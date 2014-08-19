@@ -100,6 +100,23 @@ Before installing anything do
 $workon myring_<MAJOR>.<MINOR>[.<MICRO>]
 ```
 
+First we install Flask
+
+```
+pip install Flask
+```
+
+This will install Flask, Werkzeug, Jinja2, itsdangerous, and markupsafe
+
+```
+Flask==0.10.1
+Jinja2==2.7.3
+MarkupSafe==0.23
+Werkzeug==0.9.6
+itsdangerous==0.24
+wsgiref==0.1.2
+```
+
 
 ### Cloning source code from the Insect Mothership
 
