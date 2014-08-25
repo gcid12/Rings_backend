@@ -118,4 +118,60 @@ $ cd ~/Code
 $ git clone <SSH_CLONE_URL_OF_THE_INSECT_YOU_ARE_CLONING>
 ```
 
+Now you need to install CouchDB in your computer
+
+```
+pip install couchdbkit
+```
+
+If you run 
+
+```
+pip freeze
+```
+
+You should see something like this
+
+```
+argparse==1.2.1
+couchdbkit==0.6.5
+http-parser==0.8.3
+restkit==4.2.2
+socketpool==0.5.3
+wsgiref==0.1.2
+```
+
+Start your CouchDB typing this in the command line
+
+```
+couchdb
+```
+
+You should get a similar message 
+
+```
+Apache CouchDB 1.6.0 (LogLevel=info) is starting.
+Apache CouchDB has started. Time to relax.
+[info] [<0.31.0>] Apache CouchDB has started on http://127.0.0.1:5984/
+```
+
+Please notice the URL. Copy and paste it in your Browser. You'll get something like this:
+
+```
+{"couchdb":"Welcome","uuid":"b4983e57a91fd84d552dd5ce86eeff6b","version":"1.6.0","vendor":{"version":"1.6.0-1","name":"Homebrew"}}
+```
+
+This means you are up and running. If this is the first time you run CouchDB in your computer, you need to Verify the installation. Go to this URL and click on "Verify your Installation"
+
+http://127.0.0.1:5984/_utils/verify_install.html
+
+
+It should return this message:
+
+```
+Your installation looks fine. Time to Relax.
+```
+
+You'll have to leave that command line open. If you close it the database will shut down (don't worry, nothing is going to be erased if you do). Of course in production this would run in the background but since you are in development you'll need this window to check how your app is interacting with COUCHDB's REST API.
+
 
