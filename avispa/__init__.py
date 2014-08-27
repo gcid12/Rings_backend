@@ -2,6 +2,7 @@
 from flask import Flask, render_template
 
 # Define the WSGI application object
+#avispa = Flask(__name__)
 avispa = Flask(__name__)
 
 # Configurations

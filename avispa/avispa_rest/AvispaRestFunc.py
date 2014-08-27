@@ -3,7 +3,7 @@ class AvispaRestFunc:
     # /a
 
     def get_a(self,user,*args):
-        d = {'message': 'Using get_a for user '+user , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using get_a for user '+user , 'template':'base.html'}
     	return d
 
     def post_a(self,user,*args):
