@@ -8,10 +8,21 @@ avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 ARF = AvispaRestFunc()
 
 
-def route_dispatcher(depth,user,ring=None,idx=None):
+def route_dispatcher(depth,handle,ring=None,idx=None):
 
-    m = request.method+depth
-    r = getattr(ARF, m.lower())(user,ring,idx)
+    if request.args.get("rq"):
+        method = 'rq_'+request.method
+    elif request.args.get("rs"):
+        method = 'rs_'+request.method
+    else:
+        method = request.method
+
+    m = method+depth
+    data = {}
+    data = getattr(ARF, m.lower())(handle,ring,idx)
+    data['handle']=handle
+    data['ring']=ring
+    data['idx']=idx
 
 
     accept = request.headers.get('Accept')
@@ -19,14 +30,20 @@ def route_dispatcher(depth,user,ring=None,idx=None):
     if accept.lower() == 'application/json':
         return 'Display JSON version'
     else:
-        return render_template(r['template'], results=r['message'])
+        return render_template(data['template'], data=data)
 
 # Set the route and accepted methods
 @avispa_rest.route('/')
-@avispa_rest.route('/index/', methods=['GET', 'POST'])
 def index():
 
-    return render_template("avispa_rest/index2.html", route='index')
+    data = {}
+    data['handle']='x' #you have to grab this from the session user
+    return render_template("avispa_rest/intro.html", data=data)
+
+@avispa_rest.route('/menu/', methods=['GET','POST'])
+def intro():
+
+    return render_template("avispa_rest/base.html")
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 def static(filename):
@@ -58,21 +75,22 @@ def static5(filename,depth1,depth2,depth3,depth4):
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
     return avispa_rest.send_static_file(filename)
 
-@avispa_rest.route('/<user>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def method_a(user):
 
-    return route_dispatcher('_a',user)
+@avispa_rest.route('/<handle>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def route_a(handle):
+
+    return route_dispatcher('_a',handle)
     
 
-@avispa_rest.route('/<user>/<ring>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def method_a_b(user,ring):
+@avispa_rest.route('/<handle>/<ring>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def route_a_b(handle,ring):
 
-    return route_dispatcher('_a_b',user,ring)
+    return route_dispatcher('_a_b',handle,ring)
 
-@avispa_rest.route('/<user>/<ring>/<idx>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def method_a_b_c(user,ring,idx):
+@avispa_rest.route('/<handle>/<ring>/<idx>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def route_a_b_c(handle,ring,idx):
 
-    return route_dispatcher('_a_b_c',user,ring,idx)
+    return route_dispatcher('_a_b_c',handle,ring,idx)
 
 
 

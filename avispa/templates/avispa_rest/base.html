@@ -83,13 +83,9 @@
                 
 
         <div class="btn-group" style="padding:10px;">
-          
-         {% block insect %}
-         {% endblock %} 
-          
 
-          {% block crumbs %}
-          {% endblock %}
+            {% block crumbs %}
+            {% endblock %}
 
         </div>
       </div>
@@ -140,30 +136,7 @@
 
         <hr/>
       </div> <!-- close 9 -->
-
-      <div class="col-sm-3">
-        <div class="rn-box-title">
-          <strong>ToolBar </strong>
-
-          <button type="button" class="btn btn-default btn-xs" style="float:right;">
-          <i class="fa fa-question-circle"></i>
-          </button>
-          <button type="button" class="btn btn-info btn-xs" style="float:right;">
-          <i class="fa fa-wrench"></i>
-          </button>
-
-        </div>
-        <div class="rn-box-content">
-
-          {% block tools %}
-                <!-- INSECT TOOLS HERE -->
-                <p>Tools, one click away</p>
-
-          {% endblock %}
-          
-
-        </div>
-      </div>    
+   
     </div>
   </div>
 </section>       
