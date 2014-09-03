@@ -4,26 +4,15 @@ class AvispaRestFunc:
 
     # GET/a
     def get_a(self,user,*args):
-        """
-        This function shows the rings from source 'a'
-        @use: To see all rings used by source 'a'
-        """
         d = {'message': 'Using get_a for user '+user , 'template':'avispa_rest/get_a.html'}
     	return d
 
-    def rq_get_a(self,user,*args):
-        """
-        This function shows how to formulate a get request with or without filters. 
-        @use: To filter rings used by source 'a' (Its default is no filter which is the same a get_a)
-        """
-        d = {'message': 'Using rq_get_a for user '+user , 'template':'avispa_rest/index.html'}
+    def get_rq_a(self,user,*args):
+        d = {'message': 'Using get_rq_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_get_a(self,user,*args):
-        """
-        This function shows how the response from a get request will look like
-        """
-        d = {'message': 'Using rs_get_a for user '+user , 'template':'avispa_rest/index.html'}
+    def get_rs_a(self,user,*args):
+        d = {'message': 'Using get_rs_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
     # POST/a
@@ -31,12 +20,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using post_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_post_a(self,user,*args):
-        d = {'message': 'Using rq_post_a for user '+user , 'template':'avispa_rest/index.html'}
+    def post_rq_a(self,user,*args):
+        d = {'message': 'Using post_rq_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_post_a(self,user,*args):
-        d = {'message': 'Using rs_post_a for user '+user , 'template':'avispa_rest/index.html'}
+    def post_rs_a(self,user,*args):
+        d = {'message': 'Using post_rs_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
     #PUT /a
@@ -44,12 +33,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using put_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_put_a(self,user,*args):
-        d = {'message': 'Using rq_put_a for user '+user , 'template':'avispa_rest/index.html'}
+    def put_rq_a(self,user,*args):
+        d = {'message': 'Using put_rq_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_put_a(self,user,*args):
-        d = {'message': 'Using rs_put_a for user '+user , 'template':'avispa_rest/index.html'}
+    def put_rs_a(self,user,*args):
+        d = {'message': 'Using put_rs_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
     #PATCH /a
@@ -57,12 +46,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using patch_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_patch_a(self,user,*args):
-        d = {'message': 'Using rq_patch_a for user '+user , 'template':'avispa_rest/index.html'}
+    def patch_rq_a(self,user,*args):
+        d = {'message': 'Using patch_rq_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_patch_a(self,user,*args):
-        d = {'message': 'Using rs_patch_a for user '+user , 'template':'avispa_rest/index.html'}
+    def patch_rs_a(self,user,*args):
+        d = {'message': 'Using patch_rs_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
     #DELETE /a
@@ -70,12 +59,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using delete_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_delete_a(self,user,*args):
-        d = {'message': 'Using rq_delete_a for user '+user , 'template':'avispa_rest/index.html'}
+    def delete_rq_a(self,user,*args):
+        d = {'message': 'Using delete_rq_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
     
-    def rs_delete_a(self,user,*args):
-        d = {'message': 'Using rs_delete_a for user '+user , 'template':'avispa_rest/index.html'}
+    def delete_rs_a(self,user,*args):
+        d = {'message': 'Using delete_rs_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
     # /a/b
@@ -85,12 +74,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using get_a_b for user:'+user+', ring:'+ring , 'template':'avispa_rest/get_a_b.html'}
         return d
 
-    def rq_get_a_b(self,user,ring,*args):
-        d = {'message': 'Using rq_get_a_b for user:'+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def get_rq_a_b(self,user,ring,*args):
+        d = {'message': 'Using get_rq_a_b for user:'+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_get_a_b(self,user,ring,*args):
-        d = {'message': 'Using rs_get_a_b for user:'+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def get_rs_a_b(self,user,ring,*args):
+        d = {'message': 'Using get_rs_a_b for user:'+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
@@ -99,12 +88,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using post_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_post_a_b(self,user,ring,*args):
-        d = {'message': 'Using rq_post_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def post_rq_a_b(self,user,ring,*args):
+        d = {'message': 'Using post_rq_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_post_a_b(self,user,ring,*args):
-        d = {'message': 'Using rs_post_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def post_rs_a_b(self,user,ring,*args):
+        d = {'message': 'Using post_rs_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
@@ -113,12 +102,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using put_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_put_a_b(self,user,ring,*args):
-        d = {'message': 'Using rq_put_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def put_rq_a_b(self,user,ring,*args):
+        d = {'message': 'Using put_rq_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_put_a_b(self,user,ring,*args):
-        d = {'message': 'Using rs_put_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def put_rs_a_b(self,user,ring,*args):
+        d = {'message': 'Using put_rs_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
@@ -127,12 +116,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using patch_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_patch_a_b(self,user,ring,*args):
-        d = {'message': 'Using rq_patch_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def patch_rq_a_b(self,user,ring,*args):
+        d = {'message': 'Using patch_rq_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_patch_a_b(self,user,ring,*args):
-        d = {'message': 'Using rs_patch_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def patch_rs_a_b(self,user,ring,*args):
+        d = {'message': 'Using patch_rs_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
     
@@ -141,12 +130,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using delete_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_delete_a_b(self,user,ring,*args):
-        d = {'message': 'Using rq_delete_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def delete_rq_a_b(self,user,ring,*args):
+        d = {'message': 'Using delete_rq_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_delete_a_b(self,user,ring,*args):
-        d = {'message': 'Using rs_delete_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+    def delete_rs_a_b(self,user,ring,*args):
+        d = {'message': 'Using delete_rs_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
@@ -157,12 +146,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using get_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_get_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rq_get_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def get_rq_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using get_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_get_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rs_get_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def get_rs_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using get_rs_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #POST /a/b/c
@@ -170,12 +159,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using post_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_post_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rq_post_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def post_rq_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using post_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_post_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rs_post_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def post_rs_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using post_rs_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #PUT /a/b/c
@@ -183,12 +172,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using put_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_put_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rq_put_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def put_rq_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using put_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_put_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rs_put_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def put_rs_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using put_rs_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #PATCH /a/b/c
@@ -196,12 +185,12 @@ class AvispaRestFunc:
     	d = {'message': 'Using patch_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_patch_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rq_patch_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def patch_rq_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using patch_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_patch_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rs_patch_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def patch_rs_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using patch_rs_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #DELETE /a/b/c
@@ -209,11 +198,11 @@ class AvispaRestFunc:
     	d = {'message': 'Using delete_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rq_delete_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rq_delete_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def delete_rq_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using delete_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def rs_delete_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using rs_delete_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def delete_rs_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using delete_rs_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
         return d
 

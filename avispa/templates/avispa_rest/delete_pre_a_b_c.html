@@ -1,0 +1,34 @@
+<div class="modal fade" id="delete_pre_a_b_c" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Are You sure you want to let this resource go?</h4>
+      </div>
+      <div class="modal-body">
+        <div style="float:left; padding:0 10px;">
+        <img style="width:150px;" src="/static/images/bea.jpg" class="img-thumbnail" >
+        </div>
+
+        <dl class="">
+          <dt>Name:</dt>
+          <dd>Sunsetroom1.jpg</dd>
+
+          <dt>Format:</dt>
+          <dd>JPG</dd>
+
+          <dt>Width:</dt>
+          <dd>900px</dd>
+
+          <dt>Height:</dt>
+          <dd>400px</dd>
+
+        </dl>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Nope</button>
+        <a href='/{{ data.handle }}/{{ data.ring }}/5?method=delete' class="btn btn-primary">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,9 +11,11 @@ ARF = AvispaRestFunc()
 def route_dispatcher(depth,handle,ring=None,idx=None):
 
     if request.args.get("rq"):
-        method = 'rq_'+request.method
+        method = request.args.get("rq")+'_rq'
     elif request.args.get("rs"):
-        method = 'rs_'+request.method
+        method = request.args.get("rq")+'_rs'
+    elif request.args.get("method"):
+        method = request.args.get("method")
     else:
         method = request.method
 

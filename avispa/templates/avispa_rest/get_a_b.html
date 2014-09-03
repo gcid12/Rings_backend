@@ -2,10 +2,6 @@
 
 {% block title %} Avispa {% endblock %}
 
-{% block insect %}
-<div class="rn-hp5 pull-left"><span class="label label-m">M</span></div> 
-<div class="pull-left"> AVI-01</div>
-{% endblock %}
 
 {% block crumbs %}
 
@@ -59,6 +55,7 @@
                                     
 
                                     <div class="btn-group pull-right">
+
                                         <a href="01" type="button" class="btn btn-primary btn-xs">
                                         <i class="fa fa-th-list"></i>
                                         </a>
@@ -85,9 +82,12 @@
                                         <img style="width:70px;" src="/static/images/bea.jpg" class="img-thumbnail" >
    
                                         <div class="btn-group">
-                                          <a href="03" type="button" class="btn btn-success">G</a>
-                                          <a href="03" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                                          <a href="03" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
+                                          <a href="3" type="button" class="btn btn-success">G</a>
+                                          <a href="3?rq=patch" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                                          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_pre_a_b_c">
+                                            <i class="fa fa-times"></i>
+                                          </button>
+
                                         </div>
 
                                               
@@ -200,7 +200,7 @@
                               <li><a href="#">&raquo;</a></li>
                             </ul>
                         <div class="pull-right">
-                            <a href="{{ data.}}/{{ data.ring }}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+                            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
                                <i class="fa fa-plus"></i> &nbsp; NEW
                              </a>
                         </div>     
@@ -244,71 +244,8 @@
 
 {% block modals %}
 
-<!-- //////////////////////////////////////////////////////////////////////////////-->
-<!-- AVISPA MODALS-->
-<!-- //////////////////////////////////////////////////////////////////////////////-->
+  {% include 'avispa_rest/delete_pre_a_b_c.html' %}
+  {% include 'avispa_rest/helpmodal.html' %}
 
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Are You sure you want to let this resource go?</h4>
-      </div>
-      <div class="modal-body">
-        <div style="float:left; padding:0 10px;">
-        <img style="width:150px;" src="/static/images/bea.jpg" class="img-thumbnail" >
-        </div>
-
-        <dl class="">
-          <dt>Name:</dt>
-          <dd>Sunsetroom1.jpg</dd>
-
-          <dt>Format:</dt>
-          <dd>JPG</dd>
-
-          <dt>Width:</dt>
-          <dd>900px</dd>
-
-          <dt>Height:</dt>
-          <dd>400px</dd>
-
-        </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Nope</button>
-        <button type="button" class="btn btn-primary">Yes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div class="modal fade" id="helpmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Help</h4>
-      </div>
-      <div class="modal-body">
-        <i class="fa fa-question-circle fa-4x"></i>
-        <h5> How can we help you ?</h5>
-
-        <input type="email" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-      <div class="modal-footer">
-        
-        <button type="button" class="btn btn-primary">Search</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- modal end -->
 
 {% endblock %}
