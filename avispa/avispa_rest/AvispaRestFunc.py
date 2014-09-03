@@ -8,10 +8,15 @@ class AvispaRestFunc:
     	return d
 
     def get_rq_a(self,user,*args):
-        d = {'message': 'Using get_rq_a for user '+user , 'template':'avispa_rest/index.html'}
+        # To find someting in all rings
+        d = {'message': 'Using get_rq_a for user '+user , 'template':'avispa_rest/get_rq_a.html'}
         return d
 
     def get_rs_a(self,user,*args):
+        d = {'message': 'Using get_rs_a for user '+user , 'template':'avispa_rest/index.html'}
+        return d
+
+    def get_q_a(self,user,*args):
         d = {'message': 'Using get_rs_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
@@ -75,7 +80,8 @@ class AvispaRestFunc:
         return d
 
     def get_rq_a_b(self,user,ring,*args):
-        d = {'message': 'Using get_rq_a_b for user:'+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        # To find something inside of this ring
+        d = {'message': 'Using get_rq_a_b for user:'+user+', ring:'+ring , 'template':'avispa_rest/get_rq_a_b.html'}
         return d
 
     def get_rs_a_b(self,user,ring,*args):
@@ -146,8 +152,9 @@ class AvispaRestFunc:
     	d = {'message': 'Using get_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/get_a_b_c.html'}
         return d
 
-    def get_rq_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using get_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    def get_rq_a_b_c(self,user,ring,idx,*args): 
+        #This function doesn't make to much sense as you already found the item by then. You don't need a search.
+        d = {'message': 'Using get_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/get_rq_a_b_c.html'}
         return d
 
     def get_rs_a_b_c(self,user,ring,idx,*args):
