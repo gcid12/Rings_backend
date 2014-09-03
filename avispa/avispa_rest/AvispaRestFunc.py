@@ -143,7 +143,7 @@ class AvispaRestFunc:
 
     #GET /a/b/c
     def get_a_b_c(self,user,ring,idx,*args):
-    	d = {'message': 'Using get_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+    	d = {'message': 'Using get_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/get_a_b_c.html'}
         return d
 
     def get_rq_a_b_c(self,user,ring,idx,*args):
@@ -186,7 +186,7 @@ class AvispaRestFunc:
         return d
 
     def patch_rq_a_b_c(self,user,ring,idx,*args):
-        d = {'message': 'Using patch_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using patch_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/patch_rq_a_b_c.html'}
         return d
 
     def patch_rs_a_b_c(self,user,ring,idx,*args):

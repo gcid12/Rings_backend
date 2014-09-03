@@ -1,0 +1,138 @@
+{% extends 'avispa_rest/base.html' %}
+
+
+{% block title %}<title>Avispa</title>{% endblock %}
+
+{% block crumbs %}
+
+<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
+<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
+<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a> /
+<a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.idx}}</a>
+
+{% endblock %}
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">  
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="rn-box-title">
+
+              <strong> <!-- Ring owner  -->Patching 1 item  </strong> 
+
+              <button type="button" class="btn btn-default btn-xs pull-right">
+              <i class="fa fa-question-circle"></i>
+              </button>
+            </div>
+            <div class="rn-box-solo">
+              <div class="row">
+                <div class="col-sm-3">
+
+                    <img style="width:150px;" src="/static/images/bea.jpg" class="img-thumbnail" >
+
+                </div>
+                <div class="col-sm-9" >
+                  <dl class="dl-horizontal text-left">
+                      <dt>Name:</dt>
+                      <dd>Sunsetroom1.jpg</dd>
+
+                      <dt>Format:</dt>
+                      <dd>JPG</dd>
+
+                      <dt>Width:</dt>
+                      <dd>900px</dd>
+
+                      <dt>Height:</dt>
+                      <dd>400px</dd>
+                  </dl>                           
+                </div>              
+              </div> 
+            </div>
+            <div class="rn-box-content">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Summary</label>
+                                    <div class="col-sm-10">
+
+                                      <input type="email" class="form-control" id="inputEmail3" placeholder="Deluxe Room">
+
+                                    </div>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Description</label>
+                                    <div class="col-sm-10">
+                                       
+                                      <textarea class="form-control" rows="4">Allow browsers to determine video or slideshow dimensions based on the width of their containing block by creating an intrinsic ratio that will properly scale on any device.
+                                      </textarea> 
+
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Tags</label>
+                                    <div class="col-sm-10">
+                                    
+                                        <div class="well well-sm">
+                                          <span class="label label-success rn-mar5"> Deluxe Room <i class="fa fa-times"></i> </span>
+                                          <span class="label label-success rn-mar5"> Jacuzzi <i class="fa fa-times"></i> </span>
+                                          <span class="label label-success rn-mar5"> Ocean View <i class="fa fa-times"></i> </span>
+                                          <span class="label label-warning rn-mar5"> Hotels <i class="fa fa-times"></i> </span>
+                                          <span class="label label-warning rn-mar5"> Room Images <i class="fa fa-times"></i> </span>
+                                          <span class="label label-warning rn-mar5"> Space stations<i class="fa fa-times"></i> </span>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                      
+                                      <a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=patch" type="submit" class="btn btn-primary">Save</a>
+                                      <a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" type="submit" class="btn btn-default">Leave without saving anything</a>
+                                      
+
+                                    </div>
+                                </div>
+                            </form>     
+            </div><!-- //close box content -->
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+      </div> <!-- close 9 -->
+      <div class="col-sm-3">
+        <div class="rn-box-space">
+          <strong>ToolBar </strong>
+
+          <button type="button" class="btn btn-default btn-xs" style="float:right;">
+          <i class="fa fa-question-circle"></i>
+          </button>
+          <button type="button" class="btn btn-success btn-xs" style="float:right;">
+          <i class="fa fa-wrench"></i>
+          </button>
+
+        </div>
+          <div class="rn-box-content">
+              <p>Tools, one click away</p>
+          </div>
+      </div>    
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock content%}
+
+
+
+

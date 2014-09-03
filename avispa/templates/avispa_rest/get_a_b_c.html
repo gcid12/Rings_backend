@@ -7,7 +7,8 @@
 
 <div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
 <a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
-<a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.ring}}</a>
+<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a> /
+<a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.idx}}</a>
 
 {% endblock %}
 
@@ -84,8 +85,10 @@
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label"></label>
                   <div class="col-sm-10">
-                      <a type="submit" class="btn btn-success">Edit</a>
-                      <a type="submit" class="btn btn-default">Delete This</a>
+                      <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=patch' type="submit" class="btn btn-success">Edit</a>
+                      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_pre_a_b_c">
+                          DELETE THIs
+                      </button>
                   </div>
                 </div>
               </form>           
@@ -114,3 +117,11 @@
 
 
 {% endblock content%}
+
+{% block modals %}
+
+  {% include 'avispa_rest/delete_pre_a_b_c.html' %}
+  {% include 'avispa_rest/helpmodal.html' %}
+
+
+{% endblock %}
