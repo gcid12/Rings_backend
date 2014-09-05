@@ -155,7 +155,7 @@ class AvispaRestFunc:
     
     #SEARCH /a/b
     def search_a_b(self,user,ring,*args):
-        d = {'message': 'Using search_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using search_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/search_a_b.html'}
         return d
 
     def search_rq_a_b(self,user,ring,*args):
