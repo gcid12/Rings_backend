@@ -9,7 +9,7 @@ class AvispaRestFunc:
 
     def get_rq_a(self,user,*args):
         # To find someting in all rings
-        d = {'message': 'Using get_rq_a for user '+user , 'template':'avispa_rest/get_rq_a.html'}
+        d = {'message': 'Using get_rq_a for user '+user , 'template':'avispa_rest/index.html'}
         return d
 
     def get_rs_a(self,user,*args):
@@ -70,6 +70,15 @@ class AvispaRestFunc:
     
     def delete_rs_a(self,user,*args):
         d = {'message': 'Using delete_rs_a for user '+user , 'template':'avispa_rest/index.html'}
+        return d
+
+    #SEARCH /a
+    def search_a(self,user,*args):
+        d = {'message': 'Using search_a for user '+user , 'template':'avispa_rest/search_a.html'}
+        return d
+
+    def search_rq_a(self,user,*args):
+        d = {'message': 'Using search_rq_a for user '+user , 'template':'avispa_rest/search_rq_a.html'}
         return d
 
     # /a/b
@@ -143,6 +152,16 @@ class AvispaRestFunc:
     def delete_rs_a_b(self,user,ring,*args):
         d = {'message': 'Using delete_rs_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
+    
+    #SEARCH /a/b
+    def search_a_b(self,user,ring,*args):
+        d = {'message': 'Using search_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        return d
+
+    def search_rq_a_b(self,user,ring,*args):
+        d = {'message': 'Using search_rq_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/search_rq_a_b.html'}
+        return d
+
 
 
     # a/b/c
@@ -153,7 +172,6 @@ class AvispaRestFunc:
         return d
 
     def get_rq_a_b_c(self,user,ring,idx,*args): 
-        #This function doesn't make to much sense as you already found the item by then. You don't need a search.
         d = {'message': 'Using get_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/get_rq_a_b_c.html'}
         return d
 
@@ -211,5 +229,14 @@ class AvispaRestFunc:
 
     def delete_rs_a_b_c(self,user,ring,idx,*args):
         d = {'message': 'Using delete_rs_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+        return d
+
+    #SEARCH /a/b/c
+    def search_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using search_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/index.html'}
+        return d
+
+    def search_rq_a_b_c(self,user,ring,idx,*args):
+        d = {'message': 'Using search_rq_a_b_c for user '+user+', ring:'+ring+', idx:'+idx , 'template':'avispa_rest/search_rq_a_b_c.html'}
         return d
 

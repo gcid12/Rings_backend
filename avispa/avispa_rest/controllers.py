@@ -10,7 +10,12 @@ ARF = AvispaRestFunc()
 
 def route_dispatcher(depth,handle,ring=None,idx=None):
 
-    if request.args.get("rq"):
+    if 'q' in request.args:
+        if request.args.get("q"):
+            method = 'search'
+        else:
+            method = 'search_rq'
+    elif request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
     elif request.args.get("rs"):
         method = request.args.get("rq")+'_rs'
@@ -88,6 +93,7 @@ def route_a(handle):
 def route_a_b(handle,ring):
 
     return route_dispatcher('_a_b',handle,ring)
+
 
 @avispa_rest.route('/<handle>/<ring>/<idx>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def route_a_b_c(handle,ring,idx):
