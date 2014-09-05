@@ -47,10 +47,10 @@ def index():
     data['handle']='x' #you have to grab this from the session user
     return render_template("avispa_rest/intro.html", data=data)
 
-@avispa_rest.route('/menu/', methods=['GET','POST'])
+@avispa_rest.route('/tools/', methods=['GET','POST'])
 def intro():
 
-    return render_template("avispa_rest/base.html")
+    return render_template("avispa_rest/tools.html")
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 def static(filename):

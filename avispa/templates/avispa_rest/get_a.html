@@ -3,7 +3,7 @@
 {% block crumbs %}
 
 <div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
-<a href="00" class="rn-b1" >{{ data.handle }}</a>
+<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a>
 
 {% endblock %}
 
@@ -25,12 +25,13 @@
             <div class="rn-box-title">
               <strong>Showing 3 rings</strong>
               
-              <button type="button" class="btn btn-default btn-xs pull-right">
+              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
               <i class="fa fa-question-circle"></i>
               </button>
 
-              <a href="?q" type="button" class="btn btn-warning btn-xs pull-right">
-              <i class="fa fa-search"></i> SEARCH
+              
+              <a href="?q" type="button" class="btn btn-success btn-xs pull-right">
+                <i class="fa fa-search"></i> SEARCH
               </a>
             </div>
             <div class="rn-box-solo">
@@ -69,7 +70,7 @@
                   <td style="min-width:200px;"> 
                     <div class="pull-right">
                       <div class="btn-group">
-                        <a href="events?rq=get" type="button" class="btn btn-success">G</a>
+                        <a href="events" type="button" class="btn btn-success">G</a>
                         <a href="events?rq=post" type="button" class="btn btn-warning">P</a>
                         <a href="events?rq=put" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
                         <a href="events?method=delete" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
@@ -152,7 +153,7 @@
                   <li><a href="#">&raquo;</a></li>
                </ul>
                <div class="pull-right">
-                 <a href="03" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+                 <a href="?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
                     <i class="fa fa-plus"></i> &nbsp; NEW RING
                  </a>
                </div>     
@@ -171,5 +172,11 @@
 
 
 
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
 
 {% endblock %}

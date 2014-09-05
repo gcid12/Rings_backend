@@ -104,7 +104,7 @@ class AvispaRestFunc:
         return d
 
     def post_rq_a_b(self,user,ring,*args):
-        d = {'message': 'Using post_rq_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using post_rq_a_b for user '+user+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html'}
         return d
 
     def post_rs_a_b(self,user,ring,*args):
