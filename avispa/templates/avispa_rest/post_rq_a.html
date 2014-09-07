@@ -26,12 +26,19 @@
 
               <strong> <!-- Ring owner  -->Modeling 1 ring </strong> 
 
-              <button type="button" class="btn btn-default btn-xs pull-right">
+              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
                 <i class="fa fa-question-circle"></i>
-              </button>
+              </button-->
+
             </div>
             <div class="rn-box-solo">
-              <div class="row">&nbsp;&nbsp;&nbsp; <strong>STEP 1.</strong> Fork a ring (optional, if you want to start from scratch skip to Step 2) </div> 
+              <div class="row">
+                &nbsp;&nbsp;&nbsp; <strong>STEP 1.</strong> Fork a ring (optional, if you want to start from scratch skip to Step 2)
+                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                  <i class="fa fa-question-circle"></i>
+                </button> 
+              </div> 
+
             </div>
 
             <!--div class="rn-box-content ringbuilder">
@@ -72,7 +79,12 @@
              </form>
 
             <div class="rn-box-solo">
-              <div class="row">&nbsp;&nbsp;&nbsp; <strong>STEP 2.</strong> Define the Ring's characteristics</div> 
+              <div class="row">
+                &nbsp;&nbsp;&nbsp; <strong>STEP 2.</strong> Define the Ring's characteristics
+                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                  <i class="fa fa-question-circle"></i>
+                </button>
+              </div> 
             </div>
 
             <form class="form-horizontal" role="form">
@@ -106,7 +118,13 @@
 
 
               <div class="rn-box-solo">
-                <div class="row">&nbsp;&nbsp;&nbsp; <strong>STEP 3.</strong>  Define the Field's characteristics</div> 
+                <div class="row">
+                  &nbsp;&nbsp;&nbsp; <strong>STEP 3.</strong>  Define the Field's characteristics
+                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                  <i class="fa fa-question-circle"></i>
+                  </button>
+
+                </div> 
               </div>
 
 
@@ -252,6 +270,13 @@
 
 
 {% endblock content%}
+
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
 
 
 
