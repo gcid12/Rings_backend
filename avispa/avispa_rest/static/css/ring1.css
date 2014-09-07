@@ -252,3 +252,14 @@ position: relative;
 header .navbar-default{margin:0; padding:14px 0; background:url(../images/bg-header-fill-1.gif) repeat; border:0; border-radius:0;}
 .navbar-brand{background-color:red; padding: 1px; margin:3px 0; border:1px solid transparent; border-radius:0px;}
 header .navbar-ring{padding:7px 15px; margin-top:50px; border:1px solid transparent; border-radius:3px;}
+
+/* post_rq_a */
+.ringbuilder table tr td:first-child {
+    text-align:right;
+    /*font-weight:200;*/
+    padding-right:15px;
+}
+
+.ringbuilder_field_n {
+    text-align:left;
+}

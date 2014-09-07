@@ -26,7 +26,7 @@ class AvispaRestFunc:
         return d
 
     def post_rq_a(self,user,*args):
-        d = {'message': 'Using post_rq_a for user '+user , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using post_rq_a for user '+user , 'template':'avispa_rest/post_rq_a.html'}
         return d
 
     def post_rs_a(self,user,*args):
