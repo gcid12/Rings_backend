@@ -25,8 +25,9 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
         method = request.method
 
     m = method+depth
+    requestx = 'axioma'
     data = {}
-    data = getattr(ARF, m.lower())(handle,ring,idx)
+    data = getattr(ARF, m.lower())(request,handle,ring,idx)
     data['handle']=handle
     data['ring']=ring
     data['idx']=idx

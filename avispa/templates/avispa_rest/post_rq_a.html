@@ -41,36 +41,9 @@
 
             </div>
 
-            <!--div class="rn-box-content ringbuilder">
-              <table class="form-group" style="width:100%;">
-                <tbody>
-                <tr>
-                  <td>ring:name</td>
-                  <td>
-                    <input name="RingName" value="" class="form-control" required="" type="text" placeholder="The name of the ring">
-                  </td>
-                </tr>
-                <tr>
-                  <td>ring:description</td>
-                  <td><textarea name="RingDescription" class="form-control"></textarea></td>
-                </tr>
-                <tr>
-                  <td>ring:version</td>
-                  <td><input name="RingVersion" value="" class="form-control" type="text"></td>
-                </tr>
-                <tr>
-                  <td>ring:URI</td>
-                  <td><input name="RingURI" value="" class="form-control" type="url"></td>
-                </tr>
-                <tr>
-                  <td>ring:build</td>
-                  <td><input name="RingBuild" value="" class="form-control" type="text"></td>
-                </tr>
-                </tbody>
-              </table>
-            </div-->
 
-            <form novalidate="novalidate" role="form" id="form1" action="/scar?method=postrq" method="POST" autocomplete="off">
+
+            <form id="post_rq_a" action="/{{ data.handle }}" method="POST" >
             <div class="rn-box-content">
               Load Parent Ring from this URL: <input name="ringurl" class="form-control" type="text"><br>
               <input name="submit" value="load" type="submit">
@@ -87,31 +60,31 @@
               </div> 
             </div>
 
-            <form class="form-horizontal" role="form">
+            <form class="form-horizontal" role="form" action="/{{ data.handle }}/" method="POST">
                
               <!-- RING -->
               <div class="rn-box-content">  
               <br/>           
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">ring:name</label>
+                  <label for="RingName" class="col-sm-2 control-label">ring:name</label>
                   <div class="col-sm-10">
-                     <input type="" class="form-control" id="inputEmail3" placeholder="The name of the new ring">
+                     <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new ring">
                   </div>
-                  <label for="inputEmail3" class="col-sm-2 control-label">ring:description</label>
+                  <label for="RingDescription" class="col-sm-2 control-label">ring:description</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" rows="4" placeholder="What makes this ring unique?"></textarea>
+                    <textarea name="RingDescription" class="form-control" rows="4" placeholder="What makes this ring unique?"></textarea>
                   </div>
-                  <label for="inputEmail3" class="col-sm-2 control-label">ring:version</label>
+                  <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="if this ring is new it must be version 1">
+                    <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="if this ring is new it must be version 1">
                   </div>
-                  <label for="inputEmail3" class="col-sm-2 control-label">ring:URI</label>
+                  <label for="RingURI" class="col-sm-2 control-label">ring:URI</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="URI that will be used to refer to this specific ring">
+                    <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="URI that will be used to refer to this specific ring">
                   </div>
                   <label for="inputEmail3" class="col-sm-2 control-label">ring:build</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="summary">
+                    <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="">
                   </div>
                 </div>
               </div>
@@ -249,8 +222,8 @@
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label"></label>
                   <div class="col-sm-10">
-                    <a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=patch" type="submit" class="btn btn-primary">Save</a>
-                    <a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
                   </div>
                 </div>
               </div>
