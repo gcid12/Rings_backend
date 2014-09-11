@@ -33,10 +33,10 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     data['idx']=idx
 
 
-    accept = request.headers.get('Accept')
-
-    if accept.lower() == 'application/json':
-        return 'Display JSON version'
+    if request.headers.get('Accept'):
+        accept = request.headers.get('Accept')
+        if accept.lower() == 'application/json':
+            return 'Display JSON version'
     else:
         return render_template(data['template'], data=data)
 
