@@ -27,8 +27,8 @@ class AvispaRestFunc:
 
        
         RB = RingBuilder()
-        #result = 'request'
         result = RB.JSONRingGenerator(request)
+        
 
     	d = {'message': 'Using post_a for user '+user+' JSONRing:'+result , 'template':'avispa_rest/index.html'}
         return d

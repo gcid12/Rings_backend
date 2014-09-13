@@ -10,7 +10,7 @@ class RingBuilder:
  
 
         self.ringprotocol = ['RingName','RingDescription','RingVersion','RingURI','RingBuild']
-        self.ringprotocol_mandatory = ['RingName','RingBuild']
+        self.ringprotocol_mandatory = ['RingName']
         self.ringprotocol_defaults = {'RingVersion':'0.1.0','RingBuild':'1'}
 
 
@@ -26,6 +26,8 @@ class RingBuilder:
     
     def JSONRingGenerator(self,request):
 
+        
+
                 
         if request.form.get('RingName') and request.form.get('FieldName_1'):
 
@@ -40,9 +42,9 @@ class RingBuilder:
             print(self.out)
             jsonrs = json.dumps(self.out)
             print jsonrs
-
            
-            return 'Ring Created'
+            #return 'Ring '+self.ringname+' Created'
+            return jsonrs
 
         else:
 

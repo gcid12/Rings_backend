@@ -33,10 +33,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     data['idx']=idx
 
 
-    if request.headers.get('Accept'):
-        accept = request.headers.get('Accept')
-        if accept.lower() == 'application/json':
-            return 'Display JSON version'
+    if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':       
+        return 'Display JSON version'        
     else:
         return render_template(data['template'], data=data)
 
@@ -51,7 +49,8 @@ def index():
 @avispa_rest.route('/tools/', methods=['GET','POST'])
 def intro():
 
-    return render_template("avispa_rest/tools.html")
+    data = {}
+    return render_template("avispa_rest/tools.html", data=data)
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 def static(filename):
