@@ -1,14 +1,15 @@
 # Import flask dependencies
 from flask import Blueprint, render_template, request
 from AvispaRestFunc import AvispaRestFunc
+from AvispaInstall import AvispaInstall
 
 
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 ARF = AvispaRestFunc()
 
-
 def route_dispatcher(depth,handle,ring=None,idx=None):
+
 
     if 'q' in request.args:
         if request.args.get("q"):
@@ -25,7 +26,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
         method = request.method
 
     m = method+depth
-    requestx = 'axioma'
     data = {}
     data = getattr(ARF, m.lower())(request,handle,ring,idx)
     data['handle']=handle
@@ -51,6 +51,25 @@ def intro():
 
     data = {}
     return render_template("avispa_rest/tools.html", data=data)
+
+@avispa_rest.route('/install/', methods=['GET','POST'])
+def install():
+
+    AIL = AvispaInstall()    
+
+    args = 'hola'
+
+    if not getattr(AIL, 'is_installed')(args):
+        if getattr(AIL, 'install'):
+            return 'Installed sucessfully'
+    else:
+        return 'It was already installed'
+
+
+
+
+    #data = {}
+    #return install_avispa()
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 def static(filename):

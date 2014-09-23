@@ -1,11 +1,9 @@
 #RingBuilder.py
-import json
 import collections
-import couchdb
-import pprint
-
 from datetime import datetime 
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
+
+from AvispaCouchDB import AvispaCouchDB
 
 class RingBuilder:
 
@@ -27,10 +25,12 @@ class RingBuilder:
                                   'FieldMultilingual':False, 'FieldRequired':False, 'FieldLayer':3 }
 
 
+        ACD = AvispaCouchDB()
+        self.couch=ACD._instantiate_couchdb_as_admin()
+
+
     
     def JSONRingGenerator(self,request):
-
-        
 
                 
         if request.form.get('RingName') and request.form.get('FieldName_1'):
@@ -153,8 +153,7 @@ class RingBuilder:
 
     def _createnew_db(self,ringname):
 
-        self.couch = couchdb.Server()
-
+        
         ringname=str(ringname)
 
         try:
@@ -201,7 +200,8 @@ class RingBuilder:
             
             elif(action == 'edit'):
                 if out['rings'][0][r] == ring.rings[0][r]:
-                    print(r+' did not change')
+                    #print(r+' did not change')
+                    pass
                 else:
                     print(r+' changed. Old: "'+ str(ring.rings[0][r]) +'" ('+ str(type(ring.rings[0][r])) +')'+\
                             '  New: "'+ str(out['rings'][0][r]) + '" ('+ str(type(out['rings'][0][r])) +')' )
@@ -232,7 +232,8 @@ class RingBuilder:
 
                 elif(action == 'edit'):
                     if out['fields'][i][f] == ring.fields[i][f]:
-                        print(f+'_'+str(i+1)+' did not change')
+                        #print(f+'_'+str(i+1)+' did not change')
+                        pass
                     else:
                         
                         print(f+'_'+str(i+1)+' changed. Old: "'+ str(ring.fields[i][f]) +'" ('+ str(type(ring.fields[i][f])) +')'+\

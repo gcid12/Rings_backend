@@ -22,5 +22,10 @@ CSRF_SESSION_KEY = os.environ['MYRING_CSRF_SESSION_KEY']
 # Secret key for signing cookies
 SECRET_KEY = os.environ['MYRING_SECRET_KEY']
 
+# Admin credentials to your CouchDB
+#COUCH_DB_USER =os.environ['MYRING_COUCH_DB_USER']
+#COUCH_DB_PASS = os.environ['MYRING_COUCH_DB_PASS']
+
+
 
 
