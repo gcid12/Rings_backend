@@ -55,21 +55,21 @@ def intro():
 @avispa_rest.route('/install/', methods=['GET','POST'])
 def install():
 
+    user = 'rcid' #This should come from an auth system
+    msg = ''
     AIL = AvispaInstall()    
+    if AIL.avispa_db_install():
+        msg +=  'DB was already installed '
+        if AIL.avispa_user_create(user):
+            msg += 'User already existed '
+        else:
+            msg += 'User just Created '
 
-    args = 'hola'
-
-    if not getattr(AIL, 'is_installed')(args):
-        if getattr(AIL, 'install'):
-            return 'Installed sucessfully'
     else:
-        return 'It was already installed'
+        msg += 'DB just Installed '
 
+    return msg
 
-
-
-    #data = {}
-    #return install_avispa()
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 def static(filename):
