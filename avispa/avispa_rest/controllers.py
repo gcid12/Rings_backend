@@ -1,7 +1,7 @@
 # Import flask dependencies
 from flask import Blueprint, render_template, request
 from AvispaRestFunc import AvispaRestFunc
-from AvispaInstall import AvispaInstall
+from MyRingInstall import MyRingInstall
 
 
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
@@ -55,18 +55,18 @@ def intro():
 @avispa_rest.route('/install/', methods=['GET','POST'])
 def install():
 
-    user = 'rcid' #This should come from an auth system
+    user = 'gcid' #This should come from an auth system
     msg = ''
-    AIL = AvispaInstall()    
-    if AIL.avispa_db_install():
-        msg +=  'DB was already installed '
-        if AIL.avispa_user_create(user):
-            msg += 'User already existed '
+    MRI = MyRingInstall()    
+    if MRI.myring_db_install():
+        msg += 'MyRing DB already exists'
+        if MRI.myring_user_create(user):
+            msg += user + ' already existed '
         else:
-            msg += 'User just Created '
+            msg += user + ' just Created '
 
     else:
-        msg += 'DB just Installed '
+        msg += 'MyRing DB just Installed '
 
     return msg
 
