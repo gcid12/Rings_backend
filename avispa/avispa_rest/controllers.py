@@ -1,12 +1,14 @@
 # Import flask dependencies
 from flask import Blueprint, render_template, request
 from AvispaRestFunc import AvispaRestFunc
-from MyRingInstall import MyRingInstall
+from MyRingTool import MyRingTool
+
 
 
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 ARF = AvispaRestFunc()
+MRT = MyRingTool()
 
 def route_dispatcher(depth,handle,ring=None,idx=None):
 
@@ -27,7 +29,13 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
     m = method+depth
     data = {}
-    data = getattr(ARF, m.lower())(request,handle,ring,idx)
+
+    if handle=='tool':
+        tool = ring
+        data = getattr(MRT, tool.lower())(request)
+    else:
+        data = getattr(ARF, m.lower())(request,handle,ring,idx)
+
     data['handle']=handle
     data['ring']=ring
     data['idx']=idx
@@ -51,25 +59,6 @@ def intro():
 
     data = {}
     return render_template("avispa_rest/tools.html", data=data)
-
-@avispa_rest.route('/install/', methods=['GET','POST'])
-def install():
-
-    user = 'gcid' #This should come from an auth system
-    msg = ''
-    MRI = MyRingInstall()    
-    if MRI.myring_db_install():
-        msg += 'MyRing DB already exists'
-        if MRI.myring_user_create(user):
-            msg += user + ' already existed '
-        else:
-            msg += user + ' just Created '
-
-    else:
-        msg += 'MyRing DB just Installed '
-
-    return msg
-
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 def static(filename):
