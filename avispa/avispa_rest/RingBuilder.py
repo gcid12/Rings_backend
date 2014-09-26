@@ -46,15 +46,15 @@ class RingBuilder:
             self.out['fields'] = self._generate_field_block(request)
             
             
-            if self.avispamodel._createnew_db(self.ringname.lower()):
+            if self.avispamodel.post_a(self.ringname.lower()):
                 print('New Ring database created: '+ self.ringname.lower())
             else:
                 print('The Ring '+ self.ringname.lower() +' database already exists, overwriting')
 
-            result = self.avispamodel._save_ring_schema_in_db(self.out,
-                                                              self.ringprotocols['ringprotocol'],
-                                                              self.fieldprotocols['fieldprotocol']
-                                                              )
+            result = self.avispamodel.put_a_b(self.out,
+                                              self.ringprotocols['ringprotocol'],
+                                              self.fieldprotocols['fieldprotocol']
+                                              )
 
             #print(result)
            

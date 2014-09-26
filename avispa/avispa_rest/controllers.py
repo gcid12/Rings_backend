@@ -30,15 +30,15 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     m = method+depth
     data = {}
 
-    if handle=='tool':
+    if handle=='tool':  #not a ring! Here goes all the system specific functionality
         tool = ring
         data = getattr(MRT, tool.lower())(request)
     else:
         data = getattr(ARF, m.lower())(request,handle,ring,idx)
 
-    data['handle']=handle
-    data['ring']=ring
-    data['idx']=idx
+        data['handle']=handle
+        data['ring']=ring
+        data['idx']=idx
 
 
     if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':       

@@ -3,6 +3,7 @@
 from datetime import datetime 
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
 from AvispaCouchDB import AvispaCouchDB
+from MyRingUser import MyRingUser
 
 class AvispaModel:
 
@@ -11,9 +12,53 @@ class AvispaModel:
 
         ACD = AvispaCouchDB()
         self.couch=ACD._instantiate_couchdb_as_admin()
+        self.user_database = 'myring_users'
 
 
-    def _createnew_db(self,ringname):
+    def admin_user_db_create(self,*args):
+
+        print('flag1')
+
+
+        try:
+
+            print('flag2')           
+            self.db = self.couch[self.user_database]
+            print(self.user_database+' exists already')
+            return True
+
+        except:  
+
+            print('flag3')         
+            self.db = self.couch.create(self.user_database)
+            print(self.user_database+'did not exist. Will create')
+            return False
+
+
+
+
+    def admin_user_create(self,data):
+
+        self.db = self.couch[self.user_database]
+
+        
+
+        auser =  MyRingUser.load(self.db, data['user'])
+
+        if auser:
+            auser =  MyRingUser.load(self.db, data['user'])  # WTF!!! REPEATING THIS?
+            print(data['user']+' exists already')
+            return True
+
+        else:
+            auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'])
+            auser._id = data['user']
+            auser.store(self.db)
+            print(data['user'] +' created')
+            return False
+
+#_createnew_db
+    def post_a(self,ringname):
 
             
         ringname=str(ringname)
@@ -26,7 +71,7 @@ class AvispaModel:
             self.db = self.couch.create(ringname)
             return True
 
-    def _save_ring_schema_in_db(self,out,ringprotocol,fieldprotocol):
+    def put_a_b(self,out,ringprotocol,fieldprotocol):
 
 
         numfields = len(out['fields'])
@@ -41,7 +86,8 @@ class AvispaModel:
 
         else:       
             ring = RingClass()
-            ring._id = 'blueprint'
+            ring._id= 'blueprint'
+
             action = 'new'
 
 
@@ -129,7 +175,7 @@ class AvispaModel:
                 args_f[f] =  TextField()
 
 
-        ringclass = type('Person',
+        ringclass = type('RingClass',
                          (Document,),
                          {
                             '_id' : TextField(),
