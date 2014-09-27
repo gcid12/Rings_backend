@@ -31,38 +31,45 @@ class RingBuilder:
 
 
     
-    def JSONRingGenerator(self,request):
+    def JSONRingGenerator(self,request,handle):
 
                 
         if request.form.get('RingName') and request.form.get('FieldName_1'):
 
 
-            self.ringname = request.form.get('RingName') # I dont like this here
+            ringname = request.form.get('RingName').lower() # I dont like this here
+            handle = handle.lower()
+            ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
             
             # Generate rings block                         
             self.out['rings'] = self._generate_ring_block(request)
-
             # Generate fields block
             self.out['fields'] = self._generate_field_block(request)
             
             
-            if self.avispamodel.post_a(self.ringname.lower()):
-                print('New Ring database created: '+ self.ringname.lower())
+            if self.avispamodel.ring_set_db(handle,ringname,ringversion):
+                print('New Ring database created: '+ ringname)
             else:
-                print('The Ring '+ self.ringname.lower() +' database already exists, overwriting')
+                print('The Ring '+ ringname +' database already exists')
 
-            result = self.avispamodel.put_a_b(self.out,
-                                              self.ringprotocols['ringprotocol'],
-                                              self.fieldprotocols['fieldprotocol']
-                                              )
+            if self.avispamodel.ring_set_blueprint(handle,
+                                        ringname,
+                                        ringversion,
+                                        self.out,
+                                        self.ringprotocols['ringprotocol'],
+                                        self.fieldprotocols['fieldprotocol']):
 
-            #print(result)
-           
-            return result
+                print('Blueprint inserted/updated')
+                return True
+            else:
+                print('Blueprint could not be inserted')
+                return False
+
 
         else:
 
-            return 'There is not enough information to create a Ring'
+            print('There is not enough information to create a Ring')
+            return False
 
 
 
@@ -97,6 +104,8 @@ class RingBuilder:
         fieldsbuffer = collections.OrderedDict()
 
         self._generate_fieldindex(request)
+
+        ringname = request.form.get('RingName')
             
 
         i = 0
@@ -128,7 +137,7 @@ class RingBuilder:
         for fieldkey in fieldsbuffer: #Prepare them to be shown in Ring Format 
 
             tempdict = collections.OrderedDict()
-            tempdict['RingName'] = self.ringname
+            tempdict['RingName'] = ringname
             tempdict.update(fieldsbuffer[fieldkey])
             fieldblock.append(tempdict)
 

@@ -20,9 +20,7 @@ class AvispaModel:
         print('flag1')
 
 
-        try:
-
-            print('flag2')           
+        try:          
             self.db = self.couch[self.user_database]
             print(self.user_database+' exists already')
             return True
@@ -46,7 +44,6 @@ class AvispaModel:
         auser =  MyRingUser.load(self.db, data['user'])
 
         if auser:
-            auser =  MyRingUser.load(self.db, data['user'])  # WTF!!! REPEATING THIS?
             print(data['user']+' exists already')
             return True
 
@@ -57,33 +54,82 @@ class AvispaModel:
             print(data['user'] +' created')
             return False
 
-#_createnew_db
-    def post_a(self,ringname):
 
-            
-        ringname=str(ringname)
+    def get_a(self,handle):
+
+        data=[]
 
         try:
-            self.db = self.couch[ringname]
-            return False
+            db = self.couch['myring_users']         
+            doc = db[handle]
+            rings = doc['rings']
+
+            
+
+            for ring in rings:
+                db_ringname=str(handle)+'_'+str(ring)
+                print(db_ringname)
+                db = self.couch[db_ringname]
+                RingDescription = db['blueprint']['rings'][0]['RingDescription']
+                r = {'ringname':ring,'ringdescription':RingDescription}
+                data.append(r)
+
         except:
-            print('it did not exist. Will create')
-            self.db = self.couch.create(ringname)
-            return True
+            print('No rings for this user')
 
-    def put_a_b(self,out,ringprotocol,fieldprotocol):
+        return data
 
 
+
+    def ring_set_db(self,handle,ringname,ringversion):
+
+            
+        db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+
+        #try:
+        if True:
+            
+            self.couch.create(db_ringname) 
+            self.user_add_ring(handle,ringname,ringversion)
+            return True    
+
+        #except:  
+        else:         
+            return False
+
+    def user_add_ring(self,handle,ringname,ringversion):
+
+
+        db = self.couch[self.user_database]
+        auser =  MyRingUser.load(db, handle)
+
+        auser.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now())
+
+        #auser.guid = str(ringname)+'_'+str(ringversion)
+
+        auser.store(db)
+
+        #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        #db = self.couch['myring_users']
+        #doc = db[handle]
+        #doc['guid']='9712qwerty'
+        #rings = doc['rings']
+
+        return True
+            
+
+    def ring_set_blueprint(self,handle,ringname,ringversion,out,ringprotocol,fieldprotocol):
+
+
+        db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        db = self.couch[db_ringname]
         numfields = len(out['fields'])
         RingClass = self._create_ring_class(numfields,ringprotocol,fieldprotocol)  #This is a dynamically created class
-        ring =  RingClass.load(self.db, 'blueprint')
+        ring =  RingClass.load(db, 'blueprint')
 
         # Creates Ring Blueprint if it doesn't exist. Uses current one if it exists.
-
         if ring:
-            ring =  RingClass.load(self.db, 'blueprint')
             action = 'edit'
-
         else:       
             ring = RingClass()
             ring._id= 'blueprint'
@@ -101,7 +147,7 @@ class AvispaModel:
             
             elif(action == 'edit'):
                 if out['rings'][0][r] == ring.rings[0][r]:
-                    #print(r+' did not change')
+                    print(r+' did not change')
                     pass
                 else:
                     print(r+' changed. Old: "'+ str(ring.rings[0][r]) +'" ('+ str(type(ring.rings[0][r])) +')'+\
@@ -132,8 +178,8 @@ class AvispaModel:
                         args_f[f] = out['fields'][i][f]
 
                 elif(action == 'edit'):
-                    if out['fields'][i][f] == ring.fields[i][f]:
-                        #print(f+'_'+str(i+1)+' did not change')
+                    if out['fields'][i][f] == ring.fields[i][f]:  # Checks if old and new are the same
+                        print(f+'_'+str(i+1)+' did not change')
                         pass
                     else:
                         
@@ -155,7 +201,7 @@ class AvispaModel:
             args_f={}
 
         
-        ring.store(self.db)
+        ring.store(db)
 
         return 'ok'
 

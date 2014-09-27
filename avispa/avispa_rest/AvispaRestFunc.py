@@ -1,4 +1,5 @@
 from RingBuilder import RingBuilder
+from Get import Get
 
 class AvispaRestFunc:
     
@@ -6,7 +7,18 @@ class AvispaRestFunc:
 
     # GET/a
     def get_a(self,request,handle,*args):
-        d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html'}
+
+        print('flag2')
+
+        get = Get()
+
+
+        ringlist = get.get_a(handle)
+
+        print(ringlist)
+
+
+        d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist}
     	return d
 
     def get_rq_a(self,request,handle,*args):
@@ -27,10 +39,11 @@ class AvispaRestFunc:
 
        
         RB = RingBuilder()
-        result = RB.JSONRingGenerator(request)
+        if RB.JSONRingGenerator(request,handle):
+            print('200')
         
 
-    	d = {'message': 'Using post_a for handle '+handle+' JSONRing:'+result , 'template':'avispa_rest/index.html'}
+    	d = {'message': 'Using post_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     def post_rq_a(self,request,handle,*args):
@@ -126,7 +139,10 @@ class AvispaRestFunc:
         return d
 
     def put_rq_a_b(self,request,handle,ring,*args):
-        d = {'message': 'Using put_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
+
+        #HERE TO EDIT RING BLUEPRINT
+        d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/post_rq_a.html'}
+        #d = {'message': 'Using put_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
     def put_rs_a_b(self,request,handle,ring,*args):

@@ -43,7 +43,7 @@
           
               <div class="pull-right rn-t3 text-right"><strong>Friday July 19, 2014</strong><br/> 34,543 Resources
               </div>
-              <div class="rn-t2">Local Rings</div>
+              <div class="rn-t2">Local Rings for {{ data.handle }}</div>
 
 
                 
@@ -55,6 +55,11 @@
               </div> -->
             <div class="rn-box-content">
               <table class="table table-striped"> <!-- inner row -->
+
+
+
+
+              {% for ring in data.ringlist %}
                 <tr>
                   <td> <div class="text-right lead"><h3>343</h3></div></td>
                   <td> 
@@ -65,9 +70,9 @@
                     
                     </svg></td>
                   <td> 
-                    <a class="rn-b1" href="events">&deg;Events</a>
+                    <a class="rn-b1" href="events">&deg;{{ ring.ringname }}</a>
                     <hr/>
-                    <p class="rn-t3 rn-gray">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel placerat urna. In eget magna non sem gravida facilisis. </p>
+                    <p class="rn-t3 rn-gray">{{ ring.ringdescription }}</p>
                   </td>
                   <td style="min-width:200px;"> 
                     <div class="pull-right">
@@ -82,8 +87,12 @@
                     </div>
                   </td>
                 </tr>
+              {% endfor %}
 
-                <tr>
+
+
+
+                <!--tr>
                   <td> <div class="text-right lead"><h3>1,425</h3></div></td>
                   <td> 
                     <svg height="70" width="75" >
@@ -140,7 +149,7 @@
                       <span class="label label-discrete pull-right">2 Months ago</span>
                     </div>
                   </td> 
-                </tr>
+                </tr-->
               </table>
             </div><!-- //close box -->
             
