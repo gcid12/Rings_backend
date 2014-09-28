@@ -8,7 +8,7 @@ class RingBuilder:
 
     def __init__(self):
 
-        self.out = collections.OrderedDict()
+        
 
 
         self.ringprotocols = {}
@@ -33,18 +33,21 @@ class RingBuilder:
     
     def JSONRingGenerator(self,request,handle):
 
+
+
                 
         if request.form.get('RingName') and request.form.get('FieldName_1'):
 
+            pinput = collections.OrderedDict()
 
             ringname = request.form.get('RingName').lower() # I dont like this here
             handle = handle.lower()
             ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
             
             # Generate rings block                         
-            self.out['rings'] = self._generate_ring_block(request)
+            pinput['rings'] = self._generate_ring_block(request)
             # Generate fields block
-            self.out['fields'] = self._generate_field_block(request)
+            pinput['fields'] = self._generate_field_block(request)
             
             
             if self.avispamodel.ring_set_db(handle,ringname,ringversion):
@@ -55,7 +58,7 @@ class RingBuilder:
             if self.avispamodel.ring_set_blueprint(handle,
                                         ringname,
                                         ringversion,
-                                        self.out,
+                                        pinput,
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol']):
 

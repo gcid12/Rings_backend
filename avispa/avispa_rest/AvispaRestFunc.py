@@ -11,7 +11,7 @@ class AvispaRestFunc:
     # GET/a
     def get_a(self,request,handle,*args):
 
-        ringlist = self.avispamodel.get_a(handle)
+        ringlist = self.avispamodel.user_get_rings(handle)
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist}
     	return d
 
@@ -133,6 +133,10 @@ class AvispaRestFunc:
         return d
 
     def put_rq_a_b(self,request,handle,ring,*args):
+
+        blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
+        print(blueprint) 
+
 
         #HERE TO EDIT RING BLUEPRINT
         d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/put_rq_a_b.html'}

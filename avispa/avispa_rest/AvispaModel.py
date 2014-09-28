@@ -4,6 +4,7 @@ from datetime import datetime
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
 from AvispaCouchDB import AvispaCouchDB
 from MyRingUser import MyRingUser
+from MyRingBlueprint import MyRingBlueprint
 
 class AvispaModel:
 
@@ -55,7 +56,7 @@ class AvispaModel:
             return False
 
 
-    def get_a(self,handle):
+    def user_get_rings(self,handle):
 
         data=[]
 
@@ -99,39 +100,41 @@ class AvispaModel:
 
     def user_add_ring(self,handle,ringname,ringversion):
 
-
         db = self.couch[self.user_database]
-        auser =  MyRingUser.load(db, handle)
+        doc =  MyRingUser.load(db, handle)
+        doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now())
+        doc.store(db)
 
-        auser.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now())
-
-        #auser.guid = str(ringname)+'_'+str(ringversion)
-
-        auser.store(db)
-
-        #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
-        #db = self.couch['myring_users']
-        #doc = db[handle]
-        #doc['guid']='9712qwerty'
-        #rings = doc['rings']
 
         return True
-            
 
-    def ring_set_blueprint(self,handle,ringname,ringversion,out,ringprotocol,fieldprotocol):
+    def ring_get_blueprint(self,handle,ringname):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+        #blueprint = db['blueprint']
+        blueprint = MyRingBlueprint.load(db,'blueprint')
+
+        return blueprint
+
+
+
+    def ring_set_blueprint(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
 
 
         db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db = self.couch[db_ringname]
-        numfields = len(out['fields'])
-        RingClass = self._create_ring_class(numfields,ringprotocol,fieldprotocol)  #This is a dynamically created class
-        ring =  RingClass.load(db, 'blueprint')
+        numfields = len(pinput['fields'])
+        #RingClass = self._blueprint_create_class(numfields,ringprotocol,fieldprotocol)  #This is a dynamically created class
+        #ring =  RingClass.load(db, 'blueprint')
+        ring = MyRingBlueprint.load(db,'blueprint')
 
         # Creates Ring Blueprint if it doesn't exist. Uses current one if it exists.
         if ring:
             action = 'edit'
         else:       
-            ring = RingClass()
+            ring = MyRingBlueprint()
+            #ring = RingClass()
             ring._id= 'blueprint'
 
             action = 'new'
@@ -142,17 +145,17 @@ class AvispaModel:
         args_r = {}
         for r in ringprotocol:
             if(action == 'new'):
-                if out['rings'][0][r]:
-                    args_r[r] = out['rings'][0][r]
+                if pinput['rings'][0][r]:
+                    args_r[r] = pinput['rings'][0][r]
             
             elif(action == 'edit'):
-                if out['rings'][0][r] == ring.rings[0][r]:
+                if pinput['rings'][0][r] == ring.rings[0][r]:
                     print(r+' did not change')
                     pass
                 else:
                     print(r+' changed. Old: "'+ str(ring.rings[0][r]) +'" ('+ str(type(ring.rings[0][r])) +')'+\
-                            '  New: "'+ str(out['rings'][0][r]) + '" ('+ str(type(out['rings'][0][r])) +')' )
-                    args_r[r] = out['rings'][0][r]
+                            '  New: "'+ str(pinput['rings'][0][r]) + '" ('+ str(type(pinput['rings'][0][r])) +')' )
+                    args_r[r] = pinput['rings'][0][r]
 
                   
 
@@ -174,19 +177,19 @@ class AvispaModel:
             for f in fieldprotocol:
 
                 if(action == 'new'):
-                    if out['fields'][i][f]:
-                        args_f[f] = out['fields'][i][f]
+                    if pinput['fields'][i][f]:
+                        args_f[f] = pinput['fields'][i][f]
 
                 elif(action == 'edit'):
-                    if out['fields'][i][f] == ring.fields[i][f]:  # Checks if old and new are the same
+                    if pinput['fields'][i][f] == ring.fields[i][f]:  # Checks if old and new are the same
                         print(f+'_'+str(i+1)+' did not change')
                         pass
                     else:
                         
                         print(f+'_'+str(i+1)+' changed. Old: "'+ str(ring.fields[i][f]) +'" ('+ str(type(ring.fields[i][f])) +')'+\
-                            '  New: "'+ str(out['fields'][i][f]) + '" ('+ str(type(out['fields'][i][f])) +')' )
+                            '  New: "'+ str(pinput['fields'][i][f]) + '" ('+ str(type(pinput['fields'][i][f])) +')' )
                         
-                        args_f[f] = out['fields'][i][f]
+                        args_f[f] = pinput['fields'][i][f]
 
 
             
@@ -205,7 +208,10 @@ class AvispaModel:
 
         return 'ok'
 
-    def _create_ring_class(self,numfields,ringprotocol,fieldprotocol):
+    def _blueprint_create_class(self,numfields,ringprotocol,fieldprotocol):
+        '''
+        This function is deprecated. Now we just instantiate MyRingBlueprint
+        '''
 
         args_r = {}
         args_f = {} 
