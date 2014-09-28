@@ -119,7 +119,18 @@ class AvispaRestFunc:
         return d
 
     def post_rq_a_b(self,request,handle,ring,*args):
-        d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html'}
+        '''
+        Creates new item
+        '''
+        blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
+        ringblueprint = blueprint['rings'][0]
+        fieldsblueprint = blueprint['fields']
+        numfields = len(fieldsblueprint)
+
+        d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html', 
+             'ringblueprint':ringblueprint,
+             'fieldsblueprint':fieldsblueprint,
+             'numfields':numfields }
         return d
 
     def post_rs_a_b(self,request,handle,ring,*args):
