@@ -112,7 +112,6 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
-        #blueprint = db['blueprint']
         blueprint = MyRingBlueprint.load(db,'blueprint')
 
         return blueprint
@@ -125,8 +124,6 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
-        #RingClass = self._blueprint_create_class(numfields,ringprotocol,fieldprotocol)  #This is a dynamically created class
-        #ring =  RingClass.load(db, 'blueprint')
         ring = MyRingBlueprint.load(db,'blueprint')
 
         # Creates Ring Blueprint if it doesn't exist. Uses current one if it exists.

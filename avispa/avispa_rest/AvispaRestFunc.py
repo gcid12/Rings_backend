@@ -133,13 +133,21 @@ class AvispaRestFunc:
         return d
 
     def put_rq_a_b(self,request,handle,ring,*args):
+        '''
+        Edits the Blueprint
+        '''
 
         blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
-        print(blueprint) 
+        ringblueprint = blueprint['rings'][0]
+        fieldsblueprint = blueprint['fields']
+        numfields = len(fieldsblueprint)
+        # print(blueprint) 
 
-
-        #HERE TO EDIT RING BLUEPRINT
-        d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/put_rq_a_b.html'}
+        
+        d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/put_rq_a_b.html', 
+             'ringblueprint':ringblueprint,
+             'fieldsblueprint':fieldsblueprint,
+             'numfields':numfields }
         return d
 
     def put_rs_a_b(self,request,handle,ring,*args):
