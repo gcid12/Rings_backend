@@ -83,9 +83,9 @@ class AvispaModel:
 
 
     def ring_set_db(self,handle,ringname,ringversion):
-
-            
+           
         db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        db_ringname = db_ringname.replace(" ","")
 
         #try:
         if True:
