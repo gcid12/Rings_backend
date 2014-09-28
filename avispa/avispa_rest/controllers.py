@@ -7,10 +7,12 @@ from MyRingTool import MyRingTool
 
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 #It is very important to leave url_prefix empty as all the segments will be dynamic
-ARF = AvispaRestFunc()
-MRT = MyRingTool()
+
 
 def route_dispatcher(depth,handle,ring=None,idx=None):
+
+    ARF = AvispaRestFunc()
+    MRT = MyRingTool()
 
 
     if 'q' in request.args:

@@ -1,0 +1,237 @@
+{% extends 'avispa_rest/base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+
+<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
+<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a>/<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring }}</a> 
+
+{% endblock %}
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">  
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="rn-box-title">
+
+              <strong> <!-- Ring owner  -->Modifying the ring blueprint for "{{ data.handle }}/{{ data.ring }}"</strong> 
+
+              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                <i class="fa fa-question-circle"></i>
+              </button-->
+            </div>
+
+
+            <div class="rn-box-solo">
+              <div class="row">
+                &nbsp;&nbsp;&nbsp; <strong></strong>Ring's characteristics
+                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                  <i class="fa fa-question-circle"></i>
+                </button>
+              </div> 
+            </div>
+
+            <form class="form-horizontal" role="form" action="/{{ data.handle }}/" method="POST">
+               
+              <!-- RING -->
+              <div class="rn-box-content">  
+              <br/>           
+                <div class="form-group">
+                  <label for="RingName" class="col-sm-2 control-label">ring:name</label>
+                  <div class="col-sm-10">
+                     <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new ring">
+                  </div>
+                  <label for="RingDescription" class="col-sm-2 control-label">ring:description</label>
+                  <div class="col-sm-10">
+                    <textarea name="RingDescription" class="form-control" rows="4" placeholder="What makes this ring unique?"></textarea>
+                  </div>
+                  <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
+                  <div class="col-sm-10">
+                    <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="if this ring is new it must be version 1">
+                  </div>
+                  <label for="RingURI" class="col-sm-2 control-label">ring:URI</label>
+                  <div class="col-sm-10">
+                    <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="URI that will be used to refer to this specific ring">
+                  </div>
+                  <label for="inputEmail3" class="col-sm-2 control-label">ring:build</label>
+                  <div class="col-sm-10">
+                    <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="">
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="rn-box-solo">
+                <div class="row">
+                  &nbsp;&nbsp;&nbsp; <strong></strong>Field's characteristics
+                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                  <i class="fa fa-question-circle"></i>
+                  </button>
+
+                </div> 
+              </div>
+
+
+ 
+
+              {% set numfields = request.args.get('n')|int %}
+              
+
+              {% for f in range( 1, numfields+1) %}
+              
+              <!-- N FIELD -->
+              <div class="rn-box-content ringbuilder">
+                <br/>
+                <table class="form-group" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="text-align:left;" ><h2>&nbsp;&nbsp;&nbsp;{{ f }}</h2></td>
+                      <td>
+
+                        UP | DOWN | DELETE
+                        <br/><br/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>field:name</td>
+                      <td>
+                        <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>field:label</td>
+                      <td><textarea name="FieldLabel_{{ f }}" class="form-control"></textarea></td>
+                    </tr>
+                    <tr>
+                      <td>field:semantic</td>
+                      <td><textarea name="FieldSemantic_{{ f }}" class="form-control"></textarea></td>
+                    </tr>
+                    <tr>
+                      <td>field:type</td>
+                      <td>
+                        <select name="FieldType_{{ f }}">
+                          <option value="">SELECT ONE</option>
+                          <option>INT</option>
+                          <option selected="">TEXT</option>
+                          <option>VARCHAR(120)</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>field:source</td>
+                      <td><textarea name="FieldSource_{{ f }}" class="form-control"></textarea></td>
+                    </tr>
+                    <tr>
+                      <td>field:widget</td>
+                      <td>
+                        <select name="FieldWidget_{{ f }}">
+                          <option value="">SELECT ONE</option>
+                          <option>checkbox</option>
+                          <option>date</option>
+                          <option>file</option>
+                          <option>images</option>
+                          <option>location</option>
+                          <option>password</option>
+                          <option>radio</option>
+                          <option>select</option>
+                          <option selected="">text</option>
+                          <option>textarea</option>
+                          <option>url</option>
+                          <option>url_flickr</option>
+                          <option>url_video</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>field:cardinality</td>
+                      <td>
+                        <select name="FieldCardinality_{{ f }}">
+                          <option>Single</option>
+                          <option>Multiple</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>field:multilingual</td>
+                      <td>
+                        <input name="FieldMultilingual_{{ f }}" value="1" type="checkbox">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>field:required</td>
+                      <td>
+                        <input name="FieldRequired_{{ f }}" value="1" type="checkbox">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>field:default</td>
+                      <td>
+                        <input name="FieldDefault_{{ f }}" value="" class="form-control" type="text"></td>
+                    </tr>
+                    <tr>
+                      <td>field:hint</td>
+                      <td>
+                        <textarea name="FieldHint_{{ f }}" class="form-control"></textarea></td>
+                    </tr>
+                    <tr>
+                      <td>field:layer</td>
+                      <td>
+                        <input name="FieldLayer_{{ f }}" value="" class="form-control" type="text"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- N FIELD END -->
+
+              {% endfor %}
+
+              <!-- SUBMIT -->
+
+              <div class="rn-box-content">
+                <br/>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label"></label>
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
+                  </div>
+                </div>
+              </div>
+
+              <!-- SUBMIT END -->
+              <!-- RING END -->
+
+            </form> 
+          </div> 
+        </div>
+
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock content%}
+
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
+
+
+
+

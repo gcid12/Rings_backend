@@ -1,23 +1,17 @@
 from RingBuilder import RingBuilder
-from Get import Get
+from AvispaModel import AvispaModel
 
 class AvispaRestFunc:
+
+    def __init__(self):
+        self.avispamodel = AvispaModel()
     
     # /a
 
     # GET/a
     def get_a(self,request,handle,*args):
 
-        print('flag2')
-
-        get = Get()
-
-
-        ringlist = get.get_a(handle)
-
-        print(ringlist)
-
-
+        ringlist = self.avispamodel.get_a(handle)
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist}
     	return d
 
@@ -141,8 +135,7 @@ class AvispaRestFunc:
     def put_rq_a_b(self,request,handle,ring,*args):
 
         #HERE TO EDIT RING BLUEPRINT
-        d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/post_rq_a.html'}
-        #d = {'message': 'Using put_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/put_rq_a_b.html'}
         return d
 
     def put_rs_a_b(self,request,handle,ring,*args):

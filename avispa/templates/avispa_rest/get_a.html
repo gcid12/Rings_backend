@@ -70,17 +70,17 @@
                     
                     </svg></td>
                   <td> 
-                    <a class="rn-b1" href="events">&deg;{{ ring.ringname }}</a>
+                    <a class="rn-b1" href="/{{ data.handle }}/{{ ring.ringname }}">&deg;{{ ring.ringname }}</a>
                     <hr/>
                     <p class="rn-t3 rn-gray">{{ ring.ringdescription }}</p>
                   </td>
                   <td style="min-width:200px;"> 
                     <div class="pull-right">
                       <div class="btn-group">
-                        <a href="events" type="button" class="btn btn-success">G</a>
-                        <a href="events?rq=post" type="button" class="btn btn-warning">P</a>
-                        <a href="events?rq=put" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                        <a href="events?method=delete" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn btn-success">G</a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=post" type="button" class="btn btn-warning">P</a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=put" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=delete" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
                       </div>
                       <br/><br/>
                       <span class="label label-discrete pull-right">Yesterday</span>

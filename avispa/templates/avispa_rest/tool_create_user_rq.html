@@ -1,0 +1,109 @@
+{% extends 'avispa_rest/base.html' %}
+
+{% block title %} Tool : Create User {% endblock %}
+
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="rn-box-title">
+              <strong>Creating new user</strong>
+              
+              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+              <i class="fa fa-question-circle"></i>
+              </button>
+ 
+            </div>
+            <div class="rn-box-solo">
+              <div class="pull-right rn-t3 text-right">
+                  <i class="fa fa-dot-circle-o fa-2x" style="color:#CCC; padding:0 10px;"></i>
+              </div>
+          
+              <div class="pull-right rn-t3 text-right"><strong></strong><br/>
+              </div>
+              <div class="rn-t2">&nbsp;</div>
+
+
+                
+            </div>
+              <!-- <div class="rn-box-space">
+                  
+                      <div class="rn-b1">123</div>
+                  
+              </div> -->
+            <div class="rn-box-content">
+              <form action="/tool/create_user/?rs" method="post">
+                <table>
+                  <tr>
+                    <td>Username:</td>
+                    <td><input type="text" name="user"/></td>
+                  </tr>
+                  <tr>
+                    <td>Email:</td>
+                    <td><input type="text" name="email"/></td>
+                  </tr>
+                  <tr>
+                    <td>Pass:</td>
+                    <td><input type="password" name="passw"/></td>
+                  </tr>
+                  <tr>
+                    <td>Pass (repeat):</td>
+                    <td><input type="password" name="passw"/></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>First Name:</td>
+                    <td><input type="text" name="firstname"/></td>
+                  </tr>
+                  <tr>
+                    <td>Last Name:</td>
+                    <td><input type="text" name="firstname"/></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><input type="submit" value="ok"/></td>
+                  </tr>
+                </table>
+                    
+
+              </form>
+            </div><!-- //close box -->
+            
+
+
+
+
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
