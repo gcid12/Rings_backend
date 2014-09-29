@@ -1,9 +1,87 @@
 <script>
 Dropzone.autoDiscover = false;
-var myDropzone2 = new Dropzone("#dropzone{{ field.FieldOrder }}", { 
+var myDropzone{{ field.FieldOrder }} = new Dropzone("#dropzone{{ field.FieldOrder }}", { 
       url: "/scar/images?method=post",
       addRemoveLinks: true  
       });
+
+$( ".dz-size" ).css( "display", "none" );
+
+
+//This function starts right after DropZone has returned a JSON file with image id and location
+myDropzone{{ field.FieldOrder }}.on("success", function(file,success) {
+    	//alert('Success::'+success);
+    	var obj = jQuery.parseJSON(success);
+    	//alert('flag1:'+obj.imgbase+obj.imgid);
+    	
+    	//console.log('ref x34:'+obj.imgbase+obj.imgid);
+    	
+    	var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
+    	//$( '#input_images_<?php echo $FieldOrder ?>' ).val(value+','+obj.imgbase+obj.imgid);
+    	$( '#input_images_{{ field.FieldOrder }}' ).val(value+','+obj.imgid);
+  });
+
+
+myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
+		console.log('File removal intent:'+file);
+		//var stringify = JSON.stringify(file.previewElement);
+		var stringify = file.previewElement;
+		console.log('JSONstringify:'+stringify);
+    	if(file){
+    		
+    		
+    		if(typeof file.xhr === 'undefined'){
+    			console.log('file.imgurl:'+file.imgurl);
+    			var resource2delete = file.imgurl;
+    		}else{
+    			console.log('file.xhr.response:'+file.xhr.response);
+				//It does exist in the widget and in the server
+				var obj = jQuery.parseJSON(file.xhr.response);
+				//var resource2delete = obj.imgbase+obj.imgid;
+				var resource2delete = obj.imgid;
+    		}
+    		
+    		
+    		//Delete from Form Inputs
+    		var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
+    		console.log('prevalue:'+value);
+    		var valuearray = value.split(",");
+    		console.log(valuearray);
+    		var indextodelete = jQuery.inArray(resource2delete,valuearray);
+    		console.log('indextodelete:'+indextodelete);
+    		if (indextodelete!=-1){
+    			valuearray.splice(indextodelete,1);
+    			value = valuearray.join();
+    			console.log('aftervalue:'+value);
+    			$( '#input_images_{{ field.FieldOrder }}' ).val(value);		
+    		}
+    		
+    		//Delete Resource in Server
+    		//Notice the method overload. We are sending DELETE via GET
+    		//This still needs to be implemented in the server side
+    		$.ajax({
+				type: "GET",
+				url: "http://dev2.plantrobot.com/username/images/"+obj.imgid+"?method=DELETE",
+				success: function(response){
+					//alert('Response:'+response);
+				}
+			})
+			.done(function( msg ) {
+			//alert( "Done: " + msg );
+			});
+    		 
+    		
+    		
+    	}
+    	
+  });
+
+
+myDropzone{{ field.FieldOrder }}.on("error", function(file,error,xhr) {
+    /* Error::Server responded with 0 code.*/
+    	//alert('Error::'+error);
+    	//alert('XHR Object::'+xhr);
+  });
 
 
 </script>
