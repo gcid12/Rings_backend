@@ -48,6 +48,8 @@ class RingBuilder:
             pinput['rings'] = self._generate_ring_block(request)
             # Generate fields block
             pinput['fields'] = self._generate_field_block(request)
+
+            print(pinput)
             
             
             if self.avispamodel.ring_set_db(handle,ringname,ringversion):
@@ -128,11 +130,17 @@ class RingBuilder:
                 elif val in self.fieldprotocols['mandatory']:
                     raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
 
-
                 else:
                     if val in self.fieldprotocols['defaults']:
+                        #print(val+'_'+str(i))
+                        #print(self.fieldprotocols['defaults'][val])
+                        #print
                         fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
+                        #fieldsbuffer[i][val] = True
                     else:
+                        #print(val+'_'+str(i))
+                        #print('gone none')
+                        #print
                         fieldsbuffer[i][val] = None
 
         fieldblock = []

@@ -1,6 +1,6 @@
 # AvispaUser.py
 from datetime import datetime
-from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping
+from couchdb.mapping import Document, TextField, IntegerField, BooleanField, DateTimeField, ListField, DictField, Mapping
 
 class MyRingBlueprint(Document):
     _id = TextField()
@@ -19,11 +19,11 @@ class MyRingBlueprint(Document):
         FieldType = TextField(),
         FieldSource = TextField(),
         FieldWidget = TextField(),
-        FieldOrder = TextField(),
+        FieldOrder = IntegerField(),
         FieldCardinality = TextField(),
-        FieldMultilingual = TextField(),
-        FieldRequired = TextField(),
+        FieldMultilingual = BooleanField(),
+        FieldRequired = BooleanField(),
         FieldDefault = TextField(),
         FieldHint = TextField(),
-        FieldLayer = TextField(),
+        FieldLayer = IntegerField(),
         )))

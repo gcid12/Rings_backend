@@ -42,7 +42,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
         data['ring']=ring
         data['idx']=idx
 
-        print(data)
 
 
     if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':       

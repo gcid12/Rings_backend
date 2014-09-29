@@ -1,0 +1,26 @@
+<script>
+    $(document).ready(function() {
+    
+    //imgurl='http://dev3.plantrobot.com/bc31a46cb1c7f929626cff125d3bebe5'; 
+    $(".dz-preview").on("click",function(){
+        console.log('clicked');
+        //console.log('before:'+imgurl);
+        imgurl = $(this).children("div").children("img").attr("src");
+        console.log('after:'+imgurl);
+        
+        $(this).magnificPopup({
+            items: {
+              src: imgurl+'?size=s'
+            },
+            type: 'image' // this is default type
+         });
+
+    });
+    
+    
+    $('.dz-message').css('padding','0px 0px');
+    
+    
+      
+    });
+</script>

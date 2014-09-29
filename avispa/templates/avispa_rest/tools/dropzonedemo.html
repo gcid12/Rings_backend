@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+<link href="/static/css/dropzone.css" rel="stylesheet" type="text/css" media="screen">
+
+</head>
+<body>
+
+DropZoneDemo
+
+
+<div id='dropzone3' class="dropzone"><span class="dz-message" style="font-size:small;">Click to upload</span></div>
+
+
+
+<script type="text/javascript" src="/static/js/dropzone.js"></script>
+
+
+
+<script>
+Dropzone.autoDiscover = false;
+var myDropzone2 = new Dropzone("#dropzone3", { 
+			url: "/scar/images?method=post",
+			addRemoveLinks: true	
+			});
+
+
+</script>
+
+
+</body>
+</html>

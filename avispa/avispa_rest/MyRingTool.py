@@ -88,4 +88,13 @@ class MyRingTool:
         return d
 
 
+    def dropzonedemo(self,request,*args):
+
+        d = {'message': 'using dropzone tool', 'template':'avispa_rest/tools/dropzonedemo.html'}
+
+        return d
+
+
+
+
 

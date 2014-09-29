@@ -5,20 +5,29 @@
     <title>{% block title %} Sapo {% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    
+
     <!-- Required -->
     <link href="/static/css/normalize.css" rel="stylesheet" type="text/css" media="screen">
     <link href="/static/css/main.css" rel="stylesheet" type="text/css" media="screen">
     <link href="/static/css/ring1.css" rel="stylesheet" type="text/css" media="screen">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-
+    
 
     <link rel="icon" href="/static/images/favicon.png" type="image/png"><link rel="stylesheet" href="/static/assets/fraction/fractionslider.css" type="text/css" />
 
-
+    
 
     <script type="text/javascript" src="//use.typekit.net/nyy5cxc.js"></script>
     <script type="text/javascript">try{Typekit.load();}catchg(e){}</script>
+
+
+    {% block headscripts %}
+    {% endblock %}
+
+    
+
 </head>
 <body>
 
@@ -138,6 +147,11 @@
 <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="/static/js/jquery.easing.js"></script>
 
+<!--script type="text/javascript" src="/static/js/plugins.js"></script-->
+
+
+
+
 <!--[if lt IE 9]>
     <script src="/static/js/html5shiv.js"></script>
     <script src="/static/js/respond.min.js"></script>
@@ -166,7 +180,20 @@
 <script src="/static/assets/fraction/jquery.fractionslider.init.js"></script>
 
 
+<script type="text/javascript" src="/static/js/dropzone.js"></script>
+
+
 {% block scripts %}
+{% endblock %}
+
+{% block footscripts %}
+{% endblock %}
+
+{% block footfunctions %}
+{% endblock %}
+
+
+{% block footafterfunctions %}
 {% endblock %}
 
 
