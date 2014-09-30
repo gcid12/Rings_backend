@@ -47,7 +47,9 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':       
         return 'Display JSON version'        
     else:
+        print(data)
         return render_template(data['template'], data=data)
+        #return 'ok'
 
 # Set the route and accepted methods
 @avispa_rest.route('/')

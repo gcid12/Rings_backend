@@ -94,6 +94,106 @@ class MyRingTool:
 
         return d
 
+    def wanddemo(self,request,*args):
+
+        from wand.image import Image 
+        from wand.display import display
+
+        image_folder = '/Users/ricardocid/Code/avispa/imagestest/'
+
+        with Image(filename=image_folder+'cover1b.png') as img:
+            print(img.size)
+            for r in 1,2,3:
+                with img.clone() as i:
+                    i.resize(int(i.width * r * 0.25), int(i.height * r * 0.25))
+                    i.rotate(90 * r)
+                    i.save(filename=image_folder+'cover1b-{0}.png'.format(r))
+                    display(i)
+
+
+    def fileupload(self,request,*args):
+
+        import os
+        from werkzeug import secure_filename
+
+
+        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispa/imagestest/'
+
+        if request.method == 'POST':
+            file = request.files['file']
+            if file and self.__allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+                out = 'File uploaded successfully here:' + os.path.join(UPLOAD_FOLDER, filename)
+            else:
+                out = 'Format not allowed'
+        else:
+            out = 'Upload something'
+        
+        
+
+        d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
+        return d 
+
+
+    def __allowed_file(self,filename):
+
+        ALLOWED_EXTENSIONS = set(['txt','pdf','png','jpg','JPG','jpeg','gif'])
+
+        return '.' in filename and \
+                filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
+
+
+    def uploadmultiply(self,request,*args):
+
+        import os
+        from werkzeug import secure_filename
+        from wand.image import Image 
+        from wand.display import display
+
+
+        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispa/imagestest/'
+        out = ''
+
+        if request.method == 'POST':
+            file = request.files['file']
+            if file and self.__allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+
+                print('File uploaded successfully here:' + os.path.join(UPLOAD_FOLDER, filename))
+         
+
+                with Image(filename=os.path.join(UPLOAD_FOLDER, filename)) as img:
+                    print(img.size)
+                    for r in 1,2,3:
+                        with img.clone() as i:
+                            i.resize(int(i.width * r * 0.25), int(i.height * r * 0.25))
+                            i.rotate(90 * r)
+                            i.save(filename=UPLOAD_FOLDER+filename+'{0}.jpg'.format(r))
+                            #display(i)
+                            print('File multiplied:'+UPLOAD_FOLDER+filename+'{0}.jpg'.format(r))
+
+
+
+                out = 'File uploaded'
+
+
+            else:
+                out = 'Format not allowed'
+        else:
+            out = 'Upload something'
+
+        d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
+        return d 
+
+
+
+
+
+
+
+
 
 
 
