@@ -152,7 +152,7 @@ class MyRingTool:
         from wand.display import display
 
 
-        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispa/imagestest/'
+        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispapics/'
         out = ''
 
         if request.method == 'POST':
