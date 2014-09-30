@@ -1,6 +1,7 @@
 # MyRingTool.py
 
 from AvispaModel import AvispaModel
+from AvispaUpload import AvispaUpload
 
 class MyRingTool:
 
@@ -117,7 +118,7 @@ class MyRingTool:
         from werkzeug import secure_filename
 
 
-        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispa/imagestest/'
+        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispapics/'
 
         if request.method == 'POST':
             file = request.files['file']
@@ -161,7 +162,7 @@ class MyRingTool:
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(UPLOAD_FOLDER, filename))
 
-                print('File uploaded successfully here:' + os.path.join(UPLOAD_FOLDER, filename))
+                print('File uploaded here:' + os.path.join(UPLOAD_FOLDER, filename))
          
 
                 with Image(filename=os.path.join(UPLOAD_FOLDER, filename)) as img:
@@ -186,6 +187,22 @@ class MyRingTool:
 
         d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
         return d 
+
+
+    def upload_via_aud(self,request,*args):
+
+        AUD = AvispaUpload()
+
+        if AUD.do_upload(request):
+            out = 'Success!'
+        else:
+            out = 'Fail'
+
+        d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
+        return d 
+
+
+
 
 
 
