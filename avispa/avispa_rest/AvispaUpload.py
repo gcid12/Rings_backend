@@ -72,7 +72,7 @@ class AvispaUpload:
 
         file = request.files['file']
         #filename = secure_filename(file.filename)
-        self.imgid = str(random.randrange(1000,9999))
+        self.imgid = str(random.randrange(1000000000,9999999999))
         filename = self.imgid+'_o.jpg'
         originalversionpath = self.UPLOAD_FOLDER + 'o/'
 
@@ -106,7 +106,14 @@ class AvispaUpload:
             for r in officialsizes:
                 with img.clone() as i:
                     if longside>=officialsizes[r]:
-                        self._img_resize_and_save(i,officialsizes[r],r,orientation)
+                        self._img_resize_and_save(i,officialsizes[r],r,orientation,False)
+
+            thumbnailsizes = {'t75':75,'t150':150}
+
+            for t in thumbnailsizes:
+                with img.clone() as j:
+                    if shortside>=thumbnailsizes[t]:
+                        self._img_resize_and_save(j,thumbnailsizes[t],t,orientation,True)
 
             multiplied={}
             multiplied['mimetype']='image/jpeg'
@@ -129,14 +136,33 @@ class AvispaUpload:
         if img.width == img.height:
             return 'square'
 
-    def _img_resize_and_save(self,img,mainside,sizename,orientation):
+    def _img_resize_and_save(self,img,mainside,sizename,orientation,thumbnail):
 
-        if(orientation=='portrait'):
-            img.transform(resize='x'+str(mainside))
-        elif(orientation=='landscape'):
-            img.transform(resize=str(mainside))
-        elif(orientation=='square'):
-            img.transform(crop=str(mainside))
+        if thumbnail:
+
+            if orientation=='portrait':
+                img.transform(resize=str(mainside))
+            elif orientation=='landscape':
+                img.transform(resize='x'+str(mainside))
+            elif orientation=='square':
+                img.transform(resize=str(mainside))
+
+
+            offset = abs(img.width-img.height)/2  #This centers the crop
+            if orientation=='portrait':
+                img.crop(0,offset,width=img.width,height=img.width) 
+            if orientation=='landscape':
+                img.crop(offset,0,width=img.height,height=img.height)
+
+        else:
+
+            if orientation=='portrait':
+                img.transform(resize='x'+str(mainside))
+            elif orientation=='landscape':
+                img.transform(resize=str(mainside))
+            elif orientation=='square':
+                img.transform(resize=str(mainside))
+            
 
         
 
