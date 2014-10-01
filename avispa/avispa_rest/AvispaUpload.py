@@ -14,6 +14,7 @@ class AvispaUpload:
         self.UPLOAD_FOLDER = '/Users/ricardocid/Code/avispapics/'
         self.filename = ''
         self.rs_status = ''
+        self.image_sizes = []
 
     def do_upload(self,request,*args):
 
@@ -30,6 +31,7 @@ class AvispaUpload:
         if self._upload_file(request):
             self._multi_size()
             response['imgid']=self.imgid
+            response['imgsizes']=self.image_sizes
         else:
             response['error_status']=self.rs_status
 
@@ -72,7 +74,7 @@ class AvispaUpload:
         #filename = secure_filename(file.filename)
         self.imgid = str(random.randrange(1000,9999))
         filename = self.imgid+'_o.jpg'
-        originalversionpath = self.UPLOAD_FOLDER + 'original/'
+        originalversionpath = self.UPLOAD_FOLDER + 'o/'
 
 
         try:     
@@ -89,7 +91,7 @@ class AvispaUpload:
 
     def _multi_size(self):
 
-        with Image(filename=self.UPLOAD_FOLDER+'original/'+self.imgid+'_o.jpg') as img:
+        with Image(filename=self.UPLOAD_FOLDER+'o/'+self.imgid+'_o.jpg') as img:
 
             orientation = self._img_orientation(img)
             if orientation == 'portrait' or orientation == 'square':
@@ -105,6 +107,16 @@ class AvispaUpload:
                 with img.clone() as i:
                     if longside>=officialsizes[r]:
                         self._img_resize_and_save(i,officialsizes[r],r,orientation)
+
+            multiplied={}
+            multiplied['mimetype']='image/jpeg'
+            multiplied['width']=str(img.width)
+            multiplied['height']=str(img.height)
+            multiplied['sizename']='o'
+            multiplied['unit']='pixel'
+            print(multiplied)
+            self.image_sizes.append(multiplied)
+
         
         return True
 
@@ -126,7 +138,27 @@ class AvispaUpload:
         elif(orientation=='square'):
             img.transform(crop=str(mainside))
 
-        img.save(filename=self.UPLOAD_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+        
+
+        try:     
+            img.save(filename=self.UPLOAD_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            print('File multiplied successfully here:' + self.UPLOAD_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            multiplied={}
+            multiplied['mimetype']='image/jpeg'
+            multiplied['width']=str(img.width)
+            multiplied['height']=str(img.height)
+            multiplied['sizename']=sizename
+            multiplied['unit']='pixel'
+            print(multiplied)
+            self.image_sizes.append(multiplied)
+            return True
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            flash(u'Unexpected error:'+str(sys.exc_info()[0]),'error')
+            self.rs_status='500'
+            raise
+
+
         
 
 

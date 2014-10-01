@@ -203,7 +203,8 @@ class MyRingTool:
         imgbase = '/images/'
         
         if 'imgid' in response.keys():
-            d = {'imgid': response['imgid'], 'imgbase': imgbase , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
+            print(response)
+            d = {'imgid': response['imgid'], 'imgsizes': response['imgsizes'] ,'imgbase': imgbase , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
             
         elif 'error_status' in response.keys():
             d = {'error_status':response['error_status'],'template':'avispa_rest/tools/uploadresponsejson.html'}

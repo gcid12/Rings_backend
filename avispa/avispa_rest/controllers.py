@@ -50,10 +50,13 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
 
 
-    if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':       
+    if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
+        print('flag1')
+        print(data)      
         return render_template(data['template'], data=data), status     
     else:
-        print(data)
+        print('flag2')
+        print(data) 
         return render_template(data['template'], data=data)
         #return 'ok'
 
