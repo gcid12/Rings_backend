@@ -44,7 +44,8 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
 				//It does exist in the widget and in the server
 				var obj = jQuery.parseJSON(file.xhr.response);
 				//var resource2delete = obj.imgbase+obj.imgid;
-				var resource2delete = obj.imgid;
+				var resource2delete = obj.imgid.toString();
+                console.log('Resource to delete:'+resource2delete)
     		}
     		
     		
@@ -60,14 +61,16 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     			value = valuearray.join();
     			console.log('aftervalue:'+value);
     			$( '#input_images_{{ field.FieldOrder }}' ).val(value);		
-    		}
+    		}else{
+                console.log('Could not find the id to delete in the list ')
+            }
     		
     		//Delete Resource in Server
     		//Notice the method overload. We are sending DELETE via GET
     		//This still needs to be implemented in the server side
     		$.ajax({
 				type: "GET",
-				url: "http://dev2.plantrobot.com/username/images/"+obj.imgid+"?method=DELETE",
+				url: "/tool/delete_via_aud?id="+obj.imgid,
 				success: function(response){
 					//alert('Response:'+response);
 				}

@@ -1,0 +1,8 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+     {{'{'}}"Request":"{{ data.rq }}"{% for category, message in messages %},"{{ category }}":"{{ message }}"{% endfor %}{{'}'}}
+  {% endif %}
+{% endwith %}
+
+
+

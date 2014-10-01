@@ -1,7 +1,9 @@
 # MyRingTool.py
 
+from flask import flash
 from AvispaModel import AvispaModel
 from AvispaUpload import AvispaUpload
+
 
 class MyRingTool:
 
@@ -31,6 +33,9 @@ class MyRingTool:
 
         else:
             msg += 'MyRing DB just Installed. '
+
+
+        # You need to create the image uploads folder as well. 
 
 
     	d = {'message': 'using install tool:'+msg , 'template':'avispa_rest/index.html'}
@@ -204,6 +209,18 @@ class MyRingTool:
             d = {'template':'avispa_rest/tools/uploadresponsejson.html'}
 
         return d
+
+
+    def delete_via_aud(self,request,*args):
+
+        rq = 'DELETE image/'+request.args.get('id')
+        flash(u'Succesfully deleted','message')
+
+        d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
+
+        return d
+
+
 
 
 
