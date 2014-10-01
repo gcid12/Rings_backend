@@ -45,7 +45,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
 
     if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':       
-        return 'Display JSON version'        
+        return render_template(data['template'], data=data)        
     else:
         print(data)
         return render_template(data['template'], data=data)
@@ -96,22 +96,23 @@ def static5(filename,depth1,depth2,depth3,depth4):
     return avispa_rest.send_static_file(filename)
 
 
-@avispa_rest.route('/<handle>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@avispa_rest.route('/<handle>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def route_a(handle):
 
     return route_dispatcher('_a',handle)
     
 
-@avispa_rest.route('/<handle>/<ring>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@avispa_rest.route('/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def route_a_b(handle,ring):
 
     return route_dispatcher('_a_b',handle,ring)
 
 
-@avispa_rest.route('/<handle>/<ring>/<idx>/', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@avispa_rest.route('/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def route_a_b_c(handle,ring,idx):
 
     return route_dispatcher('_a_b_c',handle,ring,idx)
+
 
 
 

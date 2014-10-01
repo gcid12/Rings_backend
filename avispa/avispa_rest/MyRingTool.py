@@ -169,8 +169,9 @@ class MyRingTool:
                     print(img.size)
                     for r in 1,2,3:
                         with img.clone() as i:
-                            i.resize(int(i.width * r * 0.25), int(i.height * r * 0.25))
-                            i.rotate(90 * r)
+                            #i.resize(int(i.width * r * 0.25), int(i.height * r * 0.25))
+                            i.transform(resize=str(100 * r))
+                            #i.rotate(90 * r)
                             i.save(filename=UPLOAD_FOLDER+filename+'{0}.jpg'.format(r))
                             #display(i)
                             print('File multiplied:'+UPLOAD_FOLDER+filename+'{0}.jpg'.format(r))
@@ -193,13 +194,17 @@ class MyRingTool:
 
         AUD = AvispaUpload()
 
-        if AUD.do_upload(request):
-            out = 'Success!'
-        else:
-            out = 'Fail'
+        imgid = AUD.do_upload(request)
+        imgbase = '/images/'
 
-        d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
-        return d 
+        if imgid :
+            d = {'imgid': imgid, 'imgbase': imgbase , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
+            
+        else:
+            d = {'template':'avispa_rest/tools/uploadresponsejson.html'}
+
+        return d
+
 
 
 

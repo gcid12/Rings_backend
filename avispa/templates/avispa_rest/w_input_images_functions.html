@@ -1,7 +1,7 @@
 <script>
 Dropzone.autoDiscover = false;
 var myDropzone{{ field.FieldOrder }} = new Dropzone("#dropzone{{ field.FieldOrder }}", { 
-      url: "/scar/images?method=post",
+      url: "/tool/upload_via_aud",
       addRemoveLinks: true  
       });
 
@@ -15,10 +15,16 @@ myDropzone{{ field.FieldOrder }}.on("success", function(file,success) {
     	//alert('flag1:'+obj.imgbase+obj.imgid);
     	
     	//console.log('ref x34:'+obj.imgbase+obj.imgid);
-    	
-    	var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
-    	//$( '#input_images_<?php echo $FieldOrder ?>' ).val(value+','+obj.imgbase+obj.imgid);
-    	$( '#input_images_{{ field.FieldOrder }}' ).val(value+','+obj.imgid);
+
+        if(obj.error){
+
+            alert(obj.error);
+
+        }else{
+    	  var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
+    	  //$( '#input_images_<?php echo $FieldOrder ?>' ).val(value+','+obj.imgbase+obj.imgid);
+    	  $( '#input_images_{{ field.FieldOrder }}' ).val(value+','+obj.imgid);
+        }
   });
 
 

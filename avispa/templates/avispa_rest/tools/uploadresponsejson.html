@@ -1,0 +1,8 @@
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+  { "error": "{% for msg in errors %}{{ msg }}{% endfor %}"}
+{% else %}
+  { "imgid":{{ data.imgid }}, "imgbase":"{{ data.imgbase }}" }
+{% endif %}
+{% endwith %}
+

@@ -3,6 +3,7 @@ import os
 import sys
 import random
 from werkzeug import secure_filename
+from flask import flash
 from wand.image import Image 
 from wand.display import display
 
@@ -19,23 +20,26 @@ class AvispaUpload:
             return False
 
         if not self._request_allowed(request):
-            return False         
+            return False
 
         if self._upload_file(request):
             self._multi_size()
+            return self.imgid
         else:
             return False
   
-        return True
+        
 
     def _request_complete(self,request):
 
         if not request.method == 'POST':
             print('Error: You can only use upload via POST')
+            flash(u'You can only use upload via POST','error')
             return False
 
         if not request.files['file']:
             print('Error: There are no files in the request')
+            flash(u'There are no files in the request','error')
             return False
 
         return True
@@ -44,7 +48,8 @@ class AvispaUpload:
 
         file = request.files['file']
         if not self.__allowed_file(file.filename):
-            print('Error: This file is not allowed')
+            print('Error: This file is not allowed: '+str(file.filename))
+            flash(u'This file is not allowed: '+str(file.filename),'error')
             return False
 
         return True
@@ -56,42 +61,72 @@ class AvispaUpload:
         #filename = secure_filename(file.filename)
         self.imgid = str(random.randrange(1000,9999))
         filename = self.imgid+'_o.jpg'
+        originalversionpath = self.UPLOAD_FOLDER + 'original/'
 
 
         try:     
-            file.save(os.path.join(self.UPLOAD_FOLDER, filename))
+            file.save(os.path.join(originalversionpath, filename))
             print('File uploaded successfully here:' + os.path.join(self.UPLOAD_FOLDER, filename))
             self.uploaded_file = os.path.join(self.UPLOAD_FOLDER, filename)
             return True
         except:
             print "Unexpected error:", sys.exc_info()[0]
+            flash(u'Unexpected error:'+str(sys.exc_info()[0]),'error')
             raise
 
 
     def _multi_size(self):
 
-        with Image(filename=self.UPLOAD_FOLDER+self.imgid+'_o.jpg') as img:
+        with Image(filename=self.UPLOAD_FOLDER+'original/'+self.imgid+'_o.jpg') as img:
 
-            #newname = str(random.randrange(1000,9999))
+            orientation = self._img_orientation(img)
+            if orientation == 'portrait' or orientation == 'square':
+                longside = img.height
+                shortside = img.width
+            elif orientation == 'landscape':
+                longside = img.width
+                shortside = img.height
 
-            #print(img.size)
-            for r in 1,2,3:
+            officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
+
+            for r in officialsizes:
                 with img.clone() as i:
-                    i.resize(int(i.width * r * 0.25), int(i.height * r * 0.25))
-                    #i.rotate(90 * r)
-                    i.save(filename=self.UPLOAD_FOLDER+self.imgid+'_{0}.jpg'.format(r))
-                    #display(i)
-                    print('File multiplied:'+self.UPLOAD_FOLDER+self.imgid+'_{0}.jpg'.format(r))
+                    if longside>=officialsizes[r]:
+                        self._img_resize_and_save(i,officialsizes[r],r,orientation)
         
         return True
 
-    def _rename(self,filename):
+    def _img_orientation(self,img):
+        
+        if img.width > img.height:
+            return 'landscape'
+        if img.width < img.height:
+            return 'portrait'
+        if img.width == img.height:
+            return 'square'
 
-        filename.rsplit('.',1)[1]
+    def _img_resize_and_save(self,img,mainside,sizename,orientation):
+
+        if(orientation=='portrait'):
+            img.transform(resize='x'+str(mainside))
+        elif(orientation=='landscape'):
+            img.transform(resize=str(mainside))
+        elif(orientation=='square'):
+            img.transform(crop=str(mainside))
+
+        img.save(filename=self.UPLOAD_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+        
 
 
+    def __allowed_file(self,filename):
+
+        ALLOWED_EXTENSIONS = set(['txt','pdf','png','jpg','JPG','jpeg','gif'])
+
+        return '.' in filename and \
+                filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
 
 
+    
     def check_upload_path(self,path):
         pass
 
@@ -161,16 +196,5 @@ class AvispaUpload:
     def _file_mime_type(self,file):
         pass
 
-
-
-
-
-
-    def __allowed_file(self,filename):
-
-        ALLOWED_EXTENSIONS = set(['txt','pdf','png','jpg','JPG','jpeg','gif'])
-
-        return '.' in filename and \
-                filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
 
 
