@@ -43,9 +43,15 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
         data['idx']=idx
 
 
+    if 'error_status' in data.keys():
+        status = int(data['error_status'])
+    else:
+        status = 200
+
+
 
     if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':       
-        return render_template(data['template'], data=data)        
+        return render_template(data['template'], data=data), status     
     else:
         print(data)
         return render_template(data['template'], data=data)

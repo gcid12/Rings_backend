@@ -13,20 +13,28 @@ class AvispaUpload:
 
         self.UPLOAD_FOLDER = '/Users/ricardocid/Code/avispapics/'
         self.filename = ''
+        self.rs_status = ''
 
     def do_upload(self,request,*args):
 
+        response={}
+
         if not self._request_complete(request):
-            return False
+            response['error_status']=self.rs_status
+            return response
 
         if not self._request_allowed(request):
-            return False
+            response['error_status']=self.rs_status
+            return response
 
         if self._upload_file(request):
             self._multi_size()
-            return self.imgid
+            response['imgid']=self.imgid
         else:
-            return False
+            response['error_status']=self.rs_status
+
+        return response
+            
   
         
 
@@ -35,11 +43,13 @@ class AvispaUpload:
         if not request.method == 'POST':
             print('Error: You can only use upload via POST')
             flash(u'You can only use upload via POST','error')
+            self.rs_status='405'
             return False
 
         if not request.files['file']:
             print('Error: There are no files in the request')
             flash(u'There are no files in the request','error')
+            self.rs_status='400'
             return False
 
         return True
@@ -50,6 +60,7 @@ class AvispaUpload:
         if not self.__allowed_file(file.filename):
             print('Error: This file is not allowed: '+str(file.filename))
             flash(u'This file is not allowed: '+str(file.filename),'error')
+            self.rs_status='415'
             return False
 
         return True
@@ -72,6 +83,7 @@ class AvispaUpload:
         except:
             print "Unexpected error:", sys.exc_info()[0]
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'error')
+            self.rs_status='500'
             raise
 
 

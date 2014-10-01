@@ -88,8 +88,9 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
 
 myDropzone{{ field.FieldOrder }}.on("error", function(file,error,xhr) {
     /* Error::Server responded with 0 code.*/
-    	alert('Error::'+error);
-    	alert('XHR Object::'+xhr);
+        var obj = jQuery.parseJSON(error);
+    	alert('Error:'+obj.error);
+    	//alert('XHR Object::'+xhr);
   });
 
 

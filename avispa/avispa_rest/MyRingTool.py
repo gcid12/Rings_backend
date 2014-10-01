@@ -199,14 +199,18 @@ class MyRingTool:
 
         AUD = AvispaUpload()
 
-        imgid = AUD.do_upload(request)
+        response = AUD.do_upload(request)
         imgbase = '/images/'
-
-        if imgid :
-            d = {'imgid': imgid, 'imgbase': imgbase , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
+        
+        if 'imgid' in response.keys():
+            d = {'imgid': response['imgid'], 'imgbase': imgbase , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
             
+        elif 'error_status' in response.keys():
+            d = {'error_status':response['error_status'],'template':'avispa_rest/tools/uploadresponsejson.html'}
+
         else:
-            d = {'template':'avispa_rest/tools/uploadresponsejson.html'}
+            d = {'error_status':'500','template':'avispa_rest/tools/uploadresponsejson.html'}
+
 
         return d
 
