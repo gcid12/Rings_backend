@@ -135,7 +135,11 @@ $ cd ~/Code
 $ git clone <SSH_CLONE_URL_OF_THE_INSECT_YOU_ARE_CLONING>
 ```
 
-Now you need to install CouchDB in your computer
+### Installing Avispa App Database
+
+#### CouchDB
+
+Install CouchDB in your computer
 
 ```
 pip install couchdbkit
@@ -193,7 +197,9 @@ You'll have to leave that command line open. If you close it the database will s
 
 ### Image upload storage and serving
 
-Imagick will process the images that are uploaded via the image widget in vespa
+#### Imagemagick and Wand
+
+Imagemagick will process the images that are uploaded via the image widget in vespa
 
 ```
 brew install imagemagick
@@ -223,6 +229,69 @@ mkdir t150
 ```
 
 All those folders store the different versions of the image that has been uploaded. The folder 'o' stores the original file
+
+#### Nginx
+
+We are going to use Nginx to serve the images. First check if you are using Mavericks
+
+```
+system_profiler SPSoftwareDataType
+```
+If it shows 10.9 or higher you are ok. Otherwise look in the internet for your installation instructions
+```
+System Version: OS X 10.9.*
+```
+One more thing. You need to have XCode installed in your Mac already.
+
+First you need to install the PCRE
+```
+sudo mkdir -p /usr/local/src
+```
+```
+cd /usr/local/src
+```
+If this fails and shows 0% just go to the same url using your browser and look if the file still exists. You might have to change the version number for a more recent one ( pcre-\*.\*\*.tar.gz ) 
+```
+sudo curl -OL ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.gz
+```
+Uncompress it
+```
+sudo tar xvzf pcre-8.36.tar.gz
+```
+Get in there
+```
+cd pcre-8.36
+```
+Execute configuration
+```
+sudo ./configure --prefix=/usr/local
+```
+
+And now with Nginx installation. Assuming you are still in /usr/local/src
+
+```
+sudo curl -OL http://nginx.org/download/nginx-1.5.7.tar.gz
+```
+Uncompress it
+```
+sudo tar xvzf nginx-1.5.7.tar.gz
+```
+```
+cd nginx-1.5.7
+```
+Notice the part "...pcre-8.36" . That one needs to have the same version as the PCRE you just downloaded
+```
+sudo ./configure --prefix=/usr/local --with-cc-opt="-Wno-deprecated-declarations" --with-http_ssl_module --with-pcre=../pcre-8.36
+```
+```
+sudo make
+```
+```
+sudo make install
+```
+
+And now you have Nginx installed
+
 
 
 
