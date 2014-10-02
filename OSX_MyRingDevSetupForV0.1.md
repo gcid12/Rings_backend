@@ -193,7 +193,13 @@ You'll have to leave that command line open. If you close it the database will s
 
 ### Image upload storage and serving
 
-This is the module that will process the images that are uploaded via the image widget in vespa
+Imagick will process the images that are uploaded via the image widget in vespa
+
+```
+brew install imagemagick
+```
+
+Wand is the python binding for imagemagick
 
 ```
 pip install wand
@@ -204,6 +210,7 @@ Now, create the folder that will store the images. This folder has to be outside
 ```
 mkdir myringimages<handle>
 cd myringimages<handle>
+mkdir o
 mkdir r100
 mkdir r240
 mkdir r320
@@ -214,6 +221,8 @@ mkdir 1024
 mkdir t75
 mkdir t150
 ```
+
+All those folders store the different versions of the image that has been uploaded. The folder 'o' stores the original file
 
 
 
