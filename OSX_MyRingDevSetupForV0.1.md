@@ -232,66 +232,35 @@ All those folders store the different versions of the image that has been upload
 
 #### Nginx
 
-We are going to use Nginx to serve the images. First check if you are using Mavericks
+Do it the easy way via Homebrew
 
 ```
-system_profiler SPSoftwareDataType
-```
-If it shows 10.9 or higher you are ok. Otherwise look in the internet for your installation instructions
-```
-System Version: OS X 10.9.*
-```
-One more thing. You need to have XCode installed in your Mac already.
-
-First you need to install the PCRE
-```
-sudo mkdir -p /usr/local/src
-```
-```
-cd /usr/local/src
-```
-If this fails and shows 0% just go to the same url using your browser and look if the file still exists. You might have to change the version number for a more recent one ( pcre-\*.\*\*.tar.gz ) 
-```
-sudo curl -OL ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.gz
-```
-Uncompress it
-```
-sudo tar xvzf pcre-8.36.tar.gz
-```
-Get in there
-```
-cd pcre-8.36
-```
-Execute configuration
-```
-sudo ./configure --prefix=/usr/local
+brew install nginx
 ```
 
-And now with Nginx installation. Assuming you are still in /usr/local/src
+Open nginx.conf and change to this:
 
 ```
-sudo curl -OL http://nginx.org/download/nginx-1.5.7.tar.gz
-```
-Uncompress it
-```
-sudo tar xvzf nginx-1.5.7.tar.gz
-```
-```
-cd nginx-1.5.7
-```
-Notice the part "...pcre-8.36" . That one needs to have the same version as the PCRE you just downloaded
-```
-sudo ./configure --prefix=/usr/local --with-cc-opt="-Wno-deprecated-declarations" --with-http_ssl_module --with-pcre=../pcre-8.36
-```
-```
-sudo make
-```
-```
-sudo make install
-```
+server {
+        listen       80;
+        server_name  localhost;
+        root /route/to/your/image/folder/root/;
 
-And now you have Nginx installed
+        #charset koi8-r;
 
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        location /myringimages/ {
+            index index.html;
+        }
+
+
+```
 
 
 
