@@ -135,7 +135,11 @@ $ cd ~/Code
 $ git clone <SSH_CLONE_URL_OF_THE_INSECT_YOU_ARE_CLONING>
 ```
 
-Now you need to install CouchDB in your computer
+### Installing Avispa App Database
+
+#### CouchDB
+
+Install CouchDB in your computer
 
 ```
 pip install couchdbkit
@@ -190,5 +194,75 @@ Your installation looks fine. Time to Relax.
 ```
 
 You'll have to leave that command line open. If you close it the database will shut down (don't worry, nothing is going to be erased if you do). Of course in production this would run in the background but since you are in development you'll need this window to check how your app is interacting with COUCHDB's REST API.
+
+### Image upload storage and serving
+
+#### Imagemagick and Wand
+
+Imagemagick will process the images that are uploaded via the image widget in vespa
+
+```
+brew install imagemagick
+```
+
+Wand is the python binding for imagemagick
+
+```
+pip install wand
+```
+
+Now, create the folder that will store the images. This folder has to be outside the Avispa project. I recommend one level higher than Avispa root. The folder should be named like the handle.
+
+```
+mkdir myringimages<handle>
+cd myringimages<handle>
+mkdir o
+mkdir r100
+mkdir r240
+mkdir r320
+mkdir r500
+mkdir r640
+mkdir r800
+mkdir 1024
+mkdir t75
+mkdir t150
+```
+
+All those folders store the different versions of the image that has been uploaded. The folder 'o' stores the original file
+
+#### Nginx
+
+Do it the easy way via Homebrew
+
+```
+brew install nginx
+```
+
+Open nginx.conf and change to this:
+
+```
+server {
+        listen       80;
+        server_name  localhost;
+        root /route/to/your/image/folder/root/;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        location /myringimages/ {
+            index index.html;
+        }
+
+
+```
+
+
+
 
 
