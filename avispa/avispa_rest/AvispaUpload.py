@@ -2,6 +2,7 @@
 import os
 import sys
 import random
+import werkzeug 
 from werkzeug import secure_filename
 from flask import flash
 from wand.image import Image 
@@ -11,7 +12,7 @@ class AvispaUpload:
 
     def __init__(self):
 
-        self.UPLOAD_FOLDER = '/Users/ricardocid/Code/avispapics/'
+        self.IMAGE_FOLDER = '/Users/ricardocid/Code/myringimages/'
         self.filename = ''
         self.rs_status = ''
         self.image_sizes = []
@@ -74,13 +75,13 @@ class AvispaUpload:
         #filename = secure_filename(file.filename)
         self.imgid = str(random.randrange(1000000000,9999999999))
         filename = self.imgid+'_o.jpg'
-        originalversionpath = self.UPLOAD_FOLDER + 'o/'
+        originalversionpath = self.IMAGE_FOLDER + 'o/'
 
 
         try:     
             file.save(os.path.join(originalversionpath, filename))
-            print('File uploaded successfully here:' + os.path.join(self.UPLOAD_FOLDER, filename))
-            self.uploaded_file = os.path.join(self.UPLOAD_FOLDER, filename)
+            print('File uploaded successfully here:' + os.path.join(self.IMAGE_FOLDER, filename))
+            self.uploaded_file = os.path.join(self.IMAGE_FOLDER, filename)
             return True
         except:
             print "Unexpected error:", sys.exc_info()[0]
@@ -91,7 +92,7 @@ class AvispaUpload:
 
     def _multi_size(self):
 
-        with Image(filename=self.UPLOAD_FOLDER+'o/'+self.imgid+'_o.jpg') as img:
+        with Image(filename=self.IMAGE_FOLDER+'o/'+self.imgid+'_o.jpg') as img:
 
             orientation = self._img_orientation(img)
             if orientation == 'portrait' or orientation == 'square':
@@ -167,8 +168,8 @@ class AvispaUpload:
         
 
         try:     
-            img.save(filename=self.UPLOAD_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
-            print('File multiplied successfully here:' + self.UPLOAD_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            img.save(filename=self.IMAGE_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            print('File multiplied successfully here:' + self.IMAGE_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
             multiplied={}
             multiplied['mimetype']='image/jpeg'
             multiplied['width']=str(img.width)
