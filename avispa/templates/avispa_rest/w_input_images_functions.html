@@ -11,19 +11,23 @@ $( ".dz-size" ).css( "display", "none" );
 //This function starts right after DropZone has returned a JSON file with image id and location
 myDropzone{{ field.FieldOrder }}.on("success", function(file,success) {
     	//alert('Success::'+success);
+        console.log(success)
+
     	var obj = jQuery.parseJSON(success);
     	//alert('flag1:'+obj.imgbase+obj.imgid);
     	
-    	//console.log('ref x34:'+obj.imgbase+obj.imgid);
+    	console.log('ref x34:'+obj.imgbase+obj.imgid);
 
         if(obj.error){
 
             alert(obj.error);
 
         }else{
+            console.log('will change the value')
     	  var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
-    	  //$( '#input_images_<?php echo $FieldOrder ?>' ).val(value+','+obj.imgbase+obj.imgid);
+    	    console.log('val:'+value)
     	  $( '#input_images_{{ field.FieldOrder }}' ).val(value+','+obj.imgid);
+            console.log('Value Changed')
         }
   });
 

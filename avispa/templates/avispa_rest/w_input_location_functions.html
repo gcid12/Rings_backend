@@ -1,0 +1,66 @@
+<!--LOCATION WIDGET FUNCTION-->
+
+
+
+<script>
+  //$(document).ready(function() {
+	
+	var options = {
+		map: "#map_canvas{{ field.FieldOrder }}",
+		location:"{{ data.value }}",
+	  	markerOptions: {
+			draggable: true
+		},
+	  	details:"#map_canvas_details_{{ field.FieldOrder }}",
+	  	detailsAttribute: "data-geo"
+	};
+	
+	$("#input_location_{{ field.FieldOrder }}").geocomplete(options)
+		.bind("geocode:dragged", function(event, result){
+    	
+    	//console.log('New coordinates:'+(typeof result));
+    	//console.log(result.nb);
+    	//console.log(result.ob);
+    	
+    	$("#input_location_{{ field.FieldOrder }}").geocomplete("find", result.nb+","+result.ob);
+
+ 		})
+ 	 	.bind("geocode:result", function(event, result){
+    		//console.log('googleresult:'+result);
+    		
+    		var strout='{ "{{ field.FieldName }}":[{';
+    		var attrout='';
+    		var valout='';
+    		var firstout=true;
+    		 $( "#input_location_rich_{{ field.FieldOrder }} table span" ).each(function( index, element ) {
+				//console.log('index:'+index);
+				//console.log('element:'+element);
+				attrout=$(this).attr('data-geo');
+				valout=$(this).html();
+			
+				//console.log(attrout);
+				//console.log(valout);
+				if(!firstout){
+				strout+=',';
+				} 
+				firstout=false; 
+					
+				strout+='"'+attrout+'":"'+valout+'"';		
+						
+			});
+		
+			strout+='}]}';
+			//Store the extra string in the rich input for this field
+			$("#input_location_{{ field.FieldOrder }}_rich").val(strout)
+		
+			//console.log(strout);
+    		
+  		});
+ 	 
+ 	 
+	
+	//$("#input_location_<?php echo $FieldOrder; ?>").trigger("geocode");
+	
+ // });
+</script>
+<!--END LOCATION WIDGET FUNCTION-->

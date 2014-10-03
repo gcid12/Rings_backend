@@ -2,7 +2,7 @@
 {% if errors %}
   { "error": "{% for msg in errors %}{{ msg }}{% endfor %}"}
 {% else %}
-  { "imgid":{{ data.imgid }}, "sizes":[{% for size in data.imgsizes %}{ "sizename":"{{size.sizename}}","width":{{size.width}},"height":{{size.height}},"unit":"{{size.unit}}","mime-type":"{{size.mimetype}}" },{% endfor %}] ,"imgbase":"{{ data.imgbase }}" }
+  { "imgid":"{{ data.imgid }}", "sizes":[{% for size in data.imgsizes %}{% if comma %}{{comma}}{% else %}{% set comma = ',' %}{% endif %}{ "sizename":"{{size.sizename}}","width":{{size.width}},"height":{{size.height}},"unit":"{{size.unit}}","mime-type":"{{size.mimetype}}" }{% endfor %}] ,"imgbase":"{{ data.imgbase }}" }
 {% endif %}
 {% endwith %}
 

@@ -115,12 +115,18 @@ class AvispaRestFunc:
 
     #POST /a/b
     def post_a_b(self,request,handle,ring,*args):
+        '''
+        Creates new item
+        '''
+        blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
+        
+
     	d = {'message': 'Using post_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
     def post_rq_a_b(self,request,handle,ring,*args):
         '''
-        Creates new item
+        Form to create new item
         '''
         blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
         ringblueprint = blueprint['rings'][0]

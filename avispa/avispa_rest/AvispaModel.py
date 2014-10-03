@@ -224,7 +224,7 @@ class AvispaModel:
                 args_f[f] =  TextField()
 
 
-        ringclass = type('RingClass',
+        blueprintclass = type('BlueprintClass',
                          (Document,),
                          {
                             '_id' : TextField(),
@@ -237,5 +237,31 @@ class AvispaModel:
                                                 )))
                                                })
 
-        return ringclass
+        return blueprintclass
+
+    def _ring_create_class(self,handle,ring):
+
+        blueprint = self.ring_get_blueprint(handle,ring)
+
+
+        #Here goes the iterations around the fields in blueprint 
+
+        ringclass = type('RingClass',
+                         (Document,),
+                         {
+                            '_id' : TextField(),
+
+                            'items': ListField(DictField(Mapping.build(
+                                                    **args_r
+                                                )))
+                                               })
+
+
+
+
+
+
+
+
+
 
