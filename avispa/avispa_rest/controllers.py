@@ -55,8 +55,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
         print(data)      
         return render_template(data['template'], data=data), status     
     else:
-        print('flag2')
-        print(data) 
+        #print('flag2')
+        #print(data) 
         return render_template(data['template'], data=data)
         #return 'ok'
 

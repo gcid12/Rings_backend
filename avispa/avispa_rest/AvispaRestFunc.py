@@ -117,11 +117,14 @@ class AvispaRestFunc:
     def post_a_b(self,request,handle,ring,*args):
         '''
         Creates new item
-        '''
-        blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
-        
+        '''        
+        itemid = self.avispamodel.item_post_db(request,handle,ring)
 
-    	d = {'message': 'Using post_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        if self.avispamodel.item_post_db(request,handle,ring):
+            print('Awesome , you just saved the item to the DB')
+            msg = 'Item saved with id: '+itemid
+
+    	d = {'message': msg+' -> handle: '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
     def post_rq_a_b(self,request,handle,ring,*args):

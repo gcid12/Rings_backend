@@ -1,6 +1,7 @@
 # AvispaModel.py
 
 from datetime import datetime 
+import random
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
 from AvispaCouchDB import AvispaCouchDB
 from MyRingUser import MyRingUser
@@ -239,22 +240,54 @@ class AvispaModel:
 
         return blueprintclass
 
-    def _ring_create_class(self,handle,ring):
+    def ring_create_class(self,blueprint):
 
-        blueprint = self.ring_get_blueprint(handle,ring)
+        args_i = {}
+        fields = blueprint['fields']
+        for field in fields:
+            args_i[field['FieldName']] = TextField()
+ 
 
-
-        #Here goes the iterations around the fields in blueprint 
-
-        ringclass = type('RingClass',
+        RingClass = type('RingClass',
                          (Document,),
                          {
                             '_id' : TextField(),
-
+                            'added' : DateTimeField(default=datetime.now),
                             'items': ListField(DictField(Mapping.build(
-                                                    **args_r
+                                                    **args_i
                                                 )))
-                                               })
+                                               }) 
+
+        return RingClass
+
+
+    def item_post_db(self,request,handle,ringname):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+
+        blueprint = self.ring_get_blueprint(handle,ringname)
+        
+        values = {}
+        fields = blueprint['fields']
+        for field in fields:
+            values[field['FieldName']] = request.form.get(field['FieldName'])
+
+
+        RingClass = self.ring_create_class(blueprint)
+        item = RingClass()         
+        item._id= str(random.randrange(1000000000,9999999999))
+        item.items.append(**values)
+        
+        if item.store(db):
+            return item._id
+
+        return False
+
+
+
+
+        
 
 
 
