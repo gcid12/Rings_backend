@@ -1,8 +1,8 @@
                                 <div class="form-group">
                                     <label for="{{ field.FieldName }}" class="col-sm-2 control-label">{{ field.FieldName }}</label>
                                     <div class="col-sm-10">
-
-                                      <input type="text" class="form-control" id="{{ field.FieldName }}" placeholder="{{ field.Hint }}" name="{{ field.FieldName }}">
+                                      {% set value = data.item[field.FieldName] %}
+                                      <input type="text" class="form-control" id="{{ field.FieldName }}" placeholder="{{ field.Hint }}" name="{{ field.FieldName }}" {% if value %}checked{% endif %}>
 
                                     </div>
                                 </div>

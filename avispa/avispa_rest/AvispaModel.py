@@ -261,7 +261,7 @@ class AvispaModel:
         return RingClass
 
 
-    def item_post_db(self,request,handle,ringname):
+    def post_a_b(self,request,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
@@ -283,6 +283,23 @@ class AvispaModel:
             return item._id
 
         return False
+
+
+    def get_a_b_c(self,request,handle,ringname,idx):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+
+        blueprint = self.ring_get_blueprint(handle,ringname)
+        RingClass = self.ring_create_class(blueprint)
+
+        item = RingClass.load(db,idx)
+
+        return item
+
+    
+
+
 
 
 
