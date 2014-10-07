@@ -50,7 +50,7 @@ class AvispaModel:
             return True
 
         else:
-            auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'])
+            auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
             auser._id = data['user']
             auser.store(self.db)
             print(data['user'] +' created')
@@ -297,7 +297,7 @@ class AvispaModel:
 
         return item
 
-    
+
 
 
 

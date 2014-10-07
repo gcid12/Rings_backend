@@ -1,6 +1,7 @@
 # AvispaUpload.py
 import os
 import sys
+import errno
 import random
 import werkzeug 
 from werkzeug import secure_filename
@@ -8,14 +9,18 @@ from flask import flash
 from wand.image import Image 
 from wand.display import display
 
+
 class AvispaUpload:
 
-    def __init__(self):
+    def __init__(self,handle):
 
-        self.IMAGE_FOLDER = '/Users/ricardocid/Code/myringimages/'
+        self.IMAGE_FOLDER = '/Users/ricardocid/Code/myringimages/'+handle+'/'
         self.filename = ''
         self.rs_status = ''
         self.image_sizes = []
+
+        self.officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
+        self.thumbnailsizes = {'t75':75,'t150':150}
 
     def do_upload(self,request,*args):
 
@@ -102,19 +107,15 @@ class AvispaUpload:
                 longside = img.width
                 shortside = img.height
 
-            officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
-
-            for r in officialsizes:
+            for r in self.officialsizes:
                 with img.clone() as i:
-                    if longside>=officialsizes[r]:
-                        self._img_resize_and_save(i,officialsizes[r],r,orientation,False)
+                    if longside>=self.officialsizes[r]:
+                        self._img_resize_and_save(i,self.officialsizes[r],r,orientation,False)
 
-            thumbnailsizes = {'t75':75,'t150':150}
-
-            for t in thumbnailsizes:
+            for t in self.thumbnailsizes:
                 with img.clone() as j:
-                    if shortside>=thumbnailsizes[t]:
-                        self._img_resize_and_save(j,thumbnailsizes[t],t,orientation,True)
+                    if shortside>=self.thumbnailsizes[t]:
+                        self._img_resize_and_save(j,self.thumbnailsizes[t],t,orientation,True)
 
             multiplied={}
             multiplied['mimetype']='image/jpeg'
@@ -195,6 +196,35 @@ class AvispaUpload:
 
         return '.' in filename and \
                 filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
+
+
+
+    def create_user_imagefolder(self):
+
+        
+        self.safe_create_dir(self.IMAGE_FOLDER+'/o') #Original folder
+
+        for r in self.officialsizes:
+            self.safe_create_dir(self.IMAGE_FOLDER+'/'+r)  # Scale-down version folders
+
+
+        for t in self.thumbnailsizes:
+            self.safe_create_dir(self.IMAGE_FOLDER+'/'+t)  # Thumbnail folders
+
+        return True
+
+    
+
+    def safe_create_dir(self,path):
+        print(path)
+        try:
+            os.makedirs(path)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+
+        print('flag1')
+        return True
 
 
     

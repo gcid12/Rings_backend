@@ -1,5 +1,10 @@
 # MyRingTool.py
 
+import uuid
+import random
+import bcrypt
+
+
 from flask import flash
 from AvispaModel import AvispaModel
 from AvispaUpload import AvispaUpload
@@ -44,6 +49,7 @@ class MyRingTool:
 
     def create_user(self,request,*args):
 
+        
 
         if 'rs' in request.args:
 
@@ -71,11 +77,19 @@ class MyRingTool:
                 data['lastname'] = 'defaultlastname'
 
             if request.form.get('passw'):
-                #implement hash here!
-                data['passhash'] = request.form.get('passw')
+                if request.form.get('passw') == request.form.get('passwrepeat'):
+                    data['salt'] = self.generate_salt()
+                    data['passhash'] = self.get_hashed_password(request.form.get('passw'),data['salt'])
+                else:
+                    print(request.form.get('passw'))
+                    print(request.form.get('passwrepeat'))
+                    raise ValueError('Both passwords need to be exactly the same')
             else:
                 #implement hash here!
-                data['passhash'] = 'defaultpass'
+                raise ValueError('You need a password!')      
+
+            data['guid'] = hex(uuid.getnode())
+
 
             msg = ''
 
@@ -84,14 +98,32 @@ class MyRingTool:
             else:
                 msg += ' just Created. '
 
+                AUD = AvispaUpload(data['user'])
+                AUD.create_user_imagefolder()
+
             d = {'message': 'using install tool:'+msg , 'template':'avispa_rest/index.html'}
 
 
         else:  # Show form to formulate request
 
-            d = {'message': 'Create_user tool RQ ', 'template':'avispa_rest/tool_create_user_rq.html'}
+            d = {'message': 'Create_user tool RQ ', 'template':'avispa_rest/tools/create_user_rq.html'}
 
         return d
+
+    def generate_salt(self):
+        return bcrypt.gensalt(10) 
+        # The integer is the number the dictates the 'slowness'
+        #Slow is desirable because if a malicious party gets their hands on the table containing hashed passwords, 
+        #then it is much more difficult to de-encrypt them. 
+
+    def get_hashed_password(self,plain_text_password,salt):
+        # Hash a password for the first time
+        #   (Using bcrypt, the salt is saved into the hash itself)
+        return bcrypt.hashpw(plain_text_password, salt)
+
+    def check_password(self,plain_text_password, hashed_password):
+        # Check hased password. Useing bcrypt, the salt is saved into the hash itself
+        return bcrypt.checkpw(plain_text_password, hashed_password)
 
 
     def dropzonedemo(self,request,*args):
@@ -197,7 +229,9 @@ class MyRingTool:
 
     def upload_via_aud(self,request,*args):
 
-        AUD = AvispaUpload()
+        #Check if the handle exists and the token is correct
+
+        AUD = AvispaUpload(request.args.get('handle'))
 
         response = AUD.do_upload(request)
         imgbase = '/images/'
