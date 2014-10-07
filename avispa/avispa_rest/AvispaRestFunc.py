@@ -131,6 +131,7 @@ class AvispaRestFunc:
         '''
         Form to create new item
         '''
+        print(ring)
         blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
         ringblueprint = blueprint['rings'][0]
         fieldsblueprint = blueprint['fields']

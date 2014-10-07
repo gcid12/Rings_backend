@@ -69,11 +69,12 @@ class AvispaModel:
             
 
             for ring in rings:
-                db_ringname=str(handle)+'_'+str(ring['ringname'])+'_'+str(ring['version'])
-                print(db_ringname)
-                db = self.couch[db_ringname]
+                ringname = str(ring['ringname'])+'_'+str(ring['version']) 
+                count = ring['count']
+                
+                db = self.couch[str(handle)+'_'+ringname]
                 RingDescription = db['blueprint']['rings'][0]['RingDescription']
-                r = {'ringname':db_ringname,'ringdescription':RingDescription}
+                r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
                 data.append(r)
 
         except:
@@ -103,7 +104,7 @@ class AvispaModel:
 
         db = self.couch[self.user_database]
         doc =  MyRingUser.load(db, handle)
-        doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now())
+        doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
         doc.store(db)
 
 
@@ -112,6 +113,7 @@ class AvispaModel:
     def ring_get_blueprint(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
+        print(db_ringname)
         db = self.couch[db_ringname]
         blueprint = MyRingBlueprint.load(db,'blueprint')
 
@@ -280,9 +282,33 @@ class AvispaModel:
         item.items.append(**values)
         
         if item.store(db):
+        
+            self.increase_item_count(handle,ringname)
+
             return item._id
 
         return False
+
+    def increase_item_count(self,handle,ringname):
+
+        self.db = self.couch[self.user_database]
+        user =  MyRingUser.load(self.db, handle)
+
+        if user:
+
+            for ring in user['rings']:
+                if ring['ringname']+'_'+ring['version'] == ringname:
+                    ring['count'] += 1
+                    print('Item Count increased')
+
+            if user.store(self.db):
+                
+                return True
+            else:
+                print('Could not increase item count')
+                return False
+
+
 
 
     def get_a_b_c(self,request,handle,ringname,idx):

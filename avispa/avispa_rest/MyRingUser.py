@@ -14,5 +14,6 @@ class MyRingUser(Document):
     rings = ListField(DictField(Mapping.build(
         ringname = TextField(),
         version = TextField(),
+        count = IntegerField(),
         added = DateTimeField(default=datetime.now)
     	)))
