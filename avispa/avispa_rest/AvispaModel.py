@@ -69,11 +69,11 @@ class AvispaModel:
             
 
             for ring in rings:
-                db_ringname=str(handle)+'_'+str(ring)
+                db_ringname=str(handle)+'_'+str(ring['ringname'])+'_'+str(ring['version'])
                 print(db_ringname)
                 db = self.couch[db_ringname]
                 RingDescription = db['blueprint']['rings'][0]['RingDescription']
-                r = {'ringname':ring,'ringdescription':RingDescription}
+                r = {'ringname':db_ringname,'ringdescription':RingDescription}
                 data.append(r)
 
         except:
