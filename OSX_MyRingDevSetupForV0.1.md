@@ -117,6 +117,10 @@ itsdangerous==0.24
 wsgiref==0.1.2
 ```
 
+Also install py-bcrypt to hash passwords
+```
+pip install py-bcrypt
+```
 
 ### Cloning source code from the Insect Mothership
 
