@@ -13,6 +13,9 @@ class AvispaRestFunc:
     def get_a(self,request,handle,*args):
 
         ringlist = self.avispamodel.user_get_rings(handle)
+
+
+        print(ringlist)
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist}
     	return d
 
@@ -101,7 +104,39 @@ class AvispaRestFunc:
     
     #GET /a/b
     def get_a_b(self,request,handle,ring,*args):
-    	d = {'message': 'Using get_a_b for handle:'+handle+', ring:'+ring , 'template':'avispa_rest/get_a_b.html'}
+        '''
+        List of items in the ring
+        '''
+        d = {}
+
+        if request.args.get('lastkey'):
+            lastkey = request.args.get('lastkey')
+        else:
+            lastkey = None
+
+        if request.args.get('resultsperpage'):
+            resultsperpage = request.args.get('resultsperpage')
+        else:
+            resultsperpage = 25
+
+        itemlist = self.avispamodel.get_a_b(handle,ring,resultsperpage,lastkey)
+        print(itemlist)
+
+        nextlastkey=itemlist[-1]['id']
+        print(nextlastkey)
+
+        print(len(itemlist))
+
+        if len(itemlist) == resultsperpage:
+            d['lastkey'] = nextlastkey
+            #Still, if the last page has exactly as many items as resultsperpage, the next page will be empty. Please fix
+
+        
+        d['message'] = 'Using get_a_b for handle:'+handle+', ring:'+ring
+        d['template'] = 'avispa_rest/get_a_b.html'
+        d['itemlist'] = itemlist
+        d['resultsperpage'] = resultsperpage
+
         return d
 
     def get_rq_a_b(self,request,handle,ring,*args):

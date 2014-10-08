@@ -262,17 +262,36 @@ class MyRingTool:
 
 
     def sync_couchdb_views(self,request,*args):
+        '''
+        Usage => http://127.0.0.1:8080/tool/sync_couchdb_views?dbringname=volatour_services_0-1-0
+        '''
 
         db_ringname =  request.args.get('dbringname')
 
         self.avispamodel.ring_set_db_views(db_ringname)
 
-        flash(u'Succesfully deleted','message')
+        flash(u'Views synced to ring :'+db_ringname,'message')
         rq='Loading the Views into CouchDB via python'
 
         d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
 
         return d
+
+    def run_view(self,request,*args):
+
+        handle = 'volatour'
+        ringname = 'services_0-1-0'
+        startkey = '3468686347'
+        resultsperpage = 3
+        self.avispamodel.get_a_b(handle,ringname,resultsperpage,startkey)
+
+        flash(u'ok')
+        rq='run_view'
+
+        d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
+
+        return d
+
 
 
 

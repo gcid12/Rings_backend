@@ -1,5 +1,6 @@
 import couchdb
 from View1 import View1
+from View2 import View2
 
 class CouchViewSync:
 
@@ -10,7 +11,8 @@ class CouchViewSync:
         '''
 
         couch_views = [
-            View1()
+            View1(),
+            View2()
             # Put other view classes here
         ]
 

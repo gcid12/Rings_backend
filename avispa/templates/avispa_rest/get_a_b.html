@@ -78,6 +78,8 @@
 
                         <div class="rn-box-content">
                             <table class="table table-striped">
+                                <!-- ITEM N -->
+                                {% for item in data.itemlist %}
                                 <tr>
                                     <td style="width:15%;">
 
@@ -85,8 +87,8 @@
                                         <img style="width:70px;" src="/static/images/bea.jpg" class="img-thumbnail" >
    
                                         <div class="btn-group">
-                                          <a href="3" type="button" class="btn btn-success">G</a>
-                                          <a href="3?rq=patch" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item.id}}" type="button" class="btn btn-success">G</a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item.id}}?rq=patch" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
                                           <button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_pre_a_b_c">
                                             <i class="fa fa-times"></i>
                                           </button>
@@ -99,96 +101,35 @@
 
                                         
                                             <dl class="dl-horizontal">
-                                              <dt>Name:</dt>
-                                              <dd>Sunsetroom1.jpg</dd>
 
-                                              <dt>Format:</dt>
-                                              <dd>JPG</dd>
+                                            {% for k,v in item.items() %}
 
-                                              <dt>Width:</dt>
-                                              <dd>900px</dd>
 
-                                              <dt>Height:</dt>
-                                              <dd>400px</dd>
+
+                                              <dt>{{ k }}:</dt>
+                                              <dd>{{ v }}</dd>
+
+
+                                            {% endfor %}
+
+
 
                                             </dl>
                                         
                                     </td>
                                     <td style="width:55%;">
-                                        <p class="rn-t3 rn-gray">
+                                        <!--p class="rn-t3 rn-gray">
                                         Router what URI segments to use if those provided | in the URL cannot be matched to a valid routeayRouter what URI segments to use if those provided | in the URL cannot be matched to a valid routeay
-                                        </p>
+                                        </p-->
                                     </td>
 
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <img style="width:70px;" src="/static/images/bea.jpg" class="img-thumbnail" >
+                                
 
-                                        <div class="btn-group">
-                                          <a href="04" type="button" class="btn btn-success">G</a>
-                                          <a href="04" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                                          <a href="04" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
-                                        </div>
+                                {% endfor %}
+                                
+                                <!-- END ITEM N -->
 
-
-                                    </td>
-                                    <td>
-                                        <dl class="dl-horizontal">
-                                          <dt>Name:</dt>
-                                          <dd>Sunsetroom1.jpg</dd>
-
-                                          <dt>Format:</dt>
-                                          <dd>JPG</dd>
-
-                                          <dt>Width:</dt>
-                                          <dd>900px</dd>
-
-                                          <dt>Height:</dt>
-                                          <dd>400px</dd>
-
-                                        </dl>
-                                    </td>
-                                    <td>
-                                        <p class="rn-t3 rn-gray">
-                                        Router what URI segments to use if those provided | in the URL cannot be matched to a valid routeayRouter what URI segments to use if those provided | in the URL cannot be matched to a valid routeay
-                                        </p>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img style="width:70px;" src="/static/images/bea.jpg" class="img-thumbnail" >
-                                        <div class="btn-group">
-                                          <a href="05" type="button" class="btn btn-success">G</a>
-                                          <a href="05" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                                          <a href="05" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <dl class="dl-horizontal">
-                                          <dt>Name:</dt>
-                                          <dd>Sunsetroom1.jpg</dd>
-
-                                          <dt>Format:</dt>
-                                          <dd>JPG</dd>
-
-                                          <dt>Width:</dt>
-                                          <dd>900px</dd>
-
-                                          <dt>Height:</dt>
-                                          <dd>400px</dd>
-
-                                        </dl>
-                                    </td>
-                                    <td>
-                                        <p class="rn-t3 rn-gray">
-                                        Router what URI segments to use if those provided | in the URL cannot be matched to a valid routeayRouter what URI segments to use if those provided | in the URL cannot be matched to a valid routeay
-                                        </p>
-                                    </td>
-
-                                </tr>
                             </table>
                          
                         
@@ -196,11 +137,13 @@
                         </div><!-- //close box content -->
                         <div class="">
                             <ul class="pagination">
-                              <li><a href="#">&laquo;</a></li>
-                              <li class="active"><a href="#">1</a></li>
+                              <li><a href="/{{ data.handle }}/{{ data.ring }}">&laquo;</a></li>
+                              <!--li class="active"><a href="#">1</a></li>
                               <li class="disable"><a href="#">2</a></li>
-                              <li class="disable"><a href="#">3</a></li>
-                              <li><a href="#">&raquo;</a></li>
+                              <li class="disable"><a href="#">3</a></li-->
+                              {% if data.lastkey %}
+                              <li><a href="?lastkey={{ data.lastkey }}">&raquo;</a></li>
+                              {% endif %}
                             </ul>
                         <div class="pull-right">
                             <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">

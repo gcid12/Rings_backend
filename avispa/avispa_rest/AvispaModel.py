@@ -93,7 +93,7 @@ class AvispaModel:
         try:     
             
             self.couch.create(db_ringname) #Creates this ring database
-            #self.ring_set_db_views(db_ringname) #Sets all the CouchDB Views needed 
+            self.ring_set_db_views(db_ringname) #Sets all the CouchDB Views needed for this new ring
             self.user_add_ring(handle,ringname,ringversion) #Adds the ring to the user's list
             return True    
 
@@ -101,8 +101,6 @@ class AvispaModel:
             return False
 
     def ring_set_db_views(self,db_ringname):
-
-        print(db_ringname)
 
         db = self.couch[db_ringname]
 
@@ -319,6 +317,59 @@ class AvispaModel:
                 print('Could not increase item count')
                 return False
 
+    def get_a_b(self,handle,ringname,limit=25,lastkey=None):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+        batch = 500  #This is not the number of results per page. 
+         # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
+
+        options = {}
+        if lastkey:
+            limit +=1
+            options['startkey']=lastkey  #Where the last page left
+
+        options['limit']=limit #Number of results per page
+        
+        
+        #options['key']='4393588627'
+        
+        #options['startkey_docid']='4393588627'
+        #options['endkey']='4393588626'
+        #options['endkey_docid']=4
+
+
+        result = db.iterview('avispa/get_a_b',batch,**options)
+
+
+
+        #print (result)
+        items = []
+        i = 0
+
+        for row in result:
+
+            i += 1
+            if lastkey and i==1:
+                #continue  #skipping the lastkey
+                print('length:')
+                print(len(items))
+                continue
+                #pass
+
+            item = {}
+            item[u'id'] = row['id']
+            item.update(row['value'])
+            #item['id']=row['id']
+            #item['values']=row['value']
+            items.append(item)
+            #print(item)
+
+        #print(items)
+
+        return items
+
+
 
 
 
@@ -333,6 +384,54 @@ class AvispaModel:
         item = RingClass.load(db,idx)
 
         return item
+
+
+
+    def couchdb_pager(db, view_name='_all_docs',
+                  startkey=None, startkey_docid=None,
+                  endkey=None, endkey_docid=None, bulk=5000):
+
+        '''
+        import couchdb
+        couch = couchdb.Server()
+        db = couch['mydatabase']
+
+        # This is dangerous.
+        for doc in db:
+            pass
+
+        # This is always safe.
+        for doc in couchdb_pager(db):
+            pass
+
+        '''
+        # Request one extra row to resume the listing there later.
+        options = {'limit': bulk + 1}
+        if startkey:
+            options['startkey'] = startkey
+            if startkey_docid:
+                options['startkey_docid'] = startkey_docid
+        if endkey:
+            options['endkey'] = endkey
+            if endkey_docid:
+                options['endkey_docid'] = endkey_docid
+        done = False
+        while not done:
+            view = db.view(view_name, **options)
+            rows = []
+            # If we got a short result (< limit + 1), we know we are done.
+            if len(view) <= bulk:
+                done = True
+                rows = view.rows
+            else:
+                # Otherwise, continue at the new start position.
+                rows = view.rows[:-1]
+                last = view.rows[-1]
+                options['startkey'] = last.key
+                options['startkey_docid'] = last.id
+
+            for row in rows:
+                yield row.id
 
 
 
