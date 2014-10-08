@@ -6,6 +6,7 @@ from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, Li
 from AvispaCouchDB import AvispaCouchDB
 from MyRingUser import MyRingUser
 from MyRingBlueprint import MyRingBlueprint
+from CouchViewSync import CouchViewSync
 
 class AvispaModel:
 
@@ -89,16 +90,26 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname = db_ringname.replace(" ","")
 
-        #try:
-        if True:
+        try:     
             
-            self.couch.create(db_ringname) 
-            self.user_add_ring(handle,ringname,ringversion)
+            self.couch.create(db_ringname) #Creates this ring database
+            #self.ring_set_db_views(db_ringname) #Sets all the CouchDB Views needed 
+            self.user_add_ring(handle,ringname,ringversion) #Adds the ring to the user's list
             return True    
 
-        #except:  
-        else:         
+        except:          
             return False
+
+    def ring_set_db_views(self,db_ringname):
+
+        print(db_ringname)
+
+        db = self.couch[db_ringname]
+
+        CVS = CouchViewSync()
+        return CVS.set_db_views(db)
+
+
 
     def user_add_ring(self,handle,ringname,ringversion):
 
@@ -210,7 +221,7 @@ class AvispaModel:
 
     def _blueprint_create_class(self,numfields,ringprotocol,fieldprotocol):
         '''
-        This function is deprecated. Now we just instantiate MyRingBlueprint
+        This function is deprecated. Now we just instantiate MyRingBlueprint class
         '''
 
         args_r = {}

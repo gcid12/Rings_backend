@@ -41,10 +41,10 @@
               </div> 
             </div>
 
-            <form class="form-horizontal" role="form" action="/{{ data.handle }}/" method="POST">
+            <form class="form-horizontal" role="form" action="/{{ data.handle }}/{{ data.ring }}?method=PUT" method="POST">
                
               <!-- RING -->
-              <div class="rn-box-content">  
+              <div class="rn-box-content">
               <br/>           
                 <div class="form-group">
                   <label for="RingName" class="col-sm-2 control-label">ring:name</label>
@@ -81,11 +81,13 @@
                 </div> 
               </div>
        
-
+              {% set f = 0 %}
               
               {% for field in data.fieldsblueprint %}
+
+              {% set f = f+1 %}
               
-              <!-- N FIELD -->
+              <!-- FIELD {{ f }} -->
               <div class="rn-box-content ringbuilder">
                 <br/>
                 <table class="form-group" style="width:100%;">
@@ -110,85 +112,90 @@
                     </tr>
                     <tr>
                       <td>field:semantic</td>
-                      <td><textarea name="FieldSemantic_{{ f }}" class="form-control">{{ field.Semantic }}</textarea></td>
+                      <td><textarea name="FieldSemantic_{{ f }}" class="form-control">{{ field.FieldSemantic }}</textarea></td>
                     </tr>
                     <tr>
                       <td>field:type</td>
                       <td>
                         <select name="FieldType_{{ f }}">
                           <option value="">SELECT ONE</option>
-                          <option>INT</option>
-                          <option selected="">TEXT</option>
-                          <option>VARCHAR(120)</option>
+                          <option value="INT" {% if field.FieldType == "INT" %}selected{% endif %}>INT</option>
+                          <option value="TEXT" {% if field.FieldType == "TEXT" %}selected{% endif %}>TEXT</option>
+                          <option value="VARCHAR(120)" {% if field.FieldType == "VARCHAR(120)" %}selected{% endif %}>VARCHAR(120)</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <td>field:source</td>
-                      <td><textarea name="FieldSource_{{ f }}" class="form-control"></textarea></td>
+                      <td><textarea name="FieldSource_{{ f }}" class="form-control">{{ field.FieldSource }}</textarea></td>
                     </tr>
                     <tr>
                       <td>field:widget</td>
                       <td>
                         <select name="FieldWidget_{{ f }}">
                           <option value="">SELECT ONE</option>
-                          <option>checkbox</option>
-                          <option>date</option>
-                          <option>file</option>
-                          <option>images</option>
-                          <option>location</option>
-                          <option>password</option>
-                          <option>radio</option>
-                          <option>select</option>
-                          <option selected="">text</option>
-                          <option>textarea</option>
-                          <option>url</option>
-                          <option>url_flickr</option>
-                          <option>url_video</option>
+                          <option value="checkbox" {% if field.FieldWidget == "checkbox" %}selected{% endif %}>checkbox</option>
+                          <option value="date" {% if field.FieldWidget == "date" %}selected{% endif %}>date</option>
+                          <option value="file" {% if field.FieldWidget == "file" %}selected{% endif %}>file</option>
+                          <option value="images" {% if field.FieldWidget == "images" %}selected{% endif %}>images</option>
+                          <option value="location" {% if field.FieldWidget == "location" %}selected{% endif %}>location</option>
+                          <option value="password" {% if field.FieldWidget == "password" %}selected{% endif %}>password</option>
+                          <option value="radio" {% if field.FieldWidget == "radio" %}selected{% endif %}>radio</option>
+                          <option value="select" {% if field.FieldWidget == "select" %}selected{% endif %}>select</option>
+                          <option value="text" {% if field.FieldWidget == "text" %}selected{% endif %}>text</option>
+                          <option value="textarea" {% if field.FieldWidget == "textarea" %}selected{% endif %}>textarea</option>
+                          <option value="url" {% if field.FieldWidget == "url" %}selected{% endif %}>url</option>
+                          <option value="url_flickr" {% if field.FieldWidget == "url_flickr" %}selected{% endif %}>url_flickr</option>
+                          <option value="url_video" {% if field.FieldWidget == "url_video" %}selected{% endif %}>url_video</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
-                      <td>field:cardinality</td>
+                      <td>field:cardinality </td>
                       <td>
                         <select name="FieldCardinality_{{ f }}">
-                          <option>Single</option>
-                          <option>Multiple</option>
+                          <option value="Single" {% if field.FieldCardinality == "Single" %} selected {% endif %} >Single</option>
+                          <option value="Multiple" {% if field.FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
                         </select>
                       </td>
                     </tr>
                     <tr>
                       <td>field:multilingual</td>
                       <td>
-                        <input name="FieldMultilingual_{{ f }}" value="1" type="checkbox">
+                        <input name="FieldMultilingual_{{ f }}" value="1" type="checkbox" {% if field.FieldMultilingual %}checked{% endif %}>
                       </td>
                     </tr>
                     <tr>
                       <td>field:required</td>
                       <td>
-                        <input name="FieldRequired_{{ f }}" value="1" type="checkbox">
+                        <input name="FieldRequired_{{ f }}" value="1" type="checkbox" {% if field.FieldRequired %}checked{% endif %}>
                       </td>
                     </tr>
                     <tr>
                       <td>field:default</td>
                       <td>
-                        <input name="FieldDefault_{{ f }}" value="" class="form-control" type="text"></td>
+                        <input name="FieldDefault_{{ f }}" value="{{ field.FieldDefault }}" class="form-control" type="text"></td>
                     </tr>
                     <tr>
                       <td>field:hint</td>
                       <td>
-                        <textarea name="FieldHint_{{ f }}" class="form-control"></textarea></td>
+                        <textarea name="FieldHint_{{ f }}" class="form-control">{{ field.FieldHint }}</textarea></td>
                     </tr>
                     <tr>
                       <td>field:layer</td>
                       <td>
-                        <input name="FieldLayer_{{ f }}" value="" class="form-control" type="text"></td>
+                        <input name="FieldLayer_{{ f }}" value="{{ field.FieldLayer }}" class="form-control" type="text"></td>
+                    </tr>
+                    <tr>
+                      <td>field:order</td>
+                      <td>
+                        <input name="FieldOrder_{{ f }}" value="{{ field.FieldOrder }}" class="form-control" type="text"></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <!-- N FIELD END -->
+              <!-- FIELD {{ f }} END -->
 
               {% endfor %}
 

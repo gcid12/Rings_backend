@@ -8,6 +8,7 @@ import bcrypt
 from flask import flash
 from AvispaModel import AvispaModel
 from AvispaUpload import AvispaUpload
+from CouchViewSync import CouchViewSync
 
 
 class MyRingTool:
@@ -258,6 +259,22 @@ class MyRingTool:
         d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
 
         return d
+
+
+    def sync_couchdb_views(self,request,*args):
+
+        db_ringname =  request.args.get('dbringname')
+
+        self.avispamodel.ring_set_db_views(db_ringname)
+
+        flash(u'Succesfully deleted','message')
+        rq='Loading the Views into CouchDB via python'
+
+        d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
+
+        return d
+
+
 
 
 

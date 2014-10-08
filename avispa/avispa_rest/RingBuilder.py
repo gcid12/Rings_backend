@@ -21,7 +21,7 @@ class RingBuilder:
 
         self.fieldprotocols['fieldprotocol'] = ['FieldName', 'FieldLabel', 'FieldSemantic', 'FieldType', 'FieldSource',\
                            'FieldWidget','FieldOrder', 'FieldCardinality', 'FieldMultilingual',\
-                           'FieldRequired', 'FieldDefault', 'FieldHint', 'FieldLayer']
+                           'FieldRequired', 'FieldDefault', 'FieldHint', 'FieldLayer', 'FieldOrder']
         self.fieldprotocols['mandatory'] = ['FieldName']
         self.fieldprotocols['defaults'] = {'FieldType':'TEXT','FieldWidget':'text','FieldCardinality':'single',\
                                   'FieldMultilingual':False, 'FieldRequired':False, 'FieldLayer':3 }
@@ -32,8 +32,6 @@ class RingBuilder:
 
     
     def JSONRingGenerator(self,request,handle):
-
-
 
                 
         if request.form.get('RingName') and request.form.get('FieldName_1'):
@@ -56,6 +54,46 @@ class RingBuilder:
                 print('New Ring database created: '+ ringname)
             else:
                 print('The Ring '+ ringname +' database already exists')
+
+            if self.avispamodel.ring_set_blueprint(handle,
+                                        ringname,
+                                        ringversion,
+                                        pinput,
+                                        self.ringprotocols['ringprotocol'],
+                                        self.fieldprotocols['fieldprotocol']):
+
+                print('Blueprint inserted/updated')
+                return True
+            else:
+                print('Blueprint could not be inserted')
+                return False
+
+
+        else:
+
+            print('There is not enough information to create a Ring')
+            return False
+
+    def put_a_b(self,request,handle,ring):
+        #Same as JSONRingGenerator but to edit blueprint
+
+                
+        if request.form.get('RingName') and request.form.get('FieldName_1'):
+
+            pinput = collections.OrderedDict()
+
+            ringname = request.form.get('RingName').lower() # I dont like this here
+            handle = handle.lower()
+            ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
+            
+            # Generate rings block                         
+            pinput['rings'] = self._generate_ring_block(request)
+            # Generate fields block
+            pinput['fields'] = self._generate_field_block(request)
+
+            print(pinput)
+            
+            
 
             if self.avispamodel.ring_set_blueprint(handle,
                                         ringname,

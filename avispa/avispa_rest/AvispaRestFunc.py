@@ -1,3 +1,4 @@
+from flask import redirect
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
 
@@ -127,6 +128,8 @@ class AvispaRestFunc:
     	d = {'message': msg+' -> handle: '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
+        #return redirect('/'+handle+'/'+ring)
+
     def post_rq_a_b(self,request,handle,ring,*args):
         '''
         Form to create new item
@@ -151,6 +154,12 @@ class AvispaRestFunc:
 
     #PUT /a/b
     def put_a_b(self,request,handle,ring,*args):
+
+        RB = RingBuilder()
+        if RB.put_a_b(request,handle,ring):
+            print('200')
+
+        print('put a_b route!')
     	d = {'message': 'Using put_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
