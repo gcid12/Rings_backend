@@ -70,7 +70,7 @@
           <div class="col-sm-12">
             <div class="rn-box-title">
 
-              <strong> <!-- Ring owner  -->Creating 1 item  </strong> 
+              <strong> <!-- Ring owner  -->Updating 1 item  </strong> 
 
               <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
               <i class="fa fa-question-circle"></i>
@@ -84,11 +84,11 @@
             </div>
             <div class="rn-box-content">
                             
-                            <form role="form" action="/{{ data.handle }}/{{ data.ring }}?method=post" method="POST" autocomplete="off">
+                            <form role="form" action="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=put" method="POST" autocomplete="off">
 
                             {% for field in data.fieldsblueprint %}
 
-                              ({{ field.FieldWidget }})
+                              &nbsp;
                               {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
                               {% include widget  %} 
                                 

@@ -1,5 +1,5 @@
 # Import flask dependencies
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from MyRingTool import MyRingTool
 
@@ -35,12 +35,14 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     if handle=='tool':  #not a ring! Here goes all the system specific functionality
         tool = ring
         data = getattr(MRT, tool.lower())(request)
+        print('flagA:')
+        print(data)
     else:
         data = getattr(ARF, m.lower())(request,handle,ring,idx)
 
-        data['handle']=handle
-        data['ring']=ring
-        data['idx']=idx
+    data['handle']=handle
+    data['ring']=ring
+    data['idx']=idx
 
 
     if 'error_status' in data.keys():
@@ -48,17 +50,21 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     else:
         status = 200
 
-
-
-    if request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
+    if 'redirect' in data:
+        print('flag0')
+        return redirect(data['redirect'])               
+    elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
         print('flag1')
         print(data)      
         return render_template(data['template'], data=data), status     
     else:
-        #print('flag2')
+        print('flag2')
         #print(data) 
         return render_template(data['template'], data=data)
         #return 'ok'
+
+
+
 
 # Set the route and accepted methods
 @avispa_rest.route('/')

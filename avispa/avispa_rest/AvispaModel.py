@@ -298,6 +298,38 @@ class AvispaModel:
 
         return False
 
+
+    def put_a_b_c(self,request,handle,ringname,idx):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+
+        blueprint = self.ring_get_blueprint(handle,ringname)
+        RingClass = self.ring_create_class(blueprint)
+        item = RingClass.load(db,idx)
+        
+        values = {}
+        fields = blueprint['fields']
+        for field in fields:
+            #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
+            f = field['FieldName']
+            old = unicode(item.items[0][f])
+            new = unicode(request.form.get(f))
+
+            if old == new:
+                print(f+' did not change')             
+            else:
+                print(f+' changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
+                                '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
+                #args[f] = new
+                item.items[0][f] = new
+
+        if item.store(db):      
+            return item._id
+
+        return False
+
+
     def increase_item_count(self,handle,ringname):
 
         self.db = self.couch[self.user_database]

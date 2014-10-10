@@ -8,6 +8,26 @@ var myDropzone{{ field.FieldOrder }} = new Dropzone("#dropzone{{ field.FieldOrde
 $( ".dz-size" ).css( "display", "none" );
 
 
+{% if data.item[field.FieldName] %}
+
+//console.log("{{ data.item[field.FieldName] }}");
+
+  {% for image in data.item[field.FieldName].split(',') %}
+    {% if image %}
+      {% if image!='1' %}
+        console.log("{{image}}");
+        var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"http://localhost/{{data.handle}}/t75/{{image}}_t75.jpg"  };
+        myDropzone{{ field.FieldOrder }}.options.addedfile.call(myDropzone{{ field.FieldOrder }}, fieldvalue);
+        myDropzone{{ field.FieldOrder }}.options.thumbnail.call(myDropzone{{ field.FieldOrder }}, fieldvalue, "http://localhost/{{data.handle}}/t75/{{image}}_t75.jpg"); 
+
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+{% endif %}
+
+
+
 //This function starts right after DropZone has returned a JSON file with image id and location
 myDropzone{{ field.FieldOrder }}.on("success", function(file,success) {
     	//alert('Success::'+success);
@@ -42,14 +62,18 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     		
     		if(typeof file.xhr === 'undefined'){
     			console.log('file.imgurl:'+file.imgurl);
-    			var resource2delete = file.imgurl;
+    			var imgurl = file.imgurl;
+                var parts = imgurl.split('/');
+                var filename = parts[parts.length-1];
+                var filenameparts = filename.split('_');
+                var resource2delete = filenameparts[0];
     		}else{
     			console.log('file.xhr.response:'+file.xhr.response);
 				//It does exist in the widget and in the server
 				var obj = jQuery.parseJSON(file.xhr.response);
 				//var resource2delete = obj.imgbase+obj.imgid;
 				var resource2delete = obj.imgid.toString();
-                console.log('Resource to delete:'+resource2delete)
+                //console.log('Resource to delete:'+resource2delete)
     		}
     		
     		
@@ -58,11 +82,12 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     		console.log('prevalue:'+value);
     		var valuearray = value.split(",");
     		console.log(valuearray);
+            console.log('resource2delete:'+resource2delete);
     		var indextodelete = jQuery.inArray(resource2delete,valuearray);
     		console.log('indextodelete:'+indextodelete);
     		if (indextodelete!=-1){
     			valuearray.splice(indextodelete,1);
-    			value = valuearray.join();
+    			value = valuearray.join(',');
     			console.log('aftervalue:'+value);
     			$( '#input_images_{{ field.FieldOrder }}' ).val(value);		
     		}else{
@@ -74,7 +99,7 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     		//This still needs to be implemented in the server side
     		$.ajax({
 				type: "GET",
-				url: "/tool/delete_via_aud?id="+obj.imgid,
+				url: "/tool/delete_via_aud?id="+resource2delete,
 				success: function(response){
 					//alert('Response:'+response);
 				}

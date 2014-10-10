@@ -314,15 +314,38 @@ class AvispaRestFunc:
 
     #PUT /a/b/c
     def put_a_b_c(self,request,handle,ring,idx,*args):
-    	d = {'message': 'Using put_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
+        '''
+        Puts changes in the item
+        '''        
+        result = self.avispamodel.put_a_b_c(request,handle,ring,idx)
+
+        if result:
+            print('Awesome , you just put the changes in the Item')
+            msg = 'Item put with id: '+idx
+
+        #return redirect('http://127.0.0.1/'+handle+'/'+ring, 301)
+        redirect = '/'+handle+'/'+ring
+
+        d = {'redirect': redirect}
+
+        #d = {'message': msg+' -> handle>> '+handle+', ring>>'+ring+', idx>>'+idx , 'template':'avispa_rest/index.html'}
         return d
+
 
     def put_rq_a_b_c(self,request,handle,ring,idx,*args):
         '''
         Prepares form to be sent for a put
         '''
-        item = self.avispamodel.get_a_b_c(request,handle,ring,idx)
+        preitem = self.avispamodel.get_a_b_c(request,handle,ring,idx)
+       
+        item = preitem.items[0]
 
+        #if item['Images']:
+         #   images=item['Images'].split(',')
+          #  item['Images']=images
+           
+
+        
         blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
         ringblueprint = blueprint['rings'][0]
         fieldsblueprint = blueprint['fields']
@@ -332,7 +355,7 @@ class AvispaRestFunc:
              'ringblueprint':ringblueprint,
              'fieldsblueprint':fieldsblueprint,
              'numfields':numfields,
-             'item':item.items[0] }
+             'item':item }
 
         #rint(item.items[0]['Website'])
 
