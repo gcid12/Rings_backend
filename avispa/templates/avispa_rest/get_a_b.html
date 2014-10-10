@@ -24,7 +24,7 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="rn-box-title">
-              <strong>Showing 101-150 of 29,345 items</strong>
+              <strong>Showing items</strong>
 
               <div class="btn-toolbar pull-right" role="toolbar">
                 <div class="btn-group">
@@ -83,8 +83,18 @@
                                 <tr>
                                     <td style="width:15%;">
 
-
-                                        <img style="width:70px;" src="/static/images/bea.jpg" class="img-thumbnail" >
+                                        {% for k,v in item.items() %}
+                                          {% if k == 'Images' %}
+                                            {% for image in v %}
+                                              {% if image %}
+                                            <img style="width:70px;" src="http://localhost/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                                              {% endif %}
+                                            {% endfor %}
+                                          {% else %}
+                                            
+                                          {% endif %}
+                                        {% endfor %}
+                                        
    
                                         <div class="btn-group">
                                           <a href="/{{data.handle}}/{{data.ring}}/{{item.id}}" type="button" class="btn btn-success">G</a>
@@ -101,32 +111,34 @@
 
                                         
                                             <dl class="dl-horizontal">
-
+                                        
                                             {% for k,v in item.items() %}
-
-
-
+                                              {% if not k =='Images' %}
+                                                {% if not k =='Description' %} 
                                               <dt>{{ k }}:</dt>
                                               <dd>{{ v }}</dd>
+                                                {% endif %}
 
-
+                                              {% endif %}
                                             {% endfor %}
-
-
-
+                                          
                                             </dl>
                                         
                                     </td>
                                     <td style="width:55%;">
-                                        <!--p class="rn-t3 rn-gray">
-                                        Router what URI segments to use if those provided | in the URL cannot be matched to a valid routeayRouter what URI segments to use if those provided | in the URL cannot be matched to a valid routeay
-                                        </p-->
+                                        <p class="rn-t3 rn-gray">
+                                        {% for k,v in item.items() %}
+                                          {% if k == 'Description' %}
+                                            {{ v }}
+                                          {% endif %}
+                                        {% endfor %}
+                                        </p>
                                     </td>
 
                                 </tr>
                                 
 
-                                {% endfor %}
+                              {% endfor %}
                                 
                                 <!-- END ITEM N -->
 

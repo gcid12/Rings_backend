@@ -119,8 +119,21 @@ class AvispaRestFunc:
         else:
             resultsperpage = 25
 
-        itemlist = self.avispamodel.get_a_b(handle,ring,resultsperpage,lastkey)
+        preitemlist = self.avispamodel.get_a_b(handle,ring,resultsperpage,lastkey)
+        print(preitemlist)
+
+        itemlist = []
+        for item in preitemlist:
+            if item['Images']:
+                images=item['Images'].split(',')
+                item['Images']=images
+            itemlist.append(item)
+
+
         print(itemlist)
+
+        
+
 
         nextlastkey=itemlist[-1]['id']
         print(nextlastkey)
