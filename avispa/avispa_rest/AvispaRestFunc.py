@@ -318,21 +318,8 @@ class AvispaRestFunc:
         return d
 
     def put_rq_a_b_c(self,request,handle,ring,idx,*args):
-        d = {'message': 'Using put_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
-        return d
-
-    def put_rs_a_b_c(self,request,handle,ring,idx,*args):
-        d = {'message': 'Using put_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
-        return d
-
-    #PATCH /a/b/c
-    def patch_a_b_c(self,request,handle,ring,idx,*args):
-    	d = {'message': 'Using patch_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
-        return d
-
-    def patch_rq_a_b_c(self,request,handle,ring,idx,*args):
         '''
-        Prepares form to be sent for a patch
+        Prepares form to be sent for a put
         '''
         item = self.avispamodel.get_a_b_c(request,handle,ring,idx)
 
@@ -341,7 +328,7 @@ class AvispaRestFunc:
         fieldsblueprint = blueprint['fields']
         numfields = len(fieldsblueprint)
 
-        d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html', 
+        d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/put_rq_a_b_c.html', 
              'ringblueprint':ringblueprint,
              'fieldsblueprint':fieldsblueprint,
              'numfields':numfields,
@@ -353,6 +340,19 @@ class AvispaRestFunc:
 
         #d = {'message': 'Using patch_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/patch_rq_a_b_c.html'}
         #return d
+
+    def put_rs_a_b_c(self,request,handle,ring,idx,*args):
+        d = {'message': 'Using put_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
+        return d
+
+    #PATCH /a/b/c
+    def patch_a_b_c(self,request,handle,ring,idx,*args):
+    	d = {'message': 'Using patch_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
+        return d
+
+    def patch_rq_a_b_c(self,request,handle,ring,idx,*args):
+        d = {'message': 'Using patch_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
+        return d
 
     def patch_rs_a_b_c(self,request,handle,ring,idx,*args):
         d = {'message': 'Using patch_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}

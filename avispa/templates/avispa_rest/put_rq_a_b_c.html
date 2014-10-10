@@ -50,7 +50,8 @@
 
 <div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
 <a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
-<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a>
+<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a> /
+<a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.idx}}</a> 
 
 {% endblock %}
 
@@ -93,9 +94,7 @@
                                 
                             {% endfor %}
 
-                            
-                                
-
+                                &nbsp;
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-2 control-label"></label>
                                     <div class="col-sm-10">
@@ -106,6 +105,8 @@
 
                                     </div>
                                 </div>
+                                &nbsp;
+
                             </form>     
             </div><!-- //close box content -->
           </div><!-- close 12 -->   

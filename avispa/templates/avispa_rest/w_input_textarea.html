@@ -2,7 +2,7 @@
                                     <label for="{{ field.FieldName }}" class="col-sm-2 control-label">{{ field.FieldName }}</label>
                                     <div class="col-sm-10">
 
-                                      <input type="text" class="form-control" id="{{ field.FieldName }}" placeholder="{{ field.Hint }}" name="{{ field.FieldName }}">
+                                      <textarea class="form-control" name="{{ field.FieldName }}" placeholder="Enter {{ field.FieldName }}" rows="6">{{ data.item[field.FieldName] }}</textarea>
 
                                     </div>
                                 </div>
