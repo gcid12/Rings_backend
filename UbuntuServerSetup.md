@@ -27,10 +27,13 @@ Before we start lets update our local update package
 # apt-get update
 ```
 
+#####VIM
+
 Install vim (Sysadmins will always need it)
 ```
 # apt-get install vim
 ```
+#####Nginx
 
 Now we install the web server Nginx
 ```
@@ -44,6 +47,7 @@ Welcome to nginx!
 If you see this page, the nginx web server is successfully installed and working. Further configuration is required.
 ```
 
+#####CouchDB
 Install CouchDB
 ```
 $ apt-get install couchdb
@@ -63,9 +67,31 @@ It should greet you with this message:
 ```
 Apache CouchDB has started. Time to relax.
 ```
+##### Imagemagick + Wand
+```
+apt-get install libmagickwand-dev
+```
+
+##### Virtualenv
+
+Install the virtualenv package:
+```
+$ apt-get install python-virtualenv
+```
+
+##### Git
+
+Install GIT package:
+```
+# apt-get install git
+```
 
 
-Now, create the directories where the application is going to live
+
+### Cloning MyRing Source Code
+
+
+Create the directories where the application is going to live
 ```
 $ mkdir /var/www
 $ mkdir /var/www/myring
@@ -76,23 +102,7 @@ Change the ownership to the group that will have access to it
 chown -R :deployteam /var/www/myring 
 ```
 
-Install the virtualenv package:
-```
-$ apt-get install python-virtualenv
-```
-
-
-
-### Installing MyRing Source Code
-
-
-First install GIT
-
-```
-# apt-get install git
-```
-
-We'll use the Machine-User methodology where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GITHUB.
+We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
 
 First check if there is any SSH Keys in that server already
 ```
