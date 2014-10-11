@@ -314,16 +314,17 @@ $ pbcopy < ~/.ssh/id_rsa.pub
 
 ####Add your SSH key to GitHub
 
-Log in to GitHub. You need to have access to the private Repository
+Log in to GitHub with you personal account. You need to have access to the private Repository
 
 1. In the user bar in the top-right corner of any page click on the settings icon (a small gear)
 2. Click 'SSH Keys' in the left sidebar
 3. Click 'Add SSH Key'
-4. In the Title field, write "RobotUser_<public_ip_address>"
+4. In the Title field, write "RobotUser-<public-ip-address>"
 5. Paste the ssh key into the "Key" field
 6. Click 'Add key'
 
 
+Please notice that this procedure will change greatly in the following subversions as RobotUsers will have their own GITHUB accounts. 
 
 
 
