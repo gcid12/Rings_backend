@@ -44,6 +44,27 @@ Welcome to nginx!
 If you see this page, the nginx web server is successfully installed and working. Further configuration is required.
 ```
 
+Install CouchDB
+```
+$ apt-get install couchdb
+```
+
+Open your /etc/couchdb/local.ini file and uncomment and change the line 'bind_address' to: 
+```
+bind_address = <public-ip-address>
+```
+
+Save that file and run
+```
+$ couchdb
+```
+
+It should greet you with this message:
+```
+Apache CouchDB has started. Time to relax.
+```
+
+
 Now, create the directories where the application is going to live
 ```
 $ mkdir /var/www
@@ -59,6 +80,7 @@ Install the virtualenv package:
 ```
 $ apt-get install python-virtualenv
 ```
+
 
 
 ### Installing MyRing Source Code
