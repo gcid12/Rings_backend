@@ -130,29 +130,10 @@ $ cd /var/www/myring
 $ virtualenv --no-site-packages --distribute .env && source .env/bin/activate && pip install -r requirements.txt
 ```
 
-To check for installation create hello.py file:
-```
-# vim hello.py
-```
-
-Press 'i' and start writing the following code:
-```
-from flask import Flask
-app = Flask(__name__)
-
-@app.route("/")
-def hello():
-    return "Hello World!"
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)
+To check for installation run installation_test.py :
 
 ```
-To save press "ESC" key and type ":wq" then ENTER
-
-Now execute hello.py
-```
-# python hello.py
+# python installation_test.py
 ```
 
 And enter the following address in your browser:
@@ -160,12 +141,9 @@ And enter the following address in your browser:
 http://<public_ip_address>:8080
 ```
 
-You should see a "Hello World" message. CTR+C in the terminal otherwise it will keep running. 
+You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
 
-Delete the installation test right after
-```
-rm /var/www/myring/hello.py
-```
+
 
 ### uWSGI
 
