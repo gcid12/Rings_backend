@@ -46,8 +46,8 @@ If you see this page, the nginx web server is successfully installed and working
 
 Now, create the directories where the application is going to live
 ```
-mkdir /var/www
-mkdir /var/www/myring
+$ mkdir /var/www
+$ mkdir /var/www/myring
 ```
 
 Change the ownership to the group that will have access to it
@@ -57,15 +57,77 @@ chown -R :deployteam /var/www/myring
 
 Install the virtualenv package:
 ```
-# apt-get install python-virtualenv
+$ apt-get install python-virtualenv
 ```
+
+
+### Installing MyRing Source Code
+
+
+First install GIT
+
+```
+# apt-get install git
+```
+
+We'll use the Machine-User methodology where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GITHUB.
+
+First check if there is any SSH Keys in that server already
+```
+$ ls -al ~/.ssh
+```
+Look for files name 'id_rsa.pub' or 'id_dsa.pub'. Since this is a new server there should not be any. 
+
+Generate a new SSH Key
+```
+$ ssh-keygen -t rsa -C "RobotUser_<public_ip_address>"
+```
+
+Then add your new key to the ssh-agent:
+```
+$ eval "$(ssh-agent -s)"
+$ ssh-add ~/.ssh/id_rsa
+```
+
+Please note that everytime you spawn any ssh -> git activity you'll have to be logged in as the current user
+
+You need to copy exactly as it is (no extra blankspaces) the contents of ~/.ssh/id_rsa.pub into your clipboard
+You'll paste them in Github
+
+Run this command and copy from your terminal using Command+c
+```
+cat  ~/.ssh/id_rsa.pub
+```
+
+Run the following command to paste the public key into your clipboard (or copy it manually)
+$ pbcopy < ~/.ssh/id_rsa.pub
+
+####Add your SSH key to GitHub
+
+Log in to GitHub with you personal account. You need to have access to the private Repository
+
+1. In the user bar in the top-right corner of any page click on the settings icon (a small gear)
+2. Click 'SSH Keys' in the left sidebar
+3. Click 'Add SSH Key'
+4. In the Title field, write "RobotUser-<public-ip-address>"
+5. Paste the ssh key into the "Key" field
+6. Click 'Add key'
+
+Please notice that this procedure will change greatly in the following subversions as RobotUsers will have their own GITHUB accounts. 
+
+
+#### Clone the Private Repository
+
+If everything was setup correctly you should be able to clone the Repository without a problem
+```
+$ git clone git@github.com:MyRing/avispa.git /var/www/myring
+```
+
 
 Create and activate a virtual environment, and install Flask into it:
 ```
-# cd /var/www/myring
-# virtualenv venv
-# . venv/bin/activate
-# pip install flask
+$ cd /var/www/myring
+$ virtualenv --no-site-packages --distribute .env && source .env/bin/activate && pip install -r requirements.txt
 ```
 
 To check for installation create hello.py file:
@@ -99,6 +161,11 @@ http://<public_ip_address>:8080
 ```
 
 You should see a "Hello World" message. CTR+C in the terminal otherwise it will keep running. 
+
+Delete the installation test right after
+```
+rm /var/www/myring/hello.py
+```
 
 ### uWSGI
 
@@ -271,68 +338,7 @@ As a result, all static files located at /var/www/myring/static will be served b
 
 
 
-### Installing MyRing
 
-
-First install GIT
-
-```
-# apt-get install git
-```
-
-We'll use the Machine-User methodology where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GITHUB.
-
-First check if there is any SSH Keys in that server already
-```
-$ ls -al ~/.ssh
-```
-Look for files name 'id_rsa.pub' or 'id_dsa.pub'. Since this is a new server there should not be any. 
-
-Generate a new SSH Key
-```
-$ ssh-keygen -t rsa -C "RobotUser_<public_ip_address>"
-```
-
-Then add your new key to the ssh-agent:
-```
-$ eval "$(ssh-agent -s)"
-$ ssh-add ~/.ssh/id_rsa
-```
-
-Please note that everytime you spawn any ssh -> git activity you'll have to be logged in as the current user
-
-You need to copy exactly as it is (no extra blankspaces) the contents of ~/.ssh/id_rsa.pub into your clipboard
-You'll paste them in Github
-
-Run this command and copy from your terminal using Command+c
-```
-cat  ~/.ssh/id_rsa.pub
-```
-
-Run the following command to paste the public key into your clipboard (or copy it manually)
-$ pbcopy < ~/.ssh/id_rsa.pub
-
-####Add your SSH key to GitHub
-
-Log in to GitHub with you personal account. You need to have access to the private Repository
-
-1. In the user bar in the top-right corner of any page click on the settings icon (a small gear)
-2. Click 'SSH Keys' in the left sidebar
-3. Click 'Add SSH Key'
-4. In the Title field, write "RobotUser-<public-ip-address>"
-5. Paste the ssh key into the "Key" field
-6. Click 'Add key'
-
-
-Please notice that this procedure will change greatly in the following subversions as RobotUsers will have their own GITHUB accounts. 
-
-
-
-
-Then clone the repository from the source code
-```
-# git clone git@github.com:MyRing/avispa.git /var/www/myring/avispa
-```
 
 
 
