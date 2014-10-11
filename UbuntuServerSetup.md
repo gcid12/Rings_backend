@@ -98,7 +98,123 @@ And enter the following address in your browser:
 http://<public_ip_address>:8080
 ```
 
-You should see a "Hello World" message
+You should see a "Hello World" message. CTR+C in the terminal otherwise it will keep running. 
+
+### uWSGI
+
+We need uWSGI to server dynamic content in production. 
+
+Install the compilers and tools first
+
+```
+# apt-get install build-essential python python-dev
+```
+
+Now install uWSGI
+```
+# pip install uwsgi
+```
+
+#### Configuring Nginx
+
+Remove Nginx's default site configuration
+```
+# rm /etc/nginx/sites-enabled/default
+```
+
+Create a new configuration file for MyRing application
+```
+vim /var/www/myring/myring_nginx.conf
+```
+And put this inside:
+```
+server {
+    listen      80;
+    server_name localhost;
+    charset     utf-8;
+    client_max_body_size 75M;
+
+    location / { try_files $uri @yourapplication; }
+    location @yourapplication {
+        include uwsgi_params;
+        uwsgi_pass unix:/var/www/myring/myring_uwsgi.sock;
+    }
+}
+```
+
+Symlink the new file to nginx's configuration directory and restart nginx
+```
+# ln -s /var/www/myring/myring_nginx.conf /etc/nginx/conf.d/
+```
+
+Now restart the server 
+```
+# /etc/init.d/nginx restart
+```
+
+And go to the following address in your browser
+```
+http://<public_ip_address>
+```
+
+It should return a 502 Bad Gateway error.Not bad, this means Nginx is already using myring_nginx.conf
+The problem is that myring_uwsgi.sock doesn't exist yet. Let's create it
+```
+vim /var/www/myring/myring_uwsgi.ini
+```
+
+Write this in the file:
+```
+[uwsgi]
+#application's base folder
+base = /var/www/myring
+
+#python module to import
+app = hello
+module = %(app)
+
+home = %(base)/venv
+pythonpath = %(base)
+
+#socket file's location
+socket = /var/www/myring/%n.sock
+
+#permissions for the socket file
+chmod-socket    = 666
+
+#the variable that holds a flask application inside the module imported at line #6
+callable = app
+
+#location of log files
+logto = /var/log/uwsgi/%n.log
+```
+
+Now create a new directory for uwsgi log files
+```
+mkdir -p /var/log/uwsgi
+```
+And make it available to the deployment team
+```
+chown -R :deployteam /var/log/uwsgi
+```
+
+Execute uWSGI and pass it the newly created configuration file
+```
+uwsgi --ini /var/www/myring/myring_uwsgi.ini
+```
+The Terminal will stay idle. That is ok. It means it is serving pages.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
