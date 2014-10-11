@@ -220,7 +220,7 @@ start on runlevel [2345]
 stop on runlevel [06]
 respawn
 
-env UWSGI=/var/www/demoapp/venv/bin/uwsgi
+env UWSGI=/var/www/myring/venv/bin/uwsgi
 env LOGTO=/var/log/uwsgi/emperor.log
 
 exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
@@ -237,8 +237,8 @@ This script will look for the config files in /etc/uwsgi/vassals folder. Create 
 Also, the last line states that the user that will be used to execute the daemon is 'www-data'.
 For simplicity's sake, let's set him as the owner of the application and log folders
 ```
-#chown -R www-data:www-data /var/www/myring/
-#chown -R www-data:www-data /var/log/uwsgi/
+# chown -R www-data:www-data /var/www/myring/
+# chown -R www-data:www-data /var/log/uwsgi/
 ```
 
 Since both, nginx and uWSGI, are now being run by the same user, we can make a security improvement to our uWSGI configuration. Open up the uwsgi config file (myring_uwsgi.ini) and change the value of chmod-socket from 666 to 644:
