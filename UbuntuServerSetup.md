@@ -130,6 +130,19 @@ $ cd /var/www/myring
 $ virtualenv --no-site-packages --distribute .env && source .env/bin/activate && pip install -r requirements.txt
 ```
 
+You'll have to test if all the modules where installed correctly. Run this for complete list:
+```
+$ cat requirements.txt
+```
+And this
+```
+$ pip freeze
+```
+For what what installed. Verify that all the items in requirements.txt show in pip freeze. If they don't you'll have to manually install what is missing
+```
+pip install <missing-module>
+```
+
 To check for installation run installation_test.py :
 
 ```
