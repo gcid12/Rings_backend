@@ -203,6 +203,75 @@ Execute uWSGI and pass it the newly created configuration file
 uwsgi --ini /var/www/myring/myring_uwsgi.ini
 ```
 The Terminal will stay idle. That is ok. It means it is serving pages.
+That is ok but if you close that terminal window the process will stop. 
+We will use uWSGI Emperor to run uWSGI as a background service.
+
+uWSGI Emperor is responsible for reading config files and spawning uWSGI processes to execute them.
+
+Create a new upstart configuration file to execute emperor
+
+```
+vim /etc/init/uwsgi.conf
+```
+And write the following in the file:
+```
+description "uWSGI"
+start on runlevel [2345]
+stop on runlevel [06]
+respawn
+
+env UWSGI=/var/www/demoapp/venv/bin/uwsgi
+env LOGTO=/var/log/uwsgi/emperor.log
+
+exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
+
+```
+
+This script will look for the config files in /etc/uwsgi/vassals folder. Create it and symlink it
+```
+# mkdir /etc/uwsgi
+# mkdir /etc/uwsgi/vassals
+# ln -s /var/www/myring/myring_uwsgi.ini /etc/uwsgi/vassals
+```
+
+Also, the last line states that the user that will be used to execute the daemon is 'www-data'.
+For simplicity's sake, let's set him as the owner of the application and log folders
+```
+#chown -R www-data:www-data /var/www/myring/
+#chown -R www-data:www-data /var/log/uwsgi/
+```
+
+Since both, nginx and uWSGI, are now being run by the same user, we can make a security improvement to our uWSGI configuration. Open up the uwsgi config file (myring_uwsgi.ini) and change the value of chmod-socket from 666 to 644:
+```
+...
+#permissions for the socket file
+chmod-socket = 644
+```
+
+Now we can start the uWSGI job
+```
+# start uwsgi
+```
+
+####Troubleshooting
+
+If something goes wrong, the first place to check is the log files. By default, nginx writes error message to the file /var/log/nginx/errors.log.
+
+We’ve configured uWSGI emperor to write it’s logs to /var/log/uwsgi/emperor.log. Also this folder contains separate log files for each configured application. In our case - /var/log/uwsgi/demoapp_uwsgi.log.
+
+#### Static Files
+
+Add the following rule to serve the Static files from myring
+```
+location /static {
+    root /var/www/myring/;
+}
+```
+As a result, all static files located at /var/www/myring/static will be served by Nginx.
+
+
+
+
 
 
 
