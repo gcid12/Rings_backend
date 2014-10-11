@@ -271,29 +271,66 @@ As a result, all static files located at /var/www/myring/static will be served b
 
 
 
+### Installing MyRing
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Then GIT
+First install GIT
 
 ```
 # apt-get install git
+```
+
+We'll use the Machine-User methodology where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GITHUB.
+
+First check if there is any SSH Keys in that server already
+```
+$ ls -al ~/.ssh
+```
+Look for files name 'id_rsa.pub' or 'id_dsa.pub'. Since this is a new server there should not be any. 
+
+Generate a new SSH Key
+```
+$ ssh-keygen -t rsa -C "RobotUser_<public_ip_address>"
+```
+
+Then add your new key to the ssh-agent:
+```
+$ eval "$(ssh-agent -s)"
+$ ssh-add ~/.ssh/id_rsa
+```
+
+Please note that everytime you spawn any ssh -> git activity you'll have to be logged in as the current user
+
+You need to copy exactly as it is (no extra blankspaces) the contents of ~/.ssh/id_rsa.pub into your clipboard
+You'll paste them in Github
+
+Run this command and copy from your terminal using Command+c
+```
+cat  ~/.ssh/id_rsa.pub
+```
+
+Run the following command to paste the public key into your clipboard (or copy it manually)
+$ pbcopy < ~/.ssh/id_rsa.pub
+
+####Add your SSH key to GitHub
+
+Log in to GitHub. You need to have access to the private Repository
+
+1. In the user bar in the top-right corner of any page click on the settings icon (a small gear)
+2. Click 'SSH Keys' in the left sidebar
+3. Click 'Add SSH Key'
+4. In the Title field, write "RobotUser_<public_ip_address>"
+5. Paste the ssh key into the "Key" field
+6. Click 'Add key'
+
+
+
+
+
+
+Then clone the repository from the source code
+```
+# git clone git@github.com:MyRing/avispa.git /var/www/myring/avispa
 ```
 
 
