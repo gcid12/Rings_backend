@@ -175,7 +175,7 @@ For what what installed. Verify that all the items in requirements.txt show in p
 pip install <missing-module>
 ```
 
-To check for installation run installation_test.py :
+To check the installation run installation_test.py :
 
 ```
 # python installation_test.py
@@ -185,8 +185,18 @@ And enter the following address in your browser:
 ```
 http://<public_ip_address>:8080
 ```
-
 You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
+
+Now it is time to test myring
+```
+$ python run.py
+```
+
+Reload your browser:
+```
+http://<public_ip_address>:8080
+```
+
 
 
 
