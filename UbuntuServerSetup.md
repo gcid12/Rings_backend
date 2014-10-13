@@ -86,6 +86,12 @@ Install GIT package:
 # apt-get install git
 ```
 
+##### Htpasswd
+Install the Apache2-utils package:
+```
+apt-get install apache2-utils
+```
+
 
 
 ### Cloning MyRing Source Code
@@ -187,17 +193,6 @@ http://<public_ip_address>:8080
 ```
 You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
 
-Now it is time to test myring
-```
-$ python run.py
-```
-
-Reload your browser:
-```
-http://<public_ip_address>:8080
-```
-
-
 
 
 ### uWSGI
@@ -222,27 +217,7 @@ Remove Nginx's default site configuration
 # rm /etc/nginx/sites-enabled/default
 ```
 
-Create a new configuration file for MyRing application
-```
-vim /var/www/myring/myring_nginx.conf
-```
-And put this inside:
-```
-server {
-    listen      80;
-    server_name localhost;
-    charset     utf-8;
-    client_max_body_size 75M;
-
-    location / { try_files $uri @yourapplication; }
-    location @yourapplication {
-        include uwsgi_params;
-        uwsgi_pass unix:/var/www/myring/myring_uwsgi.sock;
-    }
-}
-```
-
-Symlink the new file to nginx's configuration directory and restart nginx
+Symlink myring_nginx.conf to nginx's configuration directory and restart nginx
 ```
 # ln -s /var/www/myring/myring_nginx.conf /etc/nginx/conf.d/
 ```
@@ -257,20 +232,20 @@ And go to the following address in your browser
 http://<public_ip_address>
 ```
 
-It should return a 502 Bad Gateway error.Not bad, this means Nginx is already using myring_nginx.conf
-The problem is that myring_uwsgi.sock doesn't exist yet. Let's create it
+It should return a 502 Bad Gateway error. Not bad, this means Nginx is already using myring_nginx.conf
+The problem is that myring_uwsgi.sock doesn't exist yet. Create this file if it doesn't exist.
 ```
 vim /var/www/myring/myring_uwsgi.ini
 ```
 
-Write this in the file:
+Write the following in the file:
 ```
 [uwsgi]
 #application's base folder
 base = /var/www/myring
 
 #python module to import
-app = hello
+app = run
 module = %(app)
 
 home = %(base)/venv
@@ -355,7 +330,7 @@ Now we can start the uWSGI job
 
 ####Troubleshooting
 
-If something goes wrong, the first place to check is the log files. By default, nginx writes error message to the file /var/log/nginx/errors.log.
+If something goes wrong, the first place to check is the log files. By default, nginx writes error message to the file /var/log/nginx/error.log
 
 We’ve configured uWSGI emperor to write it’s logs to /var/log/uwsgi/emperor.log. Also this folder contains separate log files for each configured application. In our case - /var/log/uwsgi/demoapp_uwsgi.log.
 
