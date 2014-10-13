@@ -273,6 +273,14 @@ And make it available to the deployment team
 chown -R :deployteam /var/log/uwsgi
 ```
 
+Also, you'll need to setup the credentials for the code to work. These are not included in the source code. 
+```
+$ export MYRING_CSRF_SESSION_KEY='<any-key>'
+$ export MYRING_SECRET_KEY='<password-for-that-key>'
+$ export MYRING_COUCH_DB_USER='<couch-db-robot-user>'
+$ export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
+```
+
 Execute uWSGI and pass it the newly created configuration file
 ```
 uwsgi --ini /var/www/myring/myring_uwsgi.ini
