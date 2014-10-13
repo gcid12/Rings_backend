@@ -60,12 +60,13 @@ bind_address = <public-ip-address>
 
 Save that file and run
 ```
-$ couchdb
+$ couchdb -b
+$ couchdb -s
 ```
 
 It should greet you with this message:
 ```
-Apache CouchDB has started. Time to relax.
+Apache CouchDB is running as process xxxx, time to relax.
 ```
 
 There are two more things we need to do with CouchDB. First run in your browser:
@@ -370,6 +371,35 @@ location /static {
 }
 ```
 As a result, all static files located at /var/www/myring/static will be served by Nginx.
+
+#### Sometimes you need to turn on and off a service:
+
+Couchdb
+```
+$ couchdb -k
+$ couchdb -b
+```
+Nginx 
+```
+$ /etc/init.d/nginx stop
+$ /etc/init.d/nginx start
+```
+
+uWSGI
+```
+$ stop  uwsgi
+$ start uwsgi
+```
+
+#### Hard Restarting the Machine
+In case you need to restart the server you'll have to restart all the services. Run the following commands:
+```
+$ couchdb -b
+$ /etc/init.d/nginx start
+$ start uwsgi 
+```
+
+
 
 
 
