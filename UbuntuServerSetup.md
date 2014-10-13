@@ -67,6 +67,19 @@ It should greet you with this message:
 ```
 Apache CouchDB has started. Time to relax.
 ```
+
+There are two more things we need to do with CouchDB. First run in your browser:
+```
+http://<public-ip-address>/_utils/verify_install.html
+```
+It should respond: "Your installation looks fine. Time to Relax."
+
+Now assign the CouchDB user your code. Go to:
+```
+http://<public-ip-address>/_utils
+```
+You'll see in the lower-right corner a message like : 'Welcome to Admin Party, fix this' . Click on it and a pop-up window will appear asking you for a username and a password. Assign them. You'll use them later in this configuration as *couch-db_admin-robot-user* and *couch-db-password-for-robot-user*
+
 ##### Imagemagick + Wand
 ```
 apt-get install libmagickwand-dev
