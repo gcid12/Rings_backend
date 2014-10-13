@@ -356,6 +356,12 @@ Now we can start the uWSGI job
 # start uwsgi
 ```
 
+One more thing. Since it is not good to have access to the database via a public address. Open /etc/couchdb/local.ini file and comment out the line 'bind_address' : 
+```
+#bind_address = <public-ip-address>
+```
+
+
 ####Troubleshooting
 
 If something goes wrong, the first place to check is the log files. 
