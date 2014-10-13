@@ -146,7 +146,7 @@ $ git clone <SSH_CLONE_URL_OF_THE_INSECT_YOU_ARE_CLONING>
 Install CouchDB in your computer
 
 ```
-pip install couchdbkit
+pip install couchdb
 ```
 
 If you run 
@@ -159,7 +159,7 @@ You should see something like this
 
 ```
 argparse==1.2.1
-couchdbkit==0.6.5
+CouchDB==0.10
 http-parser==0.8.3
 restkit==4.2.2
 socketpool==0.5.3
