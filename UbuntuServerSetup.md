@@ -358,9 +358,38 @@ Now we can start the uWSGI job
 
 ####Troubleshooting
 
-If something goes wrong, the first place to check is the log files. By default, nginx writes error message to the file /var/log/nginx/error.log
+If something goes wrong, the first place to check is the log files. 
 
-We’ve configured uWSGI emperor to write it’s logs to /var/log/uwsgi/emperor.log. Also this folder contains separate log files for each configured application. In our case - /var/log/uwsgi/demoapp_uwsgi.log.
+#####CouchDB
+```
+tail /var/log/couchdb/couch.log
+```
+
+#####Nginx 
+
+http access logs 
+```
+tail /var/log/nginx/access.log
+```
+http error logs 
+```
+tail /var/log/nginx/error.log
+```
+
+#####Emperor
+
+To see if the uWSGI process was spawned correctly
+```
+tail /var/log/uwsgi/emperor.log
+```
+
+#####uWSGI
+To see the all the dynamic content activity including the python print() and python error traces
+```
+tail /var/log/uwsgi/myring_uwsgi.log
+```
+
+
 
 #### Static Files
 
