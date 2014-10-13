@@ -275,9 +275,9 @@ chown -R :deployteam /var/log/uwsgi
 
 Also, you'll need to setup the credentials for the code to work. These are not included in the source code. 
 ```
-$ export MYRING_CSRF_SESSION_KEY='<any-key>'
+$ export MYRING_CSRF_SESSION_KEY='<unique-key>'
 $ export MYRING_SECRET_KEY='<password-for-that-key>'
-$ export MYRING_COUCH_DB_USER='<couch-db-robot-user>'
+$ export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
 $ export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
 ```
 
@@ -288,6 +288,8 @@ uwsgi --ini /var/www/myring/myring_uwsgi.ini
 The Terminal will stay idle. That is ok. It means it is serving pages.
 That is ok but if you close that terminal window the process will stop. 
 We will use uWSGI Emperor to run uWSGI as a background service.
+
+##### uWSGI Emperor
 
 uWSGI Emperor is responsible for reading config files and spawning uWSGI processes to execute them.
 
@@ -305,6 +307,10 @@ respawn
 
 env UWSGI=/var/www/myring/venv/bin/uwsgi
 env LOGTO=/var/log/uwsgi/emperor.log
+env MYRING_CSRF_SESSION_KEY='<unique-key>'
+env MYRING_SECRET_KEY='<password-for-that-key>'
+env MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
+env MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
 
 exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
 
