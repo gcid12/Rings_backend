@@ -327,10 +327,10 @@ respawn
 env UWSGI=/var/www/myring/venv/bin/uwsgi
 env LOGTO=/var/log/uwsgi/emperor.log
 env MYRING_CSRF_SESSION_KEY='<unique-key>'
-env MYRING_SECRET_KEY='<password-for-that-key>'
-env MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
-env MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
-env MYRING_IMAGE_FOLDER='<folder-to-upload-images>'
+export MYRING_SECRET_KEY='<password-for-that-key>'
+export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
+export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
+export MYRING_IMAGE_FOLDER='<folder-to-upload-images>'
 
 exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
 
