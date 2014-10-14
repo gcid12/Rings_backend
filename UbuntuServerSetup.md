@@ -327,10 +327,6 @@ respawn
 env UWSGI=/var/www/myring/venv/bin/uwsgi
 env LOGTO=/var/log/uwsgi/emperor.log
 env MYRING_CSRF_SESSION_KEY='<unique-key>'
-export MYRING_SECRET_KEY='<password-for-that-key>'
-export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
-export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
-export MYRING_IMAGE_FOLDER='<folder-to-upload-images>'
 
 exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
 
@@ -358,9 +354,25 @@ Since both, nginx and uWSGI, are now being run by the same user, we can make a s
 chmod-socket = 644
 ```
 
+Create the MyRing start/reset file
+```
+vim /var/www/myringstart.sh
+```
+
+Paste the following in the file
+```
+stop uwsgi
+export MYRING_CSRF_SESSION_KEY='<unique-key>'
+export MYRING_SECRET_KEY='<password-for-that-key>'
+export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
+export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
+export MYRING_IMAGE_FOLDER='/var/imagestore'
+start uwsgi
+```
+
 Now we can start the uWSGI job
 ```
-# start uwsgi
+# source /var/www/myringstart.sh
 ```
 
 One more thing. Since it is not good to have access to the database via a public address. Open /etc/couchdb/local.ini file and comment out the line 'bind_address' : 
