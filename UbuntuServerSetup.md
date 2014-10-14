@@ -115,11 +115,15 @@ Create the directories where the application is going to live
 ```
 $ mkdir /var/www
 $ mkdir /var/www/myring
+$ mkdir /var/www/imagestore
 ```
+
+
 
 Change the ownership to the group that will have access to it
 ```
 chown -R :deployteam /var/www/myring 
+chown -R :deployteam /var/www/myring/imagestore
 ```
 
 We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
@@ -206,6 +210,7 @@ And enter the following address in your browser:
 http://<public_ip_address>:8080
 ```
 You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
+
 
 
 
@@ -325,6 +330,7 @@ env MYRING_CSRF_SESSION_KEY='<unique-key>'
 env MYRING_SECRET_KEY='<password-for-that-key>'
 env MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
 env MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
+env MYRING_IMAGE_FOLDER='<folder-to-upload-images>'
 
 exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
 
@@ -341,6 +347,7 @@ Also, the last line states that the user that will be used to execute the daemon
 For simplicity's sake, let's set him as the owner of the application and log folders
 ```
 # chown -R www-data:www-data /var/www/myring/
+# chown -R www-data:www-data /var/www/imagestore/
 # chown -R www-data:www-data /var/log/uwsgi/
 ```
 
@@ -409,6 +416,12 @@ As a result, all static files located at /var/www/myring/static will be served b
 
 #### Sometimes you need to turn on and off a service:
 
+Virtual Environment
+```
+$ deactivate
+$ source /var/www/myring/venv/bin/activate
+```
+
 Couchdb
 ```
 $ couchdb -k
@@ -427,8 +440,9 @@ $ start uwsgi
 ```
 
 #### Hard Restarting the Machine
-In case you need to restart the server you'll have to restart all the services. Run the following commands:
+In case you need to restart the server you'll have to restart the virtual environment and all the services. Run the following commands:
 ```
+$ source /var/www/myring/venv/bin/activate
 $ couchdb -b
 $ /etc/init.d/nginx start
 $ start uwsgi 
