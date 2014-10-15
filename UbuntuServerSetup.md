@@ -240,6 +240,7 @@ Symlink myring_nginx.conf to nginx's configuration directory and restart nginx
 ```
 # ln -s /var/www/myring/myring_nginx.conf /etc/nginx/conf.d/
 ```
+IMPORTANT: Check that there is no other file in /etc/nginx/conf.d . That would cause a "502 Bad Gateway" error
 
 Now restart the server 
 ```
