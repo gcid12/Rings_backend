@@ -40,6 +40,17 @@ Now we install the web server Nginx
 # apt-get install nginx
 ```
 
+####uWSGI
+Install uWSGI
+```
+# apt-get install uwsgi
+```
+
+####Python Dev
+```
+# apt-get install python-dev
+```
+
 #####CouchDB
 Install CouchDB
 ```
@@ -188,7 +199,7 @@ $ git clone git@github.com:MyRing/avispa.git /var/www/myring
 Create and activate a virtual environment, and install Flask into it:
 ```
 $ cd /var/www/myring
-$ virtualenv --no-site-packages --distribute .env && source .env/bin/activate && pip install -r requirements.txt
+$ virtualenv --no-site-packages --distribute venv && source venv/bin/activate && pip install -r requirements.txt
 ```
 
 You'll have to test if all the modules where installed correctly. Run this for complete list:
@@ -270,8 +281,8 @@ Write the following in the file:
 base = /var/www/myring
 
 #python module to import
-app = run
-module = %(app)
+avispa = run
+module = %(avispa)
 
 home = %(base)/venv
 pythonpath = %(base)
@@ -283,7 +294,7 @@ socket = /var/www/myring/%n.sock
 chmod-socket    = 666
 
 #the variable that holds a flask application inside the module imported at line #6
-callable = app
+callable = avispa
 
 #location of log files
 logto = /var/log/uwsgi/%n.log
@@ -300,10 +311,10 @@ chown -R :deployteam /var/log/uwsgi
 
 Also, you'll need to setup the credentials for the code to work. These are not included in the source code. 
 ```
-$ export MYRING_CSRF_SESSION_KEY='<unique-key>'
-$ export MYRING_SECRET_KEY='<password-for-that-key>'
-$ export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
-$ export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
+export MYRING_CSRF_SESSION_KEY='<unique-key>'
+export MYRING_SECRET_KEY='<password-for-that-key>'
+export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
+export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
 ```
 
 Execute uWSGI and pass it the newly created configuration file
