@@ -40,46 +40,12 @@ Now we install the web server Nginx
 # apt-get install nginx
 ```
 
-Check that the web-server has been installed correctly. Just type the <public_ip_address> in your browser. YOu should be greeted by Nginx with a meesage like this:
-
-```
-Welcome to nginx!
-If you see this page, the nginx web server is successfully installed and working. Further configuration is required.
-```
-
 #####CouchDB
 Install CouchDB
 ```
 $ apt-get install couchdb
 ```
 
-Open your /etc/couchdb/local.ini file and uncomment and change the line 'bind_address' to: 
-```
-bind_address = <public-ip-address>
-```
-
-Save that file and run
-```
-$ couchdb -b
-$ couchdb -s
-```
-
-It should greet you with this message:
-```
-Apache CouchDB is running as process xxxx, time to relax.
-```
-
-There are two more things we need to do with CouchDB. First run in your browser:
-```
-http://<public-ip-address>/_utils/verify_install.html
-```
-It should respond: "Your installation looks fine. Time to Relax."
-
-Now assign the CouchDB user your code. Go to:
-```
-http://<public-ip-address>/_utils
-```
-You'll see in the lower-right corner a message like : 'Welcome to Admin Party, fix this' . Click on it and a pop-up window will appear asking you for a username and a password. Assign them. You'll use them later in this configuration as *couch-db_admin-robot-user* and *couch-db-password-for-robot-user*
 
 ##### Imagemagick + Wand
 ```
@@ -106,6 +72,45 @@ Install the Apache2-utils package:
 apt-get install apache2-utils
 ```
 
+### Verifying installations
+
+Check that the web-server has been installed correctly. Just type the public ip address in your browser. You should be greeted by Nginx with a meesage like this:
+
+```
+Welcome to nginx!
+If you see this page, the nginx web server is successfully installed and working. Further configuration is required.
+```
+
+### Configuring CouchDB
+
+Open your /etc/couchdb/local.ini file and uncomment and change the line 'bind_address' to: 
+```
+bind_address = <public-ip-address>
+```
+
+Save that file and run
+```
+$ couchdb -b
+$ couchdb -s
+```
+
+It should greet you with this message:
+```
+Apache CouchDB is running as process xxxx, time to relax.
+```
+
+There are two more things we need to do with CouchDB. First run in your browser:
+```
+http://<public-ip-address>/_utils/verify_install.html
+```
+And click on "Verify your installation" It should respond: "Your installation looks fine. Time to Relax."
+
+Now assign  CouchDB robot-user. Go to:
+```
+http://<public-ip-address>/_utils
+```
+You'll see in the lower-right corner a message like : 'Welcome to Admin Party, fix this' . Click on it and a pop-up window will appear asking you for a username and a password. Assign them. You'll use them later in this configuration as *couch-db_admin-robot-user* and *couch-db-password-for-robot-user*
+
 
 
 ### Cloning MyRing Source Code
@@ -128,7 +133,7 @@ chown -R :deployteam /var/www/myring/imagestore
 
 We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
 
-First check if there is any SSH Keys in that server already
+First check if there are any SSH Keys in that server already
 ```
 $ ls -al ~/.ssh
 ```
