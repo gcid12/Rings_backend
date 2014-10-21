@@ -17,10 +17,11 @@ CSRF_ENABLED = True
 
 # Use a secure, unique and absolutely secret key for
 # signing the data.
-CSRF_SESSION_KEY = os.environ['MYRING_CSRF_SESSION_KEY']
+#CSRF_SESSION_KEY = os.environ['MYRING_CSRF_SESSION_KEY']
+CSRF_SESSION_KEY = ''
 
 # Secret key for signing cookies
-SECRET_KEY = os.environ['MYRING_SECRET_KEY']
-
+#SECRET_KEY = os.environ['MYRING_SECRET_KEY']
+SECRET_KEY = ''
 
 
