@@ -6,6 +6,7 @@ import sys
 import traceback
 from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
+from couchdb.design import ViewDefinition
 from AvispaCouchDB import AvispaCouchDB
 from MyRingUser import MyRingUser
 from MyRingBlueprint import MyRingBlueprint
@@ -129,12 +130,39 @@ class AvispaModel:
 
             return False
 
-    def ring_set_db_views(self,db_ringname):
+    def x_ring_set_db_views(self,db_ringname): 
+    #Implemented as indicated here: http://markhaase.com/2012/06/23/couchdb-views-in-python/
+    #Deprecated. Only useful if view function are in python. 
+    #Python + CouchDB very poor and complicated as of now. 
+    #I rather use JS in the meantime
+
 
         db = self.couch[db_ringname]
 
         CVS = CouchViewSync()
         return CVS.set_db_views(db)
+
+    def ring_set_db_views(self,db_ringname):
+
+        db = self.couch[db_ringname]
+
+        
+        view = ViewDefinition('avispa', 'get_a_b', 
+               '''
+                  function(doc) {
+                     if(doc.items) {
+                        emit(doc._id, doc.items[0])
+    
+                     }
+                  }
+               ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+        return True
+
+        
 
 
 

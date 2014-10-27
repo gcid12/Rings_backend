@@ -10,6 +10,6 @@ class AvispaCouchDB:
         couch = couchdb.Server()
         # couch.resource.credentials = (os.environ['MYRING_COUCH_DB_USER'], 
         #	                          os.environ['MYRING_COUCH_DB_PASS'])
-        #couch.resource.credentials = (u'robotuser',u'happy123')
+        couch.resource.credentials = (u'admin',u'happy123')
         #print couch.resource.credentials
         return couch 

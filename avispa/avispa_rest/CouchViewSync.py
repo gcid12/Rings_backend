@@ -42,3 +42,4 @@ class CouchViewSync:
 
 
         couchdb.design.ViewDefinition.sync_many(db, couch_views, remove_missing=True)
+        
