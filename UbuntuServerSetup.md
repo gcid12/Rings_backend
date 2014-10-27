@@ -351,20 +351,20 @@ exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data -
 
 This script will look for the config files in /etc/uwsgi/vassals folder. Create it and symlink it
 ```
-# mkdir /etc/uwsgi
-# mkdir /etc/uwsgi/vassals
-# ln -s /var/www/myring/myring_uwsgi.ini /etc/uwsgi/vassals
+ mkdir /etc/uwsgi
+ mkdir /etc/uwsgi/vassals
+ ln -s /var/www/myring/myring_uwsgi.ini /etc/uwsgi/vassals
 ```
 
 Also, the last line states that the user that will be used to execute the daemon is 'www-data'.
 For simplicity's sake, let's set him as the owner of the application and log folders
 ```
-# chown -R www-data:www-data /var/www/myring/
-# chown -R www-data:www-data /var/www/imagestore/
-# chown -R www-data:www-data /var/log/uwsgi/
+ chown -R www-data:www-data /var/www/myring/
+ chown -R www-data:www-data /var/www/imagestore/
+ chown -R www-data:www-data /var/log/uwsgi/
 ```
 
-Since both, nginx and uWSGI, are now being run by the same user, we can make a security improvement to our uWSGI configuration. Open up the uwsgi config file (myring_uwsgi.ini) and change the value of chmod-socket from 666 to 644:
+Since both, nginx and uWSGI, are now being run by the same user, we can make a security improvement to our uWSGI configuration. Open up the uwsgi config file (/var/www/myring/myring_uwsgi.ini) and change the value of chmod-socket from 666 to 644:
 ```
 ...
 #permissions for the socket file
@@ -378,12 +378,18 @@ vim /var/www/myringstart.sh
 
 Paste the following in the file
 ```
+/etc/init.d/nginx stop
+couchdb -k
+deactivate
+source /var/www/myring/venv/bin/activate
 stop uwsgi
-export MYRING_CSRF_SESSION_KEY='<unique-key>'
-export MYRING_SECRET_KEY='<password-for-that-key>'
-export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
-export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
+export MYRING_CSRF_SESSION_KEY=''
+export MYRING_SECRET_KEY=''
+export MYRING_COUCH_DB_USER=''
+export MYRING_COUCH_DB_PASS=''
 export MYRING_IMAGE_FOLDER='/var/imagestore'
+/etc/init.d/nginx start
+couchdb -b
 start uwsgi
 ```
 
