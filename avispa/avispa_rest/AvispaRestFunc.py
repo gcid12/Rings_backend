@@ -250,7 +250,12 @@ class AvispaRestFunc:
     
     #DELETE /a/b
     def delete_a_b(self,request,handle,ring,*args):
-    	d = {'message': 'Using delete_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
+
+        part=ring.split('_')
+        ringname = part[0]
+        ringversion = part[-1]
+        result = self.avispamodel.user_delete_ring(handle,ringname,ringversion)
+    	d = {'message': result , 'template':'avispa_rest/index.html'}
         return d
 
     def delete_rq_a_b(self,request,handle,ring,*args):

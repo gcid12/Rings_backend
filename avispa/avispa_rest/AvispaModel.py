@@ -86,13 +86,14 @@ class AvispaModel:
             
 
             for ring in rings:
-                ringname = str(ring['ringname'])+'_'+str(ring['version']) 
-                count = ring['count']
+                if not 'deleted' in ring:
+                    ringname = str(ring['ringname'])+'_'+str(ring['version']) 
+                    count = ring['count']
                 
-                db = self.couch[str(handle)+'_'+ringname]
-                RingDescription = db['blueprint']['rings'][0]['RingDescription']
-                r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
-                data.append(r)
+                    db = self.couch[str(handle)+'_'+ringname]
+                    RingDescription = db['blueprint']['rings'][0]['RingDescription']
+                    r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
+                    data.append(r)
 
         except:
 
@@ -173,8 +174,25 @@ class AvispaModel:
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
         doc.store(db)
 
-
         return True
+
+    def user_delete_ring(self,handle,ringname,ringversion):
+
+        db = self.couch[self.user_database]
+        doc =  MyRingUser.load(db, handle)
+        rings = doc['rings']
+        for ring in rings:
+            if ring['ringname']==ringname and ring['version']==ringversion:
+                print()
+                ring['deleted']=True
+                
+
+        if doc.store(db):
+            msg = ringname +'_'+ringversion+' ring Deleted!'
+        #doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
+        #doc.store(db)
+        
+        return msg
 
     def ring_get_blueprint(self,handle,ringname):
 
