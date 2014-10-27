@@ -124,7 +124,7 @@ class AvispaRestFunc:
 
         itemlist = []
         for item in preitemlist:
-            if item['Images']:
+            if 'Images' in item:
                 images=item['Images'].split(',')
                 item['Images']=images
             itemlist.append(item)
