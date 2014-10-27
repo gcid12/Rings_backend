@@ -25,6 +25,8 @@ class MyRingTool:
         data['lastname'] = 'admin last name'
         data['firstname'] = 'admin last name'
         data['passhash'] = 'adminpass'
+        data['guid'] = 'adminguid'
+        data['salt'] = 'adminsalt'
 
 
         #user = 'admin' #This is just the first user that is installed on a vanilla MyRing
@@ -95,7 +97,7 @@ class MyRingTool:
             msg = ''
 
             if self.avispamodel.admin_user_create(data):
-                msg += ' already existed. '
+                msg += ' user already existed. '
             else:
                 msg += ' just Created. '
 

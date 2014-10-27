@@ -16,6 +16,8 @@ class CouchViewSync:
             # Put other view classes here
         ]
 
+        print(couch_views)
+
         """
         def sync_many(db, views, remove_missing=False, callback=None):
 

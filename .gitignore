@@ -53,3 +53,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 .DS_Store
+
+# CouchDB logs
+*.stderr
+*.stdout

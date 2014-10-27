@@ -2,11 +2,15 @@
 
 from datetime import datetime 
 import random
+import sys
+import traceback
+from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
 from AvispaCouchDB import AvispaCouchDB
 from MyRingUser import MyRingUser
 from MyRingBlueprint import MyRingBlueprint
 from CouchViewSync import CouchViewSync
+
 
 class AvispaModel:
 
@@ -24,16 +28,24 @@ class AvispaModel:
 
 
         try:          
-            self.db = self.couch[self.user_database]
-            print(self.user_database+' exists already')
-            return True
-
-        except:  
-
-            print('flag3')         
+            #self.db = self.couch[self.user_database]
+            
             self.db = self.couch.create(self.user_database)
             print(self.user_database+'did not exist. Will create')
             return False
+
+        except:  
+
+            print "Unexpected error :", sys.exc_info()[0] , sys.exc_info()[1]
+            #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
+            self.rs_status='500'
+            #raise
+
+            # Will not get here because of 'raise'
+            print('flag3')         
+            self.db = self.couch[self.user_database]
+            print(self.user_database+' exists already')
+            return True
 
 
 
@@ -46,6 +58,8 @@ class AvispaModel:
 
         auser =  MyRingUser.load(self.db, data['user'])
 
+        print(auser)
+
         if auser:
             print(data['user']+' exists already')
             return True
@@ -53,8 +67,9 @@ class AvispaModel:
         else:
             auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
             auser._id = data['user']
-            auser.store(self.db)
-            print(data['user'] +' created')
+            storeresult = auser.store(self.db)
+            print(storeresult)
+            print(data['user'] +' created'+str(storeresult))
             return False
 
 
@@ -79,7 +94,14 @@ class AvispaModel:
                 data.append(r)
 
         except:
-            print('No rings for this user')
+
+            print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
+            self.rs_status='500'
+            raise
+
+
+            print('No rings for this user.')
 
         return data
 
@@ -97,7 +119,14 @@ class AvispaModel:
             self.user_add_ring(handle,ringname,ringversion) #Adds the ring to the user's list
             return True    
 
-        except:          
+        except:
+
+            print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
+            self.rs_status='500'
+            raise
+
+
             return False
 
     def ring_set_db_views(self,db_ringname):

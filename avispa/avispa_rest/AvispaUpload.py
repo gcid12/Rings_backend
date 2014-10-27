@@ -14,7 +14,7 @@ class AvispaUpload:
 
     def __init__(self,handle):
 
-        self.IMAGE_FOLDER = '/Users/ricardocid/Code/myringimages/'+handle+'/'
+        self.IMAGE_FOLDER = '/var/www/imagestore/'+handle
         self.filename = ''
         self.rs_status = ''
         self.image_sizes = []
@@ -80,7 +80,7 @@ class AvispaUpload:
         #filename = secure_filename(file.filename)
         self.imgid = str(random.randrange(1000000000,9999999999))
         filename = self.imgid+'_o.jpg'
-        originalversionpath = self.IMAGE_FOLDER + 'o/'
+        originalversionpath = self.IMAGE_FOLDER + '/o/'
 
 
         try:     
@@ -97,7 +97,7 @@ class AvispaUpload:
 
     def _multi_size(self):
 
-        with Image(filename=self.IMAGE_FOLDER+'o/'+self.imgid+'_o.jpg') as img:
+        with Image(filename=self.IMAGE_FOLDER+'/o/'+self.imgid+'_o.jpg') as img:
 
             orientation = self._img_orientation(img)
             if orientation == 'portrait' or orientation == 'square':
@@ -169,8 +169,8 @@ class AvispaUpload:
         
 
         try:     
-            img.save(filename=self.IMAGE_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
-            print('File multiplied successfully here:' + self.IMAGE_FOLDER+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            print('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
             multiplied={}
             multiplied['mimetype']='image/jpeg'
             multiplied['width']=str(img.width)
