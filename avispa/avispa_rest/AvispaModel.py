@@ -7,6 +7,7 @@ import traceback
 from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
 from couchdb.design import ViewDefinition
+from couchdb.http import PreconditionFailed,ResourceNotFound
 from AvispaCouchDB import AvispaCouchDB
 from MyRingUser import MyRingUser
 from MyRingBlueprint import MyRingBlueprint
@@ -22,90 +23,168 @@ class AvispaModel:
         self.couch=ACD._instantiate_couchdb_as_admin()
         self.user_database = 'myring_users'
 
+    def create_db(self,dbname):
+        print('Notice: Creating db ->'+dbname)
+        return self.couch.create(dbname)     
 
-    def admin_user_db_create(self,*args):
+    def select_db(self,dbname):
+        print('Notice: Selecting db ->'+dbname)
 
-        print('flag1')
+        return self.couch[dbname] 
+         
+
+    def delete_db(self,dbname):
+        print('Notice: Deleting db ->'+dbname)
+        del self.couch[dbname] 
+        return True
+
+    def create_doc(self,dbname,id,doc):
+        print('Notice: Creating doc ->'+str(doc))
+        print('Notice: in DB ->'+dbname)
+        print('Notice: With ID ->'+id)
+        db=self.select_db(dbname)
+        doc['_id']= id
+        db.save(doc)
+        #doc.store(db)
+        return True 
+
+    def create_user(self,dbname,data):
+        self.db = self.select_db(dbname)
+        print('Notice: Creating User ->'+data['user'])
+        auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
+        auser._id = data['user']
+        storeresult = auser.store(self.db)
+        return True
+
+    def select_user(self,dbname,user):
+        self.db = self.select_db(dbname)
+        print('Notice: Selecting User ->'+user)
+        return MyRingUser.load(self.db, user)
+
+
+    def delete_user(self,dbname,user):
+        self.db = self.select_db(dbname)
+        print('Notice: Deleting User ->'+user)
+        #del self.db[user]
+        return True
+
+    def update_user(self,dbname,docid):
+        pass
+
+
+    def admin_user_db_create(self,user_database=None,*args):
+
+        if not user_database : 
+            user_database = self.user_database
 
 
         try:          
             #self.db = self.couch[self.user_database]
             
-            self.db = self.couch.create(self.user_database)
-            print(self.user_database+'did not exist. Will create')
-            return False
+            print('Notice: Entering TRY block') 
+            
+            self.db = self.create_db(user_database)
+            
+            print('Notice: '+user_database+' database did not exist. Will create')
+            return True
 
-        except:  
+        except(PreconditionFailed):  
+            
+            print('Notice: Entering EXCEPT(PreconditionFailed) block') 
 
-            print "Unexpected error :", sys.exc_info()[0] , sys.exc_info()[1]
+            print "Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1]
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             #raise
 
             # Will not get here because of 'raise'
-            print('flag3')         
-            self.db = self.couch[self.user_database]
-            print(self.user_database+' exists already')
-            return True
+            print "Notice: Since it already existed, selecting existing one"
+            self.select_db(user_database)
+            
+            print('Notice: '+user_database+' database exists already')
+            return False
 
 
 
 
-    def admin_user_create(self,data):
+    def admin_user_create(self,data,user_database=None):
 
-        self.db = self.couch[self.user_database]
+        if not user_database : 
+            user_database = self.user_database
 
-        
+        auser = self.select_user(user_database, data['user'])
 
-        auser =  MyRingUser.load(self.db, data['user'])
-
-        print(auser)
+        print('Notice: User subtracted from DB ')
 
         if auser:
-            print(data['user']+' exists already')
-            return True
+            print('Notice: '+data['user']+' exists already')
+            return False
 
         else:
             auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
             auser._id = data['user']
             storeresult = auser.store(self.db)
-            print(storeresult)
-            print(data['user'] +' created'+str(storeresult))
-            return False
+            #print('Notice: Store Result -> '+storeresult)
+            print('Notice: '+data['user'] +' created -> '+str(storeresult))
+            return True
 
 
-    def user_get_rings(self,handle):
+    def user_get_rings(self,handle,user_database=None):
+
+
+        if not user_database : 
+            user_database = self.user_database
+
 
         data=[]
 
         try:
-            db = self.couch['myring_users']         
-            doc = db[handle]
+            print('flag1:'+user_database)        
+            db = self.select_db(user_database)
+            print('flag2:'+handle)       
+            #doc = db[handle]
+            doc = self.select_user(user_database,handle)
+            print('flag3') 
             rings = doc['rings']
-
-            
+            print('flag4') 
+            print(rings)
+         
 
             for ring in rings:
+                print('flag5')
                 if not 'deleted' in ring:
+                    print('flag5a')
                     ringname = str(ring['ringname'])+'_'+str(ring['version']) 
                     count = ring['count']
+                    print('flag5b:'+str(handle)+'_'+ringname)
+
+                    ringnamedb=str(handle)+'_'+ringname.replace('.','-')
+                    db = self.select_db(ringnamedb)
                 
-                    db = self.couch[str(handle)+'_'+ringname]
+                    #db = self.couch[str(handle)+'_'+ringname]
+                    print('flag5c')
                     RingDescription = db['blueprint']['rings'][0]['RingDescription']
+                    print('flag5d')
                     r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
+                    print('flag5e')
                     data.append(r)
 
-        except:
+            print('flag6')
 
-            print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            return data
+
+        except(ResourceNotFound):
+
+
+            print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
-            self.rs_status='500'
-            raise
+            #self.rs_status='500'
+            #raise
 
 
-            print('No rings for this user.')
+            print('Notice: No rings for this user.')
 
-        return data
+            return False
 
 
 
@@ -114,15 +193,13 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname = db_ringname.replace(" ","")
 
-        try:     
-            
+        try:            
             self.couch.create(db_ringname) #Creates this ring database
             self.ring_set_db_views(db_ringname) #Sets all the CouchDB Views needed for this new ring
             self.user_add_ring(handle,ringname,ringversion) #Adds the ring to the user's list
             return True    
 
         except:
-
             print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
@@ -167,16 +244,19 @@ class AvispaModel:
 
 
 
-    def user_add_ring(self,handle,ringname,ringversion):
+    def user_add_ring(self,handle,ringname,ringversion,user_database=None):
 
-        db = self.couch[self.user_database]
+        if not user_database : 
+            user_database = self.user_database
+
+        db = self.couch[user_database]
         doc =  MyRingUser.load(db, handle)
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
         doc.store(db)
 
         return True
 
-    def user_delete_ring(self,handle,ringname,ringversion):
+    def user_delete_ring(self,handle,ringname,ringversion,user_database=None):
 
         db = self.couch[self.user_database]
         doc =  MyRingUser.load(db, handle)
@@ -286,6 +366,8 @@ class AvispaModel:
                     ring.fields[i][y] = args_f[y]
 
             args_f={}
+
+        print(ring)
 
         
         ring.store(db)
