@@ -33,15 +33,14 @@ class MyRingTool:
         msg = ''
   
         if self.avispamodel.admin_user_db_create():
-            msg += ' MyRing DB already exists. '
-            if self.avispamodel.admin_user_create(data):
-                msg += data['user'] + ' already existed. '
-            else:
-                msg += data['user'] + ' just Created. '
-
-        else:
             msg += 'MyRing DB just Installed. '
 
+        else:   
+            msg += ' MyRing DB already exists. '
+            if self.avispamodel.admin_user_create(data):
+                msg += data['user'] + ' just Created. '
+            else:
+                msg += data['user'] + ' already existed. '
 
         # You need to create the image uploads folder as well. 
 
@@ -97,12 +96,14 @@ class MyRingTool:
             msg = ''
 
             if self.avispamodel.admin_user_create(data):
-                msg += ' user already existed. '
-            else:
                 msg += ' just Created. '
 
                 AUD = AvispaUpload(data['user'])
                 AUD.create_user_imagefolder()
+                
+            else:
+                msg += ' user already existed. '
+                
 
             d = {'message': 'using install tool:'+msg , 'template':'avispa_rest/index.html'}
 
