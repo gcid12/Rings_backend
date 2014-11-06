@@ -6,7 +6,8 @@ from flask import Flask, render_template
 avispa = Flask(__name__)
 
 # Configurations
-avispa.config.from_object('config')
+avispa.config.from_object('default_config')
+#avispa.config.from_object('env_config')
 
 # Sample HTTP error handling
 @avispa.errorhandler(404)

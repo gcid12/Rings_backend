@@ -9,12 +9,15 @@ from flask import flash
 from wand.image import Image 
 from wand.display import display
 
+from default_config import IMAGE_STORE
+from env_config import IMAGE_STORE
+
 
 class AvispaUpload:
 
     def __init__(self,handle):
 
-        self.IMAGE_FOLDER = '/var/www/imagestore/'+handle
+        self.IMAGE_FOLDER = IMAGE_STORE+'/'+handle
         self.filename = ''
         self.rs_status = ''
         self.image_sizes = []
