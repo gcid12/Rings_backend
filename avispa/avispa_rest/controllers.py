@@ -2,6 +2,8 @@
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from MyRingTool import MyRingTool
+from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+
 
 
 
@@ -37,9 +39,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
         data = getattr(MRT, tool.lower())(request)
         print('flagA:')
         print(data)
-    elif handle =='auth':  #not a ring! Here goes all the auth functions
-        auth = ring
-        data = getattr(MRA, auth.lower())(request)
 
     else:
         data = getattr(ARF, m.lower())(request,handle,ring,idx)
@@ -72,6 +71,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
 # Set the route and accepted methods
 @avispa_rest.route('/')
+@login_required
 def index():
 
     data = {}
@@ -79,36 +79,42 @@ def index():
     return render_template("avispa_rest/intro.html", data=data)
 
 @avispa_rest.route('/tools/', methods=['GET','POST'])
+@login_required
 def intro():
 
     data = {}
     return render_template("avispa_rest/tools.html", data=data)
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
+
 def static(filename):
 
     avispa_rest.static_folder='static'
     return avispa_rest.send_static_file(filename)
 
 @avispa_rest.route('/static/<depth1>/<filename>', methods=['GET', 'POST'])
+
 def static2(filename,depth1):
 
     avispa_rest.static_folder='static/'+depth1
     return avispa_rest.send_static_file(filename)
 
 @avispa_rest.route('/static/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
+
 def static3(filename,depth1,depth2):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
 
 @avispa_rest.route('/static/<depth1>/<depth2>/<depth3>/<filename>', methods=['GET', 'POST'])
+
 def static4(filename,depth1,depth2,depth3):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3
     return avispa_rest.send_static_file(filename)
 
 @avispa_rest.route('/static/<depth1>/<depth2>/<depth3>/<depth4>/<filename>/', methods=['GET', 'POST'])
+
 def static5(filename,depth1,depth2,depth3,depth4):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
@@ -116,18 +122,21 @@ def static5(filename,depth1,depth2,depth3,depth4):
 
 
 @avispa_rest.route('/<handle>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+
 def route_a(handle):
 
     return route_dispatcher('_a',handle)
     
 
 @avispa_rest.route('/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+
 def route_a_b(handle,ring):
 
     return route_dispatcher('_a_b',handle,ring)
 
 
 @avispa_rest.route('/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+
 def route_a_b_c(handle,ring,idx):
 
     return route_dispatcher('_a_b_c',handle,ring,idx)
