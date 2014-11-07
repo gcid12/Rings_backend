@@ -37,6 +37,10 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
         data = getattr(MRT, tool.lower())(request)
         print('flagA:')
         print(data)
+    elif handle =='auth':  #not a ring! Here goes all the auth functions
+        auth = ring
+        data = getattr(MRA, auth.lower())(request)
+
     else:
         data = getattr(ARF, m.lower())(request,handle,ring,idx)
 
