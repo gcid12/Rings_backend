@@ -1,11 +1,11 @@
 # Unit Testing for AvispaModel.py
 
-from AvispaModel import AvispaModel
+from avispa.avispa_rest.AvispaModel import AvispaModel
 from MainModel import MainModel
 from auth.AuthModel import AuthModel
 import unittest
 
-class AvispaModelTestCase(unittest.TestCase):
+class AllModelsTestCase(unittest.TestCase):
 
     def setUp(self):
         self.AVM = AvispaModel() 
@@ -214,5 +214,5 @@ class AvispaModelTestCase(unittest.TestCase):
 if __name__ == '__main__':
     #unittest.main()
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(AvispaModelTestCase)
+    suite = unittest.TestLoader().loadTestsFromTestCase(AllModelsTestCase)
     unittest.TextTestRunner(verbosity=2).run(suite)
