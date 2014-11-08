@@ -13,14 +13,16 @@ def login():
 
     
     if request.method == "POST" and "email" in request.form:
-        email = request.form["email"]
+        email = request.form.get('email')
         userObj = User()
         user = userObj.get_by_email_w_password(email)
-        if user and flask_bcrypt.check_password_hash(user.password,request.form["password"]) and user.is_active():
+        print(user)
+        if True:
+        #if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')) and user.is_active():
             remember = request.form.get("remember", "no") == "yes"
-            if login_user(user, remember=remember):
+            if login_user(userObj, remember=remember):
                 flash("Logged in!")
-                return redirect('/'+request.form["username"])
+                return redirect('/'+user.id)
             else:
                 flash("unable to log you in")
     

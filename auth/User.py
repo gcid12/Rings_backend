@@ -36,7 +36,7 @@ class User(UserMixin):
 
         print(user)
 
-        if self.ATM.create_user(user):
+        if self.ATM.saas_create_user(user):
             print "new user id = %s " % user['username']       
             return user['username']
         else:
@@ -44,11 +44,15 @@ class User(UserMixin):
 
     def get_by_email(self, email):
 
-    	dbUser = models.User.objects.get(email=email)
-    	if dbUser:
-            self.email = dbUser.email
-            self.active = dbUser.active
-            self.id = dbUser.id
+        dbUser =self.ATM.userdb_get_user_by_email(email)
+        #print(dbUser['key'])
+        #print(dbUser['value'])
+
+        
+        if dbUser:
+            self.email = dbUser['email']
+            self.active = True #This needs to be implemented in the userdb
+            self.id = dbUser['_id']
             return self
         else:
             return None
@@ -56,19 +60,24 @@ class User(UserMixin):
     def get_by_email_w_password(self, email):
 
         try:
-            dbUser = models.User.objects.get(email=email)
-            
+            print('flag1')
+            dbUser =self.ATM.userdb_get_user_by_email(email)
+            print('flag2')
+            print(dbUser)
             if dbUser:
-                self.email = dbUser.email
-                self.active = dbUser.active
-                self.password = dbUser.password
-                self.id = dbUser.id
+                self.email = dbUser['value']['email']
+                self.active = True #This needs to be implemented in the userdb
+                self.password = dbUser['value']['passhash']
+                self.id = dbUser['value']['_id']
                 return self
             else:
                 return None
         except:
             print "there was an error"
             return None
+
+    def is_active(self):
+        return True
 
     def get_mongo_doc(self):
         if self.id:
@@ -77,15 +86,15 @@ class User(UserMixin):
             return None
 
     def get_by_id(self, id):
-    	dbUser = models.User.objects.with_id(id)
-    	if dbUser:
-    		self.email = dbUser.email
-    		self.active = dbUser.active
-    		self.id = dbUser.id
+        dbUser = models.User.objects.with_id(id)
+        if dbUser:
+            self.email = dbUser.email
+            self.active = dbUser.active
+            self.id = dbUser.id
 
-    		return self
-    	else:
-    		return None
+            return self
+        else:
+            return None
 
 
 

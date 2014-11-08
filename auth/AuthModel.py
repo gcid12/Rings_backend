@@ -17,6 +17,10 @@ class AuthModel:
 
         self.MAM = MainModel()
 
+    #AUTHMODEL
+    def saas_create_user(self,user):
+        #Added validation for SaaS users go here
+        return self.MAM.create_user(user)
 
     #AUTHMODEL
     def admin_user_db_create(self,user_database=None,*args):
@@ -84,7 +88,7 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.email) {
-                        emit(doc.email,doc.passhash)
+                        emit(doc.email,doc)
                     }
                 }
                 ''')
@@ -95,19 +99,35 @@ class AuthModel:
         return True
 
     #AUTHMODEL
-    def userdb_get_userhash(self,key,user_database):
+    def userdb_get_user_by_email(self,key,user_database=None):
+
+        print('flag1.1')
+
+        if not user_database : 
+            user_database = self.user_database
+
+        print('flag1.2')
 
         db = self.couch[user_database]
+
+        print('flag1.3')
         
         options = {}
         options['key']=key
         result = db.view('auth/userhash',**options)
+        #result = db.iterview('auth/userhash',1,**options)
+
+        print(result)
+
+        print('flag1.4')
                
         for row in result:
 
             item = {}
             item[u'key'] = row['key']
             item[u'value'] = row['value']
+
+        print('flag1.5')
             
 
         return item

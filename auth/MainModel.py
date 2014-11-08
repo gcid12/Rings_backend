@@ -56,10 +56,14 @@ class MainModel:
         return True
 
     #MAINMODEL
-    def select_user(self,dbname,user):
+    def select_user(self,dbname,username):
         self.db = self.select_db(dbname)
-        print('Notice: Selecting User ->'+user)
-        return MyRingUser.load(self.db, user)
+        print('Notice: Selecting User ->'+username)
+        result = MyRingUser.load(self.db, username)
+        print('User object:')
+        print(result)
+        return result
+
 
 
     #MAINMODEL
