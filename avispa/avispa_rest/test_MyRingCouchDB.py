@@ -1,13 +1,13 @@
-# Unit Testing for AvispaCouchDB.py
+# Unit Testing for MyRingCouchDB.py
 
-from AvispaCouchDB import AvispaCouchDB
+from MyRingCouchDB import MyRingCouchDB
 import unittest
 import couchdb
 
-class AvispaCouchDBTestCase(unittest.TestCase):
+class MyRingCouchDBTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.ACD = AvispaCouchDB()
+        self.ACD = MyRingCouchDB()
         self.user_database = 'myring_users'
         
            
@@ -51,5 +51,5 @@ class AvispaCouchDBTestCase(unittest.TestCase):
 if __name__ == '__main__':
     #unittest.main()
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(AvispaCouchDBTestCase)
+    suite = unittest.TestLoader().loadTestsFromTestCase(MyRingCouchDBTestCase)
     unittest.TextTestRunner(verbosity=2).run(suite)

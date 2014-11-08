@@ -1,9 +1,9 @@
-# AvispaCouchDB.py
+# MyRingCouchDB.py
 import couchdb
 import os
 
 
-class AvispaCouchDB:
+class MyRingCouchDB:
 
     def __init__(self):
 

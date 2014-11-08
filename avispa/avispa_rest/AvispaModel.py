@@ -8,7 +8,7 @@ from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import PreconditionFailed,ResourceNotFound
-from AvispaCouchDB import AvispaCouchDB
+from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
 from MyRingBlueprint import MyRingBlueprint
 from CouchViewSync import CouchViewSync
@@ -19,8 +19,8 @@ class AvispaModel:
 
     def __init__(self):
 
-        ACD = AvispaCouchDB()
-        self.couch=ACD._instantiate_couchdb_as_admin()
+        MCD = MyRingCouchDB()
+        self.couch=MCD._instantiate_couchdb_as_admin()
         self.user_database = 'myring_users'
 
     def create_db(self,dbname):
@@ -48,7 +48,11 @@ class AvispaModel:
         #doc.store(db)
         return True 
 
-    def create_user(self,dbname,data):
+    def create_user(self,data,dbname=None):
+
+        if not dbname:
+            dbname=self.user_database
+
         self.db = self.select_db(dbname)
         print('Notice: Creating User ->'+data['user'])
         auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
@@ -139,52 +143,40 @@ class AvispaModel:
         data=[]
 
         try:
-            print('flag1:'+user_database)        
+                   
             db = self.select_db(user_database)
-            print('flag2:'+handle)       
-            #doc = db[handle]
+            
             doc = self.select_user(user_database,handle)
-            print('flag3') 
+            
             rings = doc['rings']
-            print('flag4') 
+            
             print(rings)
          
 
             for ring in rings:
-                print('flag5')
+                
                 if not 'deleted' in ring:
-                    print('flag5a')
+                    
                     ringname = str(ring['ringname'])+'_'+str(ring['version']) 
                     count = ring['count']
                     print('flag5b:'+str(handle)+'_'+ringname)
-
                     ringnamedb=str(handle)+'_'+ringname.replace('.','-')
-                    db = self.select_db(ringnamedb)
-                
-                    #db = self.couch[str(handle)+'_'+ringname]
-                    print('flag5c')
-                    RingDescription = db['blueprint']['rings'][0]['RingDescription']
-                    print('flag5d')
+                    db = self.select_db(ringnamedb)             
+                    RingDescription = db['blueprint']['rings'][0]['RingDescription']        
                     r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
-                    print('flag5e')
                     data.append(r)
 
             print('flag6')
 
-            return data
+            
 
-        except(ResourceNotFound):
+        except (ResourceNotFound, TypeError) as e:
 
-
+            flash("You have no rings yet, create one!")
             print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
-            #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
-            #self.rs_status='500'
-            #raise
-
-
             print('Notice: No rings for this user.')
 
-            return False
+        return data
 
 
 

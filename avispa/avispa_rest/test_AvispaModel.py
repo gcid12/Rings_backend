@@ -52,6 +52,8 @@ class AvispaModelTestCase(unittest.TestCase):
                 }]
             }
 
+
+
       
     def tearDown(self):
         self.AM.delete_db(self.user_db)
@@ -95,13 +97,13 @@ class AvispaModelTestCase(unittest.TestCase):
         #SETUP
         self.AM.admin_user_db_create(self.user_db)
         #TEST
-        result = self.AM.create_user(self.user_db,self.user)
+        result = self.AM.create_user(self.user,self.user_db)
         self.assertTrue(result)
 
     def test_select_existing_user_in_existing_db(self):
         #SETUP
         self.AM.admin_user_db_create(self.user_db)
-        self.AM.create_user(self.user_db,self.user)
+        self.AM.create_user(self.user,self.user_db)
         #TEST
         result = self.AM.select_user(self.user_db,self.user['user'])
         self.assertEqual(result['email'],self.user['email'])
@@ -116,7 +118,7 @@ class AvispaModelTestCase(unittest.TestCase):
     def test_delete_existing_user_in_existing_db(self):
         #SETUP
         self.AM.admin_user_db_create(self.user_db)
-        self.AM.create_user(self.user_db,self.user)
+        self.AM.create_user(self.user,self.user_db)
         self.AM.select_user(self.user_db,self.user['user'])
         #TEST
         result = self.AM.delete_user(self.user_db,self.user['user'])
@@ -129,11 +131,11 @@ class AvispaModelTestCase(unittest.TestCase):
         print('Function admin_user_db_create starts')
         self.AM.admin_user_db_create(self.user_db)
         print('Function create_user starts')
-        self.AM.create_user(self.user_db,self.user)
+        self.AM.create_user(self.user,self.user_db)
         #TEST
         print('Function user_get_rings starts')
         result = self.AM.user_get_rings(self.handle,self.user_db)
-        self.assertFalse(result)
+        self.assertEqual(0,len(result))
 
 
     def test_add_ring_to_user_ring_list(self):
@@ -141,7 +143,7 @@ class AvispaModelTestCase(unittest.TestCase):
         print('Function admin_user_db_create starts')
         self.AM.admin_user_db_create(self.user_db)
         print('Function create_user starts')
-        self.AM.create_user(self.user_db,self.user)
+        self.AM.create_user(self.user,self.user_db)
         print('Function user_add_ring starts')
         self.AM.user_add_ring(self.user['user'],self.preblueprint['ringname'],self.preblueprint['ringversion'],self.user_db)
         #TEST
@@ -156,7 +158,7 @@ class AvispaModelTestCase(unittest.TestCase):
         print('Function admin_user_db_create starts')
         self.AM.admin_user_db_create(self.user_db)
         print('Function create_user starts')
-        self.AM.create_user(self.user_db,self.user)
+        self.AM.create_user(self.user,self.user_db)
         print('Function user_add_ring starts')
         self.AM.user_add_ring(self.user['user'],self.preblueprint['ringname'],self.preblueprint['ringversion'],self.user_db) 
         print('Function create_db starts')
@@ -172,7 +174,7 @@ class AvispaModelTestCase(unittest.TestCase):
         self.assertEqual(result[0]['ringname'],self.preblueprint['ringname']+'_'+self.preblueprint['ringversion'])
         
         #TEARDOWN
-        #self.AM.delete_db(self.ringdbname)
+        self.AM.delete_db(self.ringdbname)
 
 
 

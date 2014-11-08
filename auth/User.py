@@ -6,24 +6,41 @@ from flask.ext.login import (LoginManager, current_user, login_required,
                             login_user, logout_user, UserMixin, AnonymousUserMixin,
                             confirm_login, fresh_login_required)
 
-import models
+from AuthModel import AuthModel
 
 
 class User(UserMixin):
-    def __init__(self, email=None, password=None, active=True, id=None):
+    def __init__(self, username=None, email=None, passhash=None, active=True, id=None):
+        self.username = username
         self.email = email
-        self.password = password
+        self.passhash = passhash
         self.active = active
         self.isAdmin = False
         self.id = None
 
+        self.ATM = AuthModel()
+
 
     def save(self): 
-        newUser = models.User(email=self.email, password=self.password, active=self.active)
-        newUser.save()
-        print "new user id = %s " % newUser.id
-        self.id = newUser.id
-        return self.id
+        #newUser = models.User(email=self.email, password=self.password, active=self.active) 
+        #newUser.save()
+
+        user = {}
+        user['username'] = self.username
+        user['email'] = self.email
+        user['lastname'] = 'testlastname'
+        user['firstname'] = 'testfirstname'
+        user['passhash'] = self.passhash
+        user['guid'] = 'testguid'
+        user['salt'] = 'testsalt'
+
+        print(user)
+
+        if self.ATM.create_user(user):
+            print "new user id = %s " % user['username']       
+            return user['username']
+        else:
+            return None
 
     def get_by_email(self, email):
 
