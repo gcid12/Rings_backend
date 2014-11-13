@@ -300,15 +300,24 @@ class AvispaRestFunc:
     def get_a_b_c(self,request,handle,ring,idx,*args):
         '''
         Gets existing item
-        '''        
+        ''' 
+        d = {}       
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
+
 
         if item:
             print('Awesome , you just retrieved the item from the DB')
-            print(item)
-            msg = 'Item retrieved with id: '+idx
+            d['item'] = item
+            print(d['item'])
 
-        d = {'message': 'Using get_a_b_c for handle '+handle+', ring->'+ring+' idx->'+idx , 'template':'avispa_rest/get_a_b_c.html'}
+        else: 
+            print('Error retrieving item')
+
+
+        d['template'] = 'avispa_rest/get_a_b_c.html'
+
+
+
         return d
 
     	

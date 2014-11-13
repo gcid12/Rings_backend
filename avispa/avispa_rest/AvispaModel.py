@@ -473,8 +473,10 @@ class AvispaModel:
         RingClass = self.ring_create_class(blueprint)
 
         item = RingClass.load(db,idx)
+        item['items'][0][u'id']=idx
 
-        return item
+
+        return item['items'][0]
 
 
     #AVISPAMODEL
