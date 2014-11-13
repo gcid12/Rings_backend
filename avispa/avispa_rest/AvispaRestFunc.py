@@ -369,9 +369,9 @@ class AvispaRestFunc:
         '''
         Prepares form to be sent for a put
         '''
-        preitem = self.AVM.get_a_b_c(request,handle,ring,idx)
+        item = self.AVM.get_a_b_c(request,handle,ring,idx)
        
-        item = preitem.items[0]
+        
 
         #if item['Images']:
          #   images=item['Images'].split(',')
