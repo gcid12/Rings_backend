@@ -1,4 +1,4 @@
-from flask import redirect
+from flask import redirect, flash
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
 
@@ -37,11 +37,18 @@ class AvispaRestFunc:
 
        
         RB = RingBuilder()
-        if RB.JSONRingGenerator(request,handle):
-            print('200')
-        
+        result = RB.JSONRingGenerator(request,handle)
+            
+        if result:
+            print('Awesome , you just created a new Ring Blueprint')
+            #msg = 'Item put with id: '+idx
+            flash("Your new Blueprint has been created")
+            redirect = '/'+handle
+            d = {'redirect': redirect, 'status':200}
 
-    	d = {'message': 'Using post_a for handle '+handle , 'template':'avispa_rest/index.html'}
+        else:
+            d = {'message': 'There was an error creating the Blueprint' , 'template':'avispa_rest/index.html'}
+        
         return d
 
     def post_rq_a(self,request,handle,*args):
@@ -131,16 +138,12 @@ class AvispaRestFunc:
 
 
         print(itemlist)
-
         
-
-
-        nextlastkey=itemlist[-1]['id']
-        print(nextlastkey)
 
         print(len(itemlist))
 
-        if len(itemlist) == resultsperpage:
+        if len(itemlist)>0 and len(itemlist) == resultsperpage:
+            nextlastkey=itemlist[-1]['id']
             d['lastkey'] = nextlastkey
             #Still, if the last page has exactly as many items as resultsperpage, the next page will be empty. Please fix
 
@@ -173,7 +176,13 @@ class AvispaRestFunc:
             print('Awesome , you just saved the item to the DB')
             msg = 'Item saved with id: '+idx
 
-    	d = {'message': msg+' -> handle: '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
+
+        redirect = '/'+handle+'/'+ring
+        print('Now redirect to:')
+        print(redirect)
+        flash("The new item has been created")
+
+        d = {'redirect': redirect, 'status':201}
         return d
 
         #return redirect('/'+handle+'/'+ring)
@@ -204,12 +213,20 @@ class AvispaRestFunc:
     def put_a_b(self,request,handle,ring,*args):
 
         RB = RingBuilder()
-        if RB.put_a_b(request,handle,ring):
-            print('200')
+        result =  RB.put_a_b(request,handle,ring)
 
-        print('put a_b route!')
-    	d = {'message': 'Using put_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        if result:
+            print('Awesome , you just put the changes in the Ring Blueprint')
+            #msg = 'Item put with id: '+idx
+            flash("Changes saved in the Blueprint")
+            redirect = '/'+handle+'/'+ring
+            d = {'redirect': redirect, 'status':200}
+
+        else:
+            d = {'message': 'There was an error updating the Blueprint' , 'template':'avispa_rest/index.html'}
+        
         return d
+
 
     def put_rq_a_b(self,request,handle,ring,*args):
         '''
@@ -326,15 +343,17 @@ class AvispaRestFunc:
 
         if result:
             print('Awesome , you just put the changes in the Item')
-            msg = 'Item put with id: '+idx
+            #msg = 'Item put with id: '+idx
+            flash("Changes saved")
+            redirect = '/'+handle+'/'+ring
+            d = {'redirect': redirect, 'status':200}
 
-        #return redirect('http://127.0.0.1/'+handle+'/'+ring, 301)
-        redirect = '/'+handle+'/'+ring
-
-        d = {'redirect': redirect}
-
-        #d = {'message': msg+' -> handle>> '+handle+', ring>>'+ring+', idx>>'+idx , 'template':'avispa_rest/index.html'}
+        else:
+            d = {'message': 'There waas an error updating this item' , 'template':'avispa_rest/index.html'}
+        
         return d
+
+
 
 
     def put_rq_a_b_c(self,request,handle,ring,idx,*args):

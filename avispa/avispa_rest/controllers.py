@@ -34,6 +34,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     m = method+depth
     data = {}
 
+
+
     if handle=='tool':  #not a ring! Here goes all the system specific functionality
         tool = ring
         data = getattr(MRT, tool.lower())(request)
@@ -47,6 +49,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     data['ring']=ring
     data['idx']=idx
 
+    
+
 
     if 'error_status' in data.keys():
         status = int(data['error_status'])
@@ -55,7 +59,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
     if 'redirect' in data:
         print('flag0')
-        return redirect(data['redirect'])               
+        print(data)
+        return data             
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
         print('flag1')
         print(data)      
@@ -125,21 +130,39 @@ def static5(filename,depth1,depth2,depth3,depth4):
 
 def route_a(handle):
 
-    return route_dispatcher('_a',handle)
+    result = route_dispatcher('_a',handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
     
 
 @avispa_rest.route('/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 
 def route_a_b(handle,ring):
 
-    return route_dispatcher('_a_b',handle,ring)
+    result = route_dispatcher('_a_b',handle,ring)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+        
 
 
 @avispa_rest.route('/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 
 def route_a_b_c(handle,ring,idx):
 
-    return route_dispatcher('_a_b_c',handle,ring,idx)
+    result = route_dispatcher('_a_b_c',handle,ring,idx)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])
+    else:
+        return result
+
+    
 
 
 
