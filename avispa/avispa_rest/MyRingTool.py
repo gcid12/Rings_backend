@@ -6,7 +6,11 @@ import bcrypt
 
 
 from flask import flash
+
 from AvispaModel import AvispaModel
+from MainModel import MainModel
+from auth.AuthModel import AuthModel
+
 from AvispaUpload import AvispaUpload
 from CouchViewSync import CouchViewSync
 
@@ -15,12 +19,14 @@ class MyRingTool:
 
     def __init__(self):
 
-        self.avispamodel = AvispaModel()        
+        self.AVM = AvispaModel() 
+        self.MAM = MainModel() 
+        self.ATM = AuthModel()        
 
     def install(self,request,*args):
 
         data = {}
-        data['user'] = 'admin'
+        data['username'] = 'admin'
         data['email'] = 'admin@domain.com'
         data['lastname'] = 'admin last name'
         data['firstname'] = 'admin last name'
@@ -32,15 +38,15 @@ class MyRingTool:
         #user = 'admin' #This is just the first user that is installed on a vanilla MyRing
         msg = ''
   
-        if self.avispamodel.admin_user_db_create():
+        if self.ATM.admin_user_db_create():
             msg += 'MyRing DB just Installed. '
 
         else:   
             msg += ' MyRing DB already exists. '
-            if self.avispamodel.admin_user_create(data):
-                msg += data['user'] + ' just Created. '
+            if self.ATM.admin_user_create(data):
+                msg += data['username'] + ' just Created. '
             else:
-                msg += data['user'] + ' already existed. '
+                msg += data['username'] + ' already existed. '
 
         # You need to create the image uploads folder as well. 
 
@@ -58,10 +64,10 @@ class MyRingTool:
 
             data = {}
 
-            if request.form.get('user'):
-                data['user'] = request.form.get('user')
+            if request.form.get('username'):
+                data['username'] = request.form.get('username')
             else:
-                data['user'] = 'defaultuser'
+                data['username'] = 'defaultusername'
 
             if request.form.get('email'):
                 data['email'] = request.form.get('email')
@@ -95,10 +101,10 @@ class MyRingTool:
 
             msg = ''
 
-            if self.avispamodel.admin_user_create(data):
+            if self.ATM.admin_user_create(data):
                 msg += ' just Created. '
 
-                AUD = AvispaUpload(data['user'])
+                AUD = AvispaUpload(data['username'])
                 AUD.create_user_imagefolder()
                 
             else:
@@ -271,7 +277,7 @@ class MyRingTool:
 
         db_ringname =  request.args.get('dbringname')
 
-        self.avispamodel.ring_set_db_views(db_ringname)
+        self.AVM.ring_set_db_views(db_ringname)
 
         flash(u'Views synced to ring :'+db_ringname,'message')
         rq='Loading the Views into CouchDB via python'
@@ -286,7 +292,7 @@ class MyRingTool:
         ringname = 'services_0-1-0'
         startkey = '3468686347'
         resultsperpage = 3
-        self.avispamodel.get_a_b(handle,ringname,resultsperpage,startkey)
+        self.AVM.get_a_b(handle,ringname,resultsperpage,startkey)
 
         flash(u'ok')
         rq='run_view'

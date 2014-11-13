@@ -5,14 +5,14 @@ from AvispaModel import AvispaModel
 class AvispaRestFunc:
 
     def __init__(self):
-        self.avispamodel = AvispaModel()
+        self.AVM = AvispaModel() 
     
     # /a
 
     # GET/a
     def get_a(self,request,handle,*args):
 
-        ringlist = self.avispamodel.user_get_rings(handle)
+        ringlist = self.AVM.user_get_rings(handle)
 
 
         print(ringlist)
@@ -119,7 +119,7 @@ class AvispaRestFunc:
         else:
             resultsperpage = 25
 
-        preitemlist = self.avispamodel.get_a_b(handle,ring,resultsperpage,lastkey)
+        preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey)
         print(preitemlist)
 
         itemlist = []
@@ -167,7 +167,7 @@ class AvispaRestFunc:
         '''
         Creates new item
         '''        
-        idx = self.avispamodel.post_a_b(request,handle,ring)
+        idx = self.AVM.post_a_b(request,handle,ring)
 
         if idx:
             print('Awesome , you just saved the item to the DB')
@@ -183,7 +183,7 @@ class AvispaRestFunc:
         Form to create new item
         '''
         print(ring)
-        blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
+        blueprint = self.AVM.ring_get_blueprint(handle,ring)
         ringblueprint = blueprint['rings'][0]
         fieldsblueprint = blueprint['fields']
         numfields = len(fieldsblueprint)
@@ -216,7 +216,7 @@ class AvispaRestFunc:
         Edits the Blueprint
         '''
 
-        blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
+        blueprint = self.AVM.ring_get_blueprint(handle,ring)
         ringblueprint = blueprint['rings'][0]
         fieldsblueprint = blueprint['fields']
         numfields = len(fieldsblueprint)
@@ -254,7 +254,7 @@ class AvispaRestFunc:
         part=ring.split('_')
         ringname = part[0]
         ringversion = part[-1]
-        result = self.avispamodel.user_delete_ring(handle,ringname,ringversion)
+        result = self.AVM.user_delete_ring(handle,ringname,ringversion)
     	d = {'message': result , 'template':'avispa_rest/index.html'}
         return d
 
@@ -284,7 +284,7 @@ class AvispaRestFunc:
         '''
         Gets existing item
         '''        
-        item = self.avispamodel.get_a_b_c(request,handle,ring,idx)
+        item = self.AVM.get_a_b_c(request,handle,ring,idx)
 
         if item:
             print('Awesome , you just retrieved the item from the DB')
@@ -322,7 +322,7 @@ class AvispaRestFunc:
         '''
         Puts changes in the item
         '''        
-        result = self.avispamodel.put_a_b_c(request,handle,ring,idx)
+        result = self.AVM.put_a_b_c(request,handle,ring,idx)
 
         if result:
             print('Awesome , you just put the changes in the Item')
@@ -341,7 +341,7 @@ class AvispaRestFunc:
         '''
         Prepares form to be sent for a put
         '''
-        preitem = self.avispamodel.get_a_b_c(request,handle,ring,idx)
+        preitem = self.AVM.get_a_b_c(request,handle,ring,idx)
        
         item = preitem.items[0]
 
@@ -351,7 +351,7 @@ class AvispaRestFunc:
            
 
         
-        blueprint = self.avispamodel.ring_get_blueprint(handle,ring)
+        blueprint = self.AVM.ring_get_blueprint(handle,ring)
         ringblueprint = blueprint['rings'][0]
         fieldsblueprint = blueprint['fields']
         numfields = len(fieldsblueprint)
