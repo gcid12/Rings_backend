@@ -311,7 +311,8 @@ class AvispaRestFunc:
             print(d['item'])
 
         else: 
-            print('Error retrieving item')
+            flash('This item does not exist')
+            print('This item does not exist')
 
 
         d['template'] = 'avispa_rest/get_a_b_c.html'
@@ -416,8 +417,24 @@ class AvispaRestFunc:
 
     #DELETE /a/b/c
     def delete_a_b_c(self,request,handle,ring,idx,*args):
-    	d = {'message': 'Using delete_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
+        result = self.AVM.delete_a_b_c(request,handle,ring,idx)
+
+        if result:
+            print('Awesome , you just put the changes in the Item')
+            #msg = 'Item put with id: '+idx
+            flash("Item deleted")
+            redirect = '/'+handle+'/'+ring
+            d = {'redirect': redirect, 'status':200}
+
+        else:
+            d = {'message': 'There was an error deleting this item' , 'template':'avispa_rest/index.html'}
+        
         return d
+
+
+
+    	#d = {'message': 'Using delete_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
+        #return d
 
     def delete_rq_a_b_c(self,request,handle,ring,idx,*args):
         d = {'message': 'Using delete_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}

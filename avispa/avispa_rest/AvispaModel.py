@@ -5,11 +5,13 @@ from couchdb.http import PreconditionFailed
 
 
 from datetime import datetime 
+import time
+import datetime as dt
 import random
 import sys
 import traceback
 from flask import flash
-from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping 
+from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
 from MyRingBlueprint import MyRingBlueprint
@@ -123,8 +125,9 @@ class AvispaModel:
                '''
                   function(doc) {
                      if(doc.items) {
-                        emit(doc._id, doc.items[0])
-    
+                        if(!doc.deleted) {
+                           emit(doc._id, doc.items[0])
+                        }
                      }
                   }
                ''')
@@ -158,6 +161,7 @@ class AvispaModel:
             if ring['ringname']==ringname and ring['version']==ringversion:
                 print()
                 ring['deleted']=True
+                #It is just a tombstone!!
                 
 
         if doc.store(db):
@@ -319,7 +323,8 @@ class AvispaModel:
                          (Document,),
                          {
                             '_id' : TextField(),
-                            'added' : DateTimeField(default=datetime.now),
+                            'added' : DateTimeField(default=datetime.now()),
+                            'deleted' : BooleanField(default=False),
                             'items': ListField(DictField(Mapping.build(
                                                     **args_i
                                                 )))
@@ -345,6 +350,7 @@ class AvispaModel:
         RingClass = self.ring_create_class(blueprint)
         item = RingClass()         
         item._id= str(random.randrange(1000000000,9999999999))
+        #item.deleted = 
         item.items.append(**values)
         
         if item.store(db):
@@ -410,7 +416,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def get_a_b(self,handle,ringname,limit=25,lastkey=None):
+    def get_a_b(self,handle,ringname,limit=100,lastkey=None):
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
@@ -468,6 +474,26 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
+        
+        options = {}
+        options['key']=idx
+
+        #Retrieving from  get_a_b view
+        result = db.iterview('avispa/get_a_b',1,**options)
+
+        
+        for row in result:      
+            item = {}
+            if row['id']:        
+                item[u'id'] = row['id']
+                item.update(row['value'])
+                return item
+
+        return False
+        
+
+
+        ''' Optional way to retrieve from DB (not view)
 
         blueprint = self.ring_get_blueprint(handle,ringname)
         RingClass = self.ring_create_class(blueprint)
@@ -476,7 +502,45 @@ class AvispaModel:
         item['items'][0][u'id']=idx
 
 
-        return item['items'][0]
+        #return item['items'][0]
+        '''
+
+    def delete_a_b_c(self,request,handle,ringname,idx):
+
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+
+        blueprint = self.ring_get_blueprint(handle,ringname)
+        RingClass = self.ring_create_class(blueprint)
+        item = RingClass.load(db,idx)
+        
+        '''
+        values = {}
+        fields = blueprint['fields']
+        for field in fields:
+            #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
+            f = field['FieldName']
+            old = unicode(item.items[0][f])
+            new = unicode(request.form.get(f))
+
+            if old == new:
+                print(f+' did not change')             
+            else:
+                print(f+' changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
+                                '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
+                #args[f] = new
+                item.items[0][f] = new
+        '''
+
+        item.deleted = True
+
+        if item.store(db): 
+
+            return item._id
+
+        return False
+
 
 
     #AVISPAMODEL
@@ -526,177 +590,4 @@ class AvispaModel:
             for row in rows:
                 yield row.id
 
-    #AUTHMODEL
-    def admin_user_db_create(self,user_database=None,*args):
-
-        if not user_database : 
-            user_database = self.user_database
-
-
-        try:          
-            #self.db = self.couch[self.user_database]
-            print('Notice: Entering TRY block')  
-            self.db = self.MAM.create_db(user_database) 
-            print('Notice: '+user_database+' database did not exist. Will create')
-
-            self.userdb_set_db_views(user_database)
-            print('Notice: DB Views Created')
-
-            return True
-
-        except(PreconditionFailed):  
-            
-            print('Notice: Entering EXCEPT(PreconditionFailed) block') 
-
-            print "Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1]
-            #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
-            self.rs_status='500'
-            #raise
-
-            # Will not get here because of 'raise'
-            print "Notice: Since it already existed, selecting existing one"
-            self.MAM.select_db(user_database)
-            
-            print('Notice: '+user_database+' database exists already')
-            return False
-
-    #AUTHMODEL
-    def admin_user_create(self,data,user_database=None):
-
-        if not user_database : 
-            user_database = self.user_database
-
-        auser = self.MAM.select_user(user_database, data['username'])
-
-        print('Notice: User subtracted from DB ')
-
-        if auser:
-            print('Notice: '+data['username']+' exists already')
-            return False
-
-        else:
-            auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
-            auser._id = data['username']
-            storeresult = auser.store(self.db)
-            #print('Notice: Store Result -> '+storeresult)
-            print('Notice: '+data['username'] +' created -> '+str(storeresult))
-            return True
-
-    #AUTHMODEL
-    def userdb_set_db_views(self,user_database):
-
-        db = self.couch[user_database]
-
-        
-        view = ViewDefinition('auth', 'userhash', 
-                '''
-                function(doc) {
-                    if(doc.email) {
-                        emit(doc.email,doc)
-                    }
-                }
-                ''')
-
-        view.get_doc(db)
-        view.sync(db)
-
-        return True
-
-    #AUTHMODEL
-    def userdb_get_user_by_email(self,key,user_database=None):
-
-        print('flag1.1')
-
-        if not user_database : 
-            user_database = self.user_database
-
-        print('flag1.2')
-
-        db = self.couch[user_database]
-
-        print('flag1.3')
-        
-        options = {}
-        options['key']=key
-        result = db.view('auth/userhash',**options)
-        #result = db.iterview('auth/userhash',1,**options)
-
-        print(result)
-
-        print('flag1.4')
-               
-        for row in result:
-
-            item = {}
-            item[u'key'] = row['key']
-            item[u'value'] = row['value']
-
-        print('flag1.5')
-            
-
-        return item
-
-
-    #MAINMODEL
-    def create_db(self,dbname):
-        print('Notice: Creating db ->'+dbname)
-        return self.couch.create(dbname)     
-
-    #MAINMODEL
-    def select_db(self,dbname):
-        print('Notice: Selecting db ->'+dbname)
-        result = self.couch[dbname] 
-        print(result)
-        return result
-         
-    #MAINMODEL
-    def delete_db(self,dbname):
-        print('Notice: Deleting db ->'+dbname)
-        del self.couch[dbname] 
-        return True
-
-    #MAINMODEL
-    def create_doc(self,dbname,id,doc):
-        print('Notice: Creating doc ->'+str(doc))
-        print('Notice: in DB ->'+dbname)
-        print('Notice: With ID ->'+id)
-        db=self.select_db(dbname)
-        doc['_id']= id
-        db.save(doc)
-        #doc.store(db)
-        return True 
-
-    #MAINMODEL
-    def create_user(self,data,dbname=None):
-
-        if not dbname:
-            dbname=self.user_database
-        
-        print('flag1')
-        self.db = self.select_db(dbname)
-        print('flag2')
-
-        print('Notice: Creating User ->'+data['username'])
-        auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
-        auser._id = data['username']
-        storeresult = auser.store(self.db)
-        return True
-
-    #MAINMODEL
-    def select_user(self,dbname,user):
-        self.db = self.select_db(dbname)
-        print('Notice: Selecting User ->'+user)
-        return MyRingUser.load(self.db, user)
-
-
-    #MAINMODEL
-    def delete_user(self,dbname,user):
-        self.db = self.select_db(dbname)
-        print('Notice: Deleting User ->'+user)
-        #del self.db[user]
-        return True
-
-    #MAINMODEL
-    def update_user(self,dbname,docid):
-        pass
-
+    
