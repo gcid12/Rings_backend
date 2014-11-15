@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import (LoginManager, current_user, login_required,
@@ -73,6 +74,7 @@ class User(UserMixin):
             else:
                 return None
         except:
+            print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]
             print "there was an error"
             return None
 
@@ -86,15 +88,25 @@ class User(UserMixin):
             return None
 
     def get_by_id(self, id):
-        dbUser = models.User.objects.with_id(id)
-        if dbUser:
-            self.email = dbUser.email
-            self.active = dbUser.active
-            self.id = dbUser.id
 
-            return self
-        else:
+        try:
+            print('flag1')
+            dbUser =self.ATM.userdb_get_user_by_id(id)
+            print('flag2')
+            print(dbUser)
+            if dbUser:
+                self.email = dbUser['value']['email']
+                self.active = True #This needs to be implemented in the userdb
+                self.password = dbUser['value']['passhash']
+                self.id = dbUser['value']['_id']
+                return self
+            else:
+                return None
+        except:
+            print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]
+            print "there was an error"
             return None
+
 
 
 

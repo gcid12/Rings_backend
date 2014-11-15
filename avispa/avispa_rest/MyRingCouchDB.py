@@ -14,7 +14,7 @@ class MyRingCouchDB:
         
         # couch.resource.credentials = (os.environ['MYRING_COUCH_DB_USER'], 
         #                             os.environ['MYRING_COUCH_DB_PASS'])
-        self.couch.resource.credentials = (u'admin',u'happy123')
+        #self.couch.resource.credentials = (u'admin',u'happy123')
         #print couch.resource.credentials
         return self.couch 
 

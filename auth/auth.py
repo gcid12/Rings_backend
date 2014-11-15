@@ -17,14 +17,16 @@ def login():
         userObj = User()
         user = userObj.get_by_email_w_password(email)
         print(user)
-        if True:
-        #if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')) and user.is_active():
+        if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')) and user.is_active():
             remember = request.form.get("remember", "no") == "yes"
             if login_user(userObj, remember=remember):
                 flash("Logged in!")
+                #flash("Redirecting to : /"+user.id)
                 return redirect('/'+user.id)
             else:
                 flash("unable to log you in")
+        else:
+            flash("User/Password is not correct")
     
 
     return render_template("/auth/login.html")
@@ -80,10 +82,10 @@ def logout():
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
-
+    
     return redirect('/login')
 
 @login_manager.user_loader
 def load_user(id):
-    return None
+    return User.get_by_id(userid)
 
