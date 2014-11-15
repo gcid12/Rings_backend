@@ -62,6 +62,8 @@ class AuthModel:
         if not user_database : 
             user_database = self.user_database
 
+        db = self.couch[user_database]
+
         auser = self.MAM.select_user(user_database, data['username'])
 
         print('Notice: User subtracted from DB ')
@@ -73,7 +75,7 @@ class AuthModel:
         else:
             auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
             auser._id = data['username']
-            storeresult = auser.store(user_database)
+            storeresult = auser.store(db)
             #print('Notice: Store Result -> '+storeresult)
             print('Notice: '+data['username'] +' created -> '+str(storeresult))
             return True
