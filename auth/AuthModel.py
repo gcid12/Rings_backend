@@ -76,7 +76,7 @@ class AuthModel:
             auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
             auser._id = data['username']
             storeresult = auser.store(db)
-            #print('Notice: Store Result -> '+storeresult)
+            
             print('Notice: '+data['username'] +' created -> '+str(storeresult))
             return True
 
@@ -126,6 +126,42 @@ class AuthModel:
         for row in result:
 
             item = {}
+            item[u'id'] = row['id']
+            item[u'key'] = row['key']
+            item[u'value'] = row['value']
+
+        print('flag1.5')
+            
+
+        return item
+
+    #AUTHMODEL
+    def userdb_get_user_by_id(self,id,user_database=None):
+
+        print('flag1.1')
+
+        if not user_database : 
+            user_database = self.user_database
+
+        print('flag1.2')
+
+        db = self.couch[user_database]
+
+        print('flag1.3')
+        
+        options = {}
+        options['id']=id
+        result = db.view('auth/userhash',**options)
+        #result = db.iterview('auth/userhash',1,**options)
+
+        print(result)
+
+        print('flag1.4')
+               
+        for row in result:
+
+            item = {}
+            item[u'id'] = row['id']
             item[u'key'] = row['key']
             item[u'value'] = row['value']
 

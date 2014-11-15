@@ -189,14 +189,33 @@ class AllModelsTestCase(unittest.TestCase):
         self.MAM.delete_db(self.ringdbname)
     
     #AUTH
-    def test_user_database_views(self):
+    def test_user_database_views_by_email(self):
         #SETUP
         print('Function admin_user_db_create starts')
         self.ATM.admin_user_db_create(self.user_db)
         print('Function create_user starts')
         self.MAM.create_user(self.user,self.user_db)
+
+        #TEST
         print('Function userdb_get_user_by_email')
         result =self.ATM.userdb_get_user_by_email(self.user['email'],self.user_db)
+        print(result['id'])
+        print(result['key'])
+        print(result['value'])
+        self.assertEqual(result['key'],self.user['email'])
+
+        #AUTH
+    def test_user_database_views_by_id(self):
+        #SETUP
+        print('Function admin_user_db_create starts')
+        self.ATM.admin_user_db_create(self.user_db)
+        print('Function create_user starts')
+        self.MAM.create_user(self.user,self.user_db)
+
+        #TEST
+        print('Function userdb_get_user_by_id')
+        result =self.ATM.userdb_get_user_by_id(self.user['username'],self.user_db)
+        print(result['id'])
         print(result['key'])
         print(result['value'])
         self.assertEqual(result['key'],self.user['email'])

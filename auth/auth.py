@@ -82,10 +82,13 @@ def logout():
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
-    
+
     return redirect('/login')
 
 @login_manager.user_loader
 def load_user(id):
-    return User.get_by_id(userid)
+    
+    #print(id)
+    #return User.get_by_id(id)
+    return None
 
