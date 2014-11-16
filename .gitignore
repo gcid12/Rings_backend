@@ -1,6 +1,9 @@
 #Flask environment config
 env_config.py
 
+#Dumps
+*.dump
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

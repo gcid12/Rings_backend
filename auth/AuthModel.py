@@ -6,6 +6,7 @@ from couchdb.design import ViewDefinition
 from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
 from MainModel import MainModel
+from env_config import COUCHDB_USER, COUCHDB_PASS
 
 class AuthModel:
 
@@ -13,6 +14,11 @@ class AuthModel:
 
         MCD = MyRingCouchDB()
         self.couch=MCD._instantiate_couchdb_as_admin()
+        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
+        print('self.couch :ATM')
+        print(self.couch)
+        print('self.couch.resource.credentials :ATM')
+        print(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
         self.MAM = MainModel()

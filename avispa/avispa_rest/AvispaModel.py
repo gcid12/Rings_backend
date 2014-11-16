@@ -20,6 +20,7 @@ from CouchViewSync import CouchViewSync
 from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
 from MainModel import MainModel
+from env_config import COUCHDB_USER, COUCHDB_PASS
 
 
 class AvispaModel:
@@ -28,8 +29,15 @@ class AvispaModel:
     def __init__(self):
 
         MCD = MyRingCouchDB()
-        self.couch=MCD._instantiate_couchdb_as_admin()
+        self.couch=MCD.instantiate_couchdb_as_admin()    
+        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
+        print('self.couch :AVM')
+        print(self.couch)
+        print('self.couch.resource.credentials :AVM')
+        print(self.couch.resource.credentials)
         self.user_database = 'myring_users'
+
+
 
         self.MAM = MainModel()
  
@@ -88,7 +96,8 @@ class AvispaModel:
         db_ringname = db_ringname.replace(" ","")
 
         try:            
-            self.couch.create(db_ringname) #Creates this ring database
+            #self.couch.create(db_ringname) #Creates this ring database
+            self.MAM.create_db(db_ringname)
             self.ring_set_db_views(db_ringname) #Sets all the CouchDB Views needed for this new ring
             self.user_add_ring(handle,ringname,ringversion) #Adds the ring to the user's list
             return True    

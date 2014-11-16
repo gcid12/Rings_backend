@@ -14,14 +14,20 @@ class MyRingCouchDB:
         
         # couch.resource.credentials = (os.environ['MYRING_COUCH_DB_USER'], 
         #                             os.environ['MYRING_COUCH_DB_PASS'])
-        self.couch.resource.credentials = (u'admin',u'happy123')
+        #self.couch.resource.credentials = (u'admin',u'happy123')
         #print couch.resource.credentials
         return self.couch 
 
     def _instantiate_couchdb_as_user(self,username=None,password=None):
 
         if username and password:
-            self.couch.resource.credentials = (username,password)
+            pass
+            #self.couch.resource.credentials = (username,password)
+            
+        else:
+            pass
+            #self.couch.resource.credentials = (u'admin',u'happy123')
+
 
         couch = couchdb.Server()
 

@@ -1,6 +1,8 @@
 # AuthModel.py
 from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
+from env_config import COUCHDB_USER, COUCHDB_PASS
+
 
 class MainModel:
 
@@ -8,11 +10,12 @@ class MainModel:
 
         MCD = MyRingCouchDB()
         self.couch=MCD._instantiate_couchdb_as_admin()
+        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.user_database = 'myring_users'
 
     #MAINMODEL
     def create_db(self,dbname):
-        print('Notice: Creating db ->'+dbname)
+        print('Notice: Creating db ->>'+dbname)
         return self.couch.create(dbname)     
 
     #MAINMODEL

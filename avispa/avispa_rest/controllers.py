@@ -48,6 +48,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     data['handle']=handle
     data['ring']=ring
     data['idx']=idx
+    data['current_user']=current_user
 
     
 

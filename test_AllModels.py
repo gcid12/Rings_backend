@@ -152,7 +152,7 @@ class AllModelsTestCase(unittest.TestCase):
     #AVISPA
     def test_add_ring_to_user_ring_list(self):
         #SETUP
-        print('Function admin_user_db_create starts')
+        print('Function admin_user_db_create starts2c')
         self.ATM.admin_user_db_create(self.user_db)
         print('Function create_user starts')
         self.MAM.create_user(self.user,self.user_db)

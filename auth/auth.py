@@ -77,7 +77,8 @@ def reauth():
 @auth_flask_login.route("/logout")
 @login_required
 def logout():
-    
+    logout_user()
+    flash("Logged out.")
     return redirect('/login')
 
 @login_manager.unauthorized_handler
@@ -87,8 +88,18 @@ def unauthorized_callback():
 
 @login_manager.user_loader
 def load_user(id):
+
+    print('load_user id is:')
+    print(id)
+
+    if id is None:
+        redirect('/login')
+    user = User()
+    user.get_by_id(id)
+    if user.is_active():
+        return user
+    else:
+        return None
     
-    #print(id)
-    #return User.get_by_id(id)
-    return None
+
 

@@ -7,21 +7,25 @@ class MyRingCouchDB:
 
     def __init__(self):
 
-        self.couch = couchdb.Server()
+        couch = couchdb.Server()
+        self.couch = couch
 
-    def _instantiate_couchdb_as_admin(self):
+    def instantiate_couchdb_as_admin(self):  
+        #This is needed to have couch.resources available
+        #for when couch.resources.credentials is created
+        #Tried loading couch.resources.credentials here but it will only
+        #load in the first instance. The following ones show None even though 
+        #I call this function as well
 
-        
-        # couch.resource.credentials = (os.environ['MYRING_COUCH_DB_USER'], 
-        #                             os.environ['MYRING_COUCH_DB_PASS'])
-        #self.couch.resource.credentials = (u'admin',u'happy123')
-        #print couch.resource.credentials
+
         return self.couch 
 
     def _instantiate_couchdb_as_user(self,username=None,password=None):
+        #WILL BE DEPRECATED
 
         if username and password:
-            self.couch.resource.credentials = (username,password)
+            pass
+            #self.couch.resource.credentials = (username,password)
 
         couch = couchdb.Server()
 

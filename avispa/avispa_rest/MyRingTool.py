@@ -7,8 +7,9 @@ import bcrypt
 
 from flask import flash
 
-from AvispaModel import AvispaModel
 from MainModel import MainModel
+from AvispaModel import AvispaModel
+
 from auth.AuthModel import AuthModel
 
 from AvispaUpload import AvispaUpload
@@ -21,7 +22,10 @@ class MyRingTool:
 
         self.AVM = AvispaModel() 
         self.MAM = MainModel() 
-        self.ATM = AuthModel()        
+        self.ATM = AuthModel()    
+
+    def checkuno(self,request,*args):
+        self.MAM.create_db('python-test39')    
 
     def install(self,request,*args):
 

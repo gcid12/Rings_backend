@@ -1,5 +1,6 @@
 from flask import redirect, flash
 from RingBuilder import RingBuilder
+from MainModel import MainModel #DELETE!
 from AvispaModel import AvispaModel
 
 class AvispaRestFunc:
