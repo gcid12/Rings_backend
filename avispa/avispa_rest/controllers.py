@@ -1,11 +1,12 @@
 # Import flask dependencies
-import urlparse
+import urlparse, time, datetime
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from MyRingTool import MyRingTool
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE
+
 
 
 
@@ -48,6 +49,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     else:
         data = getattr(ARF, m.lower())(request,handle,ring,idx)
 
+
     data['handle']=handle
     data['ring']=ring
     data['idx']=idx
@@ -55,6 +57,12 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
     o = urlparse.urlparse(request.url)
     data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+    t = (2009, 2, 17, 17, 3, 38, 1, 48, 0)
+    #t = time.mktime(t)
+    #t = time.localtime()
+    t = time.time()
+
+    data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 
     print("host_url")
     print(data['host_url'])
