@@ -118,16 +118,31 @@ class AuthModel:
             return True
 
     #AUTHMODEL
-    def userdb_set_db_views(self,user_database):
+    def userdb_set_db_views(self,user_database=None):
+
+        if not user_database : 
+            user_database = self.user_database
 
         db = self.couch[user_database]
 
         
-        view = ViewDefinition('auth', 'userhash', 
+        view = ViewDefinition('auth', 'userbyemail', 
                 '''
                 function(doc) {
                     if(doc.email) {
                         emit(doc.email,doc)
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+        view = ViewDefinition('auth', 'userbyhandle', 
+                '''
+                function(doc) {
+                    if(doc.email) {
+                        emit(doc._id,doc)
                     }
                 }
                 ''')
@@ -153,7 +168,7 @@ class AuthModel:
         
         options = {}
         options['key']=key
-        result = db.view('auth/userhash',**options)
+        result = db.view('auth/userbyemail',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
         print(result)
@@ -187,8 +202,9 @@ class AuthModel:
         print('flag1.3')
         
         options = {}
-        options['id']=id
-        result = db.view('auth/userhash',**options)
+        # options will only accept this: 'key', 'startkey', 'endkey'
+        options['key']=id
+        result = db.view('auth/userbyhandle',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
         print(result)

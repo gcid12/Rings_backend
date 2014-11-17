@@ -305,6 +305,20 @@ class MyRingTool:
 
         return d
 
+    def update_gerardo(self,request,*args):
+
+        self.ATM.userdb_set_db_views()
+
+        flash(u'DB Views updated')
+
+        rq = ''
+
+        d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
+
+        return d
+
+
+
 
 
 

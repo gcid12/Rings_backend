@@ -218,7 +218,7 @@ class AllModelsTestCase(unittest.TestCase):
         print(result['id'])
         print(result['key'])
         print(result['value'])
-        self.assertEqual(result['key'],self.user['email'])
+        self.assertEqual(result['key'],self.user['username'])
 
 
 
