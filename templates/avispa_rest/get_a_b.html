@@ -87,7 +87,7 @@
                                           {% if k == 'Images' %}
                                             {% for image in v %}
                                               {% if image %}
-                                            <img style="width:70px;" src="http://localhost/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                                            <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
                                               {% endif %}
                                             {% endfor %}
                                           {% else %}

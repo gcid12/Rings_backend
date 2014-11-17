@@ -27,8 +27,8 @@ class User(UserMixin):
         #newUser.save()
 
         user = {}
-        user['username'] = self.username
-        user['email'] = self.email
+        user['username'] = self.username.lower()
+        user['email'] = self.email.lower()
         user['lastname'] = 'testlastname'
         user['firstname'] = 'testfirstname'
         user['passhash'] = self.passhash

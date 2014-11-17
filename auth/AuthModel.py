@@ -1,12 +1,13 @@
 # AuthModel.py
 import sys
+import os
 from couchdb.http import PreconditionFailed
 from couchdb.design import ViewDefinition
 
 from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_USER, COUCHDB_PASS
+from env_config import COUCHDB_USER, COUCHDB_PASS, IMAGE_STORE
 
 class AuthModel:
 
@@ -23,10 +24,40 @@ class AuthModel:
 
         self.MAM = MainModel()
 
+        self.officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
+        self.thumbnailsizes = {'t75':75,'t150':150}
+
     #AUTHMODEL
     def saas_create_user(self,user):
         #Added validation for SaaS users go here
-        return self.MAM.create_user(user)
+        if self.MAM.create_user(user):
+            print("User created in DB. Attempting to create image folders...")
+            self.create_user_imagefolder(user['username'])
+            return True
+
+    def create_user_imagefolder(self,username):         
+        self.safe_create_dir(IMAGE_STORE+'/'+username+'/o') #Original folder
+
+        for r in self.officialsizes:
+            self.safe_create_dir(IMAGE_STORE+'/'+username+'/'+r)  # Scale-down version folders
+
+
+        for t in self.thumbnailsizes:
+            self.safe_create_dir(IMAGE_STORE+'/'+username+'/'+t)  # Thumbnail folders
+
+        return True
+
+    def safe_create_dir(self,path): #DONT USE HERE! #Moved to AuthModel.py
+        print(path)
+        try:
+            os.makedirs(path)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+
+        print('Folder created:'+path)
+        return True
+
 
     #AUTHMODEL
     def admin_user_db_create(self,user_database=None,*args):

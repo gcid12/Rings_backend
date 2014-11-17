@@ -202,7 +202,7 @@ class AvispaUpload:
 
 
 
-    def create_user_imagefolder(self):
+    def x_create_user_imagefolder(self): #DONT USE HERE! #Moved to AuthModel.py
 
         
         self.safe_create_dir(self.IMAGE_FOLDER+'/o') #Original folder
@@ -218,7 +218,7 @@ class AvispaUpload:
 
     
 
-    def safe_create_dir(self,path):
+    def x_safe_create_dir(self,path): #DONT USE HERE! #Moved to AuthModel.py
         print(path)
         try:
             os.makedirs(path)

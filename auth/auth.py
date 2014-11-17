@@ -1,4 +1,4 @@
-import os, datetime
+import sys, os, datetime
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
@@ -21,7 +21,7 @@ def login():
             remember = request.form.get("remember", "no") == "yes"
             if login_user(userObj, remember=remember):
                 flash("Logged in!")
-                #flash("Redirecting to : /"+user.id)
+                flash("Redirecting to : /"+user.id)
                 return redirect('/'+user.id)
             else:
                 flash("unable to log you in")
@@ -61,6 +61,7 @@ def register():
                 flash("unable to log you in")
 
         except:
+            print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address")
             current_app.logger.error("Error on registration - possible duplicate emails")
         

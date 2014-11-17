@@ -154,6 +154,8 @@ class AvispaModel:
             user_database = self.user_database
 
         db = self.couch[user_database]
+        print("handle:")
+        print(handle)
         doc =  MyRingUser.load(db, handle)
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
         doc.store(db)
