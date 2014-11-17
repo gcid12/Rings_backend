@@ -3,7 +3,8 @@ from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from MyRingTool import MyRingTool
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-
+from default_config import IMAGE_STORE
+from env_config import IMAGE_STORE
 
 
 
@@ -15,6 +16,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
     ARF = AvispaRestFunc()
     MRT = MyRingTool()
+    ISR = ImageServer()
 
 
     if 'q' in request.args:
@@ -36,7 +38,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
 
 
-    if handle=='tool':  #not a ring! Here goes all the system specific functionality
+    if handle=='_tools':  #not a ring! Here goes all the system specific functionality
         tool = ring
         data = getattr(MRT, tool.lower())(request)
         print('flagA:')
@@ -90,6 +92,13 @@ def intro():
 
     data = {}
     return render_template("avispa_rest/tools.html", data=data)
+
+@avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
+
+def imageserver(filename,depth1,depth2):
+
+    avispa_rest.static_folder=IMAGE_STORE+'/'+depth1+'/'+depth2
+    return avispa_rest.send_static_file(filename)
 
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 
