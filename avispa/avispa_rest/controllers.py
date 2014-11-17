@@ -1,4 +1,5 @@
 # Import flask dependencies
+import urlparse
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from MyRingTool import MyRingTool
@@ -16,7 +17,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
     ARF = AvispaRestFunc()
     MRT = MyRingTool()
-    ISR = ImageServer()
+    
 
 
     if 'q' in request.args:
@@ -52,7 +53,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
     data['idx']=idx
     data['current_user']=current_user
 
-    
+    o = urlparse.urlparse(request.url)
+    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+    print("host_url")
+    print(data['host_url'])
 
 
     if 'error_status' in data.keys():
