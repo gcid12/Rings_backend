@@ -15,9 +15,11 @@ class AvispaRestFunc:
 
         ringlist = self.AVM.user_get_rings(handle)
 
+        ringlistlen = len(ringlist)
+
 
         print(ringlist)
-        d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist}
+        d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist, 'ringlistlen':ringlistlen}
     	return d
 
     def get_rq_a(self,request,handle,*args):

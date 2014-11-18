@@ -26,20 +26,21 @@
     {% block headscripts %}
     {% endblock %}
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+
 
 
 
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+ 
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+         
+      {% endif %}
+    {% endwith %}
 
 <header>
   <div class="topbar topbar-white" role="navigation">
