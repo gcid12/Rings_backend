@@ -21,7 +21,7 @@ def login():
             remember = request.form.get("remember", "no") == "yes"
             if login_user(userObj, remember=remember):
                 flash("Logged in!")
-                flash("Redirecting to : /"+user.id)
+                #flash("Redirecting to : /"+user.id)
                 return redirect('/'+user.id)
             else:
                 flash("unable to log you in")

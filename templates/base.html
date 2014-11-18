@@ -59,7 +59,9 @@
       </div>
         <div class="navbar-collapse collapse">
             <!-- Note: you can use <li class="hidden-sm"> to hide things -->
+            
             <ul class="nav navbar-nav navbar-right">
+                <li>Logged in as: {% if data is defined %}{{ data.current_user.id }}{% endif %}</li>
                 <li class="active"><a href="/">Home</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools &nbsp; <span class="caret"></span></a>
@@ -92,7 +94,7 @@
             <i class="fa fa-dot-circle-o fa-2x" style="color:#CCC; padding:0 10px;"></i>
         </div>
     
-        <div class="pull-right rn-t3 text-right"><strong>{{ data.today }}</strong><br/>
+        <div class="pull-right rn-t3 text-right"><strong>{% if data is defined %}{{ data.today }}{%endif%}</strong><br/>
             <span class="rn-clear">Resources: <br/>Global: 1,345 / Local: 34,543 </span>
         </div>
 

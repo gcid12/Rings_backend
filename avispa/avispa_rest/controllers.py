@@ -150,8 +150,15 @@ def static5(filename,depth1,depth2,depth3,depth4):
 
 
 @avispa_rest.route('/<handle>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-
+@login_required
 def route_a(handle):
+
+    print("get_a:Login")
+    print(handle)
+    print(current_user.id)
+
+    if handle != current_user.id:
+        return redirect('/logout') 
 
     result = route_dispatcher('_a',handle)
  
@@ -162,7 +169,7 @@ def route_a(handle):
     
 
 @avispa_rest.route('/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-
+@login_required
 def route_a_b(handle,ring):
 
     result = route_dispatcher('_a_b',handle,ring)
@@ -175,7 +182,7 @@ def route_a_b(handle,ring):
 
 
 @avispa_rest.route('/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-
+@login_required
 def route_a_b_c(handle,ring,idx):
 
     result = route_dispatcher('_a_b_c',handle,ring,idx)
