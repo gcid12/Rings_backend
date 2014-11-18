@@ -1,4 +1,4 @@
-import sys, os, datetime
+import sys, os, time, datetime
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
@@ -27,9 +27,12 @@ def login():
                 flash("unable to log you in")
         else:
             flash("User/Password is not correct")
-    
 
-    return render_template("/auth/login.html")
+    data = {}
+    #t = time.time()
+    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    
+    return render_template("/auth/login.html", data=data)
 
 #
 # Route disabled - enable route to allow user registration.

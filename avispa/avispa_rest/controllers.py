@@ -57,11 +57,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
     o = urlparse.urlparse(request.url)
     data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-    t = (2009, 2, 17, 17, 3, 38, 1, 48, 0)
-    #t = time.mktime(t)
-    #t = time.localtime()
-    t = time.time()
 
+    t = time.time()
     data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 
     print("host_url")
