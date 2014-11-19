@@ -43,22 +43,8 @@ class User(UserMixin):
         else:
             return None
 
-    def get_by_email(self, email):
-
-        dbUser =self.ATM.userdb_get_user_by_email(email)
-        #print(dbUser['key'])
-        #print(dbUser['value'])
-
-        
-        if dbUser:
-            self.email = dbUser['email']
-            self.active = True #This needs to be implemented in the userdb
-            self.id = dbUser['_id']
-            return self
-        else:
-            return None
     
-    def get_by_email_w_password(self, email):
+    def get_by_email(self, email):
 
         try:
             print('flag1')
