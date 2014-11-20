@@ -335,6 +335,8 @@ class AvispaModel:
                          {
                             '_id' : TextField(),
                             'added' : DateTimeField(default=datetime.now()),
+                            'license' : TextField(),
+                            'public' : BooleanField(default=False),
                             'deleted' : BooleanField(default=False),
                             'items': ListField(DictField(Mapping.build(
                                                     **args_i

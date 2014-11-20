@@ -5,6 +5,8 @@ from couchdb.mapping import Document, TextField, IntegerField, BooleanField, Dat
 class MyRingBlueprint(Document):
     _id = TextField()
     added = DateTimeField(default=datetime.now)
+    license = TextField()
+    public = BooleanField(default=False)
     rings = ListField(DictField(Mapping.build(
         RingName = TextField(),
         RingDescription = TextField(),
