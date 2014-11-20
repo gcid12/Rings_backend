@@ -306,8 +306,10 @@ class AvispaRestFunc:
         ''' 
         d = {}       
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
-
-
+        if 'Images' in item:
+                images=item['Images'].split(',')
+                item['Images']=images
+        
         if item:
             print('Awesome , you just retrieved the item from the DB')
             d['item'] = item

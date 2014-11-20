@@ -33,17 +33,26 @@
             <div class="rn-box-solo">
               <div class="row">
                 <div class="col-sm-3">
-                    {% for k,v in data.item.items() %}
-                        {% if k == 'Images' %}
-                            {% for image in v %}
-                                {% if image %}
-                                    <img style="width:70px;" src="http://localhost/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                                            
-                        {% endif %}
-                    {% endfor %}
+
+                               
+
+                  {% for k,v in data.item.items() %}
+                     {% if k =='Images' %}
+                         
+
+                        {% for image in v %}
+                          {% if image %}
+                            <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                          {% endif %}
+
+                        {% endfor %}             
+
+                      {% endif %}
+                  {% endfor %}
+                
+
+
+
                 </div>
               </div>    
             </div>
