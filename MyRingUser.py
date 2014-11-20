@@ -1,6 +1,6 @@
 # AvispaUser.py
 from datetime import datetime
-from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, Mapping
+from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping
 
 class MyRingUser(Document):
     _id = TextField()
@@ -17,3 +17,12 @@ class MyRingUser(Document):
         count = IntegerField(),
         added = DateTimeField(default=datetime.now)
     	)))
+    is_active = BooleanField(default=True)
+    is_authenticated = BooleanField(default=False)
+    new_password_key = TextField()
+    new_password_requested = DateTimeField()
+    new_email = TextField()
+    new_email_key = TextField()
+    last_login = DateTimeField()
+    last_ip = TextField()
+    modified = DateTimeField(default=datetime.now)

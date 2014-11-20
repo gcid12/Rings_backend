@@ -22,9 +22,7 @@ class User(UserMixin):
         self.ATM = AuthModel()
 
 
-    def save(self): 
-        #newUser = models.User(email=self.email, password=self.password, active=self.active) 
-        #newUser.save()
+    def set_user(self): 
 
         user = {}
         user['username'] = self.username.lower()
@@ -43,8 +41,22 @@ class User(UserMixin):
         else:
             return None
 
-    
-    def get_by_email(self, email):
+    def set_password_key(self,key):
+
+        print('set_password_key:')
+        print(self.id)
+ 
+        return self.ATM.saas_create_password_key(self.id,key)
+
+    def set_password(self,passhash):
+
+        print('set_password:')
+        print(self.id)
+ 
+        return self.ATM.saas_set_password(self.id,passhash)
+
+
+    def get_by_token(self, email, token):
 
         try:
             print('flag1')
@@ -53,7 +65,7 @@ class User(UserMixin):
             print(dbUser)
             if dbUser:
                 self.email = dbUser['value']['email']
-                self.active = True #This needs to be implemented in the userdb
+                self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
                 self.id = dbUser['value']['_id']
                 return self
@@ -64,25 +76,20 @@ class User(UserMixin):
             print "there was an error"
             return None
 
-    def is_active(self):
-        return True
-
-    def get_mongo_doc(self):
-        if self.id:
-            return models.User.objects.with_id(self.id)
-        else:
-            return None
-
-    def get_by_id(self, id):
+    def get_user(self):
 
         try:
             print('flag1')
-            dbUser =self.ATM.userdb_get_user_by_id(id)
+            if self.email:
+                dbUser =self.ATM.userdb_get_user_by_email(self.email)
+            elif self.username:
+                dbUser =self.ATM.userdb_get_user_by_id(self.username)
+
             print('flag2')
             print(dbUser)
             if dbUser:
                 self.email = dbUser['value']['email']
-                self.active = True #This needs to be implemented in the userdb
+                self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
                 self.id = dbUser['value']['_id']
                 return self
@@ -92,6 +99,33 @@ class User(UserMixin):
             print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]
             print "there was an error"
             return None
+
+
+    def is_valid_password_key(self,email,key):
+
+        try:
+            print('flag1')
+            dbUser =self.ATM.userdb_get_user_by_email(email)
+            print('flag2')
+            print(dbUser)
+            if dbUser['value']['new_password_key']==key:   
+                return True
+            else:
+                return False
+        except:
+            print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]
+            print "There was an error validating the Key"
+            return False
+
+
+    def is_active(self):
+        return self.active
+
+    def is_authenticated(self):
+        return True
+
+    def is_anonymous(self):
+        return False
 
 
 

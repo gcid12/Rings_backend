@@ -35,6 +35,30 @@ class AuthModel:
             self.create_user_imagefolder(user['username'])
             return True
 
+    def saas_create_password_key(self,user,key):
+
+        print("saas_create_password_key")
+        print(user)
+        print(key)
+
+        data = {}
+        data['id']=user
+        data['new_password_key']=key
+
+        return self.MAM.update_user(data)
+
+    def saas_set_password(self,user,passhash):
+
+        print("saas_set_password")
+        print(user)
+        print(passhash)
+
+        data = {}
+        data['id']=user
+        data['passhash']=passhash
+
+        return self.MAM.update_user(data)
+
     def create_user_imagefolder(self,username):         
         self.safe_create_dir(IMAGE_STORE+'/'+username+'/o') #Original folder
 

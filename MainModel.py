@@ -53,25 +53,76 @@ class MainModel:
         print('flag2')
 
         print('Notice: Creating User ->'+data['username'])
-        auser = MyRingUser(email= data['email'],firstname= data['firstname'],lastname=data['lastname'], passhash= data['passhash'], guid= data['guid'], salt= data['salt'])
+        auser = MyRingUser(
+            email= data['email'],
+            firstname= data['firstname'],
+            lastname=data['lastname'], 
+            passhash= data['passhash'], 
+            guid= data['guid'], 
+            salt= data['salt'])
+
         auser._id = data['username']
         storeresult = auser.store(self.db)
         return True
 
-    #MAINMODEL
+    #MAINMODEL  Rarely Used directly. It is better to use the DB Views
     def select_user(self,dbname,user):
         self.db = self.select_db(dbname)
         print('Notice: Selecting User ->'+user)
         return MyRingUser.load(self.db, user)
 
 
-    #MAINMODEL
+    #MAINMODEL  
     def delete_user(self,dbname,user):
         self.db = self.select_db(dbname)
         print('Notice: Deleting User ->'+user)
         #del self.db[user]
         return True
 
-    #MAINMODEL
-    def update_user(self,dbname,docid):
-        pass
+    #MAINMODEL  
+    def update_user(self,data,user_database=None):
+
+        print("update user data:")
+        print(data)
+
+        print("update_user 1:")
+
+        if not user_database : 
+            user_database = self.user_database
+
+        print("update_user 2:")
+
+        self.db = self.couch[self.user_database]
+        print("update_user 3:")
+        user =  MyRingUser.load(self.db, data['id'])
+        print("update_user 4:")
+        print(user)
+
+        if user:
+            print("update_user 5:")
+
+
+
+            
+
+
+            for field in data:
+                if field!='id':
+                    print("Old Value:"+str(user[field]))
+                    print("New Value:"+str(data[field]))
+                    user[field]=data[field]
+
+            if user.store(self.db):  
+                print('Data updated succesfully')             
+                return True
+            else:
+                print('Could not update user')
+                return False
+
+        else:
+            print('No user'+data['_id'])
+        
+
+
+
+

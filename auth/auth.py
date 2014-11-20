@@ -1,9 +1,9 @@
-import sys, os, time, datetime, smtplib, urlparse
+import sys, os, time, datetime, smtplib, urlparse, random
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-from env_config import FROMEMAIL, FROMPASS, TOEMAIL
+from env_config import FROMEMAIL, FROMPASS
 
 from User import User
 
@@ -15,19 +15,27 @@ def login():
     
     if request.method == "POST" and "email" in request.form:
         email = request.form.get('email')
-        userObj = User()
-        user = userObj.get_by_email(email)
+        userObj = User(email=email)
+        user = userObj.get_user()
+        print("user:")
+        print(user.password)
+        print(request.form.get('password'))
+        print(flask_bcrypt.check_password_hash(user.password,request.form.get('password')))
         print(user)
-        if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')) and user.is_active():
-            remember = request.form.get("remember", "no") == "yes"
-            if login_user(userObj, remember=remember):
-                flash("Logged in!")
-                #flash("Redirecting to : /"+user.id)
-                return redirect('/'+user.id)
+        print(userObj.is_active())
+        if userObj.is_active():
+            if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
+                remember = request.form.get("remember", "no") == "yes"
+                if login_user(userObj, remember=remember):
+                    flash("Logged in!")
+                    #flash("Redirecting to : /"+user.id)
+                    return redirect('/'+user.id)
+                else:
+                    flash("unable to log you in")
             else:
-                flash("unable to log you in")
+                flash("User/Password is not correct")
         else:
-            flash("User/Password is not correct")
+            flash("User not active")
 
     data = {}
     #t = time.time()
@@ -57,7 +65,8 @@ def register():
         print user
 
         try:
-            user.save()
+            user.set_user()
+            print('Now log in the user')
             if login_user(user, remember="no"):
                 flash("Logged in!")
                 return redirect('/tools')
@@ -67,9 +76,11 @@ def register():
         except:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address")
-            current_app.logger.error("Error on registration - possible duplicate emails")
+            current_app.logger.error("Error on registration ")
         
-    return render_template("/auth/register.html")
+    data = {}
+
+    return render_template("/auth/register.html", data=data)
 
 @auth_flask_login.route("/_forgot", methods=["GET", "POST"])
 def forgot():
@@ -78,9 +89,10 @@ def forgot():
     if request.method == 'POST' and request.form.get('email'):
 
         email = request.form.get('email')
-        userObj = User()
-        user = userObj.get_by_email(email)
+        userObj = User(email=email)
+        user = userObj.get_user()
         print(user)
+
 
         if user and user.is_active():
 
@@ -88,6 +100,12 @@ def forgot():
 
                 o = urlparse.urlparse(request.url)
                 host_url=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+                #save the token in the database
+                key = flask_bcrypt.generate_password_hash(request.form.get('email')+str(random.randint(0,9999)))
+                #key = 'qwerty1234'
+                print("key:"+key)
+                userObj.set_password_key(key)
 
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.ehlo()
@@ -99,13 +117,13 @@ def forgot():
                 #Send the mail
                 msg = "\r\n".join([
                   "From:"+FROMEMAIL,
-                  "To: "+TOEMAIL,
-                  "Subject: Password Recovery Email for"+user.email,
+                  "To: "+user.email,
+                  "Subject: Password Recovery Email for: "+user.email,
                   "",
-                  "Click here <a href='"+host_url+"/_recoverpass?token=qwerty12345'>qwerty12345</a>"
+                  "Click here "+host_url+"/_forgot?k="+key+"&e="+email
                   ])
                 #msg = "\nHello!" # The /n separates the message from the headers
-                server.sendmail(FROMEMAIL, TOEMAIL, msg)
+                server.sendmail(FROMEMAIL, user.email, msg)
                 server.quit()
 
 
@@ -114,14 +132,51 @@ def forgot():
                 
 
             except:
+                print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
                 print("Error sending password revovery email")
                 flash("There was an error sending the password recovery instructions")
                 pass
 
         else:
             flash("Could not find this email")
+
+    elif request.method == 'GET' and request.args.get('k') and request.args.get('e'):
+        data = {}
+        data['key'] = request.args.get('k')
+        data['email'] = request.args.get('e')
+        userObj = User()
+        if userObj.is_valid_password_key(data['email'],data['key']):
+            print('Token authorized')
+            return render_template("/auth/new_password.html", data=data)
+        else:
+            print('Token Rejected')
             
-        
+
+    elif (request.method == 'POST' and 
+         request.form.get('e') and 
+         request.form.get('k') and 
+         request.form.get('password') and 
+         request.form.get('confirm')):
+
+        userObj = User(email=request.form.get('e'))
+        user = userObj.get_user()
+
+        if request.form.get('password') == request.form.get('confirm'):
+            if userObj.is_valid_password_key(request.form.get('e'),request.form.get('k')):
+                print('Token authorized')
+                # generate password hash
+                passhash = flask_bcrypt.generate_password_hash(request.form.get('password'))
+                userObj.set_password(passhash)
+                flash('Password changed')
+                return redirect('_login')
+            else:
+                flash('Token Rejected')
+                return redirect('_login')
+        else:
+            flash('Both passwords need to match')
+            return redirect('/_forgot?k='+request.form.get('k')+'&e='+request.form.get('e'))
+            
+              
     data = {}
 
     
@@ -156,8 +211,8 @@ def load_user(id):
 
     if id is None:
         redirect('/_login')
-    user = User()
-    user.get_by_id(id)
+    user = User(username=id)
+    user.get_user()
     if user.is_active():
         return user
     else:
