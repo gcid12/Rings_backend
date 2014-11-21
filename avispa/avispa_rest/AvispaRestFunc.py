@@ -2,6 +2,7 @@ from flask import redirect, flash
 from RingBuilder import RingBuilder
 from MainModel import MainModel #DELETE!
 from AvispaModel import AvispaModel
+from env_config import PREVIEW_LAYER
 
 class AvispaRestFunc:
 
@@ -151,7 +152,7 @@ class AvispaRestFunc:
                 print(fieldname)
                 if fieldname in layers:
                     cutItem['id'] = item['id']
-                    if layers[fieldname]<=2:
+                    if layers[fieldname]<=PREVIEW_LAYER:
                         print("Out:"+fieldname)
                         cutItem[fieldname] = item[fieldname]  
 
