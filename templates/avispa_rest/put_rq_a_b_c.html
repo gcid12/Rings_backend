@@ -79,7 +79,7 @@
             <form role="form" action="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=put" method="POST" autocomplete="off">
               <div class="rn-box-solo">
                 <div class="row">
-                 Public: {{data.item}} <input type="checkbox" value="public" name="_public" {% if data.item.public == True %}checked{% endif %} >
+                 Public: <input type="checkbox" value="public" name="_public" {% if data.item._public == True %}checked{% endif %} >
 
                
                 </div> 

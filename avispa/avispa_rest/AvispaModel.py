@@ -396,6 +396,8 @@ class AvispaModel:
 
         if request.form.get('_public'):
             item['public']=True
+        else:
+            item['public']=False
 
         for field in fields:
             #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
