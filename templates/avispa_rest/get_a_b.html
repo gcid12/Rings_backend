@@ -111,16 +111,37 @@
                                     </td>
                                     <td style="width:30%;">
 
+
+                                            <dl class="dl-horizontal">
+                                        
+                                            {% for k,v in item.items() %}
+                                              
+                                              {% if k =='_public' %}
+                                                {% if v ==True %}
+                                                  <dt></dt>
+                                                  <dd><b>PUBLIC</b></dd>
+                                                {% else%}
+                                                  <dt></dt>
+                                                  <dd><b>NOT PUBLIC</b></dd>
+                                                {% endif %}
+                                              {% endif %}
+                                              
+                                            {% endfor %}
+                                          
+                                            </dl>
+
                                         
                                             <dl class="dl-horizontal">
                                         
                                             {% for k,v in item.items() %}
                                               {% if not k =='Images' %}
-                                                {% if not k =='Description' %} 
+                                              {% if not k =='Description' %} 
+                                              {% if not k =='_public' %} 
+
                                               <dt>{{ k }}:</dt>
                                               <dd>{{ v }}</dd>
-                                                {% endif %}
-
+                                              {% endif %}
+                                              {% endif %}
                                               {% endif %}
                                             {% endfor %}
                                           

@@ -61,20 +61,29 @@
               <form class="form-horizontal" role="form">
                               
                 <div class="form-group">
+                {% for k,v in data.item.items() %}
+                     
+                     {% if k =='_public' %} 
+                            <div><b>PUBLIC</b></div>
+                      
+                      {% endif %}
+                  {% endfor %}
+
                   {% for k,v in data.item.items() %}
                      {% if not k =='Images' %}
-                        {% if not k =='Description' %} 
+                     {% if not k =='Description' %}
+                     {% if not k =='_public' %} 
                             <label for="inputPassword3" class="col-sm-2 control-label">{{ k }}:</label>
                             <div class="col-sm-10">
-                    <p>{{ v }}</p>
-                  </div>
-                        {% endif %}
-
+                              <p>{{ v }}</p>
+                            </div>
+                      {% endif %}
+                      {% endif %}
                       {% endif %}
                   {% endfor %}
             
                 </div>          
-                <div class="form-group">
+                <!--div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Tags</label>
                   <div class="col-sm-10">
                     <div>
@@ -86,7 +95,7 @@
                             <span class="label label-warning rn-mar5"> Space stations</span>       
                     </div>
                   </div>
-                </div>
+                </div-->
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label"></label>
                   <div class="col-sm-10">

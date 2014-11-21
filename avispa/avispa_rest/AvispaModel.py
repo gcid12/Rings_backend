@@ -133,11 +133,16 @@ class AvispaModel:
         view = ViewDefinition('avispa', 'get_a_b', 
                '''
                   function(doc) {
-                     if(doc.items) {
-                        if(!doc.deleted) {
-                           emit(doc._id, doc.items[0])
-                        }
-                     }
+                    if(doc.items) {
+                       if(!doc.deleted) {
+                          var x = new Object();  
+                          x['_public']=doc.public
+                          for (var key in doc.items[0]) { 
+                             x[key]=doc.items[0][key]; 
+                          }
+                          emit(doc._id, x)
+                       }
+                    }
                   }
                ''')
 
@@ -176,11 +181,12 @@ class AvispaModel:
                 
 
         if doc.store(db):
-            msg = ringname +'_'+ringversion+' ring Deleted!'
+            return True
+
         #doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
         #doc.store(db)
         
-        return msg
+        return False
 
     #AVISPAMODEL
     def ring_get_blueprint(self,handle,ringname):
@@ -387,6 +393,10 @@ class AvispaModel:
         
         values = {}
         fields = blueprint['fields']
+
+        if request.form.get('_public'):
+            item['public']=True
+
         for field in fields:
             #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
             f = field['FieldName']

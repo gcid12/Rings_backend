@@ -274,8 +274,14 @@ class AvispaRestFunc:
         part=ring.split('_')
         ringname = part[0]
         ringversion = part[-1]
-        result = self.AVM.user_delete_ring(handle,ringname,ringversion)
-    	d = {'message': result , 'template':'avispa_rest/index.html'}
+        
+        if self.AVM.user_delete_ring(handle,ringname,ringversion):
+            flash('Ring '+ringname+'_'+ringversion+' deleted')
+        else:
+            flash('Could not delete the Ring')
+        
+        redirect = '/'+handle
+        d = {'redirect': redirect, 'status':200}
         return d
 
     def delete_rq_a_b(self,request,handle,ring,*args):
@@ -390,7 +396,8 @@ class AvispaRestFunc:
         fieldsblueprint = blueprint['fields']
         numfields = len(fieldsblueprint)
 
-        d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/put_rq_a_b_c.html', 
+        d = {'message': 'Using put_rq_a_b_c for handle '+handle+', ring:'+ring , 
+             'template':'avispa_rest/put_rq_a_b_c.html', 
              'ringblueprint':ringblueprint,
              'fieldsblueprint':fieldsblueprint,
              'numfields':numfields,
