@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %} Abeja {% endblock %}
+
+{% block crumbs %}
+
+<div class="rn-hp5 pull-left"><span class="label label-m">ABEJA</span></div> 
+<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
+<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a> /
+<a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.idx}}</a>
+
+{% endblock %}
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">  
+        <div class="row">
+          <div class="col-sm-12">
+          {% if data.item %}
+            <div class="rn-box-title">
+              <strong>Showing 1 item</strong>
+              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+              <i class="fa fa-question-circle"></i>
+              </button>
+            </div>
+            <div class="rn-box-solo">
+              <div class="row">
+                <div class="col-sm-3">
+
+                               
+
+                  {% for k,v in data.item.items() %}
+                     {% if k =='Images' %}
+                         
+
+                        {% for image in v %}
+                          {% if image %}
+                            <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                          {% endif %}
+
+                        {% endfor %}             
+
+                      {% endif %}
+                  {% endfor %}
+                
+
+
+
+                </div>
+              </div>    
+            </div>
+
+            <div class="rn-box-content">
+              <form class="form-horizontal" role="form">
+                              
+                <div class="form-group">
+                {% for k,v in data.item.items() %}
+                     
+                     {% if k =='_public' %} 
+                            <div><b>PUBLIC</b></div>
+                      
+                      {% endif %}
+                  {% endfor %}
+
+                  {% for k,v in data.item.items() %}
+                     {% if not k =='Images' %}
+                     {% if not k =='Description' %}
+                     {% if not k =='_public' %} 
+                     {% if not k =='id' %} 
+                            <label for="inputPassword3" class="col-sm-2 control-label">{{ k }}:</label>
+                            <div class="col-sm-10">
+                              <p>{{ v }}</p>
+                            </div>
+                      {% endif %}
+                      {% endif %}
+                      {% endif %}
+                      {% endif %}
+                  {% endfor %}
+            
+                </div>          
+                <!--div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Tags</label>
+                  <div class="col-sm-10">
+                    <div>
+                            <span class="label label-success rn-mar5"> Deluxe Room </span>
+                            <span class="label label-success rn-mar5"> Jacuzzi </span>
+                            <span class="label label-success rn-mar5"> Ocean View  </span>
+                            <span class="label label-warning rn-mar5"> Hotels </span>
+                            <span class="label label-warning rn-mar5"> Room Images </span>
+                            <span class="label label-warning rn-mar5"> Space stations</span>       
+                    </div>
+                  </div>
+                </div-->
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label"></label>
+                  <div class="col-sm-10">
+                      <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-success">Edit</a>
+                      <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default">DELETE THIS
+                      </a>
+                      
+                  </div>
+                </div>
+              </form>           
+            </div><!-- //close box content -->  
+            {% endif %}        
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+      </div> <!-- close 9 -->
+      <div class="col-sm-3">
+        <div class="rn-box-space">
+          <strong>ToolBar </strong>
+
+          <button type="button" class="btn btn-default btn-xs" style="float:right;">
+          <i class="fa fa-question-circle"></i>
+          </button>
+          <button type="button" class="btn btn-success btn-xs" style="float:right;">
+          <i class="fa fa-wrench"></i>
+          </button>
+        </div>
+        <div class="rn-box-content">
+              <p>Tools, one click away</p>
+        </div>
+      </div>    
+    </div>
+  </div>
+</section>
+
+
+{% endblock content%}
+
+{% block modals %}
+
+  {% include 'avispa_rest/delete_pre_a_b_c.html' %}
+  {% include 'avispa_rest/helpmodal.html' %}
+
+
+{% endblock %}

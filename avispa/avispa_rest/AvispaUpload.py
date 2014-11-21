@@ -121,9 +121,10 @@ class AvispaUpload:
                         self._img_resize_and_save(j,self.thumbnailsizes[t],t,orientation,True)
 
             multiplied={}
-            multiplied['mimetype']='image/jpeg'
-            multiplied['width']=str(img.width)
-            multiplied['height']=str(img.height)
+            multiplied['mime-type']='image/jpeg'
+            multiplied['extension']='jpg'
+            multiplied['width']=img.width
+            multiplied['height']=img.height
             multiplied['sizename']='o'
             multiplied['unit']='pixel'
             print(multiplied)
@@ -175,9 +176,10 @@ class AvispaUpload:
             img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
             print('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
             multiplied={}
-            multiplied['mimetype']='image/jpeg'
-            multiplied['width']=str(img.width)
-            multiplied['height']=str(img.height)
+            multiplied['mime-type']='image/jpeg'
+            multiplied['extension']='jpg'
+            multiplied['width']=img.width
+            multiplied['height']=img.height
             multiplied['sizename']=sizename
             multiplied['unit']='pixel'
             print(multiplied)

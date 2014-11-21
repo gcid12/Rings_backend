@@ -12,7 +12,7 @@ class AvispaRestFunc:
     # /a
 
     # GET/a
-    def get_a(self,request,handle,*args):
+    def get_a(self,request,handle,ring,idx,api=False,*args):
 
         ringlist = self.AVM.user_get_rings(handle)
 
@@ -23,21 +23,21 @@ class AvispaRestFunc:
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist, 'ringlistlen':ringlistlen}
     	return d
 
-    def get_rq_a(self,request,handle,*args):
+    def get_rq_a(self,request,handle,ring,idx,api=False,*args):
         # To find someting in all rings
         d = {'message': 'Using get_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
-    def get_rs_a(self,request,handle,*args):
+    def get_rs_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using get_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
-    def get_q_a(self,request,handle,*args):
+    def get_q_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using get_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     # POST/a
-    def post_a(self,request,handle,*args):
+    def post_a(self,request,handle,ring,idx,api=False,*args):
 
        
         RB = RingBuilder()
@@ -55,66 +55,66 @@ class AvispaRestFunc:
         
         return d
 
-    def post_rq_a(self,request,handle,*args):
+    def post_rq_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/post_rq_a.html'}
         return d
 
-    def post_rs_a(self,request,handle,*args):
+    def post_rs_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using post_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     #PUT /a
-    def put_a(self,request,handle,*args):
+    def put_a(self,request,handle,ring,idx,api=False,*args):
     	d = {'message': 'Using put_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
-    def put_rq_a(self,request,handle,*args):
+    def put_rq_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using put_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
-    def put_rs_a(self,request,handle,*args):
+    def put_rs_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using put_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     #PATCH /a
-    def patch_a(self,request,handle,*args):
+    def patch_a(self,request,handle,ring,idx,api=False,*args):
     	d = {'message': 'Using patch_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
-    def patch_rq_a(self,request,handle,*args):
+    def patch_rq_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using patch_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
-    def patch_rs_a(self,request,handle,*args):
+    def patch_rs_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using patch_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     #DELETE /a
-    def delete_a(self,request,handle,*args):
+    def delete_a(self,request,handle,ring,idx,api=False,*args):
     	d = {'message': 'Using delete_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
-    def delete_rq_a(self,request,handle,*args):
+    def delete_rq_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using delete_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
     
-    def delete_rs_a(self,request,handle,*args):
+    def delete_rs_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using delete_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     #SEARCH /a
-    def search_a(self,request,handle,*args):
+    def search_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using search_a for handle '+handle , 'template':'avispa_rest/search_a.html'}
         return d
 
-    def search_rq_a(self,request,handle,*args):
+    def search_rq_a(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using search_rq_a for handle '+handle , 'template':'avispa_rest/search_rq_a.html'}
         return d
 
     # /a/b
     
     #GET /a/b
-    def get_a_b(self,request,handle,ring,*args):
+    def get_a_b(self,request,handle,ring,idx,api=False,*args):
         '''
         List of items in the ring
         '''
@@ -181,18 +181,18 @@ class AvispaRestFunc:
 
         return d
 
-    def get_rq_a_b(self,request,handle,ring,*args):
+    def get_rq_a_b(self,request,handle,ring,idx,api=False,*args):
         # To find something inside of this ring
         d = {'message': 'Using get_rq_a_b for handle:'+handle+', ring:'+ring , 'template':'avispa_rest/get_rq_a_b.html'}
         return d
 
-    def get_rs_a_b(self,request,handle,ring,*args):
+    def get_rs_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using get_rs_a_b for handle:'+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
     #POST /a/b
-    def post_a_b(self,request,handle,ring,*args):
+    def post_a_b(self,request,handle,ring,idx,api=False,*args):
         '''
         Creates new item
         '''        
@@ -213,7 +213,7 @@ class AvispaRestFunc:
 
         #return redirect('/'+handle+'/'+ring)
 
-    def post_rq_a_b(self,request,handle,ring,*args):
+    def post_rq_a_b(self,request,handle,ring,idx,api=False,*args):
         '''
         Form to create new item
         '''
@@ -230,13 +230,13 @@ class AvispaRestFunc:
              'item':{} }
         return d
 
-    def post_rs_a_b(self,request,handle,ring,*args):
+    def post_rs_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using post_rs_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
     #PUT /a/b
-    def put_a_b(self,request,handle,ring,*args):
+    def put_a_b(self,request,handle,ring,idx,api=False,*args):
 
         RB = RingBuilder()
         result =  RB.put_a_b(request,handle,ring)
@@ -254,7 +254,7 @@ class AvispaRestFunc:
         return d
 
 
-    def put_rq_a_b(self,request,handle,ring,*args):
+    def put_rq_a_b(self,request,handle,ring,idx,api=False,*args):
         '''
         Edits the Blueprint
         '''
@@ -272,27 +272,27 @@ class AvispaRestFunc:
              'numfields':numfields }
         return d
 
-    def put_rs_a_b(self,request,handle,ring,*args):
+    def put_rs_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using put_rs_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
     #PATCH /a/b
-    def patch_a_b(self,request,handle,ring,*args):
+    def patch_a_b(self,request,handle,ring,idx,api=False,*args):
     	d = {'message': 'Using patch_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def patch_rq_a_b(self,request,handle,ring,*args):
+    def patch_rq_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using patch_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def patch_rs_a_b(self,request,handle,ring,*args):
+    def patch_rs_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using patch_rs_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
     
     #DELETE /a/b
-    def delete_a_b(self,request,handle,ring,*args):
+    def delete_a_b(self,request,handle,ring,idx,api=False,*args):
 
         part=ring.split('_')
         ringname = part[0]
@@ -307,20 +307,20 @@ class AvispaRestFunc:
         d = {'redirect': redirect, 'status':200}
         return d
 
-    def delete_rq_a_b(self,request,handle,ring,*args):
+    def delete_rq_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using delete_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
-    def delete_rs_a_b(self,request,handle,ring,*args):
+    def delete_rs_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using delete_rs_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
     
     #SEARCH /a/b
-    def search_a_b(self,request,handle,ring,*args):
+    def search_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using search_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/search_a_b.html'}
         return d
 
-    def search_rq_a_b(self,request,handle,ring,*args):
+    def search_rq_a_b(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using search_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/search_rq_a_b.html'}
         return d
 
@@ -329,7 +329,7 @@ class AvispaRestFunc:
     # a/b/c
 
     #GET /a/b/c
-    def get_a_b_c(self,request,handle,ring,idx,*args):
+    def get_a_b_c(self,request,handle,ring,idx,api=False,*args):
         '''
         Gets existing item
         ''' 
@@ -348,8 +348,10 @@ class AvispaRestFunc:
             flash('This item does not exist')
             print('This item does not exist')
 
-
-        d['template'] = 'avispa_rest/get_a_b_c.html'
+        if api:
+            d['template'] = 'avispa_rest/get_api_a_b_c.html'
+        else:
+            d['template'] = 'avispa_rest/get_a_b_c.html'
 
 
 
@@ -357,29 +359,29 @@ class AvispaRestFunc:
 
     	
 
-    def get_rq_a_b_c(self,request,handle,ring,idx,*args): 
+    def get_rq_a_b_c(self,request,handle,ring,idx,api=False,*args): 
         d = {'message': 'Using get_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/get_rq_a_b_c.html'}
         return d
 
-    def get_rs_a_b_c(self,request,handle,ring,idx,*args):
+    def get_rs_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using get_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #POST /a/b/c
-    def post_a_b_c(self,request,handle,ring,idx,*args):
+    def post_a_b_c(self,request,handle,ring,idx,api=False,*args):
     	d = {'message': 'Using post_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def post_rq_a_b_c(self,request,handle,ring,idx,*args):
+    def post_rq_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using post_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def post_rs_a_b_c(self,request,handle,ring,idx,*args):
+    def post_rs_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using post_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #PUT /a/b/c
-    def put_a_b_c(self,request,handle,ring,idx,*args):
+    def put_a_b_c(self,request,handle,ring,idx,api=False,*args):
         '''
         Puts changes in the item
         '''        
@@ -400,7 +402,7 @@ class AvispaRestFunc:
 
 
 
-    def put_rq_a_b_c(self,request,handle,ring,idx,*args):
+    def put_rq_a_b_c(self,request,handle,ring,idx,api=False,*args):
         '''
         Prepares form to be sent for a put
         '''
@@ -433,25 +435,25 @@ class AvispaRestFunc:
         #d = {'message': 'Using patch_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/patch_rq_a_b_c.html'}
         #return d
 
-    def put_rs_a_b_c(self,request,handle,ring,idx,*args):
+    def put_rs_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using put_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #PATCH /a/b/c
-    def patch_a_b_c(self,request,handle,ring,idx,*args):
+    def patch_a_b_c(self,request,handle,ring,idx,api=False,*args):
     	d = {'message': 'Using patch_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def patch_rq_a_b_c(self,request,handle,ring,idx,*args):
+    def patch_rq_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using patch_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def patch_rs_a_b_c(self,request,handle,ring,idx,*args):
+    def patch_rs_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using patch_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #DELETE /a/b/c
-    def delete_a_b_c(self,request,handle,ring,idx,*args):
+    def delete_a_b_c(self,request,handle,ring,idx,api=False,*args):
         result = self.AVM.delete_a_b_c(request,handle,ring,idx)
 
         if result:
@@ -471,20 +473,20 @@ class AvispaRestFunc:
     	#d = {'message': 'Using delete_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         #return d
 
-    def delete_rq_a_b_c(self,request,handle,ring,idx,*args):
+    def delete_rq_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using delete_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def delete_rs_a_b_c(self,request,handle,ring,idx,*args):
+    def delete_rs_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using delete_rs_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
     #SEARCH /a/b/c
-    def search_a_b_c(self,request,handle,ring,idx,*args):
+    def search_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using search_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
         return d
 
-    def search_rq_a_b_c(self,request,handle,ring,idx,*args):
+    def search_rq_a_b_c(self,request,handle,ring,idx,api=False,*args):
         d = {'message': 'Using search_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/search_rq_a_b_c.html'}
         return d
 

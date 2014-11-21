@@ -3,6 +3,7 @@
 import uuid
 import random
 import bcrypt
+import json
 
 
 from flask import flash
@@ -239,20 +240,27 @@ class MyRingTool:
 
         d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
         return d 
-
-
+    
     def upload_via_aud(self,request,*args):
 
         #Check if the handle exists and the token is correct
+        handle = request.args.get('handle')
 
-        AUD = AvispaUpload(request.args.get('handle'))
+        AUD = AvispaUpload(handle)
 
         response = AUD.do_upload(request)
-        imgbase = '/images/'
+        response['handle'] = handle
+        response['imgbase']= '/_images/{handle}/{sizename}/{imgid}_{sizename}.{extension}'
+
+        print 'DATA:', repr(response)
+        json_string = json.dumps(response)
+        print 'JSON:', json_string
+
+        
         
         if 'imgid' in response.keys():
             print(response)
-            d = {'imgid': response['imgid'], 'imgsizes': response['imgsizes'] ,'imgbase': imgbase , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
+            d = {'data_string':json_string, 'imgid': response['imgid'], 'imgsizes': response['imgsizes'] ,'imgbase': response['imgsizes'] , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
             
         elif 'error_status' in response.keys():
             d = {'error_status':response['error_status'],'template':'avispa_rest/tools/uploadresponsejson.html'}

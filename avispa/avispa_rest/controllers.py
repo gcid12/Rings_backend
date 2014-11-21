@@ -14,7 +14,7 @@ avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 
 
-def route_dispatcher(depth,handle,ring=None,idx=None):
+def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
 
     ARF = AvispaRestFunc()
     MRT = MyRingTool()
@@ -40,14 +40,14 @@ def route_dispatcher(depth,handle,ring=None,idx=None):
 
 
 
-    if handle=='_tools':  #not a ring! Here goes all the system specific functionality
+    if handle=='_tools':  #not a ring! System specific tools
         tool = ring
         data = getattr(MRT, tool.lower())(request)
         print('flagA:')
         print(data)
 
     else:
-        data = getattr(ARF, m.lower())(request,handle,ring,idx)
+        data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
 
 
     data['handle']=handle
@@ -110,6 +110,7 @@ def imageserver(filename,depth1,depth2):
     avispa_rest.static_folder=IMAGE_STORE+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
 
+
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
 
 def static(filename):
@@ -144,6 +145,37 @@ def static5(filename,depth1,depth2,depth3,depth4):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
     return avispa_rest.send_static_file(filename)
+
+
+@avispa_rest.route('/_api/<handle>', methods=['GET'])
+def api_route_a(handle):
+
+    result = route_dispatcher('_a',handle,api=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/_api/<handle>/<ring>', methods=['GET'])
+def api_route_a_b(handle,ring):
+
+    result = route_dispatcher('_a_b',handle,ring,api=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/_api/<handle>/<ring>/<idx>', methods=['GET'])
+def api_route_a_b_c(handle,ring,idx):
+
+    result = route_dispatcher('_a_b_c',handle,ring,idx,api=True)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])
+    else:
+        return result
 
 
 @avispa_rest.route('/<handle>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
