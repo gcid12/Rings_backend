@@ -137,9 +137,11 @@
                                               {% if not k =='Images' %}
                                               {% if not k =='Description' %} 
                                               {% if not k =='_public' %} 
+                                              {% if not k =='id' %} 
 
                                               <dt>{{ k }}:</dt>
                                               <dd>{{ v }}</dd>
+                                              {% endif %}
                                               {% endif %}
                                               {% endif %}
                                               {% endif %}

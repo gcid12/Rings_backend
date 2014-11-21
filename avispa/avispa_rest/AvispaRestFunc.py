@@ -129,15 +129,37 @@ class AvispaRestFunc:
         else:
             resultsperpage = 25
 
+        blueprint = self.AVM.ring_get_blueprint(handle,ring)
+        print(blueprint.fields)
+
+        layers = {}
+        for blueprintfield in blueprint.fields:
+            layers[blueprintfield.FieldName]=blueprintfield.FieldLayer
+
+        print(layers)
+
+
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey)
         print(preitemlist)
 
         itemlist = []
         for item in preitemlist:
-            if 'Images' in item:
-                images=item['Images'].split(',')
-                item['Images']=images
-            itemlist.append(item)
+            #item['_level']=2
+            #print(item)
+            cutItem = {}
+            for fieldname in item:
+                print(fieldname)
+                if fieldname in layers:
+                    cutItem['id'] = item['id']
+                    if layers[fieldname]<=2:
+                        print("Out:"+fieldname)
+                        cutItem[fieldname] = item[fieldname]  
+
+
+            if 'Images' in cutItem:
+                images=cutItem['Images'].split(',')
+                cutItem['Images']=images
+            itemlist.append(cutItem)
 
 
         print(itemlist)

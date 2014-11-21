@@ -73,10 +73,12 @@
                      {% if not k =='Images' %}
                      {% if not k =='Description' %}
                      {% if not k =='_public' %} 
+                     {% if not k =='id' %} 
                             <label for="inputPassword3" class="col-sm-2 control-label">{{ k }}:</label>
                             <div class="col-sm-10">
                               <p>{{ v }}</p>
                             </div>
+                      {% endif %}
                       {% endif %}
                       {% endif %}
                       {% endif %}
