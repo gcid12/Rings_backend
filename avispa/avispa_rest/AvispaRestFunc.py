@@ -151,20 +151,24 @@ class AvispaRestFunc:
         for item in preitemlist:
             #item['_level']=2
             #print(item)
-            cutItem = {}
+            previewItem = {}
             for fieldname in item:
-                print(fieldname)
+                #print(fieldname)
+                
                 if fieldname in layers:
-                    cutItem['_id'] = item['_id']
                     if layers[fieldname]<=PREVIEW_LAYER:
-                        print("Out:"+fieldname)
-                        cutItem[fieldname] = item[fieldname]  
+                        #Only include those fields above the PREVIEWLAYER
+                        #print("Out:"+fieldname)
+                        previewItem[fieldname] = item[fieldname] 
+                    #Include id anyway     
+                    previewItem[u'_id'] = item[u'_id']
 
 
-            if 'Images' in cutItem:
-                images=cutItem['Images'].split(',')
-                cutItem['Images']=images
-            itemlist.append(cutItem)
+            if 'Images' in previewItem:
+                images=previewItem['Images'].split(',')
+                del images[0]
+                previewItem['Images']=images
+            itemlist.append(previewItem)
 
 
         print('itemlist:')
@@ -182,8 +186,24 @@ class AvispaRestFunc:
         d['resultsperpage'] = resultsperpage
 
         if api:
+
+            out = {}
+
+            out['source'] = "/"+str(handle)+"/"+str(ring)
+
             
-            d['api_out'] = json.dumps(itemlist)
+            if 'blueprint' in request.args:
+                blueprint= self.AVM.ring_get_blueprint_from_view(handle,ring)
+                out['rings'] = blueprint['rings']
+                out['fields'] = blueprint['fields']
+
+            #del itemlist['_id']
+            #del item['_public'] 
+            
+            out['items'] = itemlist
+            
+            
+            d['api_out'] = json.dumps(out)
             d['template'] = 'avispa_rest/get_api_a_b.html'
         else:
             d['template'] = 'avispa_rest/get_a_b.html'
@@ -353,19 +373,22 @@ class AvispaRestFunc:
             print(item)
 
             if api:
-
-                blueprint= self.AVM.ring_get_blueprint_from_view(handle,ring)
-                print('blueprint::')
-                print(blueprint)
                 out = {}
-                out['items'] = {}
-                               
-                #out['rings'] = blueprint['rings']
-                #out['rings'] = blueprint['rings']
-                #out['fields'] = blueprint['fields']
-                del item['_id']
-                del item['_public']      
-                out['items'][0] = item
+
+                out['source'] = "/"+str(handle)+"/"+str(ring)
+                
+                if 'blueprint' in request.args:
+                    blueprint= self.AVM.ring_get_blueprint_from_view(handle,ring)
+                    print('blueprint::')
+                    print(blueprint)
+                    out['rings'] = blueprint['rings']
+                    out['fields'] = blueprint['fields']
+                
+                #del item['_id']
+                del item['_public'] 
+                out['items'] = [] 
+                out['items'].append(item)
+                #out['items'] = item
 
                 api_out = json.dumps(out)
 
