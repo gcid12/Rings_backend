@@ -4,10 +4,14 @@
 
 {% block crumbs %}
 
+<div class="rn-hp5 pull-left"><a href="/_api/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}"><img src="/static/images/json.png"></a></div> 
+
 <div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
 <a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
 <a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a> /
 <a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.idx}}</a>
+
+
 
 {% endblock %}
 
@@ -73,7 +77,7 @@
                      {% if not k =='Images' %}
                      {% if not k =='Description' %}
                      {% if not k =='_public' %} 
-                     {% if not k =='id' %} 
+                     {% if not k =='_id' %} 
                             <label for="inputPassword3" class="col-sm-2 control-label">{{ k }}:</label>
                             <div class="col-sm-10">
                               <p>{{ v }}</p>

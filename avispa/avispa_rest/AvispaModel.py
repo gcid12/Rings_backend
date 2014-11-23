@@ -130,7 +130,7 @@ class AvispaModel:
         db = self.couch[db_ringname]
 
         
-        view = ViewDefinition('avispa', 'get_a_b', 
+        view = ViewDefinition('ring', 'items', 
                '''
                   function(doc) {
                     if(doc.items) {
@@ -144,6 +144,19 @@ class AvispaModel:
                        }
                     }
                   }
+               ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+
+        view = ViewDefinition('ring', 'blueprint', 
+               '''
+                function(doc) {
+                  if(doc._id=='blueprint'){   
+                    emit(doc._id, doc)
+                  }
+                }
                ''')
 
         view.get_doc(db)
@@ -463,7 +476,7 @@ class AvispaModel:
         #options['endkey_docid']=4
 
 
-        result = db.iterview('avispa/get_a_b',batch,**options)
+        result = db.iterview('ring/items',batch,**options)
 
 
 
@@ -482,7 +495,7 @@ class AvispaModel:
                 #pass
 
             item = {}
-            item[u'id'] = row['id']
+            item[u'_id'] = row['id']
             item.update(row['value'])
             #item['id']=row['id']
             #item['values']=row['value']
@@ -503,18 +516,44 @@ class AvispaModel:
         options = {}
         options['key']=idx
 
-        #Retrieving from  get_a_b view
-        result = db.iterview('avispa/get_a_b',1,**options)
+        #Retrieving from ring/items view
+        result = db.iterview('ring/items',1,**options)
 
         
         for row in result:      
             item = {}
             if row['id']:        
-                item[u'id'] = row['id']
+                item[u'_id'] = row['id']
                 item.update(row['value'])
                 return item
 
         return False
+
+    #AVISPAMODEL
+    def ring_get_blueprint_from_view(self,handle,ringname):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+
+        options = {}
+        result  = db.iterview('ring/blueprint',1,**options)
+
+        for row in result:  
+            #print('row.value.fields:')
+            #print(row.value['fields'])    
+            blueprint = {}
+            #blueprint['rings']=row.value
+            blueprint['fields']=row.value['fields']
+            blueprint['rings']=row.value['rings']
+            #blueprint['rings']=row.rings
+            #blueprint['fields']=row.fields
+
+        print('blueprint:')
+        print(blueprint)
+
+        return blueprint
+
+        #return False
         
 
 

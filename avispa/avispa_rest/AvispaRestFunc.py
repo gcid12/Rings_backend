@@ -1,3 +1,4 @@
+import json
 from flask import redirect, flash
 from RingBuilder import RingBuilder
 from MainModel import MainModel #DELETE!
@@ -130,17 +131,20 @@ class AvispaRestFunc:
         else:
             resultsperpage = 25
 
-        blueprint = self.AVM.ring_get_blueprint(handle,ring)
-        print(blueprint.fields)
+        blueprint = self.AVM.ring_get_blueprint_from_view(handle,ring)
+        print(blueprint['fields'])
 
         layers = {}
-        for blueprintfield in blueprint.fields:
-            layers[blueprintfield.FieldName]=blueprintfield.FieldLayer
+        for blueprintfield in blueprint['fields']:
+            layers[blueprintfield['FieldName']]=int(blueprintfield['FieldLayer'])
 
+        print('layers:')
         print(layers)
 
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey)
+        
+        print('preitemlist:')
         print(preitemlist)
 
         itemlist = []
@@ -151,7 +155,7 @@ class AvispaRestFunc:
             for fieldname in item:
                 print(fieldname)
                 if fieldname in layers:
-                    cutItem['id'] = item['id']
+                    cutItem['_id'] = item['_id']
                     if layers[fieldname]<=PREVIEW_LAYER:
                         print("Out:"+fieldname)
                         cutItem[fieldname] = item[fieldname]  
@@ -163,8 +167,8 @@ class AvispaRestFunc:
             itemlist.append(cutItem)
 
 
+        print('itemlist:')
         print(itemlist)
-        
 
         print(len(itemlist))
 
@@ -174,10 +178,15 @@ class AvispaRestFunc:
             #Still, if the last page has exactly as many items as resultsperpage, the next page will be empty. Please fix
 
         
-        d['message'] = 'Using get_a_b for handle:'+handle+', ring:'+ring
-        d['template'] = 'avispa_rest/get_a_b.html'
         d['itemlist'] = itemlist
         d['resultsperpage'] = resultsperpage
+
+        if api:
+            
+            d['api_out'] = json.dumps(itemlist)
+            d['template'] = 'avispa_rest/get_api_a_b.html'
+        else:
+            d['template'] = 'avispa_rest/get_a_b.html'
 
         return d
 
@@ -341,18 +350,36 @@ class AvispaRestFunc:
         
         if item:
             print('Awesome , you just retrieved the item from the DB')
-            d['item'] = item
-            print(d['item'])
+            print(item)
+
+            if api:
+
+                blueprint= self.AVM.ring_get_blueprint_from_view(handle,ring)
+                print('blueprint::')
+                print(blueprint)
+                out = {}
+                out['items'] = {}
+                               
+                #out['rings'] = blueprint['rings']
+                #out['rings'] = blueprint['rings']
+                #out['fields'] = blueprint['fields']
+                del item['_id']
+                del item['_public']      
+                out['items'][0] = item
+
+                api_out = json.dumps(out)
+
+                d['api_out'] = api_out
+                d['template'] = 'avispa_rest/get_api_a_b_c.html'
+
+            else:
+                d['item'] = item
+                d['template'] = 'avispa_rest/get_a_b_c.html'
 
         else: 
+            d['error_status'] = '500'                      
             flash('This item does not exist')
             print('This item does not exist')
-
-        if api:
-            d['template'] = 'avispa_rest/get_api_a_b_c.html'
-        else:
-            d['template'] = 'avispa_rest/get_a_b_c.html'
-
 
 
         return d

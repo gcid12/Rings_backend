@@ -4,9 +4,12 @@
 
 {% block crumbs %}
 
+<div class="rn-hp5 pull-left"><a href="/_api/{{ data.handle }}/{{ data.ring }}"><img src="/static/images/json.png"></a></div>
+
 <div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
 <a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
 <a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a>
+
 
 {% endblock %}
 
@@ -97,9 +100,9 @@
                                         
    
                                         <div class="btn-group">
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item.id}}" type="button" class="btn btn-success">G</a>
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item.id}}?rq=put" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item.id}}?method=delete" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-success">G</a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
 
                                           <!--button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_pre_a_b_c">
                                             <i class="fa fa-times"></i>
@@ -137,7 +140,7 @@
                                               {% if not k =='Images' %}
                                               {% if not k =='Description' %} 
                                               {% if not k =='_public' %} 
-                                              {% if not k =='id' %} 
+                                              {% if not k =='_id' %} 
 
                                               <dt>{{ k }}:</dt>
                                               <dd>{{ v }}</dd>

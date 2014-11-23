@@ -2,6 +2,6 @@
 {% if errors %}
   { "error": "{% for msg in errors %}{{ msg }}{% endfor %}"}
 {% else %}
-  {{data.data_string | safe}}
+  {{data.api_out | safe}}
 {% endif %}
 {% endwith %}
