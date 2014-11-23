@@ -165,7 +165,7 @@ class AvispaRestFunc:
 
 
             if 'Images' in previewItem:
-                images=previewItem['Images'].split(',')
+                images=previewItem['Images'].split(',')                
                 del images[0]
                 previewItem['Images']=images
             itemlist.append(previewItem)
@@ -366,6 +366,7 @@ class AvispaRestFunc:
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
         if 'Images' in item:
                 images=item['Images'].split(',')
+                del images[0]
                 item['Images']=images
         
         if item:
