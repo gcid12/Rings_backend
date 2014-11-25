@@ -218,6 +218,8 @@ class AvispaModel:
 
 
         db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        print('db_ringname:')
+        print(db_ringname)
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
         ring = MyRingBlueprint.load(db,'blueprint')
@@ -533,6 +535,7 @@ class AvispaModel:
     def ring_get_blueprint_from_view(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
+        print(db_ringname)
         db = self.couch[db_ringname]
 
         options = {}

@@ -157,6 +157,7 @@ class AvispaRestFunc:
                 
                 if fieldname in layers:
                     if layers[fieldname]<=PREVIEW_LAYER:
+                    #if True:
                         #Only include those fields above the PREVIEWLAYER
                         #print("Out:"+fieldname)
                         previewItem[fieldname] = item[fieldname] 

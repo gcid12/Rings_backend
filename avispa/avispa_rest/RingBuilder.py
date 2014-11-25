@@ -1,5 +1,8 @@
 #RingBuilder.py
 import collections
+import urllib2
+import json
+import urlparse
 
 from AvispaModel import AvispaModel
 
@@ -42,10 +45,16 @@ class RingBuilder:
             handle = handle.lower()
             ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
             
+            
+            requestparameters = {}
+            for p in request.form:
+                requestparameters[p] = request.form.get(p)
+                print(p+':'+request.form.get(p))
+ 
             # Generate rings block                         
-            pinput['rings'] = self._generate_ring_block(request)
+            pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
-            pinput['fields'] = self._generate_field_block(request)
+            pinput['fields'] = self._generate_field_block(requestparameters)
 
             print(pinput)
             
@@ -68,6 +77,47 @@ class RingBuilder:
                 print('Blueprint could not be inserted')
                 return False
 
+        elif request.form.get('ringurl') :
+            print("ringurl:")
+            print(request.form.get('ringurl'))
+
+            o1 = urlparse.urlparse(request.url)
+            host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
+
+            o2 = urlparse.urlparse(request.form.get('ringurl'))
+            ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
+
+            
+            if host_url==ring_url:
+                print('Cloning local ring')
+                self.avispamodel.ring_get_blueprint_from_view(handle,ringname)
+                #You are cloning a ring from your localhost
+                pass
+                #Verificar si el request viene localmente. 
+                #obtener el Blueprint (del Ring indicado)
+                #tranformarlo para la generacion de un nuevo ring
+
+            else:
+                pass
+            #else
+               #Un call comun y corriente  
+
+                print('in')
+                r = requests.get(request.form.get('ringurl'))
+                #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')
+                
+                print(r.text)
+                
+
+                #transformar request para generacion de nuevo ring
+
+               #crear nuevo ring
+
+
+            #data = json.load(response)   
+            #print data
+            return False
+
 
         else:
 
@@ -86,7 +136,9 @@ class RingBuilder:
             handle = handle.lower()
             ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
             
-            # Generate rings block                         
+            # Generate rings block  
+            
+
             pinput['rings'] = self._generate_ring_block(request)
             # Generate fields block
             pinput['fields'] = self._generate_field_block(request)
@@ -116,15 +168,20 @@ class RingBuilder:
 
 
 
-    def _generate_ring_block(self, request):
+    def _generate_ring_block(self, requestparameters):
 
         ringsbuffer = collections.OrderedDict()
 
         
         # Collect all the 'Ring*' fields coming via the RQ
         for k in self.ringprotocols['ringprotocol']:
-            if request.form.get(k):
-                ringsbuffer[k] = request.form[k]
+            print('generate_ring_block iteration:')
+            print(k)
+            if k in requestparameters:
+                print('in')
+            #if request.form.get(k):
+                #ringsbuffer[k] = request.form[k]
+                ringsbuffer[k] = requestparameters[k]
                 #print(k)
             elif k in self.ringprotocols['mandatory']:
                 raise Exception('Field in Ring Protocol missing : '+k)
@@ -135,20 +192,23 @@ class RingBuilder:
                 else:
                     ringsbuffer[k] = ''
 
+        print('ringsbuffer:')
+        print(ringsbuffer)
+
         ringblock = []
         ringblock.append(ringsbuffer)
 
         return ringblock
-        
 
     
-    def _generate_field_block(self,request):
+    def _generate_field_block(self,requestparameters):
 
         fieldsbuffer = collections.OrderedDict()
 
-        self._generate_fieldindex(request)
+        self._generate_fieldindex(requestparameters)
 
-        ringname = request.form.get('RingName')
+        #ringname = request.form.get('RingName')
+        ringname = requestparameters['RingName']
             
 
         i = 0
@@ -162,8 +222,11 @@ class RingBuilder:
                     # Just first for every field. Creates Dictionary that will hold it
                     fieldsbuffer[i] = collections.OrderedDict()
 
-                if request.form.get(val+'_'+str(i)):
-                    fieldsbuffer[i][val] = request.form[val+'_'+str(i)]
+                #if request.form.get(val+'_'+str(i)):
+                #if requestparameters[val+'_'+str(i)]:
+                if val+'_'+str(i) in requestparameters:
+
+                    fieldsbuffer[i][val] = requestparameters[val+'_'+str(i)]
                     #print(val+'_'+str(i))
                 elif val in self.fieldprotocols['mandatory']:
                     raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
@@ -194,16 +257,18 @@ class RingBuilder:
         return fieldblock
 
 
-    def _generate_fieldindex(self, request):
+    def _generate_fieldindex(self, requestparameters):
 
         # Look for 'Field*' sent via POST. Even if they are non-sequential
 
         self.fieldindex=[]
-        for postkey in request.form:
+        #for postkey in request.form:
+        for postkey in requestparameters:
 
             if postkey[:9] == 'FieldName':
                 a,b,c = postkey.partition('_')
-                if request.form.get(a+b+c):
+                #if request.form.get(a+b+c):
+                if requestparameters[a+b+c]:
                     self.fieldindex.append(c)
         
         # Collect all the 'Field*' fields

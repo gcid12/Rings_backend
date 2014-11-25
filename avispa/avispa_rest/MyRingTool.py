@@ -325,7 +325,68 @@ class MyRingTool:
 
         return d
 
+    def test_urllib2(self,request,*args):
 
+        import requests
+
+        print('in')
+        r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')
+        #r = requests.get('http://yahoo.com')
+        
+        print('out')
+        print(r)
+
+        rq = r
+        d = {'rq': r,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+    def test_request1(self,request,*args):
+
+        import urlparse
+        import requests
+
+        o1 = urlparse.urlparse(request.url)
+        host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
+        print(host_url)
+
+        ringurl = 'http://127.0.0.1:8080/_api/blalab/reactivoexamen_0-1-2?blueprint'
+        o2 = urlparse.urlparse(ringurl)
+        print('o2:')
+        print(o2)
+        #o2 = urlparse.urlparse(request.form.get('ringurl'))
+        ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
+        print(ring_url)
+        
+        if host_url==ring_url:
+            print('Cloning local ring')
+            pathparts=o2.path.split('/')
+            handle = pathparts[2]
+            ringname = pathparts[3]
+            blueprint = self.AVM.ring_get_blueprint_from_view(handle,ringname)
+            print('Cloning local ring2')
+            print(blueprint)
+            #You are cloning a ring from your localhost
+            rq = 'Cloning local ring'
+            #Verificar si el request viene localmente. 
+            #obtener el Blueprint (del Ring indicado)
+            #tranformarlo para la generacion de un nuevo ring
+
+        else:
+            
+        #else
+           #Un call comun y corriente  
+
+            print('Cloning non local ring')
+            r = requests.get(request.form.get('ringurl'))
+            #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')
+            
+            print(r.text)
+            rq= r.text
+
+        
+        d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+            
 
 
 
