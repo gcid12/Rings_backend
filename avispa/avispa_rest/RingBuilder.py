@@ -3,6 +3,7 @@ import collections
 import urllib2
 import json
 import urlparse
+import requests
 
 from AvispaModel import AvispaModel
 
@@ -30,7 +31,7 @@ class RingBuilder:
                                   'FieldMultilingual':False, 'FieldRequired':False, 'FieldLayer':3 }
 
 
-        self.avispamodel = AvispaModel()
+        self.AVM = AvispaModel()
 
 
     
@@ -59,12 +60,12 @@ class RingBuilder:
             print(pinput)
             
             
-            if self.avispamodel.ring_set_db(handle,ringname,ringversion):
+            if self.AVM.ring_set_db(handle,ringname,ringversion):
                 print('New Ring database created: '+ ringname)
             else:
                 print('The Ring '+ ringname +' database already exists')
 
-            if self.avispamodel.ring_set_blueprint(handle,
+            if self.AVM.ring_set_blueprint(handle,
                                         ringname,
                                         ringversion,
                                         pinput,
@@ -78,47 +79,127 @@ class RingBuilder:
                 return False
 
         elif request.form.get('ringurl') :
-            print("ringurl:")
-            print(request.form.get('ringurl'))
+            #We are cloning a Ring!!!
 
+            pinput = collections.OrderedDict()              
+            
             o1 = urlparse.urlparse(request.url)
             host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
+            print(host_url)
 
             o2 = urlparse.urlparse(request.form.get('ringurl'))
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
+            print(ring_url)
+            
 
             
             if host_url==ring_url:
-                print('Cloning local ring')
-                self.avispamodel.ring_get_blueprint_from_view(handle,ringname)
                 #You are cloning a ring from your localhost
-                pass
-                #Verificar si el request viene localmente. 
-                #obtener el Blueprint (del Ring indicado)
-                #tranformarlo para la generacion de un nuevo ring
+                #Although the result is like doing a put_a_b with no changes as system won't allow duplicates
+                print('Cloning local ring')
+
+                pathparts=o2.path.split('/')
+                handle = pathparts[2]
+                ringnameparts = pathparts[3].split('_')
+                ringname = ringnameparts[0]
+                ringversion = ringnameparts[1]
+                
+                #original blueprint
+                blueprint = self.AVM.ring_get_blueprint_from_view(handle,ringname+'_'+ringversion)
+                print(blueprint) 
+                #Generate pinput from blueprint
+
+                requestparameters = {}
+
+
+                print('blueprint rings:')
+
+
+                print(blueprint['rings'])
+
+                
+                for k in blueprint['rings'][0]:
+                    requestparameters[k] = blueprint['rings'][0][k]
+
+                i = 0
+                for n in blueprint['fields']:
+                    print('n')
+                    print(n)
+                    i = i + 1
+                    for k in n:   
+                        requestparameters[k+'_'+str(i)] = n[k]
+
+                print('requestparameters:')
+                print(requestparameters)
+
+                # Generate rings block                         
+                pinput['rings'] = self._generate_ring_block(requestparameters)
+                # Generate fields block
+                pinput['fields'] = self._generate_field_block(requestparameters)
+
+                
 
             else:
-                pass
-            #else
-               #Un call comun y corriente  
-
-                print('in')
-                r = requests.get(request.form.get('ringurl'))
-                #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')
-                
-                print(r.text)
+                # You are cloning a ring from another server 
+                print('Cloning non local ring')
+                #r = requests.get(request.form.get('ringurl'))
+                #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
                 
 
-                #transformar request para generacion de nuevo ring
+                #print(r.text)
+                #decoded = json.loads(r.text)
+                #Generate pinput from r.text
 
-               #crear nuevo ring
+                x = '{"source": "/blalab/mecanismos_0-2-0", "items": [{"Descripcion": "Cigue\u00f1al de cuatro codos", "Referencia": "2.1 f", "Imagen": "", "Clasificacion": "Eslabon", "Subclasificacion": "Manivela", "_id": "1378154159"}], "rings": [{"RingVersion": "0.2.0", "RingDescription": "Descripcion de Mecanismos", "RingName": "Mecanismos", "RingURI": "http://ring.apiring.org/mecanismos", "RingBuild": "1"}], "fields": [{"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "textarea", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Descripcion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "images", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Imagen", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Clasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Subclasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Referencia", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}]} '
+                blueprint = json.loads(x)
+                print('blueprint:')
+                print(blueprint)
 
 
-            #data = json.load(response)   
-            #print data
-            return False
+                handle = handle.lower()
+                ringname = blueprint['rings'][0]['RingName'].lower()
+                ringversion = blueprint['rings'][0]['RingVersion'].replace('.','-')
+                
+                requestparameters = {}
+
+                for k in blueprint['rings'][0]:
+                    requestparameters[k] = blueprint['rings'][0][k]
+
+                i = 0
+                for n in blueprint['fields']:
+                    print('n')
+                    print(n)
+                    i = i + 1
+                    for k in n:   
+                        requestparameters[k+'_'+str(i)] = n[k]
+
+                print('requestparameters:')
+                print(requestparameters)
 
 
+               
+
+                    # Generate rings block                         
+                pinput['rings'] = self._generate_ring_block(requestparameters)
+                # Generate fields block
+                pinput['fields'] = self._generate_field_block(requestparameters)
+ 
+
+            if self.AVM.ring_set_blueprint(handle,
+                                        ringname,
+                                        ringversion,
+                                        pinput,
+                                        self.ringprotocols['ringprotocol'],
+                                        self.fieldprotocols['fieldprotocol']):
+
+                print('Blueprint inserted/updated')
+                return True
+            else:
+                print('Blueprint could not be inserted')
+                return False
+                
+
+            
         else:
 
             print('There is not enough information to create a Ring')
@@ -137,17 +218,22 @@ class RingBuilder:
             ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
             
             # Generate rings block  
+
+            requestparameters = {}
+            for p in request.form:
+                requestparameters[p] = request.form.get(p)
+                print(p+':'+request.form.get(p))
             
 
-            pinput['rings'] = self._generate_ring_block(request)
+            pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
-            pinput['fields'] = self._generate_field_block(request)
+            pinput['fields'] = self._generate_field_block(requestparameters)
 
             print(pinput)
             
             
 
-            if self.avispamodel.ring_set_blueprint(handle,
+            if self.AVM.ring_set_blueprint(handle,
                                         ringname,
                                         ringversion,
                                         pinput,
