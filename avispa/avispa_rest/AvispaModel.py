@@ -1,7 +1,7 @@
 # AvispaModel.py
 
 
-from couchdb.http import PreconditionFailed
+from couchdb.http import PreconditionFailed, ResourceNotFound
 
 
 from datetime import datetime 
@@ -71,10 +71,16 @@ class AvispaModel:
                     count = ring['count']
                     print('flag5b:'+str(handle)+'_'+ringname)
                     ringnamedb=str(handle)+'_'+ringname.replace('.','-')
-                    db = self.MAM.select_db(ringnamedb)             
-                    RingDescription = db['blueprint']['rings'][0]['RingDescription']        
-                    r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
-                    data.append(r)
+                    print('ringnamedb::'+ringnamedb)
+                    db = self.MAM.select_db(ringnamedb)
+                    print('Get description:')
+                    try:          
+                        RingDescription = db['blueprint']['rings'][0]['RingDescription']        
+                        r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
+                        data.append(r)
+                    except ResourceNotFound:
+                        print('skipping ring '+ ringname + '. Blueprint does not exist')
+                        
 
             print('flag6')
 
@@ -82,9 +88,12 @@ class AvispaModel:
 
         except (ResourceNotFound, TypeError) as e:
 
-            flash("You have no rings yet, create one!")
+            #BUG: This exception gets triggered even if the ring does exist
+            #The problem has to do with pagination. It can't find it in the current page
+
+            #flash("You have no rings yet, create one!")
             print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
-            print('Notice: No rings for this user.')
+            #print('Notice: No rings for this user.')
 
         return data
 

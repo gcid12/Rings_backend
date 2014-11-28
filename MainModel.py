@@ -22,7 +22,7 @@ class MainModel:
     def select_db(self,dbname):
         print('Notice: Selecting db ->'+dbname)
         result = self.couch[dbname] 
-        print(result)
+        print('db selected!')
         return result
          
     #MAINMODEL
