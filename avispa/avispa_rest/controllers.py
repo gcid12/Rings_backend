@@ -146,6 +146,17 @@ def static5(filename,depth1,depth2,depth3,depth4):
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
     return avispa_rest.send_static_file(filename)
 
+@avispa_rest.route('/_tools/install', methods=['GET'])
+def first_install():
+
+    result = route_dispatcher('_a_b','_tools','install')
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+
 
 @avispa_rest.route('/_api/<handle>', methods=['GET'])
 def api_route_a(handle):
