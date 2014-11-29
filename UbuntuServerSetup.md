@@ -96,7 +96,7 @@ If you see this page, the nginx web server is successfully installed and working
 
 Open your /etc/couchdb/local.ini file and uncomment and change the line 'bind_address' to: 
 ```
-bind_address = <public-ip-address>
+bind_address = 0.0.0.0
 ```
 
 Save that file and run
@@ -112,7 +112,7 @@ Apache CouchDB is running as process xxxx, time to relax.
 
 There are two more things we need to do with CouchDB. First run in your browser:
 ```
-http://<public-ip-address>/_utils/verify_install.html
+http://<public-ip-address>:5984/_utils/verify_install.html
 ```
 And click on "Verify your installation" It should respond: "Your installation looks fine. Time to Relax."
 
@@ -228,6 +228,48 @@ http://<public_ip_address>:8080
 You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
 
 
+####INITIALIZING MYRING FLASK APP
+
+Go to 
+```
+http://<public_ip_address>:8080/_utils/index.html
+```
+And click on "Everyone is admin. Fix this" on the lower right corner. Assign a Username and Password. These are . the credentials your application will use to access the database (COUCHDB_USER and COUCHDB_PASS) .
+
+Rename env_config.py.template to env_config.py .
+
+```
+mv env_config.py.template env_config.py
+```
+
+Assign the values for this machine
+```
+IMAGE_STORE = '/var/www/myring/imagestore'
+COUCHDB_USER = u'couchdbadminuser'
+COUCHDB_PASS = u'passwordforcouchdbadminuser'
+FROMEMAIL = u'systememails@domain.com'
+FROMPASS = u'passwordforthatemail'
+PREVIEW_LAYER = 2
+```
+
+Assign the PythonPath running this command. This will be in the initialization script but we are manually testing flask right now
+```
+export PYTHONPATH=${PYTHONPATH}:/var/www/myring/
+```
+
+
+As a test to see if all the dependencies for Flask are ready, run
+```
+python /var/www/myring/run.py
+```
+
+It will show you the login screen. Run this to install the initial DBs
+
+```
+http://<public_ip_address>:8080/_tools/install
+```
+
+Stop the Flask server with CTRL+C
 
 
 ### uWSGI
@@ -276,13 +318,15 @@ vim /var/www/myring/myring_uwsgi.ini
 
 Write the following in the file:
 ```
+# myring_uwsgi.ini
+
 [uwsgi]
 #application's base folder
 base = /var/www/myring
 
 #python module to import
-avispa = run
-module = %(avispa)
+app = run
+module = %(app)
 
 home = %(base)/venv
 pythonpath = %(base)
@@ -291,10 +335,10 @@ pythonpath = %(base)
 socket = /var/www/myring/%n.sock
 
 #permissions for the socket file
-chmod-socket    = 666
+chmod-socket    = 644
 
 #the variable that holds a flask application inside the module imported at line #6
-callable = avispa
+callable = app
 
 #location of log files
 logto = /var/log/uwsgi/%n.log
@@ -309,13 +353,7 @@ And make it available to the deployment team
 chown -R :deployteam /var/log/uwsgi
 ```
 
-Also, you'll need to setup the credentials for the code to work. These are not included in the source code. 
-```
-export MYRING_CSRF_SESSION_KEY='<unique-key>'
-export MYRING_SECRET_KEY='<password-for-that-key>'
-export MYRING_COUCH_DB_USER='<couch-db_admin-robot-user>'
-export MYRING_COUCH_DB_PASS='<couch-db-password-for-robot-user>'
-```
+
 
 Execute uWSGI and pass it the newly created configuration file
 ```
