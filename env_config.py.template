@@ -1,6 +1,6 @@
-IMAGE_STORE = '<ABSOLUTE ROUTE TO IMAGE FOLDER >/'
-COUCHDB_USER = u'<COUCHDB ADMIN USERNAME>'
-COUCHDB_PASS = u'<COUCHDB ADMIN PASS>'
-FROMEMAIL = u'<GMAIL FROM EMAIL>'
-FROMPASS = u'<GMAIL FROM EMAIL PASS>'
+IMAGE_STORE = '/var/www/myringimages'
+COUCHDB_USER = u'couchdbadminuser'
+COUCHDB_PASS = u'passwordforcouchdbadminuser'
+FROMEMAIL = u'systememails@domain.com'
+FROMPASS = u'passwordforthatemail'
 PREVIEW_LAYER = 2
