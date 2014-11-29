@@ -69,7 +69,7 @@ def register():
             print('Now log in the user')
             if login_user(user, remember="no"):
                 flash("Logged in!")
-                return redirect('/tools')
+                return redirect('/_login')
             else:
                 flash("unable to log you in")
 
