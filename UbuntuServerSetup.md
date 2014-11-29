@@ -46,6 +46,18 @@ Install uWSGI
 # apt-get install uwsgi
 ```
 
+```
+# apt-get install build-essential python python-dev
+```
+
+```
+# apt-get install uwsgi-plugin-python
+```
+
+```
+# pip install uwsgi
+```
+
 ####Python Dev
 ```
 # apt-get install python-dev
@@ -228,7 +240,7 @@ http://<public_ip_address>:8080
 You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
 
 
-####INITIALIZING MYRING FLASK APP
+####Initializing MyRing Flask App Databases.
 
 Go to 
 ```
@@ -272,20 +284,6 @@ http://<public_ip_address>:8080/_tools/install
 Stop the Flask server with CTRL+C
 
 
-### uWSGI
-
-We need uWSGI to server dynamic content in production. 
-
-Install the compilers and tools first
-
-```
-# apt-get install build-essential python python-dev
-```
-
-Now install uWSGI
-```
-# pip install uwsgi
-```
 
 #### Configuring Nginx
 
