@@ -1,6 +1,0 @@
-IMAGE_STORE = '/var/www/myringimages'
-COUCHDB_USER = u'couchdbadminuser'
-COUCHDB_PASS = u'passwordforcouchdbadminuser'
-FROMEMAIL = u'systememails@domain.com'
-FROMPASS = u'passwordforthatemail'
-PREVIEW_LAYER = 2
