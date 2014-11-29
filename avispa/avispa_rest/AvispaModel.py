@@ -225,6 +225,10 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_set_blueprint(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
 
+        
+        if ringversion == 'None' or ringversion == None:
+            print('ringversion none')
+            ringversion = ''
 
         db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         print('db_ringname:')
@@ -281,22 +285,26 @@ class AvispaModel:
             for f in fieldprotocol:
 
                 if(action == 'new'):
-                    if pinput['fields'][i][f]:
-                        args_f[f] = pinput['fields'][i][f]
+                    if pinput['fields'][i][f]:  #BUG Aqui deberia leer False as 'False'!!!
+                            if pinput['fields'][i][f] == 'FALSE':
+                                args_f[f] = False
+                            elif pinput['fields'][i][f] == 'TRUE':
+                                args_f[f] = True
+                            else:
+                                args_f[f] = pinput['fields'][i][f]
 
                 elif(action == 'edit'):
                     if pinput['fields'][i][f] == ring.fields[i][f]:  # Checks if old and new are the same
                         print(f+'_'+str(i+1)+' did not change')
-                        pass
-                    else:
-                        
+                    else:                      
                         print(f+'_'+str(i+1)+' changed. Old: "'+ str(ring.fields[i][f]) +'" ('+ str(type(ring.fields[i][f])) +')'+\
                             '  New: "'+ str(pinput['fields'][i][f]) + '" ('+ str(type(pinput['fields'][i][f])) +')' )
                         
                         args_f[f] = pinput['fields'][i][f]
 
 
-            
+            print('args_f:')
+            print(args_f)
 
             if(action == 'new'):
                 ring.fields.append(**args_f)

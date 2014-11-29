@@ -4,6 +4,7 @@ import urllib2
 import json
 import urlparse
 import requests
+from couchdb.http import PreconditionFailed
 
 from AvispaModel import AvispaModel
 
@@ -28,7 +29,7 @@ class RingBuilder:
                            'FieldRequired', 'FieldDefault', 'FieldHint', 'FieldLayer', 'FieldOrder']
         self.fieldprotocols['mandatory'] = ['FieldName']
         self.fieldprotocols['defaults'] = {'FieldType':'TEXT','FieldWidget':'text','FieldCardinality':'single',\
-                                  'FieldMultilingual':False, 'FieldRequired':False, 'FieldLayer':3 }
+                                  'FieldMultilingual':'FALSE', 'FieldRequired':'FALSE', 'FieldLayer':'2' }
 
 
         self.AVM = AvispaModel()
@@ -44,8 +45,14 @@ class RingBuilder:
 
             ringname = request.form.get('RingName').lower() # I dont like this here
             handle = handle.lower()
-            ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
-            
+            if request.form.get('RingVersion'):
+                ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
+            else:
+                ringversion = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
+
+
+            print('ringversion:')
+            print(ringversion)
             
             requestparameters = {}
             for p in request.form:
@@ -150,7 +157,7 @@ class RingBuilder:
                 #decoded = json.loads(r.text)
                 #Generate pinput from r.text
 
-                x = '{"source": "/blalab/mecanismos_0-2-0", "items": [{"Descripcion": "Cigue\u00f1al de cuatro codos", "Referencia": "2.1 f", "Imagen": "", "Clasificacion": "Eslabon", "Subclasificacion": "Manivela", "_id": "1378154159"}], "rings": [{"RingVersion": "0.2.0", "RingDescription": "Descripcion de Mecanismos", "RingName": "Mecanismos", "RingURI": "http://ring.apiring.org/mecanismos", "RingBuild": "1"}], "fields": [{"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "textarea", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Descripcion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "images", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Imagen", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Clasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Subclasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Referencia", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}]} '
+                x = '{"source": "/blalab/mecanismos_0-3-0", "items": [{"Descripcion": "Cigue\u00f1al de cuatro codos", "Referencia": "2.1 f", "Imagen": "", "Clasificacion": "Eslabon", "Subclasificacion": "Manivela", "_id": "1378154159"}], "rings": [{"RingVersion": "0.3.0", "RingDescription": "Descripcion de Mecanismos", "RingName": "Mecanismos", "RingURI": "http://ring.apiring.org/mecanismos", "RingBuild": "1"}], "fields": [{"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "textarea", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Descripcion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "images", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Imagen", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Clasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Subclasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Referencia", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}]} '
                 blueprint = json.loads(x)
                 print('blueprint:')
                 print(blueprint)
@@ -184,6 +191,14 @@ class RingBuilder:
                 # Generate fields block
                 pinput['fields'] = self._generate_field_block(requestparameters)
  
+
+            try: 
+                self.AVM.ring_set_db(handle,ringname,ringversion)
+                print('New Ring database created:'+handle+'_'+ringname+'_'+ringversion)
+            except(PreconditionFailed):
+                print('The Ring '+ ringname +' database already exists')
+                flash('The Ring '+ ringname+'_'+ringversion +' already exists')
+                return False
 
             if self.AVM.ring_set_blueprint(handle,
                                         ringname,
@@ -269,14 +284,17 @@ class RingBuilder:
                 #ringsbuffer[k] = request.form[k]
                 ringsbuffer[k] = requestparameters[k]
                 #print(k)
-            elif k in self.ringprotocols['mandatory']:
-                raise Exception('Field in Ring Protocol missing : '+k)
-                #print('Field in Ring Protocol missing : '+k)
-            else:
-                if k in self.ringprotocols['defaults']:
-                    ringsbuffer[k] = self.ringprotocols['defaults'][k]
-                else:
-                    ringsbuffer[k] = ''
+
+                if requestparameters[k]=='':
+
+                    if k in self.ringprotocols['mandatory']:
+                        raise Exception('Field in Ring Protocol missing : '+k)
+                        #print('Field in Ring Protocol missing : '+k)
+                    else:
+                        if k in self.ringprotocols['defaults']:
+                            ringsbuffer[k] = self.ringprotocols['defaults'][k]
+                        else:
+                            ringsbuffer[k] = ''
 
         print('ringsbuffer:')
         print(ringsbuffer)
@@ -310,26 +328,64 @@ class RingBuilder:
 
                 #if request.form.get(val+'_'+str(i)):
                 #if requestparameters[val+'_'+str(i)]:
+
+                print('gfb1')
+                #print('requestparameters')
+                #print(requestparameters)
                 if val+'_'+str(i) in requestparameters:
 
-                    fieldsbuffer[i][val] = requestparameters[val+'_'+str(i)]
-                    #print(val+'_'+str(i))
-                elif val in self.fieldprotocols['mandatory']:
-                    raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
+                    print('gfb2')
+                    print(val+'_'+str(i))
+
+                    
+                    if requestparameters[val+'_'+str(i)]:
+
+                        print('gfb3')
+                        print(requestparameters[val+'_'+str(i)])
+
+                        fieldsbuffer[i][val] = requestparameters[val+'_'+str(i)]
+                        #print(val+'_'+str(i))
+                    else:
+                        #The parameter exists but it is empty
+                        print('gfb4')
+                        print(val+'_'+str(i))
+                        print('gone none')
+                        #print
+                        fieldsbuffer[i][val] = ''
+
+                        if val in self.fieldprotocols['mandatory']:
+                            raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
+
+                        if val in self.fieldprotocols['defaults']:
+                            print("DEFAULTS:")
+                            print(val+'_'+str(i))
+                            print(self.fieldprotocols['defaults'][val])
+                            #print
+                            fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
+                            #fieldsbuffer[i][val] = True
+                    
 
                 else:
+                    #The checkboxes or fields could not be in the request but still need to be introduced in the database
+                    print('gfb5')
+                
+                    if val in self.fieldprotocols['mandatory']:
+                        raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
+
                     if val in self.fieldprotocols['defaults']:
-                        #print(val+'_'+str(i))
-                        #print(self.fieldprotocols['defaults'][val])
+                        print('gfb6')
+                        print("DEFAULTS 2:")
+                        print(val+'_'+str(i))
+                        print(self.fieldprotocols['defaults'][val])
                         #print
                         fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
-                        #fieldsbuffer[i][val] = True
-                    else:
-                        #print(val+'_'+str(i))
-                        #print('gone none')
-                        #print
-                        fieldsbuffer[i][val] = None
+                        print(fieldsbuffer[i][val])
 
+                
+                
+        print("fieldsbuffer:")
+        print(fieldsbuffer)
+         
         fieldblock = []
 
         for fieldkey in fieldsbuffer: #Prepare them to be shown in Ring Format 

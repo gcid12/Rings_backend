@@ -15,6 +15,7 @@ from auth.AuthModel import AuthModel
 
 from AvispaUpload import AvispaUpload
 from CouchViewSync import CouchViewSync
+from MyRingBlueprint import MyRingBlueprint
 
 
 class MyRingTool:
@@ -385,6 +386,16 @@ class MyRingTool:
 
         
         d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
+    def analyze_blueprint(self,request,*args):
+
+        ring = MyRingBlueprint()
+
+        print(MyRingBlueprint.fields['FieldName'])
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
             
 
