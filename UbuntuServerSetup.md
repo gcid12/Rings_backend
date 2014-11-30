@@ -46,6 +46,18 @@ Install uWSGI
 # apt-get install uwsgi
 ```
 
+```
+# apt-get install build-essential python python-dev
+```
+
+```
+# apt-get install uwsgi-plugin-python
+```
+
+```
+# pip install uwsgi
+```
+
 ####Python Dev
 ```
 # apt-get install python-dev
@@ -228,7 +240,7 @@ http://<public_ip_address>:8080
 You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
 
 
-####INITIALIZING MYRING FLASK APP
+####Initializing MyRing Flask App Databases.
 
 Go to 
 ```
@@ -272,20 +284,6 @@ http://<public_ip_address>:8080/_tools/install
 Stop the Flask server with CTRL+C
 
 
-### uWSGI
-
-We need uWSGI to server dynamic content in production. 
-
-Install the compilers and tools first
-
-```
-# apt-get install build-essential python python-dev
-```
-
-Now install uWSGI
-```
-# pip install uwsgi
-```
 
 #### Configuring Nginx
 
@@ -357,7 +355,7 @@ chown -R :deployteam /var/log/uwsgi
 
 Execute uWSGI and pass it the newly created configuration file
 ```
-uwsgi --ini /var/www/myring/myring_uwsgi.ini
+uwsgi --ini /var/www/myring/myring_uwsgi.ini --chown-socket=www-data:www-data
 ```
 The Terminal will stay idle. That is ok. It means it is serving pages.
 That is ok but if you close that terminal window the process will stop. 
