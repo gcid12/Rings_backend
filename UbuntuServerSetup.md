@@ -355,7 +355,7 @@ chown -R :deployteam /var/log/uwsgi
 
 Execute uWSGI and pass it the newly created configuration file
 ```
-uwsgi --ini /var/www/myring/myring_uwsgi.ini
+uwsgi --ini /var/www/myring/myring_uwsgi.ini --chown-socket=www-data:www-data
 ```
 The Terminal will stay idle. That is ok. It means it is serving pages.
 That is ok but if you close that terminal window the process will stop. 
