@@ -66,10 +66,18 @@ def register():
 
         try:
             user.set_user()
+            #return redirect('/_login')
             print('Now log in the user')
-            if login_user(user, remember="no"):
-                flash("Logged in!")
-                return redirect('/_login')
+
+            #Go through regular login process
+            userObj = User(email=email)
+            userview = userObj.get_user()
+            print(userObj)
+            if login_user(userObj, remember="no"):
+                    flash("Logged in!")
+                    #flash("Redirecting to : /"+user.id)
+                    return redirect('/'+userview.id)
+  
             else:
                 flash("unable to log you in")
 
