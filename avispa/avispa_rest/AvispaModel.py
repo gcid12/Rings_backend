@@ -211,6 +211,33 @@ class AvispaModel:
         return False
 
     #AVISPAMODEL
+    def user_hard_delete_ring(self,handle,ringname,ringversion,user_database=None):
+
+        dbname = handle+'_'+ringname+'_'+ringversion
+        if self.MAM.delete_db(dbname):
+            print('Deleted from COUCHDB')
+            del1 = True
+
+
+        db = self.couch[self.user_database]
+        doc =  MyRingUser.load(db, handle)
+        rings = doc['rings']
+        for ring in rings:
+            if ring['ringname']==ringname and ring['version']==ringversion:
+                
+                ring['deleted']=True
+                
+        if doc.store(db):
+            print('Deleted from USERDB')
+            del2 = True
+      
+
+        if del1 and del2:
+            return True
+        else:
+            return False
+
+    #AVISPAMODEL
     def ring_get_blueprint(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)

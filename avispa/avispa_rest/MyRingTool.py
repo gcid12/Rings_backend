@@ -397,6 +397,45 @@ class MyRingTool:
 
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
+
+
+    def analyze_url(self,request,*args):
+
+        from urlparse import urlparse, urlunparse
+
+
+        o2 = urlparse('http://127.0.0.1:8080/vito/juicio_0-1-0?blueprint222=23')
+        print 'scheme  :', o2.scheme
+        print 'netloc  :', o2.netloc
+        print 'path    :', o2.path
+        print 'params  :', o2.params
+        print 'query   :', o2.query
+        print 'fragment:', o2.fragment
+        print 'username:', o2.username
+        print 'password:', o2.password
+        print 'hostname:', o2.hostname, '(netloc in lower case)'
+        print 'port    :', o2.port
+
+        pathparts = o2.path.split('/')
+        print(pathparts)
+        if pathparts[1]!='_api':
+            corrected_path = '/_api'+o2.path
+        else:
+            corrected_path = o2.path
+
+        corrected_query = 'blueprint'
+
+        ring_url=urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
+        print('ring_url:')
+        print(ring_url)
+
+
+        d = {'rq': ring_url,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
+
+
             
 
 
