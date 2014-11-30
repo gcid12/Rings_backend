@@ -4,6 +4,9 @@ env_config.py
 #Flask test run
 run.sh
 
+#Imagestore
+imagestore/
+
 #Dumps
 *.dump
 
