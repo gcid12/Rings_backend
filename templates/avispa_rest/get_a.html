@@ -83,9 +83,9 @@
                     <div class="pull-right">
                       <!--input type="checkbox" value="public" name="public"/-->
                       <div class="btn-group">
-                        <a href="/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn btn-success">View</a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn btn-success">List</a>
                         <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=post" type="button" class="btn btn-warning">New</a>
-                        <!--a href="/{{ data.handle }}/{{ ring.ringname }}?rq=put">Edit Schema</i></a-->
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=put"><span style="padding:25px;">Edit Schema</span></i></a>
                         <!--a href="/{{ data.handle }}/{{ ring.ringname }}?method=delete" >Delete Ring</a-->
                       </div>
                       <br/><br/>
@@ -161,21 +161,23 @@
             
 
 
-            <!--div class="">
-               <ul class="pagination">
+            <div class="">
+               <!--ul class="pagination">
                   <li><a href="#">&laquo;</a></li>
                   <li class="active"><a href="#">1</a></li>
                   <li class="disable"><a href="#">2</a></li>
                   <li class="disable"><a href="#">3</a></li>
                   <li><a href="#">&raquo;</a></li>
-               </ul>
+               </ul-->
                <div class="pull-right">
                  <a href="?rq=post&n=10" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
                     <i class="fa fa-plus"></i> &nbsp; NEW RING
                  </a>
                </div>     
 
-            </div-->
+            </div>
+
+
 
 
 

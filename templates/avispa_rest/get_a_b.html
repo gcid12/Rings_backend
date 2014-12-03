@@ -82,7 +82,19 @@
                         <div class="rn-box-content">
                             <table class="table table-striped">
                                 <!-- ITEM N -->
+
+                                {% if not data.itemlist %}
+                                You have no items in this Ring. Create one, click here:
+                                <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs " style="margin:0 5px;">
+                                <i class="fa fa-plus"></i> &nbsp; NEW
+                                </a>
+
+                               {% endif %}
+                                
                                 {% for item in data.itemlist %}
+                                
+                                
+
                                 <tr>
                                     <td style="width:15%;">
 
@@ -167,6 +179,8 @@
                                 
 
                               {% endfor %}
+
+                              
                                 
                                 <!-- END ITEM N -->
 
