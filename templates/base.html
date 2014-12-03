@@ -54,7 +54,7 @@
         </button>
 
         <img style="width:30px; margin:5px;" src="/static/images/myringpurple.png"  alt="Rings">
-        <a href="/">
+        <a href="/{{ current_user.id }}">
             <span class="rn-clear">MY</span><span class="rn-black">RING </span>
         </a>  
       </div>
@@ -64,7 +64,7 @@
             {%if current_user.is_authenticated()%}
             <ul class="nav navbar-nav navbar-right">
                 
-                <li>Logged in as: {{ current_user.id }} </li>
+                <li><span style="padding:25px;">Logged in as: {{ current_user.id }} </span></li>
                 <li class="active"><a href="/{{ current_user.id }}">Home</a></li>
                 
                 <!--li class="dropdown">
@@ -108,7 +108,7 @@
     
         {% if data.today is defined %}
         <div class="pull-right rn-t3 text-right"><strong>{{ data.today }}</strong><br/>
-            <span class="rn-clear">Resources: <br/>Global: 1,345 / Local: 34,543 </span>
+            <!--span class="rn-clear">Resources: <br/>Global: 1,345 / Local: 34,543 </span-->
         </div>
         {%endif%}
 

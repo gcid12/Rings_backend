@@ -87,7 +87,7 @@
 
                             {% for field in data.fieldsblueprint %}
 
-                              ({{ field.FieldWidget }})
+                              
                               {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
                               {% include widget  %} 
                                 

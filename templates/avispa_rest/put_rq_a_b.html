@@ -49,7 +49,8 @@
                 <div class="form-group">
                   <label for="RingName" class="col-sm-2 control-label">ring:name</label>
                   <div class="col-sm-10">
-                     <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringblueprint.RingName }}" >
+                     <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringblueprint.RingName }}" disabled>
+                    
                   </div>
                   <label for="RingDescription" class="col-sm-2 control-label">ring:description</label>
                   <div class="col-sm-10">
@@ -103,7 +104,7 @@
                     <tr>
                       <td>field:name</td>
                       <td>
-                        <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text" value="{{ field.FieldName }}">
+                        <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text" value="{{ field.FieldName }}" disabled>
                       </td>
                     </tr>
                     <tr>
@@ -117,7 +118,7 @@
                     <tr>
                       <td>field:type</td>
                       <td>
-                        <select name="FieldType_{{ f }}">
+                        <select name="FieldType_{{ f }}" disabled>
                           <option value="">SELECT ONE</option>
                           <option value="INT" {% if field.FieldType == "INT" %}selected{% endif %}>INT</option>
                           <option value="TEXT" {% if field.FieldType == "TEXT" %}selected{% endif %}>TEXT</option>
