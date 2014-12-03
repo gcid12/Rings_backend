@@ -311,14 +311,16 @@ class AvispaModel:
         for i in xrange(0,numfields):
             for f in fieldprotocol:
 
+                #Boolean correction
+                if pinput['fields'][i][f] == 'FALSE':
+                    pinput['fields'][i][f] = False
+                elif pinput['fields'][i][f] == 'TRUE':
+                    pinput['fields'][i][f] = True
+                
+
                 if(action == 'new'):
-                    if pinput['fields'][i][f]:  #BUG Aqui deberia leer False as 'False'!!!
-                            if pinput['fields'][i][f] == 'FALSE':
-                                args_f[f] = False
-                            elif pinput['fields'][i][f] == 'TRUE':
-                                args_f[f] = True
-                            else:
-                                args_f[f] = pinput['fields'][i][f]
+                    if pinput['fields'][i][f] or pinput['fields'][i][f]==False:  #BUG Aqui deberia leer False as 'False'!!!      
+                        args_f[f] = pinput['fields'][i][f]
 
                 elif(action == 'edit'):
                     if pinput['fields'][i][f] == ring.fields[i][f]:  # Checks if old and new are the same
@@ -330,8 +332,8 @@ class AvispaModel:
                         args_f[f] = pinput['fields'][i][f]
 
 
-            print('args_f:')
-            print(args_f)
+            #print('args_f:')
+            #print(args_f)
 
             if(action == 'new'):
                 ring.fields.append(**args_f)
