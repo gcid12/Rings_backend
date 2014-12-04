@@ -49,7 +49,8 @@
                 <div class="form-group">
                   <label for="RingName" class="col-sm-2 control-label">ring:name</label>
                   <div class="col-sm-10">
-                     <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringblueprint.RingName }}" disabled>
+                     <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the ring" value="{{ data.ringblueprint.RingName }}" disabled>
+                     <input name="RingName" type="hidden" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringblueprint.RingName }}">
                     
                   </div>
                   <label for="RingDescription" class="col-sm-2 control-label">ring:description</label>
@@ -104,7 +105,8 @@
                     <tr>
                       <td>field:name</td>
                       <td>
-                        <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text" value="{{ field.FieldName }}" disabled>
+                        <input id="FieldName_{{ f }}disabled" name="FieldName_{{ f }}disabled" class="form-control" type="text" value="{{ field.FieldName }}" disabled>
+                        <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="hidden" value="{{ field.FieldName }}">
                       </td>
                     </tr>
                     <tr>
