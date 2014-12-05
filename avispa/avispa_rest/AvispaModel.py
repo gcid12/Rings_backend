@@ -423,8 +423,15 @@ class AvispaModel:
         
         values = {}
         fields = blueprint['fields']
+
+        print("post_a_b raw arguments sent:")
+        print(request.form)
+
         for field in fields:
             values[field['FieldName']] = request.form.get(field['FieldName'])
+
+            print(field['FieldName']+' content: '+str(request.form.get(field['FieldName'])))
+            print(field['FieldName']+' type: '+str(type(request.form.get(field['FieldName']))))
 
 
         RingClass = self.ring_create_class(blueprint)

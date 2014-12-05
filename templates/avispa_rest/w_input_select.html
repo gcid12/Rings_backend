@@ -4,7 +4,7 @@
      
      
      {% if not data.item[field.FieldName] %}
-     <select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}[]" class="select-chosen"  {% if field.FieldCardinality %}'multiple'{% endif %}>
+     <select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality %}'multiple'{% endif %}>
                          
                 {% if field.FieldCardinality != 'Multiple' %}
                     <option value="">SELECT ONE </option>
