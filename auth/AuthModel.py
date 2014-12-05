@@ -3,6 +3,7 @@ import sys
 import os
 from couchdb.http import PreconditionFailed
 from couchdb.design import ViewDefinition
+from flask import flash
 
 from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
@@ -30,6 +31,21 @@ class AuthModel:
     #AUTHMODEL
     def saas_create_user(self,user):
         #Added validation for SaaS users go here
+
+        #Check if that username or email exists before trying to create the new user. Reject if TRUE
+
+        if self.userdb_get_user_by_email(self,user['email']):
+            print('User with this email already exists')
+            flash('User with this email already exists')
+            return False
+
+        if self.userdb_get_user_by_handle(self,user['username']):
+            print('User with this username already exists')
+            flash('User with this username already exists')
+            return False
+
+
+
         if self.MAM.create_user(user):
             print("User created in DB. Attempting to create image folders...")
             self.create_user_imagefolder(user['username'])
@@ -177,7 +193,7 @@ class AuthModel:
         return True
 
     #AUTHMODEL
-    def userdb_get_user_by_email(self,key,user_database=None):
+    def userdb_get_user_by_email(self,email,user_database=None):
 
         print('flag1.1')
 
@@ -191,7 +207,7 @@ class AuthModel:
         print('flag1.3')
         
         options = {}
-        options['key']=key
+        options['key']=email
         result = db.view('auth/userbyemail',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
@@ -208,11 +224,13 @@ class AuthModel:
 
         print('flag1.5')
             
-
-        return item
+        if item:
+            return item
+        else:
+            return False
 
     #AUTHMODEL
-    def userdb_get_user_by_id(self,id,user_database=None):
+    def userdb_get_user_by_handle(self,handle,user_database=None):
 
         print('flag1.1')
 
@@ -227,7 +245,7 @@ class AuthModel:
         
         options = {}
         # options will only accept this: 'key', 'startkey', 'endkey'
-        options['key']=id
+        options['key']=handle
         result = db.view('auth/userbyhandle',**options)
         #result = db.iterview('auth/userhash',1,**options)
 

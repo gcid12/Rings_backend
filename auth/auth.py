@@ -81,6 +81,7 @@ def register():
             else:
                 flash("unable to log you in")
 
+
         except:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address")

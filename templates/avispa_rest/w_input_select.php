@@ -1,26 +1,43 @@
+<?php 
+	if($FieldLabel){
+		$namearr=json_decode($FieldLabel);
+		
+		if(isset($namearr->en)){
+			$name=$namearr->en;
+		}else{
+			$name=$FieldName;
+		}
+		
+	}else{
+		$name=$FieldName;
+	}
+?>
 <div class="form-group">
-<label for='{{ field.FieldName }}'>{{ field.FieldName }}</label><br/>
-     <!--span>{{ field.FieldSource }}</span-->
-     
-     
-     {% if not data.item[field.FieldName] %}
-     <select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}[]" class="select-chosen"  {% if field.FieldCardinality %}'multiple'{% endif %}>
+<label for='<?php echo $FieldName; ?>'><?php echo $name; ?><?php echo($FieldRequired)?'*':''; ?></label><br/>
+	<span><?php //echo $FieldSource; ?></span>
+	
+	<?php if(!$value){ ?>
+	<select id="input_select_<?php echo $FieldOrder; ?>" name="<?php echo $FieldName; ?>[]" class="select-chosen"  <?php echo($FieldCardinality=='Multiple')?'multiple':''; ?> >
                          
-                {% if field.FieldCardinality != 'Multiple' %}
-                    <option value="">SELECT ONE </option>
-                {% endif %}
+                <?php if($FieldCardinality!='Multiple'){ ?>  
+					 <option value="">SELECT ONE </option>
+				<?php } ?>
 
     </select>
-    {% else %}
+    <?php }else{ ?>
     
+    <input name="<?php echo $FieldName; ?>" class="form-control" id="text<?php echo $FieldOrder; ?>" placeholder="Enter <?php echo $FieldName; ?>" <?php echo($FieldRequired)?'required':''; ?> value="<?php echo $value ?>" />
     
-    <input name="{{ field.FieldName }}" class="form-control" id="text{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %}'required'{% endif %} value="{{ data.item[field.FieldName] }}" />
-    
-    {% endif %}
+    <?php } ?>
 
 </div>
 
 
+
+
+<?php
+
+/*
                                         <!--option value="United States">United States</option>
                                         <option value="United Kingdom">United Kingdom</option>
                                         <option value="Afghanistan">Afghanistan</option>
@@ -272,3 +289,5 @@
                                         <option value="Yemen">Yemen</option>
                                         <option value="Zambia">Zambia</option>
                                         <option value="Zimbabwe">Zimbabwe</option-->
+*/
+?>

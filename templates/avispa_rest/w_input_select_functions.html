@@ -1,0 +1,97 @@
+<script>
+$("#input_select_{{ field.FieldOrder }}").chosen({width: "100%"}); 
+
+    
+/*
+@USAGE urlo="http://anyurl.com/anyuser/equiposfutbol?fields=NombreDelEquipo";
+*/
+console.log('Document ready w_select')
+//The FieldSource should have a "fields" indicated
+var urlo="{{ field.FieldSource }}";
+
+console.log('FieldSource: {{ field.FieldSource }}')
+
+//Select widget can't work without a source
+if(urlo!='undefined'){
+
+    var url=urlo.split("?");
+
+    //This object carries the values sent via AJAX
+    var urldata = new Object();
+
+    //No parameters via URL?
+    if(typeof url[1]!='undefined'){
+        var urlpar=url[1].split("&");
+        var urlval = new Array();
+    
+        for(j=0;j<urlpar.length;++j){
+            urlval=urlpar[j].split("=");
+            urldata[urlval[0]]=urlval[1];
+            urlval.length=0;
+        }
+    }
+    urldata['method']='get';
+    urldata['accept']='json';
+    urldata['blueprint']='1';
+
+
+    console.log('urldata:')
+    console.log(urldata)
+
+    
+    $.get( url[0], urldata )
+    .done(function( data ) {
+        var returnedData = JSON.parse(data);
+
+        console.log("returnedData:")
+        console.log(returnedData)
+        //We put the returned JSON in a global variable for chosen to be able to use it
+        window.input_select_{{ field.FieldOrder }}=returnedData;
+        
+        //By default we will grab the first field to display it as the option
+        if( typeof urldata['fl']=='undefined'){
+            var thefield=returnedData.fields[0].FieldName;
+        }else{ //But it is better if the source is explicitly indicated by &fl=<name_of_field>
+            var urlfields = urldata['fl'].split(",");
+            var thefield=urlfields[0];
+        }
+        
+        var i;
+        var newoption;
+        for(i=0;i<returnedData.items.length; ++i){      
+            //This grabs the indicated field and displays it as the option
+            
+            newoption = "<option>"+returnedData.items[i][thefield]+"</option>";
+            $( '#input_select_{{ field.FieldOrder }}' ).append(newoption);
+        
+        }
+    
+        $('#input_select_{{ field.FieldOrder }}').trigger("chosen:updated");
+    
+    
+    },"json");
+    
+
+    
+}
+    
+
+
+$("#input_select_{{ field.FieldOrder }}").chosen().change(function(){
+
+    //var selection = $( "#input_select_{{ field.FieldOrder }}" ).val();
+    /////alert('changed to: '+ selection);
+    //var selected=selection.split(",");
+    //var datareturned  = window.input_select_{{ field.FieldOrder }};
+     
+    //for(k=0;k<selected.length;++k){
+    //  //selected[k]
+    //}
+     
+    //for(k=0;window.input_select.items.length;++k){
+    //  if(window.input_select.items[k].NombreDelEquipo=)
+    // alert('Rich: '+ window.input_select_{{ field.FieldOrder }});
+    //}
+});
+
+</script>

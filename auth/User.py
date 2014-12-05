@@ -83,7 +83,7 @@ class User(UserMixin):
             if self.email:
                 dbUser =self.ATM.userdb_get_user_by_email(self.email)
             elif self.username:
-                dbUser =self.ATM.userdb_get_user_by_id(self.username)
+                dbUser =self.ATM.userdb_get_user_by_handle(self.username)
 
             print('flag2')
             print(dbUser)
