@@ -17,10 +17,10 @@ class AuthModel:
         MCD = MyRingCouchDB()
         self.couch=MCD._instantiate_couchdb_as_admin()
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        print('self.couch :ATM')
-        print(self.couch)
-        print('self.couch.resource.credentials :ATM')
-        print(self.couch.resource.credentials)
+        #print('self.couch :ATM')
+        #print(self.couch)
+        #print('self.couch.resource.credentials :ATM')
+        #print(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
         self.MAM = MainModel()
@@ -195,25 +195,25 @@ class AuthModel:
     #AUTHMODEL
     def userdb_get_user_by_email(self,email,user_database=None):
 
-        print('flag1.1')
+        #print('flag1.1')
 
         if not user_database : 
             user_database = self.user_database
 
-        print('flag1.2')
+        #print('flag1.2')
 
         db = self.couch[user_database]
 
-        print('flag1.3')
+        #print('flag1.3')
         
         options = {}
         options['key']=email
         result = db.view('auth/userbyemail',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
-        print(result)
+        #print(result)
 
-        print('flag1.4')
+        #print('flag1.4')
                
         for row in result:
 
@@ -222,7 +222,7 @@ class AuthModel:
             item[u'key'] = row['key']
             item[u'value'] = row['value']
 
-        print('flag1.5')
+        #print('flag1.5')
             
         if item:
             return item
@@ -232,16 +232,16 @@ class AuthModel:
     #AUTHMODEL
     def userdb_get_user_by_handle(self,handle,user_database=None):
 
-        print('flag1.1')
+        #print('flag1.1')
 
         if not user_database : 
             user_database = self.user_database
 
-        print('flag1.2')
+        #print('flag1.2')
 
         db = self.couch[user_database]
 
-        print('flag1.3')
+        #print('flag1.3')
         
         options = {}
         # options will only accept this: 'key', 'startkey', 'endkey'
@@ -249,9 +249,9 @@ class AuthModel:
         result = db.view('auth/userbyhandle',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
-        print(result)
+        #print(result)
 
-        print('flag1.4')
+        #print('flag1.4')
                
         for row in result:
 
@@ -260,7 +260,7 @@ class AuthModel:
             item[u'key'] = row['key']
             item[u'value'] = row['value']
 
-        print('flag1.5')
+        #print('flag1.5')
             
 
         return item

@@ -79,14 +79,14 @@ class User(UserMixin):
     def get_user(self):
 
         try:
-            print('flag1')
+            #print('flag1')
             if self.email:
                 dbUser =self.ATM.userdb_get_user_by_email(self.email)
             elif self.username:
                 dbUser =self.ATM.userdb_get_user_by_handle(self.username)
 
-            print('flag2')
-            print(dbUser)
+            #print('flag2')
+            #print(dbUser)
             if dbUser:
                 self.email = dbUser['value']['email']
                 self.active = dbUser['value']['is_active'] 
@@ -104,10 +104,10 @@ class User(UserMixin):
     def is_valid_password_key(self,email,key):
 
         try:
-            print('flag1')
+            #print('flag1')
             dbUser =self.ATM.userdb_get_user_by_email(email)
-            print('flag2')
-            print(dbUser)
+            #print('flag2')
+            #print(dbUser)
             if dbUser['value']['new_password_key']==key:   
                 return True
             else:

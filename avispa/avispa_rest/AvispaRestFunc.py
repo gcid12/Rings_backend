@@ -20,7 +20,7 @@ class AvispaRestFunc:
         ringlistlen = len(ringlist)
 
 
-        print(ringlist)
+        #print(ringlist)
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist, 'ringlistlen':ringlistlen}
     	return d
 
@@ -132,20 +132,20 @@ class AvispaRestFunc:
             resultsperpage = 25
 
         blueprint = self.AVM.ring_get_blueprint_from_view(handle,ring)
-        print(blueprint['fields'])
+        #print(blueprint['fields'])
 
         layers = {}
         for blueprintfield in blueprint['fields']:
             layers[blueprintfield['FieldName']]=int(blueprintfield['FieldLayer'])
 
-        print('layers:')
-        print(layers)
+        #print('layers:')
+        #print(layers)
 
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey)
         
-        print('preitemlist:')
-        print(preitemlist)
+        #print('preitemlist:')
+        #print(preitemlist)
 
         itemlist = []
         for item in preitemlist:
@@ -172,10 +172,10 @@ class AvispaRestFunc:
             itemlist.append(previewItem)
 
 
-        print('itemlist:')
-        print(itemlist)
+        #print('itemlist:')
+        #print(itemlist)
 
-        print(len(itemlist))
+        #print(len(itemlist))
 
         if len(itemlist)>0 and len(itemlist) == resultsperpage:
             nextlastkey=itemlist[-1]['id']
@@ -247,7 +247,7 @@ class AvispaRestFunc:
         '''
         Form to create new item
         '''
-        print(ring)
+        #print(ring)
         blueprint = self.AVM.ring_get_blueprint(handle,ring)
         ringblueprint = blueprint['rings'][0]
         fieldsblueprint = blueprint['fields']

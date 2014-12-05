@@ -17,12 +17,12 @@ def login():
         email = request.form.get('email')
         userObj = User(email=email)
         user = userObj.get_user()
-        print("user:")
-        print(user.password)
-        print(request.form.get('password'))
-        print(flask_bcrypt.check_password_hash(user.password,request.form.get('password')))
-        print(user)
-        print(userObj.is_active())
+        #print("user:")
+        #print(user.password)
+        #print(request.form.get('password'))
+        #print(flask_bcrypt.check_password_hash(user.password,request.form.get('password')))
+        #print(user)
+        #print(userObj.is_active())
         if userObj.is_active():
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"

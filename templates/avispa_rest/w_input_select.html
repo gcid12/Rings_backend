@@ -1,20 +1,25 @@
 <div class="form-group">
 <label for='{{ field.FieldName }}'>{{ field.FieldName }}</label><br/>
-     <!--span>{{ field.FieldSource }}</span-->
+     <!--span>FieldCardinality:{{ field.FieldCardinality }}</span-->
      
      
      {% if not data.item[field.FieldName] %}
-     <select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality %}'multiple'{% endif %}>
-                         
-                {% if field.FieldCardinality != 'Multiple' %}
-                    <option value="">SELECT ONE </option>
-                {% endif %}
+
+         <input type="hidden" name="{{ field.FieldName }}" class="form-control" id="input_select_{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
+
+         <!--select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}-->
+
+         <select id="chosen_{{ field.FieldOrder }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}>
+                             
+            {% if field.FieldCardinality != 'Multiple' %}
+                <option value="">SELECT ONE </option>
+            {% endif %}
 
     </select>
     {% else %}
     
     
-    <input name="{{ field.FieldName }}" class="form-control" id="text{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %}'required'{% endif %} value="{{ data.item[field.FieldName] }}" />
+        <input name="{{ field.FieldName }}" class="form-control" id="text{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
     
     {% endif %}
 

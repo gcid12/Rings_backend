@@ -31,10 +31,10 @@ class AvispaModel:
         MCD = MyRingCouchDB()
         self.couch=MCD.instantiate_couchdb_as_admin()    
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        print('self.couch :AVM')
-        print(self.couch)
-        print('self.couch.resource.credentials :AVM')
-        print(self.couch.resource.credentials)
+        #print('self.couch :AVM')
+        #print(self.couch)
+        #print('self.couch.resource.credentials :AVM')
+        #print(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
 
@@ -427,6 +427,7 @@ class AvispaModel:
         print("post_a_b raw arguments sent:")
         print(request.form)
 
+
         for field in fields:
             values[field['FieldName']] = request.form.get(field['FieldName'])
 
@@ -604,8 +605,8 @@ class AvispaModel:
             #blueprint['rings']=row.rings
             #blueprint['fields']=row.fields
 
-        print('blueprint:')
-        print(blueprint)
+        #print('blueprint:')
+        #print(blueprint)
 
         return blueprint
 
