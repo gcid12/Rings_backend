@@ -64,7 +64,8 @@ def register():
         user = User(username,email,password_hash)
         print user
 
-        try:
+        #try:
+        if True:
             user.set_user()
             #return redirect('/_login')
             print('Now log in the user')
@@ -82,7 +83,8 @@ def register():
                 flash("unable to log you in")
 
 
-        except:
+        #except:
+        else:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address")
             current_app.logger.error("Error on registration ")

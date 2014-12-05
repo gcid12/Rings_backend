@@ -33,13 +33,16 @@ class AuthModel:
         #Added validation for SaaS users go here
 
         #Check if that username or email exists before trying to create the new user. Reject if TRUE
-
-        if self.userdb_get_user_by_email(self,user['email']):
+        print("self.userdb_get_user_by_email")
+        
+        if self.userdb_get_user_by_email(user['email']):
             print('User with this email already exists')
             flash('User with this email already exists')
             return False
 
-        if self.userdb_get_user_by_handle(self,user['username']):
+        print("self.userdb_get_user_by_handle")
+
+        if self.userdb_get_user_by_handle(user['username']):
             print('User with this username already exists')
             flash('User with this username already exists')
             return False
@@ -214,6 +217,7 @@ class AuthModel:
         #print(result)
 
         #print('flag1.4')
+        item = {}
                
         for row in result:
 
@@ -252,6 +256,7 @@ class AuthModel:
         #print(result)
 
         #print('flag1.4')
+        item = {}
                
         for row in result:
 
