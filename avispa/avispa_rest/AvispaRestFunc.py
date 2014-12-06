@@ -1,4 +1,4 @@
-import json
+import json, collections
 from flask import redirect, flash
 from RingBuilder import RingBuilder
 from MainModel import MainModel #DELETE!
@@ -144,17 +144,19 @@ class AvispaRestFunc:
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey)
         
-        #print('preitemlist:')
-        #print(preitemlist)
+        print('preitemlist:')
+        print(preitemlist)
 
         itemlist = []
         for item in preitemlist:
             #item['_level']=2
             #print(item)
-            previewItem = {}
+            #previewItem = {}
+            previewItem = collections.OrderedDict()
             for fieldname in item:
                 #print(fieldname)
                 
+                previewItem[u'_id'] = item[u'_id']
                 if fieldname in layers:
                     if layers[fieldname]<=PREVIEW_LAYER:
                     #if True:
@@ -162,13 +164,17 @@ class AvispaRestFunc:
                         #print("Out:"+fieldname)
                         previewItem[fieldname] = item[fieldname] 
                     #Include id anyway     
-                    previewItem[u'_id'] = item[u'_id']
+                    
 
 
             if 'Images' in previewItem:
                 images=previewItem['Images'].split(',')                
                 del images[0]
                 previewItem['Images']=images
+
+            print('previewItem:')
+            print(previewItem)
+
             itemlist.append(previewItem)
 
 
@@ -375,7 +381,8 @@ class AvispaRestFunc:
             print(item)
 
             if api:
-                out = {}
+                #out = {}
+                out = collections.OrderedDict()
 
                 out['source'] = "/"+str(handle)+"/"+str(ring)
                 
@@ -387,7 +394,7 @@ class AvispaRestFunc:
                     out['fields'] = blueprint['fields']
                 
                 #del item['_id']
-                del item['_public'] 
+                #del item['_public'] 
                 out['items'] = [] 
                 out['items'].append(item)
                 #out['items'] = item

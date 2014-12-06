@@ -10,6 +10,7 @@ import datetime as dt
 import random
 import sys
 import traceback
+import collections
 from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
@@ -517,6 +518,18 @@ class AvispaModel:
         batch = 500  #This is not the number of results per page. 
          # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
 
+        blueprint = self.ring_get_blueprint_from_view(handle,ringname) 
+        OrderedFields=[]
+        for field in blueprint['fields']:
+            OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+            
+
+        #print('blueprint:')
+        #print(blueprint)
+
+        print('OrderedFields:')
+        print(OrderedFields)
+
         options = {}
         if lastkey:
             limit +=1
@@ -534,8 +547,6 @@ class AvispaModel:
 
         result = db.iterview('ring/items',batch,**options)
 
-
-
         #print (result)
         items = []
         i = 0
@@ -544,19 +555,28 @@ class AvispaModel:
 
             i += 1
             if lastkey and i==1:
-                #continue  #skipping the lastkey
+                #If lastkey was sent, ignore first item 
+                #as it was the last item in the last page
                 print('length:')
                 print(len(items))
                 continue
                 #pass
 
-            item = {}
+            #item = {} #Make this an ordered dictionary
+            item = collections.OrderedDict()
+
             item[u'_id'] = row['id']
-            item.update(row['value'])
+
+            for fieldname in OrderedFields:
+                item[fieldname] = row['value'][fieldname]
+
+            #item.update(row['value'])
+
             #item['id']=row['id']
             #item['values']=row['value']
             items.append(item)
-            #print(item)
+            print("item:")
+            print(item)
 
         #print(items)
 
@@ -568,6 +588,15 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
+
+        blueprint = self.ring_get_blueprint_from_view(handle,ringname)   
+        OrderedFields=[]
+        for field in blueprint['fields']:
+            print("order:FieldName")
+            print(field['FieldOrder'],field['FieldName'])
+            OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+            print(OrderedFields)
+
         
         options = {}
         options['key']=idx
@@ -577,10 +606,15 @@ class AvispaModel:
 
         
         for row in result:      
-            item = {}
+            item = collections.OrderedDict()
             if row['id']:        
                 item[u'_id'] = row['id']
-                item.update(row['value'])
+
+                for fieldname in OrderedFields:
+                    item[fieldname] = row['value'][fieldname]
+                    #item.update(row['value'])
+
+                print("item:")
                 return item
 
         return False
