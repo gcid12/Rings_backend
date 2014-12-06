@@ -198,7 +198,7 @@ def route_a(handle):
     print(current_user.id)
 
     if handle != current_user.id:
-        return redirect('/logout') 
+        return redirect('/_logout') 
 
     result = route_dispatcher('_a',handle)
  
