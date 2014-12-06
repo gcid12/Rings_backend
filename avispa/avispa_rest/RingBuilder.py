@@ -120,13 +120,14 @@ class RingBuilder:
                 print('Cloning local ring')
 
                 pathparts=corrected_path.split('/')
-                handle = pathparts[2]
+                origin_handle = pathparts[2] #BUG! This will set origin database as handle for new ring 
+                handle = handle.lower()
                 ringnameparts = pathparts[3].split('_')
                 ringname = ringnameparts[0]
                 ringversion = ringnameparts[1]
                 
                 #original blueprint
-                blueprint = self.AVM.ring_get_blueprint_from_view(handle,ringname+'_'+ringversion)
+                blueprint = self.AVM.ring_get_blueprint_from_view(origin_handle,ringname+'_'+ringversion)
                 print(blueprint) 
                 #Generate pinput from blueprint
 
