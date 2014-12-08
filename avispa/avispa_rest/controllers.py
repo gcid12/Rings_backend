@@ -3,6 +3,7 @@ import urlparse, time, datetime
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from MyRingTool import MyRingTool
+from MyRingPatch import MyRingPatch
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE
@@ -16,8 +17,12 @@ avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
 
+    
     ARF = AvispaRestFunc()
+
+    #Will have to move _tools and _patch this to its own FlaskBlueprint
     MRT = MyRingTool()
+    MRP = MyRingPatch()
     
 
 
@@ -43,6 +48,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     if handle=='_tools':  #not a ring! System specific tools
         tool = ring
         data = getattr(MRT, tool.lower())(request)
+        print('flagA:')
+        print(data)
+    elif handle=='_patch':
+        tool = ring
+        data = getattr(MRP, tool.lower())(request)
         print('flagA:')
         print(data)
 
@@ -96,12 +106,6 @@ def index():
     data['handle']='x' #you have to grab this from the session user
     return render_template("avispa_rest/intro.html", data=data)
 
-@avispa_rest.route('/tools/', methods=['GET','POST'])
-@login_required
-def intro():
-
-    data = {}
-    return render_template("avispa_rest/tools.html", data=data)
 
 @avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
 
