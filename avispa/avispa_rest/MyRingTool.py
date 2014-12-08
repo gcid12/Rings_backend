@@ -15,7 +15,7 @@ from auth.AuthModel import AuthModel
 
 from AvispaUpload import AvispaUpload
 from CouchViewSync import CouchViewSync
-from MyRingBlueprint import MyRingBlueprint
+from MyRingSchema import MyRingSchema
 
 
 class MyRingTool:
@@ -350,7 +350,7 @@ class MyRingTool:
         host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
         print(host_url)
 
-        ringurl = 'http://127.0.0.1:8080/_api/blalab/reactivoexamen_0-1-2?blueprint'
+        ringurl = 'http://127.0.0.1:8080/_api/blalab/reactivoexamen_0-1-2?schema'
         o2 = urlparse.urlparse(ringurl)
         print('o2:')
         print(o2)
@@ -363,13 +363,13 @@ class MyRingTool:
             pathparts=o2.path.split('/')
             handle = pathparts[2]
             ringname = pathparts[3]
-            blueprint = self.AVM.ring_get_blueprint_from_view(handle,ringname)
+            schema = self.AVM.ring_get_schema_from_view(handle,ringname)
             print('Cloning local ring2')
-            print(blueprint)
+            print(schema)
             #You are cloning a ring from your localhost
             rq = 'Cloning local ring'
             #Verificar si el request viene localmente. 
-            #obtener el Blueprint (del Ring indicado)
+            #obtener el Schema (del Ring indicado)
             #tranformarlo para la generacion de un nuevo ring
 
         else:
@@ -389,11 +389,11 @@ class MyRingTool:
         return d
 
 
-    def analyze_blueprint(self,request,*args):
+    def analyze_schema(self,request,*args):
 
-        ring = MyRingBlueprint()
+        ring = MyRingSchema()
 
-        print(MyRingBlueprint.fields['FieldName'])
+        print(MyRingSchema.fields['FieldName'])
 
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
@@ -404,7 +404,7 @@ class MyRingTool:
         from urlparse import urlparse, urlunparse
 
 
-        o2 = urlparse('http://127.0.0.1:8080/vito/juicio_0-1-0?blueprint222=23')
+        o2 = urlparse('http://127.0.0.1:8080/vito/juicio_0-1-0?schema222=23')
         print 'scheme  :', o2.scheme
         print 'netloc  :', o2.netloc
         print 'path    :', o2.path
@@ -423,7 +423,7 @@ class MyRingTool:
         else:
             corrected_path = o2.path
 
-        corrected_query = 'blueprint'
+        corrected_query = 'schema'
 
         ring_url=urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
         print('ring_url:')

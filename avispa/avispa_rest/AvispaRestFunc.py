@@ -45,14 +45,14 @@ class AvispaRestFunc:
         result = RB.JSONRingGenerator(request,handle)
             
         if result:
-            print('Awesome , you just created a new Ring Blueprint')
+            print('Awesome , you just created a new Ring Schema')
             #msg = 'Item put with id: '+idx
-            flash("Your new Blueprint has been created")
+            flash("Your new Schema has been created")
             redirect = '/'+handle
             d = {'redirect': redirect, 'status':200}
 
         else:
-            d = {'message': 'There was an error creating the Blueprint' , 'template':'avispa_rest/index.html'}
+            d = {'message': 'There was an error creating the Schema' , 'template':'avispa_rest/index.html'}
         
         return d
 
@@ -131,12 +131,12 @@ class AvispaRestFunc:
         else:
             resultsperpage = 25
 
-        blueprint = self.AVM.ring_get_blueprint_from_view(handle,ring)
-        #print(blueprint['fields'])
+        schema = self.AVM.ring_get_schema_from_view(handle,ring)
+        #print(schema['fields'])
 
         layers = {}
-        for blueprintfield in blueprint['fields']:
-            layers[blueprintfield['FieldName']]=int(blueprintfield['FieldLayer'])
+        for schemafield in schema['fields']:
+            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])
 
         #print('layers:')
         #print(layers)
@@ -199,10 +199,10 @@ class AvispaRestFunc:
             out['source'] = "/"+str(handle)+"/"+str(ring)
 
             
-            if 'blueprint' in request.args:
-                blueprint= self.AVM.ring_get_blueprint_from_view(handle,ring)
-                out['rings'] = blueprint['rings']
-                out['fields'] = blueprint['fields']
+            if 'schema' in request.args:
+                schema= self.AVM.ring_get_schema_from_view(handle,ring)
+                out['rings'] = schema['rings']
+                out['fields'] = schema['fields']
 
             #del itemlist['_id']
             #del item['_public'] 
@@ -254,14 +254,14 @@ class AvispaRestFunc:
         Form to create new item
         '''
         #print(ring)
-        blueprint = self.AVM.ring_get_blueprint(handle,ring)
-        ringblueprint = blueprint['rings'][0]
-        fieldsblueprint = blueprint['fields']
-        numfields = len(fieldsblueprint)
+        schema = self.AVM.ring_get_schema(handle,ring)
+        ringschema = schema['rings'][0]
+        fieldsschema = schema['fields']
+        numfields = len(fieldsschema)
 
         d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html', 
-             'ringblueprint':ringblueprint,
-             'fieldsblueprint':fieldsblueprint,
+             'ringschema':ringschema,
+             'fieldsschema':fieldsschema,
              'numfields':numfields,
              'item':{} }
         return d
@@ -278,33 +278,33 @@ class AvispaRestFunc:
         result =  RB.put_a_b(request,handle,ring)
 
         if result:
-            print('Awesome , you just put the changes in the Ring Blueprint')
+            print('Awesome , you just put the changes in the Ring Schema')
             #msg = 'Item put with id: '+idx
-            flash("Changes saved in the Blueprint")
+            flash("Changes saved in the Schema")
             redirect = '/'+handle+'/'+ring
             d = {'redirect': redirect, 'status':200}
 
         else:
-            d = {'message': 'There was an error updating the Blueprint' , 'template':'avispa_rest/index.html'}
+            d = {'message': 'There was an error updating the Schema' , 'template':'avispa_rest/index.html'}
         
         return d
 
 
     def put_rq_a_b(self,request,handle,ring,idx,api=False,*args):
         '''
-        Edits the Blueprint
+        Edits the Schema
         '''
 
-        blueprint = self.AVM.ring_get_blueprint(handle,ring)
-        ringblueprint = blueprint['rings'][0]
-        fieldsblueprint = blueprint['fields']
-        numfields = len(fieldsblueprint)
-        # print(blueprint) 
+        schema = self.AVM.ring_get_schema(handle,ring)
+        ringschema = schema['rings'][0]
+        fieldsschema = schema['fields']
+        numfields = len(fieldsschema)
+        # print(schema) 
 
         
         d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/put_rq_a_b.html', 
-             'ringblueprint':ringblueprint,
-             'fieldsblueprint':fieldsblueprint,
+             'ringschema':ringschema,
+             'fieldsschema':fieldsschema,
              'numfields':numfields }
         return d
 
@@ -386,12 +386,12 @@ class AvispaRestFunc:
 
                 out['source'] = "/"+str(handle)+"/"+str(ring)
                 
-                if 'blueprint' in request.args:
-                    blueprint= self.AVM.ring_get_blueprint_from_view(handle,ring)
-                    print('blueprint::')
-                    print(blueprint)
-                    out['rings'] = blueprint['rings']
-                    out['fields'] = blueprint['fields']
+                if 'schema' in request.args:
+                    schema= self.AVM.ring_get_schema_from_view(handle,ring)
+                    print('schema::')
+                    print(schema)
+                    out['rings'] = schema['rings']
+                    out['fields'] = schema['fields']
                 
                 #del item['_id']
                 #del item['_public'] 
@@ -475,15 +475,15 @@ class AvispaRestFunc:
            
 
         
-        blueprint = self.AVM.ring_get_blueprint(handle,ring)
-        ringblueprint = blueprint['rings'][0]
-        fieldsblueprint = blueprint['fields']
-        numfields = len(fieldsblueprint)
+        schema = self.AVM.ring_get_schema(handle,ring)
+        ringschema = schema['rings'][0]
+        fieldsschema = schema['fields']
+        numfields = len(fieldsschema)
 
         d = {'message': 'Using put_rq_a_b_c for handle '+handle+', ring:'+ring , 
              'template':'avispa_rest/put_rq_a_b_c.html', 
-             'ringblueprint':ringblueprint,
-             'fieldsblueprint':fieldsblueprint,
+             'ringschema':ringschema,
+             'fieldsschema':fieldsschema,
              'numfields':numfields,
              'item':item }
 

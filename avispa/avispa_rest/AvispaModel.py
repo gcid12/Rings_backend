@@ -15,7 +15,7 @@ from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
-from MyRingBlueprint import MyRingBlueprint
+from MyRingSchema import MyRingSchema
 from CouchViewSync import CouchViewSync
 
 from MyRingCouchDB import MyRingCouchDB
@@ -76,11 +76,11 @@ class AvispaModel:
                     db = self.MAM.select_db(ringnamedb)
                     print('Get description:')
                     try:          
-                        RingDescription = db['blueprint']['rings'][0]['RingDescription']        
+                        RingDescription = db['schema']['rings'][0]['RingDescription']        
                         r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
                         data.append(r)
                     except ResourceNotFound:
-                        print('skipping ring '+ ringname + '. Blueprint does not exist')
+                        print('skipping ring '+ ringname + '. Schema does not exist')
                         
 
             print('flag6')
@@ -160,10 +160,10 @@ class AvispaModel:
         view.sync(db)
 
 
-        view = ViewDefinition('ring', 'blueprint', 
+        view = ViewDefinition('ring', 'schema', 
                '''
                 function(doc) {
-                  if(doc._id=='blueprint'){   
+                  if(doc._id=='schema'){   
                     emit(doc._id, doc)
                   }
                 }
@@ -239,19 +239,19 @@ class AvispaModel:
             return False
 
     #AVISPAMODEL
-    def ring_get_blueprint(self,handle,ringname):
+    def ring_get_schema(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
         print(db_ringname)
         db = self.couch[db_ringname]
-        blueprint = MyRingBlueprint.load(db,'blueprint')
+        schema = MyRingSchema.load(db,'schema')
 
-        return blueprint
+        return schema
 
 
 
     #AVISPAMODEL
-    def ring_set_blueprint(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
+    def ring_set_schema(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
 
         
         if ringversion == 'None' or ringversion == None:
@@ -263,15 +263,15 @@ class AvispaModel:
         print(db_ringname)
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
-        ring = MyRingBlueprint.load(db,'blueprint')
+        ring = MyRingSchema.load(db,'schema')
 
-        # Creates Ring Blueprint if it doesn't exist. Uses current one if it exists.
+        # Creates Ring Schema if it doesn't exist. Uses current one if it exists.
         if ring:
             action = 'edit'
         else:       
-            ring = MyRingBlueprint()
+            ring = MyRingSchema()
             #ring = RingClass()
-            ring._id= 'blueprint'
+            ring._id= 'schema'
 
             action = 'new'
 
@@ -354,9 +354,9 @@ class AvispaModel:
 
     
     #AVISPAMODEL
-    def _blueprint_create_class(self,numfields,ringprotocol,fieldprotocol):
+    def _schema_create_class(self,numfields,ringprotocol,fieldprotocol):
         '''
-        This function is deprecated. Now we just instantiate MyRingBlueprint class
+        This function is deprecated. Now we just instantiate MyRingSchema class
         '''
 
         args_r = {}
@@ -373,7 +373,7 @@ class AvispaModel:
                 args_f[f] =  TextField()
 
 
-        blueprintclass = type('BlueprintClass',
+        schemaclass = type('SchemaClass',
                          (Document,),
                          {
                             '_id' : TextField(),
@@ -386,14 +386,14 @@ class AvispaModel:
                                                 )))
                                                })
 
-        return blueprintclass
+        return schemaclass
 
     
     #AVISPAMODEL
-    def ring_create_class(self,blueprint):
+    def ring_create_class(self,schema):
 
         args_i = {}
-        fields = blueprint['fields']
+        fields = schema['fields']
         for field in fields:
             args_i[field['FieldName']] = TextField()
  
@@ -420,10 +420,10 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
 
-        blueprint = self.ring_get_blueprint(handle,ringname)
+        schema = self.ring_get_schema(handle,ringname)
         
         values = {}
-        fields = blueprint['fields']
+        fields = schema['fields']
 
         print("post_a_b raw arguments sent:")
         print(request.form)
@@ -436,7 +436,7 @@ class AvispaModel:
             print(field['FieldName']+' type: '+str(type(request.form.get(field['FieldName']))))
 
 
-        RingClass = self.ring_create_class(blueprint)
+        RingClass = self.ring_create_class(schema)
         item = RingClass()         
         item._id= str(random.randrange(1000000000,9999999999))
         #item.deleted = 
@@ -457,12 +457,12 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
 
-        blueprint = self.ring_get_blueprint(handle,ringname)
-        RingClass = self.ring_create_class(blueprint)
+        schema = self.ring_get_schema(handle,ringname)
+        RingClass = self.ring_create_class(schema)
         item = RingClass.load(db,idx)
         
         values = {}
-        fields = blueprint['fields']
+        fields = schema['fields']
 
         if request.form.get('_public'):
             item['public']=True
@@ -518,14 +518,14 @@ class AvispaModel:
         batch = 500  #This is not the number of results per page. 
          # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
 
-        blueprint = self.ring_get_blueprint_from_view(handle,ringname) 
+        schema = self.ring_get_schema_from_view(handle,ringname) 
         OrderedFields=[]
-        for field in blueprint['fields']:
+        for field in schema['fields']:
             OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
             
 
-        #print('blueprint:')
-        #print(blueprint)
+        #print('schema:')
+        #print(schema)
 
         print('OrderedFields:')
         print(OrderedFields)
@@ -589,9 +589,9 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
 
-        blueprint = self.ring_get_blueprint_from_view(handle,ringname)   
+        schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
-        for field in blueprint['fields']:
+        for field in schema['fields']:
             print("order:FieldName")
             print(field['FieldOrder'],field['FieldName'])
             OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
@@ -620,29 +620,29 @@ class AvispaModel:
         return False
 
     #AVISPAMODEL
-    def ring_get_blueprint_from_view(self,handle,ringname):
+    def ring_get_schema_from_view(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
         print(db_ringname)
         db = self.couch[db_ringname]
 
         options = {}
-        result  = db.iterview('ring/blueprint',1,**options)
+        result  = db.iterview('ring/schema',1,**options)
 
         for row in result:  
             #print('row.value.fields:')
             #print(row.value['fields'])    
-            blueprint = {}
-            #blueprint['rings']=row.value
-            blueprint['fields']=row.value['fields']
-            blueprint['rings']=row.value['rings']
-            #blueprint['rings']=row.rings
-            #blueprint['fields']=row.fields
+            schema = {}
+            #schema['rings']=row.value
+            schema['fields']=row.value['fields']
+            schema['rings']=row.value['rings']
+            #schema['rings']=row.rings
+            #schema['fields']=row.fields
 
-        #print('blueprint:')
-        #print(blueprint)
+        #print('schema:')
+        #print(schema)
 
-        return blueprint
+        return schema
 
         #return False
         
@@ -650,8 +650,8 @@ class AvispaModel:
 
         ''' Optional way to retrieve from DB (not view)
 
-        blueprint = self.ring_get_blueprint(handle,ringname)
-        RingClass = self.ring_create_class(blueprint)
+        schema = self.ring_get_schema(handle,ringname)
+        RingClass = self.ring_create_class(schema)
 
         item = RingClass.load(db,idx)
         item['items'][0][u'id']=idx
@@ -666,13 +666,13 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
 
-        blueprint = self.ring_get_blueprint(handle,ringname)
-        RingClass = self.ring_create_class(blueprint)
+        schema = self.ring_get_schema(handle,ringname)
+        RingClass = self.ring_create_class(schema)
         item = RingClass.load(db,idx)
         
         '''
         values = {}
-        fields = blueprint['fields']
+        fields = schema['fields']
         for field in fields:
             #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
             f = field['FieldName']

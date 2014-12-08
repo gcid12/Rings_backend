@@ -73,17 +73,17 @@ class RingBuilder:
             else:
                 print('The Ring '+ ringname +' database already exists')
 
-            if self.AVM.ring_set_blueprint(handle,
+            if self.AVM.ring_set_schema(handle,
                                         ringname,
                                         ringversion,
                                         pinput,
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol']):
 
-                print('Blueprint inserted/updated')
+                print('Schema inserted/updated')
                 return True
             else:
-                print('Blueprint could not be inserted')
+                print('Schema could not be inserted')
                 return False
 
         elif request.form.get('ringurl') :
@@ -106,7 +106,7 @@ class RingBuilder:
             else:
                 corrected_path = o2.path
 
-            corrected_query = 'blueprint'
+            corrected_query = 'schema'
 
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
             host_ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
@@ -126,25 +126,25 @@ class RingBuilder:
                 ringname = ringnameparts[0]
                 ringversion = ringnameparts[1]
                 
-                #original blueprint
-                blueprint = self.AVM.ring_get_blueprint_from_view(origin_handle,ringname+'_'+ringversion)
-                print(blueprint) 
-                #Generate pinput from blueprint
+                #original schema
+                schema = self.AVM.ring_get_schema_from_view(origin_handle,ringname+'_'+ringversion)
+                print(schema) 
+                #Generate pinput from schema
 
                 requestparameters = {}
 
 
-                print('blueprint rings:')
+                print('schema rings:')
 
 
-                print(blueprint['rings'])
+                print(schema['rings'])
 
                 
-                for k in blueprint['rings'][0]:
-                    requestparameters[k] = blueprint['rings'][0][k]
+                for k in schema['rings'][0]:
+                    requestparameters[k] = schema['rings'][0][k]
 
                 i = 0
-                for n in blueprint['fields']:
+                for n in schema['fields']:
                     print('n')
                     print(n)
                     i = i + 1
@@ -167,29 +167,29 @@ class RingBuilder:
                 r = requests.get(ring_url)
                 #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
                 
-                print('Raw JSON Blueprint:')
+                print('Raw JSON schema:')
                 print(r.text)
-                blueprint = json.loads(r.text)
+                schema = json.loads(r.text)
                 
                 #Generate pinput from r.text
 
                 #x = '{"source": "/blalab/mecanismos_0-3-0", "items": [{"Descripcion": "Cigue\u00f1al de cuatro codos", "Referencia": "2.1 f", "Imagen": "", "Clasificacion": "Eslabon", "Subclasificacion": "Manivela", "_id": "1378154159"}], "rings": [{"RingVersion": "0.3.0", "RingDescription": "Descripcion de Mecanismos", "RingName": "Mecanismos", "RingURI": "http://ring.apiring.org/mecanismos", "RingBuild": "1"}], "fields": [{"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "textarea", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Descripcion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "images", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Imagen", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Clasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Subclasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Referencia", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}]} '
-                #blueprint = json.loads(x)
-                print('blueprint:')
-                print(blueprint)
+                #schema = json.loads(x)
+                print('schema:')
+                print(schema)
 
 
                 handle = handle.lower()
-                ringname = blueprint['rings'][0]['RingName'].lower()
-                ringversion = blueprint['rings'][0]['RingVersion'].replace('.','-')
+                ringname = schema['rings'][0]['RingName'].lower()
+                ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
                 
                 requestparameters = {}
 
-                for k in blueprint['rings'][0]:
-                    requestparameters[k] = blueprint['rings'][0][k]
+                for k in schema['rings'][0]:
+                    requestparameters[k] = schema['rings'][0][k]
 
                 i = 0
-                for n in blueprint['fields']:
+                for n in schema['fields']:
                     print('n')
                     print(n)
                     i = i + 1
@@ -217,19 +217,19 @@ class RingBuilder:
                 return False
 
             try:
-                self.AVM.ring_set_blueprint(handle,
+                self.AVM.ring_set_schema(handle,
                                         ringname,
                                         ringversion,
                                         pinput,
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol'])
 
-                print('Blueprint inserted/updated')
+                print('Schema inserted/updated')
                 return True
             except(ValueError):
                 #Delete db you just created
                 self.AVM.user_hard_delete_ring(handle,ringname,ringversion)
-                print('Blueprint could not be inserted, Delete all trace.')
+                print('Schema could not be inserted, Delete all trace.')
                 return False
                 
 
@@ -240,7 +240,7 @@ class RingBuilder:
             return False
 
     def put_a_b(self,request,handle,ring):
-        #Same as JSONRingGenerator but to edit blueprint
+        #Same as JSONRingGenerator but to edit schema
 
                 
         if request.form.get('RingName') and request.form.get('FieldName_1'):
@@ -267,17 +267,17 @@ class RingBuilder:
             
             
 
-            if self.AVM.ring_set_blueprint(handle,
+            if self.AVM.ring_set_schema(handle,
                                         ringname,
                                         ringversion,
                                         pinput,
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol']):
 
-                print('Blueprint inserted/updated')
+                print('Schema inserted/updated')
                 return True
             else:
-                print('Blueprint could not be inserted')
+                print('Schema could not be inserted')
                 return False
 
 

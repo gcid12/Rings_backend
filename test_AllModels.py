@@ -22,15 +22,15 @@ class AllModelsTestCase(unittest.TestCase):
         self.user['guid'] = 'testguid'
         self.user['salt'] = 'testsalt'
 
-        self.preblueprint = {}
-        self.preblueprint['ringname'] = 'testring'
-        self.preblueprint['ringversion'] = '1.2.3'
+        self.preschema = {}
+        self.preschema['ringname'] = 'testring'
+        self.preschema['ringversion'] = '1.2.3'
 
         self.handle = self.user['username']
 
-        self.ringdbname = self.user['username']+'_'+self.preblueprint['ringname']+'_'+self.preblueprint['ringversion'].replace('.','-')
+        self.ringdbname = self.user['username']+'_'+self.preschema['ringname']+'_'+self.preschema['ringversion'].replace('.','-')
 
-        self.mockblueprint = {
+        self.mockschema = {
             'fields': [{
                 'FieldLabel': None, 
                 'FieldOrder': None, 
@@ -157,11 +157,11 @@ class AllModelsTestCase(unittest.TestCase):
         print('Function create_user starts')
         self.MAM.create_user(self.user,self.user_db)
         print('Function user_add_ring starts')
-        self.AVM.user_add_ring(self.user['username'],self.preblueprint['ringname'],self.preblueprint['ringversion'],self.user_db)
+        self.AVM.user_add_ring(self.user['username'],self.preschema['ringname'],self.preschema['ringversion'],self.user_db)
         #TEST
         result = self.MAM.select_user(self.user_db,self.user['username'])
         if result['rings'][0]['ringname']:
-            self.assertEqual(result['rings'][0]['ringname'],self.preblueprint['ringname'])
+            self.assertEqual(result['rings'][0]['ringname'],self.preschema['ringname'])
     
     
     #AVISPA
@@ -172,18 +172,18 @@ class AllModelsTestCase(unittest.TestCase):
         print('Function create_user starts')
         self.MAM.create_user(self.user,self.user_db)
         print('Function user_add_ring starts')
-        self.AVM.user_add_ring(self.user['username'],self.preblueprint['ringname'],self.preblueprint['ringversion'],self.user_db) 
+        self.AVM.user_add_ring(self.user['username'],self.preschema['ringname'],self.preschema['ringversion'],self.user_db) 
         print('Function create_db starts')
         self.MAM.create_db(self.ringdbname)
         print('Function select_db starts')
         self.MAM.select_db(self.ringdbname)
         print('Function create_doc starts')
-        self.MAM.create_doc(self.ringdbname,'blueprint',self.mockblueprint)
+        self.MAM.create_doc(self.ringdbname,'schema',self.mockschema)
 
         #TEST
         print('Function user_get_rings starts')
         result = self.AVM.user_get_rings(self.handle,self.user_db)
-        self.assertEqual(result[0]['ringname'],self.preblueprint['ringname']+'_'+self.preblueprint['ringversion'])
+        self.assertEqual(result[0]['ringname'],self.preschema['ringname']+'_'+self.preschema['ringversion'])
         
         #TEARDOWN
         self.MAM.delete_db(self.ringdbname)
@@ -214,7 +214,7 @@ class AllModelsTestCase(unittest.TestCase):
 
         #TEST
         print('Function userdb_get_user_by_id')
-        result =self.ATM.userdb_get_user_by_id(self.user['username'],self.user_db)
+        result =self.ATM.userdb_get_user_by_handle(self.user['username'],self.user_db)
         print(result['id'])
         print(result['key'])
         print(result['value'])

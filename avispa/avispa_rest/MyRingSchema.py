@@ -2,7 +2,7 @@
 from datetime import datetime
 from couchdb.mapping import Document, TextField, IntegerField, BooleanField, DateTimeField, ListField, DictField, Mapping
 
-class MyRingBlueprint(Document):
+class MyRingSchema(Document):
     _id = TextField()
     added = DateTimeField(default=datetime.now)
     license = TextField()
