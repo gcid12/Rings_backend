@@ -131,6 +131,11 @@ class AvispaRestFunc:
         else:
             resultsperpage = 25
 
+        if request.args.get('sort'):
+            sort = request.args.get('sort')
+        else:
+            sort = None
+
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         #print(schema['fields'])
 
@@ -142,7 +147,7 @@ class AvispaRestFunc:
         #print(layers)
 
 
-        preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey)
+        preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
         
         print('preitemlist:')
         print(preitemlist)

@@ -511,7 +511,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def get_a_b(self,handle,ringname,limit=100,lastkey=None):
+    def get_a_b(self,handle,ringname,limit=100,lastkey=None,sort=None):
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
@@ -522,6 +522,19 @@ class AvispaModel:
         OrderedFields=[]
         for field in schema['fields']:
             OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+
+
+        sort_reverse=False
+        if sort:
+            sort_parts = sort.split('_')
+            if len(sort_parts)==2:
+                if sort_parts[1].lower()=='desc':
+                    sort_reverse=True
+
+                sort= sort_parts[0]
+
+        else:
+            sort = OrderedFields[0]
             
 
         #print('schema:')
@@ -547,11 +560,18 @@ class AvispaModel:
 
         result = db.iterview('ring/items',batch,**options)
 
-        #print (result)
+        print ('ITEMS FROM VIEW:',result)
+
+        presorteditems = []
+        for row in result:
+            presorteditems.append(row)
+
+        print('PRESORTEDITEMS:', presorteditems)
+
         items = []
         i = 0
 
-        for row in result:
+        for row in presorteditems:
 
             i += 1
             if lastkey and i==1:
@@ -575,12 +595,25 @@ class AvispaModel:
             #item['id']=row['id']
             #item['values']=row['value']
             items.append(item)
-            print("item:")
-            print(item)
+            #print("item:")
+            #print(item)
+            
+            #sort = 'Dificultad'
 
+            
+            #self.sort=sort
+            #print('Sorting by '+sort)
+            self.sort = sort
+            items = sorted(items, key=self.SortItemList, reverse=sort_reverse)
         #print(items)
 
         return items
+
+    def SortItemList(self,items):
+        if self.sort:
+            return items[self.sort]
+        else:
+            return items[1:]
 
 
     #AVISPAMODEL
