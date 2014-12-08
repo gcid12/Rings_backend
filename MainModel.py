@@ -66,10 +66,10 @@ class MainModel:
         return True
 
     #MAINMODEL  Rarely Used directly. It is better to use the DB Views
-    def select_user(self,dbname,user):
+    def select_user(self,dbname,username):
         self.db = self.select_db(dbname)
-        print('Notice: Selecting User ->'+user)
-        return MyRingUser.load(self.db, user)
+        print('Notice: Selecting User ->'+username)
+        return MyRingUser.load(self.db, username)
 
 
     #MAINMODEL  

@@ -263,20 +263,20 @@ class AvispaModel:
         print(db_ringname)
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
-        ring = MyRingSchema.load(db,'schema')
+        schema = MyRingSchema.load(db,'schema')
 
         # Creates Ring Schema if it doesn't exist. Uses current one if it exists.
-        if ring:
+        if schema:
             action = 'edit'
         else:       
-            ring = MyRingSchema()
+            schema = MyRingSchema()
             #ring = RingClass()
-            ring._id= 'schema'
+            schema._id= 'schema'
 
             action = 'new'
 
 
-        # Creates or updates Ring parameters
+        # Creates or updates Shcema parameters
 
         args_r = {}
         for r in ringprotocol:
@@ -285,11 +285,11 @@ class AvispaModel:
                     args_r[r] = pinput['rings'][0][r]
             
             elif(action == 'edit'):
-                if pinput['rings'][0][r] == ring.rings[0][r]:
+                if pinput['rings'][0][r] == schema.rings[0][r]:
                     print(r+' did not change')
-                    pass
+                    
                 else:
-                    print(r+' changed. Old: "'+ str(ring.rings[0][r]) +'" ('+ str(type(ring.rings[0][r])) +')'+\
+                    print(r+' changed. Old: "'+ str(schema.rings[0][r]) +'" ('+ str(type(schema.rings[0][r])) +')'+\
                             '  New: "'+ str(pinput['rings'][0][r]) + '" ('+ str(type(pinput['rings'][0][r])) +')' )
                     args_r[r] = pinput['rings'][0][r]
 
@@ -297,11 +297,11 @@ class AvispaModel:
 
         
         if(action == 'new'):
-            ring.rings.append(**args_r)
+            schema.rings.append(**args_r)
         
         elif(action == 'edit'):
             for x in args_r:
-                ring.rings[0][x] = args_r[x]
+                schema.rings[0][x] = args_r[x]
             
 
         # Creates or updates Field parameters
@@ -324,10 +324,10 @@ class AvispaModel:
                         args_f[f] = pinput['fields'][i][f]
 
                 elif(action == 'edit'):
-                    if pinput['fields'][i][f] == ring.fields[i][f]:  # Checks if old and new are the same
+                    if pinput['fields'][i][f] == schema.fields[i][f]:  # Checks if old and new are the same
                         print(f+'_'+str(i+1)+' did not change')
                     else:                      
-                        print(f+'_'+str(i+1)+' changed. Old: "'+ str(ring.fields[i][f]) +'" ('+ str(type(ring.fields[i][f])) +')'+\
+                        print(f+'_'+str(i+1)+' changed. Old: "'+ str(schema.fields[i][f]) +'" ('+ str(type(schema.fields[i][f])) +')'+\
                             '  New: "'+ str(pinput['fields'][i][f]) + '" ('+ str(type(pinput['fields'][i][f])) +')' )
                         
                         args_f[f] = pinput['fields'][i][f]
@@ -337,18 +337,18 @@ class AvispaModel:
             #print(args_f)
 
             if(action == 'new'):
-                ring.fields.append(**args_f)
+                schema.fields.append(**args_f)
                 
             elif(action == 'edit'):
                 for y in args_f:
-                    ring.fields[i][y] = args_f[y]
+                    schema.fields[i][y] = args_f[y]
 
             args_f={}
 
-        print(ring)
+        print(schema)
 
         
-        ring.store(db)
+        schema.store(db)
 
         return 'ok'
 
