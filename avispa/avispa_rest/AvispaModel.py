@@ -77,15 +77,18 @@ class AvispaModel:
                     print('ringnamedb::'+ringnamedb) 
                     try:
                         db = self.MAM.select_db(ringnamedb)
-                        print('Get description:')
+                        print('Get RingDescription:')
                         try: 
                             RingDescription = db['schema']['rings'][0]['RingDescription'] 
                         except KeyError:
-                            RingDescription = False           
+                            RingDescription = False 
+                        
+                        print('Get RingLabel:')
                         try:       
                             RingLabel = db['schema']['rings'][0]['RingLabel'] 
                         except KeyError:
-                            RingLabel = False     
+                            RingLabel = False 
+                                
                         r = {'ringname':ringname,'ringversion':ringversion,'ringversionh':ringversionh,'ringlabel':RingLabel,'ringdescription':RingDescription,'count':count}
                         data.append(r)
                     except ResourceNotFound:
