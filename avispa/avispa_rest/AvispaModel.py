@@ -68,22 +68,24 @@ class AvispaModel:
                 
                 if not 'deleted' in ring:
                     
-                    ringname = str(ring['ringname'])+'_'+str(ring['version']) 
+                    ringname = str(ring['ringname'])
+                    ringversion = str(ring['version'])
+                    ringversionh = ringversion.replace('-','.')
                     count = ring['count']
-                    print('flag5b:'+str(handle)+'_'+ringname)
-                    ringnamedb=str(handle)+'_'+ringname.replace('.','-')
+                    print('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
+                    ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
                     print('ringnamedb::'+ringnamedb)
                     db = self.MAM.select_db(ringnamedb)
                     print('Get description:')
                     try:          
                         RingDescription = db['schema']['rings'][0]['RingDescription']        
-                        r = {'ringname':ringname,'ringdescription':RingDescription,'count':count}
+                        r = {'ringname':ringname,'ringversion':ringversion,'ringversionh':ringversionh,'ringdescription':RingDescription,'count':count}
                         data.append(r)
                     except ResourceNotFound:
-                        print('skipping ring '+ ringname + '. Schema does not exist')
+                        print('skipping ring '+ ringname+'_'+ringversion + '. Schema does not exist')
                         
 
-            print('flag6')
+            #print('flag6')
 
             
 

@@ -75,7 +75,7 @@
                     
                     </svg></td>
                   <td> 
-                    <a class="rn-b1" href="/{{ data.handle }}/{{ ring.ringname }}">&deg;{{ ring.ringname }}</a>
+                    <a class="rn-b1" href="/{{ data.handle }}/{{ ring.ringname }}_{{ ring.ringversion}}">&deg;{{ ring.ringname }}</a> <span style='font-size: 12px;'>(v {{ring.ringversionh}})</span>
                     <hr/>
                     <p class="rn-t3 rn-gray">{{ ring.ringdescription }}</p>
                   </td>
@@ -83,9 +83,9 @@
                     <div class="pull-right">
                       <!--input type="checkbox" value="public" name="public"/-->
                       <div class="btn-group">
-                        <a href="/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn btn-success">List</a>
-                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=post" type="button" class="btn btn-warning">New</a>
-                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=put"><span style="padding:25px;">Edit Schema</span></i></a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}_{{ ring.ringversion}}" type="button" class="btn btn-success">List</a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}_{{ ring.ringversion}}?rq=post" type="button" class="btn btn-warning">New</a>
+                        <a href="/{{ data.handle }}/{{ ring.ringname }}_{{ ring.ringversion}}?rq=put"><span style="padding:25px;">Edit Schema</span></i></a>
                         <!--a href="/{{ data.handle }}/{{ ring.ringname }}?method=delete" >Delete Ring</a-->
                       </div>
                       <br/><br/>
