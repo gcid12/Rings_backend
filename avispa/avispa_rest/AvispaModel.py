@@ -70,8 +70,10 @@ class AvispaModel:
                     ringversion = str(ring['version'])
                     ringversionh = ringversion.replace('-','.')
                     count = ring['count']
-                    print('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
-                    ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
+                    #print('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
+                    print('flag5b:'+str(handle)+'_'+ringname)
+                    #ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
+                    ringnamedb=str(handle)+'_'+ringname
                     print('ringnamedb::'+ringnamedb) 
                     try:
                         db = self.MAM.select_db(ringnamedb)
@@ -87,7 +89,8 @@ class AvispaModel:
                         r = {'ringname':ringname,'ringversion':ringversion,'ringversionh':ringversionh,'ringlabel':RingLabel,'ringdescription':RingDescription,'count':count}
                         data.append(r)
                     except ResourceNotFound:
-                        print('skipping ring '+ ringname+'_'+ringversion + '. Schema does not exist')
+                        #print('skipping ring '+ ringname+'_'+ringversion + '. Schema does not exist')
+                        print('skipping ring '+ ringname + '. Schema does not exist')
                         
 
             #print('flag6')
@@ -109,7 +112,8 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_set_db(self,handle,ringname,ringversion):
            
-        db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        db_ringname=str(handle)+'_'+str(ringname)
         db_ringname = db_ringname.replace(" ","")
 
         try:            
@@ -198,13 +202,13 @@ class AvispaModel:
         return True
 
     #AVISPAMODEL
-    def user_delete_ring(self,handle,ringname,ringversion,user_database=None):
+    def user_delete_ring(self,handle,ringname,user_database=None):
 
         db = self.couch[self.user_database]
         doc =  MyRingUser.load(db, handle)
         rings = doc['rings']
         for ring in rings:
-            if ring['ringname']==ringname and ring['version']==ringversion:
+            if ring['ringname']==ringname:
                 print()
                 ring['deleted']=True
                 #It is just a tombstone!!
@@ -221,7 +225,8 @@ class AvispaModel:
     #AVISPAMODEL
     def user_hard_delete_ring(self,handle,ringname,ringversion,user_database=None):
 
-        dbname = handle+'_'+ringname+'_'+ringversion
+        #dbname = handle+'_'+ringname+'_'+ringversion
+        dbname = handle+'_'+ringname
         if self.MAM.delete_db(dbname):
             print('Deleted from COUCHDB')
             del1 = True
@@ -265,7 +270,8 @@ class AvispaModel:
             print('ringversion none')
             ringversion = ''
 
-        db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+        db_ringname=str(handle)+'_'+str(ringname)
         print('db_ringname:')
         print(db_ringname)
         db = self.couch[db_ringname]

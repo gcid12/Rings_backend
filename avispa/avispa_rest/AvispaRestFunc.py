@@ -338,13 +338,9 @@ class AvispaRestFunc:
     
     #DELETE /a/b
     def delete_a_b(self,request,handle,ring,idx,api=False,*args):
-
-        part=ring.split('_')
-        ringname = part[0]
-        ringversion = part[-1]
         
-        if self.AVM.user_delete_ring(handle,ringname,ringversion):
-            flash('Ring '+ringname+'_'+ringversion+' deleted')
+        if self.AVM.user_delete_ring(handle,ring):
+            flash('Ring '+ring+' deleted')
         else:
             flash('Could not delete the Ring')
         
