@@ -1,14 +1,12 @@
 # AvispaModel.py
-
-
 from couchdb.http import PreconditionFailed, ResourceNotFound
-
 
 from datetime import datetime 
 import time
 import datetime as dt
 import random
 import sys
+
 import traceback
 import collections
 from flask import flash
