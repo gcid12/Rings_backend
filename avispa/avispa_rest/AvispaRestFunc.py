@@ -140,8 +140,10 @@ class AvispaRestFunc:
         #print(schema['fields'])
 
         layers = {}
+        labels = {}
         for schemafield in schema['fields']:
             layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])
+            labels[schemafield['FieldName']]=schemafield['FieldLabel']
 
         #print('layers:')
         #print(layers)
@@ -196,6 +198,8 @@ class AvispaRestFunc:
         
         d['itemlist'] = itemlist
         d['resultsperpage'] = resultsperpage
+        d['FieldLabel'] = labels
+
 
         if api:
 
@@ -472,15 +476,16 @@ class AvispaRestFunc:
         '''
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
        
-        
-
         #if item['Images']:
          #   images=item['Images'].split(',')
           #  item['Images']=images
-           
-
         
         schema = self.AVM.ring_get_schema(handle,ring)
+  
+        labels = {}
+        for schemafield in schema['fields']:
+            labels[schemafield['FieldName']]=schemafield['FieldLabel']
+
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
@@ -490,7 +495,10 @@ class AvispaRestFunc:
              'ringschema':ringschema,
              'fieldsschema':fieldsschema,
              'numfields':numfields,
-             'item':item }
+             'item':item,
+             'labels':labels }
+
+        
 
         #rint(item.items[0]['Website'])
 

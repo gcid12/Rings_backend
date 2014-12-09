@@ -1,5 +1,5 @@
 <div class="form-group">
-<label for='{{ field.FieldName }}'>{{ field.FieldName }}</label><br/>
+<label for='{{ field.FieldName }}'>{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label><br/>
      <!--span>FieldCardinality:{{ field.FieldCardinality }}</span-->
      
      

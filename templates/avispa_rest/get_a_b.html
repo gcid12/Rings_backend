@@ -154,7 +154,7 @@
                                               {% if not k =='_public' %} 
                                               {% if not k =='_id' %} 
 
-                                              <dt>{{ k }}:</dt>
+                                              <dt>{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</dt>
                                               <dd>{{ v }}</dd>
                                               {% endif %}
                                               {% endif %}

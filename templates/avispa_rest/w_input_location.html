@@ -1,5 +1,5 @@
 <div class="form-group">
-	<label for="{{ field.FieldName }}">{{ field.FieldName }}{% if field.FieldRequired %}*{% endif %}</label>
+	<label for="{{ field.FieldName }}">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
 	<input id="input_location_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="form-control" type="text" placeholder="Type in an address" {% if field.FieldRequired %}required{% endif %} value='{{ data.item[field.FieldName] }}' />
 	<input id="input_location_{{ field.FieldOrder }}_rich" name="{{ field.FieldName }}_rich" type="hidden" value='{{ field.Rich }}' />
 	<div id="map_canvas{{ field.FieldOrder }}" style="width:100; height:200px; margin:0px;"></div>

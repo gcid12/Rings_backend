@@ -1,5 +1,5 @@
                                 <div class="form-group">
-                                    <label for="{{ field.FieldName }}" class="col-sm-2 control-label">{{ field.FieldName }}</label>
+                                    <label for="{{ field.FieldName }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
                                     <div class="col-sm-10">
 
                                       <textarea class="form-control" name="{{ field.FieldName }}" placeholder="Enter {{ field.FieldName }}" rows="6">{{ data.item[field.FieldName] }}</textarea>
