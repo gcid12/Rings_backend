@@ -57,7 +57,7 @@ class MyRingPatch:
 
             for ring in user['rings']:
 
-                db_ringname=current_user.username+'_'+str(ring['ringname'])+'_'+str(ring['version'])
+                db_ringname=current_user.username+'_'+str(ring['ringname'])
                 print(db_ringname)
                 db2 = self.couch[db_ringname]
                 if not MyRingSchema.load(db2,'schema'):
