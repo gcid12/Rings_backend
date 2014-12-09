@@ -72,12 +72,19 @@ class AvispaModel:
                     count = ring['count']
                     print('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
                     ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
-                    print('ringnamedb::'+ringnamedb)
-                    db = self.MAM.select_db(ringnamedb)
-                    print('Get description:')
-                    try:          
-                        RingDescription = db['schema']['rings'][0]['RingDescription']        
-                        r = {'ringname':ringname,'ringversion':ringversion,'ringversionh':ringversionh,'ringdescription':RingDescription,'count':count}
+                    print('ringnamedb::'+ringnamedb) 
+                    try:
+                        db = self.MAM.select_db(ringnamedb)
+                        print('Get description:')
+                        try: 
+                            RingDescription = db['schema']['rings'][0]['RingDescription'] 
+                        except KeyError:
+                            RingDescription = False           
+                        try:       
+                            RingLabel = db['schema']['rings'][0]['RingLabel'] 
+                        except KeyError:
+                            RingLabel = False     
+                        r = {'ringname':ringname,'ringversion':ringversion,'ringversionh':ringversionh,'ringlabel':RingLabel,'ringdescription':RingDescription,'count':count}
                         data.append(r)
                     except ResourceNotFound:
                         print('skipping ring '+ ringname+'_'+ringversion + '. Schema does not exist')

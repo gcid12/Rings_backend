@@ -9,6 +9,7 @@ class MyRingSchema(Document):
     public = BooleanField(default=False)
     rings = ListField(DictField(Mapping.build(
         RingName = TextField(),
+        RingLabel = TextField(),
         RingDescription = TextField(),
         RingVersion = TextField(),
         RingURI = TextField(),

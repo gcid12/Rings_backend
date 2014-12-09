@@ -19,7 +19,7 @@ class RingBuilder:
 
         self.ringprotocols = {}
 
-        self.ringprotocols['ringprotocol'] = ['RingName','RingDescription','RingVersion','RingURI','RingBuild']
+        self.ringprotocols['ringprotocol'] = ['RingName','RingLabel','RingDescription','RingVersion','RingURI','RingBuild']
         self.ringprotocols['mandatory'] = ['RingName']
         self.ringprotocols['defaults'] = {'RingVersion':'0.1.0','RingBuild':'1'}
 
