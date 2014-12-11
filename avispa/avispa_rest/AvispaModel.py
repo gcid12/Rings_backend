@@ -6,6 +6,8 @@ import time
 import datetime as dt
 import random
 import sys
+import requests
+import urlparse
 
 import traceback
 import collections
@@ -88,7 +90,7 @@ class AvispaModel:
                             RingLabel = db['schema']['rings'][0]['RingLabel'] 
                         except KeyError:
                             RingLabel = False 
-                                
+
                         r = {'ringname':ringname,'ringversion':ringversion,'ringversionh':ringversionh,'ringlabel':RingLabel,'ringdescription':RingDescription,'count':count}
                         data.append(r)
                     except ResourceNotFound:
@@ -431,81 +433,6 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def post_a_b(self,request,handle,ringname):
-
-        db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
-
-        schema = self.ring_get_schema(handle,ringname)
-        
-        values = {}
-        fields = schema['fields']
-
-        print("post_a_b raw arguments sent:")
-        print(request.form)
-
-
-        for field in fields:
-            values[field['FieldName']] = request.form.get(field['FieldName'])
-
-            print(field['FieldName']+' content: '+str(request.form.get(field['FieldName'])))
-            print(field['FieldName']+' type: '+str(type(request.form.get(field['FieldName']))))
-
-
-        RingClass = self.ring_create_class(schema)
-        item = RingClass()         
-        item._id= str(random.randrange(1000000000,9999999999))
-        #item.deleted = 
-        item.items.append(**values)
-        
-        if item.store(db):
-        
-            self.increase_item_count(handle,ringname)
-
-            return item._id
-
-        return False
-
-
-    #AVISPAMODEL
-    def put_a_b_c(self,request,handle,ringname,idx):
-
-        db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
-
-        schema = self.ring_get_schema(handle,ringname)
-        RingClass = self.ring_create_class(schema)
-        item = RingClass.load(db,idx)
-        
-        values = {}
-        fields = schema['fields']
-
-        if request.form.get('_public'):
-            item['public']=True
-        else:
-            item['public']=False
-
-        for field in fields:
-            #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
-            f = field['FieldName']
-            old = unicode(item.items[0][f])
-            new = unicode(request.form.get(f))
-
-            if old == new:
-                print(f+' did not change')             
-            else:
-                print(f+' changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
-                                '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
-                #args[f] = new
-                item.items[0][f] = new
-
-        if item.store(db):      
-            return item._id
-
-        return False
-
-
-    #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
 
         self.db = self.couch[self.user_database]
@@ -514,7 +441,7 @@ class AvispaModel:
         if user:
 
             for ring in user['rings']:
-                if ring['ringname']+'_'+ring['version'] == ringname:
+                if ring['ringname'] == ringname:
                     ring['count'] += 1
                     print('Item Count increased')
 
@@ -525,6 +452,85 @@ class AvispaModel:
                 print('Could not increase item count')
                 return False
 
+
+
+    #AVISPAMODEL
+    def ring_get_schema_from_view(self,handle,ringname):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        print(db_ringname)
+        db = self.couch[db_ringname]
+
+        options = {}
+        result  = db.iterview('ring/schema',1,**options)
+
+        for row in result:  
+            #print('row.value.fields:')
+            #print(row.value['fields'])    
+            schema = {}
+            #schema['rings']=row.value
+            schema['fields']=row.value['fields']
+            schema['rings']=row.value['rings']
+            #schema['rings']=row.rings
+            #schema['fields']=row.fields
+
+        #print('schema:')
+        #print(schema)
+
+        return schema
+
+        #return False
+
+    
+    #AVISPAMODEL
+    def couchdb_pager(db, view_name='_all_docs',
+                  startkey=None, startkey_docid=None,
+                  endkey=None, endkey_docid=None, bulk=5000):
+
+        '''
+        import couchdb
+        couch = couchdb.Server()
+        db = couch['mydatabase']
+
+        # This is dangerous.
+        for doc in db:
+            pass
+
+        # This is always safe.
+        for doc in couchdb_pager(db):
+            pass
+
+        '''
+        # Request one extra row to resume the listing there later.
+        options = {'limit': bulk + 1}
+        if startkey:
+            options['startkey'] = startkey
+            if startkey_docid:
+                options['startkey_docid'] = startkey_docid
+        if endkey:
+            options['endkey'] = endkey
+            if endkey_docid:
+                options['endkey_docid'] = endkey_docid
+        done = False
+        while not done:
+            view = db.view(view_name, **options)
+            rows = []
+            # If we got a short result (< limit + 1), we know we are done.
+            if len(view) <= bulk:
+                done = True
+                rows = view.rows
+            else:
+                # Otherwise, continue at the new start position.
+                rows = view.rows[:-1]
+                last = view.rows[-1]
+                options['startkey'] = last.key
+                options['startkey_docid'] = last.id
+
+            for row in rows:
+                yield row.id
+
+
+    
 
     #AVISPAMODEL
     def get_a_b(self,handle,ringname,limit=100,lastkey=None,sort=None):
@@ -632,30 +638,165 @@ class AvispaModel:
             return items[1:]
 
 
+
+
+
     #AVISPAMODEL
-    def get_a_b_c(self,request,handle,ringname,idx):
+    def post_a_b(self,request,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
 
+        schema = self.ring_get_schema(handle,ringname)
+        
+        values = {}
+        fields = schema['fields']
+
+        print("post_a_b raw arguments sent:")
+        print(request.form)
+
+
+        for field in fields:
+            
+
+            print(field['FieldName']+' content: '+str(request.form.get(field['FieldName'])))
+            print(field['FieldName']+' type: '+str(type(request.form.get(field['FieldName']))))
+
+            print('FieldSource:',field['FieldSource'])
+            print('FieldWidget:',field['FieldWidget'])
+
+            #Detect if FieldWidget is "select" . If it is you are getting an ID. 
+            #You need to query the source to get the real value and the _rich values
+            if field['FieldSource'] and field['FieldWidget']:
+                external_id=int(request.form.get(field['FieldName'])) #need to sanitize this more
+                print('external_id',external_id)
+                urlparts = urlparse.urlparse(field['FieldSource'])
+                print('urlparts',urlparts)
+
+                pathparts = urlparts.path.split('/')
+                if pathparts[1]!='_api':
+                    corrected_path = '/_api'+urlparts.path
+                    external_ringname = pathparts[2]
+                else:
+                    corrected_path = urlparts.path
+                    external_ringname = pathparts[3]
+
+
+                path = corrected_path+'/'+str(external_id)
+                query = 'schema=1'
+                url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, path , '', query, ''))
+
+
+                external_host=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, '', '', '', ''))
+                print('external_host:',external_host)
+
+                rqurl = urlparse.urlparse(request.url)
+                local_host=urlparse.urlunparse((rqurl.scheme, rqurl.netloc, '', '', '', ''))
+                print('local_host:',local_host)
+            
+                if local_host==external_host:
+                    print('Data source is in the same server')
+
+                    rich_item = self.get_a_b_c(None,handle,external_ringname,external_id)
+
+                    rs = self.ring_get_schema_from_view(handle,external_ringname)
+
+                    print('rich_item:',rich_item)
+                    print('rich_schema:',rs)
+                    external_FieldName = rs['fields'][0]['FieldName']
+
+                    
+                else:
+                    print('Data source is in another server')
+                 
+                    print('Retrieving source at:',url)
+                    r = requests.get(url)
+                    print('Raw JSON schema:')
+                    print(r.text)
+                    rs = json.loads(r.text)
+                    print('rs:',rs)
+                    rich_item = rs['items'][0]
+                    print('rich_item:',rich_item)
+                    external_FieldName = rs['fields'][0]['FieldName']
+
+          
+                
+                #Overwriting the default Field
+                if urlparts.query:
+                    queryparts = urlparts.query.split('&')
+                    print('queryparts:',queryparts)
+                    for querypart in queryparts:
+                        paramparts = querypart.split('=')
+                        print('paramparts:',paramparts)
+                        if paramparts[0]=='fl':
+                            flparts = paramparts[1].split(',')
+                            print('flparts:',flparts)   
+                            external_FieldName = flparts[0]
+
+                    
+
+                
+                    
+                
+                    
+
+                value = rich_item[external_FieldName]
+
+                print('value:',value)
+             
+                values[field['FieldName']] = value
+
+            else:
+                values[field['FieldName']] = request.form.get(field['FieldName'])
+
+
+
+        RingClass = self.ring_create_class(schema)
+        item = RingClass()         
+        item._id= str(random.randrange(1000000000,9999999999))
+        #item.deleted = 
+        item.items.append(**values)
+        
+        if item.store(db):
+        
+            self.increase_item_count(handle,ringname)
+
+            return item._id
+
+        return False
+
+
+    #AVISPAMODEL
+    def get_a_b_c(self,request,handle,ringname,idx):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        print('db_ringname:',db_ringname)
+        db = self.couch[db_ringname]
+        print('db:',db)
+
         schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
         for field in schema['fields']:
-            print("order:FieldName")
-            print(field['FieldOrder'],field['FieldName'])
+            #print("order:FieldName")
+            #print(field['FieldOrder'],field['FieldName'])
             OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
-            print(OrderedFields)
+        
+        print('OrderedFields:',OrderedFields)
+        print('idx:',idx)
 
         
         options = {}
-        options['key']=idx
+        options['key']=str(idx)
 
         #Retrieving from ring/items view
         result = db.iterview('ring/items',1,**options)
 
+        print('result:',result)
+
         
         for row in result:      
             item = collections.OrderedDict()
+            print('row',row)
             if row['id']:        
                 item[u'_id'] = row['id']
 
@@ -668,32 +809,51 @@ class AvispaModel:
 
         return False
 
+
     #AVISPAMODEL
-    def ring_get_schema_from_view(self,handle,ringname):
+    def put_a_b_c(self,request,handle,ringname,idx):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        print(db_ringname)
         db = self.couch[db_ringname]
 
-        options = {}
-        result  = db.iterview('ring/schema',1,**options)
+        schema = self.ring_get_schema(handle,ringname)
+        RingClass = self.ring_create_class(schema)
+        item = RingClass.load(db,idx)
+        
+        values = {}
+        fields = schema['fields']
 
-        for row in result:  
-            #print('row.value.fields:')
-            #print(row.value['fields'])    
-            schema = {}
-            #schema['rings']=row.value
-            schema['fields']=row.value['fields']
-            schema['rings']=row.value['rings']
-            #schema['rings']=row.rings
-            #schema['fields']=row.fields
+        if request.form.get('_public'):
+            item['public']=True
+        else:
+            item['public']=False
 
-        #print('schema:')
-        #print(schema)
+        for field in fields:
+            #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
+            f = field['FieldName']
+            old = unicode(item.items[0][f])
+            new = unicode(request.form.get(f))
 
-        return schema
+            if old == new:
+                print(f+' did not change')             
+            else:
+                print(f+' changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
+                                '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
+                #args[f] = new
+                item.items[0][f] = new
 
-        #return False
+        if item.store(db):      
+            return item._id
+
+        return False
+
+
+    
+
+
+    
+    
+
         
 
 
@@ -747,51 +907,5 @@ class AvispaModel:
 
 
 
-    #AVISPAMODEL
-    def couchdb_pager(db, view_name='_all_docs',
-                  startkey=None, startkey_docid=None,
-                  endkey=None, endkey_docid=None, bulk=5000):
-
-        '''
-        import couchdb
-        couch = couchdb.Server()
-        db = couch['mydatabase']
-
-        # This is dangerous.
-        for doc in db:
-            pass
-
-        # This is always safe.
-        for doc in couchdb_pager(db):
-            pass
-
-        '''
-        # Request one extra row to resume the listing there later.
-        options = {'limit': bulk + 1}
-        if startkey:
-            options['startkey'] = startkey
-            if startkey_docid:
-                options['startkey_docid'] = startkey_docid
-        if endkey:
-            options['endkey'] = endkey
-            if endkey_docid:
-                options['endkey_docid'] = endkey_docid
-        done = False
-        while not done:
-            view = db.view(view_name, **options)
-            rows = []
-            # If we got a short result (< limit + 1), we know we are done.
-            if len(view) <= bulk:
-                done = True
-                rows = view.rows
-            else:
-                # Otherwise, continue at the new start position.
-                rows = view.rows[:-1]
-                last = view.rows[-1]
-                options['startkey'] = last.key
-                options['startkey_docid'] = last.id
-
-            for row in rows:
-                yield row.id
 
     

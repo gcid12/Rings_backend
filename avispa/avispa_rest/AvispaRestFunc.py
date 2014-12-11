@@ -151,8 +151,8 @@ class AvispaRestFunc:
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
         
-        print('preitemlist:')
-        print(preitemlist)
+        #print('preitemlist:')
+        #print(preitemlist)
 
         itemlist = []
         for item in preitemlist:
@@ -179,8 +179,8 @@ class AvispaRestFunc:
                 del images[0]
                 previewItem['Images']=images
 
-            print('previewItem:')
-            print(previewItem)
+            #print('previewItem:')
+            #print(previewItem)
 
             itemlist.append(previewItem)
 
@@ -240,7 +240,8 @@ class AvispaRestFunc:
     def post_a_b(self,request,handle,ring,idx,api=False,*args):
         '''
         Creates new item
-        '''        
+        '''
+
         idx = self.AVM.post_a_b(request,handle,ring)
 
         if idx:

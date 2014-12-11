@@ -53,6 +53,7 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
             var thefield_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }}.fields[0].FieldName;
         }else{ //But it is better if the source is explicitly indicated by &fl=<name_of_field>
             var urlfields_{{ field.FieldOrder }} = urldata_{{ field.FieldOrder }}['fl'].split(",");
+            //Take just the first field mentioned
             var thefield_{{ field.FieldOrder }}=urlfields_{{ field.FieldOrder }}[0];
         }
         
@@ -60,8 +61,8 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
         var newoption;
         for(i=0;i<returnedData_{{ field.FieldOrder }}.items.length; ++i){      
             //This grabs the indicated field and displays it as the option
-            
-            newoption = "<option>"+returnedData_{{ field.FieldOrder }}.items[i][thefield_{{ field.FieldOrder }}]+"</option>";
+            var id = '_id';
+            newoption = "<option value='"+returnedData_{{ field.FieldOrder }}.items[i][id]+"'>"+returnedData_{{ field.FieldOrder }}.items[i][thefield_{{ field.FieldOrder }}]+"</option>";
             $( '#chosen_{{ field.FieldOrder }}' ).append(newoption);
         
         }
