@@ -8,6 +8,7 @@ import random
 import sys
 import requests
 import urlparse
+import json
 
 import traceback
 import collections
@@ -165,6 +166,64 @@ class AvispaModel:
                           x['_public']=doc.public
                           for (var key in doc.items[0]) { 
                              x[key]=doc.items[0][key]; 
+                          }
+                          emit(doc._id, x)
+                       }
+                    }
+                  }
+               ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+        view = ViewDefinition('ring', 'rich', 
+               '''
+                  function(doc) {
+                    if(doc.rich) {
+                       if(!doc.deleted) {
+                          var x = new Object();  
+                          x['_public']=doc.public
+                          for (var key in doc.rich[0]) { 
+                             x[key]=doc.rich[0][key]; 
+                          }
+                          emit(doc._id, x)
+                       }
+                    }
+                  }
+               ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+        view = ViewDefinition('ring', 'history', 
+               '''
+                  function(doc) {
+                    if(doc.history) {
+                       if(!doc.deleted) {
+                          var x = new Object();  
+                          x['_public']=doc.public
+                          for (var key in doc.history[0]) { 
+                             x[key]=doc.history[0][key]; 
+                          }
+                          emit(doc._id, x)
+                       }
+                    }
+                  }
+               ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+
+        view = ViewDefinition('ring', 'meta', 
+               '''
+                  function(doc) {
+                    if(doc.meta) {
+                       if(!doc.deleted) {
+                          var x = new Object();  
+                          x['_public']=doc.public
+                          for (var key in doc.meta[0]) { 
+                             x[key]=doc.meta[0][key]; 
                           }
                           emit(doc._id, x)
                        }
@@ -411,9 +470,38 @@ class AvispaModel:
     def ring_create_class(self,schema):
 
         args_i = {}
+        args_rich = {}
+        args_history = {}
+        args_meta = {}
+
         fields = schema['fields']
         for field in fields:
             args_i[field['FieldName']] = TextField()
+
+            #d1={'source':TextField()}
+            d1 = {}
+            d1['source']=TextField()
+            print('len:',len(d1))
+            #args_rich[field['FieldName']] = DictField(Mapping.build(**d1))
+            args_rich[field['FieldName']] = TextField()
+            #args_rich[field['FieldName']] = TextField()
+
+            d2 = {}
+            d2['date']=DateTimeField()
+            d2['author']=TextField()
+            d2['before']=TextField()
+            d2['after']=TextField()
+            args_history[field['FieldName']] = ListField(DictField(Mapping.build(**d2)))
+            #args_history[field['FieldName']] = TextField()
+            args_meta[field['FieldName']] = DictField()
+            #args_meta[field['FieldName']] = TextField()
+
+
+        print('args_i',args_i)
+        print('args_rich',args_rich)
+        print('args_history',args_history)
+        print('args_meta',args_meta)
+
  
 
         RingClass = type('RingClass',
@@ -426,8 +514,19 @@ class AvispaModel:
                             'deleted' : BooleanField(default=False),
                             'items': ListField(DictField(Mapping.build(
                                                     **args_i
+                                                ))),
+                            'rich': ListField(DictField(Mapping.build(
+                                                    **args_rich
+                                                ))),
+                            'history': ListField(DictField(Mapping.build(
+                                                    **args_history
+                                                ))),
+                            'meta': ListField(DictField(Mapping.build(
+                                                    **args_meta
                                                 )))
                                                }) 
+
+        print('RingClass:',RingClass)
 
         return RingClass
 
@@ -481,7 +580,7 @@ class AvispaModel:
 
         #return False
 
-    
+
     #AVISPAMODEL
     def couchdb_pager(db, view_name='_all_docs',
                   startkey=None, startkey_docid=None,
@@ -582,13 +681,13 @@ class AvispaModel:
 
         result = db.iterview('ring/items',batch,**options)
 
-        print ('ITEMS FROM VIEW:',result)
+        #print ('ITEMS FROM VIEW:',result)
 
         presorteditems = []
         for row in result:
             presorteditems.append(row)
 
-        print('PRESORTEDITEMS:', presorteditems)
+        #print('PRESORTEDITEMS:', presorteditems)
 
         items = []
         i = 0
@@ -649,7 +748,8 @@ class AvispaModel:
 
         schema = self.ring_get_schema(handle,ringname)
         
-        values = {}
+        item_values = {}
+        rich_values = {}
         fields = schema['fields']
 
         print("post_a_b raw arguments sent:")
@@ -701,8 +801,9 @@ class AvispaModel:
 
                     rs = self.ring_get_schema_from_view(handle,external_ringname)
 
+                    print('rich_rs:',rs)
                     print('rich_item:',rich_item)
-                    print('rich_schema:',rs)
+                    
                     external_FieldName = rs['fields'][0]['FieldName']
 
                     
@@ -714,11 +815,15 @@ class AvispaModel:
                     print('Raw JSON schema:')
                     print(r.text)
                     rs = json.loads(r.text)
-                    print('rs:',rs)
+                    print('rich_rs:',rs)
                     rich_item = rs['items'][0]
                     print('rich_item:',rich_item)
                     external_FieldName = rs['fields'][0]['FieldName']
 
+                
+                rich_item_dict = {}
+                for j in rich_item:
+                    rich_item_dict[j] = rich_item[j]
           
                 
                 #Overwriting the default Field
@@ -732,30 +837,35 @@ class AvispaModel:
                             flparts = paramparts[1].split(',')
                             print('flparts:',flparts)   
                             external_FieldName = flparts[0]
+         
 
-                    
-
-                
-                    
-                
-                    
-
+                #The value for the Field picked (or the first Field if default)
                 value = rich_item[external_FieldName]
 
                 print('value:',value)
-             
-                values[field['FieldName']] = value
 
+                print('rich_item_dict:',rich_item_dict)
+             
+                item_values[field['FieldName']] = value
+                #rich_values[field['FieldName']] = rich_item_dict
+                #rs = json.loads(r.text)
+                rich_values[field['FieldName']] = json.dumps(rich_item_dict)
+ 
             else:
-                values[field['FieldName']] = request.form.get(field['FieldName'])
+                #Not a select. Will not have rich data
+                item_values[field['FieldName']] = request.form.get(field['FieldName'])
 
 
 
         RingClass = self.ring_create_class(schema)
-        item = RingClass()         
+        item = RingClass()        
         item._id= str(random.randrange(1000000000,9999999999))
         #item.deleted = 
-        item.items.append(**values)
+        item.items.append(**item_values)
+        print("rich_values:",rich_values)
+        #item.rich.append(**rich_values)
+        item.rich.append(**rich_values)
+        dict(foo='bar')
         
         if item.store(db):
         
@@ -820,7 +930,7 @@ class AvispaModel:
         RingClass = self.ring_create_class(schema)
         item = RingClass.load(db,idx)
         
-        values = {}
+        item_values = {}
         fields = schema['fields']
 
         if request.form.get('_public'):
@@ -829,7 +939,7 @@ class AvispaModel:
             item['public']=False
 
         for field in fields:
-            #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
+            #item_values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
             f = field['FieldName']
             old = unicode(item.items[0][f])
             new = unicode(request.form.get(f))
@@ -880,7 +990,7 @@ class AvispaModel:
         item = RingClass.load(db,idx)
         
         '''
-        values = {}
+        item_values = {}
         fields = schema['fields']
         for field in fields:
             #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
