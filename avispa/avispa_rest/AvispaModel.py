@@ -820,6 +820,9 @@ class AvispaModel:
 
                 
                 rich_item_dict = {}
+                #Nice to include where we got the information from
+                rich_item_dict['_source'] = url  
+                # Converting the ordered_dictionary to regular dictionary
                 for j in rich_item:
                     rich_item_dict[j] = rich_item[j]
           
