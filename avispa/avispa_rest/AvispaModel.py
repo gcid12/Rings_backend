@@ -482,9 +482,7 @@ class AvispaModel:
             d1 = {}
             d1['source']=TextField()
             print('len:',len(d1))
-            #args_rich[field['FieldName']] = DictField(Mapping.build(**d1))
-            args_rich[field['FieldName']] = TextField()
-            #args_rich[field['FieldName']] = TextField()
+            args_rich[field['FieldName']] = DictField()
 
             d2 = {}
             d2['date']=DateTimeField()
@@ -492,9 +490,9 @@ class AvispaModel:
             d2['before']=TextField()
             d2['after']=TextField()
             args_history[field['FieldName']] = ListField(DictField(Mapping.build(**d2)))
-            #args_history[field['FieldName']] = TextField()
+            
             args_meta[field['FieldName']] = DictField()
-            #args_meta[field['FieldName']] = TextField()
+            
 
 
         print('args_i',args_i)
@@ -845,11 +843,10 @@ class AvispaModel:
                 print('value:',value)
 
                 print('rich_item_dict:',rich_item_dict)
-             
+                
                 item_values[field['FieldName']] = value
-                #rich_values[field['FieldName']] = rich_item_dict
-                #rs = json.loads(r.text)
-                rich_values[field['FieldName']] = json.dumps(rich_item_dict)
+                rich_values[field['FieldName']] = rich_item_dict
+               
  
             else:
                 #Not a select. Will not have rich data
