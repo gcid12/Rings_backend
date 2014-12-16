@@ -748,6 +748,7 @@ class AvispaModel:
         
         item_values = {}
         rich_values = {}
+        history_values = {}
         fields = schema['fields']
 
         print("post_a_b raw arguments sent:")
@@ -856,6 +857,19 @@ class AvispaModel:
                 item_values[field['FieldName']] = request.form.get(field['FieldName'])
 
 
+            
+            #This will record the history for the first entry in the item history
+            history_item = {}
+            history_item['date'] = datetime.now()
+            history_item['author'] = handle
+            history_item['before'] = ''
+            history_item['after'] = item_values[field['FieldName']]
+
+            history_list = []
+            history_list.append(history_item)
+
+            history_values[field['FieldName']] = history_list
+
 
         RingClass = self.ring_create_class(schema)
         item = RingClass()        
@@ -865,7 +879,8 @@ class AvispaModel:
         print("rich_values:",rich_values)
         #item.rich.append(**rich_values)
         item.rich.append(**rich_values)
-        dict(foo='bar')
+        item.history.append(**history_values)
+        
         
         if item.store(db):
         
