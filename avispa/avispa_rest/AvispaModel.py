@@ -946,6 +946,7 @@ class AvispaModel:
         item = RingClass.load(db,idx)
         
         item_values = {}
+        history_values = {}
         fields = schema['fields']
 
         if request.form.get('_public'):
@@ -966,6 +967,21 @@ class AvispaModel:
                                 '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
                 #args[f] = new
                 item.items[0][f] = new
+
+                #This will record the history for the item update 
+                history_item = {}
+                history_item['date'] = str(datetime.now())
+                history_item['author'] = handle
+                history_item['before'] = str(old) +' '+ str(type(old)) 
+                history_item['after'] = str(new) + ' '+ str(type(new))
+                
+                #history_list = item.history[0][field['FieldName']]
+                #history_list.append(**history_item)
+
+                #history_values[field['FieldName']] = history_list
+
+                #item.history[0][field['FieldName']].append(**history_item)
+                item.history[0][field['FieldName']].append(history_item)
 
         if item.store(db):      
             return item._id
