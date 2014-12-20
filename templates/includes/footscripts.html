@@ -1,0 +1,78 @@
+
+<!-- JavaScript -->
+
+
+<script src="{{ url_for('static',filename='js/modernizr-2.7.1.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.easing.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='assets/simple-slider/simple-slider.js') }}"></script> 
+
+
+<script src="{{ url_for('static',filename='js/wow.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/jquery.isotope.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/jquery.validate.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/main.js') }}"></script>
+
+
+
+
+<!--[if lt IE 9]>
+    <script src="{{ url_for('static',filename='js/html5shiv.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/respond.min.js') }}"></script>
+<![endif]-->
+
+<!-- TOOLTIP + POPOVER SCRIPT -->
+<script type="text/javascript">
+	$('[data-toggle="tooltip"]').tooltip({
+    'placement': 'bottom'
+});
+$('[data-toggle="popover"]').popover({
+    trigger: 'hover',
+        'placement': 'left'
+});
+
+$('#userNameField').tooltip({
+    'show': true,
+        'placement': 'bottom',
+        'title': "Please remember to..."
+});
+
+$('#userNameField').tooltip('show');
+</script>
+
+<!-- SCRIPT FOR SCROLLER STOP -->
+<script>
+// This function will be executed when the user scrolls the page.
+$(window).scroll(function(e) {
+	// Get the position of the location where the scroller starts.
+	var scroller_anchor = $(".scro_anchor").offset().top;
+
+	// Check if the user has scrolled and the current position is after the scroller's start location and if its not already fixed at the top
+	if ($(this).scrollTop() >= scroller_anchor && $('.scro').css('position') != 'fixed')
+	{    // Change the CSS of the scroller to hilight it and fix it at the top of the screen.
+		$('.scro').css({
+			// 'background': '#CCC',
+			'position': 'fixed',
+			'top': '70px'
+		});
+		// Changing the height of the scroller anchor to that of scroller so that there is no change in the overall height of the page.
+		$('.scro_anchor').css('height', '100px');
+	}
+	else if ($(this).scrollTop() < scroller_anchor && $('.scro').css('position') != 'relative')
+	{    // If the user has scrolled back to the location above the scroller anchor place it back into the content.
+
+		// Change the height of the scroller anchor to 0 and now we will be adding the scroller back to the content.
+		$('.scro_anchor').css('height', '0px');
+
+		// Change the CSS and put it back to its original position.
+		$('.scro').css({
+			// 'background': '#440000',
+			'position': 'relative',
+			
+		});
+	}
+});
+</script>
+
