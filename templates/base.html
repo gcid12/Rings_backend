@@ -43,35 +43,19 @@
         </a>  
       </div>
         <div class="navbar-collapse collapse">
-            <!-- Note: you can use <li class="hidden-sm"> to hide things -->
             
             {%if current_user.is_authenticated()%}
             <ul class="nav navbar-nav navbar-right">
                 
-                <li><span style="padding:25px;">Logged in as: {{ current_user.id }} </span></li>
                 <li class="active"><a href="/{{ current_user.id }}">Home</a></li>
-                
-                <!--li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools &nbsp; <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="/tools">Avispa</a></li>
-                    <li><a href="/tools">Papalotl</a></li>
-                    <li><a href="/tools">Oruga</a></li>
-                    <li><a href="/tools">Catarina</a></li>
-                    <li><a href="/tools">Chapulin</a></li>
-                    <li><a href="/tools">Abeja</a></li>
-                  </ul>
-                </li-->
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions &nbsp; <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/static/images/dosx.jpg" style=" margin:0 5px; width:20px;"> {{ current_user.id }}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <!--li><a href="/login">Login</a></li-->
-                    <li><a href="/_logout">Logout</a></li>
+                    <li><a href="">Profile</a></li>
+                    <li><a href="/_logout">log-Out</a></li>
+                    
                   </ul>
                 </li>
-                <!-- <li><a href="#"><i class="fa fa-comment"></i></a></li>
-                <li><a href="#"><i class="fa fa-cog"></i></a></li>
-                <li><a href="#"><i class="fa fa-sign-out"></i></a></li> -->
             </ul>
             {%endif%}
         </div><!--/.nav-collapse -->
