@@ -6,7 +6,7 @@
 
 <div class="rn-hp5 pull-left"><a href="/_api/{{ data.handle }}/{{ data.ring }}"><img src="/static/images/json.png"></a></div>
 
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
+<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA [get_a_b]</span></div> 
 <a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
 <a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a>
 
@@ -50,9 +50,6 @@
                 
               </div>
             </div>
-              
-
-              
 
               {% block result1 %}
 
@@ -89,19 +86,23 @@
                                 <i class="fa fa-plus"></i> &nbsp; NEW
                                 </a>
 
+                              {% else %}
+                                <div class="pull-right">
+                                  <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
+                                     <i class="fa fa-plus"></i> &nbsp; NEW
+                                   </a>
+                                </div> 
+
                                {% endif %}
                                 
                                 {% for item in data.itemlist %}
-                                
-                                
-
                                 <tr>
-                                    <td style="width:15%;">
-
+                                    <td>
                                         {% for k,v in item.items() %}
                                           {% if k == 'Images' %}
                                             {% for image in v %}
                                               {% if image %}
+                                            
                                             <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
                                               {% endif %}
                                             {% endfor %}
@@ -109,22 +110,23 @@
                                             
                                           {% endif %}
                                         {% endfor %}
+                                        <!-- IMAGE PLACEHOLDER -->
+                                        <img style="width:70px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings">
+
                                         
-   
-                                        <div class="btn-group">
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-success">View</a>
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-info">Edit</i></a>
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default">Delete</a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></i></a>
+                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
 
                                           <!--button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_pre_a_b_c">
                                             <i class="fa fa-times"></i>
                                           </button-->
 
-                                        </div>
+                                        
 
                                               
                                     </td>
-                                    <td style="width:30%;">
+                                    <td>
 
 
                                             <dl class="dl-horizontal">
@@ -155,7 +157,9 @@
                                               {% if not k =='_id' %} 
 
                                               <dt>{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</dt>
-                                              <dd>{{ v }}</dd>
+                                              <dd>
+                                                  {{ v|truncate(170, true) }}
+                                              </dd>
                                               {% endif %}
                                               {% endif %}
                                               {% endif %}
@@ -165,7 +169,7 @@
                                             </dl>
                                         
                                     </td>
-                                    <td style="width:55%;">
+                                    <td style="">
                                         <p class="rn-t3 rn-gray">
                                         {% for k,v in item.items() %}
                                           {% if k == 'Description' %}
