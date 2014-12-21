@@ -28,28 +28,30 @@
 |
 -->
 
-  {% macro panel(name, color, number) %}
+  {% macro panel(name, handle, color, count,description) %}
 
   <tr>
     <td> 
       <div class="row">
         <div class=" col-sm-2 hidden-xs">
-          {{ icon_big(number,color) }}
+          {{ icon_big(count,color) }}
         </div> 
         <div class="col-xs-7 col-sm-7">
           <a class="nounder" href="01"><h3 class="fs-1-5">&deg;{{ name }}</h3></a>
-          <p class="rn-t3 text-lgray">This ring lists all the brands that manufacture sneakers</p>
+          <p class="rn-t3 text-lgray">{{ description }}</p>
         </div> 
         <div class="col-xs-5 col-sm-3">
           <div class="pull-right">
             <div class="visible-xs">
-              {{ icon_med(number,color) }}
+              {{ icon_med(count,color) }}
             </div>
             <div class="btn-group">
-              <a href="01" type="button" class="btn btn-info btn-xs">List</a>
-              <a href="03" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+            
+              <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a>
+              <a href="/{{ handle }}/{{ name }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
 
-              <a href="03" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              <a href="/{{ handle }}/{{ name }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+
             </div>
             <br/><br/>
             <span class="label label-discrete pull-right">1 day ago</span>

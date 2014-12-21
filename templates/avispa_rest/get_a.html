@@ -1,201 +1,179 @@
 {% extends 'base.html' %}
 
-{% block title %} Avispa {% endblock %}
+{% block title %}
+	My Ring - {{ title }}
+{% endblock %}
 
 {% block crumbs %}
 
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA [get_a]</span></div> 
+<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA [a_1]</span></div> 
 <a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a>
 
 {% endblock %}
 
-
-
 {% block content %}
 
+<!-- CONTENT HERE -->
 
-<!-- START NEW CONTENT --> 
 
-
-<section class="bp-20 p-50">
-  <div class="container">
+<section class="">
+  <div class="container-fluid">
     <div class="row">
-            
-      <div class="col-md-9">  
+      <div class="col-sm-1">
+        <a href="/">
+          <table>
+            <tr align="center">
+              <td class="hidden-xs">
+                <img class="block-center" src="/static/images/repo-icon.png" style="width:80px;" alt="MyRing">
+              </td>
+              <td class="visible-xs">
+                <span class="label label-default fs-0-6 ">Data Collection</span>
+              </td>
+            </tr>
+            <tr align="center" class="hidden-xs">
+              <td>
+                <span class="label label-default fs-0-6 ">Data Collection</span>
+              </td>
+            </tr>
+          </table>
+        </a>
+        
+        
+      </div>
+      <div class="col-sm-10 text-left">
+        <div class="btn-toolbar pull-right" role="toolbar">
+            {{ ui.label(1) }}
 
+               
+        </div>
+        <a href="/">
+          <div style="line-height:1.3em; padding:0px 0 0 15px">
 
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="rn-box-title">
-              <strong>Showing {{data.ringlistlen}} rings</strong>
-              
-              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-              <i class="fa fa-question-circle"></i>
-              </button-->
-
-              
-              <!--a href="?q" type="button" class="btn btn-success btn-xs pull-right">
-                <i class="fa fa-search"></i> SEARCH
-              </a-->
-            </div>
-            <div class="rn-box-solo">
-              <div class="pull-right rn-t3 text-right">
-                  <i class="fa fa-dot-circle-o fa-2x" style="color:#CCC; padding:0 10px;"></i>
-              </div>
-          
-              <div class="pull-right rn-t3 text-right"><strong> &nbsp;</strong>
-
-              </div>
-              <div class="rn-t2">Local Rings for {{ data.handle }}</div>
-
-
-
-
-                
-            </div>
-              <!-- <div class="rn-box-space">
-                  
-                      <div class="rn-b1">123</div>
-                  
-              </div> -->
-            <div class="rn-box-content">
-              <table class="table table-striped"> <!-- inner row -->
-
-
-
-
-              {% for ring in data.ringlist %}
-                <tr>
-                  <td> <div class="text-right lead"><h3>{{ ring.count }}</h3></div></td>
-                  <td> 
-                    <svg height="70" width="75" >
-                    
-                    <circle cx="42" cy="36" r="30" stroke="#DDD" stroke-width="4" fill="none" />
-                    <circle cx="40" cy="35" r="30" stroke="orange" stroke-width="2" fill="none" />
-                    
-                    </svg></td>
-                  <td> 
-                    <a class="rn-b1" href="/{{ data.handle }}/{{ ring.ringname }}">&deg;{{ ring.ringname }}</a>
-                    <hr/>
-                    <p class="rn-t3 rn-gray">{{ ring.ringdescription }}</p>
-                  </td>
-                  <td style="min-width:200px;"> 
-                    <div class="pull-right">
-                      <!--input type="checkbox" value="public" name="public"/-->
-                      <div class="btn-group">
-                        <a href="/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn btn-success">List</a>
-                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=post" type="button" class="btn btn-warning">New</a>
-                        <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=put"><span style="padding:25px;">Edit Schema</span></i></a>
-                        <!--a href="/{{ data.handle }}/{{ ring.ringname }}?method=delete" >Delete Ring</a-->
-                      </div>
-                      <br/><br/>
-                      <!--span class="label label-discrete pull-right">Yesterday</span-->
-                    </div>
-                  </td>
-                </tr>
-              {% endfor %}
-
-
-
-
-                <!--tr>
-                  <td> <div class="text-right lead"><h3>1,425</h3></div></td>
-                  <td> 
-                    <svg height="70" width="75" >
-                    
-                    <circle cx="42" cy="36" r="30" stroke="#DDD" stroke-width="4" fill="none" />
-                    <circle cx="40" cy="35" r="30" stroke="red" stroke-width="2" fill="none" />
-                    
-                    </svg>
-                  </td>
-                  <td> 
-                    <a class="rn-b1" href="musicvideos">&deg;Music Videos</a>
-                    <hr/>
-
-                    <p class="rn-t3 rn-gray">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel placerat urna. In eget magna non sem gravida facilisis. </p>
-                  </td>
-                  <td style="min-width:200px;"> 
-                    <div class="pull-right">
-                      <div class="btn-group">
-                        <a href="03" type="button" class="btn btn-success">G</a>
-                        <a href="03" type="button" class="btn btn-warning">P</a>
-                        <a href="03" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                        <a href="03" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
-                      </div>
-                      <br/><br/>
-                      <span class="label label-discrete pull-right">Today 3:45pm</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td> <div class="text-right lead"><h3>343</h3></div>
-                  </td>
-                  <td> 
-                      <svg height="70" width="75" >
-                      
-                      <circle cx="42" cy="36" r="30" stroke="#DDD" stroke-width="4" fill="none" />
-                      <circle cx="40" cy="35" r="30" stroke="purple" stroke-width="2" fill="none" />
-                      
-                      </svg>
-                  </td>
-                  <td> 
-                    <a class="rn-b1" href="partyphotos">&deg;Party Photos</a>
-                    <hr/>
-                    <p class="rn-t3 rn-gray">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel placerat urna. In eget magna non sem gravida facilisis. </p>
-                  </td>
-                  <td style="min-width:200px;"> 
-                    <div class="pull-right">
-                      <div class="btn-group">
-                        <a href="03" type="button" class="btn btn-success">G</a>
-                        <a href="03" type="button" class="btn btn-warning">P</a>
-                        <a href="03" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                        <a href="03" type="button" class="btn btn-default"><i class="fa fa-times"></i></a>
-                      </div>
-                      <br/><br/>
-                      <span class="label label-discrete pull-right">2 Months ago</span>
-                    </div>
-                  </td> 
-                </tr-->
-              </table>
-            </div><!-- //close box -->
-            
-
-
-            <div class="">
-               <!--ul class="pagination">
-                  <li><a href="#">&laquo;</a></li>
-                  <li class="active"><a href="#">1</a></li>
-                  <li class="disable"><a href="#">2</a></li>
-                  <li class="disable"><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-               </ul-->
-               <div class="pull-right">
-                 <a href="?rq=post&n=10" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
-                    <i class="fa fa-plus"></i> &nbsp; NEW RING
-                 </a>
-               </div>     
-
-            </div>
-
-
-
-
-
-          </div><!-- close 12 -->   
-        </div> <!-- close row -->
-
+              <h3 class="fs-1-2 text-gray text-s1 fw-c">HOTEL PROPERTIES </h3>
+              <p class="fc-e">5,345 Data resources |  3 Collaborators |  Last Update: 11.23.2014</p>
+          </div> 
+         </a> 
+      </div>
     </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="spa5"></div>
+      </div>
+      
+    </div>
+  </div>  
 </section>
 
+<section class="">
+  <div class="container-fluid">
+      <div class="row tab-margin">
+        <div class="col-xs-10 text-center">
+         
+          <a href="/" >
+            <div class="tab-box-b {% if tab=='rep' %}tab-on{% endif %}">
+                
+                <h4 class="text-s2 text-1em fs-1"><i class="fa fa-arrow-right fa-1x"></i>&nbsp; 
+                <span class="hidden-xs">Rings  {{ tab }}</span></h4>
+            </div>
+          </a> 
+          <a href="/monitoring" >
+            <div class="tab-box-b {% if tab=='mon' %}tab-on{% endif %}">
+              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-crosshairs fa-1x"></i> &nbsp;<span class="hidden-xs">Monitor</span></h4>
+            </div>
+          </a>
+          <a href="/collab" >
+            <div class="tab-box-b {% if tab=='col' %}tab-on{% endif %}">
+              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-users fa-1x"></i> &nbsp;<span class="hidden-xs">Community</span></h4>
+            </div>
+          </a> 
+          
+          <a href="/campaigns" >
+            <div class="tab-box-b  {% if tab=='cam' %}tab-on{% endif %}">
+              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-globe fa-1x"></i> &nbsp;<span class="hidden-xs">Campaigns</span></h4>
+            </div>
+          </a>
+          
+          <a href="/settings" >
+            <div class="tab-box-b {% if tab=='set' %}tab-on{% endif %} tb-icon">
+              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-wrench fa-1x"></i></h4>
+            </div>
+          </a>
+          
+        </div> 
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <!-- BOX CONTENT -->
+          <div class="">
+
+              
+              <div class="row">
+                <!-- COLUMN 1 -->
+                {% block tabcontent %}
+                <div class="col-sm-9 rn-box ">
+                  <div class="row">
+                    <div class="col-sm-offset-1 col-sm-11">
+                      <div class="spa10"></div>
+                      <table class="table table-striped" cellpadding="0" cellspacing="0">
+                        
+
+                        {% for ring in data.ringlist %}
+                          
+        
+                          {{ ui.panel(ring.ringname, data.handle, '#fce121', ring.count, ring.ringdescription) }}
 
 
+                        {% endfor %}
 
 
+          
+                      </table>  
+                    </div> 
+                  </div>  
+                </div>
+                {% endblock %} 
+                <!-- COLUMN 2 -->
+                <div class="col-sm-3">
+                  <div class="bord-left">
+                    <div class="rhr4 visible-xs"></div>
+                    <div class="spa10"></div>
+                    <h2 class="fs-1-5 fw-c text-lgray">Rings</h2>
+                    
+                    <p class="fs-0-8">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
 
+                    <hr/>
+                    <p>Actions:</p>
+
+                    <a class="btn btn-default btn-xs"><i class="fa fa-plus-circle fa-1x"></i> Join now!</a>
+
+                     <div class="spa10"></div>
+
+                    <a class="btn btn-default btn-xs"><i class="fa fa-plus-circle fa-1x"></i> Invite someone</a>
+                    <div class="spa5"></div>
+                    <br/>
+                    <hr/>
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                      <input type="text" class="form-control" placeholder="Search">
+                    </div>
+
+                    <hr/>
+                    <p>Other collections</p>
+                  </div>  
+                </div>
+
+              </div> 
+              
+          </div> 
+        </div><!-- close 12 -->   
+           
+    </div>
+  </div>
+</section>
+
+    
+	
 {% endblock %}
 
-{% block modals %}
-
-  {% include 'avispa_rest/helpmodal.html' %}
-
-{% endblock %}

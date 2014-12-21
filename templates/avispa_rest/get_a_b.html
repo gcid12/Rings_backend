@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'avispa_rest/get_a.html' %}
 
 {% block title %} Avispa {% endblock %}
 
@@ -13,23 +13,14 @@
 
 {% endblock %}
 
-{% block content %}
+{% block tabcontent %}
 
+  <!-- COLUMN 1 -->
+  <div class="col-sm-9">
+    <div class="rn-box-title">
+      <strong>Showing items</strong>
 
-<!-- START NEW CONTENT --> 
-
-
-<section class="bp-20 p-50">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9">  
-
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="rn-box-title">
-              <strong>Showing items</strong>
-
-              <div class="btn-toolbar pull-right" role="toolbar">
+        <div class="btn-toolbar pull-right" role="toolbar">
                 <div class="btn-group">
                   <!--a href="05" type="button" class="btn btn-default btn-xs">
                   <i class="fa fa-arrow-left"></i>
@@ -46,196 +37,153 @@
                   <!--a href="?q" type="button" class="btn btn-success btn-xs pull-right">
                       <i class="fa fa-search"></i> SEARCH
                   </a-->
-                </div>
-                
-              </div>
-            </div>
-
-              {% block result1 %}
-
-                        <div class="rn-box-space">
-                            
-                                    
-
-                                    <!--div class="btn-group pull-right">
-
-                                        <a href="01" type="button" class="btn btn-primary btn-xs">
-                                        <i class="fa fa-th-list"></i>
-                                        </a>
-                                        <a href="06" type="button" class="btn btn-default btn-xs">
-                                            <i class="fa fa-th-large"></i>
-                                        </a>
-                                    </div-->
-                                    
-
-
-                                    <!--strong>Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</strong-->
-   
-                        </div>
-
-
-                        <!-- RESULT LIST START -->
-
-                        <div class="rn-box-content">
-                            <table class="table table-striped">
-                                <!-- ITEM N -->
-
-                                {% if not data.itemlist %}
-                                You have no items in this Ring. Create one, click here:
-                                <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs " style="margin:0 5px;">
-                                <i class="fa fa-plus"></i> &nbsp; NEW
-                                </a>
-
-                              {% else %}
-                                <div class="pull-right">
-                                  <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
-                                     <i class="fa fa-plus"></i> &nbsp; NEW
-                                   </a>
-                                </div> 
-
-                               {% endif %}
-                                
-                                {% for item in data.itemlist %}
-                                <tr>
-                                    <td>
-                                        {% for k,v in item.items() %}
-                                          {% if k == 'Images' %}
-                                            {% for image in v %}
-                                              {% if image %}
-                                            
-                                            <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
-                                              {% endif %}
-                                            {% endfor %}
-                                          {% else %}
-                                            
-                                          {% endif %}
-                                        {% endfor %}
-                                        <!-- IMAGE PLACEHOLDER -->
-                                        <img style="width:70px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings">
-
-                                        
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></i></a>
-                                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
-
-                                          <!--button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_pre_a_b_c">
-                                            <i class="fa fa-times"></i>
-                                          </button-->
-
-                                        
-
-                                              
-                                    </td>
-                                    <td>
-
-
-                                            <dl class="dl-horizontal">
-                                        
-                                            {% for k,v in item.items() %}
-                                              
-                                              {% if k =='_public' %}
-                                                {% if v ==True %}
-                                                  <dt></dt>
-                                                  <dd><b>PUBLIC</b></dd>
-                                                {% else%}
-                                                  <dt></dt>
-                                                  <dd><b>NOT PUBLIC</b></dd>
-                                                {% endif %}
-                                              {% endif %}
-                                              
-                                            {% endfor %}
-                                          
-                                            </dl>
-
-                                        
-                                            <dl class="dl-horizontal">
-                                        
-                                            {% for k,v in item.items() %}
-                                              {% if not k =='Images' %}
-                                              {% if not k =='Description' %} 
-                                              {% if not k =='_public' %} 
-                                              {% if not k =='_id' %} 
-
-                                              <dt>{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</dt>
-                                              <dd>
-                                                  {{ v|truncate(170, true) }}
-                                              </dd>
-                                              {% endif %}
-                                              {% endif %}
-                                              {% endif %}
-                                              {% endif %}
-                                            {% endfor %}
-                                          
-                                            </dl>
-                                        
-                                    </td>
-                                    <td style="">
-                                        <p class="rn-t3 rn-gray">
-                                        {% for k,v in item.items() %}
-                                          {% if k == 'Description' %}
-                                            {{ v }}
-                                          {% endif %}
-                                        {% endfor %}
-                                        </p>
-                                    </td>
-
-                                </tr>
-                                
-
-                              {% endfor %}
-
-                              
-                                
-                                <!-- END ITEM N -->
-
-                            </table>
-                         
-                        
-                            
-                        </div><!-- //close box content -->
-                        <div class="">
-                            <ul class="pagination">
-                              <li><a href="/{{ data.handle }}/{{ data.ring }}">&laquo;</a></li>
-                              <!--li class="active"><a href="#">1</a></li>
-                              <li class="disable"><a href="#">2</a></li>
-                              <li class="disable"><a href="#">3</a></li-->
-                              {% if data.lastkey %}
-                              <li><a href="?lastkey={{ data.lastkey }}">&raquo;</a></li>
-                              {% endif %}
-                            </ul>
-                        <div class="pull-right">
-                            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
-                               <i class="fa fa-plus"></i> &nbsp; NEW
-                             </a>
-                        </div>     
-
-                        </div>
-
-
-                        <!-- RESULT LIST FIN -->
-
-
-                        {% endblock %}
-
-          </div><!-- close 12 -->   
-        </div> <!-- close row -->
-
-      </div> <!-- close 9 -->
-   
-
+                </div>    
+        </div>
     </div>
-  </div>
-</section>
+    {% block result1 %}
+    <div class="rn-box-space">
+                            
+          <!--div class="btn-group pull-right">
+
+              <a href="01" type="button" class="btn btn-primary btn-xs">
+              <i class="fa fa-th-list"></i>
+              </a>
+              <a href="06" type="button" class="btn btn-default btn-xs">
+                  <i class="fa fa-th-large"></i>
+              </a>
+          </div-->
+          <!--strong>Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</strong-->
+    </div>
+    <!-- RESULT LIST START -->
+    <div class="rn-box-content">
+      <table class="table table-striped">
+        <!-- ITEM N -->
+        {% if not data.itemlist %}
+        You have no items in this Ring. Create one, click here:
+        <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs " style="margin:0 5px;">
+        <i class="fa fa-plus"></i> &nbsp; NEW
+        </a>
+
+        {% else %}
+          <div class="pull-right">
+            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
+               <i class="fa fa-plus"></i> &nbsp; NEW
+             </a>
+          </div> 
+
+         {% endif %}
+          
+          {% for item in data.itemlist %}
+          <tr>
+              <td>
+                  {% for k,v in item.items() %}
+                    {% if k == 'Images' %}
+                      {% for image in v %}
+                        {% if image %}
+                      
+                      <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                        {% endif %}
+                      {% endfor %}
+                    {% else %}
+                      
+                    {% endif %}
+                  {% endfor %}
+                  <!-- IMAGE PLACEHOLDER -->
+                  <img style="width:70px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings">
+
+                  
+                    <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
+                    <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></i></a>
+                    <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+
+                    <!--button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_pre_a_b_c">
+                      <i class="fa fa-times"></i>
+                    </button-->       
+              </td>
+              <td>
+                      <dl class="dl-horizontal">
+                  
+                      {% for k,v in item.items() %}
+                        
+                        {% if k =='_public' %}
+                          {% if v ==True %}
+                            <dt></dt>
+                            <dd><b>PUBLIC</b></dd>
+                          {% else%}
+                            <dt></dt>
+                            <dd><b>NOT PUBLIC</b></dd>
+                          {% endif %}
+                        {% endif %}
+                        
+                      {% endfor %}
+                    
+                      </dl>
+
+                  
+                      <dl class="dl-horizontal">
+                  
+                      {% for k,v in item.items() %}
+                        {% if not k =='Images' %}
+                        {% if not k =='Description' %} 
+                        {% if not k =='_public' %} 
+                        {% if not k =='_id' %} 
+
+                        <dt>{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</dt>
+                        <dd>
+                            {{ v|truncate(170, true) }}
+                        </dd>
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    
+                      </dl>
+                  
+              </td>
+              <td style="">
+                  <p class="rn-t3 rn-gray">
+                  {% for k,v in item.items() %}
+                    {% if k == 'Description' %}
+                      {{ v }}
+                    {% endif %}
+                  {% endfor %}
+                  </p>
+              </td>
+
+          </tr>
+        {% endfor %}
+          <!-- END ITEM N -->
+      </table>
+    </div><!-- //close box content -->
+    <div class="">
+        <ul class="pagination">
+          <li><a href="/{{ data.handle }}/{{ data.ring }}">&laquo;</a></li>
+          <!--li class="active"><a href="#">1</a></li>
+          <li class="disable"><a href="#">2</a></li>
+          <li class="disable"><a href="#">3</a></li-->
+          {% if data.lastkey %}
+          <li><a href="?lastkey={{ data.lastkey }}">&raquo;</a></li>
+          {% endif %}
+        </ul>
+      <div class="pull-right">
+          <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
+             <i class="fa fa-plus"></i> &nbsp; NEW
+           </a>
+      </div>     
+    </div>
+    <!-- RESULT LIST FIN -->
+  {% endblock %}
+  </div><!-- close 9 -->   
+
 
 
 {% endblock %}
 
-
-
 {% block modals %}
 
-  {% include 'avispa_rest/delete_pre_a_b_c.html' %}
-  {% include 'avispa_rest/helpmodal.html' %}
+{% include 'avispa_rest/delete_pre_a_b_c.html' %}
+{% include 'avispa_rest/helpmodal.html' %}
 
 
 {% endblock %}
