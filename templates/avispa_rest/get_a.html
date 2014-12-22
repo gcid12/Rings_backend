@@ -4,172 +4,192 @@
 	My Ring - {{ title }}
 {% endblock %}
 
-{% block crumbs %}
 
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA [a_1]</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a>
-
-{% endblock %}
 
 {% block content %}
 
 <!-- CONTENT HERE -->
 
 
-<section class="">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-1">
-        <a href="/">
-          <table>
-            <tr align="center">
-              <td class="hidden-xs">
-                <img class="block-center" src="/static/images/repo-icon.png" style="width:80px;" alt="MyRing">
-              </td>
-              <td class="visible-xs">
-                <span class="label label-default fs-0-6 ">Data Collection</span>
-              </td>
-            </tr>
-            <tr align="center" class="hidden-xs">
-              <td>
-                <span class="label label-default fs-0-6 ">Data Collection</span>
-              </td>
-            </tr>
-          </table>
-        </a>
-        
-        
-      </div>
-      <div class="col-sm-10 text-left">
-        <div class="btn-toolbar pull-right" role="toolbar">
-            {{ ui.label(1) }}
+<section>
 
-               
-        </div>
-        <a href="/">
-          <div style="line-height:1.3em; padding:0px 0 0 15px">
-
-              <h3 class="fs-1-2 text-gray text-s1 fw-c">HOTEL PROPERTIES </h3>
-              <p class="fc-e">5,345 Data resources |  3 Collaborators |  Last Update: 11.23.2014</p>
-          </div> 
-         </a> 
-      </div>
-    </div>
     <div class="row">
-      <div class="col-xs-12">
-        <div class="spa5"></div>
-      </div>
+      <div class="col-sm-9" >
+        {% block crumbs %}
       
+        <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Library</a></li>
+                <li class="active">{{ data.handle }}</li>
+        </ol>
+        {% endblock %}
+      </div> 
+      <div class="col-sm-3">
+        <div class="text-right">
+        {% if data.today is defined %}
+                <div class="rn-t3">{{ data.today }}
+                </div>
+        {%endif%} 
+          <span class="label label-m">AVISPA [a]</span>
+
+        </div>
+      </div>
+        
     </div>
-  </div>  
+ 
 </section>
 
+
+
 <section class="">
   <div class="container-fluid">
-      <div class="row tab-margin">
-        <div class="col-xs-10 text-center">
-         
-          <a href="/" >
-            <div class="tab-box-b {% if tab=='rep' %}tab-on{% endif %}">
-                
-                <h4 class="text-s2 text-1em fs-1"><i class="fa fa-arrow-right fa-1x"></i>&nbsp; 
-                <span class="hidden-xs">Rings  {{ tab }}</span></h4>
-            </div>
-          </a> 
-          <a href="/monitoring" >
-            <div class="tab-box-b {% if tab=='mon' %}tab-on{% endif %}">
-              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-crosshairs fa-1x"></i> &nbsp;<span class="hidden-xs">Monitor</span></h4>
-            </div>
-          </a>
-          <a href="/collab" >
-            <div class="tab-box-b {% if tab=='col' %}tab-on{% endif %}">
-              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-users fa-1x"></i> &nbsp;<span class="hidden-xs">Community</span></h4>
-            </div>
-          </a> 
+
+      <!-- BOX CONTENT -->
           
-          <a href="/campaigns" >
-            <div class="tab-box-b  {% if tab=='cam' %}tab-on{% endif %}">
-              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-globe fa-1x"></i> &nbsp;<span class="hidden-xs">Campaigns</span></h4>
-            </div>
-          </a>
-          
-          <a href="/settings" >
-            <div class="tab-box-b {% if tab=='set' %}tab-on{% endif %} tb-icon">
-              <h4 class="text-s2 text-1em fs-1"><i class="fa fa-wrench fa-1x"></i></h4>
-            </div>
-          </a>
-          
-        </div> 
-      </div>
       <div class="row">
-        <div class="col-sm-12">
-          <!-- BOX CONTENT -->
-          <div class="">
+        <!-- COLUMN 1 -->
 
-              
-              <div class="row">
-                <!-- COLUMN 1 -->
-                {% block tabcontent %}
-                <div class="col-sm-9 rn-box ">
-                  <div class="row">
-                    <div class="col-sm-offset-1 col-sm-11">
-                      <div class="spa10"></div>
-                      <table class="table table-striped" cellpadding="0" cellspacing="0">
                         
+        <div class="col-sm-3 omega">
+          <div class="bord-right">
+            <div class="rhr4 visible-xs"></div>
+            &nbsp;
 
-                        {% for ring in data.ringlist %}
-                          
-        
-                          {{ ui.panel(ring.ringname, data.handle, '#fce121', ring.count, ring.ringdescription) }}
+            <span class="pull-right">{{ ui.label(1) }}</span>
+            <h1>Hotels</h1>
 
+            
+            
 
-                        {% endfor %}
-
-
-          
-                      </table>  
-                    </div> 
-                  </div>  
-                </div>
-                {% endblock %} 
-                <!-- COLUMN 2 -->
-                <div class="col-sm-3">
-                  <div class="bord-left">
-                    <div class="rhr4 visible-xs"></div>
-                    <div class="spa10"></div>
-                    <h2 class="fs-1-5 fw-c text-lgray">Rings</h2>
-                    
-                    <p class="fs-0-8">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
-
-                    <hr/>
-                    <p>Actions:</p>
-
-                    <a class="btn btn-default btn-xs"><i class="fa fa-plus-circle fa-1x"></i> Join now!</a>
-
-                     <div class="spa10"></div>
-
-                    <a class="btn btn-default btn-xs"><i class="fa fa-plus-circle fa-1x"></i> Invite someone</a>
-                    <div class="spa5"></div>
-                    <br/>
-                    <hr/>
-                    <div class="input-group input-group-sm">
-                      <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                      <input type="text" class="form-control" placeholder="Search">
-                    </div>
-
-                    <hr/>
-                    <p>Other collections</p>
-                  </div>  
-                </div>
-
-              </div> 
+            <div class="text-s1 fs-1">
+              <strong>{{data.ringlistlen}}</strong>
               
-          </div> 
-        </div><!-- close 12 -->   
-           
-    </div>
+              {% if data.ringlistlen == 1 %} ring {% else %} rings {% endif %}
+              <br/>
+            
+                <strong>3,456 </strong> data assets
+              <br/>
+            
+                <strong>5 </strong>collaborators
+
+            </div>
+            <div class="spa30"></div>
+            
+            
+
+            <hr/>
+            <p>Actions:</p>
+
+            <a href="?rq=post&n=10" class="btn btn-warning btn-xs">
+              <i class="fa fa-plus"></i> &nbsp; NEW RING
+            </a>
+            <br/>
+            <a href="" class="btn btn-default btn-xs">
+              <i class="fa fa-plus-circle fa-1x"></i> Invite
+            </a>
+            <br/>
+            <a href="" class="btn btn-default btn-xs">
+              <i class="fa fa-plus-circle fa-1x"></i> Campaign
+            </a>
+             <div class="spa10"></div>
+
+            <div class="spa5"></div>
+            <br/>
+            <hr/>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+
+            <hr/>
+            <p>Other collections</p>
+          </div>  
+        </div>
+
+        <!-- COLUMN 2 -->
+
+        <div class="col-sm-9" >
+          <!-- TABS -->
+
+          <div class="row">
+            <div class="col-sm-1 omega">
+          
+              <div class="spa10"></div>
+              <a href="/" class="text-center">
+                <div class="tab-box-d {% if tab=='rep' %}tab-on{% endif %}">
+                  <i class="fa fa-arrow-right fa-1x"></i>
+                </div>
+              </a>
+              
+              <a href="/monitoring" class="text-center">
+                <div class="tab-box-d tab-on2 {% if tab=='mon' %}tab-on{% endif %}">
+                  <i class="fa fa-crosshairs fa-1x"></i>
+                </div>
+              </a>
+              <a href="/collab" class="text-center">
+                <div class="tab-box-d {% if tab=='col' %}tab-on{% endif %}">
+                  <i class="fa fa-users fa-1x"></i>
+                </div>
+              </a> 
+              
+              <a href="/campaigns" class="text-center">
+                <div class="tab-box-d  {% if tab=='cam' %}tab-on{% endif %}">
+                 <i class="fa fa-globe fa-1x"></i>
+                </div>
+              </a>
+
+              <a href="/settings" class="text-center">
+                <div class="tab-box-d  {% if tab=='cam' %}tab-on{% endif %}">
+                 <i class="fa fa-wrench fa-1x"></i>
+                </div>
+              </a> 
+            </div>
+
+            <div class="col-sm-10 alpha omega">
+            {% block tabcontent %}
+
+            
+              
+            
+              <div class="rn-box-gad gad100">
+                <h2 class="fs-1-5 text-lgray">Rings</h2>
+
+                <table class="table table-striped" cellpadding="0" cellspacing="0">
+                  
+                  {% for ring in data.ringlist %}
+                    
+                    {{ ui.panel(ring.ringname, data.handle, '#fce121', ring.count, ring.ringdescription) }}
+
+                  {% endfor %}
+
+                </table> 
+                <div class="row">
+                  <div class="col-sm-12 ">
+                    <div class="pull-right">
+                      <ul class="pagination">
+                        <li><a href="#">&laquo;</a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li class="disable"><a href="#">2</a></li>
+                        <li class="disable"><a href="#">3</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                      </ul>
+                    </div>
+                   
+                  </div>
+                </div> 
+              </div>
+            
+
+            {% endblock %} 
+            </div> 
+
+
+          </div>  
+
+        </div><!--  close col-9 -->
+      </div> 
+                 
+    
   </div>
 </section>
 

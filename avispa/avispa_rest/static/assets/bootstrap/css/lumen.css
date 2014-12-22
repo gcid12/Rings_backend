@@ -4277,18 +4277,18 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #eeeeee;
 }
 .breadcrumb {
-  padding: 8px 15px;
-  margin-bottom: 20px;
+  padding: 0 0 0 0px;
+  margin-bottom: 0px;
   list-style: none;
-  background-color: #fafafa;
-  border-radius: 4px;
+  background-color: #F5F5F5;
+/*  border-radius: 4px;*/
 }
 .breadcrumb > li {
   display: inline-block;
 }
 .breadcrumb > li + li:before {
   content: ">\00a0";
-  padding: 0 5px;
+  /*padding: 0 5px;*/
   color: #999999;
 }
 .breadcrumb > .active {
@@ -6413,9 +6413,9 @@ label {
   box-shadow: none;
 }
 .breadcrumb {
-  border-color: #ededed;
+  /*border-color: #ededed;
   border-style: solid;
-  border-width: 0 1px 4px 1px;
+  border-width: 0 1px 4px 1px;*/
 }
 .pagination > li > a,
 .pager > li > a,
