@@ -22,8 +22,8 @@
                 <li><a href="/">home</a> </li>
         {% block crumbs %}
         
+                <li><a href="/{{ data.handle }}">{{ data.handle }}</a> </li>
                 
-                <li class="active">{{ data.handle }}</li>
         
         {% endblock %}
         </ol>
@@ -126,7 +126,7 @@
             <div class="col-sm-1 omega">
           
               
-              <a href="" class="text-center">
+              <a href="/{{ data.handle }}" class="text-center">
                 <div class="tab-box-d tab-on2{% if tab=='rep' %}tab-on{% endif %}">
                   <i class="fa fa-circle-o fa-1x"></i>
                 </div>
