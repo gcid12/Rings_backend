@@ -240,13 +240,13 @@
 
 {% macro label(code) %}
           {% if code==1 %}
-            <div class="label label-success" style="margin-top:-50px;">Owner</div>
+            <div class="label label-discrete" style="margin-top:-50px;">Owner</div>
           {% elif code==2 %}
-            <div class="label label-info" style="margin-top:-50px;">Admin</div>
+            <div class="label label-discrete" style="margin-top:-50px;">Admin</div>
           {% elif code==3 %}
-            <div class="label label-warning" style="margin-top:-50px;">Collab</div>  
+            <div class="label label-discrete" style="margin-top:-50px;">Collab</div>  
           {% else %}
-            <div class="label label-default" style="margin-top:-50px;">Observer</div>
+            <div class="label label-discrete" style="margin-top:-50px;">Observer</div>
           {% endif %}
 {% endmacro %}   
 

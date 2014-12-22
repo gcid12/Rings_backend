@@ -10,31 +10,43 @@
 
 <!-- CONTENT HERE -->
 
+<div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;">({% block findme %} get_a {% endblock %})</div>
 
 <section>
 
     <div class="row">
       <div class="col-sm-9" >
-        {% block crumbs %}
-      
+
+        <span class="label label-m pull-left" style="margin:5px 20px 0 0;">AVISPA</span>
         <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
+                <li><a href="/">home</a> </li>
+        {% block crumbs %}
+        
+                
                 <li class="active">{{ data.handle }}</li>
-        </ol>
+        
         {% endblock %}
+        </ol>
       </div> 
       <div class="col-sm-3">
         <div class="text-right">
         {% if data.today is defined %}
-                <div class="rn-t3">{{ data.today }}
-                </div>
+                <p class="fs-0-8">
+                {{ data.today }} 
+                </p>
         {%endif%} 
-          <span class="label label-m">AVISPA [a]</span>
 
         </div>
       </div>
         
+    </div>
+    <div class="row hidden-xs">
+      <div class="col-sm-12">
+        <!-- <div class="rhr4"></div> -->
+        <hr/>
+
+      </div>
+      
     </div>
  
 </section>
@@ -52,10 +64,9 @@
                         
         <div class="col-sm-3 omega">
           <div class="bord-right">
-            <div class="rhr4 visible-xs"></div>
-            &nbsp;
+            
 
-            <span class="pull-right">{{ ui.label(1) }}</span>
+            
             <h1>Hotels</h1>
 
             
@@ -114,7 +125,7 @@
           <div class="row">
             <div class="col-sm-1 omega">
           
-              <div class="spa10"></div>
+              
               <a href="/" class="text-center">
                 <div class="tab-box-d {% if tab=='rep' %}tab-on{% endif %}">
                   <i class="fa fa-arrow-right fa-1x"></i>
