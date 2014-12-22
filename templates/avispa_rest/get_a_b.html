@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block tabcontent %}
-<div class="rn-hp5 pull-left"><a href="/_api/{{ data.handle }}/{{ data.ring }}"><img src="/static/images/json.png"></a></div>
+
 
   <!-- COLUMN 1 -->
   <div class="col-sm-12">
@@ -71,6 +71,12 @@
           </div> 
 
          {% endif %}
+
+         <a class="btn btn-danger btn-xs pull-right" href="/_api/{{ data.handle }}/{{ data.ring }}">
+         <!-- <img src="/static/images/json.png"> -->
+         { }
+         </a>
+
           
           <p class="fs-0-8 fc-g">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
 
