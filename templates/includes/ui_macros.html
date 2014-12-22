@@ -1,32 +1,4 @@
-<!--
-|___________________________________________________________
-| RINGS UI HELPERS
-|___________________________________________________________
-|
-| 1. RING icon
-|     It display the ring icon with number of data Assets.
-| 
-|       icon_big(number,color)  
-|       icon_med(number,color) 
-|       icon_small(number,color)
-|
-| 2. RING panel
-|     When you want to display general info about a ring
-| 
-|       panel(name, color, number)  //to be used in results 
-|       panel_collapse(name, color, number, percent, active)  //to be used in collapsable content
-|
-| 3. RING collections
-|    
-|       collection(name, rings, owner, update)
-|
-| 4. RING collaborators
-|
-|       collab_collapse(order,colname, avatar, graph, color, assets, percent, last)
-|
-|
-|
--->
+
 
   {% macro panel(name, handle, color, count,description) %}
 
@@ -183,11 +155,11 @@
 
 {% macro icon_big(number,color) %}
   <svg height="85" width="100" style="margin:-5px;">
-    <line x1="3" y1="0" x2="3" y2="40" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
-    <line x1="3" y1="40" x2="32" y2="55" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
-    <circle cx="62" cy="56" r="25" stroke="#e5e5e5" stroke-width="3" fill="none" />
-    <circle cx="60" cy="52" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
-    <text x="60" y="60" fill="gray" class="fs-1-5" text-anchor="middle">{{ number }}</text>
+    <!-- <line x1="3" y1="0" x2="3" y2="40" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
+    <line x1="3" y1="40" x2="32" y2="55" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" /> -->
+    <circle cx="57" cy="45" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
+    <circle cx="60" cy="40" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
+    <text x="60" y="49" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
   </svg>
 {% endmacro %}
 

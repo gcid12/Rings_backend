@@ -60,20 +60,20 @@
         <!-- ITEM N -->
         {% if not data.itemlist %}
         You have no items in this Ring. Create one, click here:
-        <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs " style="margin:0 5px;">
+        <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
         <i class="fa fa-plus"></i> &nbsp; NEW
         </a>
 
         {% else %}
           <div class="pull-right">
-            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
+            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
                <i class="fa fa-plus"></i> &nbsp; NEW
              </a>
           </div> 
 
          {% endif %}
           
-          <p class="fs-0-8">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
+          <p class="fs-0-8 fc-g">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
 
         <div class="spa20"></div>
         <table class="table table-striped">
