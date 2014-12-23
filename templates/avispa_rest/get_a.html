@@ -17,10 +17,18 @@
 
     <div class="row hidden-xs">
       <div class="col-sm-12">
-        <!-- <div class="rhr4"></div> -->
-        <hr/>
+        <div class="text-right">
+                  {% if data.today is defined %}
+                          <p class="fs-0-8">
+                          {{ data.today }} 
+                          </p>
+                  {%endif%} 
+
+        </div>
+        <div class="rhr4"></div>
 
       </div>
+
       
     </div>
  
@@ -38,15 +46,10 @@
 
                         
         <div class="col-sm-3 omega">
+
           <div class="bord-right">
-            
 
-            
-            <h1>Hotels</h1>
-
-            
-            
-
+            <h1>Collection Name</h1>
             <div class="text-s1 fs-1">
               <strong>{{data.ringlistlen}}</strong>
               
@@ -61,8 +64,6 @@
             </div>
             <div class="spa30 hidden-xs"></div>
             
-            
-
             <hr/>
             <p>Actions:</p>
 
@@ -82,12 +83,6 @@
             <div class="spa5"></div>
             <br/>
             <hr/>
-            <!-- <div class="input-group input-group-sm">
-              <span class="input-group-addon"><i class="fa fa-search"></i></span>
-              <input type="text" class="form-control" placeholder="Search">
-            </div> -->
-
-            <hr/>
             <p>Other collections</p>
           </div>  
         </div>
@@ -96,7 +91,7 @@
 
         <div class="col-sm-9" >
           <!-- TABS -->
-
+          <div class="spa10"></div>
           <div class="row">
             <div class="col-sm-1 omega">
           
@@ -131,9 +126,9 @@
               </a> 
             </div>
 
-            <div class="col-sm-10 alpha omega">
+            <div class="col-sm-11 alpha omega">
               <div class="row">
-                <div class="col-sm-9 pl-20" >
+                <div class="col-sm-12 pl-40 pb-10" >
 
                   <span class="label label-m pull-left" style="margin:5px 20px 0 0;">AVISPA</span>
                   <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
@@ -146,16 +141,7 @@
                   {% endblock %}
                   </ol>
                 </div> 
-                <div class="col-sm-3">
-                  <div class="text-right">
-                  {% if data.today is defined %}
-                          <p class="fs-0-8">
-                          {{ data.today }} 
-                          </p>
-                  {%endif%} 
-
-                  </div>
-                </div>
+                
                   
               </div>
             {% block tabcontent %}
