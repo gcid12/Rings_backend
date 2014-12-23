@@ -1,17 +1,12 @@
 {% extends 'avispa_rest/get_a.html' %}
 
 {% block title %} Avispa {% endblock %}
+{% block findme %} get_a_b_c {% endblock %}
 
 {% block crumbs %}
 
-<div class="rn-hp5 pull-left"><a href="/_api/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}"><img src="/static/images/json.png"></a></div> 
-
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA [get_a_b_c]</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
-<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a> /
-<a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.idx}}</a>
-
-
+<li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
+<li class="active">{{ data.idx}}</li>
 
 {% endblock %}
 
@@ -20,15 +15,21 @@
 
 <!-- START NEW CONTENT --> 
 
-      <div class="col-md-9">  
+      <div class="col-sm-12">  
         <div class="row">
           <div class="col-sm-12">
-          {% if data.item %}
+          {% if data.item %} 
             <div class="rn-box-title">
               <strong>Showing 1 item</strong>
-              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-              <i class="fa fa-question-circle"></i>
-              </button>
+              
+
+              <a class="btn btn-vader btn-xs pull-right" href="/_api/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}">
+               <!-- <img src="/static/images/json.png"> -->
+               { }
+              </a>
+
+
+              
             </div>
             <div class="rn-box-solo">
               <div class="row">

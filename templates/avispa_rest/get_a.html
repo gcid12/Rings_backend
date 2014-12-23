@@ -14,32 +14,7 @@
 
 <section>
 
-    <div class="row">
-      <div class="col-sm-9" >
 
-        <span class="label label-m pull-left" style="margin:5px 20px 0 0;">AVISPA</span>
-        <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
-                <li><a href="/">home</a> </li>
-        {% block crumbs %}
-        
-                <li><a href="/{{ data.handle }}">{{ data.handle }}</a> </li>
-                
-        
-        {% endblock %}
-        </ol>
-      </div> 
-      <div class="col-sm-3">
-        <div class="text-right">
-        {% if data.today is defined %}
-                <p class="fs-0-8">
-                {{ data.today }} 
-                </p>
-        {%endif%} 
-
-        </div>
-      </div>
-        
-    </div>
     <div class="row hidden-xs">
       <div class="col-sm-12">
         <!-- <div class="rhr4"></div> -->
@@ -125,7 +100,7 @@
           <div class="row">
             <div class="col-sm-1 omega">
           
-              
+              <div class="spa15"></div>
               <a href="/{{ data.handle }}" class="text-center">
                 <div class="tab-box-d tab-on2{% if tab=='rep' %}tab-on{% endif %}">
                   <i class="fa fa-circle-o fa-1x"></i>
@@ -157,11 +132,38 @@
             </div>
 
             <div class="col-sm-10 alpha omega">
+              <div class="row">
+                <div class="col-sm-9 pl-20" >
+
+                  <span class="label label-m pull-left" style="margin:5px 20px 0 0;">AVISPA</span>
+                  <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
+                        
+                        <li><a href="/{{ data.handle }}"><i class="fa fa-arrow-right"></i> {{ data.handle }}</a> </li>  
+                  {% block crumbs %}
+                  
+                          
+
+                  {% endblock %}
+                  </ol>
+                </div> 
+                <div class="col-sm-3">
+                  <div class="text-right">
+                  {% if data.today is defined %}
+                          <p class="fs-0-8">
+                          {{ data.today }} 
+                          </p>
+                  {%endif%} 
+
+                  </div>
+                </div>
+                  
+              </div>
             {% block tabcontent %}
 
             
-              
-            
+                  
+
+            <div class="col-sm-12">
               <div class="rn-box-gad gad100">
                 <h2 class="fs-1-5 text-lgray">Rings</h2>
 
@@ -189,7 +191,7 @@
                   </div>
                 </div> 
               </div>
-            
+            </div>
 
             {% endblock %} 
             </div> 

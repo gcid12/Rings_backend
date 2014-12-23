@@ -5,8 +5,7 @@
 
 {% block crumbs %}
 
-<li><a href="/{{ data.handle }}">{{ data.handle }}</a> </li>
-<li class="active">{{ data.ring}} </li>
+<li class="active">˚{{ data.ring}} </li>
 
 
 {% endblock %}
@@ -38,7 +37,8 @@
           </div>    
         </div>
         
-        {{ ui.panel('ring.ringname', 'data.handle', '#fce121', '345', 'ring.ringdescription') }}
+        {{ ui.panel(data.ring, data.handle, '#fce121', '123', 'ringdescription') }}
+        
     </div>
     {% block result1 %}
 
@@ -72,10 +72,7 @@
 
          {% endif %}
 
-         <a class="btn btn-danger btn-xs pull-right" href="/_api/{{ data.handle }}/{{ data.ring }}">
-         <!-- <img src="/static/images/json.png"> -->
-         { }
-         </a>
+         
 
           
           <p class="fs-0-8 fc-g">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
@@ -101,11 +98,9 @@
                   <img style="width:70px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings">
 
                   <div class="btn-group" role="group" aria-label="...">
-                    <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
-                    <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></i></a>
+                    <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                    <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
                     <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
-
-                    
                   </div>
                          
                     <br/>
@@ -176,8 +171,9 @@
       </div>     
     </div>
     <!-- RESULT LIST FIN -->
+</div><!-- close 12 -->  
   {% endblock %}
-  </div><!-- close 9 -->   
+   
 
 
 
