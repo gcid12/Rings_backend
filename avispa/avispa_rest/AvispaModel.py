@@ -325,6 +325,21 @@ class AvispaModel:
         return schema
 
 
+    #AVISPAMODEL
+    def ring_get_item_document(self,handle,ringname,idx):
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+
+        schema = self.ring_get_schema(handle,ringname)
+        RingClass = self.ring_create_class(schema)
+        item = RingClass.load(db,idx)
+
+        return item
+
+        
+
+
 
     #AVISPAMODEL
     def ring_set_schema(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
@@ -960,6 +975,9 @@ class AvispaModel:
             old = unicode(item.items[0][f])
             new = unicode(request.form.get(f))
 
+            #old = old.strip()
+            new = new.strip()
+
             if old == new:
                 print(f+' did not change')             
             else:
@@ -981,6 +999,17 @@ class AvispaModel:
                 #history_values[field['FieldName']] = history_list
 
                 #item.history[0][field['FieldName']].append(**history_item)
+                '''
+                if history not in item:
+                    item['history'] = []
+
+                if not item.history[0]:
+
+                    fields = {}
+
+                    item.history.append
+                '''
+
                 item.history[0][field['FieldName']].append(history_item)
 
         if item.store(db):      
