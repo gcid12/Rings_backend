@@ -103,8 +103,9 @@
                           
                         {% endif %}
                       {% endfor %}
-                      <!-- IMAGE PLACEHOLDER -->
+                      <!-- IMAGE PLACEHOLDER/ PLEASE REMOVE -->
                       <img style="width:70px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings">
+                      <!-- IMAGE PLACEHOLDER FINISH -->
 
                       <div class="btn-group" role="group" aria-label="...">
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
@@ -134,12 +135,14 @@
                             {% if not k =='Description' %} 
                             {% if not k =='_public' %} 
                             {% if not k =='_id' %} 
+                            {% if v %} 
                           <tr>
                             <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</p></td>
                             <td>
                                 <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">{{ v|truncate(170, true) }}</p>
                             </td>
                           </tr>
+                            {% endif %}
                             {% endif %}
                             {% endif %}
                             {% endif %}
@@ -189,14 +192,14 @@
             <div class="spa20"></div>
             
               {% for item in data.itemlist %}
-              <div class="pull-left" style="background-color:#F7F7F7; margin:1px; padding:2px;">
+              <div class="pull-left" style="background-color:#F7F7F7; margin:2px; padding:2px;">
                   
                       
                       <!-- IMAGE PLACEHOLDER -->
                   <table>
                     <tr>
                       <td align="center">
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-xs btn-link pull-right" data-toggle="popover" data-placement="bottom" 
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
                                   title="
                                   {% for k,v in item.items() %}
                                     {% if k == 'name' %}
@@ -211,8 +214,8 @@
                                   {% endfor %}"
                           >
                         <!-- Image placeholder -->
-                          <!-- <img style="width:90px; margin:1px;" src="/static/images/d3-b.png"  alt="Rings"> -->
-                          <img style="width:90px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                          <img style="width:90px; margin:1px;" src="/static/images/image01.jpg"  alt="Rings">
+                          
 
 
                     <!-- {% for k,v in item.items() %}
