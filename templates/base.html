@@ -8,10 +8,11 @@
     {% import 'includes/ui_macros.html' as ui %}
     {% import 'includes/graphs.html' as graphs %}
     
-
-  {% block headscripts %}
-    <link href="{{ url_for('static',filename='assets/bootstrap/css/lumen.css') }}" rel="stylesheet" type="text/css" media="screen">
+<link href="{{ url_for('static',filename='assets/bootstrap/css/lumen.css') }}" rel="stylesheet" type="text/css" media="screen">
     <link href="{{ url_for('static',filename='css/ring1.css') }}" rel="stylesheet" type="text/css" media="screen">
+    
+  {% block headscripts %}
+    
   {% endblock %}
 
 </head>

@@ -6375,12 +6375,15 @@ label {
   border-color: transparent;
 }
 .nav-tabs > li > a {
-  margin-top: 6px;
+  margin-top: 0px;
   border-color: #e7e7e7;
-  color: #333333;
+  color: #777;
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+  background-color:#CCC;
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus,
@@ -6390,9 +6393,10 @@ label {
 .nav-tabs .open > a,
 .nav-tabs .open > a:hover,
 .nav-tabs .open > a:focus {
-  padding-top: 13px;
-  padding-bottom: 13px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   margin-top: 0;
+
 }
 .nav-tabs .open > a,
 .nav-tabs .open > a:hover,
@@ -6401,10 +6405,12 @@ label {
 }
 .nav-tabs > li.disabled > a:hover,
 .nav-tabs > li.disabled > a:focus {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-top: 6px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-top: 1px;
+
 }
+
 .dropdown-menu {
   margin-top: 0;
   border-width: 0 1px 4px 1px;
@@ -6412,6 +6418,14 @@ label {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+
+.tab2btn{
+background-color: yellow;
+border-width: 1px;
+border-color: red;
+padding: 4px;
+}
+
 .breadcrumb {
   /*border-color: #ededed;
   border-style: solid;
