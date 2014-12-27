@@ -48,9 +48,12 @@
 
 {% block crumbs %}
 
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPAz</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
-<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a>
+
+
+
+<li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
+<li class="active">New record</li>
+
 
 {% endblock %}
 

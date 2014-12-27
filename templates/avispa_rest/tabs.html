@@ -50,7 +50,13 @@
           <div class="bord-right">
 
             <h2>Collection Name</h2>
+            
+
+            <div class="rhr4 text-s1 fw-c fc-g fs-1" style="background-color:#CCC;">INFO</div>
+            <div class="spa10 clearboth"></div>
+
             <div class="text-s1 fs-1">
+
               <strong>{{data.ringlistlen}}</strong>
               
               {% if data.ringlistlen == 1 %} ring {% else %} rings {% endif %}
@@ -63,10 +69,20 @@
 
             </div>
             <div class="spa30 hidden-xs"></div>
-            
-            <hr/>
-            <p>Actions:</p>
 
+
+            <div class="rhr4" style="background-color:#CCC;">&nbsp;</div>
+            <div class="text-s1 fw-c fc-g fs-1">INFOx</div>
+            <div class="spa10 clearboth"></div>
+123
+
+          </div>
+          
+          
+          
+          
+          <div class="bord-right">
+            
             <a href="?rq=post&n=10" class="btn btn-warning btn-xs">
               <i class="fa fa-plus"></i> &nbsp; NEW RING
             </a>
@@ -130,7 +146,7 @@
               <div class="row">
                 <div class="col-sm-12 pl-40 pb-10" >
 
-                  <span class="label label-m pull-left" style="margin:5px 20px 0 0;">AVISPA</span>
+                  <span class="label label-discrete pull-left" style="margin:5px 20px 0 0;">AVISPA</span>
                   <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
                         
                         <li><a href="/{{ data.handle }}"><i class="fa fa-arrow-right"></i> {{ data.handle }}</a> </li>  
