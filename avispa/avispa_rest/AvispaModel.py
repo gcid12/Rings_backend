@@ -138,6 +138,7 @@ class AvispaModel:
 
             return False
 
+
     #AVISPAMODEL
     def x_ring_set_db_views(self,db_ringname): 
     #Implemented as indicated here: http://markhaase.com/2012/06/23/couchdb-views-in-python/
@@ -249,6 +250,32 @@ class AvispaModel:
 
         return True
 
+
+    #AVISPAMODEL
+    def user_add_collection(self,handle,collectionname,collectionversion,collectionrings,user_database=None):
+
+        if not user_database : 
+            user_database = self.user_database
+
+        db = self.couch[user_database]
+        print("handle:")
+        print(handle)
+
+        '''
+        rings = []
+        for r in collectionrings:
+            ring = {}
+            ring['layer'] = 1
+            ring['ringname'] = "sombreros"
+            ring['version'] = "0-3-4"
+            rings.append(ring)
+        '''
+
+        doc =  MyRingUser.load(db, handle)
+        doc.collections.append(collectionname=str(collectionname),version=str(collectionversion),added=datetime.now(),rings=collectionrings)
+        doc.store(db)
+
+        return True
 
     #AVISPAMODEL
     def user_add_ring(self,handle,ringname,ringversion,user_database=None):
