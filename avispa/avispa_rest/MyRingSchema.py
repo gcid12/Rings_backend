@@ -13,7 +13,8 @@ class MyRingSchema(Document):
         RingDescription = TextField(),
         RingVersion = TextField(),
         RingURI = TextField(),
-        RingBuild = TextField()
+        RingBuild = TextField(),
+        RingParent = TextField()
         )))
     fields = ListField(DictField(Mapping.build(
         FieldName = TextField(),

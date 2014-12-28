@@ -19,7 +19,7 @@ class RingBuilder:
 
         self.ringprotocols = {}
 
-        self.ringprotocols['ringprotocol'] = ['RingName','RingLabel','RingDescription','RingVersion','RingURI','RingBuild']
+        self.ringprotocols['ringprotocol'] = ['RingName','RingLabel','RingDescription','RingVersion','RingURI','RingBuild','RingParent']
         self.ringprotocols['mandatory'] = ['RingName']
         self.ringprotocols['defaults'] = {'RingVersion':'0.1.0','RingBuild':'1'}
 
@@ -51,11 +51,17 @@ class RingBuilder:
             else:
                 ringversion = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
 
-
             print('ringversion:')
             print(ringversion)
             
             requestparameters = {}
+
+            if request.form.get('RingParent'):
+                requestparameters['RingParent'] = request.form.get('RingParent')
+            else: 
+                requestparameters['RingParent'] = request.form.get('RingName')
+
+
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
                 print(p+':'+request.form.get(p))
