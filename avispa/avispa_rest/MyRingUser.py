@@ -11,6 +11,16 @@ class MyRingUser(Document):
     passhash = TextField()
     guid = TextField()
     added = DateTimeField(default=datetime.now)
+    collections = ListField(DictField(Mapping.build(
+        collectionname = TextField(),
+        added = DateTimeField(),
+        version = TextField(),
+        rings = ListField(DictField(Mapping.build(
+            layer = IntegerField(),
+            ringname = TextField(),
+            version = TextField()
+            )))
+        )))
     rings = ListField(DictField(Mapping.build(
         ringname = TextField(),
         version = TextField(),
