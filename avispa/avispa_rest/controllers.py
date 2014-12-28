@@ -56,6 +56,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
         print('flagA:')
         print(data)
 
+
     else:
         data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
 
@@ -186,6 +187,36 @@ def api_route_a_b(handle,ring):
 def api_route_a_b_c(handle,ring,idx):
 
     result = route_dispatcher('_a_b_c',handle,ring,idx,api=True)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])
+    else:
+        return result
+
+@avispa_rest.route('/_collections/<handle>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def api_route_a(handle):
+
+    result = collection_dispatcher('_a',handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/_collections/<handle>/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def api_route_a_b(handle,ring):
+
+    result = collection_dispatcher('_a_b',handle,collection)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/_collections/<handle>/<collection>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def api_route_a_b_c(handle,ring,idx):
+
+    result = collection_dispatcher('_a_b_c',handle,collection,idx)
 
     if 'redirect' in result:
         return redirect(result['redirect'])
