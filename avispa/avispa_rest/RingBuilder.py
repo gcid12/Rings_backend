@@ -257,9 +257,14 @@ class RingBuilder:
             handle = handle.lower()
             ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
             
+            
             # Generate rings block  
 
             requestparameters = {}
+
+            if 'RingParent' not in request.form:
+                requestparameters['RingParent'] = request.form.get('RingName')            
+            
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
                 print(p+':'+request.form.get(p))
@@ -272,7 +277,6 @@ class RingBuilder:
             print(pinput)
             
             
-
             if self.AVM.ring_set_schema(handle,
                                         ringname,
                                         ringversion,

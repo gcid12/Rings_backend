@@ -2,6 +2,7 @@
 import urlparse, time, datetime
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
+from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -96,6 +97,50 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
         #return 'ok'
 
 
+def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
+
+    ACF = AvispaCollectionsRestFunc()
+
+    method = request.method
+    m = method+depth
+    data = {}
+
+    data = getattr(ACF, m.lower())(request,handle,collection,idx,api=api)
+
+    data['handle']=handle
+    data['collection']=collection
+    data['idx']=idx
+    data['current_user']=current_user
+
+    o = urlparse.urlparse(request.url)
+    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+    t = time.time()
+    data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+
+    print("host_url")
+    print(data['host_url'])
+
+
+    if 'error_status' in data.keys():
+        status = int(data['error_status'])
+    else:
+        status = 200
+
+    if 'redirect' in data:
+        print('flag0')
+        print(data)
+        return data             
+    elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
+        print('flag1')
+        print(data)      
+        return render_template(data['template'], data=data), status     
+    else:
+        print('flag2')
+        #print(data) 
+        return render_template(data['template'], data=data)
+        #return 'ok'
+    
 
 
 # Set the route and accepted methods
@@ -193,8 +238,8 @@ def api_route_a_b_c(handle,ring,idx):
     else:
         return result
 
-@avispa_rest.route('/_collections/<handle>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def api_route_a(handle):
+@avispa_rest.route('/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def collections_route_a(handle):
 
     result = collection_dispatcher('_a',handle)
  
@@ -203,8 +248,8 @@ def api_route_a(handle):
     else:
         return result
 
-@avispa_rest.route('/_collections/<handle>/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def api_route_a_b(handle,ring):
+@avispa_rest.route('/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def collections_route_a_b(handle,collection):
 
     result = collection_dispatcher('_a_b',handle,collection)
  
@@ -213,8 +258,8 @@ def api_route_a_b(handle,ring):
     else:
         return result
 
-@avispa_rest.route('/_collections/<handle>/<collection>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def api_route_a_b_c(handle,ring,idx):
+@avispa_rest.route('/<handle>/_collections/<collection>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def collections_route_a_b_c(handle,collection,idx):
 
     result = collection_dispatcher('_a_b_c',handle,collection,idx)
 
