@@ -48,14 +48,14 @@
       <!-- COLUMN 1 -->
       <div class="col-sm-2 col-xs-12 omega">
         <a href="/" class="text-center">
-          <span class="tab-box-d {% if tab=='rep' %} tab-on2 {% endif %}">
+          <span class="tab-box-d tab-on2{% if tab=='rep' %} tab-on2 {% endif %}">
             <i class="fa fa-circle-o fa-1x"></i>
             <p class="hidden-xs fs-0-6">Rings</p>
           </span>
         </a>
         
         <a href="/monitoring" class="text-center">
-          <span class="tab-box-d tab-on2{% if tab=='mon' %}tab-on2{% endif %}">
+          <span class="tab-box-d {% if tab=='mon' %}tab-on2{% endif %}">
             <i class="fa fa-crosshairs fa-1x"></i>
             <p class="hidden-xs fs-0-6">Monitoring</p>
           </span>
