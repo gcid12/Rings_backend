@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	My Ring - {{ title }}
+  My Ring - {{ title }}
 {% endblock %}
 
 
@@ -10,7 +10,7 @@
 
 <!-- CONTENT HERE -->
 
-<div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;">({% block findme %} get_a {% endblock %})</div>
+<div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;"><span class=" label bird">&nbsp;</span></div>
 
 <section>
 
@@ -35,149 +35,113 @@
 </section>
 
 
+<section>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-12 pl-40 pb-10" >
+            
+           
+            <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
+                  
+                   <li><a href="/{{ data.handle }}"><i class="fa fa-arrow-right"></i> {{ data.handle }}</a> </li> 
+            {% block crumbs %}
+            
+                    
 
-<section class="">
-  <div class="container-fluid">
+            {% endblock %}
+            </ol>
+          </div> 
+        </div>
+        
+        <!-- <div class="rn-box">
+          
+
+              <table class="table " cellpadding="0" cellspacing="0">
+                
+                    
+                    {{ ui.collection_big('hotels',6,1,'1 day ago') }}
+              </table>
+        </div>  -->     
+      </div>
+    </div>
+
+  
 
       <!-- BOX CONTENT -->
           
       <div class="row">
+
+
         <!-- COLUMN 1 -->
 
-                        
-        <div class="col-sm-3 col-md-2 col-lg-2 omega">
-
-          <div class="bord-right">
-
-            <h2>Collection Name</h2>
-            
-
-            <div class="rhr4 text-s1 fw-c fc-g fs-1" style="background-color:#CCC;">INFO</div>
-            <div class="spa10 clearboth"></div>
-
-            <div class="text-s1 fs-1">
-
-              <strong>{{data.ringlistlen}}</strong>
-              
-              {% if data.ringlistlen == 1 %} ring {% else %} rings {% endif %}
-              <br/>
-            
-                <strong>3,456 </strong> data assets
-              <br/>
-            
-                <strong>5 </strong>collaborators
-
-            </div>
-            <div class="spa30 hidden-xs"></div>
-
-
-            <div class="rhr4" style="background-color:#CCC;">&nbsp;</div>
-            <div class="text-s1 fw-c fc-g fs-1">INFOx</div>
-            <div class="spa10 clearboth"></div>
-123
-
-          </div>
-          
-          
-          
-          
-          <div class="bord-right">
-            
-            <a href="?rq=post&n=10" class="btn btn-warning btn-xs">
-              <i class="fa fa-plus"></i> &nbsp; NEW RING
-            </a>
-            <br/>
-            <a href="" class="btn btn-default btn-xs">
-              <i class="fa fa-plus-circle fa-1x"></i> Invite
-            </a>
-            <br/>
-            <a href="" class="btn btn-default btn-xs">
-              <i class="fa fa-plus-circle fa-1x"></i> Campaign
-            </a>
-             <div class="spa10"></div>
-
-            <div class="spa5"></div>
-            <br/>
-            <hr/>
-            <p>Other collections</p>
-          </div>  
-        </div>
-
-        <!-- COLUMN 2 -->
-
-        <div class="col-sm-9 col-md-10 col-lg-10" >
-          <!-- TABS -->
-          <div class="spa10"></div>
-          <div class="row">
-            <div class="col-sm-1 omega">
-          
-              <div class="spa15"></div>
-              <a href="/{{ data.handle }}" class="text-center">
-                <div class="tab-box-d tab-on2{% if tab=='rep' %}tab-on{% endif %}">
+        <!-- <div class="col-sm-2 col-xs-12 omega">
+              <a href="/" class="text-center">
+                <span class="tab-box-d {% if tab=='rep' %} tab-on2 {% endif %}">
                   <i class="fa fa-circle-o fa-1x"></i>
-                </div>
+                  <p class="hidden-xs fs-0-6">Rings</p>
+                </span>
               </a>
               
-              <a href="" class="text-center">
-                <div class="tab-box-d{% if tab=='mon' %}tab-on{% endif %}">
+              <a href="/monitoring" class="text-center">
+                <span class="tab-box-d {% if tab=='mon' %}tab-on2{% endif %}">
                   <i class="fa fa-crosshairs fa-1x"></i>
-                </div>
+                  <p class="hidden-xs fs-0-6">Monitoring</p>
+                </span>
               </a>
-              <a href="" class="text-center">
-                <div class="tab-box-d {% if tab=='col' %}tab-on{% endif %}">
+              <a href="/collab" class="text-center">
+                <span class="tab-box-d {% if tab=='col' %}tab-on2{% endif %}">
                   <i class="fa fa-users fa-1x"></i>
-                </div>
+                  <p class="hidden-xs fs-0-6">Collaborators</p>
+                </span>
               </a> 
               
-              <a href="" class="text-center">
-                <div class="tab-box-d  {% if tab=='cam' %}tab-on{% endif %}">
+              <a href="/campaigns" class="text-center">
+                <span class="tab-box-d  {% if tab=='cam' %}tab-on2{% endif %}">
                  <i class="fa fa-globe fa-1x"></i>
-                </div>
+                 <p class="hidden-xs fs-0-6">Campaigns</p>
+                </span>
               </a>
 
-              <a href="" class="text-center">
-                <div class="tab-box-d  {% if tab=='cam' %}tab-on{% endif %}">
+              <a href="settings" class="text-center">
+                <span class="tab-box-d  {% if tab=='set' %}tab-on2{% endif %}">
                  <i class="fa fa-wrench fa-1x"></i>
-                </div>
+                 <p class="hidden-xs fs-0-6">Settings</p>
+                </span>
               </a> 
-            </div>
 
-            <div class="col-sm-11 alpha omega">
-              <div class="row">
-                <div class="col-sm-12 pl-40 pb-10" >
+        </div> -->
 
-                  <span class="label label-discrete pull-left" style="margin:5px 20px 0 0;">AVISPA</span>
-                  <ol class="breadcrumb fs-0-8" style="padding:5px 15px 0 20px; ">
-                        
-                        <li><a href="/{{ data.handle }}"><i class="fa fa-arrow-right"></i> {{ data.handle }}</a> </li>  
-                  {% block crumbs %}
-                  
-                          
 
-                  {% endblock %}
-                  </ol>
-                </div> 
-                
-                  
-              </div>
+
+
+        <div class="col-sm-12 alpha" >
+          <!-- TABS -->
+           
+          
+            
+
+            
+              
             {% block tabcontent %}
 
         
 
             {% endblock %} 
-            </div> 
+            
 
 
-          </div>  
+           
 
         </div><!--  close col-9 -->
+
       </div> 
                  
     
-  </div>
+  
 </section>
 
     
-	
+  
 {% endblock %}
 

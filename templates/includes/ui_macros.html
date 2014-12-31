@@ -1,12 +1,51 @@
 
 
-  {% macro panel(name, handle, color, count,description) %}
+  {% macro panel(name, handle, color, count,description,link) %}
 
   <tr>
     <td> 
       <div class="row">
         <div class=" col-sm-2 hidden-xs">
           {{ icon_big(count,color) }}
+        </div> 
+        <div class="col-xs-7 col-sm-7">
+          <a href="{{ link }}" class="nounder"><h3 class="fs-1-5">&deg;{{ name}}</h3></a>
+          <p class="rn-t3 text-lgray">{{ description }}</p>
+        </div> 
+        <div class="col-xs-5 col-sm-3">
+          <div class="pull-right">
+            <div class="visible-xs">
+              {{ icon_med(count,color) }}
+            </div>
+            <div class="btn-group">
+            
+              <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
+              
+              <a href="" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+
+              <a href="" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+
+              <a href="" type="button" class="btn btn-vader btn-xs">
+              { }</a>
+
+            </div>
+            <br/><br/>
+            <span class="label label-discrete pull-right">1 day ago</span>
+          </div>
+        </div>
+      </div>  
+    </td>
+  </tr>
+
+{% endmacro %}
+
+  {% macro panel2(name, handle, color, count,description) %}
+
+  <tr>
+    <td> 
+      <div class="row">
+        <div class=" col-sm-2 hidden-xs">
+          {{ icon_sma(count,color) }}
         </div> 
         <div class="col-xs-7 col-sm-7">
           <a href="/{{ handle }}/{{ name }}" class="nounder"><h3 class="fs-1-5">&deg;{{ name }}</h3></a>
@@ -45,8 +84,8 @@
       <a data-toggle="collapse" data-parent="#accordion" href="#{{ name }}" aria-expanded="true" aria-controls="collapseOne">
         <table>
           <tr>
-            <td>{{ icon_sma(number, color) }}</td>
-            <td></td>
+            <td>{{ icon_xsma(number, color) }}</td>
+            <td><h4>&deg;{{ name }}</h4></td>
           </tr>
         </table>
            
@@ -55,38 +94,56 @@
   </div>
   <div id="{{ name }}" class="panel-collapse collapse {{ active }}" role="tabpanel" aria-labelledby="{{ name }}">
     <div class="panel-body">
-        <h3>&deg;{{ name }}</h3>
-       <span class="fs-2">{{ number }}</span>  &nbsp; &nbsp; &nbsp; Data Assets
+        
+      
 
-        <div class="progress">
-          <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%">
-            <span class="fs-0-8">{{ percent }}% Completion</span>
-          </div>
-        </div>
+        {{ pbar2('35', name, color) }}
     </div>
   </div>
 </div>
 {% endmacro %}
 
+{% macro panel_home(name, color, number, percent, active,link) %} 
+          
+          <tr>
+            <td><p>{{ number }}</p></td>
+            <td>{{ icon_xsma(number, color) }}</td>
+            <td><a href="{{ link }}"><p class="fs-0-8">&deg;{{ name }}</a> / <span class="fc-g">1 day ago</span></p></td>
+            <td>
+              <div class="pull-right">
+                <div class="visible-xs">
+                  {{ icon_med(count,color) }}
+                </div>
+                <div class="btn-group" >
+                
+                  <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
+                  <a href="/re01" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
 
+                  <a href="/{{ handle }}/{{ name }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+
+                  
+
+                </div>
+                
+              </div>
+            </td>
+          </tr>
+          
+                   
+{% endmacro %}
 
   {% macro collection(name, percent, role, update) %}
 
   <tr>
     
     <td align="center"> 
-
-             <img class="block-center" src="/static/images/repo-icon.png" style="width:50px;" alt="MyRing"> 
-          
+      <img class="block-center" src="/static/images/repo-icon.png" style="width:50px;" alt="MyRing"> <br/>
+      
     </td>
     <td> 
       <a class="nounder" href="/"><h3 class="fs-1 text-gray text-s1 fw-c">
       {{ name|upper() }}</h3></a>
-      
       <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
-
-      
-
     </td>
 
     <td> 
@@ -97,14 +154,38 @@
   </tr>
 {% endmacro %}
 
+  {% macro collection_big(name, percent, role, update) %}
+
+  <tr>
+    
+    <td align="center"> 
+      <img class="block-center" src="/static/images/repo-icon.png" style="width:70px;" alt="MyRing"> <br/>
+      <span class="label label-default fs-0-7 ">Data Collection</span> 
+    </td>
+    <td> 
+      <a class="nounder" href="/"><h3 class="fs-1-5 text-gray text-s1 fw-c">
+      {{ name|upper() }}</h3></a>
+      <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
+    </td>
+
+    <td> 
+      <div class="pull-right">
+        {{ label(role) }}
+      </div>
+    </td>
+  </tr>
+{% endmacro %}
+
+
+
 {% macro campaign(active,name,by,type,rings,da,q) %}
 
   <tr>
     
     <td><i class="fa fa-toggle-{{ active }} fa-1x"></i></td>
-    <td><p><a href="/campaigns/w1">{{ name }}</a></p></td>
+    <td><p class="fs-0-8"><a href="/campaigns/w1">{{ name }}</a></p></td>
     <td><img class=" user-med" src="/static/images/{{ by }}" style="width:20px;"></td>
-    <td>{{ type }}</td>
+    <td><p class="fs-0-8">{{ type }}</p></td>
     
     <td><span class="badge">{{ da }} </span></td>
 
@@ -267,4 +348,121 @@
   <hr/>
 </div>    
 {% endmacro %}    
+
+
+{% macro mosaic_item(name) %}
+<div class="pull-left" style="background-color:#F7F7F7; margin:2px; padding:2px;">
+                      <!-- IMAGE PLACEHOLDER -->
+    <table>
+      <tr>
+        <td align="center">
+          <a href="" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
+                    
+            >
+          <!-- Image placeholder -->
+            <img style="width:90px; margin:1px;" src="/static/images/image01.jpg"  class="img-thumbnail">
+
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <span class="fs-0-6 text-gray">
+            {{ name }}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+            <div class="btn-group" role="group" aria-label="...">
+              <a href="" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+              <a href="" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+              <a href="" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+            </div>
+                   
+            <br/>
+                    <!-- <span class="label label-info">PUBLIC</span> -->     
+        </td>
+      </tr>
+    </table>
+</div>
+
+{% endmacro %}  
+
+{% macro list_item() %}
+
+<tr>
+                  <td>
+                      
+                    <table> 
+                      <tr>
+                        <td>
+                          <img style="width:70px;" src="/static/images/image01.jpg" class="img-thumbnail" >
+                        </td>
+                      </tr> 
+                      <tr>
+                        <td align="center">
+                          <div class="btn-group" role="group" aria-label="...">
+                            <a href="" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                            <a href="" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                            <a href="" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                          </div>
+                        </td>
+                      </tr>   
+                    </table>
+                         
+                  </td>
+                  <td>
+                      <table>
+
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">name:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">BALLY'S LAS VEGAS</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">address:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">3645 Las Vegas Blvd S, Las Vegas</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">state:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">NV</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">country:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">US</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">stars:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">3.5</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">description:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">Bally’s Las Vegas is one of the strip’s most exciting resorts, offering guests a “classic Las Vegas” experience. The 44-acre property is located on the center of the wor...</p>
+                            </td>
+                          </tr>
+                            
+                        
+                      </table>
+                  </td> 
+                  <td width="30%">
+                    
+                    
+                  </td>  
+                  
+
+              </tr>
+
+{% endmacro%}
+
 
