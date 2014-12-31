@@ -553,8 +553,8 @@ float:left;
 
 .tab-box-d{
     
-    border: 1px solid #CCC;
-    border-width: 0px 0px 1px 0px;
+    border: 1px solid #E2E2E2;
+    border-width: 1px 0px 1px 1px;
     padding-top: 20px;
     padding-bottom:20px;
     width:100%;
@@ -567,8 +567,11 @@ float:left;
 .tab-on2{
 background-color: #FFF;
 color:#127BA3;
-font-size:1.2em;
-margin:2px 0;
+font-size:1.4em;
+margin:0px 0;
+border-width: 1px 0px 1px 3px;
+border-left-color:#A5BEC6;
+margin-left:1px;
 
 }
 
