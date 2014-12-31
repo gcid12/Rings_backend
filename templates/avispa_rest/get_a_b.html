@@ -65,40 +65,36 @@
             <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
             
             </ul> 
+    <!-- ITEM N -->
+        {% if not data.itemlist %}
+        You have no items in this Ring. Create one, click here:
+        <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
+          <i class="fa fa-plus"></i> &nbsp; NEW
+        </a>
+
+        {% else %}
+          <div class="pull-right">
+            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+               <i class="fa fa-plus"></i> &nbsp; NEW
+             </a>
+          </div> 
+
+        {% endif %}
+          
+        <p class="fs-0-8 fc-g pull-left">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
+        <div class="spa20"></div>
+
+
         <!-- Tab panes -->
         <div class="tab-content">
 
-        <div class="row">
-          <div class="col-sm-12">
-            <!-- ITEM N -->
-            {% if not data.itemlist %}
-            You have no items in this Ring. Create one, click here:
-            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
-              <i class="fa fa-plus"></i> &nbsp; NEW
-            </a>
-
-            {% else %}
-              <div class="pull-right">
-                <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
-                   <i class="fa fa-plus"></i> &nbsp; NEW
-                 </a>
-              </div> 
-
-            {% endif %}
-              
-            <p class="fs-0-8 fc-g pull-left">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
-            <div class="spa20"></div>
-            
-          </div>
-          
-        </div>
-
 <!-- AS LIST -->
-      <div class="row">
-        <div class="col-sm-9">
-          <div role="tabpanel" class="tab-pane fade in active" id="list">
+      <div role="tabpanel" class="tab-pane fade in active" id="list">
 
+        <div class="row">
+          <div class="col-sm-10">
 
+            
             <table class="table table-striped table-condensed">
 
               {% for item in data.itemlist %}
@@ -147,8 +143,7 @@
                                 {% endif %}
                       {% endfor %}
                   </td>
- 
-                  <td style="width:90px;">
+                  <td style="width:150px;">
                   <!-- 1st FIELD -->
                       {{ ui.pbar('35') }}
                   </td>  
@@ -174,24 +169,22 @@
             {% endfor %}
               <!-- END ITEM N -->
             </table>
+          </div>  <!-- close col -->
+          <div class="col-sm-2">
+              {{ graphs.dona('Data completion','85','#a2b2c5',) }}
 
-          </div>
-        </div><!-- close col -->
-        <div class="col-sm-3">
-            <div class="spa10"></div>
-
-            <div class="block-center">
-            123
-            </div>
-          
-        </div>
-      </div><!-- close row -->
+              
+            
+          </div> <!-- close col -->
+        </div><!-- close row -->
+      </div> <!-- close tab -->
  <!-- AS A LIST close -->
 
  <!-- AS MEGA LIST -->
           <div role="tabpanel" class="tab-pane fade" id="megalist">
 
 
+          
             <table class="table table-striped">
               {% for item in data.itemlist %}
               <tr>
@@ -280,6 +273,7 @@
   <!-- AS MOSAIC -->
           <div role="tabpanel" class="tab-pane fade" id="mosaic">
 
+            
             
               {% for item in data.itemlist %}
               <div class="pull-left" style="background-color:#F7F7F7; margin:2px; padding:2px;">
