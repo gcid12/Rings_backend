@@ -58,17 +58,18 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs text-right" role="tablist">
             
-            <li role="presentation" class="active pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
-            <li role="presentation" class="pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list-ul"></i></a></li>
+            
+
+            <li role="presentation" class="pull-right"><a href="#megalist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-th-list"></i></a></li>
+            <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
+            <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
             
             </ul> 
         <!-- Tab panes -->
         <div class="tab-content">
 
-<!-- AS A LIST -->
-          <div role="tabpanel" class="tab-pane fade" id="list">
-
-
+        <div class="row">
+          <div class="col-sm-12">
             <!-- ITEM N -->
             {% if not data.itemlist %}
             You have no items in this Ring. Create one, click here:
@@ -87,6 +88,110 @@
               
             <p class="fs-0-8 fc-g pull-left">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
             <div class="spa20"></div>
+            
+          </div>
+          
+        </div>
+
+<!-- AS LIST -->
+      <div class="row">
+        <div class="col-sm-9">
+          <div role="tabpanel" class="tab-pane fade in active" id="list">
+
+
+            <table class="table table-striped table-condensed">
+
+              {% for item in data.itemlist %}
+              <tr>
+                  <td style="width:40px;" class="text-right">
+                      {% for k,v in item.items() %}
+                        {% if k == 'Images' %}
+                          {% for image in v %}
+                            {% if image %}
+                          
+                          <img style="width:20px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                            {% endif %}
+                          {% endfor %}
+                        {% else %}
+                          
+                        {% endif %}
+                      {% endfor %}
+                      <!-- IMAGE PLACEHOLDER/ PLEASE REMOVE -->
+                      <img style="width:20px;" src="/static/images/d3-a.png"  alt="Rings">
+                      <!-- IMAGE PLACEHOLDER FINISH -->
+                  </td>
+                      
+                  
+                  <td>
+                             
+                        <br/>
+                         {% for k,v in item.items() %}
+                            
+                            {% if k =='_public' %}
+                              {% if v ==True %}
+                                
+                                <span class="label label-info">PUBLIC</span>
+                              {% else%}
+                                <span class="label label-info">NOT PUBLIC</span>
+                              {% endif %}
+                            {% endif %}
+                            
+                          {% endfor %}
+                  </td>
+
+                  <td>
+                  <!-- 1st FIELD -->
+                      {% for k,v in item.items() %}
+                                {% if k == 'name' %}
+                                  <p class="text-s1 fs-0-8 fw-b">{{ v|truncate(100, true,'...') }}</p>
+                                {% endif %}
+                      {% endfor %}
+                  </td>
+ 
+                  <td style="width:90px;">
+                  <!-- 1st FIELD -->
+                      {{ ui.pbar('35') }}
+                  </td>  
+
+                  <td style="width:90px;">
+                      <div class="btn-group" role="group" aria-label="...">
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                      </div>
+                  </td>
+                  <td style="">
+                      <p class="fs-1 fc-b">
+                      {% for k,v in item.items() %}
+                        {% if k == 'Description' %}
+                          {{ v }}
+                        {% endif %}
+                      {% endfor %}
+                      </p>
+                  </td>
+
+              </tr>
+            {% endfor %}
+              <!-- END ITEM N -->
+            </table>
+
+          </div>
+        </div><!-- close col -->
+        <div class="col-sm-3">
+            <div class="spa10"></div>
+
+            <div class="block-center">
+            123
+            </div>
+          
+        </div>
+      </div><!-- close row -->
+ <!-- AS A LIST close -->
+
+ <!-- AS MEGA LIST -->
+          <div role="tabpanel" class="tab-pane fade" id="megalist">
+
+
             <table class="table table-striped">
               {% for item in data.itemlist %}
               <tr>
@@ -96,7 +201,7 @@
                           {% for image in v %}
                             {% if image %}
                           
-                          <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                          <img style="width:120px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
                             {% endif %}
                           {% endfor %}
                         {% else %}
@@ -104,8 +209,11 @@
                         {% endif %}
                       {% endfor %}
                       <!-- IMAGE PLACEHOLDER/ PLEASE REMOVE -->
-                      <img style="width:70px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings">
+                      <img style="width:150px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings"><br/>
                       <!-- IMAGE PLACEHOLDER FINISH -->
+
+                      
+
 
                       <div class="btn-group" role="group" aria-label="...">
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
@@ -167,29 +275,11 @@
             </table>
 
           </div>
- <!-- AS A LIST close -->
+ <!-- AS A MEGALIST close -->
 
   <!-- AS MOSAIC -->
-          <div role="tabpanel" class="tab-pane fade in active" id="mosaic">
+          <div role="tabpanel" class="tab-pane fade" id="mosaic">
 
-            <!-- ITEM N -->
-            {% if not data.itemlist %}
-            You have no items in this Ring. Create one, click here:
-            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
-              <i class="fa fa-plus"></i> &nbsp; NEW
-            </a>
-
-            {% else %}
-              <div class="pull-right">
-                <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
-                   <i class="fa fa-plus"></i> &nbsp; NEW
-                 </a>
-              </div> 
-
-            {% endif %}
-              
-            <p class="fs-0-8 fc-g pull-left">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p>
-            <div class="spa20"></div>
             
               {% for item in data.itemlist %}
               <div class="pull-left" style="background-color:#F7F7F7; margin:2px; padding:2px;">
