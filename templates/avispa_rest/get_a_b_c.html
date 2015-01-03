@@ -20,37 +20,40 @@
           <div class="col-sm-12">
           {% if data.item %} 
             <div class="rn-box-title">
-              <strong>Showing 1 item</strong>
+              Showing 1 item
               
               <a class="btn btn-vader btn-xs pull-right" href="/_api/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}">
                <!-- <img src="/static/images/json.png"> -->
-               { }
+               
               </a>
+              
             </div>
             <div class="rn-box-solo">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-12">
 
                   {% for k,v in data.item.items() %}
-                     {% if k =='Images' %}
+                     {% if data.widget[k] =='images' %}
                          
-
+                         {{k}}
                         {% for image in v %}
                           {% if image %}
-                            <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                            <img src="{{data.host_url}}/_images/{{data.handle}}/r500/{{image}}_r500.jpg" class="img-thumbnail" >
                           {% endif %}
 
-                        {% endfor %}             
+                        {% endfor %} 
+                        <br/>            
 
                       {% endif %}
                   {% endfor %}
                 
+                <!--p>{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg</p-->
 
                 </div>
               </div>    
             </div>
 
-            <div class="rn-box-content">
+            <div class="rn-box-solo">
               <form class="form-horizontal" role="form">
                               
                 <div class="form-group">
@@ -63,15 +66,13 @@
                   {% endfor %}
 
                   {% for k,v in data.item.items() %}
-                     {% if not k =='Images' %}
-                     {% if not k =='Description' %}
                      {% if not k =='_public' %} 
                      {% if not k =='_id' %} 
-                            <label for="inputPassword3" class="col-sm-2 control-label">{{ k }}:</label>
+                     {% if data.widget[k] != 'images' %}
+                            <label for="" class="col-sm-2 control-label">{{ k }}:</label>
                             <div class="col-sm-10">
                               <p>{{ v }}</p>
-                            </div>
-                      {% endif %}
+                            </div> 
                       {% endif %}
                       {% endif %}
                       {% endif %}

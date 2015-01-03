@@ -373,12 +373,37 @@ class AvispaRestFunc:
         '''
         Gets existing item
         ''' 
+
         d = {}       
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
-        if 'Images' in item:
-                images=item['Images'].split(',')
+        print('preitem:',item)
+
+        schema = self.AVM.ring_get_schema(handle,ring)
+        print('schema:',schema)
+
+        d['widget'] = {}
+
+        
+        for field in schema['fields']:
+            
+
+            d['widget'][field['FieldName']] = field['FieldWidget']
+            
+
+            if 'images' in field['FieldWidget']:
+                images=item[field['FieldName']].split(',')
+                print('contents:',item[field['FieldName']])
+                print('fieldname:',field['FieldName'])
+                print('images:',images)
                 del images[0]
-                item['Images']=images
+                item[field['FieldName']] = images
+
+        print('postitem:',item)
+
+
+
+        
+        
         
         if item:
             print('Awesome , you just retrieved the item from the DB')
