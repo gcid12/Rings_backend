@@ -15,98 +15,155 @@
 
 <!-- START NEW CONTENT --> 
 
-      <div class="col-sm-12">  
-        <div class="row">
           <div class="col-sm-12">
           {% if data.item %} 
-            <div class="rn-box-title">
-              Showing 1 item
+            <div class="rn-box-title-slim">
+              Showing item: {{ data.idx}}
               
-              <a class="btn btn-vader btn-xs pull-right" href="/_api/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}">
-               <!-- <img src="/static/images/json.png"> -->
-               
-              </a>
+            
+            <a class="btn btn-vader btn-xs pull-right fw-b " style="margin-right:10px;" href="/_api/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}">
+              { }</a>
               
             </div>
             <div class="rn-box-solo">
               <div class="row">
-                <div class="col-sm-12">
+                
+                  <div class="col-sm-5 col-md-4 col-lg-3">
+                    <div class="form-group">
+                      <label for="inputPassword3" class="control-label"></label>
+                      <div class="">
+                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-success btn-xs">Edit</a>
+                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default btn-xs">DELETE THIS
+                          </a>
+                          
+                      </div>
+                    </div>
+            
+                  <form class="form-horizontal" role="form">
+                    
+                    <table class="table table-condensed table-striped">   
+
+                       
+                            {% for k,v in data.item.items() %}
+                      <tr> 
+                        <!-- <td>
+                              {% if k =='_public' %} 
+                                      <div><b>&nbsp;PUBLIC</b></div>
+
+                              {% endif %}
+                        </td> -->
+
+                               {% if not k =='_public' %} 
+                               {% if not k =='_id' %} 
+                               {% if data.widget[k] != 'images' %}
+                        <td>  
+                              <p class="fs-0-8 fw-a fc-g">{{ k }}:</p>
+                        </td>
+                        <td>
+                              <p class="fs-0-8 fw-b">{{ v }}</p>
+                        </td> 
+                                {% endif %}
+                                {% endif %}
+                                {% endif %}
+
+                      </tr>
+                            {% endfor %}
+                      
+                           
+                        
+                    </table>         
+                    
+                  </form>  
+                </div>
+
+                <div class="col-sm-7 col-md-8 col-lg-9">
 
                   {% for k,v in data.item.items() %}
                      {% if data.widget[k] =='images' %}
                          
-                         {{k}}
+                         <p class="fs-0-8 fw-a fc-g">{{k}}:</p>
+                         
                         {% for image in v %}
                           {% if image %}
-                            <img src="{{data.host_url}}/_images/{{data.handle}}/r500/{{image}}_r500.jpg" class="img-thumbnail" >
+                            <a type="button" class="btn btn-link" data-toggle="modal" data-target="#{{image}}" style="margin:0; padding:0;">
+                            <img src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" class="img-thumbnail" >
+                            </a>
                           {% endif %}
 
                         {% endfor %} 
-                        <br/>            
+                        <hr/>            
 
                       {% endif %}
                   {% endfor %}
                 
                 <!--p>{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg</p-->
 
-                </div>
-              </div>    
-            </div>
+                <!-- Button trigger modal -->
 
-            <div class="rn-box-solo">
-              <form class="form-horizontal" role="form">
-                              
-                <div class="form-group">
-                {% for k,v in data.item.items() %}
-                     
-                     {% if k =='_public' %} 
-                            <div><b>&nbsp;PUBLIC</b></div>
-                      
-                      {% endif %}
-                  {% endfor %}
 
-                  {% for k,v in data.item.items() %}
-                     {% if not k =='_public' %} 
-                     {% if not k =='_id' %} 
-                     {% if data.widget[k] != 'images' %}
-                            <label for="" class="col-sm-2 control-label">{{ k }}:</label>
-                            <div class="col-sm-10">
-                              <p>{{ v }}</p>
-                            </div> 
-                      {% endif %}
-                      {% endif %}
-                      {% endif %}
-                  {% endfor %}
-            
-                </div>          
-                <!--div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Tags</label>
-                  <div class="col-sm-10">
-                    <div>
-                            <span class="label label-success rn-mar5"> Deluxe Room </span>
-                            <span class="label label-success rn-mar5"> Jacuzzi </span>
-                            <span class="label label-success rn-mar5"> Ocean View  </span>
-                            <span class="label label-warning rn-mar5"> Hotels </span>
-                            <span class="label label-warning rn-mar5"> Room Images </span>
-                            <span class="label label-warning rn-mar5"> Space stations</span>       
-                    </div>
-                  </div>
-                </div-->
-                <div class="form-group">
-                  <label for="inputPassword3" class="col-sm-2 control-label"></label>
-                  <div class="col-sm-10">
-                      <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-success">Edit</a>
-                      <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default">DELETE THIS
-                      </a>
-                      
-                  </div>
+
+
                 </div>
-              </form>           
+
+
+              </div>          
             </div><!-- //close box content -->  
             {% endif %}        
           </div><!-- close 12 -->   
-        </div> <!-- close row -->
-      </div> <!-- close 9 -->
+
+
+<!-- MODALS -->
+
+
+
+
+
+
+{% for k,v in data.item.items() %}
+ {% if data.widget[k] =='images' %}
+
+     
+    {% for image in v %}
+      {% if image %}
+
+
+        <div class="modal fade" id="{{image}}" tabindex="-1" role="dialog" aria-labelledby="{{image}}" aria-hidden="true">
+
+          <div class="modal-dialog">
+
+            <div class="modal-content" style="padding:1px; margin:1px; background-color:black;">
+
+              <div class="modal-body " style="padding:1px; margin:1px;">
+                <button type="button" class="btn btn-default btn-xs pull-right" data-dismiss="modal"><i class="fa fa-times"></i></button><br/>
+                <img src="{{data.host_url}}/_images/{{data.handle}}/r1024/{{image}}_r1024.jpg" class="img-thumbnail" >
+              </div>
+             
+            </div>
+          </div>
+        </div>
+
+      {% endif %}
+
+    {% endfor %} 
+    <hr/>            
+
+  {% endif %}
+{% endfor %}
+
+
+
+      <script> 
+      //THIS SCRIPT HIDE ALL NOT FOUND IMAGES THAT TEPLATE DONT DETECT MISSING
+        (function() {
+    var allimgs = document.images;
+    for (var i = 0; i < allimgs.length; i++) {
+        allimgs[i].onerror = function() {
+            this.style.visibility = "hidden"; // Other elements aren't affected. 
+
+        }
+    }
+})();
+      </script>
    
 
 {% endblock %}

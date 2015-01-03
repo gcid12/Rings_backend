@@ -565,20 +565,6 @@ float:left;
     float:left;
 }
 
-.tab-box-e{
-    
-    border: 1px solid #E2E2E2;
-    border-width: 1px 0px 1px 1px;
-    padding-top: 20px;
-    padding-bottom:20px;
-    width:100%;
-    text-align: middle;
-    color:#CCC;
-    background-color: #F9f9f9;
-    font-size:1.2em;
-    float:left;
-}
-
 .tab-on2{
 background-color: #FFF;
 color:#127BA3;
@@ -720,4 +706,17 @@ margin:0px 0;
   text-decoration: none;
   outline: none;
     background-color: red;}
+
+
+.modal-dialog{
+    position: relative;
+width: auto;
+margin: 1px auto;
+}
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 750px;
+    margin: 1px auto;
+  }
+  }
 
