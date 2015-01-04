@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'avispa_rest/tabs.html' %}
 
-{% block title %} Avispa {% endblock %}
-
+{% block title %} MyRing {% endblock %}
+{% block findme %} post_rq_a_b {% endblock %}
 
 {% block headscripts %}
   {% include 'avispa_rest/wa_jqueryui_style.html'  %}
@@ -48,13 +48,16 @@
 
 {% block crumbs %}
 
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
-<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a>
+
+
+
+<li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
+<li class="active">New record</li>
+
 
 {% endblock %}
 
-{% block content %}
+{% block tabcontent %}
 
 
 <!-- START NEW CONTENT --> 
@@ -69,7 +72,7 @@
           <div class="col-sm-12">
             <div class="rn-box-title">
 
-              <strong> <!-- Ring owner  -->Creating 1 item  </strong> 
+              <strong> <!-- Ring owner  -->Creating 1 item.x  </strong> 
 
               <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
               <i class="fa fa-question-circle"></i>
@@ -122,7 +125,7 @@
 
 
 
-{% endblock content%}
+{% endblock %}
 
 {% block modals %}
 
