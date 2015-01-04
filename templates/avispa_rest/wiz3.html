@@ -1,0 +1,32 @@
+
+{% extends 'rwiz.html' %}
+
+
+{% block name %}3. Define Rings{% endblock %}
+
+{% block wizsteps %} 
+              {{ ui.wizSteps(1,'Set Goals','') }}
+              {{ ui.wizSteps(2,'Define Type','') }}
+              {{ ui.wizSteps(3,'Define Rings','on') }}
+              {{ ui.wizSteps(4,'Launch','') }}
+{% endblock %}
+
+
+{% block wizcontent %}
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <!-- PANEL 1 -->
+              {{ ui.panel_collapse('hotel_rooms', '#fce121', '1.3k', '58', 'in') }}
+              <!-- PANEL 2 -->
+              {{ ui.panel_collapse('pools', '#1a77ff', '2.5k', '21', '') }}
+              <!-- PANEL 3 -->
+              {{ ui.panel_collapse('restaurant', '#924ea0', '234', '84', '') }}
+              <!-- PANEL 4 -->
+              {{ ui.panel_collapse('bars', '#e40066', '123', '99', '') }}
+        </div>
+
+{% endblock %}
+            
+{% block wizprev %}/campaigns/wiz2 {% endblock %}
+{% block wiznext %} /campaigns/wiz4 {% endblock %} 
+
+

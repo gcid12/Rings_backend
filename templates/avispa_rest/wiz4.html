@@ -1,0 +1,23 @@
+
+{% extends 'rwiz.html' %}
+
+
+{% block name %}4. Launch{% endblock %}
+
+{% block wizsteps %} 
+              {{ ui.wizSteps(1,'Set Goals','') }}
+              {{ ui.wizSteps(2,'Define Type','') }}
+              {{ ui.wizSteps(3,'Define Rings','') }}
+              {{ ui.wizSteps(4,'Launch','on') }}
+{% endblock %}
+
+
+{% block wizcontent %}
+            1. Setting goals for thisWizard Content en wiz 01
+
+{% endblock %}
+            
+{% block wizprev %}/campaigns/wiz3 {% endblock %}
+{% block wiznext %} /campaigns/wizdone {% endblock %} 
+
+

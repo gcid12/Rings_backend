@@ -1,0 +1,65 @@
+
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<section class="">
+  <div class="container">
+
+  <div class="row">
+    <div class="col-sm-12 rn-box">  
+      <div class="row">
+        <div class="col-sm-offset-1 col-sm-5">
+          <h2>{% block name %}New Campaign{% endblock %}</h2> <!-- Campaign Name -->
+        </div>
+        <div class="col-sm-offset-1 col-sm-4">
+          
+            
+        </div>
+      </div><!-- close row -->
+    <hr/>
+      <div class="row">
+        <div class="col-xs-4 align-right">
+
+          <div style="padding-left:10px;">
+
+          {% block wizsteps %} 
+             
+          {% endblock %}
+            
+          </div>
+          <div class="spa20"></div>
+        </div>
+        <div class=" col-xs-8">
+          <div style="height:300px;">
+
+          {% block wizcontent %}
+            Wizard Content
+
+
+          {% endblock %}
+            
+
+              <div style="position:relative; bottom:0px; width:90%;">
+                <hr/>
+                <a href="/campaigns" class="btn btn-default btn-xs pull-left"> <i class="fa fa-save fa-1x"></i> SAVE</a>
+                <a href="/campaigns" class="btn btn-default btn-xs pull-left"><i class="fa fa-close fa-1x"></i> CANCEL</a>
+                <a href="{% block wiznext %} /campaigns/w1 {% endblock %}" class="btn btn-success pull-right"> NEXT <i class="fa fa-arrow-right fa-1x"></i></a>
+                <a href="{% block wizprev %}/campaigns {% endblock %}" class="btn btn-default pull-right"><i class="fa fa-arrow-left fa-1x"></i> PREV</a>
+              </div>
+          </div>
+          
+        </div>
+      </div><!-- close row -->  <div class="spa10"></div>
+    </div>
+  </div><!-- closerow -->
+
+
+  </div>
+</section>  
+
+{% endblock %} 
+
+

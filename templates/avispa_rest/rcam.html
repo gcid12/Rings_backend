@@ -1,0 +1,124 @@
+{% extends 'avispa_rest/tabs.html' %}
+
+{% block tabcontent %}
+
+     
+        <div class="row">
+          <div class="col-sm-12">
+
+            <div class="rn-box-gad gad100">
+              <div class="rn-box-title">
+                Campaigns
+              </div>
+              <div class="rn-box-solo gad100">
+                <div class="row">
+                  <div class="col-sm-9">
+                    <h3>5 Active <span class="fc-g">Campaigns</span></h3>
+
+                    <h4 class="fc-g">2,345 Data Assets | 38% efectiveness</h4>
+                    
+                  </div>
+                  <div class="col-sm-3 ">
+                    <div class="spa10"></div>
+                    <a href="campaigns/wiz1" class="btn btn-success "><i class="fa fa-plus-circle fa-1x"></i> Create New Campaign</a>
+                  </div>
+                </div>
+              </div>  
+            </div><!-- close row -->
+          
+            
+              
+            <div class="rn-box-gad gad66">
+              <div class="rn-box-title-slim ">
+                Active 
+                
+              </div>
+              <div class="rn-box-solo gad100">
+              
+                
+                  <table class="table table-striped table-hover">
+                    <tr>
+                      <th></th>
+                      <th>name</th>
+                      <th>by</th>
+                      <th>type</th>
+                      
+                      <th>assets</th>
+                      <th>complete</th>
+                      <th></th>
+                    </tr>
+                    
+                    {{ ui.campaign('on','Veterans Collecting Data','alba.jpg','paid','restaurants, pools','342','90') }}
+
+                    {{ ui.campaign('on','Friends shout out 4 help','alba.jpg','social','restaurants','1.5k','80') }}
+
+                    {{ ui.campaign('on','Mikes Blog','clint.jpg','embedded','restaurants','934','56') }}
+
+                    {{ ui.campaign('off','Links from Banners Ad','clint.jpg','whitelabel','bars','20','10') }}
+
+                    {{ ui.campaign('on','NYU Students','clint.jpg','social','restaurants','2,2K','77') }}
+                  </table>
+              </div>
+          </div>
+
+          <div class="rn-box-gad gad33"> 
+            <div class="rn-box-title-slim ">
+                      Actions      
+            </div>
+            <div class="rn-box-solo gad100">
+                <h2 class="fs-1 fw-c text-lgray"><br/>Create a campaign</h2>
+                  
+                  <p class="fs-0-8">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                  </p>
+                  <div class="spa5"></div>
+
+                <hr/>
+                <p>Things to do:</p>
+                <a class="btn btn-success btn-xs"><i class="fa fa-plus-circle fa-1x"></i> Create Campaign</a>
+                <div class="spa10"></div>
+                <a class="btn btn-info btn-xs"><i class="fa fa-plus-circle fa-1x"></i> Promote Campaign</a><br/>
+                  <div class="spa5"></div>
+                  <hr/>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <div class="spa15"></div>
+            </div>
+          </div>
+
+
+        </div><!-- closerow -->
+
+
+{% endblock %} 
+
+{% block auxbar %}
+<div class="col-sm-3">
+        <div class="bord-left">
+
+          <div class="spa10"></div>
+          <h2 class="fs-1-5 fw-c text-lgray">Campaigns</h2>
+          
+          <p class="fs-0-8">
+            Campaigns are designed to increase the amount of data in your Collections. A campaign can be embedded into a website, can be spreaded in social networks and if necessary you can pay people to do it. 
+          </p>
+          <div class="spa50"></div>
+
+          
+
+            <hr/>
+
+          Search in campaigns
+        
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control" placeholder="ring">
+          </div>
+          <button class="btn btn-default btn-xs pull-right"> campaign name</button>
+
+        </div>
+      </div>
+
+{% endblock %} 

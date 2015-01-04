@@ -1,0 +1,137 @@
+{% extends 'avispa_rest/tabs.html' %}
+
+{% block tabcontent %}
+<div class="row">
+      
+  <div class="col-sm-12">
+        
+    <div class="rn-box-gad gad100">
+        <div class="rn-box-title">
+                Settings
+        </div>
+        
+      
+      <!-- BOX 1-->
+      <div class="rn-box-title-slim ">
+      Data owners  
+        <a href="05" type="button" class="btn btn-info btn-xs pull-right">
+        <i class="fa fa-pencil"></i> edit</a>     
+      </div>
+      <div class="rn-box-solo gad100">
+        <div class="row">
+          <div class="col-sm-10">
+            <p class="fs-0-8">
+             Park Central Hotel <br/>
+             1234 Broadway Ave. NY <br/>
+             10019-4038 PH 212.247.8000
+           </p>
+          </div>
+        </div>
+      </div> 
+
+      <!-- BOX 2-->
+      <div class="rn-box-title-slim ">
+      License    
+        <a href="05" type="button" class="btn btn-info btn-xs pull-right">
+        <i class="fa fa-pencil"></i> edit</a>  
+      </div>
+      <div class="rn-box-solo gad100">
+        <div class="row">
+          <div class="col-sm-10">
+            <p>This work is licensed under a creative Commons Attribution 4.0 International License</p>
+          </div>
+        </div>
+      </div> 
+      <!-- BOX 3-->
+      <div class="rn-box-title-slim ">
+      General Settings  
+        <a href="05" type="button" class="btn btn-info btn-xs pull-right">
+        <i class="fa fa-pencil"></i> edit</a>   
+      </div>
+      <div class="rn-box-solo gad100">
+        <div class="row">
+          <div class="col-sm-10">
+            <input type="checkbox" name="switch01" data-size="mini" data-on-text="ON" data-off-text="OFF" > Everyone can join  <br/>
+
+                  <input type="checkbox" name="switch01" data-size="mini" data-on-text="ON" data-off-text="OFF" checked> Collaborators can invite  <br/>
+
+                  <input type="checkbox" name="switch01" data-size="mini" data-on-text="ON" data-off-text="OFF" checked> Other stuff 
+
+                  <div class="spa10"></div>
+          </div>
+        </div>
+      </div> 
+      <!-- BOX 4-->
+      <div class="rn-box-title-slim ">
+      Help
+        <a href="05" type="button" class="btn btn-info btn-xs pull-right">
+        <i class="fa fa-pencil"></i> edit</a>    
+      </div>
+      <div class="rn-box-solo gad100">
+        <div class="row">
+          <div class="col-sm-10">
+            <div class="row">
+              <div class="col-sm-offset-1 col-sm-2">
+<!--                 <img class="img-responsive center-block" src="/static/images/ringo.png" alt="MyRing" >
+ -->              </div>
+               <div class="col-sm-6 fs-0-8">
+                  <p>Ringo is here to help you in any way. Turn him on an he will appear in every interaction you have with MyRing system, turn it off whenever you feel confident enough. Ringo is also your point of contact with Help, manuals or human agents.</p>
+                  <br/>
+              </div>
+              <div class="col-sm-3">
+                <input type="checkbox" name="switch01" data-size="mini" data-on-text="ON" data-off-text="OFF" checked> Show Help
+              </div> 
+            </div>
+            <div class="row">
+              <div class="col-sm-offset-1 col-sm-8">
+                <input type="text" data-slider="true">
+                <table align="center" width="100%">
+                  <tr>
+                    <td align="left"><i class="fa fa-minus-circle"></i></td>
+                    <td align="left"><i class="fa fa-caret-up"></i></td>
+                    <td align="center"><i class="fa fa-caret-up"></i></td>
+                    <td align="right"><i class="fa fa-caret-up"></i></td>
+                    <td align="right"><i class="fa fa-plus-circle"></i></td>
+                  </tr>
+                </table>
+                <div class="spa50"></div>
+              </div>
+              
+            </div>  
+          </div>
+        </div>
+      </div> 
+
+
+
+
+          
+  
+
+       
+    </div><!-- close  --> 
+  </div>
+</div> 
+{% endblock %} 
+
+{% block auxbar %}
+<div class="bord-left col-sm-3 ">
+
+          <div class="spa10"></div>
+          <h2 class="fs-1-5 fw-c text-lgray">Settings</h2>
+          
+          <p class="fs-0-8">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+          <div class="spa50"></div>
+          
+        
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control" placeholder="ring">
+        </div>
+        <button class="btn btn-warning btn-xs pull-right"> Search</button>
+
+          
+      </div>
+{% endblock %} 

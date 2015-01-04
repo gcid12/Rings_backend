@@ -1,0 +1,117 @@
+{% extends 'avispa_rest/tabs.html' %}
+
+
+{% block tabcontent %}
+
+  <div class="row">
+    <!-- COLUMN 1 -->
+    
+    <div class="col-sm-12" > <!-- GRAPHS GOES HERE -->
+
+       
+
+
+          {% block graphboxes %} 
+        <!-- BOX 1 -->
+        <div class="rn-box-gad gad66">
+            
+            <div class="rn-box-solo">
+
+                {{ graphs.graph01(graphd) }} 
+            </div>
+        </div> <!-- close BOX -->
+
+
+        <!-- BOX 1.2 -->
+        <div class="rn-box-gad gad33">
+            <div class="rn-box-title-slim ">
+                Completed
+                <div class="visible-sm visible-md visible-lg">
+                  <i class="fa fa-plus pull-right fc-g"></i>
+                </div>
+              
+            </div>
+            <div class="rn-box-solo">
+
+              <div class="spa10"></div>
+              <div style="padding:0 10px;">
+                <table class="table">
+                    {{ ui.pbar2(85, 'properties', '#fce121') }} 
+                    {{ ui.pbar2(20, 'rooms', '#1a77ff') }} 
+                    {{ ui.pbar2(36, 'amenities', '#924ea0') }} 
+                    {{ ui.pbar2(47, 'dining', '#e40066') }} 
+                </table> 
+              </div>
+            </div>
+
+        </div> <!-- close BOX -->
+
+        <!-- BOX 2 -->
+        <div class="rn-box-gad gad33 text-center">
+          <div class="rn-box-title-slim ">
+                Completed General
+                <div class="visible-sm visible-md visible-lg">
+                  <i class="fa fa-plus pull-right fc-g"></i>
+                </div>
+              
+          </div>
+          <div class="rn-box-solo">
+                <div class="spa10"></div>
+
+                <div class="block-center">
+                {{ graphs.dona2('Data completion','85','#a2b2c5', '#839ab2') }}
+                </div>
+          </div>
+
+          <div class="spa5"></div>
+        </div><!-- close BOX -->
+
+
+        {% endblock %} 
+
+    </div>  <!-- close 9 col -->
+
+  </div> 
+{% endblock %} 
+
+{% block auxbar %}
+<div class="col-sm-3">
+      <div class="bord-left">
+        <div class="spa10"></div>
+        <h2 class="fs-1-5 fw-c text-lgray">Monitor</h2>
+        
+        <p class="fs-0-8">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        
+        <hr/>
+        <h4 class="fs-1 fw-c text-lgray">Filters:</h4>
+       
+
+        <table class="table table-condensed table-striped">
+          <tr>
+            <td><span class="text-s2 fs-0-8">˚properties</span></td>
+            <td><i class="fa fa-toggle-on fa-1x"></i></td>
+          </tr>
+          <tr>
+            <td><span class="text-s2 fs-0-8 fc-g">˚rooms</span></td>
+            <td><i class="fa fa-toggle-off fa-1x fc-g"></i></td>
+          </tr>
+          <tr>
+            <td><span class="text-s2 fs-0-8">˚amenities</span></td>
+            <td><i class="fa fa-toggle-on fa-1x"></i></td>
+          </tr>
+          <tr>
+            <td><span class="text-s2 fs-0-8">˚entertainment</span></td>
+            <td><i class="fa fa-toggle-on fa-1x"></i></td>
+          </tr>
+          <tr>
+            <td><span class="text-s2 fs-0-8">˚dining</span></td>
+            <td><i class="fa fa-toggle-on fa-1x"></i></td>
+          </tr>
+
+        </table>
+        
+      </div>
+    </div>
+{% endblock %}

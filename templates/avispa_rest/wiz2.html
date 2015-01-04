@@ -1,0 +1,96 @@
+
+{% extends 'rwiz.html' %}
+
+
+{% block name %}2. Define Type{% endblock %}
+
+{% block wizsteps %} 
+              {{ ui.wizSteps(1,'Set Goals','') }}
+              {{ ui.wizSteps(2,'Define Type','on') }}
+              {{ ui.wizSteps(3,'Define Rings','') }}
+              {{ ui.wizSteps(4,'Launch','') }}
+{% endblock %}
+
+
+{% block wizcontent %}
+
+           
+		<div class="row">
+          <div class="col-sm-offset-1 col-sm-2">
+            <i class="fa fa-book fa-3x"></i>
+          </div>
+          <div class="col-sm-7">  
+              <h4>Whitelabel</h4>
+              <p class="fs-0-8">Send an invitation to become a MyRing collaborator. This can be to someone new to Rings or any experienced Data Collector. </p>
+          </div>
+          <div class="col-sm-2"> 
+          	<input type="checkbox" name="kind">
+          </div>
+
+
+        </div>
+
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-2">
+            <i class="fa fa-file-code-o fa-3x"></i>
+          </div>
+          <div class="col-sm-7">  
+              
+              <h4>Embedded</h4>
+              <p class="fs-0-8">Send an invitation to become a MyRing collaborator. This can be to someone new to Rings or any experienced Data Collector. </p>
+          </div>
+          <div class="col-sm-2"> 
+          	<input type="checkbox" name="kind">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-2">
+            <i class="fa fa-comment fa-3x"></i>
+          </div>
+          <div class="col-sm-7"> 
+              <h4>Social Media</h4>
+              <p class="fs-0-8">Send an invitation to become a MyRing collaborator. This can be to someone new to Rings or any experienced Data Collector. </p>
+          </div>
+          <div class="col-sm-2"> 
+          	<input type="checkbox" name="kind">
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-2">
+            <i class="fa fa-money fa-3x"></i>
+          </div>
+          <div class="col-sm-7">  
+              
+              <h4>Paid</h4>
+              <p class="fs-0-8">Send an invitation to become a MyRing collaborator. This can be to someone new to Rings or any experienced Data Collector. </p>
+          </div>
+          <div class="col-sm-2"> 
+          	<input type="checkbox" name="kind">
+          </div>
+          
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2">
+          	<br/>
+          </div>
+        </div>
+
+        
+
+{% endblock %}
+            
+{% block wizprev %}/campaigns/wiz1 {% endblock %}
+{% block wiznext %} /campaigns/wiz3 {% endblock %} 
+
+
+
+
+       
+          
+          
+          
+
