@@ -1,0 +1,277 @@
+
+{% macro graph01(gd) %}
+      
+
+      <div class="svg-container">
+        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" class="svg-content">
+
+        <circle fill="#FFF" stroke="#CCC" stroke-width="10" stroke-dasharray="2,2" stroke-miterlimit="10" cx="250" cy="250" r="200" opacity="0.6" />
+        <line x1="77" y1="350" x2="250" y2="250" stroke-dasharray="2,2" style="stroke:rgb(200,200,200);stroke-width:1" />
+        <line x1="420" y1="350" x2="250" y2="250" stroke-dasharray="2,2" style="stroke:rgb(200,200,200);stroke-width:1" />
+        <line x1="250" y1="50" x2="250" y2="250" stroke-dasharray="2,2" style="stroke:rgb(200,200,200);stroke-width:1" />
+
+
+
+
+    {{ gd.g01.base[2][0] }} <!-- data to build the graph -->
+
+
+				{{ graph01_triangle(
+						gd,
+						gd.g01.base[2][1],
+						gd.g01.base[2][3],
+						gd.g01.base[2][2],
+						'120',
+						'#fce121',
+						'hotel_rooms'
+						) }}
+
+
+						{{ graph01_triangle(
+						gd,
+						gd.g01.base[15][1],
+						gd.g01.base[15][3],
+						gd.g01.base[15][2],
+						'200',
+						'#1a77ff',
+						'pools'
+						) }}
+
+
+						{{ graph01_triangle(
+						gd,
+						gd.g01.base[20][1],
+						gd.g01.base[20][3],
+						gd.g01.base[20][2],
+						'300',
+						'#924ea0',
+						'restaurant'
+						) }}
+
+
+						{{ graph01_triangle(
+						gd,
+						gd.g01.base[6][1],
+						gd.g01.base[6][3],
+						gd.g01.base[6][2],
+						'150',
+						'#e40066',
+						'bars'
+						) }}
+
+
+        
+
+        </svg>
+      </div>
+<div class="spa5"></div>
+
+
+{% endmacro %}
+
+
+
+{% macro graph01_triangle(gd,x1,x2,y,h,color,name) %}
+
+
+<polygon points="250,{{ h }} {{ x1 }},{{ y }} {{ x2 }},{{ y }}" style="fill:none;stroke:{{ color }};stroke-width:1" />
+
+<polygon points="{{ x2+10 }},{{ y+10 }} {{ x2+15 }},{{ y }} {{ x2+5 }},{{ y }}" style="fill:{{ color }};stroke:none;stroke-width:1" />
+
+<text x="{{ x2+15 }}" y="{{ y+15 }}" fill="{{ color }}" class="fs-0-8" text-anchor="middle" >{{name}}</text>
+
+
+{% endmacro %}
+
+
+
+{% macro dona(name,percent, color, colorh) %}
+
+	<h1 class="fc-g">{{ percent }} %</h1>
+    <p class="fc-g">{{ name }}</p>
+          
+            
+      <div id="canvas-holder{{ percent }}">
+        <canvas id="chart-area"/>
+      </div>
+
+        <script>
+
+        	var v1 = {{ percent }}
+        	var v2 = 100 - v1
+          var doughnutData = [
+              {
+                value: v1,
+                color:"{{ color }}",
+                highlight: "{{ colorh }}",
+                label: "{{ name }}"
+              },
+              {
+                value: v2,
+                color: "#DDD",
+                highlight: "#CCC",
+                label: ""
+              }
+            ];
+
+            window.onload = function(){
+              var ctx = document.getElementById("chart-area").getContext("2d");
+              window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
+            };
+        </script>
+
+{% endmacro %}
+
+{% macro dona2(name,percent, color, colorh) %}
+
+
+        <div id="canvas-holder{{ percent }}">
+        <canvas id="hours"/>
+      </div>
+
+   
+
+        <script>
+
+        	var data = [
+    {
+        value: 85,
+        color:"#fce121",
+        highlight: "#ceba1b",
+        label: "˚properties"
+    },
+    {
+        value : 30,
+        color : "#1a77ff",
+        highlight: "#34548b",
+        label: "rooms"
+    },
+    {
+        value : 40,
+        color : "#924ea0",
+        highlight: "#6f3778",
+        label: "amenities"
+    },
+    {
+        value : 10,
+        color : "#e40066",
+        highlight: "#a8014c",
+        label: "dining"
+    },
+    {
+        value : 55,
+        color : "#FFF",
+        highlight: "#FFF",
+        label: "incomplete"
+    }
+
+];
+var canvas = document.getElementById("hours");
+var ctx = canvas.getContext("2d");
+new Chart(ctx).Doughnut(data, {responsive : true});
+        </script>
+
+{% endmacro %}
+
+
+
+
+{% macro donamulti(name,percent) %}
+
+
+            <div id="canvas-holder">
+              <canvas id="chart-area"/>
+            </div>
+              <script>
+              
+                var doughnutData = [
+                    {
+                      value: 300,
+                      color:"#F7464A",
+                      highlight: "#FF5A5E",
+                      label: "Red"
+                    },
+                    {
+                      value: 50,
+                      color: "#46BFBD",
+                      highlight: "#5AD3D1",
+                      label: "Green"
+                    },
+                    {
+                      value: 100,
+                      color: "#FDB45C",
+                      highlight: "#FFC870",
+                      label: "Yellow"
+                    },
+                    {
+                      value: 40,
+                      color: "#949FB1",
+                      highlight: "#A8B3C5",
+                      label: "Grey"
+                    },
+                    {
+                      value: 120,
+                      color: "#4D5360",
+                      highlight: "#616774",
+                      label: "Dark Grey"
+                    }
+
+                  ];
+
+                  window.onload = function(){
+                    var ctx = document.getElementById("chart-area").getContext("2d");
+                    window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
+                  };
+              </script>
+
+{% endmacro %}
+
+{% macro gline() %}
+
+		<div style="width:100%">
+			<div>
+				<canvas id="canvas2" height="200" width="600"></canvas>
+			</div>
+		</div>
+
+<script>
+		var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+		var lineChartData = {
+			labels : ["January","February","March","April","May","June","July"],
+			datasets : [
+				{
+					label: "My First dataset",
+					fillColor : "rgba(220,220,220,0.2)",
+					strokeColor : "rgba(220,220,220,1)",
+					pointColor : "rgba(220,220,220,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(220,220,220,1)",
+					data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+				},
+				{
+					label: "My Second dataset",
+					fillColor : "rgba(151,187,205,0.2)",
+					strokeColor : "rgba(151,187,205,1)",
+					pointColor : "rgba(151,187,205,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(151,187,205,1)",
+					data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+				}
+			]
+
+		}
+
+	window.onload = function(){
+		var ctx = document.getElementById("canvas2").getContext("2d");
+		window.myLine = new Chart(ctx).Line(lineChartData, {
+			responsive: true
+		});
+	}
+
+
+	</script>
+
+{%  endmacro %}
+
