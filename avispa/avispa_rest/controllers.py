@@ -101,7 +101,22 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     ACF = AvispaCollectionsRestFunc()
 
-    method = request.method
+
+    if 'q' in request.args:
+        if request.args.get("q"):
+            method = 'search'
+        else:
+            method = 'search_rq'
+    elif request.args.get("rq"):
+        method = request.args.get("rq")+'_rq'
+    elif request.args.get("rs"):
+        method = request.args.get("rq")+'_rs'
+    elif request.args.get("method"):
+        method = request.args.get("method")
+    else:
+        method = request.method
+
+    #method = request.method
     m = method+depth
     data = {}
 

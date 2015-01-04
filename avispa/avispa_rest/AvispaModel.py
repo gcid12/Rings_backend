@@ -58,9 +58,9 @@ class AvispaModel:
                    
             db = self.MAM.select_db(user_database)
             
-            doc = self.MAM.select_user(user_database,handle)
+            user_doc = self.MAM.select_user(user_database,handle)
             
-            rings = doc['rings']
+            rings = user_doc['rings']
             
             print(rings)
          
@@ -250,32 +250,6 @@ class AvispaModel:
 
         return True
 
-
-    #AVISPAMODEL
-    def user_add_collection(self,handle,collectionname,collectionversion,collectionrings,user_database=None):
-
-        if not user_database : 
-            user_database = self.user_database
-
-        db = self.couch[user_database]
-        print("handle:")
-        print(handle)
-
-        '''
-        rings = []
-        for r in collectionrings:
-            ring = {}
-            ring['layer'] = 1
-            ring['ringname'] = "sombreros"
-            ring['version'] = "0-3-4"
-            rings.append(ring)
-        '''
-
-        doc =  MyRingUser.load(db, handle)
-        doc.collections.append(collectionname=str(collectionname),version=str(collectionversion),added=datetime.now(),rings=collectionrings)
-        doc.store(db)
-
-        return True
 
     #AVISPAMODEL
     def user_add_ring(self,handle,ringname,ringversion,user_database=None):
@@ -749,7 +723,8 @@ class AvispaModel:
             item[u'_id'] = row['id']
 
             for fieldname in OrderedFields:
-                item[fieldname] = row['value'][fieldname]
+                if fieldname in row['value']:
+                    item[fieldname] = row['value'][fieldname]
 
             #item.update(row['value'])
 
