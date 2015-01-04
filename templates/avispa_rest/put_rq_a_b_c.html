@@ -1,6 +1,6 @@
 {% extends 'avispa_rest/tabs.html' %}
 
-{% block title %} Avispa {% endblock %}
+{% block title %} {% endblock %}
 
 
 {% block headscripts %}
@@ -48,10 +48,10 @@
 
 {% block crumbs %}
 
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> / 
-<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring}}</a> /
-<a href="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}" class="rn-b1" >{{ data.idx}}</a> 
+
+<li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
+<li class="active">update : {{ data.idx}}</li>
+
 
 {% endblock %}
 
@@ -61,7 +61,7 @@
 <!-- START NEW CONTENT --> 
 
 
-<section class="bp-20 p-50">
+<section >
   <div class="container">
     <div class="row">
       <div class="col-md-9">  
@@ -70,7 +70,7 @@
           <div class="col-sm-12">
             <div class="rn-box-title">
 
-              <strong> <!-- Ring owner  -->Updating 1 item  </strong> 
+             Updating 1 item 
 
               <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
               <i class="fa fa-question-circle"></i>
@@ -130,6 +130,6 @@
 
 {% endblock %}
 
-
+{% block findme %} put_rq_a_b_c {% endblock %}
 
 

@@ -1,11 +1,10 @@
 {% extends 'avispa_rest/tabs.html' %}
 
-{% block title %} Avispa {% endblock %}
+{% block title %} {% endblock %}
 
 {% block crumbs %}
 
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a> 
+<li class="active">New Ring</li>
 
 {% endblock %}
 
@@ -15,20 +14,19 @@
 <!-- START NEW CONTENT --> 
 
 
-<section class="bp-20 p-50">
+<section>
   <div class="container">
-    <div class="row">
-      <div class="col-md-9">  
+
 
         <div class="row">
-          <div class="col-sm-12">
+          <div class="col-sm-10">
             <div class="rn-box-title">
 
-              <strong> <!-- Ring owner  -->Modeling 1 ring </strong> 
+               <!-- Ring owner  -->Modeling new Ring 
 
-              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+              <!-- <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
                 <i class="fa fa-question-circle"></i>
-              </button-->
+              </button> -->
 
             </div>
             <div class="rn-box-solo">
@@ -247,8 +245,7 @@
           </div> 
         </div>
 
-      </div> 
-    </div>
+
   </div>
 </section>
 
@@ -264,5 +261,5 @@
 {% endblock %}
 
 
-
+{% block findme %} post_rq_a {% endblock %}
 

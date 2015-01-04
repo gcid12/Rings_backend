@@ -10,7 +10,7 @@
 
 <!-- CONTENT HERE -->
 
-<div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;"><span class=" label bird">&nbsp;</span></div>
+
 
 <section>
 
@@ -47,37 +47,37 @@
 
       <!-- COLUMN 1 -->
       <div class="col-sm-1 col-xs-12 omega">
-        <a href="/" class="text-center">
+        <a href="/{{ data.handle }}" class="text-center">
           <span class="tab-box-d tab-on2{% if tab=='rep' %} tab-on2 {% endif %}">
             <i class="fa fa-circle-o fa-1x"></i>
-            <p class="visible-md fs-0-6">Rings</p>
+            <p class="visible-lg fs-0-6">Rings</p>
           </span>
         </a>
         
-        <a href="/monitoring" class="text-center">
+        <a href="_ipsum" class="text-center">
           <span class="tab-box-d {% if tab=='mon' %}tab-on2{% endif %}">
             <i class="fa fa-crosshairs fa-1x"></i>
-            <p class="visible-md fs-0-6">Monitoring</p>
+            <p class="visible-lg fs-0-6">Monitoring</p>
           </span>
         </a>
-        <a href="/collab" class="text-center">
+        <a href="_ipsum" class="text-center">
           <span class="tab-box-d {% if tab=='col' %}tab-on2{% endif %}">
             <i class="fa fa-users fa-1x"></i>
-            <p class="visible-md fs-0-6">Collaborators</p>
+            <p class="visible-lg fs-0-6">Collaborators</p>
           </span>
         </a> 
         
-        <a href="/campaigns" class="text-center">
+        <a href="_ipsum" class="text-center">
           <span class="tab-box-d  {% if tab=='cam' %}tab-on2{% endif %}">
            <i class="fa fa-globe fa-1x"></i>
-           <p class="visible-md fs-0-6">Campaigns</p>
+           <p class="visible-lg fs-0-6">Campaigns</p>
           </span>
         </a>
 
-        <a href="settings" class="text-center">
+        <a href="_ipsum" class="text-center">
           <span class="tab-box-d  {% if tab=='set' %}tab-on2{% endif %}">
            <i class="fa fa-wrench fa-1x"></i>
-           <p class="visible-md fs-0-6">Settings</p>
+           <p class="visible-lg fs-0-6">Settings</p>
           </span>
         </a> 
 
@@ -95,8 +95,10 @@
           <div class="col-sm-12 pl-40 pb-10" >
             
             <ol class="breadcrumb fs-1" style="padding:5px 15px 0 20px; ">
-                  
-              <li><a href="/{{ data.handle }}"><i class="fa fa-arrow-right"></i> {{ data.handle }}</a> </li> 
+              <li><div class="rn-hp5 pull-left">
+              <span class="label label-m">AVISPA</span></div> 
+              </li>    
+              <li><a href="/{{ data.handle }}">{{ data.handle }}</a> </li> 
             {% block crumbs %}
 
             {% endblock %}
@@ -121,7 +123,7 @@
 
 
 
-
+<div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;"><span class=" label bird">&nbsp;{% block findme %} {% endblock %}</span></div>
     
   
 {% endblock %}

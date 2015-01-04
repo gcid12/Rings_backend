@@ -1,7 +1,7 @@
 {% extends 'avispa_rest/tabs.html' %}
 
-{% block title %} MyRing {% endblock %}
-{% block findme %} post_rq_a_b {% endblock %}
+{% block title %} {% endblock %}
+
 
 {% block headscripts %}
   {% include 'avispa_rest/wa_jqueryui_style.html'  %}
@@ -49,10 +49,8 @@
 {% block crumbs %}
 
 
-
-
 <li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
-<li class="active">New record</li>
+<li class="active">New item</li>
 
 
 {% endblock %}
@@ -63,7 +61,7 @@
 <!-- START NEW CONTENT --> 
 
 
-<section class="bp-20 p-50">
+<section>
   <div class="container">
     <div class="row">
       <div class="col-md-9">  
@@ -72,7 +70,7 @@
           <div class="col-sm-12">
             <div class="rn-box-title">
 
-              <strong> <!-- Ring owner  -->Creating 1 item.x  </strong> 
+              <!-- Ring owner  -->Creating 1 item. 
 
               <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
               <i class="fa fa-question-circle"></i>
@@ -133,6 +131,6 @@
 
 {% endblock %}
 
-
+{% block findme %} post_rq_a_b {% endblock %}
 
 

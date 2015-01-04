@@ -1,11 +1,10 @@
 {% extends 'avispa_rest/tabs.html' %}
 
-{% block title %} Avispa {% endblock %}
+{% block title %} {% endblock %}
 
 {% block crumbs %}
-
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a>/<a href="/{{ data.handle }}/{{ data.ring }}" class="rn-b1" >{{ data.ring }}</a> 
+<li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
+<li class="active">Modify Schema</li>
 
 {% endblock %}
 
@@ -15,7 +14,7 @@
 <!-- START NEW CONTENT --> 
 
 
-<section class="bp-20 p-50">
+<section>
   <div class="container">
     <div class="row">
       <div class="col-md-9">  
@@ -24,7 +23,7 @@
           <div class="col-sm-12">
             <div class="rn-box-title">
 
-              <strong> <!-- Ring owner  -->Modifying the ring schema for "{{ data.handle }}/{{ data.ring }}"</strong> 
+               <!-- Ring owner  -->Modifying the ring schema for "{{ data.handle }}/{{ data.ring }}"
 
               <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
                 <i class="fa fa-question-circle"></i>
@@ -244,6 +243,6 @@
 
 {% endblock %}
 
-
+{% block findme %} put_rq_a_b {% endblock %}
 
 

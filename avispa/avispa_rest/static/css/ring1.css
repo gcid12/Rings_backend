@@ -663,10 +663,10 @@ header .navbar-ring{padding:7px 15px; margin-top:50px; border:1px solid transpar
 
 
 
-.bird{background-color: yellow;}
+.bird{background-color: yellow; color:black;}
 
-@media (max-width:750px){
-    .bird{background-color: red;}
+@media (max-width:768px){
+    .bird{background-color: orange; color:black;}
 
     .tab-box-d{
     
@@ -687,8 +687,9 @@ margin:0px 0;
 
 }
 
-.rn-box-title{float:left; width:99%;}
-.rn-box-solo{float:left; width:99%;}
+.rn-box-title{ width:99%;}
+.rn-box-title-slim{ width:99%;}
+.rn-box-solo{ width:99%;}
 
 .gad25{width:99%;}
 .gad50{width:99%;}
@@ -702,10 +703,10 @@ margin:0px 0;
 
 }
 
-.nostroke{
+a.nostroke{
   text-decoration: none;
   outline: none;
-    background-color: red;}
+    }
 
 
 .modal-dialog{
