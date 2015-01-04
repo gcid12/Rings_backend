@@ -82,25 +82,32 @@
                      {% if data.widget[k] =='images' %}
                          
                          <p class="fs-0-8 fw-a fc-g">{{k}}:</p>
-                         
+                         <div id="links">
                         {% for image in v %}
                           {% if image %}
-                            <a type="button" class="btn btn-link" data-toggle="modal" data-target="#{{image}}" style="margin:0; padding:0;">
-                            <img src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" class="img-thumbnail" >
+                            
+
+                            <a href="{{data.host_url}}/_images/{{data.handle}}/r1024/{{image}}_r1024.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
+                              <img src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" alt="Banana">
                             </a>
+
                           {% endif %}
 
                         {% endfor %} 
-                        <hr/>            
+                        <hr/>   
+
+                        </div>         
 
                       {% endif %}
                   {% endfor %}
+
+
                 
                 <!--p>{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg</p-->
 
                 <!-- Button trigger modal -->
 
-
+                <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
 
 
                 </div>
