@@ -488,6 +488,14 @@ class MyRingTool:
         d = {'rq': current_user,'template':'avispa_rest/tools/flashresponsejson.html'}
         return d
 
+    def template(self,request,*args):
+        template = request.args.get('t')
+        
+        d = {'rq': current_user,'template':'avispa_rest/'+template+'.html'}
+        return d
+
+
+
 
 
 

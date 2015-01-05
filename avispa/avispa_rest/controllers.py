@@ -155,6 +155,32 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         #print(data) 
         return render_template(data['template'], data=data)
         #return 'ok'
+
+
+def dashboard_dispatcher(handle,dashboard_widgets):
+
+    if 'collection_list' in dashboard_widgets:
+        ACF = AvispaCollectionsRestFunc()
+        m = 'get_a'
+        collections = getattr(ACF, m.lower())(request,handle,None,None)
+        
+
+    if 'ring_list' in dashboard_widgets:
+        ARF = AvispaRestFunc()
+        m = 'get_a'
+        rings = getattr(ARF, m.lower())(request,handle,None,None)
+        
+
+
+    data = {'message': 'Using get_a for handle '+handle ,
+            'template':'avispa_rest/userhome.html',
+            'handle': handle,
+            'rings': rings,
+            'collections': collections }
+    
+    return render_template(data['template'], data=data)
+
+    
     
 
 
@@ -212,9 +238,27 @@ def static5(filename,depth1,depth2,depth3,depth4):
     return avispa_rest.send_static_file(filename)
 
 @avispa_rest.route('/_tools/install', methods=['GET'])
+#This is needed because in a Vanilla install there are no users so /<handle>/<ring> would redirect me to /_login
 def first_install():
 
+
     result = route_dispatcher('_a_b','_tools','install')
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_home', methods=['GET'])
+#This is needed because in a Vanilla install there are no users so /<handle>/<ring> would redirect me to /_login
+def home(handle):
+
+    dashboard_widgets = []
+    dashboard_widgets.append('production_timeline')
+    dashboard_widgets.append('collection_list')
+    dashboard_widgets.append('ring_list')
+
+    result = dashboard_dispatcher(handle,dashboard_widgets)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        

@@ -34,6 +34,30 @@ class AvispaCollectionsModel:
             print('user_doc:',user_doc)
 
             collections = user_doc['collections']  
+            rings = user_doc['rings']
+            
+            validring = {}
+
+            for ring in rings:   
+                if not 'deleted' in ring:
+                    ringname = str(ring['ringname'])
+                    ringversion = str(ring['version'])
+                    ringversionh = ringversion.replace('-','.')
+                    count = ring['count']
+                    validring[ringname+'_'+ringversionh] = count
+
+
+            for collection in collections:
+                for ring in collection['rings']:
+                    if ring['ringname']+'_'+ring['version'] in validring:
+                        #Valid Collection, none of its rings are marked as deleted
+                 
+                        collection['valid'] = True
+                        ring['count'] = validring[ring['ringname']+'_'+ring['version']]
+                    
+                        
+
+            print('NewCollections:', collections)
                 
 
         except (ResourceNotFound, TypeError) as e:
