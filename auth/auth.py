@@ -29,7 +29,7 @@ def login():
                 if login_user(userObj, remember=remember):
                     flash("Logged in!")
                     #flash("Redirecting to : /"+user.id)
-                    return redirect('/'+user.id)
+                    return redirect('/'+user.id+'/_home')
                 else:
                     flash("unable to log you in")
             else:
