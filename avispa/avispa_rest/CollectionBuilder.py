@@ -32,7 +32,7 @@ class CollectionBuilder:
             if request.form.get('CollectionVersion'):
                 collection['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
             else:
-                collection['version'] = self.ringprotocols['defaults']['CollectionVersion'].replace('.','-')
+                collection['version'] = self.collectionprotocols['defaults']['CollectionVersion'].replace('.','-')
             
             ringlist = []
           
@@ -57,7 +57,7 @@ class CollectionBuilder:
                 print('New Collection created: '+collection['name'])
                 return True
             else:
-                print('The Ring '+ collection['name'] +' database already exists')
+                print('The Collection '+ collection['name'] +' database already exists')
                 return False
 
 

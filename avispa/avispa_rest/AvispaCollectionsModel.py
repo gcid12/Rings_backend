@@ -1,6 +1,7 @@
 # CollectionsModel.py
 
 from datetime import datetime 
+from couchdb.http import ResourceNotFound
 
 from MyRingCouchDB import MyRingCouchDB
 from MainModel import MainModel

@@ -19,6 +19,7 @@ class AvispaRestFunc:
         ringlistlen = len(ringlist)
 
         #print(ringlist)
+        
 
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist, 'ringlistlen':ringlistlen, 'tab':'rep' }
     	return d

@@ -274,8 +274,33 @@ class MyRingPatch:
 
 
 
+    def p20150105(self,request,*args):
 
+        print('check_and_repair_user')
 
+        handle = request.args.get('handle')
+        
+        print('handle:',handle)
+
+        if not request.args.get('user_database'): 
+            user_database = 'myring_users'
+
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        try:
+
+            print('user_doc[colections]:',user_doc['collections'])
+
+        except(KeyError):
+
+            user_doc['collections'] = []        
+            user_doc.store(db)
+
+            print('User: '+handle+' repaired.')
+
+        d = {'rq': current_user,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
 
             
 

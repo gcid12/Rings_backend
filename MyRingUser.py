@@ -17,6 +17,18 @@ class MyRingUser(Document):
         count = IntegerField(),
         added = DateTimeField(default=datetime.now)
     	)))
+    collections = ListField(DictField(Mapping.build(
+        collectionname = TextField(),
+        collectiondescription = TextField(),
+        version = TextField(),
+        added = DateTimeField(default=datetime.now),
+        rings = ListField(DictField(Mapping.build(
+            handle = TextField(),
+            ringname = TextField(),
+            version = TextField(),
+            layer = IntegerField()
+            )))
+        )))
     is_active = BooleanField(default=True)
     is_authenticated = BooleanField(default=False)
     new_password_key = TextField()
