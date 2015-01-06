@@ -130,7 +130,7 @@ class AvispaRestFunc:
         if request.args.get('resultsperpage'):
             resultsperpage = request.args.get('resultsperpage')
         else:
-            resultsperpage = 100
+            resultsperpage = 1000
 
         if request.args.get('sort'):
             sort = request.args.get('sort')
