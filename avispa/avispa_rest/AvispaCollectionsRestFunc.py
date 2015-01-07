@@ -210,8 +210,22 @@ class AvispaCollectionsRestFunc:
     
     #DELETE /a/b
     def delete_a_b(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection delete_a_b for handle '+handle , 'template':'avispa_rest/index.html'}
+        #Will delete an existing collection
+
+        result = self.ACM.delete_a_b(handle,collection)
+
+        if result:
+            print('Awesome , you just deleted a Collection')
+            #msg = 'Item put with id: '+idx
+            flash("Your Collection has been deleted")
+            redirect = '/'+handle+'/_collections'
+            d = {'redirect': redirect, 'status':200}
+
+        else:
+            d = {'message': 'There was an error deleting the collection' , 'template':'avispa_rest/index.html'}
+        
         return d
+
 
     def delete_rq_a_b(self,request,handle,collection,idx,api=False,*args):
         d = {'message': 'Using Collection delete_rq_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}

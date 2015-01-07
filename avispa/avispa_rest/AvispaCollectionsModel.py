@@ -193,4 +193,27 @@ class AvispaCollectionsModel:
         user_doc.store(db)
 
         return True  
+
+
+    #COLLECTIONSMODEL
+    def delete_a_b(self,handle,collection,user_database=None):
+
+        if not user_database : 
+            user_database = self.user_database
+
+                      
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        i = 0
+        for coll in user_doc['collections']:
+            if coll['collectionname'] ==  collection:
+                del user_doc['collections'][i] 
+
+            i = i+1
+
+        print('user_doc MOD:',user_doc)
+        user_doc.store(db)
+
+        return True  
   
