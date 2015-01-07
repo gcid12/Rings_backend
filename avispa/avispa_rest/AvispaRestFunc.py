@@ -249,8 +249,12 @@ class AvispaRestFunc:
             print('Awesome , you just saved the item to the DB')
             msg = 'Item saved with id: '+idx
 
+        
+        if request.form.get('saveandnew'):
+            redirect = '/'+handle+'/'+ring+'?rq=post'
+        else:
+            redirect = '/'+handle+'/'+ring
 
-        redirect = '/'+handle+'/'+ring
         print('Now redirect to:')
         print(redirect)
         flash("The new item has been created")
