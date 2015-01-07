@@ -19,8 +19,8 @@ class AvispaCollectionsModel:
         self.MAM = MainModel()
 
 
-    #AVISPAMODEL
-    def get_collections(self,handle,user_database=None):
+    #COLLECTIONSMODEL
+    def get_a(self,handle,user_database=None):
 
 
         if not user_database : 
@@ -46,13 +46,17 @@ class AvispaCollectionsModel:
                     count = ring['count']
                     validring[ringname+'_'+ringversionh] = count
 
+        
 
-            for collection in collections:
-                for ring in collection['rings']:
-                    if ring['ringname']+'_'+ring['version'] in validring:
-                        #Valid Collection, none of its rings are marked as deleted
-                 
-                        collection['valid'] = True
+            for coll in collections:
+                coll['valid'] = True
+                for ring in coll['rings']:
+                    
+                    if ring['ringname']+'_'+ring['version'] not in validring:
+                        #InValid Collection, at least one of its rings is marked as deleted             
+                        coll['valid'] = False
+                        break
+                    else:
                         ring['count'] = validring[ring['ringname']+'_'+ring['version']]
                     
                         
@@ -66,8 +70,11 @@ class AvispaCollectionsModel:
 
         return collections
 
+    
+        
 
-    def set_collection(self,handle,collection,user_database=None):
+    #COLLECTIONSMODEL
+    def post_a(self,handle,collection,user_database=None):
 
         if not user_database : 
             user_database = self.user_database
@@ -88,4 +95,58 @@ class AvispaCollectionsModel:
         user_doc['collections'].append(newcollection)
         user_doc.store(db)
 
-        return True    
+        return True  
+
+
+    #COLLECTIONSMODEL
+    def get_a_b(self,handle,collection,user_database=None):
+
+
+        if not user_database : 
+            user_database = self.user_database
+
+        try:               
+            db = self.MAM.select_db(user_database)
+            user_doc = self.MAM.select_user(user_database,handle) 
+
+
+            print('user_doc:',user_doc)
+
+            collections = user_doc['collections'] 
+            rings = user_doc['rings']
+            
+            validring = {}
+
+            for ring in rings:   
+                if not 'deleted' in ring:
+                    ringname = str(ring['ringname'])
+                    ringversion = str(ring['version'])
+                    ringversionh = ringversion.replace('-','.')
+                    count = ring['count']
+                    validring[ringname+'_'+ringversionh] = count
+
+            
+            
+
+            for coll in collections:
+                #coll['valid'] = True
+                if coll['collectionname'] == collection:
+                    
+                    for ring in coll['rings']:       
+                        if ring['ringname']+'_'+ring['version'] not in validring:
+                            #InValid Collection, at least one of its rings is marked as deleted             
+                            coll['valid'] = False
+                            break
+                        else:
+                            ring['count'] = validring[ring['ringname']+'_'+ring['version']]
+                                            
+                    return coll
+                        
+
+            #print('ValidatedCollections:', collections)
+                
+
+        except (ResourceNotFound, TypeError) as e:
+            print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            
+  

@@ -378,13 +378,14 @@ class AvispaModel:
                     args_r[r] = pinput['rings'][0][r]
             
             elif(action == 'edit'):
-                if pinput['rings'][0][r] == schema.rings[0][r]:
-                    print(r+' did not change')
-                    
-                else:
-                    print(r+' changed. Old: "'+ str(schema.rings[0][r]) +'" ('+ str(type(schema.rings[0][r])) +')'+\
-                            '  New: "'+ str(pinput['rings'][0][r]) + '" ('+ str(type(pinput['rings'][0][r])) +')' )
-                    args_r[r] = pinput['rings'][0][r]
+                if r in schema.rings[0]:
+                    if pinput['rings'][0][r] == schema.rings[0][r]:
+                        print(r+' did not change')
+                        
+                    else:
+                        print(r+' changed. Old: "'+ str(schema.rings[0][r]) +'" ('+ str(type(schema.rings[0][r])) +')'+\
+                                '  New: "'+ str(pinput['rings'][0][r]) + '" ('+ str(type(pinput['rings'][0][r])) +')' )
+                        args_r[r] = pinput['rings'][0][r]
 
                   
 

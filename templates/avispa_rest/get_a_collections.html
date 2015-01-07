@@ -67,30 +67,32 @@
 
 
               {% for collection in data.collectionlist %}
-                <tr>
-                  <td>
-                    
-                  </td>
-                  <td> 
-                  </td>
-                  <td> 
-                    <a class="rn-b1" href="/{{ data.handle }}/_collections/{{ collection.collectionname }}">&circ;{{ collection.collectionname }}</a>
-                    <hr/>
-                    <p class="rn-t3 rn-gray">{{ collection.collectiondescription }}</p>
-                  </td>
-                  <td style="min-width:200px;"> 
-                    <div class="pull-right">
-                      <!--input type="checkbox" value="public" name="public"/-->
-                      <div class="btn-group">
-                        <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}" >Show</a>
-                        <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">Edit</i></a>
-                        <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?method=delete" >Delete</a>
+                {% if collection.valid %}
+                  <tr>
+                    <td>
+                      
+                    </td>
+                    <td> 
+                    </td>
+                    <td> 
+                      <a class="rn-b1" href="/{{ data.handle }}/_collections/{{ collection.collectionname }}">&circ;{{ collection.collectionname }}</a>
+                      <hr/>
+                      <p class="rn-t3 rn-gray">{{ collection.collectiondescription }}</p>
+                    </td>
+                    <td style="min-width:200px;"> 
+                      <div class="pull-right">
+                        <!--input type="checkbox" value="public" name="public"/-->
+                        <div class="btn-group">
+                          <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}" >Show</a>
+                          <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">Edit</i></a>
+                          <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?method=delete" >Delete</a>
+                        </div>
+                        <br/><br/>
+                        <!--span class="label label-discrete pull-right">Yesterday</span-->
                       </div>
-                      <br/><br/>
-                      <!--span class="label label-discrete pull-right">Yesterday</span-->
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                {% endif %}
               {% endfor %}
 
 

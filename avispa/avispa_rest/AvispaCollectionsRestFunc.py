@@ -13,7 +13,7 @@ class AvispaCollectionsRestFunc:
     # GET/a
     def get_a(self,request,handle,collection,idx,api=False,*args):
 
-        collectionlist = self.ACM.get_collections(handle)
+        collectionlist = self.ACM.get_a(handle)
         print('collectionlist:',collectionlist)
         collectionlistlen = len(collectionlist)
 
@@ -40,7 +40,7 @@ class AvispaCollectionsRestFunc:
 
         #Build the actual collection
         CB = CollectionBuilder()
-        result = CB.CollectionGenerator(request,handle)
+        result = CB.post_a(request,handle)
             
         if result:
             print('Awesome , you just created a new Collection')
@@ -149,12 +149,36 @@ class AvispaCollectionsRestFunc:
 
     #PUT /a/b
     def put_a_b(self,request,handle,collection,idx,api=False,*args):
+        # Introduce de changes to the existing collection
+
+
+        CB = CollectionBuilder()
+        result = CB.put_a_b(request,handle,collection)
+
         d = {'message': 'Using Collection put_a_b for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     def put_rq_a_b(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection put_rq_a_b for handle '+handle , 'template':'avispa_rest/index.html'}
+        #Form to edit a collection
+        ringlist = self.AVM.user_get_rings(handle)
+        collectionlist = self.ACM.get_a_b(handle,collection)
+
+        print('collectionlist:',collectionlist)
+
+        collectionrings = []
+        for ring in collectionlist['rings']:
+            collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace(',','-'))
+
+        
+
+
+        d = {'message': 'Using Collection put_rq_a for handle '+handle , 
+             'template': 'avispa_rest/put_rq_a_b_collections.html',
+             'ringlist': ringlist,
+             'collectionlist': collectionlist,
+             'collectionrings': collectionrings}
         return d
+
 
     def put_rs_a_b(self,request,handle,collection,idx,api=False,*args):
         d = {'message': 'Using Collection put_rs_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
