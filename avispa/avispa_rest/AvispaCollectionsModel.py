@@ -149,4 +149,48 @@ class AvispaCollectionsModel:
         except (ResourceNotFound, TypeError) as e:
             print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
             
+
+
+    #COLLECTIONSMODEL
+    def put_a_b(self,handle,collectiond,user_database=None):
+
+        if not user_database : 
+            user_database = self.user_database
+
+                      
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        print('user_doc[colections]:',user_doc['collections'])
+
+        newcollection = {'collectionname' : str(collectiond['name']),
+                         'collectiondescription' : str(collectiond['description']),
+                         'version' : str(collectiond['version']),
+                         'rings' : collectiond['ringlist'],
+                         'added' : str(datetime.now())}
+
+        i = 0
+        for coll in user_doc['collections']:
+
+            #print()
+            #print('coll',coll)
+            #print('user_doc[collections][i]',user_doc['collections'][i])
+            #print()
+            #print('coll[collectioname]:',coll['collectionname'])
+            #print('newcoll:',newcollection['collectionname'])
+            if coll['collectionname'] ==  newcollection['collectionname']:
+                print ('You need to replace this', coll)
+                print ('For this:', newcollection)
+                #This is a match. This is what we need to replace with incoming document
+                user_doc['collections'][i] = newcollection
+                #print ('coll MOD',coll)
+
+
+            i = i+1
+
+                #user_doc['collections'].append(newcollection)
+        print('user_doc MOD:',user_doc)
+        user_doc.store(db)
+
+        return True  
   

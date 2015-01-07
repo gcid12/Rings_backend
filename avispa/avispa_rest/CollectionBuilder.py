@@ -24,15 +24,15 @@ class CollectionBuilder:
                 
         if request.form.get('CollectionName'):
 
-            collection = {}
+            collectiond = {}
 
-            collection['name'] = request.form.get('CollectionName').lower() # I dont like this here
-            collection['description'] = request.form.get('CollectionDescription').lower()
-            collection['handle'] = handle.lower()
+            collectiond['name'] = request.form.get('CollectionName').lower() # I dont like this here
+            collectiond['description'] = request.form.get('CollectionDescription').lower()
+            collectiond['handle'] = handle.lower()
             if request.form.get('CollectionVersion'):
-                collection['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
+                collectiond['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
             else:
-                collection['version'] = self.collectionprotocols['defaults']['CollectionVersion'].replace('.','-')
+                collectiond['version'] = self.collectionprotocols['defaults']['CollectionVersion'].replace('.','-')
             
             ringlist = []
           
@@ -49,15 +49,15 @@ class CollectionBuilder:
                     ring['layer'] = 1 
                     ringlist.append(ring)
 
-            collection['ringlist'] = ringlist
+            collectiond['ringlist'] = ringlist
                
             #Here you write to the user.collection document
                      
-            if self.ACM.post_a(handle,collection):
-                print('New Collection created: '+collection['name'])
+            if self.ACM.post_a(handle,collectiond):
+                print('New Collection created: '+collectiond['name'])
                 return True
             else:
-                print('The Collection '+ collection['name'] +' database already exists')
+                print('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 
     def put_a_b(self,request,handle,collection):
@@ -65,15 +65,15 @@ class CollectionBuilder:
         #Same as collectiongenerator
         if request.form.get('CollectionName'):
 
-            collection = {}
+            collectiond = {}
 
-            collection['name'] = request.form.get('CollectionName').lower() # I dont like this here
-            collection['description'] = request.form.get('CollectionDescription').lower()
-            collection['handle'] = handle.lower()
+            collectiond['name'] = request.form.get('CollectionName').lower() # I dont like this here
+            collectiond['description'] = request.form.get('CollectionDescription').lower()
+            collectiond['handle'] = handle.lower()
             if request.form.get('CollectionVersion'):
-                collection['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
+                collectiond['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
             else:
-                collection['version'] = self.collectionprotocols['defaults']['CollectionVersion'].replace('.','-')
+                collectiond['version'] = self.collectionprotocols['defaults']['CollectionVersion'].replace('.','-')
             
             ringlist = []
           
@@ -90,15 +90,15 @@ class CollectionBuilder:
                     ring['layer'] = 1 
                     ringlist.append(ring)
 
-            collection['ringlist'] = ringlist
+            collectiond['ringlist'] = ringlist
                
             #Here you write to the user.collection document
                      
-            if self.ACM.put_a_b(handle,collection):
-                print('Collection updated: '+collection['name'])
+            if self.ACM.put_a_b(handle,collectiond):
+                print('Collection updated: '+collectiond['name'])
                 return True
             else:
-                print('The Collection '+ collection['name'] +' database already exists')
+                print('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 
 

@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+
+{% block headscripts %}
+  {% include 'avispa_rest/wa_jqueryui_style.html'  %}
+  {% include 'avispa_rest/wa_richtable_style.html'  %}
+
+  {% for field in data.fieldsschema %}
+    {% set widgetstyle = 'avispa_rest/w_input_'+field.FieldWidget+'_style.html' %}   
+    {% include widgetstyle ignore missing  %}                                
+  {% endfor %}
+
+{% endblock %}
+
+{% block footscripts %}
+  {% include 'avispa_rest/wa_jqueryui_lib.html'  %}
+  
+{% endblock %}
+
+{% block footfunctions %}
+  {% include 'avispa_rest/wa_jqueryui_functions.html'  %} 
+  {% include 'avispa_rest/wa_richtable_functions.html'  %}
+
+{% endblock %}
+
+{% block footafterfunctions %}
+
+{% endblock %}
+
+
+
+
+{% block crumbs %}
+
+<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
+<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a>/<a href="/{{ data.handle }}/_collections" class="rn-b1" >_collections</a> 
+
+{% endblock %}
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">  
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="rn-box-title">
+
+              <strong> <!-- Ring owner  -->Updating 1 collection </strong> 
+
+              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                <i class="fa fa-question-circle"></i>
+              </button-->
+
+            </div>
+
+
+            <form class="form-horizontal" role="form" action="/{{ data.handle }}/_collections/{{ data.collection }}?method=PUT" method="POST">
+
+
+              <div class="rn-box-solo">
+                <div class="row">
+                  &nbsp;&nbsp;&nbsp; <strong>STEP 1.</strong> Name this Collection
+                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                    <i class="fa fa-question-circle"></i>
+                  </button> 
+                </div> 
+
+              </div>
+
+              <div class="rn-box-content">
+                Collection name: <input name="CollectionNameDisabled" class="form-control" type="text" value="{{data.collectionlist.collectionname}}" disabled><input name="CollectionName" class="form-control" type="hidden" value="{{data.collectionlist.collectionname}}"><br/>
+                Summary: <input name="CollectionDescription" class="form-control" type="text" value="{{data.collectionlist.collectiondescription}}"><br/>
+                Version: <input name="CollectionVersion" class="form-control" type="text" value="{{data.collectionlist.version}}" ><br/>
+
+              </div>
+
+
+              <div class="rn-box-solo">
+                <div class="row">
+                  &nbsp;&nbsp;&nbsp; <strong>STEP 2.</strong> Select what Rings belong to this Collection
+                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+                    <i class="fa fa-question-circle"></i>
+                  </button>
+                </div> 
+              </div>
+               
+              <!-- RING -->
+              <div class="rn-box-content">  
+              <br/>           
+                <div class="form-group">
+                  
+                  <div class="col-sm-10">
+
+                  <br/><br/>
+  
+                  {% set n = 0 %}
+                  {% for ring in data.ringlist %}
+
+                    
+
+                    {% set n = n+1 %}
+                    <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}_{{ring.ringversionh}}' {% if data.handle+'_'+ring.ringname+'_'+ring.ringversionh in data.collectionrings %} checked {% endif %}/> <a href="/{{ data.handle }}/{{ring.ringname}}">{{ data.handle }}/{{ring.ringname}}</a>  ( v{{ring.ringversionh}} ) : {{ring.ringdescription}}<br/>
+
+                    
+                  {% endfor %}
+
+                  </div>
+
+                </div>
+              </div>
+
+
+              
+
+ 
+
+              {% set numfields = request.args.get('n')|int %}
+
+
+              <!-- SUBMIT -->
+
+              <div class="rn-box-content">
+                <br/>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label"></label>
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="/{{ data.handle }}/_collections" type="submit" class="btn btn-default">Leave without saving anything</a>  
+                  </div>
+                </div>
+              </div>
+
+              <!-- SUBMIT END -->
+              <!-- RING END -->
+
+            </form> 
+          </div> 
+        </div>
+
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock content%}
+
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
+
+
+
+

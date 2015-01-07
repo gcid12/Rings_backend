@@ -155,7 +155,16 @@ class AvispaCollectionsRestFunc:
         CB = CollectionBuilder()
         result = CB.put_a_b(request,handle,collection)
 
-        d = {'message': 'Using Collection put_a_b for handle '+handle , 'template':'avispa_rest/index.html'}
+        if result:
+            print('Awesome , you just updated a Collection')
+            #msg = 'Item put with id: '+idx
+            flash("Your Collection has been updated")
+            redirect = '/'+handle+'/_collections'
+            d = {'redirect': redirect, 'status':200}
+
+        else:
+            d = {'message': 'There was an error updating the collection' , 'template':'avispa_rest/index.html'}
+        
         return d
 
     def put_rq_a_b(self,request,handle,collection,idx,api=False,*args):
