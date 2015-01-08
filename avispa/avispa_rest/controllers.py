@@ -61,6 +61,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     else:
         data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
 
+    if 'collection' in request.args:
+        data['collection'] = request.args.get('collection')
 
     data['handle']=handle
     data['ring']=ring

@@ -104,7 +104,36 @@
 </div>
 {% endmacro %}
 
-{% macro panel_home(name, color, number, percent, active, resource) %} 
+{% macro panel_collections(name, color, number, percent, active, resource,collection) %} 
+          
+          <tr>
+            <td><p>{{ number }}</p></td>
+            <td>{{ icon_xsma(number, color) }}</td>
+            <td><a href="/{{ resource }}?collection={{collection}}"><p class="fs-0-8">&deg;{{ name }}</a> / <span class="fc-g">1 day ago</span></p></td>
+            <td>
+              <div class="pull-right">
+                <div class="visible-xs">
+                  {{ icon_med(count,color) }}
+                </div>
+                <div class="btn-group" >
+                
+                  <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
+                  <a href="/{{ resource }}?rq=post&collection={{collection}}" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+
+                  <a href="/{{ resource }}?rq=put&collection={{collection}}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+
+                  
+
+                </div>
+                
+              </div>
+            </td>
+          </tr>
+          
+                   
+{% endmacro %}
+
+{% macro panel_rings(name, color, number, percent, active, resource) %} 
           
           <tr>
             <td><p>{{ number }}</p></td>

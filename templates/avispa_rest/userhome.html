@@ -78,7 +78,7 @@
                         <td colspan="2">
                           <table class="table table-striped">
                             {% for ring in collection.rings %}  
-                              {{ ui.panel_home(ring.ringname, '#fce121', ring.count , '85', '',data.handle+'/_collections/'+collection.collectionname+'/'+ring.ringname) }}
+                              {{ ui.panel_collections(ring.ringname, '#fce121', ring.count , '85', '',data.handle+'/'+ring.ringname,collection.collectionname) }}
                             {% endfor %}
                               
                           </table>
@@ -88,38 +88,6 @@
                     {% endif %}
                   {% endfor %}
 
-                    {#}
-                    {{ ui.collection('sneakers',4,2,'2 months ago') }}
-                    <tr>
-                      <td></td>
-                      <td colspan="2">
-                        <table class="table table-striped">
-
-                            {{ ui.panel_home('sneakers', 'red', '123', '85', '','/') }}
-                            {{ ui.panel_home('brands', 'orange', '5.2k', '85', '','/') }}
-                            {{ ui.panel_home('collections', 'purple', '94', '85', '','/') }}
-                            {{ ui.panel_home('materials', 'green', '723', '85', '','/') }}
-                            {{ ui.panel_home('stores', 'yellow', '21', '85', '','/') }}
-                            
-                          
-                        </table>
-                      </td>
-                      
-                    </tr>
-                    {{ ui.collection('art exhibitions',12,3,'11:30') }}
-                    <tr>
-                      <td></td>
-                      <td colspan="2">
-                        <table class="table table-striped">
-                            {{ ui.panel_home('pieces', 'green', '723', '85', '','/') }}
-                            {{ ui.panel_home('museums', 'red', '123', '85', '','/') }}
-                            {{ ui.panel_home('galleries', 'orange', '5.2k', '85', '','/') }}
-
-                        </table>
-                      </td>
-                    </tr>
-
-                    {#}
                        
               </table>  
 
@@ -141,22 +109,9 @@
           <table class="table table-striped table-condensed">
           {% for ring in data.rings.ringlist %}
 
-            {{ ui.panel_home(ring.ringname, '#924ea0', ring.count, '36', '',data.handle+'/'+ring.ringname) }}
+            {{ ui.panel_rings(ring.ringname, '#924ea0', ring.count, '36', '',data.handle+'/'+ring.ringname) }}
 
           {% endfor %}
-
-          {#{ ui.panel_home('XXXamenities', '#924ea0', '294', '36', '','/re02') }}
-          {{ ui.panel_home('brands', 'orange', '5.2k', '85', '','/re02') }}
-          {{ ui.panel_home('collections', 'purple', '94', '85', '','/re02') }}
-          {{ ui.panel_home('dining', '#e40066', '35', '47', '','/re02') }}
-          {{ ui.panel_home('galleries', 'orange', '5.2k', '85', '','/re02') }}
-          {{ ui.panel_home('materials', 'green', '723', '85', '','/re02') }}
-          {{ ui.panel_home('museums', 'red', '123', '85', '','/re02') }}
-          {{ ui.panel_home('pieces', 'green', '723', '85', '','/re02') }}
-          {{ ui.panel_home('properties', '#fce121', '563', '85', '','/re02') }}
-          {{ ui.panel_home('rooms', '#1a77ff', '1.5k', '20', '','/re02') }}
-          {{ ui.panel_home('sneakers', 'red', '123', '85', '','/re02') }}
-          {{ ui.panel_home('stores', 'yellow', '21', '85', '','/re02') }#}
 
           </table>                  
                             
