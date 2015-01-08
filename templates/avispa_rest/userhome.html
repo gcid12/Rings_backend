@@ -72,13 +72,13 @@
               
                   {% for collection in data.collections.collectionlist %}  
                     {% if collection.valid %}
-                      {{ ui.collection(collection.collectionname,6,1,'1 day ago') }}
+                      {{ ui.collection(collection.collectionname,6,1,'1 day ago',data.handle+'/_collections/'+collection.collectionname) }}
                       <tr>
                         <td></td>
                         <td colspan="2">
                           <table class="table table-striped">
                             {% for ring in collection.rings %}  
-                              {{ ui.panel_home(ring.ringname, '#fce121', ring.count , '85', '',data.handle+'/'+ring.ringname) }}
+                              {{ ui.panel_home(ring.ringname, '#fce121', ring.count , '85', '',data.handle+'/_collections/'+collection.collectionname+'/'+ring.ringname) }}
                             {% endfor %}
                               
                           </table>

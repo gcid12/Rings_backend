@@ -19,7 +19,7 @@ class CollectionBuilder:
 
 
     
-    def post_a(self,request,handle):
+    def post_a_x(self,request,handle):
 
                 
         if request.form.get('CollectionName'):
@@ -53,14 +53,14 @@ class CollectionBuilder:
                
             #Here you write to the user.collection document
                      
-            if self.ACM.post_a(handle,collectiond):
+            if self.ACM.post_a_x(handle,collectiond):
                 print('New Collection created: '+collectiond['name'])
                 return True
             else:
                 print('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 
-    def put_a_b(self,request,handle,collection):
+    def put_a_x_y(self,request,handle,collection):
 
         #Same as collectiongenerator
         if request.form.get('CollectionName'):
@@ -94,7 +94,7 @@ class CollectionBuilder:
                
             #Here you write to the user.collection document
                      
-            if self.ACM.put_a_b(handle,collectiond):
+            if self.ACM.put_a_x_y(handle,collectiond):
                 print('Collection updated: '+collectiond['name'])
                 return True
             else:

@@ -20,7 +20,9 @@ class AvispaCollectionsModel:
 
 
     #COLLECTIONSMODEL
-    def get_a(self,handle,user_database=None):
+    def get_a_x(self,handle,user_database=None):
+
+        # Returns list of collections
 
 
         if not user_database : 
@@ -74,7 +76,9 @@ class AvispaCollectionsModel:
         
 
     #COLLECTIONSMODEL
-    def post_a(self,handle,collection,user_database=None):
+    def post_a_x(self,handle,collection,user_database=None):
+
+        #Creates new collection
 
         if not user_database : 
             user_database = self.user_database
@@ -99,7 +103,9 @@ class AvispaCollectionsModel:
 
 
     #COLLECTIONSMODEL
-    def get_a_b(self,handle,collection,user_database=None):
+    def get_a_x_y(self,handle,collection,user_database=None):
+
+        #Returns just one collection
 
 
         if not user_database : 
@@ -152,7 +158,7 @@ class AvispaCollectionsModel:
 
 
     #COLLECTIONSMODEL
-    def put_a_b(self,handle,collectiond,user_database=None):
+    def put_a_x_y(self,handle,collectiond,user_database=None):
 
         if not user_database : 
             user_database = self.user_database
@@ -196,7 +202,7 @@ class AvispaCollectionsModel:
 
 
     #COLLECTIONSMODEL
-    def delete_a_b(self,handle,collection,user_database=None):
+    def delete_a_x_y(self,handle,collection,user_database=None):
 
         if not user_database : 
             user_database = self.user_database

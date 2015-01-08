@@ -161,7 +161,7 @@ def dashboard_dispatcher(handle,dashboard_widgets):
 
     if 'collection_list' in dashboard_widgets:
         ACF = AvispaCollectionsRestFunc()
-        m = 'get_a'
+        m = 'get_a_x'
         collections = getattr(ACF, m.lower())(request,handle,None,None)
         
 
@@ -298,9 +298,10 @@ def api_route_a_b_c(handle,ring,idx):
         return result
 
 @avispa_rest.route('/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def collections_route_a(handle):
+@login_required
+def collections_route_a_x(handle):
 
-    result = collection_dispatcher('_a',handle)
+    result = collection_dispatcher('_a_x',handle)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
@@ -308,19 +309,32 @@ def collections_route_a(handle):
         return result
 
 @avispa_rest.route('/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def collections_route_a_b(handle,collection):
+@login_required
+def collections_route_a_x_y(handle,collection):
 
-    result = collection_dispatcher('_a_b',handle,collection)
+    result = collection_dispatcher('_a_x_y',handle,collection)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
     else:
         return result
 
-@avispa_rest.route('/<handle>/_collections/<collection>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def collections_route_a_b_c(handle,collection,idx):
+@avispa_rest.route('/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@login_required
+def collections_route_a_x_y_b(handle,collection,idx):
 
-    result = collection_dispatcher('_a_b_c',handle,collection,idx)
+    result = collection_dispatcher('_a_x_y_b',handle,collection,idx)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_collections/<collection>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@login_required
+def collections_route_a_x_y_b_c(handle,collection,idx):
+
+    result = collection_dispatcher('_a_x_y_b_c',handle,collection,idx)
 
     if 'redirect' in result:
         return redirect(result['redirect'])
