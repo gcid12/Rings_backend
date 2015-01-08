@@ -14,8 +14,16 @@ class AvispaCollectionsRestFunc:
     def get_a_x(self,request,handle,collection,idx,api=False,*args):
 
         collectionlist = self.ACM.get_a_x(handle)
-        print('collectionlist:',collectionlist)
-        collectionlistlen = len(collectionlist)
+        #print('collectionlist:',collectionlist)
+
+        count = 0
+        for collection in collectionlist:
+            if collection['valid']:
+                count = count + 1
+
+        collectionlistlen = count
+
+
 
         d = {'template':'avispa_rest/get_a_x.html', 'collectionlist':collectionlist, 'collectionlistlen':collectionlistlen}
         return d
@@ -119,6 +127,12 @@ class AvispaCollectionsRestFunc:
     #GET /a/b
     def get_a_x_y(self,request,handle,collection,idx,api=False,*args):
         #Show a collection (Main page)
+
+
+        collectiond = self.ACM.get_a_x_y(handle,collection)
+        print('collectiond:',collectiond)
+
+
 
 
         d = {'message': 'Using Collection get_a_b for handle '+handle , 'template':'avispa_rest/get_a_b_collections.html'}
