@@ -17,7 +17,7 @@
   <div class="col-sm-12">
     <div class="rn-box-white gad100">
         
-        {{ ui.panel(data.ring, data.handle, '#fce121', '123', 'ringdescription') }}
+        {{ ui.panel(data.ring, data.handle, '#fce121', '123', 'ringdescription','',data.collection) }}
         
     </div>
 
@@ -46,15 +46,18 @@
             </ul> 
         <div class="spa5"></div>
     <!-- ITEM N -->
+        
+
         {% if not data.itemlist %}
         You have no items in this Ring. Create one, click here:
-        <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
+
+        <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
           <i class="fa fa-plus"></i> &nbsp; NEW
         </a>
 
         {% else %}
           <div class="pull-right">
-            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
                <i class="fa fa-plus"></i> &nbsp; NEW
              </a>
           </div> 
@@ -131,9 +134,9 @@
 
                   <td style="width:90px;">
                       <div class="btn-group" role="group" aria-label="...">
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
                       </div>
                   </td>
                   <td style="">
@@ -188,9 +191,9 @@
 
 
                       <div class="btn-group" role="group" aria-label="...">
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
                       </div>
                              
                         <br/>
@@ -262,7 +265,7 @@
                   <table>
                     <tr>
                       <td align="center">
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
+                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
                                   title="
                                   {% for k,v in item.items() %}
                                     {% if k == 'name' %}
@@ -314,9 +317,9 @@
                     <tr>
                       <td align="center">
                           <div class="btn-group" role="group" aria-label="...">
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
                           </div>
                                  
                           <br/>
@@ -359,7 +362,7 @@
           {% endif %}
         </ul>
       <div class="pull-right">
-          <a href="/{{ data.handle }}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+          <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
              <i class="fa fa-plus"></i> &nbsp; NEW
            </a>
       </div>     

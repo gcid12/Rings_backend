@@ -16,6 +16,9 @@
 <!-- START NEW CONTENT --> 
 
           <div class="col-sm-12">
+            <div class="rn-box-white gad100">
+              {{ ui.panel(data.ring, data.handle, '#fce121', '123', 'ringdescription','',data.collection) }} 
+            </div>
           {% if data.item %} 
             <div class="rn-box-title-slim">
               Showing item: {{ data.idx}}
@@ -32,8 +35,8 @@
                     <div class="form-group">
                       <label for="inputPassword3" class="control-label"></label>
                       <div class="">
-                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-success btn-xs">Edit</a>
-                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default btn-xs">DELETE THIS
+                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}' type="submit" class="btn btn-success btn-xs">Edit</a>
+                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}' type="submit" class="btn btn-default btn-xs">DELETE THIS
                           </a>
                           
                       </div>

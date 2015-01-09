@@ -1,6 +1,6 @@
 
 
-  {% macro panel(name, handle, color, count,description,link) %}
+  {% macro panel(name, handle, color, count,description,link,collection) %}
 
   <tr>
     <td> 
@@ -9,7 +9,7 @@
           {{ icon_big(count,color) }}
         </div> 
         <div class="col-xs-7 col-sm-7">
-          <a href="/{{ handle }}/{{ name }}" class="nounder"><h3 class="fs-1-5">&deg;{{ name}}</h3></a>
+          <a href="/{{ handle }}/{{ name }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder"><h3 class="fs-1-5">&deg;{{ name}}</h3></a>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
         </div> 
         <div class="col-xs-5 col-sm-3">
@@ -20,13 +20,11 @@
             <div class="btn-group">
             
               <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
+
+              <a href="/{{ handle }}/{{ name }}?rq=post{% if collection != '' %}&collection={{collection}}{% endif %}" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
               
-              <a href="/{{ handle }}/{{ name }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
-
               <a href="/{{ handle }}/{{ name }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-
-              <a href="/_api/{{ handle }}/{{ name }}" type="button" class="btn btn-vader btn-xs">
-              { }</a>
+              <a href="/_api/{{ handle }}/{{ name }}" type="button" class="btn btn-vader btn-xs">{ }</a>
 
             </div>
             <br/><br/>
