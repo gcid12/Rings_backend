@@ -3,6 +3,7 @@ from flask import redirect, flash
 from RingBuilder import RingBuilder
 from MainModel import MainModel #DELETE!
 from AvispaModel import AvispaModel
+from AvispaCollectionsModel import AvispaCollectionsModel
 from env_config import PREVIEW_LAYER
 
 class AvispaRestFunc:
@@ -16,11 +17,46 @@ class AvispaRestFunc:
     def get_a(self,request,handle,ring,idx,api=False,*args):
 
         ringlist = self.AVM.user_get_rings(handle)
+        print('ringlist:',ringlist)
+
+        if 'collection' in request.args:
+            self.ACM = AvispaCollectionsModel()
+            collectiond = self.ACM.get_a_x_y(handle,request.args.get('collection')) #It comes with just one collection  
+
+            print('collectiond:',collectiond)
+            
+            if collectiond:
+                if 'valid' in collectiond:
+                    
+                    ringd = {}
+                    for rc in collectiond['rings']:
+                        #Building dictionary of collection rings
+                        ringd[rc['handle']+'_'+rc['ringname']+'_'+rc['version'].replace('.','-')] = rc
+
+                    
+                    print('ringd:',ringd)
+                    ringlistmod = []
+                    for ring in ringlist:
+                        print('trying to match:', handle+'_'+ring['ringname']+'_'+ring['ringversion'])
+                        if handle+'_'+ring['ringname']+'_'+ring['ringversion'] in ringd:
+                            # A match! One of the collection's ring. Add it to the list
+                            ringlistmod.append(ring) 
+
+                    del ringlist
+                    ringlist = ringlistmod
+
+            else:
+
+                redirect = '/'+handle+'/_home'
+                
+                d = {'redirect': redirect, 'status':404}
+                return d
+
+            
+
         ringlistlen = len(ringlist)
 
-        #print(ringlist)
         
-
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist, 'ringlistlen':ringlistlen, 'tab':'rep' }
     	return d
 

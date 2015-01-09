@@ -44,7 +44,7 @@ class CollectionBuilder:
                     vparts = value.split('_')
                     ring['handle'] = vparts[0]
                     ring['ringname'] = vparts[1]
-                    ring['version'] = vparts[2]
+                    ring['version'] = vparts[2].replace('.','-')
                     # Will implement this later. This is to separate from primary and secondary rings
                     ring['layer'] = 1 
                     ringlist.append(ring)

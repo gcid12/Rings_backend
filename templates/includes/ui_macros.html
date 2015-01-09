@@ -162,7 +162,7 @@
                    
 {% endmacro %}
 
-  {% macro collection(name, percent, role, update,link) %}
+  {% macro collection(name, percent, role, update,link,collection) %}
 
   <tr>
     
@@ -171,7 +171,7 @@
       
     </td>
     <td> 
-      <a class="nounder" href="{{link}}"><h3 class="fs-1 text-gray text-s1 fw-c">
+      <a class="nounder" href="{{link}}?collection={{collection}}"><h3 class="fs-1 text-gray text-s1 fw-c">
       {{ name|upper() }}</h3></a>
       <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
     </td>
@@ -184,7 +184,7 @@
   </tr>
 {% endmacro %}
 
-  {% macro collection_big(name, percent, role, update) %}
+  {% macro collection_big(name, percent, role, update,link) %}
 
   <tr>
     
@@ -193,7 +193,7 @@
       <span class="label label-default fs-0-7 ">Data Collection</span> 
     </td>
     <td> 
-      <a class="nounder" href="/"><h3 class="fs-1-5 text-gray text-s1 fw-c">
+      <a class="nounder" href="{{link}}"><h3 class="fs-1-5 text-gray text-s1 fw-c">
       {{ name|upper() }}</h3></a>
       <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
     </td>

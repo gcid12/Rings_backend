@@ -126,38 +126,31 @@ class AvispaCollectionsRestFunc:
     
     #GET /a/b
     def get_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        #Show a collection (Main page)
+        #THIS IS NOT USED . SEE AvispaRestFunc.get_a() instead 
 
-
-        collectiond = self.ACM.get_a_x_y(handle,collection)
-        print('collectiond:',collectiond)
-
-
-
-
-        d = {'message': 'Using Collection get_a_b for handle '+handle , 'template':'avispa_rest/get_a_b_collections.html'}
+        d = {'message': 'Using Collection get_a_x_y for handle '+handle , 'template':'avispa_rest/get_a.html'}
         return d
 
     def get_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection get_rq_a_b for handle:'+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection get_rq_a_x_y for handle:'+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
     def get_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection get_rs_a_b for handle:'+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection get_rs_a_x_y for handle:'+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
 
     #POST /a/b
     def post_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection post_a_b for handle '+handle , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection post_a_x_y for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     def post_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection post_rq_a_b for handle '+handle , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection post_rq_a_x_y for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
     def post_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection post_rs_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection post_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
 
@@ -184,39 +177,39 @@ class AvispaCollectionsRestFunc:
     def put_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
         #Form to edit a collection
         ringlist = self.AVM.user_get_rings(handle)
-        collectionlist = self.ACM.get_a_x_y(handle,collection)
+        collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection
 
-        print('collectionlist:',collectionlist)
+        print('collectiond:',collectiond)
 
         collectionrings = []
-        for ring in collectionlist['rings']:
+        for ring in collectiond['rings']:
             collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace(',','-'))
 
         
         d = {'message': 'Using Collection put_rq_a_x_y for handle '+handle , 
              'template': 'avispa_rest/put_rq_a_x_y.html',
              'ringlist': ringlist,
-             'collectionlist': collectionlist,
+             'collectionlist': collectiond,
              'collectionrings': collectionrings}
         return d
 
 
     def put_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection put_rs_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection put_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
 
     #PATCH /a/b
     def patch_a_x_y(self,request,handle,collection,idx,api=False,*args):
-    	d = {'message': 'Using Collection patch_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+    	d = {'message': 'Using Collection patch_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
     def patch_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection patch_rq_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection patch_rq_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
     def patch_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection patch_rs_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection patch_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
     
@@ -240,20 +233,20 @@ class AvispaCollectionsRestFunc:
 
 
     def delete_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection delete_rq_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection delete_rq_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
 
     def delete_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection delete_rs_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
+        d = {'message': 'Using Collection delete_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
     
     #SEARCH /a/b
     def search_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection search_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/search_a_b.html'}
+        d = {'message': 'Using Collection search_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/search_a_b.html'}
         return d
 
     def search_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection search_rq_a_b for handle '+handle+', collection:'+collection , 'template':'avispa_rest/search_rq_a_b.html'}
+        d = {'message': 'Using Collection search_rq_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/search_rq_a_b.html'}
         return d
 
 

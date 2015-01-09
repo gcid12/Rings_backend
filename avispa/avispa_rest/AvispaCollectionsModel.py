@@ -44,7 +44,7 @@ class AvispaCollectionsModel:
                 if not 'deleted' in ring:
                     ringname = str(ring['ringname'])
                     ringversion = str(ring['version'])
-                    ringversionh = ringversion.replace('-','.')
+                    ringversionh = ringversion
                     count = ring['count']
                     validring[ringname+'_'+ringversionh] = count
 
@@ -76,7 +76,7 @@ class AvispaCollectionsModel:
         
 
     #COLLECTIONSMODEL
-    def post_a_x(self,handle,collection,user_database=None):
+    def post_a_x(self,handle,collectiond,user_database=None):
 
         #Creates new collection
 
@@ -89,10 +89,10 @@ class AvispaCollectionsModel:
 
         print('user_doc[colections]:',user_doc['collections'])
 
-        newcollection = {'collectionname' : str(collection['name']),
-                         'collectiondescription' : str(collection['description']),
-                         'version' : str(collection['version']),
-                         'rings' : collection['ringlist'],
+        newcollection = {'collectionname' : str(collectiond['name']),
+                         'collectiondescription' : str(collectiond['description']),
+                         'version' : str(collectiond['version']),
+                         'rings' : collectiond['ringlist'],
                          'added' : str(datetime.now())}
 
 
@@ -138,6 +138,7 @@ class AvispaCollectionsModel:
                 #coll['valid'] = True
                 if coll['collectionname'] == collection:
                     
+                    coll['valid'] = True
                     for ring in coll['rings']:       
                         if ring['ringname']+'_'+ring['version'] not in validring:
                             #InValid Collection, at least one of its rings is marked as deleted             
@@ -145,6 +146,9 @@ class AvispaCollectionsModel:
                             break
                         else:
                             ring['count'] = validring[ring['ringname']+'_'+ring['version']]
+
+
+
                                             
                     return coll
                         

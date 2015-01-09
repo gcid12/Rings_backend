@@ -27,6 +27,7 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="rn-box-title">
+
               <strong>Showing {{data.collectionlistlen}} collections</strong>
               
               <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
@@ -75,7 +76,7 @@
                     <td> 
                     </td>
                     <td> 
-                      <a class="rn-b1" href="/{{ data.handle }}/_collections/{{ collection.collectionname }}">&circ;{{ collection.collectionname }}</a>
+                      <a class="rn-b1" href="/{{ data.handle }}?collection={{ collection.collectionname }}">&circ;{{ collection.collectionname }}</a>
                       <hr/>
                       <p class="rn-t3 rn-gray">{{ collection.collectiondescription }}</p>
                     </td>
@@ -83,7 +84,7 @@
                       <div class="pull-right">
                         <!--input type="checkbox" value="public" name="public"/-->
                         <div class="btn-group">
-                          <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}" >Show</a>
+                          <a href="/{{ data.handle }}?collection={{ collection.collectionname }}" >Show</a>
                           <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">Edit</i></a>
                           <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?method=delete" >Delete</a>
                         </div>

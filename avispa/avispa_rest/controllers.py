@@ -56,9 +56,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
         data = getattr(MRP, tool.lower())(request)
         print('flagA:')
         print(data)
-
-
-    else:
+    else:  
         data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
 
     if 'collection' in request.args:
