@@ -719,6 +719,7 @@ class AvispaModel:
                 #pass
 
             #item = {} #Make this an ordered dictionary
+            #This will output the fields as specified in the schema
             item = collections.OrderedDict()
 
             item[u'_id'] = row['id']

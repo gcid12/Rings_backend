@@ -17,13 +17,9 @@
   <div class="col-sm-12">
     <div class="rn-box-white gad100">
         
-        {{ ui.panel(data.ring, data.handle, '#fce121', '123', 'ringdescription','',data.collection) }}
+        {{ ui.panel(data.ring, data.handle, '#fce121', '123', '','',data.collection) }}
         
     </div>
-
-
-
-
 
     {% block result1 %}
 
@@ -38,10 +34,12 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs text-right" role="tablist">
             
-            
+            {% if data.imagesui==True %}
             <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
+            {% endif %}
             <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
             <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
+
             
             </ul> 
         <div class="spa5"></div>
@@ -80,34 +78,35 @@
             
             <table class="table table-striped table-condensed">
 
+
               {% for item in data.itemlist %}
               <tr>
-                  <td style="width:40px;" class="text-right">
+                  
+                  {% if data.imagesui==True %}
+                  <td style="width:100px;" class="text-right">
                       {% for k,v in item.items() %}
-                        {% if k == 'Images' %}
+                        {% if data.widget[k] == 'images' %}       
                           {% for image in v %}
-                            {% if image %}
-                          
-                          <img style="width:20px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                            {% if image %}                      
+                              <img style="width:40px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
                             {% endif %}
-                          {% endfor %}
-                        {% else %}
-                          
+                          {% endfor %}                    
                         {% endif %}
                       {% endfor %}
                       <!-- IMAGE PLACEHOLDER/ PLEASE REMOVE -->
-                      <img style="width:20px;" src="/static/images/d3-a.png"  alt="Rings">
+                      <!--img style="width:20px;" src="/static/images/d3-a.png"  alt="Rings"-->
                       <!-- IMAGE PLACEHOLDER FINISH -->
                   </td>
+                  {% endif %}
                       
                   
                   <td>
                              
-                        <br/>
+                        
                          {% for k,v in item.items() %}
-                            
+     
                             {% if k =='_public' %}
-                              {% if v ==True %}
+                              {% if v == True %}
                                 
                                 <span class="label label-info">PUBLIC</span>
                               {% else%}
@@ -118,15 +117,26 @@
                           {% endfor %}
                   </td>
 
+                  {% for k,v in item.items() %}
                   <td>
-                  <!-- 1st FIELD -->
-                      {% for k,v in item.items() %}
-                                {% if k == 'name' %}
-                                <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" class="nounder"><p class="text-s1 fs-0-8 fw-b">{{ v|truncate(100, true,'...') }}</p></a>
-                    
-                                {% endif %}
-                      {% endfor %}
+                        
+
+                          {% if not k =='_public' %} 
+                          {% if not k =='_id' %} 
+                          {% if not data.widget[k] == 'images' %} 
+                          {% if v %}                   
+                          
+                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
+
+                          {% endif %}
+                          {% endif %}
+                          {% endif %}
+                          {% endif %}
+                        
+
                   </td>
+                  {% endfor %}
+
                   <td style="width:150px;">
                   <!-- 1st FIELD -->
                       {{ ui.pbar('35') }}
@@ -171,23 +181,18 @@
               {% for item in data.itemlist %}
               <tr>
                   <td>
-                      {% for k,v in item.items() %}
-                        {% if k == 'Images' %}
-                          {% for image in v %}
-                            {% if image %}
-                          
-                          <img style="width:120px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
-                            {% endif %}
-                          {% endfor %}
-                        {% else %}
-                          
-                        {% endif %}
-                      {% endfor %}
-                      <!-- IMAGE PLACEHOLDER/ PLEASE REMOVE -->
-                      <img style="width:150px; margin:5px;" src="/static/images/d3-a.png"  alt="Rings"><br/>
-                      <!-- IMAGE PLACEHOLDER FINISH -->
 
-                      
+                      {% if data.imagesui==True %}
+                        {% for k,v in item.items() %}
+                          {% if data.widget[k] == 'images' %}       
+                            {% for image in v %}
+                              {% if image %}                      
+                                <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" class="img-thumbnail" >
+                              {% endif %}
+                            {% endfor %}                    
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
 
 
                       <div class="btn-group" role="group" aria-label="...">
@@ -252,6 +257,8 @@
           </div>
  <!-- AS A BIGLIST close -->
 
+ {% if data.imagesui==True %}
+
   <!-- AS MOSAIC -->
           <div role="tabpanel" class="tab-pane fade" id="mosaic">
 
@@ -279,25 +286,20 @@
                                     {% endif %}
                                   {% endfor %}"
                           >
+
                         <!-- Image placeholder -->
-                          <img style="width:90px; margin:1px;" src="/static/images/image01.jpg"  alt="Rings">
+                          {% for k,v in item.items() %}
+                        {% if data.widget[k] == 'images' %}       
                           
-
-
-                    <!-- {% for k,v in item.items() %}
-                        {% if k == 'Images' %}
-                          {% for image in v %}
-                            {% if image %}
-
-
-                          
-                          <img style="width:70px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                            {% if v[0] %}                      
+                              <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
                             {% endif %}
-                          {% endfor %}
-                        {% else %}
-                          
+                                             
                         {% endif %}
-                      {% endfor %} -->
+                      {% endfor %}
+                          
+
+
 
                         </a>
                       </td>
@@ -344,7 +346,8 @@
             </table>
             
           </div>
-  <!-- AS MOSAIC close -->    
+  <!-- AS MOSAIC close -->  
+{% endif %}  
 
         </div>
 

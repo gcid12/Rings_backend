@@ -175,7 +175,7 @@ class AvispaRestFunc:
             lastkey = None
 
         if request.args.get('resultsperpage'):
-            resultsperpage = request.args.get('resultsperpage')
+            resultsperpage = int(request.args.get('resultsperpage'))
         else:
             resultsperpage = 1000
 
@@ -184,48 +184,57 @@ class AvispaRestFunc:
         else:
             sort = None
 
+        if request.args.get('layer'):
+            layer = request.args.get('layer')
+        else:
+            layer = PREVIEW_LAYER
+
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         #print(schema['fields'])
 
         layers = {}
         labels = {}
+        widgets = {}
         for schemafield in schema['fields']:
             layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])
             labels[schemafield['FieldName']]=schemafield['FieldLabel']
+            widgets[schemafield['FieldName']]=schemafield['FieldWidget']
 
-        #print('layers:')
-        #print(layers)
+        print('widgets:',widgets)
 
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
         
+        
         #print('preitemlist:')
-        #print(preitemlist)
+        print('preitemlist:',preitemlist)
 
         itemlist = []
+        d['imagesui'] = False
         for item in preitemlist:
             #item['_level']=2
-            #print(item)
+            print('item:',item)
             #previewItem = {}
-            previewItem = collections.OrderedDict()
+            previewItem = collections.OrderedDict()  
+
             for fieldname in item:
-                #print(fieldname)
+                print('fieldname:',fieldname)
                 
                 previewItem[u'_id'] = item[u'_id']
                 if fieldname in layers:
-                    if layers[fieldname]<=PREVIEW_LAYER:
+                    if layers[fieldname]<=layer:
                     #if True:
                         #Only include those fields above the PREVIEWLAYER
-                        #print("Out:"+fieldname)
+                        print("Layer for "+fieldname+'->'+str(layers[fieldname]))
                         previewItem[fieldname] = item[fieldname] 
                     #Include id anyway     
                     
-
-
-            if 'Images' in previewItem:
-                images=previewItem['Images'].split(',')                
-                del images[0]
-                previewItem['Images']=images
+                        if  widgets[fieldname]=='images':
+                            
+                            d['imagesui'] = True
+                            images=previewItem[fieldname].split(',')                
+                            del images[0]
+                            previewItem[fieldname]=images
 
             #print('previewItem:')
             #print(previewItem)
@@ -239,14 +248,17 @@ class AvispaRestFunc:
         #print(len(itemlist))
 
         if len(itemlist)>0 and len(itemlist) == resultsperpage:
-            nextlastkey=itemlist[-1]['id']
+            nextlastkey=itemlist[-1]['_id']
             d['lastkey'] = nextlastkey
             #Still, if the last page has exactly as many items as resultsperpage, the next page will be empty. Please fix
 
-        
+        d['widget'] = widgets
         d['itemlist'] = itemlist
         d['resultsperpage'] = resultsperpage
         d['FieldLabel'] = labels
+
+
+        
 
 
         if api:
@@ -255,14 +267,9 @@ class AvispaRestFunc:
 
             out['source'] = "/"+str(handle)+"/"+str(ring)
 
-            
             if 'schema' in request.args:
-                schema= self.AVM.ring_get_schema_from_view(handle,ring)
                 out['rings'] = schema['rings']
                 out['fields'] = schema['fields']
-
-            #del itemlist['_id']
-            #del item['_public'] 
             
             out['items'] = itemlist
             
@@ -270,6 +277,9 @@ class AvispaRestFunc:
             d['api_out'] = json.dumps(out)
             d['template'] = 'avispa_rest/get_api_a_b.html'
         else:
+      
+
+            d['rings'] = schema['rings']
             d['template'] = 'avispa_rest/get_a_b.html'
 
         return d
