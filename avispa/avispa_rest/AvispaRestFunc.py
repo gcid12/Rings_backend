@@ -202,6 +202,9 @@ class AvispaRestFunc:
 
         print('widgets:',widgets)
 
+        d['ringcount']  = self.AVM.get_item_count(handle,ring)
+
+
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
         
@@ -228,7 +231,7 @@ class AvispaRestFunc:
                         print("Layer for "+fieldname+'->'+str(layers[fieldname]))
                         previewItem[fieldname] = item[fieldname] 
                     #Include id anyway     
-                    
+
                         if  widgets[fieldname]=='images':
                             
                             d['imagesui'] = True
@@ -336,6 +339,9 @@ class AvispaRestFunc:
              'fieldsschema':fieldsschema,
              'numfields':numfields,
              'item':{} }
+
+        d['ringcount']  = self.AVM.get_item_count(handle,ring)
+
         return d
 
     def post_rs_a_b(self,request,handle,ring,idx,api=False,*args):
@@ -378,6 +384,8 @@ class AvispaRestFunc:
              'ringschema':ringschema,
              'fieldsschema':fieldsschema,
              'numfields':numfields }
+        d['ringcount']  = self.AVM.get_item_count(handle,ring)
+        
         return d
 
     def put_rs_a_b(self,request,handle,ring,idx,api=False,*args):
@@ -438,7 +446,8 @@ class AvispaRestFunc:
         Gets existing item
         ''' 
 
-        d = {}       
+        d = {}
+        d['ringcount']  = self.AVM.get_item_count(handle,ring)       
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
         print('preitem:',item)
 
@@ -581,6 +590,8 @@ class AvispaRestFunc:
              'numfields':numfields,
              'item':item,
              'labels':labels }
+
+        d['ringcount']  = self.AVM.get_item_count(handle,ring)  
 
         
 

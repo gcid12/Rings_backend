@@ -547,6 +547,23 @@ class AvispaModel:
 
 
     #AVISPAMODEL
+    def get_item_count(self,handle,ringname,user_database=None):
+
+
+        if not user_database : 
+            user_database = self.user_database
+
+        user_doc = self.MAM.select_user(user_database,handle)
+        print('user rings:',user_doc['rings'])
+        for user_ring in user_doc['rings']:
+            if user_ring['ringname']==ringname:
+                return user_ring['count']
+
+
+        return False
+
+
+    #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
 
         self.db = self.couch[self.user_database]
@@ -649,6 +666,8 @@ class AvispaModel:
     #AVISPAMODEL
     def get_a_b(self,handle,ringname,limit=100,lastkey=None,sort=None):
 
+
+
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
         batch = 500  #This is not the number of results per page. 
@@ -676,8 +695,8 @@ class AvispaModel:
         #print('schema:')
         #print(schema)
 
-        print('OrderedFields:')
-        print(OrderedFields)
+        #print('OrderedFields:')
+        #print(OrderedFields)
 
         options = {}
         if lastkey:
@@ -713,8 +732,8 @@ class AvispaModel:
             if lastkey and i==1:
                 #If lastkey was sent, ignore first item 
                 #as it was the last item in the last page
-                print('length:')
-                print(len(items))
+                #print('length:')
+                #print(len(items))
                 continue
                 #pass
 
