@@ -86,6 +86,12 @@ class MyRingPatch:
 
 
     def p20141223(self,request,*args):
+        '''
+        This patch pulls every single item and checks whether its document has the correct structure
+        @input (GET): handle
+        @input (GET): ringname
+
+        '''
 
         #Select schema for this Ring
         print('check_and_repair_ring')
@@ -303,6 +309,199 @@ class MyRingPatch:
         return d
 
             
+    def p20150113(self,request,*args):
+        '''
+        This patch repairs items that where affected by the bug that didn't detect rich fields. 
+        It detects affected items and aquires rich-data from the source
+        @input (GET) : handle
+        @input (GET) : ringname
+        '''
+
+        print('Starts patch p20150113')
+
+
+        from MyRingCouchDB import MyRingCouchDB
+        from env_config import COUCHDB_USER, COUCHDB_PASS
+        from datetime import datetime
+
+        import urlparse
+        import requests
+
+        MCD = MyRingCouchDB()
+        self.couch=MCD.instantiate_couchdb_as_admin()    
+        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
+                
+   
+
+        handle = request.args.get('handle')
+        ringname = request.args.get('ringname')
+
+        print('handle:',handle)
+        print('ringname:',ringname)
+
+        if handle and ringname:
+            schema = self.AVM.ring_get_schema_from_view(handle,ringname)
+            #print('schema:',schema['fields'])
+
+            
+            #Pre: Obtain the items
+            items = self.AVM.get_a_b(handle,ringname,limit=1000000)
+            itemlist = []
+            for i in items:
+                itemlist.append(i['_id'])
+                
+            print('itemlist:',itemlist)
+
+
+            #schema = self.AVM.ring_get_schema(handle,ringname)
+            RingClass = self.AVM.ring_create_class(schema)
+            db_ringname=str(handle)+'_'+str(ringname)
+            db = self.couch[db_ringname]
+
+            
+            for idx in itemlist: 
+                #For each item in the Ring            
+    
+                item = RingClass.load(db,idx)
+                needs_saving = False
+
+                for field in schema['fields']:
+                    #For each field in the item
+                    if field['FieldWidget'] == 'select' and field['FieldSource']:
+                        #If it is a select 
+                        if item.items[0][field['FieldName']]:
+                            #If it exists
+
+                            try: 
+                                external_id = int(item['items'][0][field['FieldName']])
+                            except:
+                                break
+
+
+                            if external_id:
+
+                                needs_saving = True
+
+                                #If it is an integer
+
+                                #Retrieve it and see if it exists
+                                urlparts = urlparse.urlparse(field['FieldSource'])
+                                print('urlparts',urlparts)
+
+                                pathparts = urlparts.path.split('/')
+                                if pathparts[1]!='_api':
+                                    corrected_path = '/_api'+urlparts.path
+                                    external_handle = pathparts[1]
+                                    external_ringname = pathparts[2]
+                                else:
+                                    corrected_path = urlparts.path
+                                    external_handle = pathparts[2]
+                                    external_ringname = pathparts[3]
+
+                                path = corrected_path+'/'+str(external_id)
+                                query = 'schema=1'
+                                url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, path , '', query, ''))
+
+                                external_host=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, '', '', '', ''))
+                                print('external_host:',external_host)
+
+                                rqurl = urlparse.urlparse(request.url)
+                                local_host=urlparse.urlunparse((rqurl.scheme, rqurl.netloc, '', '', '', ''))
+                                print('local_host:',local_host)
+
+                                if local_host==external_host:
+                                    print('Data source is in the same server')
+
+                                    rich_item = self.AVM.get_a_b_c(None,external_handle,external_ringname,external_id)
+
+                                    rs = self.AVM.ring_get_schema_from_view(external_handle,external_ringname)
+
+                                    print('rich_rs:',rs)
+                                    print('rich_item:',rich_item)
+                                    
+                                    external_FieldName = rs['fields'][0]['FieldName']
+
+                                    
+                                else:
+                                    print('Data source is in another server')
+                                 
+                                    print('Retrieving source at:',url)
+                                    r = requests.get(url)
+                                    print('Raw JSON schema:')
+                                    print(r.text)
+                                    rs = json.loads(r.text)
+                                    print('rich_rs:',rs)
+                                    rich_item = rs['items'][0]
+                                    print('rich_item:',rich_item)
+                                    external_FieldName = rs['fields'][0]['FieldName']
+
+
+                                rich_item_dict = {}
+                                #Nice to include where we got the information from
+                                rich_item_dict['_source'] = url  
+                                # Converting the ordered_dictionary to regular dictionary
+                                for j in rich_item:
+                                    rich_item_dict[j] = rich_item[j]
+
+
+
+                                #Overwriting the default Field
+                                if urlparts.query:
+                                    queryparts = urlparts.query.split('&')
+                                    print('queryparts:',queryparts)
+                                    for querypart in queryparts:
+                                        paramparts = querypart.split('=')
+                                        print('paramparts:',paramparts)
+                                        if paramparts[0]=='fl':
+                                            flparts = paramparts[1].split(',')
+                                            print('flparts:',flparts)   
+                                            external_FieldName = flparts[0]
+                                #The value for the Field picked (or the first Field if default)
+                                value = rich_item[external_FieldName]
+
+                                print('value:',value)
+
+                                print('rich_item_dict:',rich_item_dict)
+
+
+                                old_value = item.items[0][field['FieldName']]
+                                item.items[0][field['FieldName']] = value
+                                item.rich[0][field['FieldName']] = rich_item_dict
+
+
+                                #RECORD THIS PATCH HISTORY
+
+                                history_item = {}
+                                history_item['date'] = str(datetime.now())
+                                history_item['author'] = handle
+                                history_item['before'] = old_value
+                                history_item['after'] = value
+                                history_item['action'] = 'Patch p20150113'
+                                item.history[0][field['FieldName']].append(history_item)
+                         
+
+                    else:
+                        #Not a select. Will not have rich data
+                        print(field['FieldName']+' is NOT a RICH Field ')
+                        
+
+
+
+                if needs_saving:
+                    if item.store(db): 
+                        print('item document saved:',item)
+                else:
+                    print('Nothing to patch here')   
+
+        else:
+            print('Please indicate this in URL:  ?handle=x&ringname=y')  
+                
+
+        d = {'rq': current_user,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
+
 
 
 
