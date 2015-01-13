@@ -804,7 +804,7 @@ class AvispaModel:
 
             #Detect if FieldWidget is "select" . If it is you are getting an ID. 
             #You need to query the source to get the real value and the _rich values
-            if field['FieldSource'] and field['FieldWidget']=='select' and len(field['FieldName'])!=0:
+            if field['FieldSource'] and field['FieldWidget']=='select' and len(request.form.get(field['FieldName']))!=0:
                 print(field['FieldName']+' is a RICH Field ')
                 external_id=int(request.form.get(field['FieldName'])) #need to sanitize this more
                 print('external_id',external_id)
