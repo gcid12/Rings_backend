@@ -85,12 +85,18 @@
                   {% if data.imagesui==True %}
                   <td style="width:100px;" class="text-right">
                       {% for k,v in item.items() %}
-                        {% if data.widget[k] == 'images' %}       
-                          {% for image in v %}
+                        {% if data.widget[k] == 'images' %}  
+
+                          {% if v[0] %}                      
+                              <img style="width:40px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{v[0]}}_t75.jpg" class="img-thumbnail" >
+                          {% endif %}
+
+                          {#% for image in v %}
                             {% if image %}                      
                               <img style="width:40px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
                             {% endif %}
-                          {% endfor %}                    
+                          {% endfor %#} 
+
                         {% endif %}
                       {% endfor %}
                       <!-- IMAGE PLACEHOLDER/ PLEASE REMOVE -->
@@ -174,8 +180,6 @@
 
  <!-- AS MEGA LIST -->
           <div role="tabpanel" class="tab-pane fade" id="biglist">
-
-
           
             <table class="table table-striped">
               {% for item in data.itemlist %}
@@ -184,12 +188,17 @@
 
                       {% if data.imagesui==True %}
                         {% for k,v in item.items() %}
-                          {% if data.widget[k] == 'images' %}       
-                            {% for image in v %}
+                          {% if data.widget[k] == 'images' %} 
+
+                            {% if v[0] %}                      
+                              <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                            {% endif %}
+
+                            {#% for image in v %}       
                               {% if image %}                      
                                 <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" class="img-thumbnail" >
                               {% endif %}
-                            {% endfor %}                    
+                            {% endfor %#}                    
                           {% endif %}
                         {% endfor %}
                       {% endif %}
@@ -288,7 +297,7 @@
                           >
 
                         <!-- Image placeholder -->
-                          {% for k,v in item.items() %}
+                      {% for k,v in item.items() %}
                         {% if data.widget[k] == 'images' %}       
                           
                             {% if v[0] %}                      
