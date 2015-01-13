@@ -814,9 +814,11 @@ class AvispaModel:
                 pathparts = urlparts.path.split('/')
                 if pathparts[1]!='_api':
                     corrected_path = '/_api'+urlparts.path
+                    external_handle = pathparts[1]
                     external_ringname = pathparts[2]
                 else:
                     corrected_path = urlparts.path
+                    external_handle = pathparts[2]
                     external_ringname = pathparts[3]
 
 
@@ -835,9 +837,9 @@ class AvispaModel:
                 if local_host==external_host:
                     print('Data source is in the same server')
 
-                    rich_item = self.get_a_b_c(None,handle,external_ringname,external_id)
+                    rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_id)
 
-                    rs = self.ring_get_schema_from_view(handle,external_ringname)
+                    rs = self.ring_get_schema_from_view(external_handle,external_ringname)
 
                     print('rich_rs:',rs)
                     print('rich_item:',rich_item)
