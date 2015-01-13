@@ -184,6 +184,11 @@ class AvispaRestFunc:
         else:
             sort = None
 
+        if request.args.get('noimages'):
+            noimages = request.args.get('noimages')
+        else:
+            noimages = None
+
         if request.args.get('layer'):
             layer = request.args.get('layer')
         else:
@@ -243,6 +248,9 @@ class AvispaRestFunc:
             #print(previewItem)
 
             itemlist.append(previewItem)
+
+        if noimages:
+            d['imagesui'] = False
 
 
         #print('itemlist:')
@@ -385,7 +393,7 @@ class AvispaRestFunc:
              'fieldsschema':fieldsschema,
              'numfields':numfields }
         d['ringcount']  = self.AVM.get_item_count(handle,ring)
-        
+
         return d
 
     def put_rs_a_b(self,request,handle,ring,idx,api=False,*args):
