@@ -435,6 +435,10 @@ class MyRingPatch:
                                     print('rich_item:',rich_item)
                                     external_FieldName = rs['fields'][0]['FieldName']
 
+                                if not rich_item:
+                                    #It didn't find the external item
+                                    break
+
 
                                 rich_item_dict = {}
                                 #Nice to include where we got the information from
