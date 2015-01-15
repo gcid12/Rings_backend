@@ -117,7 +117,6 @@ class RingBuilder:
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
             host_ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
             print(host_ring_url)
- 
 
             
             if host_url==host_ring_url:
@@ -148,6 +147,11 @@ class RingBuilder:
                 
                 for k in schema['rings'][0]:
                     requestparameters[k] = schema['rings'][0][k]
+
+
+                if 'RingParent' not in requestparameters:
+                    requestparameters['Ringparent'] = requestparameters['RingName']
+                
 
                 i = 0
                 for n in schema['fields']:
@@ -193,6 +197,13 @@ class RingBuilder:
 
                 for k in schema['rings'][0]:
                     requestparameters[k] = schema['rings'][0][k]
+
+                print('pre_requestparameters:')
+                print(requestparameters)
+
+                if 'RingParent' not in requestparameters:
+                    print('adding RingParent to requestparameters')
+                    requestparameters['RingParent'] = requestparameters['RingName']
 
                 i = 0
                 for n in schema['fields']:
