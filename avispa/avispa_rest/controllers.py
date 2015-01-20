@@ -3,6 +3,7 @@ import urlparse, time, datetime
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
+from AvispaRolesRestFunc import AvispaRolesRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -180,6 +181,60 @@ def dashboard_dispatcher(handle,dashboard_widgets):
     
     return render_template(data['template'], data=data)
 
+def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
+
+    ARR = AvispaRolesRestFunc()
+
+
+    if 'q' in request.args:
+        if request.args.get("q"):
+            method = 'search'
+        else:
+            method = 'search_rq'
+    elif request.args.get("rq"):
+        method = request.args.get("rq")+'_rq'
+    elif request.args.get("rs"):
+        method = request.args.get("rq")+'_rs'
+    elif request.args.get("method"):
+        method = request.args.get("method")
+    else:
+        method = request.method
+
+    #method = request.method
+    m = method
+    data = {}
+
+    data = getattr(ARR, m.lower())(request,depth,handle,ring,idx,collection,api=api)
+
+    data['handle']=handle
+    data['ring']=ring
+    data['idx']=idx
+    data['collection']=collection
+    data['current_user']=current_user
+
+    t = time.time()
+    data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+
+    
+
+    if 'error_status' in data.keys():
+        status = int(data['error_status'])
+    else:
+        status = 200
+
+    if 'redirect' in data:
+        print('flag0')
+        print(data)
+        return data             
+    elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
+        print('flag1')
+        print(data)      
+        return render_template(data['template'], data=data), status     
+    else:
+        print('flag2')
+        #print(data) 
+        return render_template(data['template'], data=data)
+        #return 'ok'
     
     
 
@@ -238,7 +293,7 @@ def static5(filename,depth1,depth2,depth3,depth4):
     return avispa_rest.send_static_file(filename)
 
 @avispa_rest.route('/_tools/install', methods=['GET'])
-#This is needed because in a Vanilla install there are no users so /<handle>/<ring> would redirect me to /_login
+#This is needed because in a Vanilla install there are no users so /_tools/install would redirect me to /_login
 def first_install():
 
 
@@ -250,7 +305,7 @@ def first_install():
         return result
 
 @avispa_rest.route('/<handle>/_home', methods=['GET'])
-#This is needed because in a Vanilla install there are no users so /<handle>/<ring> would redirect me to /_login
+#The home of user <handle>
 def home(handle):
 
     dashboard_widgets = []
@@ -265,6 +320,61 @@ def home(handle):
     else:
         return result
 
+@avispa_rest.route('/_roles/<handle>', methods=['GET'])
+@login_required
+def roles_a(handle):
+    
+    result = role_dispatcher('_a',handle)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/_roles/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@login_required
+def roles_a_b(handle,ring):
+    
+    result = role_dispatcher('_a_b',handle,ring)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+    
+
+@avispa_rest.route('/_roles/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@login_required
+def roles_a_b_c(handle,ring,idx):
+    
+    result = role_dispatcher('_a_b_c',handle,ring,idx)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/_roles/<handle>/_collection', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@login_required
+def roles_a_x(handle,collection):
+    
+    result = role_dispatcher('_a_x',handle)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/_roles/<handle>/_collection/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+@login_required
+def roles_a_x_y(handle,collection):
+    
+    result = role_dispatcher('_a_x_y',handle,collection)
+    
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
 
 
 @avispa_rest.route('/_api/<handle>', methods=['GET'])

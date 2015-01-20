@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="rn-box-title">
+
+              <strong>Showing roles for @{{ data.handle }}{% if data.ring %}/{{data.ring}}{% endif %}</strong>
+              
+              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+              <i class="fa fa-question-circle"></i>
+              </button-->
+
+              
+              <!--a href="?q" type="button" class="btn btn-success btn-xs pull-right">
+                <i class="fa fa-search"></i> SEARCH
+              </a-->
+            </div>
+            <div class="rn-box-solo">
+              <div class="pull-right rn-t3 text-right">
+                  <i class="fa fa-dot-circle-o fa-2x" style="color:#CCC; padding:0 10px;"></i>
+              </div>
+          
+              <div class="pull-right rn-t3 text-right"><strong> &nbsp;</strong>
+
+              </div>
+              <div class="rn-t2">Roles in @{{ data.handle }}{% if data.ring %}/{{data.ring}}{% endif %}</div>
+
+                
+            </div>
+              <!-- <div class="rn-box-space">
+                  
+                      <div class="rn-b1">123</div>
+                  
+              </div> -->
+            <div class="rn-box-content">
+              <table class="table table-striped"> <!-- inner row -->
+
+
+
+
+              {% for k in data.roles["local"] %}
+                  {% set role = data.roles["local"] %}
+                
+                  <tr>
+                    <td>
+                      
+                    </td>
+                    <td> 
+                    </td>
+                    <td> 
+                      <a class="rn-b1" href="">{{ role[k]['role'] }}</a>
+                      <hr/>
+                      <p class="rn-t3 rn-gray"></p>
+                      {% if role[k]['users']%}<b>USERS:</b>{% endif %}
+                      {% for user in role[k]['users'] %}
+                        {% if comma %}{{comma}}{% endif %}{{user}}
+                        {% set comma = ', ' %}
+                      {% endfor %}
+
+
+                      {% if 'inherited' in data.roles %}
+                        {% if 'users' in data.roles['inherited'][role[k]['role']] %}
+                           {#{data.roles['inherited'][role[k]['role']]['users']}#} 
+                           {% for user in data.roles['inherited'][role[k]['role']]['users'] %} 
+                               , <b>{{user}}</b>
+                           {% endfor %}                    
+                        {% endif %}
+                      {% endif %}
+
+                      
+                      {% if role[k]['users']%}<br/>{% endif %}
+                      <b>Authorized to:</b>
+
+                      {% for authorization in role[k]['authorizations'] %}
+
+                        {% if data.roledictionary[authorization] %}
+                          <br/>+ {{data.roledictionary[authorization]}}
+                        {% endif %}
+
+                        {#% if comma %}{{comma}}{% endif %}{{authorization}}
+                        {% set comma = ',' %#}
+                      {% endfor %}
+
+                      {% if 'inherited' in data.roles %}
+                        {% if 'authorizations' in data.roles['inherited'][role[k]['role']] %}
+                           {#{data.roles['inherited'][role[k]['role']]['authorizations']}#} 
+                           {% for authorization in data.roles['inherited'][role[k]['role']]['authorizations'] %} 
+
+                               {% if data.roledictionary[authorization] %}
+                                 <br/>+<b> {{data.roledictionary[authorization]}}</b>
+                               {% endif %}
+
+                           {% endfor %}                    
+                        {% endif %}
+                      {% endif %}
+
+
+
+                      {#% if role[k]['role'] in data.roles['inherited'] %}
+                      <br/><b>Inherited users:</b>
+                         {{data.roles['inherited'][role[k]['role']]['users']}}
+                      <br/><b>Inherited authorizations:</b>
+                         {{data.roles['inherited'][role[k]['role']]['authorizations']}}
+                      {% endif %#}
+
+                      <p class="rn-t3 rn-gray"></p>
+                    </td>
+                    <td style="min-width:200px;"> 
+                      <div class="pull-right">
+                        <!--input type="checkbox" value="public" name="public"/-->
+                        <div class="btn-group">
+                          <a href="/">Edit</i></a>
+                          <a href="/" >Delete</a>
+                        </div>
+                        <br/><br/>
+                        <!--span class="label label-discrete pull-right">Yesterday</span-->
+                      </div>
+                    </td>
+                  </tr>
+                
+              {% endfor %}
+
+
+              </table>
+            </div><!-- //close box -->
+            
+
+
+            <div class="">
+               <!--ul class="pagination">
+                  <li><a href="#">&laquo;</a></li>
+                  <li class="active"><a href="#">1</a></li>
+                  <li class="disable"><a href="#">2</a></li>
+                  <li class="disable"><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+               </ul-->
+               <div class="pull-right">
+                 <a href="?rq=post&n=10" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
+                    <i class="fa fa-plus"></i> &nbsp; NEW ROLE
+                 </a>
+               </div>     
+
+            </div>
+
+
+
+
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
