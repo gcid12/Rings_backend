@@ -9,7 +9,9 @@
           {{ icon_big(count,color) }}
         </div> 
         <div class="col-xs-7 col-sm-7">
-          <a href="/{{ handle }}/{{ name }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder"><h3 class="fs-1-5">&deg;{{ name}}</h3></a>    
+          <h3 class="fs-1-5">
+          <span class="mega-octicon octicon-repo"></span> <a href="/{{ handle }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{handle}}</a>/<a href="/{{ handle }}/{{ name }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder"><span style="font-weight:500;">{{name}}</span></a>
+          </h3>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
         </div> 
         <div class="col-xs-5 col-sm-3">
@@ -102,12 +104,12 @@
 </div>
 {% endmacro %}
 
-{% macro panel_collections(name, color, number, percent, active, resource,collection) %} 
+{% macro panel_collections(name, handle, color, number, percent, active, resource,collection) %} 
           
           <tr>
             <td><p>{{ number }}</p></td>
             <td>{{ icon_xsma(number, color) }}</td>
-            <td><a href="/{{ resource }}?collection={{collection}}"><p class="fs-0-8">&deg;{{ name }}</a> / <span class="fc-g">1 day ago</span></p></td>
+            <td><span class="octicon octicon-repo"></span> &nbsp;<a href="/{{ resource }}?collection={{collection}}"> {{handle}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1 day ago</span></p></td>
             <td>
               <div class="pull-right">
                 <div class="visible-xs">
@@ -131,12 +133,12 @@
                    
 {% endmacro %}
 
-{% macro panel_rings(name, color, number, percent, active, resource) %} 
+{% macro panel_rings(name, handle, color, number, percent, active, resource) %} 
           
           <tr>
             <td><p>{{ number }}</p></td>
             <td>{{ icon_xsma(number, color) }}</td>
-            <td><a href="/{{ resource }}"><p class="fs-0-8">&deg;{{ name }}</a> / <span class="fc-g">1 day ago</span></p></td>
+            <td><span class="octicon octicon-repo"></span> &nbsp;<a href="/{{ resource }}"> {{handle}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1 day ago</p></span></td>
             <td>
               <div class="pull-right">
                 <div class="visible-xs">
