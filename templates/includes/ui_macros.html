@@ -6,13 +6,15 @@
     <td> 
       <div class="row">
         <div class=" col-sm-2 hidden-xs">
-          {{ icon_big(count,color) }}
+          {{ icon_big(count,color) }} 
         </div> 
         <div class="col-xs-7 col-sm-7">
+
           <h3 class="fs-1-5">
           <span class="mega-octicon octicon-repo"></span> <a href="/{{ handle }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{handle}}</a>/<a href="/{{ handle }}/{{ name }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder"><span style="font-weight:500;">{{name}}</span></a>
           </h3>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
+
         </div> 
         <div class="col-xs-5 col-sm-3">
           <div class="pull-right">
