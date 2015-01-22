@@ -93,15 +93,36 @@
                       {% if role[k]['users']%}<br/>{% endif %}
                       <b>Authorized to:</b>
 
+                    
+
+                      <br/><br/><b>HANDLE level</b>
                       {% for authorization in role[k]['authorizations'] %}
-
-                        {% if data.roledictionary[authorization] %}
-                          <br/>+ {{data.roledictionary[authorization]}}
-                        {% endif %}
-
-                        {#% if comma %}{{comma}}{% endif %}{{authorization}}
-                        {% set comma = ',' %#}
+                        {% if authorization in data.depth_a %}
+                          {% if data.roledictionary[authorization] %}
+                            <br/>+ {{data.roledictionary[authorization]}}
+                          {% endif %}
+                        {% endif %}                    
                       {% endfor %}
+
+                      <br/><br/><b>RING level</b>
+                      {% for authorization in role[k]['authorizations'] %}
+                        {% if authorization in data.depth_a_b %}
+                          {% if data.roledictionary[authorization] %}
+                            <br/>+ {{data.roledictionary[authorization]}}
+                          {% endif %}
+                        {% endif %}                    
+                      {% endfor %}
+
+                      <br/><br/><b>ITEM level</b>
+                      {% for authorization in role[k]['authorizations'] %}
+                        {% if authorization in data.depth_a_b %}
+                          {% if data.roledictionary[authorization] %}
+                            <br/>+ {{data.roledictionary[authorization]}}
+                          {% endif %}
+                        {% endif %}                    
+                      {% endfor %}
+
+                      
 
                       {% if 'inherited' in data.roles %}
                         {% if 'authorizations' in data.roles['inherited'][role[k]['role']] %}

@@ -30,7 +30,7 @@ class AvispaRolesRestFunc:
         roles = self.ARM.get_role(depth,handle,ring,idx,collection)
         roledictionary = self.generate_roledictionary(handle,ring,idx,collection)
 
-        d = {'template':'avispa_rest/get_roles.html','roles':roles,'roledictionary':roledictionary}
+        d = {'template':'avispa_rest/roles.html','roles':roles,'roledictionary':roledictionary}
         return d
 
     

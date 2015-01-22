@@ -214,6 +214,11 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
     data['collection']=collection
     data['current_user']=current_user
 
+    data['depth_a'] = ['get_a','post_a','put_a','delete_a']
+    data['depth_a_b'] = ['get_a_b','post_a_b','put_a_b','delete_a_b']
+    data['depth_a_b_c'] = ['get_a_b_c','post_a_b_c','put_a_b_c','delete_a_b_c']
+    
+
     t = time.time()
     data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 

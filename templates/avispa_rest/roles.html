@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+
+        <div class="row">
+          <div class="col-sm-12">
+
+
+              <!-- <div class="rn-box-space">
+                  
+                      <div class="rn-b1">123</div>
+                  
+              </div> -->
+          
+
+            <div class="rn-box-content">
+              <table class="table "> <!-- inner row -->
+
+               <tr>
+                 <td colspan='4'><b>Account Permissions</b></td>
+               </tr>
+               <tr>
+                 <td></td> 
+                 <td colspan="2">Who is the Account Owner for @blab ?</td>
+                 <td><input type="text"></td>
+               </tr>
+
+
+               <tr>
+                 <td colspan='4'><b>Rings Permissions</b></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td colspan="2"><b>@blalab/motorcycles</b></td>
+                 <td></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>Who is this Ring's Owner?</td>
+                 <td><input type="text"></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>Who is this Ring's Moderator?</td>
+                 <td><input type="text"></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>Who is this Ring's Capturist?</td>
+                 <td><input type="text"></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td colspan="2"><b>@blalab/mechanisms</b></td>
+                 <td></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>Who is this Ring's Owner?</td>
+                 <td><input type="text"></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>Who is this Ring's Moderator?</td>
+                 <td><input type="text"></td>
+               </tr>
+               <tr>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>Who is this Ring's Capturist?</td>
+                 <td><input type="text"></td>
+               </tr>
+
+
+              </table>
+            </div><!-- //close box -->
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
