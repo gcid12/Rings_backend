@@ -11,11 +11,7 @@ class MyRingUser(Document):
     passhash = TextField()
     guid = TextField()
     added = DateTimeField(default=datetime.now)
-    roles = ListField(DictField(Mapping.build(
-        role = TextField(),
-        users = ListField(Mapping.build()),
-        authorizations = ListField(Mapping.build())
-        )))
+    branchof = TextField()
     rings = ListField(DictField(Mapping.build(
         ringname = TextField(),
         version = TextField(),
@@ -23,8 +19,7 @@ class MyRingUser(Document):
         added = DateTimeField(default=datetime.now),
         roles = ListField(DictField(Mapping.build(
             role = TextField(),
-            users = ListField(Mapping.build()),
-            authorizations = ListField(Mapping.build())
+            users = ListField(Mapping.build())
             )))
     	)))
     collections = ListField(DictField(Mapping.build(
@@ -40,8 +35,7 @@ class MyRingUser(Document):
             ))),
         roles = ListField(DictField(Mapping.build(
             role = TextField(),
-            users = ListField(Mapping.build()),
-            authorizations = ListField(Mapping.build())
+            users = ListField(Mapping.build())
             )))
         )))
     is_active = BooleanField(default=True)
