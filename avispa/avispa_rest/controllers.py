@@ -9,6 +9,7 @@ from MyRingPatch import MyRingPatch
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE
+from MainModel import MainModel
 
 
 
@@ -25,7 +26,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     #Will have to move _tools and _patch this to its own FlaskBlueprint
     MRT = MyRingTool()
     MRP = MyRingPatch()
-    
 
 
     if 'q' in request.args:
@@ -45,7 +45,9 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     m = method+depth
     data = {}
 
-
+    MAM = MainModel()
+    if not MAM.user_is_authorized(current_user,method,depth,handle,ring,idx):
+        return render_template('avispa_rest/error_401.html', data=data),401
 
     if handle=='_tools':  #not a ring! System specific tools
         tool = ring

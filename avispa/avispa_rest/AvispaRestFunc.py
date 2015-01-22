@@ -1,16 +1,18 @@
 import json, collections
 from flask import redirect, flash
 from RingBuilder import RingBuilder
-from MainModel import MainModel #DELETE!
 from AvispaModel import AvispaModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from env_config import PREVIEW_LAYER
+from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
 class AvispaRestFunc:
 
     def __init__(self):
         self.AVM = AvispaModel() 
-    
+
+        
+
     # /a
 
     # GET/a

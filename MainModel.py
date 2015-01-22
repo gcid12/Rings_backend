@@ -121,6 +121,12 @@ class MainModel:
 
         else:
             print('No user'+data['_id'])
+
+
+    #ROLEMODEL
+    def user_is_authorized(self,current_user,method,depth,handle,ring,idx):
+        #Go to the DB and figure out if current user is authorized to enter the route using the method indicated
+        return False
         
 
 

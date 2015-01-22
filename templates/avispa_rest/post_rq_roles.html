@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="rn-box-title">
+
+              <strong>New role for @{{ data.handle }}{% if data.ring %}/{{data.ring}}{% endif %}</strong>
+              
+              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
+              <i class="fa fa-question-circle"></i>
+              </button-->
+
+              
+              <!--a href="?q" type="button" class="btn btn-success btn-xs pull-right">
+                <i class="fa fa-search"></i> SEARCH
+              </a-->
+            </div>
+            <div class="rn-box-solo">
+              <div class="pull-right rn-t3 text-right">
+                  <i class="fa fa-dot-circle-o fa-2x" style="color:#CCC; padding:0 10px;"></i>
+              </div>
+          
+              <div class="pull-right rn-t3 text-right"><strong> &nbsp;</strong>
+
+              </div>
+              <div class="rn-t2">&nbsp;</div>
+
+                
+            </div>
+              <!-- <div class="rn-box-space">
+                  
+                      <div class="rn-b1">123</div>
+                  
+              </div> -->
+            <div class="rn-box-content">
+            
+              <table> <!-- inner row -->
+
+                <tr>
+                    <td>
+                      Role Name:&nbsp;
+                    </td>
+                    <td>
+                      <select>
+                        <option>--CHOOSE ONE--</option>
+                        <option>Anonymous Reader</option>
+                        <option>Fact Checker</option>
+                        <option>Capturist</option>
+                        <option>Moderator</option>
+                        <option>Ring Owner</option>
+                        <option>Handle Owner</option>
+                      </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      Users:&nbsp;
+                    </td>
+                    <td>
+                      <input type="text"/>
+                    </td>
+                </tr>
+              </table>
+              <br/>
+              
+            </div><!-- //close box -->
+
+            
+            
+
+
+            <div class="">
+               <!--ul class="pagination">
+                  <li><a href="#">&laquo;</a></li>
+                  <li class="active"><a href="#">1</a></li>
+                  <li class="disable"><a href="#">2</a></li>
+                  <li class="disable"><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+               </ul-->
+               <div class="pull-right">
+                 <a href="?rq=post&n=10" type="button" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;">
+                    <i class="fa fa-plus"></i> &nbsp; NEW ROLE
+                 </a>
+               </div>     
+
+            </div>
+
+
+
+
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}

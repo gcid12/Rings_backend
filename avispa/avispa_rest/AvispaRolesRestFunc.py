@@ -30,8 +30,75 @@ class AvispaRolesRestFunc:
         roles = self.ARM.get_role(depth,handle,ring,idx,collection)
         roledictionary = self.generate_roledictionary(handle,ring,idx,collection)
 
-        d = {'template':'avispa_rest/role.html','roles':roles,'roledictionary':roledictionary}
+        d = {'template':'avispa_rest/get_roles.html','roles':roles,'roledictionary':roledictionary}
         return d
+
+    
+
+
+    def post(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
+        # Create new role in <handle>
+        
+        result = self.ARM.post_role(depth,handle,ring,idx,collection)
+
+        if result:
+            flash("The new role has been created")
+            
+            redirect = self.determine_redirect_route(depth)
+
+            d = {'redirect': redirect, 'status':200}
+
+        else:
+            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
+        
+        return d
+
+    def post_rq(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
+        
+        d = {'template':'avispa_rest/post_rq_roles.html'}
+        
+        return d
+
+    def put(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
+        # Edit a role in <handle>
+        
+        result = self.ARM.put_role(depth,handle,ring,idx,collection)
+
+        if result:
+            flash("The new role has been created")
+            
+            redirect = self.determine_redirect_route(depth)
+
+            d = {'redirect': redirect, 'status':200}
+
+        else:
+            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
+        
+        return d
+
+    def put_rq(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
+        
+        d = {'template':'avispa_rest/put_rq_roles.html'}
+        
+        return d
+
+    def delete_role(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
+        # Delete a role in <handle>
+        
+        result = self.ARM.delete_role(depth,handle,ring,idx,collection)
+
+        if result:
+            flash("The new role has been created")
+            
+            redirect = self.determine_redirect_route(depth)
+
+            d = {'redirect': redirect, 'status':200}
+
+        else:
+            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
+        
+        return d
+
 
     def generate_roledictionary(self,handle,ring,idx,collection):
 
@@ -79,68 +146,9 @@ class AvispaRolesRestFunc:
             roledictionary['put_a_b_c'] = 'Modify item @'+handle+'/'+ring+'/'+idx
                                    
             roledictionary['delete_a_b_c'] = 'Delete item @'+handle+'/'+ring+'/'+idx 
-            
-        
 
         return roledictionary
 
-
-    def post(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        # Create new role in <handle>
-        
-        result = self.ARM.post_role(depth,handle,ring,idx,collection)
-
-        if result:
-            flash("The new role has been created")
-            
-            redirect = self.determine_redirect_route(depth)
-
-            d = {'redirect': redirect, 'status':200}
-
-        else:
-            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
-        
-        return d
-
-    def post_rq(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        pass
-
-    def put(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        # Edit a role in <handle>
-        
-        result = self.ARM.put_role(depth,handle,ring,idx,collection)
-
-        if result:
-            flash("The new role has been created")
-            
-            redirect = self.determine_redirect_route(depth)
-
-            d = {'redirect': redirect, 'status':200}
-
-        else:
-            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
-        
-        return d
-
-    def put_rq(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        pass
-
-    def delete_role(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        # Delete a role in <handle>
-        
-        result = self.ARM.delete_role(depth,handle,ring,idx,collection)
-
-        if result:
-            flash("The new role has been created")
-            
-            redirect = self.determine_redirect_route(depth)
-
-            d = {'redirect': redirect, 'status':200}
-
-        else:
-            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
-        
-        return d
 
     def determine_redirect_route(self,depth):
 
