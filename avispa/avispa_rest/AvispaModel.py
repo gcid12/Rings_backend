@@ -71,6 +71,11 @@ class AvispaModel:
                     
                     ringname = str(ring['ringname'])
                     ringversion = str(ring['version'])
+                    if 'origin' in ring:
+                        ringorigin = str(ring['origin'])
+                    else:
+                        ringorigin = str(handle)
+
                     ringversionh = ringversion.replace('-','.')
                     count = ring['count']
                     #print('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
@@ -92,7 +97,15 @@ class AvispaModel:
                         except KeyError:
                             RingLabel = False 
 
-                        r = {'ringname':ringname,'ringversion':ringversion,'ringversionh':ringversionh,'ringlabel':RingLabel,'ringdescription':RingDescription,'count':count}
+                        r = {
+                            'ringname':ringname,
+                            'ringversion':ringversion,
+                            'ringversionh':ringversionh,
+                            'ringorigin':ringorigin,
+                            'ringlabel':RingLabel,
+                            'ringdescription':RingDescription,
+                            'count':count}
+
                         data.append(r)
                     except ResourceNotFound:
                         #print('skipping ring '+ ringname+'_'+ringversion + '. Schema does not exist')
@@ -584,6 +597,26 @@ class AvispaModel:
                 print('Could not increase item count')
                 return False
 
+    def set_ring_origin(self,handle,ringname,origin):
+
+        self.db = self.couch[self.user_database]
+        user =  MyRingUser.load(self.db, handle)
+
+        if user:
+
+            for ring in user['rings']:
+                if ring['ringname'] == ringname:
+
+                    ring['origin'] = origin
+                    print('Ring origin set to '+origin)
+
+            if user.store(self.db):
+                
+                return True
+            else:
+                print('Could not set origin')
+                return False
+
 
 
     #AVISPAMODEL
@@ -660,6 +693,32 @@ class AvispaModel:
 
             for row in rows:
                 yield row.id
+
+
+    
+
+    def get_a_b_parameters(self,handle,ringname,user_database=None):
+        
+        if not user_database : 
+            user_database = self.user_database
+
+        user_doc = self.MAM.select_user(user_database,handle)
+
+        print('user rings:',user_doc['rings'])
+        for user_ring in user_doc['rings']:
+            if user_ring['ringname']==ringname:
+                parameters = {}
+                parameters['count'] = user_ring['count']
+                if 'origin' in user_ring:
+                    parameters['ringorigin'] = user_ring['origin']
+                else:
+                    parameters['ringorigin'] = handle
+
+                
+                return parameters
+
+
+        return False
 
 
     

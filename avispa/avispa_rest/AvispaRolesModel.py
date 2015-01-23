@@ -9,9 +9,42 @@ class AvispaRolesModel:
         self.MAM = MainModel()
         self.user_database = 'myring_users'
 
+    def get_role(self,handle):
+
+        result = {}
+
+        if not user_database : 
+            user_database = self.user_database
+
+        user_doc = self.MAM.select_user(user_database,handle)
+
+        users = {}
+        users['handle'] = {}
+        user['handle'][user_doc['_id']] = {}
+        users['rings'] = {}
+        user['rings'][user_doc['_id']] = {}
+
+        if 'roles' in user_doc:
+            for role in user_doc['roles']:
+                if 'role' in role and 'users' in role:
+                    if role['role'] == 'handle_owner':
+                        users['handle'][user_doc['_id']]['handle_owner'] = role['users']
+
+        if 'rings' in user_doc:
+            for ring in user_doc['rings']:             
+                if 'roles' in ring:
+                    user['rings'][user_doc['_id']][ring['ringname']+_+ring['version']] = {}
+                    for role in ring:
+                        if 'role' in role and 'users' in role:
+                            users['rings'][user_doc['_id']][ring['ringname']+_+ring['version']][role['role']] = role['users']
+
+
+
+
+
         
 
-    def get_role(self,depth,handle,ring=None,idx=None,collection=None,user_database=None):
+    def x_get_role(self,depth,handle,ring=None,idx=None,collection=None,user_database=None):
 
         result = {}
 
@@ -62,56 +95,6 @@ class AvispaRolesModel:
 
 
 
-
-            '''
-            roles_dictionary = {}
-            authorizations_dictionary = {}
-            users_dictionary = {}
-
-            if 'roles' in user_doc:
-                #result_a = user_doc.roles
-                #print('result_A:',result_a)
-
-                for r1 in user_doc.roles:
-                    roles_dictionary[r1['role']] = True
-                    # For each role
-                    if r1['authorizations']:
-                        authorizations_dictionary[r1['role']] = r1['authorizations']
-                    if r1['users']:
-                        users_dictionary[r1['role']] = r1['users']
-
-
-
-            roles = {}
-            for ring_x in user_doc.rings:
-                #For each ring
-                if 'roles' in ring_x:
-                    for r2 in ring_x.roles:
-                        # For each role
-                        if r2['authorizations']:
-                            if authorizations_dictionary[r2['role']]:
-                                authorizations_dictionary[r2['role']] += r2['authorizations']
-                            else:
-                                authorizations_dictionary[r2['role']] = r2['authorizations']
-                        if r2['users']:
-                            if users_dictionary[r2['role']]:
-                                users_dictionary[r2['role']] += r2['users'] 
-                            else:
-                                users_dictionary[r2['role']] = r2['users']                
-
-
-
-
-            result_b = roles[ring]
-            print('result_B:',result_b)
-
-            for rx in result_b:
-                result_a.append(rx)
-            
-            print('resultSUM:',result_a)
-
-            result = result_a
-            '''
 
             
 

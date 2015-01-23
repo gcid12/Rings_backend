@@ -1,4 +1,5 @@
 # CollectionsModel.py
+import sys
 
 from datetime import datetime 
 from couchdb.http import ResourceNotFound
@@ -39,14 +40,26 @@ class AvispaCollectionsModel:
             rings = user_doc['rings']
             
             validring = {}
+            ringorigins = {}
+            ringcounts = {}
 
             for ring in rings:   
                 if not 'deleted' in ring:
                     ringname = str(ring['ringname'])
                     ringversion = str(ring['version'])
                     ringversionh = ringversion
-                    count = ring['count']
-                    validring[ringname+'_'+ringversionh] = count
+
+                    if 'origin' in ring:
+                        ringorigin = str(ring['origin'])
+                    else:
+                        ringorigin = str(handle)
+
+                    ringorigins[ringname+'_'+ringversionh] = ringorigin
+ 
+                    ringcounts[ringname+'_'+ringversionh] = ring['count']
+
+                    validring[ringname+'_'+ringversionh] = True
+
 
         
 
@@ -59,7 +72,8 @@ class AvispaCollectionsModel:
                         coll['valid'] = False
                         break
                     else:
-                        ring['count'] = validring[ring['ringname']+'_'+ring['version']]
+                        ring['count'] = ringcounts[ring['ringname']+'_'+ring['version']]
+                        ring['ringorigin'] = ringorigins[ring['ringname']+'_'+ring['version']]
                     
                         
 

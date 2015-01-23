@@ -1,6 +1,6 @@
 
 
-  {% macro panel(name, handle, color, count,description,link,collection) %}
+  {% macro panel(name, origin, handle, color, count,description,link,collection) %}
 
   <tr>
     <td> 
@@ -11,7 +11,7 @@
         <div class="col-xs-7 col-sm-7">
 
           <h3 class="fs-1-5">
-          <span class="mega-octicon octicon-repo"></span> <a href="/{{ handle }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{handle}}</a>/<a href="/{{ handle }}/{{ name }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder"><span style="font-weight:500;">{{name}}</span></a>
+          <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> <a href="/{{ handle }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{origin}}</a>/<a href="/{{ handle }}/{{ name }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder"><span style="font-weight:500;">{{name}}</span></a>
           </h3>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
 
@@ -106,12 +106,12 @@
 </div>
 {% endmacro %}
 
-{% macro panel_collections(name, handle, color, number, percent, active, resource,collection) %} 
+{% macro panel_collections(name, origin, handle, color, number, percent, active, resource,collection) %} 
           
           <tr>
             <td><p>{{ number }}</p></td>
             <td>{{ icon_xsma(number, color) }}</td>
-            <td><span class="octicon octicon-repo"></span> &nbsp;<a href="/{{ resource }}?collection={{collection}}"> {{handle}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1 day ago</span></p></td>
+            <td><span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> &nbsp;<a href="/{{ resource }}?collection={{collection}}"> {{origin}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1x day ago</span></p></td>
             <td>
               <div class="pull-right">
                 <div class="visible-xs">
@@ -135,12 +135,12 @@
                    
 {% endmacro %}
 
-{% macro panel_rings(name, handle, color, number, percent, active, resource) %} 
+{% macro panel_rings(name, origin, handle, color, number, percent, active, resource) %} 
           
           <tr>
             <td><p>{{ number }}</p></td>
             <td>{{ icon_xsma(number, color) }}</td>
-            <td><span class="octicon octicon-repo"></span> &nbsp;<a href="/{{ resource }}"> {{handle}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1 day ago</p></span></td>
+            <td><span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span></span> &nbsp;<a href="/{{ resource }}"> {{origin}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1 day ago</p></span></td>
             <td>
               <div class="pull-right">
                 <div class="visible-xs">

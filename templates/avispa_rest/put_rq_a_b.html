@@ -22,7 +22,7 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="rn-box-white gad100">   
-              {{ ui.panel(data.ring, data.handle, '#fce121', data.ringcount, 'ringdescription') }}      
+              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount, 'ringdescription') }}      
             </div>
             <div class="rn-box-title">
 
@@ -33,17 +33,19 @@
               </button-->
             </div>
 
+            <form class="form-horizontal" role="form" action="/{{ data.handle }}/{{ data.ring }}?method=PUT" method="POST">
+
 
             <div class="rn-box-solo">
               <div class="row">
-                &nbsp;&nbsp;&nbsp; <strong></strong>Ring's characteristics
+                &nbsp;&nbsp;&nbsp; <strong></strong>Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" />
                 <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
                   <i class="fa fa-question-circle"></i>
                 </button>
               </div> 
             </div>
 
-            <form class="form-horizontal" role="form" action="/{{ data.handle }}/{{ data.ring }}?method=PUT" method="POST">
+            
                
               <!-- RING -->
               <div class="rn-box-content">

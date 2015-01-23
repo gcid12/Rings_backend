@@ -29,7 +29,7 @@
                   
                   {% for ring in data.ringlist %}
                     
-                    {{ ui.panel(ring.ringname, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection) }}
+                    {{ ui.panel(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection) }}
                   {% endfor %}
 
                 </table> 

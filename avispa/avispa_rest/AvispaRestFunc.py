@@ -50,8 +50,6 @@ class AvispaRestFunc:
                 d = {'redirect': redirect, 'status':404}
                 return d
 
-            
-
         ringlistlen = len(ringlist)
 
         
@@ -209,7 +207,11 @@ class AvispaRestFunc:
 
         print('widgets:',widgets)
 
-        d['ringcount']  = self.AVM.get_item_count(handle,ring)
+        
+        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        d['ringcount']  = ringparameters['count']
+        d['ringorigin'] = ringparameters['ringorigin']
+
 
 
 
@@ -350,7 +352,11 @@ class AvispaRestFunc:
              'numfields':numfields,
              'item':{} }
 
-        d['ringcount']  = self.AVM.get_item_count(handle,ring)
+        
+        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        d['ringcount']  = ringparameters['count']
+        d['ringorigin'] = ringparameters['ringorigin']
+
 
         return d
 
@@ -361,6 +367,13 @@ class AvispaRestFunc:
 
     #PUT /a/b
     def put_a_b(self,request,handle,ring,idx,api=False,*args):
+
+
+        print('Changing origin?')
+        print(request.form.get('ringorigin'))
+        if request.form.get('ringorigin'):
+            print('Changing origin!')
+            originresult = self.AVM.set_ring_origin(handle,ring,request.form.get('ringorigin'))
 
         RB = RingBuilder()
         result =  RB.put_a_b(request,handle,ring)
@@ -394,7 +407,10 @@ class AvispaRestFunc:
              'ringschema':ringschema,
              'fieldsschema':fieldsschema,
              'numfields':numfields }
-        d['ringcount']  = self.AVM.get_item_count(handle,ring)
+        
+        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        d['ringcount']  = ringparameters['count']
+        d['ringorigin'] = ringparameters['ringorigin']
 
         return d
 
@@ -457,7 +473,11 @@ class AvispaRestFunc:
         ''' 
 
         d = {}
-        d['ringcount']  = self.AVM.get_item_count(handle,ring)       
+        
+        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        d['ringcount']  = ringparameters['count']
+        d['ringorigin'] = ringparameters['ringorigin']
+
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
         print('preitem:',item)
 
@@ -601,7 +621,10 @@ class AvispaRestFunc:
              'item':item,
              'labels':labels }
 
-        d['ringcount']  = self.AVM.get_item_count(handle,ring)  
+
+        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        d['ringcount']  = ringparameters['count']
+        d['ringorigin'] = ringparameters['ringorigin'] 
 
         
 
