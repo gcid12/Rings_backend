@@ -46,7 +46,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     data = {}
 
     MAM = MainModel()
-    if not MAM.user_is_authorized(current_user,method,depth,handle,ring,idx):
+    if not MAM.user_is_authorized(current_user.id,method,depth,handle,ring,idx):
         return render_template('avispa_rest/error_401.html', data=data),401
 
     if handle=='_tools':  #not a ring! System specific tools
@@ -463,12 +463,10 @@ def collections_route_a_x_y_b_c(handle,collection,idx):
 @login_required
 def route_a(handle):
 
-    print("get_a:Login")
-    print(handle)
-    print(current_user.id)
 
-    if handle != current_user.id:
-        return redirect('/_logout') 
+
+    #if handle != current_user.id:
+     #   return redirect('/_logout') 
 
     result = route_dispatcher('_a',handle)
  

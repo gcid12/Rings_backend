@@ -13,6 +13,18 @@ class MainModel:
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.user_database = 'myring_users'
 
+        self.roles = {}
+        self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['handle_owner'] = ['get_a','get_a_b','get_a_b_c','post_a','put_a','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
+        self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
+        self.roles['moderator'] = ['get_a_b','get_a_b_c','put_a_b_c','delete_a_b_c']
+        self.roles['capturist'] = ['get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
+        self.roles['fact_checker'] = ['get_a_b_c','put_a_b_c']
+        self.roles['anonymous'] = ['get_a_b','get_a_b_c']
+
+
+
     #MAINMODEL
     def create_db(self,dbname):
         print('Notice: Creating db ->>'+dbname)
@@ -125,8 +137,22 @@ class MainModel:
 
     #ROLEMODEL
     def user_is_authorized(self,current_user,method,depth,handle,ring,idx):
-        #Go to the DB and figure out if current user is authorized to enter the route using the method indicated
-        return True
+
+        
+        user_authorizations = []
+
+        if current_user == handle: 
+            #This user is a Handle Owner      
+            user_authorizations += self.roles['handle_owner']
+            
+
+        #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
+
+        if method.lower()+depth.lower() in user_authorizations:
+            return True
+        else:
+            return False
+
         
 
 
