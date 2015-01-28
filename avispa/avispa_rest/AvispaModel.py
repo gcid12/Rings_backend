@@ -166,100 +166,126 @@ class AvispaModel:
         return CVS.set_db_views(db)
 
     #AVISPAMODEL
-    def ring_set_db_views(self,db_ringname):
+    def ring_set_db_views(self,db_ringname,specific=False):
 
         db = self.couch[db_ringname]
 
         
-        view = ViewDefinition('ring', 'items', 
-               '''
-                  function(doc) {
-                    if(doc.items) {
-                       if(!doc.deleted) {
-                          var x = new Object();  
-                          x['_public']=doc.public
-                          for (var key in doc.items[0]) { 
-                             x[key]=doc.items[0][key]; 
-                          }
-                          emit(doc._id, x)
-                       }
+        if not specific or specific == 'ring/items':
+            view = ViewDefinition('ring', 'items', 
+                   '''
+                      function(doc) {
+                        if(doc.items) {
+                           if(!doc.deleted) {
+                              var x = new Object();  
+                              x['_public']=doc.public
+                              for (var key in doc.items[0]) { 
+                                 x[key]=doc.items[0][key]; 
+                              }
+                              emit(doc._id, x)
+                           }
+                        }
+                      }
+                   ''')
+
+            view.get_doc(db)
+            view.sync(db)
+
+        if not specific or specific == 'ring/rich':
+            view = ViewDefinition('ring', 'rich', 
+                   '''
+                      function(doc) {
+                        if(doc.rich) {
+                           if(!doc.deleted) {
+                              var x = new Object();  
+                              x['_public']=doc.public
+                              for (var key in doc.rich[0]) { 
+                                 x[key]=doc.rich[0][key]; 
+                              }
+                              emit(doc._id, x)
+                           }
+                        }
+                      }
+                   ''')
+
+            view.get_doc(db)
+            view.sync(db)
+
+        if not specific or specific == 'ring/history':
+            view = ViewDefinition('ring', 'history', 
+                   '''
+                      function(doc) {
+                        if(doc.history) {
+                           if(!doc.deleted) {
+                              var x = new Object();  
+                              x['_public']=doc.public
+                              for (var key in doc.history[0]) { 
+                                 x[key]=doc.history[0][key]; 
+                              }
+                              emit(doc._id, x)
+                           }
+                        }
+                      }
+                   ''')
+
+            view.get_doc(db)
+            view.sync(db)
+
+
+        if not specific or specific == 'ring/meta':
+            view = ViewDefinition('ring', 'meta', 
+                   '''
+                      function(doc) {
+                        if(doc.meta) {
+                           if(!doc.deleted) {
+                              var x = new Object();  
+                              x['_public']=doc.public
+                              for (var key in doc.meta[0]) { 
+                                 x[key]=doc.meta[0][key]; 
+                              }
+                              emit(doc._id, x)
+                           }
+                        }
+                      }
+                   ''')
+
+            view.get_doc(db)
+            view.sync(db)
+
+        if not specific or specific == 'item/roles':
+            view = ViewDefinition('item', 'roles', 
+
+                   '''
+                    function(doc) {
+                        if(doc.history) {
+                            if(!doc.deleted) {
+                                var x = new Object();  
+                                x['_public']=doc.public
+                                for (var key in doc.roles) { 
+                                   x[key]=doc.roles[key]; 
+                                }
+                            emit(doc._id, x)
+                            }
+                        }
                     }
-                  }
-               ''')
+                   ''')
 
-        view.get_doc(db)
-        view.sync(db)
+            view.get_doc(db)
+            view.sync(db)
 
-        view = ViewDefinition('ring', 'rich', 
-               '''
-                  function(doc) {
-                    if(doc.rich) {
-                       if(!doc.deleted) {
-                          var x = new Object();  
-                          x['_public']=doc.public
-                          for (var key in doc.rich[0]) { 
-                             x[key]=doc.rich[0][key]; 
-                          }
-                          emit(doc._id, x)
-                       }
+
+        if not specific or specific == 'ring/schema':
+            view = ViewDefinition('ring', 'schema', 
+                   '''
+                    function(doc) {
+                      if(doc._id=='schema'){   
+                        emit(doc._id, doc)
+                      }
                     }
-                  }
-               ''')
+                   ''')
 
-        view.get_doc(db)
-        view.sync(db)
-
-        view = ViewDefinition('ring', 'history', 
-               '''
-                  function(doc) {
-                    if(doc.history) {
-                       if(!doc.deleted) {
-                          var x = new Object();  
-                          x['_public']=doc.public
-                          for (var key in doc.history[0]) { 
-                             x[key]=doc.history[0][key]; 
-                          }
-                          emit(doc._id, x)
-                       }
-                    }
-                  }
-               ''')
-
-        view.get_doc(db)
-        view.sync(db)
-
-
-        view = ViewDefinition('ring', 'meta', 
-               '''
-                  function(doc) {
-                    if(doc.meta) {
-                       if(!doc.deleted) {
-                          var x = new Object();  
-                          x['_public']=doc.public
-                          for (var key in doc.meta[0]) { 
-                             x[key]=doc.meta[0][key]; 
-                          }
-                          emit(doc._id, x)
-                       }
-                    }
-                  }
-               ''')
-
-        view.get_doc(db)
-        view.sync(db)
-
-
-        view = ViewDefinition('ring', 'schema', 
-               '''
-                function(doc) {
-                  if(doc._id=='schema'){   
-                    emit(doc._id, doc)
-                  }
-                }
-               ''')
-
-        view.get_doc(db)
-        view.sync(db)
+            view.get_doc(db)
+            view.sync(db)
 
         return True
 

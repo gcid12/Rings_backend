@@ -2,6 +2,7 @@
 from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
 from env_config import COUCHDB_USER, COUCHDB_PASS
+from couchdb.http import PreconditionFailed, ResourceNotFound
 
 
 class MainModel:
@@ -23,7 +24,7 @@ class MainModel:
         self.roles['fact_checker'] = ['get_a_b_c','put_a_b_c']
         self.roles['anonymous'] = ['get_a_b','get_a_b_c']
 
-
+        self.user_database = 'myring_users'
 
     #MAINMODEL
     def create_db(self,dbname):
@@ -54,6 +55,17 @@ class MainModel:
         #doc.store(db)
         return True 
 
+    def select_item_doc(self,handle,ringname,idx):
+
+        
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
+        AVM = AvispaModel()
+        schema = AVM.ring_get_schema_from_view(handle,ringname) 
+        RingClass = AVMring_create_class(schema)
+        item_doc = RingClass.load(db,idx)
+        return item_doc
+
     #MAINMODEL
     def create_user(self,data,dbname=None):
 
@@ -77,7 +89,7 @@ class MainModel:
         storeresult = auser.store(self.db)
         return True
 
-    #MAINMODEL  Rarely Used directly. It is better to use the DB Views
+    #MAINMODEL  
     def select_user(self,dbname,username):
         self.db = self.select_db(dbname)
         print('Notice: Selecting User ->'+username)
@@ -113,11 +125,6 @@ class MainModel:
         if user:
             print("update_user 5:")
 
-
-
-            
-
-
             for field in data:
                 if field!='id':
                     print("Old Value:"+str(user[field]))
@@ -137,18 +144,133 @@ class MainModel:
 
     #ROLEMODEL
     def user_is_authorized(self,current_user,method,depth,handle,ring,idx):
-
         
         user_authorizations = []
 
-        if current_user == handle: 
-            #This user is a Handle Owner      
-            user_authorizations += self.roles['handle_owner']
-            
+        print('depth:',depth)
+
+        
+        if depth == '_a' or depth == '_a_b' or depth == '_a_b_c':
+
+            if current_user == handle: 
+                #This user is a Handle Owner
+                print('This user is a Handle Owner')     
+                user_authorizations += self.roles['handle_owner']
+
+
+            if depth == '_a_b' or depth == '_a_b_c':
+
+                
+                user_doc = self.select_user(self.user_database,handle)          
+                rings = user_doc['rings']
+
+                for r in rings:
+
+                    if r['ringname']==ring:
+                        print('r:',r)
+
+                        if 'owner' in r:
+                            if current_user in r['owner']:
+                                print('This user is a Ring Owner:'+r['ringname']+'_'+r['version']) 
+                                user_authorizations += self.roles['ring_owner']                        
+                        else:
+                            #This ring has no owner. Should correct. Orphans will become handle's property
+                            r['owner'] = [handle] 
+                            user_doc.store(self.db)
+                            print('This user just became a Ring Owner of this orphan:'+r['ringname']+'_'+r['version']) 
+                            user_authorizations += self.roles['ring_owner']
+
+
+
+                        if 'moderator' in r:
+                            print('Moderator list:',r['moderator'])
+                            if current_user in r['moderator']:
+                                print('This user is a Ring Moderator:'+r['ringname']+'_'+r['version']) 
+                                user_authorizations += self.roles['moderator']
+
+                        if 'capturist' in r:
+                            print('Capturist list:',r['capturist'])
+                            if current_user in r['capturist']:
+                                print('This user is a Ring Capturist:'+r['ringname']+'_'+r['version']) 
+                                user_authorizations += self.roles['capturist']
+                            
+
+                        
+                if depth == '_a_b_c':
+
+                    db_ringname=str(handle)+'_'+str(ring) 
+                    #print('db_ringname:',db_ringname)
+                    db = self.select_db(db_ringname)
+                    #print('db:',db)
+
+                    options = {}
+                    options['key']=str(idx)
+
+                    #Retrieving from ring/items view
+                    result = db.iterview('item/roles',1,**options)
+                    print('item/roles:',result)
+
+                    
+
+                    try:
+                        for roles in result:
+                            print('roles for item:',roles['value'])
+                            #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
+
+                            for role in roles['value']:
+                                print(roles['value'][role])
+                                print(type(roles['value'][role]))
+
+
+                                if type(roles['value'][role]) is list and current_user in roles['value'][role]:
+                                    print('This user is an Item '+role+':'+ring) 
+                                    if role in self.roles:
+                                        user_authorizations += self.roles[role]
+                            
+                    except(ResourceNotFound):
+                        #AUTOREPAIR
+
+                        print('item/roles db view does not exist. Will regenerate')
+
+                        from avispa.avispa_rest.AvispaModel import AvispaModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
+                        AVM = AvispaModel()
+                        AVM.ring_set_db_views(db_ringname,'item/roles')
+
+                        #Now issue the same request before the exception was thrown
+
+
+                        for roles in result:
+                            print('roles for item:',roles['value'])
+                            #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
+
+                            for role in roles['value']:
+                                print(roles['value'][role])
+                                print(type(roles['value'][role]))
+
+
+                                if type(roles['value'][role]) is list and current_user in roles['value'][role]:
+                                    print('This user is an Item '+role+':'+ring) 
+                                    if role in self.roles:
+                                        user_authorizations += self.roles[role]
+
+
+
+
+
 
         #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
+        print('user_authorizations:',user_authorizations)
 
-        if method.lower()+depth.lower() in user_authorizations:
+        method_parts = method.split('_')
+        print('method_parts:',method_parts)
+        
+        
+        m = method_parts[0]
+
+        print('auth:',m.lower()+depth.lower())
+        
+
+        if m.lower()+depth.lower() in user_authorizations:
             return True
         else:
             return False
