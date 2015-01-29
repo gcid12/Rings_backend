@@ -9,38 +9,41 @@ class AvispaRolesModel:
         self.MAM = MainModel()
         self.user_database = 'myring_users'
 
-    def get_role(self,handle):
+    def get_role(self,handle,user_database=None):
 
-        result = {}
+        
+        
 
+        '''
         if not user_database : 
             user_database = self.user_database
 
         user_doc = self.MAM.select_user(user_database,handle)
 
-        users = {}
-        users['handle'] = {}
-        user['handle'][user_doc['_id']] = {}
-        users['rings'] = {}
-        user['rings'][user_doc['_id']] = {}
-
-        if 'roles' in user_doc:
-            for role in user_doc['roles']:
-                if 'role' in role and 'users' in role:
-                    if role['role'] == 'handle_owner':
-                        users['handle'][user_doc['_id']]['handle_owner'] = role['users']
 
         if 'rings' in user_doc:
-            for ring in user_doc['rings']:             
-                if 'roles' in ring:
-                    user['rings'][user_doc['_id']][ring['ringname']+_+ring['version']] = {}
-                    for role in ring:
-                        if 'role' in role and 'users' in role:
-                            users['rings'][user_doc['_id']][ring['ringname']+_+ring['version']][role['role']] = role['users']
+            for ring in user_doc['rings']: 
+                result[ring['ringname']] = {}            
+                if 'owner' in ring:
+                    result[ring['ringname']]['owner'] = ring['owner']
+                if 'capturist' in ring:
+                    result[ring['ringname']]['capturist'] = ring['owner']
+                if 'moderator' in ring:
+                    result[ring['ringname']]['moderator'] = ring['owner']
+        '''
 
+        if not user_database : 
+            user_database = self.user_database
 
+        db = self.MAM.select_db(user_database)
 
+        options = {}
+        options['key']=str(handle)
 
+        #Retrieving from ring/items view
+        roles = db.iterview('rings/roles',1,**options)
+
+        return roles
 
         
 

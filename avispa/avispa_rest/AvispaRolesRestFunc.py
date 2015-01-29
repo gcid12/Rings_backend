@@ -13,27 +13,22 @@ class AvispaRolesRestFunc:
         
     def get(self,request,depth,handle,ring,idx,collection,api=False,*args):
 
-        '''
-        if ring == None:
-            ring = '<any ring>'
+        result = self.ARM.get_role(handle)
 
-        if idx == None:
-            idx = '<any item>'
+        roles = {}
 
-        if collection == None:
-            collection = '<any collection>'
-        '''
+        for r in result:
+            print('Raw:',r.value)
+            for ring in r.value:
+                print('ringrole:',ring) 
+                roles[ring] = r.value[ring] 
 
+        print('Roles:',roles)
 
-        # Show roles
+        
+        d = {'template':'avispa_rest/roles.html','roles':roles}
 
-        roles = self.ARM.get_role(depth,handle,ring,idx,collection)
-        roledictionary = self.generate_roledictionary(handle,ring,idx,collection)
-
-        d = {'template':'avispa_rest/roles.html','roles':roles,'roledictionary':roledictionary}
-        return d
-
-    
+        return d  
 
 
     def post(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):

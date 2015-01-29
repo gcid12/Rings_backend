@@ -193,6 +193,64 @@ class AuthModel:
         view.get_doc(db)
         view.sync(db)
 
+        view = ViewDefinition('rings', 'count', 
+                '''
+                function(doc) {
+                    if(doc.email) {
+                        var x = new Object();
+                        for (var key in doc.rings){
+                            x[doc.rings[key]['ringname']]=doc.rings[key]['count']
+                        }
+                        emit(doc._id,x)
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+
+        view = ViewDefinition('rings', 'origin', 
+                '''
+                function(doc) {
+                    if(doc.email) {
+                        var x = new Object();
+                            for (var key in doc.rings){
+                                if(!doc.rings[key]['deleted']){
+                                    x[doc.rings[key]['origin']] = doc.rings[key]['origin']
+                
+                                }
+                            }
+                        emit(doc._id,x)
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+
+        view = ViewDefinition('rings', 'roles', 
+                '''
+                function(doc) {
+                    if(doc.email) {
+                        var x = new Object();
+                        for (var key in doc.rings){
+                            if(!doc.rings[key]['deleted']){
+                                x[doc.rings[key]['ringname']] = new Object();
+                                x[doc.rings[key]['ringname']]['owner']=doc.rings[key]['owner'];
+                                x[doc.rings[key]['ringname']]['capturist']=doc.rings[key]['capturist'];
+                                x[doc.rings[key]['ringname']]['moderator']=doc.rings[key]['moderator'];
+                            }
+                        }
+                        emit(doc._id,x)
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
         return True
 
     #AUTHMODEL

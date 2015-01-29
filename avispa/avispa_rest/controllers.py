@@ -100,6 +100,19 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
         #return 'ok'
 
 
+def patch_dispatcher(patchnumber):
+
+
+    MRP = MyRingPatch()
+    patch = str(patchnumber)
+    data = getattr(MRP, patch.lower())(request)
+    
+    if 'redirect' in data:
+        return data              
+    else:    
+        return render_template(data['template'], data=data)
+
+
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     ACF = AvispaCollectionsRestFunc()
@@ -326,6 +339,17 @@ def home(handle):
         return redirect(result['redirect'])        
     else:
         return result
+
+@avispa_rest.route('/_patch/<patchnumber>', methods=['GET'])
+def patch(patchnumber):
+
+    result = patch_dispatcher(patchnumber)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
 
 @avispa_rest.route('/_roles/<handle>', methods=['GET'])
 @login_required

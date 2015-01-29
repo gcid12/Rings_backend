@@ -504,6 +504,24 @@ class MyRingPatch:
         d = {'rq': current_user,'template':'avispa_rest/tools/flashresponsejson.html'}
         return d
 
+    def p20150128(self,request,*args):
+        '''
+        This patch runs authmodel.userdb_set_db_views() to create the new userdatabase views : 
+        '''
+
+        from auth.AuthModel import AuthModel
+
+        ATM = AuthModel()
+
+        ATM.userdb_set_db_views()
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+        
+
+
+
 
 
 
