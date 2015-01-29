@@ -25,7 +25,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
 
     #Will have to move _tools and _patch this to its own FlaskBlueprint
     MRT = MyRingTool()
-    MRP = MyRingPatch()
+    
 
 
     if 'q' in request.args:
@@ -52,11 +52,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     if handle=='_tools':  #not a ring! System specific tools
         tool = ring
         data = getattr(MRT, tool.lower())(request)
-        print('flagA:')
-        print(data)
-    elif handle=='_patch':
-        tool = ring
-        data = getattr(MRP, tool.lower())(request)
         print('flagA:')
         print(data)
     else:  
