@@ -66,7 +66,6 @@ class AvispaRolesRestFunc:
         print('valid_emails:',valid_emails)
         print('invalid_emails:',invalid_emails)
 
-
         #2. If it is an email, send ring subscription url/token 
 
         o = urlparse.urlparse(request.url)
@@ -74,12 +73,19 @@ class AvispaRolesRestFunc:
 
         for email in valid_emails:
 
-            token = flask_bcrypt.generate_password_hash(to+str(random.randint(0,9999)))  
+            user_doc = self.MAM.select_user_doc_view('auth/userbyemail',email)         
 
-            to = str(email)
+            if user_doc:
+                #You are inviting an existing myRing user
+                invite_email = user_doc['email']
+            else:
+                #You are inviting a soon to be myRing user
+                invite_email = email
+
+            token = flask_bcrypt.generate_password_hash(invite_email+str(random.randint(0,9999)))  
+            to = str(invite_email)
             subject = handle+" has invited you to collaborate in the ring : "+ring
             content = "Click here to start: "+host_url+"/_roles/"+handle+"/"+ring+"?rq=put&k="+token+"&e="+to
-
             self.EMM.send_one_email(to,subject,content)
             
         flash("Invitation emails sent.")
@@ -88,47 +94,34 @@ class AvispaRolesRestFunc:
 
         for invite_handle in invalid_emails:
 
-            myringhandleexists = False
-
-            db = self.MAM.select_db(self.user_database)
-
-            options = {}
-            options['key']=str(invite_handle)
-
-            #Retrieving from ring/items view
-            result = db.iterview('auth/userbyhandle',1,**options)
-            # This is a generator. If it comes empty, the username didn't exist.
-            # The only way to figure that out is trying to iterate in it.
-            print(result)
+            user_doc = self.MAM.select_user_doc_view('auth/userbyhandle',invite_handle)
             
-            for r in result:
-                myringhandleexists = True
-                print('rings/roles ('+ring+'):',r)
-                invite_email = r['value']['email']
-
-            if myringhandleexists:
-
+                
+            if user_doc:
                 #4. If yes, translate it to an email and send ring subscription ulr/token
-
+                invite_email = user_doc['email']
+   
                 print(invite_handle+' exists and it has the following email:',invite_email)
-
                 if invite_email not in valid_emails:
 
                     token = flask_bcrypt.generate_password_hash(invite_email+str(random.randint(0,9999)))  
-
                     to = str(invite_email)
                     subject = handle+" has invited you to collaborate in the ring : "+ring
-                    content = "Click here to start: "+host_url+"/_roles/"+handle+"/"+ring+"?rq=put&k="+token+"&e="+to
-                    
+                    content = "Click here to start: "+host_url+"/_roles/"+handle+"/"+ring+"?rq=put&k="+token+"&e="+to                  
                     self.EMM.send_one_email(to,subject,content)
+                else:
+                    print(invite_email+" and "+invite_handle+" point to the same user")
                 
             else:
-                print(invite_handle+' does not exist. What you want to do with it?')
+                print(invite_handle+' is not a MyRingID. What do you want to do with it?')
                 flash('Could not find '+invite_handle+'. ')
 
 
         
-        #5. Keep history of everything
+        #5. Keep track of everything. We are going to store it in the user document
+
+
+
         
 
         #redirect = '/_roles/'+handle
@@ -137,6 +130,7 @@ class AvispaRolesRestFunc:
 
         d = {'message': 'Using post_a_b_role for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
+       
 
 
     def put_a_b(self,request,depth,handle,ring,idx,collection,api=False,*args):

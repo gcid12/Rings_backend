@@ -96,6 +96,26 @@ class MainModel:
         return MyRingUser.load(self.db, username)
 
 
+    def select_user_doc_view(self,dbview,key,user_database=None):
+ 
+        if not user_database : 
+            user_database = self.user_database
+
+        db = self.select_db(self.user_database)
+        options = {}
+        options['key']=str(key)
+        #Retrieving from ring/items view
+        result = db.iterview(dbview,1,**options)
+        # This is a generator. If it comes empty, the username didn't exist.
+        # The only way to figure that out is trying to iterate in it.
+        print(result)
+        
+        for r in result:     
+            return r['value']
+
+        return False
+
+
     #MAINMODEL  
     def delete_user(self,dbname,user):
         self.db = self.select_db(dbname)
@@ -130,6 +150,9 @@ class MainModel:
                     print("Old Value:"+str(user[field]))
                     print("New Value:"+str(data[field]))
                     user[field]=data[field]
+
+            for invitations in data:
+                pass
 
             if user.store(self.db):  
                 print('Data updated succesfully')             
