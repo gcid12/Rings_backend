@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+
+        <div class="row">
+          <div class="col-sm-12">
+
+        
+
+
+               <div class="rn-box-space">
+                  
+                      <div class="rn-b1">Invite somebody to collaborate in this ring: </div>
+                      <div class="rn-box-white">   
+                         {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , 'ringdescription') }}      
+                      </div>
+                  
+              </div> 
+          
+
+            <div class="rn-box-content">
+              <form role="form" action="/_roles/{{ data.handle }}/{{ data.ring }}?method=post" method="POST" autocomplete="off">
+                <table class="table "> <!-- inner row -->
+
+                 <tr>
+                   <td>Email(s) or MyRing IDs (you can comma separate them) </td>
+                   
+                 </tr>
+                 <tr>
+                   
+                   <td><textarea name="collaborators" cols="90" rows="5"></textarea></td>
+                 </tr>
+                 <tr>
+                   <td><input type="submit" value="send invite to help in {{data.origin}}/{{data.ring}}"/></td>
+                   
+                 </tr>
+
+                </table>
+              </form>
+            </div><!-- //close box -->
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}

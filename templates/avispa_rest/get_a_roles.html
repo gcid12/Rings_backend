@@ -41,23 +41,34 @@
                <tr>
                  <td colspan='4'></td>
                </tr>
-               {% for role in data.roles %}
+               {% for ring in data.roles %}
                <tr>
                  <td>&nbsp;</td>
-                 <td colspan="2"><b>@blalab/{{role}}</b></td>
+                 <td colspan="2"><b>@{{data.handle}}/{{ring}}</b></td>
                  <td></td>
                </tr>
                <tr>
                  <td>&nbsp;</td>
                  <td>&nbsp;</td>
                  <td>Who is this Ring's Moderator?</td>
-                 <td><input type="text" value="{%for m in data.roles[role]['moderator'] %}{{comma}}{{m}}{% set comma=', '%}{%endfor%}"></td>
+                 <td>
+                     {%for m in data.roles[ring]['moderator'] %}
+                         {{comma}}{{m}} <a href=''>(x)</a>{% set comma=', '%}
+                     {%endfor%}
+                         <a href='/_roles/{{data.handle}}/{{ring}}?rq=post&r=mod'>[Invite somebody]</a>
+                 </td>
                </tr>
                <tr>
                  <td>&nbsp;</td>
                  <td>&nbsp;</td>
                  <td>Who is this Ring's Capturist?</td>
-                 <td><input type="text" value="{%for m in data.roles[role]['capturist'] %}{{comma}}{{m}}{% set comma=', '%}{%endfor%}"></td>
+                 <td>
+
+                     {%for m in data.roles[ring]['capturist'] %}
+                         {{comma}}{{m}} <a>(x)</a>{% set comma=', '%}
+                     {%endfor%}
+                         <a href='/_roles/{{data.handle}}/{{ring}}?rq=post&r=cap'>[Invite somebody]</a>
+                 </td>
                </tr>
                {% endfor %}
 

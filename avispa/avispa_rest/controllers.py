@@ -211,7 +211,7 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
         method = request.method
 
     #method = request.method
-    m = method
+    m = method+depth
     data = {}
 
     data = getattr(ARR, m.lower())(request,depth,handle,ring,idx,collection,api=api)
@@ -356,6 +356,7 @@ def roles_a(handle):
         return redirect(result['redirect'])        
     else:
         return result
+
 
 @avispa_rest.route('/_roles/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required

@@ -1,7 +1,11 @@
 # AvispaCollectionsRestFunc.py
+import smtplib, urlparse, random
 from flask import redirect, flash
 from AvispaModel import AvispaModel
 from AvispaRolesModel import AvispaRolesModel
+from flanker.addresslib import address
+from app import flask_bcrypt
+from env_config import FROMEMAIL, FROMPASS
 
 class AvispaRolesRestFunc:
 
@@ -11,7 +15,7 @@ class AvispaRolesRestFunc:
 
 
         
-    def get(self,request,depth,handle,ring,idx,collection,api=False,*args):
+    def get_a(self,request,depth,handle,ring,idx,collection,api=False,*args):
 
         result = self.ARM.get_role(handle)
 
@@ -26,141 +30,95 @@ class AvispaRolesRestFunc:
         print('Roles:',roles)
 
         
-        d = {'template':'avispa_rest/roles.html','roles':roles}
+        d = {'template':'avispa_rest/get_a_roles.html','roles':roles}
 
         return d  
 
+    def get_a_b(self,request,depth,handle,ring,idx,collection,api=False,*args):
 
-    def post(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        # Create new role in <handle>
-        
-        result = self.ARM.post_role(depth,handle,ring,idx,collection)
-
-        if result:
-            flash("The new role has been created")
-            
-            redirect = self.determine_redirect_route(depth)
-
-            d = {'redirect': redirect, 'status':200}
-
-        else:
-            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
-        
+        redirect = '/_roles/'+handle
+        d = {'redirect': redirect, 'status':201}
         return d
 
-    def post_rq(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
+
+
+    def post_rq_a_b(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
         
-        d = {'template':'avispa_rest/post_rq_roles.html'}
-        
-        return d
 
-    def put(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        # Edit a role in <handle>
-        
-        result = self.ARM.put_role(depth,handle,ring,idx,collection)
-
-        if result:
-            flash("The new role has been created")
-            
-            redirect = self.determine_redirect_route(depth)
-
-            d = {'redirect': redirect, 'status':200}
-
-        else:
-            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
-        
-        return d
-
-    def put_rq(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        
-        d = {'template':'avispa_rest/put_rq_roles.html'}
-        
-        return d
-
-    def delete_role(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
-        # Delete a role in <handle>
-        
-        result = self.ARM.delete_role(depth,handle,ring,idx,collection)
-
-        if result:
-            flash("The new role has been created")
-            
-            redirect = self.determine_redirect_route(depth)
-
-            d = {'redirect': redirect, 'status':200}
-
-        else:
-            d = {'message': 'There was an error creating the role' , 'template':'avispa_rest/index.html'}
+        d = {'template':'avispa_rest/post_rq_a_b_roles.html'}
         
         return d
 
 
-    def generate_roledictionary(self,handle,ring,idx,collection):
+    def post_a_b(self,request,depth,handle,ring=None,idx=None,collection=None,api=False,*args):
+        
+        #1. Parse the request.form.get('collaborators')  string separating emails from MyRing IDs
 
-        roledictionary = {}
+        collabraw = request.form.get('collaborators')
 
-        if handle and (not ring and not idx):
-            # A LEVEL
-            roledictionary['get_a'] =  'See a list of all rings that belong to @'+handle       
-            roledictionary['get_a_b'] =  'See a list of all items from any ring that belongs to @'+handle 
-            roledictionary['get_a_b_c'] = 'See details from any item in any ring that belongs to @'+handle
-            roledictionary['get_a_x'] = 'See a list of all collections that belong to @'+handle
-            roledictionary['get_a_x_y'] = 'See details from any collection that belongs to @'+handle
+        valid_emails, invalid_emails = address.validate_list(collabraw, as_tuple=True)
+
+        print('valid_emails:',valid_emails)
+        print('invalid_emails:',invalid_emails)
+
+
+        #2. If it is an email, send ring subscription url/token 
+
+        o = urlparse.urlparse(request.url)
+        host_url=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+        for email in valid_emails:
+
+            email = str(email)
+
+            key = flask_bcrypt.generate_password_hash(email+str(random.randint(0,9999)))
+
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.ehlo()
+            server.starttls()
+
+            #Next, log in to the server
+            server.login(FROMEMAIL, FROMPASS)
+
+            #Send the mail
+            msg = "\r\n".join([
+              "From:"+FROMEMAIL,
+              "To: "+email,
+              "Subject: "+handle+" has invited you to collaborate in the ring : "+ring,
+              "",
+              "Click here to start: "+host_url+"/_roles/"+handle+"/"+ring+"?rq=put&k="+key+"&e="+email
+              ])
+            #msg = "\nHello!" # The /n separates the message from the headers
+            server.sendmail(FROMEMAIL, email, msg)
+            server.quit()
+
+            print(msg)
+            print("Sending invitation email to: "+email)
             
-            roledictionary['post_a'] = 'Create a new ring for @'+handle
-            roledictionary['post_a_b'] = 'Create a new item in any ring that belongs to @'+handle
-            roledictionary['post_a_x'] = 'Create a new collection for @'+handle
-
-            roledictionary['put_a'] = 'Modify @'+handle+' settings'
-            roledictionary['put_a_b'] = 'Modify schema from any ring that belongs to @'+handle
-            roledictionary['put_a_b_c'] = 'Modify any item from any ring that belongs to @'+handle
-            roledictionary['put_a_x_y'] = 'Modify any collection that belongs to @'+handle
-
-            roledictionary['delete_a'] = 'Delete @'+handle
-            roledictionary['delete_a_b'] = 'Delete any ring that belongs to @'+handle
-            roledictionary['delete_a_b_c'] = 'Delete any item in any ring that belongs to @'+handle
-            roledictionary['delete_a_x_y'] = 'Delete any collection that belongs to @'+handle
-
-        elif (handle and ring) and not idx:
-            # B LEVEL               
-            roledictionary['get_a_b'] =  'See a list of all items from ring @'+handle+'/'+ring 
-            roledictionary['get_a_b_c'] = 'See details from any item in ring @'+handle+'/'+ring           
-            
-            roledictionary['post_a_b'] = 'Create a new item in ring @'+handle+'/'+ring 
-            
-            roledictionary['put_a_b'] = 'Modify schema from ring @'+handle+'/'+ring 
-            roledictionary['put_a_b_c'] = 'Modify any item from ring @'+handle+'/'+ring 
-                       
-            roledictionary['delete_a_b'] = 'Delete ring @'+handle+'/'+ring 
-            roledictionary['delete_a_b_c'] = 'Delete any item from ring @'+handle+'/'+ring 
-
-        elif (handle and ring) and not idx:
-            # C LEVEL                       
-            roledictionary['get_a_b_c'] = 'See details from item @'+handle+'/'+ring+'/'+idx          
-
-            roledictionary['put_a_b_c'] = 'Modify item @'+handle+'/'+ring+'/'+idx
-                                   
-            roledictionary['delete_a_b_c'] = 'Delete item @'+handle+'/'+ring+'/'+idx 
-
-        return roledictionary
+        flash("Invitation emails sent.")
 
 
-    def determine_redirect_route(self,depth):
+        #3. If it appears to be a MyRingID, check if it exists
+        #4. If yes, translate it to an email and send ring subscription ulr/token
+        #5. Keep history of everything
+        
 
-        if depth == '_a':
-            return '/_roles/'+handle
-        elif depth == '_a_b':
-            return '/_roles/'+handle+'/'+ring
-        elif depth == '_a_b_c':
-            return '/_roles/'+handle+'/'+ring+'/'+idx
-        elif depth == '_a_x':
-            return '/_roles/'+handle+'/_collections'
-        elif depth == '_a_x_y':
-            return '/_roles/'+handle+'/_collections/'+collection
+        redirect = '/_roles/'+handle
+        d = {'redirect': redirect, 'status':201}
+        return d
+
+
+    def put_a_b(self,request,depth,handle,ring,idx,collection,api=False,*args):
+
+        redirect = '/_roles/'+handle
+        d = {'redirect': redirect, 'status':201}
+        return d
 
 
 
 
+    
 
+   
 
    
