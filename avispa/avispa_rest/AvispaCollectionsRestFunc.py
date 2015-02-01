@@ -17,11 +17,18 @@ class AvispaCollectionsRestFunc:
         #print('collectionlist:',collectionlist)
 
         count = 0
-        for collection in collectionlist:
-            if collection['valid']:
-                count = count + 1
+        if collectionlist:          
+            for collection in collectionlist:
+                if collection['valid']:
+                    count = count + 1
+            
+        else:
+            collectionlist = []
 
         collectionlistlen = count
+
+
+
 
 
 
