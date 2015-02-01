@@ -53,6 +53,9 @@
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="">Profile</a></li>
                     <li><a href="/_roles/{{ current_user.id }}">Roles</a></li>
+                    <li><a href="/{{ current_user.id }}?rq=post">New Ring</a></li>
+                    <li><a href="/{{ current_user.id }}/collections?rq=post">New Collection</a></li>
+                    <li><a href="/_orgregister">New Organization</a></li>
                     <li><a href="/_logout">log-Out</a></li>
                   </ul>
                 </li>

@@ -3,6 +3,7 @@ from MyRingCouchDB import MyRingCouchDB
 from MyRingUser import MyRingUser
 from env_config import COUCHDB_USER, COUCHDB_PASS
 from couchdb.http import PreconditionFailed, ResourceNotFound
+from datetime import datetime
 
 
 class MainModel:
@@ -17,6 +18,7 @@ class MainModel:
         self.roles = {}
         self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_owner'] = ['get_a','get_a_b','get_a_b_c','post_a','put_a','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
         self.roles['moderator'] = ['get_a_b','get_a_b_c','put_a_b_c','delete_a_b_c']
@@ -79,11 +81,71 @@ class MainModel:
         print('Notice: Creating User ->'+data['username'])
         auser = MyRingUser(
             email= data['email'],
+            billingemail = data['email'],
+            isorg = False,
             firstname= data['firstname'],
             lastname=data['lastname'], 
             passhash= data['passhash'], 
             guid= data['guid'], 
             salt= data['salt'])
+
+        auser._id = data['username']
+        storeresult = auser.store(self.db)
+        return True
+
+    #MAINMODEL
+    def create_orguser(self,data,dbname=None):
+
+        if not dbname:
+            dbname=self.user_database
+        
+        print('flag1')
+        self.db = self.select_db(dbname)
+        print('flag2')
+
+
+        people = {}
+        people[data['username']] = {}
+        people[data['username']]['addedby'] = data['username']
+        people[data['username']]['added'] = str(datetime.now())
+
+        teams = {}
+        teams['owner'] = {}
+        teams['owner']['members'] = []
+        teams['owner']['members'].append(data['username'])
+        teams['owner']['addedby'] = data['username']
+        teams['owner']['added'] = str(datetime.now())
+        
+        #dict(data['username']:dict("addedby":data['username'],"added":datetime.now()))
+        #dict(data['username']=dict("addedby"=data['username'],"added"=datetime.now()))
+
+        people2 = {}
+        people2['addedby'] = 'moco'
+        people2['added'] = datetime.now()
+
+
+        print('Notice: Creating User ->'+data['username'])
+        auser = MyRingUser(
+            email= data['username']+'@id.myring.io',
+            billingemail = data['email'],  
+            isorg = True,
+            firstname= data['firstname'],
+            lastname=data['lastname'], 
+            passhash= data['passhash'], 
+            guid= data['guid'], 
+            salt= data['salt'])
+
+        #auser.people[data['username']] = {}
+        auser.people.append(handle=data['owner'],addedby=data['owner'],added=datetime.now()) 
+        auser.teams.append(teamname='owner',addedby=data['owner'],added=datetime.now())
+
+        for team in auser.teams:
+            if team.teamname == 'owner':
+                print("Teamowner:",team)
+                print("team.teamname:",team.teamname)
+                print("team.members:",team.members, type(team.members))
+                print("team.added:",team.added)
+                team.members.append(handle=data['owner'],addedby=data['owner'],added=datetime.now())
 
         auser._id = data['username']
         storeresult = auser.store(self.db)
@@ -175,10 +237,20 @@ class MainModel:
         
         if depth == '_a' or depth == '_a_b' or depth == '_a_b_c':
 
+            
+
             if current_user == handle: 
                 #This user is a Handle Owner
                 print('This user is a Handle Owner')     
                 user_authorizations += self.roles['handle_owner']
+
+            elif self.is_org_owner(current_user,handle):
+                print('This user is an Org Member')
+                user_authorizations += self.roles['handle_owner']
+            else:
+                print('This user is Anonymous')
+                user_authorizations += self.roles['handle_member']
+
 
 
             if depth == '_a_b' or depth == '_a_b_c':
@@ -299,6 +371,9 @@ class MainModel:
             return False
 
         
+    def is_org_owner(self,handle,org):
+
+        return True
 
 
 

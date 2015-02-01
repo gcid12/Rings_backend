@@ -1,45 +1,65 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask.ext.login import (LoginManager, current_user, login_required,
-                            login_user, logout_user, UserMixin, AnonymousUserMixin,
-                            confirm_login, fresh_login_required)
-
 from AuthModel import AuthModel
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask.ext.login import UserMixin, AnonymousUserMixin
+
 
 
 class User(UserMixin):
-    def __init__(self, username=None, email=None, passhash=None, active=True, id=None):
+    def __init__(self, username=None, email=None, passhash=None, owner=None, isOrg=False, active=True, id=None):
         self.username = username
         self.email = email
         self.passhash = passhash
+        self.isOrg = isOrg
         self.active = active
         self.isAdmin = False
         self.id = None
+
+        if owner:
+            self.owner = owner
+        else:
+            self.owner = username
+        
 
         self.ATM = AuthModel()
 
 
     def set_user(self): 
 
+        
         user = {}
-        user['username'] = self.username.lower()
-        user['email'] = self.email.lower()
+        # Defaults
         user['lastname'] = 'testlastname'
         user['firstname'] = 'testfirstname'
-        user['passhash'] = self.passhash
         user['guid'] = 'testguid'
         user['salt'] = 'testsalt'
+        # Via self
+        user['username'] = self.username.lower()
+        user['email'] = self.email.lower()  
+        user['owner'] = self.owner 
+        user['passhash'] = self.passhash
+        
 
         print(user)
 
-        if self.ATM.saas_create_user(user):
-            print "new user id = %s " % user['username']       
-            return user['username']
+        if not self.isOrg:
+            #You are registering a regular User
+            if self.ATM.saas_create_user(user):
+                print "new user id = %s " % user['username']       
+                return user['username']
+            else: 
+                return None
         else:
-            return None
+            #You are registering an Organization
+            if self.ATM.saas_create_orguser(user):
+                print "new organization id = %s " % user['username']       
+                return user['username']
+            else: 
+                return None
+
+        
 
     def set_password_key(self,key):
 

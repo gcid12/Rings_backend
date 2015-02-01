@@ -7,6 +7,24 @@ class MyRingUser(Document):
     firstname = TextField()
     lastname = TextField()
     email = TextField()
+    billingemail = TextField()
+    isorg = BooleanField()
+    #people = DictField()
+    people = ListField(DictField(Mapping.build(
+        handle = TextField(),
+        addedby = TextField(),
+        added = DateTimeField(default=datetime.now)
+        )))
+    teams = ListField(DictField(Mapping.build(
+        teamname = TextField(),
+        members = ListField(DictField(Mapping.build(
+                handle = TextField(),
+                addedby = TextField(),
+                added = DateTimeField(default=datetime.now)
+            ))),
+        addedby = TextField(),
+        added = DateTimeField(default=datetime.now)
+        )))
     salt = TextField()
     passhash = TextField()
     guid = TextField()

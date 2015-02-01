@@ -43,9 +43,7 @@ def login():
     
     return render_template("/auth/login.html", data=data)
 
-#
-# Route disabled - enable route to allow user registration.
-#
+
 @auth_flask_login.route("/_register", methods=["GET","POST"])
 def register():
 
@@ -92,6 +90,40 @@ def register():
     data = {}
 
     return render_template("/auth/register.html", data=data)
+
+@auth_flask_login.route("/_orgregister", methods=["GET","POST"])
+@login_required
+def orgregister():
+
+    #registerForm = forms.SignupForm(request.form)
+    #current_app.logger.info(request.form)
+
+    if request.method == 'POST':
+
+        username = request.form.get('username')
+        email = request.form.get('email')
+
+        # Organizations use no passwords
+        password_hash = ''
+
+        # prepare User
+        user = User(username,email,password_hash,current_user.id,True)
+        print user
+
+        #try:
+        if True:
+            user.set_user()
+            return redirect('/'+username)
+
+        #except:
+        else:
+            print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            flash("unable to register with that email address")
+            current_app.logger.error("Error on registration ")
+        
+    data = {}
+
+    return render_template("/auth/orgregister.html", data=data)
 
 @auth_flask_login.route("/_forgot", methods=["GET", "POST"])
 def forgot():

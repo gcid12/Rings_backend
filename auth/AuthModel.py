@@ -33,24 +33,38 @@ class AuthModel:
         #Added validation for SaaS users go here
 
         #Check if that username or email exists before trying to create the new user. Reject if TRUE
-        print("self.userdb_get_user_by_email")
-        
+        print("self.userdb_get_user_by_email")     
         if self.userdb_get_user_by_email(user['email']):
             print('User with this email already exists')
             flash('User with this email already exists')
             return False
 
         print("self.userdb_get_user_by_handle")
-
         if self.userdb_get_user_by_handle(user['username']):
-            print('User with this username already exists')
-            flash('User with this username already exists')
+            print('Organization or User with this username already exists')
+            flash('Organization or User with this username already exists')
             return False
 
 
 
         if self.MAM.create_user(user):
             print("User created in DB. Attempting to create image folders...")
+            self.create_user_imagefolder(user['username'])
+            return True
+
+        #AUTHMODEL
+    def saas_create_orguser(self,user):
+        #Added validation for SaaS users go here
+
+        #Check if that username exists before trying to create the new orguser. Reject if TRUE     
+        print("self.userdb_get_user_by_handle")
+        if self.userdb_get_user_by_handle(user['username']):
+            print('Organization or User with this username already exists')
+            flash('Organization or User with this username already exists')
+            return False
+
+        if self.MAM.create_orguser(user):
+            print("Organization created in DB. Attempting to create image folders...")
             self.create_user_imagefolder(user['username'])
             return True
 

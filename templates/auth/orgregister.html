@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+
+        <div class="row">
+          <div class="col-sm-12">
+
+        
+
+
+               <div class="rn-box-space">
+                  
+                      <div class="rn-b1">Create a new Organization</div>
+                  
+              </div> 
+          
+
+            <div class="rn-box-content">
+              <form action="" method="POST" role="form">
+                
+                
+              
+                <div class="form-group">
+                  <label for="">Organization name:</label>
+                  <input type="text" id="username" name="username" required="required" class="form-control" placeholder="This is the handle of the organization">
+                </div>
+
+                <div class="form-group">
+                  <label for="">Billing email:</label>
+                  <input type="email" id="email" name="email" required="required" class="form-control" placeholder="Receipts will be sent here">
+                </div>
+         
+                <button type="submit" class="btn btn-primary">Create organization</button>
+              </form>
+            </div><!-- //close box -->
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
+
+
+
+
+
+
+  
