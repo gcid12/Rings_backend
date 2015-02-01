@@ -168,18 +168,18 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         #return 'ok'
 
 
-def dashboard_dispatcher(handle,dashboard_widgets):
+def home_dispatcher(handle):
 
-    if 'collection_list' in dashboard_widgets:
-        ACF = AvispaCollectionsRestFunc()
-        m = 'get_a_x'
-        collections = getattr(ACF, m.lower())(request,handle,None,None)
+    
+    ACF = AvispaCollectionsRestFunc()
+    m = 'get_a_x'
+    collections = getattr(ACF, m.lower())(request,handle,None,None)
         
 
-    if 'ring_list' in dashboard_widgets:
-        ARF = AvispaRestFunc()
-        m = 'get_a'
-        rings = getattr(ARF, m.lower())(request,handle,None,None)
+    
+    ARF = AvispaRestFunc()
+    m = 'get_a'
+    rings = getattr(ARF, m.lower())(request,handle,None,None)
         
 
 
@@ -323,12 +323,7 @@ def first_install():
 #The home of user <handle>
 def home(handle):
 
-    dashboard_widgets = []
-    dashboard_widgets.append('production_timeline')
-    dashboard_widgets.append('collection_list')
-    dashboard_widgets.append('ring_list')
-
-    result = dashboard_dispatcher(handle,dashboard_widgets)
+    result = home_dispatcher(handle)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
