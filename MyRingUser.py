@@ -8,7 +8,7 @@ class MyRingUser(Document):
     lastname = TextField()
     email = TextField()
     billingemail = TextField()
-    isorg = BooleanField()
+    is_org = BooleanField()
     #people = DictField()
     people = ListField(DictField(Mapping.build(
         handle = TextField(),

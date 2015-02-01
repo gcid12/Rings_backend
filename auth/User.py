@@ -50,14 +50,14 @@ class User(UserMixin):
                 print "new user id = %s " % user['username']       
                 return user['username']
             else: 
-                return None
+                return False
         else:
             #You are registering an Organization
             if self.ATM.saas_create_orguser(user):
                 print "new organization id = %s " % user['username']       
                 return user['username']
             else: 
-                return None
+                return False
 
         
 

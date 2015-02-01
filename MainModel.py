@@ -128,7 +128,7 @@ class MainModel:
         auser = MyRingUser(
             email= data['username']+'@id.myring.io',
             billingemail = data['email'],  
-            isorg = True,
+            is_org = True,
             firstname= data['firstname'],
             lastname=data['lastname'], 
             passhash= data['passhash'], 

@@ -62,27 +62,32 @@ def register():
         user = User(username,email,password_hash)
         print user
 
-        #try:
-        if True:
-            user.set_user()
-            #return redirect('/_login')
-            print('Now log in the user')
+        try:
+        #if True:
+            if user.set_user():
 
-            #Go through regular login process
-            userObj = User(email=email)
-            userview = userObj.get_user()
-            print(userObj)
-            if login_user(userObj, remember="no"):
-                    flash("Logged in!")
-                    #flash("Redirecting to : /"+user.id)
-                    return redirect('/'+userview.id)
-  
+                #return redirect('/_login')
+                print('Now log in the user')
+
+                #Go through regular login process
+                userObj = User(email=email)
+                userview = userObj.get_user()
+                print(userObj)
+                if login_user(userObj, remember="no"):
+                        flash("Logged in. Welcome to MyRing!")
+                        #flash("Redirecting to : /"+user.id)
+                        return redirect('/'+userview.id+'/_home')
+      
+                else:
+                    flash("Please enter your credentials ")
+                    return redirect('/_login')
             else:
-                flash("unable to log you in")
+                
+                return redirect('/_register')
 
 
-        #except:
-        else:
+        except:
+        #else:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address")
             current_app.logger.error("Error on registration ")
@@ -113,7 +118,7 @@ def orgregister():
         #try:
         if True:
             user.set_user()
-            return redirect('/'+username)
+            return redirect('/'+username+'/_home')
 
         #except:
         else:
