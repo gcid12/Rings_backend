@@ -175,16 +175,22 @@ def home_dispatcher(handle):
     m = 'get_a_x'
     collections = getattr(ACF, m.lower())(request,handle,None,None)
         
-
     
     ARF = AvispaRestFunc()
     m = 'get_a'
     rings = getattr(ARF, m.lower())(request,handle,None,None)
+
+    MAM = MainModel()
+    peopleteams = MAM.is_org(handle)
+    if peopleteams:
+        print('peopleteams:',peopleteams)
+        template = 'avispa_rest/orghome.html'
+    else:
+        template = 'avispa_rest/userhome.html'
         
 
 
-    data = {'message': 'Using get_a for handle '+handle ,
-            'template':'avispa_rest/userhome.html',
+    data = {'template':template,
             'handle': handle,
             'rings': rings,
             'collections': collections }

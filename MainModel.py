@@ -151,6 +151,12 @@ class MainModel:
         storeresult = auser.store(self.db)
         return True
 
+    #MAINMODEL
+    def is_org(self,username,user_database=None):
+   
+        result = self.select_user_doc_view('orgs/peopleteams',username)
+        return result
+
     #MAINMODEL  
     def select_user(self,dbname,username):
         self.db = self.select_db(dbname)
