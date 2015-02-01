@@ -507,7 +507,11 @@ class MyRingPatch:
     def p20150128(self,request,*args):
         '''
         This patch runs authmodel.userdb_set_db_views() to create the new userdatabase views : 
+
+        YOU MUST run: 'pip install flanker' before running this patch in order for the application to run.
         '''
+
+
 
         from auth.AuthModel import AuthModel
 

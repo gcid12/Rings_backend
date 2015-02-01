@@ -25,7 +25,6 @@ class AvispaCollectionsModel:
 
         # Returns list of collections
 
-
         if not user_database : 
             user_database = self.user_database
 
@@ -78,13 +77,15 @@ class AvispaCollectionsModel:
                         
 
             print('NewCollections:', collections)
+
+            return collections
                 
 
         except (ResourceNotFound, TypeError) as e:
             print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
             
 
-        return collections
+        return False
 
     
         
