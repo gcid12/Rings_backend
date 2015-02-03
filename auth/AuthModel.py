@@ -92,6 +92,12 @@ class AuthModel:
 
         return self.MAM.update_user(data)
 
+    def saas_update_user_profile(self,user,changes):
+
+        changes['id']=user
+        
+        return self.MAM.update_user(changes)
+
     def create_user_imagefolder(self,username):         
         self.safe_create_dir(IMAGE_STORE+'/'+username+'/o') #Original folder
 

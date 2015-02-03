@@ -231,16 +231,17 @@ def forgot():
     return render_template("/auth/forgot.html", data=data)
 
 
-@auth_flask_login.route("/_profile", methods=["GET", "POST"])
+@auth_flask_login.route("/_profile", methods=["GET"])
 @login_required
-def profile():
+def profile_get():
 
+    rawuser = load_user(current_user.id)
     
     user = {}
-    user['profilepic'] = '3832048359'
-    user['name'] = 'Ricardo Cid'
-    user['url'] = 'http://blacklabelrobot.com'
-    user['location'] = 'New York, NY'
+    user['profilepic'] = rawuser.profilepic
+    user['name'] = rawuser.name
+    user['url'] = rawuser.url
+    user['location'] = rawuser.location
 
     data = {}
     data['user'] = user
@@ -250,6 +251,21 @@ def profile():
     data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
 
     return render_template("/auth/profile.html", data=data)
+
+
+
+
+@auth_flask_login.route("/_profile", methods=["POST"])
+@login_required
+def profile_post():
+    
+    user = User(username=current_user.id)
+    if user.update_user_profile(request):
+        flash('Profile updated')
+    else:
+        flash('Profile not updated. There was a problem')
+
+    return redirect('/'+current_user.id+'/_home')
 
 
 

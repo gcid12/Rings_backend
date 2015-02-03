@@ -31,8 +31,9 @@ class User(UserMixin):
         
         user = {}
         # Defaults
-        user['lastname'] = 'testlastname'
-        user['firstname'] = 'testfirstname'
+        
+        #user['lastname'] = 'testlastname'
+        #user['firstname'] = 'testfirstname'
         user['guid'] = 'testguid'
         user['salt'] = 'testsalt'
         # Via self
@@ -108,7 +109,11 @@ class User(UserMixin):
             #print('flag2')
             #print(dbUser)
             if dbUser:
+                self.profilepic = dbUser['value']['profilepic']
+                self.name = dbUser['value']['name']
                 self.email = dbUser['value']['email']
+                self.url = dbUser['value']['url']
+                self.location = dbUser['value']['location']
                 self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
                 self.id = dbUser['value']['_id']
@@ -120,6 +125,32 @@ class User(UserMixin):
             print "there was an error"
             return None
 
+    def update_user_profile(self,request):
+
+        dbUser =self.ATM.userdb_get_user_by_handle(self.username)
+        changes = {}
+
+        if dbUser:
+            if request.form.get('profilepic') != dbUser['value']['profilepic']:
+                print('profilepic changed!')
+                changes['profilepic'] = request.form.get('profilepic')
+
+            if request.form.get('name') != dbUser['value']['name']:
+                print('name changed!')
+                changes['name'] = request.form.get('name')
+            
+            if request.form.get('url') != dbUser['value']['url']:
+                print('url changed!')
+                changes['url'] = request.form.get('url')
+
+            if request.form.get('location') != dbUser['value']['location']:
+                print('location changed!')
+                changes['location'] = request.form.get('location')
+
+        return self.ATM.saas_update_user_profile(self.username,changes)
+                
+
+    
 
     def is_valid_password_key(self,email,key):
 
