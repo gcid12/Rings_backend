@@ -231,6 +231,28 @@ def forgot():
     return render_template("/auth/forgot.html", data=data)
 
 
+@auth_flask_login.route("/_profile", methods=["GET", "POST"])
+@login_required
+def profile():
+
+    
+    user = {}
+    user['profilepic'] = '3832048359'
+    user['name'] = 'Ricardo Cid'
+    user['url'] = 'http://blacklabelrobot.com'
+    user['location'] = 'New York, NY'
+
+    data = {}
+    data['user'] = user
+    data['handle'] = current_user.id
+
+    o = urlparse.urlparse(request.url)
+    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+    return render_template("/auth/profile.html", data=data)
+
+
+
 @auth_flask_login.route("/_reauth", methods=["GET", "POST"])
 @login_required
 def reauth():

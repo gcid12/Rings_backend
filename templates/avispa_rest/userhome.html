@@ -119,6 +119,34 @@
           <a href="/{{data.handle}}?rq=post&n=10">New Ring</a>
           
         </div><!-- close 2 --> 
+
+        <div class="col-sm-6">
+          <div class="rn-box-title"> 
+              Organizations 
+          </div>
+          <div class="rn-box-solo">
+            <table class="table table-striped table-condensed">
+            {% for organization in data.organizations %}
+                <div class="col-xs-12 text-right">
+                    
+                    <h4 class="text-lead fw-300 pull-left">
+                        <a href="/{{organization}}/_home">{{organization}}</a>
+                        <span class="text-gray"></span>
+   
+                    </h4>
+                    <br/>        
+                </div>
+            {% endfor %}
+            </table>                                       
+          </div> 
+
+          <a href="/_orgregister">New Organization</a>
+          <br/><br/><br/>
+          
+
+        </div><!-- close 2 --> 
+
+
                 <!-- COLUMN 1 -->
         <!-- COLUMN 1 -->           
     </div>

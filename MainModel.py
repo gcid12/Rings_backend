@@ -157,6 +157,12 @@ class MainModel:
         result = self.select_user_doc_view('orgs/peopleteams',username)
         return result
 
+    #MAINMODEL
+    def user_orgs(self,username,user_database=None):
+   
+        result = self.select_user_doc_view('orgs/user2orgs',username,10)
+        return result
+
     #MAINMODEL  
     def select_user(self,dbname,username):
         self.db = self.select_db(dbname)
@@ -164,22 +170,32 @@ class MainModel:
         return MyRingUser.load(self.db, username)
 
 
-    def select_user_doc_view(self,dbview,key,user_database=None):
+    def select_user_doc_view(self,dbview,key,batch=None,user_database=None,):
  
         if not user_database : 
             user_database = self.user_database
+
+        if not batch : 
+            batch = 1
 
         db = self.select_db(self.user_database)
         options = {}
         options['key']=str(key)
         #Retrieving from ring/items view
-        result = db.iterview(dbview,1,**options)
+        result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
-        print(result)
+        print('iterview result for '+dbview+' with key '+key+':',result)
         
-        for r in result:     
-            return r['value']
+        if batch == 1:
+            for r in result:     
+                return r['value']
+        else:
+            out = []
+            for r in result:
+                out.append(r['value'])
+            return out
+
 
         return False
 
