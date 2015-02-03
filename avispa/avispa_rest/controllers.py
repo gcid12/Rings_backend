@@ -49,6 +49,12 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
      
     data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
 
+
+    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    data['actualname'] = user_doc['name']
+    data['profilepic'] = user_doc['profilepic']
+    data['location'] = user_doc['location']
+
     if 'collection' in request.args:
         data['collection'] = request.args.get('collection')
 
@@ -145,6 +151,13 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     data = getattr(ACF, m.lower())(request,handle,collection,idx,api=api)
 
+    MAM = MainModel()
+    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if user_doc:
+        data['actualname'] = user_doc['name']
+        data['profilepic'] = user_doc['profilepic']
+        data['location'] = user_doc['location']
+
     data['handle']=handle
     data['collection']=collection
     data['idx']=idx
@@ -184,8 +197,7 @@ def home_dispatcher(handle):
     
     ACF = AvispaCollectionsRestFunc()
     m = 'get_a_x'
-    collections = getattr(ACF, m.lower())(request,handle,None,None)
-        
+    collections = getattr(ACF, m.lower())(request,handle,None,None)       
     
     ARF = AvispaRestFunc()
     m = 'get_a'
@@ -195,24 +207,33 @@ def home_dispatcher(handle):
             'rings': rings,
             'collections': collections}
 
+
     MAM = MainModel()
+    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if user_doc:
+
+        data['actualname'] = user_doc['name']
+        data['profilepic'] = user_doc['profilepic']
+        data['location'] = user_doc['location']
+        
+
+    
     peopleteams = MAM.is_org(handle)
     if peopleteams:
-        #print('peopleteams:',peopleteams)
+        
         data['template'] = 'avispa_rest/orghome.html'
         data['people'] = peopleteams['people']
-        teams2 = []
+        
         for team in peopleteams['teams']:
             team['count']=len(team['members'])
-        #print('teams2:',teams2)
-        print('pp2:',peopleteams['teams'])
+        
+        
         data['teams'] = peopleteams['teams']
 
 
     else:
      
         data['organizations'] = MAM.user_orgs(handle)
-        print('user2orgs:',data['organizations'])
         data['template'] = 'avispa_rest/userhome.html'
  
     return render_template(data['template'], data=data)

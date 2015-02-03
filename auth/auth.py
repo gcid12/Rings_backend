@@ -4,6 +4,7 @@ from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from env_config import FROMEMAIL, FROMPASS
+from MainModel import MainModel
 
 from User import User
 
@@ -128,6 +129,14 @@ def orgregister():
         
     data = {}
 
+    MAM = MainModel()
+    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if user_doc:
+        data['handle'] = current_user.id
+        data['actualname'] = user_doc['name']
+        data['profilepic'] = user_doc['profilepic']
+        data['location'] = user_doc['location']
+
     return render_template("/auth/orgregister.html", data=data)
 
 @auth_flask_login.route("/_forgot", methods=["GET", "POST"])
@@ -246,6 +255,15 @@ def profile_get():
     data = {}
     data['user'] = user
     data['handle'] = current_user.id
+
+
+    MAM = MainModel()
+    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if user_doc: 
+        data['actualname'] = user_doc['name']
+        data['profilepic'] = user_doc['profilepic']
+        data['location'] = user_doc['location']
+
 
     o = urlparse.urlparse(request.url)
     data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))

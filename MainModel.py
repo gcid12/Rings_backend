@@ -170,7 +170,7 @@ class MainModel:
         return MyRingUser.load(self.db, username)
 
 
-    def select_user_doc_view(self,dbview,key,batch=None,user_database=None,):
+    def select_user_doc_view(self,dbview,key,batch=None,user_database=None):
  
         if not user_database : 
             user_database = self.user_database
