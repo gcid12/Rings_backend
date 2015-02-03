@@ -23,9 +23,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     
     ARF = AvispaRestFunc()
 
-    #Will have to move _tools and _patch this to its own FlaskBlueprint
-    MRT = MyRingTool()
-    
 
 
     if 'q' in request.args:
@@ -49,13 +46,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     if not MAM.user_is_authorized(current_user.id,method,depth,handle,ring,idx):
         return render_template('avispa_rest/error_401.html', data=data),401
 
-    if handle=='_tools':  #not a ring! System specific tools
-        tool = ring
-        data = getattr(MRT, tool.lower())(request)
-        print('flagA:')
-        print(data)
-    else:  
-        data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
+     
+    data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
 
     if 'collection' in request.args:
         data['collection'] = request.args.get('collection')
@@ -93,6 +85,26 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
         #print(data) 
         return render_template(data['template'], data=data)
         #return 'ok'
+
+def tool_dispatcher(tool):
+    
+    MRT = MyRingTool()
+
+    data = getattr(MRT, tool.lower())(request)
+    print('Tool executed:',data)
+
+    data['handle']=current_user.id
+    data['current_user']=current_user
+    o = urlparse.urlparse(request.url)
+    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+    t = time.time()
+    data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+
+    if 'redirect' in data:
+        return data                 
+    else:
+        return render_template(data['template'], data=data)
 
 
 def patch_dispatcher(patchnumber):
@@ -169,7 +181,6 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
 
 def home_dispatcher(handle):
-
     
     ACF = AvispaCollectionsRestFunc()
     m = 'get_a_x'
@@ -180,21 +191,30 @@ def home_dispatcher(handle):
     m = 'get_a'
     rings = getattr(ARF, m.lower())(request,handle,None,None)
 
+    data = {'handle': handle,
+            'rings': rings,
+            'collections': collections}
+
     MAM = MainModel()
     peopleteams = MAM.is_org(handle)
     if peopleteams:
-        print('peopleteams:',peopleteams)
-        template = 'avispa_rest/orghome.html'
+        #print('peopleteams:',peopleteams)
+        data['template'] = 'avispa_rest/orghome.html'
+        data['people'] = peopleteams['people']
+        teams2 = []
+        for team in peopleteams['teams']:
+            team['count']=len(team['members'])
+        #print('teams2:',teams2)
+        print('pp2:',peopleteams['teams'])
+        data['teams'] = peopleteams['teams']
+
+
     else:
-        template = 'avispa_rest/userhome.html'
-        
-
-
-    data = {'template':template,
-            'handle': handle,
-            'rings': rings,
-            'collections': collections }
-    
+     
+        data['organizations'] = MAM.user_orgs(handle)
+        print('user2orgs:',data['organizations'])
+        data['template'] = 'avispa_rest/userhome.html'
+ 
     return render_template(data['template'], data=data)
 
 def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
@@ -313,12 +333,23 @@ def static5(filename,depth1,depth2,depth3,depth4):
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
     return avispa_rest.send_static_file(filename)
 
+
 @avispa_rest.route('/_tools/install', methods=['GET'])
 #This is needed because in a Vanilla install there are no users so /_tools/install would redirect me to /_login
 def first_install():
 
+    #result = route_dispatcher('_a_b','_tools','install')
+    result = tool_dispatcher('install')
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
 
-    result = route_dispatcher('_a_b','_tools','install')
+@avispa_rest.route('/_tools/<tool>', methods=['GET','POST'])
+def tool(tool):
+
+    result = tool_dispatcher(tool)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
