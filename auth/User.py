@@ -4,6 +4,7 @@ import sys
 from AuthModel import AuthModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin, AnonymousUserMixin
+from MainModel import MainModel
 
 
 
@@ -106,13 +107,13 @@ class User(UserMixin):
             elif self.username:
                 dbUser =self.ATM.userdb_get_user_by_handle(self.username)
 
-            #print('flag2')
-            #print(dbUser)
+            print('DBUSER:',dbUser['value']['name'])
             if dbUser:
-                self.profilepic = dbUser['value']['profilepic']
+                
                 self.name = dbUser['value']['name']
                 self.email = dbUser['value']['email']
                 self.url = dbUser['value']['url']
+                self.profilepic = dbUser['value']['profilepic']
                 self.location = dbUser['value']['location']
                 self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
@@ -148,7 +149,6 @@ class User(UserMixin):
                 changes['location'] = request.form.get('location')
 
         return self.ATM.saas_update_user_profile(self.username,changes)
-                
 
     
 

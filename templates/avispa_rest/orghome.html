@@ -14,11 +14,13 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 text-right">
-        <img class="img-responsive center-block user-big" src="/static/images/escudo_UNAM_azul_fuerte.jpg" style="float:left; margin-right:10px;" alt="MyRing">
+        <img class="img-responsive center-block user-big" src="/_images/{{data.handle}}/t150/{{data.orgprofilepic}}_t150.jpg" style="float:left; margin-right:10px;" alt="MyRing">
 
-
-        <h1 class="text-lead fw-300 pull-left">{{data.handle}}<span class="text-gray"></span><br/></h1>
+        <h1 class="text-lead fw-300 pull-left"><span class="text-gray">{{data.orgactualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1>
         <br/>
+
+        <a href="/_orgprofile/{{data.handle}}" type="button" class="btn btn-info btn-xs pull-right">
+              Organization profile</a>
 
         
       </div>

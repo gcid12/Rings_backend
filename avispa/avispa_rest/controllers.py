@@ -215,22 +215,25 @@ def home_dispatcher(handle):
         data['actualname'] = user_doc['name']
         data['profilepic'] = user_doc['profilepic']
         data['location'] = user_doc['location']
+
+
+    org_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+    if user_doc:
+
+        data['orgactualname'] = org_user_doc['name']
+        data['orgprofilepic'] = org_user_doc['profilepic']
+        data['orglocation'] = org_user_doc['location']
         
 
     
     peopleteams = MAM.is_org(handle)
-    if peopleteams:
-        
+    if peopleteams: 
+
         data['template'] = 'avispa_rest/orghome.html'
-        data['people'] = peopleteams['people']
-        
+        data['people'] = peopleteams['people']       
         for team in peopleteams['teams']:
-            team['count']=len(team['members'])
-        
-        
+            team['count']=len(team['members'])              
         data['teams'] = peopleteams['teams']
-
-
     else:
      
         data['organizations'] = MAM.user_orgs(handle)

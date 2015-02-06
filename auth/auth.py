@@ -244,6 +244,7 @@ def forgot():
 @login_required
 def profile_get():
 
+    print('profile_get():')
     rawuser = load_user(current_user.id)
     
     user = {}
@@ -257,12 +258,13 @@ def profile_get():
     data['handle'] = current_user.id
 
 
+    
     MAM = MainModel()
     user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    if user_doc: 
-        data['actualname'] = user_doc['name']
+    if user_doc:   
         data['profilepic'] = user_doc['profilepic']
-        data['location'] = user_doc['location']
+        
+    
 
 
     o = urlparse.urlparse(request.url)
@@ -284,6 +286,102 @@ def profile_post():
         flash('Profile not updated. There was a problem')
 
     return redirect('/'+current_user.id+'/_home')
+
+
+@auth_flask_login.route("/_profile/<handle>", methods=["POST"])
+@login_required
+def profile_wrong(handle):
+    
+    return redirect('/'+handle+'/_home')
+
+  
+
+@auth_flask_login.route("/_orgprofile/<handle>", methods=["GET"])
+@login_required
+def orgprofile_get(handle):
+
+    
+
+    MAM = MainModel()
+
+    needs_reload = False
+
+    print('orgprofile_get():')
+    rawuser = load_user(handle)
+
+    '''
+    print(rawuser)
+    print(rawuser.added)
+    profile_prerequisites = ['profilepic','name','url','location']
+    for prq in profile_prerequisites:
+        if rawuser[prq]:
+            needs_reload = True
+            # Repair elements that are missing in the profile
+            elements = [prq]           
+            if not MAM.repair_user_doc(elements,handle):
+                flash("The organization profile can't be updated right now. Error in: "+prq)
+                redirect('/'+handle+'/_home')
+
+    if needs_reload:
+        rawuser = load_user(handle)
+    '''
+
+
+    user = {}
+
+    prerequisites = ['profilepic','name','url','location']
+    for pr in prerequisites:
+        
+        '''
+        try:
+            user[pr] = rawuser[pr]
+            user[pr] = getattr(rawuser, pr, default_value)
+        except(AttributeError):
+            if MAM.repair_user_doc(pr,handle):
+                print('Repaired '+pr)
+                user[pr] = ''
+            else:
+                print('Could not repair '+pr)
+        '''
+
+        if hasattr(rawuser,pr):
+            print('Value is there for:'+pr)
+            user[pr] = getattr(rawuser, pr,'')
+        else:
+            if MAM.repair_user_doc(pr,handle):
+                print('Repaired '+pr)
+                user[pr] = ''
+            else:
+                print('Could not repair '+pr)
+
+
+    '''
+    user['profilepic'] = rawuser.profilepic
+    user['name'] = rawuser.name
+    user['url'] = rawuser.url
+    user['location'] = rawuser.location
+    '''
+
+    data = {}
+    data['user'] = user
+    data['handle'] = handle
+
+
+    return render_template("/auth/orgprofile.html", data=data)
+
+
+@auth_flask_login.route("/_orgprofile/<handle>", methods=["POST"])
+@login_required
+def orgprofile_post(handle):
+
+
+    user = User(username=handle)
+    if user.update_user_profile(request):
+        flash('Organization information updated')
+    else:
+        flash('Organization information not updated. There was a problem')
+
+    return redirect('/'+handle+'/_home')
 
 
 
@@ -309,9 +407,10 @@ def unauthorized_callback():
 
 @login_manager.user_loader
 def load_user(id):
+    # This is called every single time when you are logged in.
 
-    print('load_user id is:')
-    print(id)
+    print('xload_user id is:',id)
+    
 
     if id is None:
         redirect('/_login')

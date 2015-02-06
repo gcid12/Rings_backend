@@ -151,6 +151,23 @@ class MainModel:
         storeresult = auser.store(self.db)
         return True
 
+    def repair_user_doc(self,element,username,dbname=None):
+
+        print('Repairing user_doc for '+username+'. Adding element: '+str(element))
+        if not dbname:
+            dbname=self.user_database
+
+        db = self.select_db(dbname)
+        user_doc = MyRingUser.load(db, username)
+    
+        user_doc[element] = ''
+
+        if user_doc.store(db):
+            return True
+        else:
+            return False
+
+
     #MAINMODEL
     def is_org(self,username,user_database=None):
    
