@@ -5,6 +5,7 @@ from AuthModel import AuthModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from MainModel import MainModel
+from flask import flash
 
 
 
@@ -31,13 +32,8 @@ class User(UserMixin):
 
         
         user = {}
-        # Defaults
-        
-        #user['lastname'] = 'testlastname'
-        #user['firstname'] = 'testfirstname'
-        user['guid'] = 'testguid'
-        user['salt'] = 'testsalt'
-        # Via self
+        # Defaults coming via self
+
         user['username'] = self.username.lower()
         user['email'] = self.email.lower()  
         user['owner'] = self.owner 
@@ -121,10 +117,46 @@ class User(UserMixin):
                 return self
             else:
                 return None
-        except:
+        except(KeyError):
             print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]
-            print "there was an error"
-            return None
+            print "there was an error, we need to repair the user_document"
+
+            preconditions = ['name','email','url','profilepic','location']
+            repaired = False
+            for element_to_add in preconditions:
+                MAM = MainModel()
+                if MAM.repair_user_doc(element_to_add,dbUser['value']['_id']):
+                    repaired = True
+                    print('Repaired '+element_to_add+'. ')
+                    #flash('Repaired '+element_to_add+'. ')
+
+            #Let's try again
+            if repaired:
+
+                if self.email:
+                    dbUser =self.ATM.userdb_get_user_by_email(self.email)
+                elif self.username:
+                    dbUser =self.ATM.userdb_get_user_by_handle(self.username)
+
+                if dbUser:                   
+
+
+
+                    self.name = dbUser['value']['name']
+                    self.email = dbUser['value']['email']
+                    self.url = dbUser['value']['url']
+                    self.profilepic = dbUser['value']['profilepic']
+                    self.location = dbUser['value']['location']
+                    self.active = dbUser['value']['is_active'] 
+                    self.password = dbUser['value']['passhash']
+                    self.id = dbUser['value']['_id']
+                    return self
+                else:
+                    return False
+
+            else:
+                return False
+
 
     def update_user_profile(self,request):
 

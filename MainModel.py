@@ -69,7 +69,7 @@ class MainModel:
         return item_doc
 
     #MAINMODEL
-    def create_user(self,data,dbname=None):
+    def create_user(self,userd,dbname=None):
 
         if not dbname:
             dbname=self.user_database
@@ -78,18 +78,14 @@ class MainModel:
         self.db = self.select_db(dbname)
         print('flag2')
 
-        print('Notice: Creating User ->'+data['username'])
+        print('Notice: Creating User ->'+userd['username'])
         auser = MyRingUser(
-            email= data['email'],
-            billingemail = data['email'],
-            isorg = False,
-            firstname= data['firstname'],
-            lastname=data['lastname'], 
-            passhash= data['passhash'], 
-            guid= data['guid'], 
-            salt= data['salt'])
+            email= userd['email'],
+            billingemail = userd['email'],
+            isorg = False, 
+            passhash= userd['passhash'])
 
-        auser._id = data['username']
+        auser._id = userd['username']
         storeresult = auser.store(self.db)
         return True
 
@@ -155,13 +151,21 @@ class MainModel:
 
         db = self.select_db(dbname)
         user_doc = MyRingUser.load(db, username)
-    
-        user_doc[element] = ''
 
-        if user_doc.store(db):
-            return True
-        else:
-            return False
+        print('user_doc:',user_doc,type(user_doc))
+        print('element:',element,type(element))
+
+    
+        #if not hasattr(user_doc,str(element)): 
+        try:
+            user_doc[element]
+        except(KeyError):
+            print('repairflag')
+            user_doc[element] = ''
+            if user_doc.store(db):
+                return True
+            
+        return False
 
 
     #MAINMODEL

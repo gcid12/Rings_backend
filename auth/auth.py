@@ -87,7 +87,7 @@ def register():
                 return redirect('/_register')
 
 
-        except:
+        except(KeyError):
         #else:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address")
