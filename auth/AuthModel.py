@@ -301,6 +301,41 @@ class AuthModel:
         view.get_doc(db)
         view.sync(db)
 
+
+        view = ViewDefinition('orgs', 'peopleteams', 
+                '''
+                function(doc) {
+                    if(doc.is_org) {
+                        var x = new Object();
+                        x['people']=doc.people
+                        x['teams']=doc.teams
+                        emit(doc._id,x)
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+
+        view = ViewDefinition('orgs', 'user2orgs', 
+                '''
+                function(doc) {
+                    if(doc.is_org) {
+
+                        for (var key in doc.people){
+                            emit(doc.people[key]['handle'],doc._id)
+                            
+                        }
+
+                        
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
         return True
 
     #AUTHMODEL
