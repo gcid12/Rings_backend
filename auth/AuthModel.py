@@ -1,6 +1,7 @@
 # AuthModel.py
 import sys
 import os
+import errno
 from couchdb.http import PreconditionFailed
 from couchdb.design import ViewDefinition
 from flask import flash
@@ -110,7 +111,7 @@ class AuthModel:
 
         return True
 
-    def safe_create_dir(self,path): #DONT USE HERE! #Moved to AuthModel.py
+    def safe_create_dir(self,path): 
         print(path)
         try:
             os.makedirs(path)
@@ -206,6 +207,35 @@ class AuthModel:
                 function(doc) {
                     if(doc.email) {
                         emit(doc._id,doc)
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
+        view = ViewDefinition('auth', 'userbasic', 
+                '''
+                function(doc) {
+                    if(doc.email) {
+                        var x = new Object();
+                        x['name'] = doc.name;  
+                        x['location'] = doc.location;
+
+                        if(doc.profilepic==''){
+                            x['profilepic'] = ''
+                        }else{        
+                            parts = doc.profilepic.split(',')
+                            if(parts[0]==''){
+                              x['profilepic'] = parts[1];
+                            }else{
+                              x['profilepic'] = parts[0];
+                            }
+                        }
+
+                        
+                        
+                        emit(doc._id,x)
                     }
                 }
                 ''')

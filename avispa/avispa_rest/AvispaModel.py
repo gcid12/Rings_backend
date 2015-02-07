@@ -1135,14 +1135,6 @@ class AvispaModel:
         return False
 
 
-    
-
-
-    
-    
-
-        
-
 
         ''' Optional way to retrieve from DB (not view)
 

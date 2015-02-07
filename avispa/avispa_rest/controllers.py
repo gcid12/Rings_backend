@@ -50,10 +50,10 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
 
 
-    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    data['actualname'] = user_doc['name']
-    data['profilepic'] = user_doc['profilepic']
-    data['location'] = user_doc['location']
+    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    data['cu_actualname'] = cu_user_doc['name']
+    data['cu_profilepic'] = cu_user_doc['profilepic']
+    data['cu_location'] = cu_user_doc['location']
 
     if 'collection' in request.args:
         data['collection'] = request.args.get('collection')
@@ -152,11 +152,11 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     data = getattr(ACF, m.lower())(request,handle,collection,idx,api=api)
 
     MAM = MainModel()
-    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
     if user_doc:
-        data['actualname'] = user_doc['name']
-        data['profilepic'] = user_doc['profilepic']
-        data['location'] = user_doc['location']
+        data['cu_actualname'] = cu_user_doc['name']
+        data['cu_profilepic'] = cu_user_doc['profilepic']
+        data['cu_location'] = cu_user_doc['location']
 
     data['handle']=handle
     data['collection']=collection
@@ -194,52 +194,66 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
 
 def home_dispatcher(handle):
-    
-    ACF = AvispaCollectionsRestFunc()
-    m = 'get_a_x'
-    collections = getattr(ACF, m.lower())(request,handle,None,None)       
-    
-    ARF = AvispaRestFunc()
-    m = 'get_a'
-    rings = getattr(ARF, m.lower())(request,handle,None,None)
-
-    data = {'handle': handle,
-            'rings': rings,
-            'collections': collections}
-
 
     MAM = MainModel()
-    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    if user_doc:
+    data = {}
 
-        data['actualname'] = user_doc['name']
-        data['profilepic'] = user_doc['profilepic']
-        data['location'] = user_doc['location']
-
-
-    org_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
-    if user_doc:
-
-        data['orgactualname'] = org_user_doc['name']
-        data['orgprofilepic'] = org_user_doc['profilepic']
-        data['orglocation'] = org_user_doc['location']
-        
-
+    if MAM.user_exists(handle):
     
-    peopleteams = MAM.is_org(handle)
-    if peopleteams: 
+        ACF = AvispaCollectionsRestFunc()
+        m = 'get_a_x'
+        collections = getattr(ACF, m.lower())(request,handle,None,None)       
+        
+        ARF = AvispaRestFunc()
+        m = 'get_a'
+        rings = getattr(ARF, m.lower())(request,handle,None,None)
 
-        data['template'] = 'avispa_rest/orghome.html'
-        data['people'] = peopleteams['people']       
-        for team in peopleteams['teams']:
-            team['count']=len(team['members'])              
-        data['teams'] = peopleteams['teams']
-    else:
+
+        data['handle'] = handle
+        data['rings'] = rings
+        data['collections'] = collections
+
+
+
+
+        
+        cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if cu_user_doc:
+
+            data['cu_actualname'] = cu_user_doc['name']
+            data['cu_profilepic'] = cu_user_doc['profilepic']
+            data['cu_location'] = cu_user_doc['location']
+            data['cu_handle'] = current_user.id
+
+
+        
+        peopleteams = MAM.is_org(handle) 
+        if peopleteams: 
+            #This is an organization
+            
+            org_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+            if org_user_doc:
+
+                data['orgactualname'] = org_user_doc['name']
+                data['orgprofilepic'] = org_user_doc['profilepic']
+                data['orglocation'] = org_user_doc['location']
+            
+
+            data['template'] = 'avispa_rest/orghome.html'
+            data['people'] = peopleteams['people']       
+            for team in peopleteams['teams']:
+                team['count']=len(team['members'])              
+            data['teams'] = peopleteams['teams']
+        else:
+         
+            data['organizations'] = MAM.user_orgs(handle)
+            data['template'] = 'avispa_rest/userhome.html'
      
-        data['organizations'] = MAM.user_orgs(handle)
-        data['template'] = 'avispa_rest/userhome.html'
- 
-    return render_template(data['template'], data=data)
+        return render_template(data['template'], data=data)
+
+    else:
+        data['redirect'] = '/'+current_user.id+'/_home'
+        return data
 
 def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 

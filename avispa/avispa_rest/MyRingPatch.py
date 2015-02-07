@@ -511,7 +511,20 @@ class MyRingPatch:
         YOU MUST run: 'pip install flanker' before running this patch in order for the application to run.
         '''
 
+        from auth.AuthModel import AuthModel
 
+        ATM = AuthModel()
+
+        ATM.userdb_set_db_views()
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
+    def p20150206(self,request,*args):
+        '''
+        This patch installs auth/userbasic
+        '''
 
         from auth.AuthModel import AuthModel
 
@@ -521,6 +534,9 @@ class MyRingPatch:
 
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
+
+
+        pass
 
         
 

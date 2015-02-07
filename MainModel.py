@@ -129,11 +129,7 @@ class MainModel:
             email= data['username']+'@id.myring.io',
             billingemail = data['email'],  
             is_org = True,
-            firstname= data['firstname'],
-            lastname=data['lastname'], 
-            passhash= data['passhash'], 
-            guid= data['guid'], 
-            salt= data['salt'])
+            passhash= data['passhash'])
 
         #auser.people[data['username']] = {}
         auser.people.append(handle=data['owner'],addedby=data['owner'],added=datetime.now()) 
@@ -172,6 +168,11 @@ class MainModel:
     def is_org(self,username,user_database=None):
    
         result = self.select_user_doc_view('orgs/peopleteams',username)
+        return result
+
+    def user_exists(self,username,user_database=None):
+   
+        result = self.select_user_doc_view('auth/userbyhandle',username)
         return result
 
     #MAINMODEL
