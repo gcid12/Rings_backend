@@ -214,9 +214,7 @@ def home_dispatcher(handle):
         data['collections'] = collections
 
 
-
-
-        
+        #This is to be used by the current user bar
         cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if cu_user_doc:
 
@@ -225,26 +223,42 @@ def home_dispatcher(handle):
             data['cu_location'] = cu_user_doc['location']
             data['cu_handle'] = current_user.id
 
+        #Thisi is the data from the handle we are visiting
+        if current_user.id == handle:
+            data['handle_actualname'] = data['cu_actualname']
+            data['handle_profilepic'] = data['cu_profilepic']
+            data['handle_location'] = data['cu_location']
+
+        else:
+            handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+            if handle_user_doc:
+                data['handle_actualname'] = handle_user_doc['name']
+                data['handle_profilepic'] = handle_user_doc['profilepic']
+                data['handle_location'] = handle_user_doc['location']
+    
 
         
         peopleteams = MAM.is_org(handle) 
         if peopleteams: 
             #This is an organization
-            
-            org_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
-            if org_user_doc:
-
-                data['orgactualname'] = org_user_doc['name']
-                data['orgprofilepic'] = org_user_doc['profilepic']
-                data['orglocation'] = org_user_doc['location']
-            
 
             data['template'] = 'avispa_rest/orghome.html'
-            data['people'] = peopleteams['people']       
+            data['people'] = peopleteams['people'] 
+
+            data['peoplethumbnails'] = {}
+            for person in peopleteams['people']:
+                #get the profilepic for this person
+                person_user_doc = MAM.select_user_doc_view('auth/userbasic',person['handle'])
+                if person_user_doc:
+                    data['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
+
+                    
+
             for team in peopleteams['teams']:
                 team['count']=len(team['members'])              
             data['teams'] = peopleteams['teams']
         else:
+            #This is a regular user
          
             data['organizations'] = MAM.user_orgs(handle)
             data['template'] = 'avispa_rest/userhome.html'

@@ -14,9 +14,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 text-right">
-        <img class="img-responsive center-block user-big" src="/_images/{{data.handle}}/t150/{{data.orgprofilepic}}_t150.jpg" style="float:left; margin-right:10px;" alt="MyRing">
+        <img class="img-responsive center-block user-big" src="/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="float:left; margin-right:10px;" alt="">
 
-        <h1 class="text-lead fw-300 pull-left"><span class="text-gray">{{data.orgactualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1>
+        <h1 class="text-lead fw-300 pull-left"><span class="text-gray">{{data.handle_actualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1>
         <br/>
 
         <a href="/_orgprofile/{{data.handle}}" type="button" class="btn btn-info btn-xs pull-right">
@@ -119,7 +119,7 @@
             <table class="table table-striped table-condensed">
             {% for person in data.people %}
                 <div class="col-xs-12 text-right">
-                    <img class="img-responsive center-block user-small" src="/static/images/dosx.jpg" style="float:left; margin-right:10px;" alt="MyRing">
+                    <img class="img-responsive center-block user-small" src="/_images/{{person.handle}}/t150/{{data.peoplethumbnails[person.handle]}}_t150.jpg" style="float:left; margin-right:10px;" alt="{{person.handle}}">
                     <h4 class="text-lead fw-300 pull-left">
                         <a href="/{{person.handle}}/_home">{{person.handle}}</a>
                         <span class="text-gray"></span>
