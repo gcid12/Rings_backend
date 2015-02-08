@@ -17,15 +17,12 @@
 
           <div class="col-sm-12">
             <div class="rn-box-white gad100">
-              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection) }} 
+              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection,data.user_authorizations) }} 
             </div>
           {% if data.item %} 
             <div class="rn-box-title-slim">
               Showing item: {{ data.idx}}
-              
-            
-            <a class="btn btn-vader btn-xs pull-right fw-b " style="margin-right:10px;" href="/_api/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}">
-              { }</a>
+
               
             </div>
             <div class="rn-box-solo">
@@ -35,9 +32,13 @@
                     <div class="form-group">
                       <label for="inputPassword3" class="control-label"></label>
                       <div class="">
+                          {% if 'put_a_b_c' in data.user_authorizations %}
                           <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}' type="submit" class="btn btn-success btn-xs">Edit</a>
+                          {%endif%}
+                          {% if 'delete_a_b_c' in data.user_authorizations %}
                           <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}' type="submit" class="btn btn-default btn-xs">DELETE THIS
                           </a>
+                          {%endif%}
                           
                       </div>
                     </div>

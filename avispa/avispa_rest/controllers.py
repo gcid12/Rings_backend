@@ -67,7 +67,9 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     data['current_user']=current_user
 
     o = urlparse.urlparse(request.url)
-    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+    data['host_url'] = urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+    data['api_url'] = urlparse.urlunparse((o.scheme, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
 
     t = time.time()
     data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))

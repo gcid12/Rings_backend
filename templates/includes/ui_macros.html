@@ -1,6 +1,6 @@
 
 
-  {% macro panel(name, origin, handle, color, count,description,link,collection) %}
+  {% macro panel(ring, origin, handle, color, count,description,link,collection,user_authorizations) %}
 
   <tr>
     <td> 
@@ -11,7 +11,9 @@
         <div class="col-xs-7 col-sm-7">
 
           <h3 class="fs-1-5">
-          <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> <a href="/{{ handle }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{origin}}</a>/<a href="/{{ handle }}/{{ name }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder"><span style="font-weight:500;">{{name}}</span></a>
+            <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
+            {% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{origin}}</a>{%else%}{{origin}}{%endif%}/<span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}/{{ ring }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{ring}}
+            </a>{%else%}{{ring}}{%endif%}</span>
           </h3>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
 
@@ -26,12 +28,15 @@
               <br/><a>[ Invite a Capturist ]</a-->
             <div class="btn-group">
             
-              <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
-
-              <a href="/{{ handle }}/{{ name }}?rq=post{% if collection != '' %}&collection={{collection}}{% endif %}" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              <!-- <a href="/{{ handle }}/{{ ring }}" type="button" class="btn btn-info btn-xs">List</a> -->
+              {% if 'post_a_b' in user_authorizations %}
+              <a href="/{{ handle }}/{{ ring }}?rq=post{% if collection != '' %}&collection={{collection}}{% endif %}" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              {% endif %}
               
-              <a href="/{{ handle }}/{{ name }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              <a href="/_api/{{ handle }}/{{ name }}" type="button" class="btn btn-vader btn-xs">{ }</a>
+              {% if 'put_a_b' in user_authorizations %}
+              <a href="/{{ handle }}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              {% endif %}
+              
               
 
             </div>
@@ -46,7 +51,7 @@
 {% endmacro %}
 
 
-  {% macro panel2(name, handle, color, count,description) %}
+  {% macro panel2(ring, handle, color, count,description) %}
 
   <tr>
     <td> 
@@ -55,7 +60,7 @@
           {{ icon_sma(count,color) }}
         </div> 
         <div class="col-xs-7 col-sm-7">
-          <a href="/{{ handle }}/{{ name }}" class="nounder"><h3 class="fs-1-5">&deg;{{ name }}</h3></a>
+          <a href="/{{ handle }}/{{ ring }}" class="nounder"><h3 class="fs-1-5">&deg;{{ ring }}</h3></a>
           <p class="rn-t3 text-lgray">{{ description }}</p>
         </div> 
         <div class="col-xs-5 col-sm-3">
@@ -65,12 +70,12 @@
             </div>
             <div class="btn-group">
             
-              <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
-              <a href="/{{ handle }}/{{ name }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              <!-- <a href="/{{ handle }}/{{ ring }}" type="button" class="btn btn-info btn-xs">List</a> -->
+              <a href="/{{ handle }}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
 
-              <a href="/{{ handle }}/{{ name }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              <a href="/{{ handle }}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
 
-              <a class="btn btn-vader btn-xs pull-right" href="/_api/{{ handle }}/{{ name }}">
+              <a class="btn btn-vader btn-xs pull-right" href="/_api/{{ handle }}/{{ ring }}">
               { }</a>
 
             </div>

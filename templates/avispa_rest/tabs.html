@@ -4,25 +4,18 @@
   My Ring - {{ title }}
 {% endblock %}
 
-
-
 {% block content %}
-
 <!-- CONTENT HERE -->
-
-
-
 <section>
 
     <div class="row hidden-xs">
       <div class="col-sm-12">
         <div class="text-right">
-                  {% if data.today is defined %}
-                          <p class="fs-0-8">
-                          {{ data.today }} 
-                          </p>
-                  {%endif%} 
-
+          {% if data.today is defined %}
+            <p class="fs-0-8">
+            {{ data.today }}    
+            </p>
+          {%endif%}        
         </div>
       </div>
     </div>
@@ -93,10 +86,17 @@
         <!-- RINGS -->
         <div class="row">
           <div class="col-sm-12 pl-40 pb-10" >
-            
+  
             {% if data.collection == '' or not data.collection %}
 
+               
+
               <ol class="breadcrumb fs-1" style="padding:5px 15px 0 20px; ">
+                <li>
+                 {% if data.api_url is defined %}
+                   <a href="{{data.api_url}}" type="button" class="btn btn-vader btn-xs">{ }</a>
+                 {%endif%}
+                </li>
                 <li><div class="rn-hp5 pull-left">
                 <span class="label label-m">AVISPA</span></div> 
                 </li>    

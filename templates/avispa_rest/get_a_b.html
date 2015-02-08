@@ -17,7 +17,7 @@
   <div class="col-sm-12">
     <div class="rn-box-white gad100">
         
-        {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection) }}
+        {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
         
     </div>
 
@@ -46,20 +46,22 @@
     <!-- ITEM N -->
         
 
-        {% if not data.itemlist %}
-        You have no items in this Ring. Create one, click here:
+        {% if 'post_a' in data.user_authorizations %}
+          {% if not data.itemlist %}
+          You have no items in this Ring. Create one, click here:
 
-        <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
-          <i class="fa fa-plus"></i> &nbsp; NEW
-        </a>
+          <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
+            <i class="fa fa-plus"></i> &nbsp; NEW
+          </a>
 
-        {% else %}
-          <div class="pull-right">
-            <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
-               <i class="fa fa-plus"></i> &nbsp; NEW
-             </a>
-          </div> 
+          {% else %}
+            <div class="pull-right">
+              <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+                 <i class="fa fa-plus"></i> &nbsp; NEW
+               </a>
+            </div> 
 
+          {% endif %}
         {% endif %}
           
         <!-- <p class="fs-0-8 fc-g pull-left">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p> -->
@@ -68,6 +70,7 @@
 
         <!-- Tab panes -->
         <div class="tab-content">
+        
 
 <!-- AS LIST -->
       <div role="tabpanel" class="tab-pane fade in active" id="list">
@@ -131,9 +134,11 @@
                           {% if not k =='_id' %} 
                           {% if not data.widget[k] == 'images' %} 
                           {% if v %}                   
-                          
-                          <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
-
+                          {% if 'get_a_b_c' in data.user_authorizations %}
+                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
+                          {% else %}
+                            {{ v|truncate(170, true) }}
+                          {% endif %}
                           {% endif %}
                           {% endif %}
                           {% endif %}
@@ -150,9 +155,15 @@
 
                   <td style="width:90px;">
                       <div class="btn-group" role="group" aria-label="...">
+                      {% if 'get_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                      {%endif%}
+                      {% if 'put_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                      {%endif%}
+                      {% if 'delete_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                      {%endif%}
                       </div>
                   </td>
                   <td style="">
@@ -205,9 +216,15 @@
 
 
                       <div class="btn-group" role="group" aria-label="...">
+                      {% if 'get_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                      {% endif %}
+                      {% if 'put_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                      {% endif %}
+                      {% if 'delete_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                      {%endif%}
                       </div>
                              
                         <br/>
@@ -281,6 +298,7 @@
                   <table>
                     <tr>
                       <td align="center">
+                      {% if 'get_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
                                   title="
                                   {% for k,v in item.items() %}
@@ -293,9 +311,7 @@
                                     {% if k == 'description' %}
                                       {{ v|truncate(100, true) }}
                                     {% endif %}
-                                  {% endfor %}"
-                          >
-
+                                  {% endfor %}">
                         <!-- Image placeholder -->
                       {% for k,v in item.items() %}
                         {% if data.widget[k] == 'images' %}       
@@ -306,11 +322,18 @@
                                              
                         {% endif %}
                       {% endfor %}
-                          
-
-
-
                         </a>
+                      {%else%}
+                        {% for k,v in item.items() %}
+                          {% if data.widget[k] == 'images' %}       
+                            
+                              {% if v[0] %}                      
+                                <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                              {% endif %}
+                                               
+                          {% endif %}
+                        {% endfor %}
+                      {%endif%}
                       </td>
                     </tr>
                     <tr>
@@ -328,9 +351,15 @@
                     <tr>
                       <td align="center">
                           <div class="btn-group" role="group" aria-label="...">
+                          {% if 'get_a_b_c' in data.user_authorizations %}
                             <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                          {%endif%}
+                          {% if 'put_a_b_c' in data.user_authorizations %}
+                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>
+                          {%endif%}
+                          {% if 'delete_a_b_c' in data.user_authorizations %}
                             <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                          {%endif%}
                           </div>
                                  
                           <br/>
@@ -351,9 +380,7 @@
                   </table>
               </div>
               {% endfor %}
-              <!-- END ITEM N -->
-            </table>
-            
+              <!-- END ITEM N -->            
           </div>
   <!-- AS MOSAIC close -->  
 {% endif %}  
@@ -373,11 +400,13 @@
           <li><a href="?lastkey={{ data.lastkey }}">&raquo;</a></li>
           {% endif %}
         </ul>
+      {% if 'post_a' in data.user_authorizations %}
       <div class="pull-right">
           <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
              <i class="fa fa-plus"></i> &nbsp; NEW
            </a>
-      </div>     
+      </div>  
+      {% endif %}   
     </div>
     <!-- RESULT LIST FIN -->
 </div><!-- close 12 -->  

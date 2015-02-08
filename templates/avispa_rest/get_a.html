@@ -29,11 +29,11 @@
                   
                   {% for ring in data.ringlist %}
                     
-                    {{ ui.panel(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection) }}
+                    {{ ui.panel(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection, data.user_authorizations) }}
                   {% endfor %}
 
                 </table> 
-                <div class="row">
+                <!--div class="row">
                   <div class="col-sm-12 ">
                     <div class="pull-right">
                       <ul class="pagination">
@@ -46,7 +46,7 @@
                     </div>
                    
                   </div>
-                </div> 
+                </div--> 
               </div>
             </div>
             {% if not data.collection %}
@@ -56,9 +56,11 @@
               </div>
               <div class="rn-box-solo gad100">
                 
+                 {% if 'post_a' in data.user_authorizations %}
                  <a href="?rq=post&n=10" type="button" class="btn btn-warning btn-xs" style="margin:0 5px;">
                     <i class="fa fa-plus"></i> &nbsp; NEW RING
-                 </a>               
+                 </a>
+                 {% endif %}            
             </div>
             {% endif %}
 

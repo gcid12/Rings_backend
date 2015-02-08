@@ -46,7 +46,6 @@
             
             {%if current_user.is_authenticated()%}
             <ul class="nav navbar-nav navbar-right">
-                
                 <li class="active"><a href="/{{ current_user.id }}/_home">Home</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:20px;"> {{ current_user.id }}<span class="caret"></span></a>
@@ -75,13 +74,10 @@
     <div class="row">
 
       <div class="col-sm-12">  
-      {{current_user.id}} credentials for this page:{{data.user_authorizations}}
+      {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
+      <br/>
         {% block content %}
-          
-
-
         {% endblock %}
-
         <hr/>
       </div> <!-- close 9 -->
    
