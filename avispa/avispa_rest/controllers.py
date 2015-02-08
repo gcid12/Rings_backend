@@ -240,11 +240,8 @@ def home_dispatcher(handle):
         
         peopleteams = MAM.is_org(handle) 
         if peopleteams: 
-            #This is an organization
-
-            data['template'] = 'avispa_rest/orghome.html'
+            #This is an organization         
             data['people'] = peopleteams['people'] 
-
             data['peoplethumbnails'] = {}
             for person in peopleteams['people']:
                 #get the profilepic for this person
@@ -252,11 +249,11 @@ def home_dispatcher(handle):
                 if person_user_doc:
                     data['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
 
-                    
-
             for team in peopleteams['teams']:
                 team['count']=len(team['members'])              
             data['teams'] = peopleteams['teams']
+
+            data['template'] = 'avispa_rest/orghome.html'
         else:
             #This is a regular user
          
@@ -408,6 +405,18 @@ def tool(tool):
     else:
         return result
 
+
+@avispa_rest.route('/_patch/<patchnumber>', methods=['GET'])
+def patch(patchnumber):
+
+    result = patch_dispatcher(patchnumber)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+
 @avispa_rest.route('/<handle>/_home', methods=['GET'])
 #The home of user <handle>
 def home(handle):
@@ -419,15 +428,7 @@ def home(handle):
     else:
         return result
 
-@avispa_rest.route('/_patch/<patchnumber>', methods=['GET'])
-def patch(patchnumber):
 
-    result = patch_dispatcher(patchnumber)
- 
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
 
 
 @avispa_rest.route('/_roles/<handle>', methods=['GET'])

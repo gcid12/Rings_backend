@@ -288,7 +288,8 @@ class MainModel:
                 print('This user is a Handle Owner')     
                 user_authorizations += self.roles['handle_owner']
 
-            elif self.is_org_owner(current_user,handle):
+            #elif self.is_org_owner(current_user,handle):
+            elif self.user_belongs_org_team(current_user,handle,'owner'):
                 print('This user is an Org Member')
                 user_authorizations += self.roles['handle_owner']
             else:
@@ -418,6 +419,22 @@ class MainModel:
     def is_org_owner(self,handle,org):
 
         return True
+
+
+    def user_belongs_org_team(self,username,org,team):
+
+        result = self.select_user_doc_view('orgs/peopleteams',org)
+        for teamd in result['teams']:
+            print('team:'+str(teamd))
+            if teamd['teamname'] == team:
+                print('teammember:',teamd['members'])
+                for member in teamd['members']:
+                    if member['handle'] == username:
+                        return True
+
+        return False
+
+
 
 
 

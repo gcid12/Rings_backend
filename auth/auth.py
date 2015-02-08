@@ -240,44 +240,37 @@ def forgot():
     return render_template("/auth/forgot.html", data=data)
 
 
-@auth_flask_login.route("/_profile", methods=["GET"])
+@auth_flask_login.route("/<handle>/_profile", methods=["GET"])
 @login_required
-def profile_get():
+def profile_get(handle):
 
-    print('profile_get():')
-    rawuser = load_user(current_user.id)
-    
-    user = {}
-    user['profilepic'] = rawuser.profilepic
-    user['name'] = rawuser.name
-    user['url'] = rawuser.url
-    user['location'] = rawuser.location
+    if handle == current_user.id:
+        user = load_user(handle)
 
-    data = {}
-    data['user'] = user
-    data['handle'] = current_user.id
+        data = {}
+        data['user'] = user
+        data['handle'] = handle
 
+        o = urlparse.urlparse(request.url)
+        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
 
-    
-    MAM = MainModel()
-    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    if user_doc:   
-        data['profilepic'] = user_doc['profilepic']
         
-    
+        #This is for the upperbar only
+        MAM = MainModel()
+        user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if user_doc:   
+            data['cu_profilepic'] = user_doc['profilepic']
+
+        return render_template("/auth/profile.html", data=data)
+
+    else:
+        return redirect('/'+current_user.id+'/_profile')
 
 
-    o = urlparse.urlparse(request.url)
-    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
 
-    return render_template("/auth/profile.html", data=data)
-
-
-
-
-@auth_flask_login.route("/_profile", methods=["POST"])
+@auth_flask_login.route("/<handle>/_profile", methods=["POST"])
 @login_required
-def profile_post():
+def profile_post(handle):
     
     user = User(username=current_user.id)
     if user.update_user_profile(request):
@@ -288,93 +281,37 @@ def profile_post():
     return redirect('/'+current_user.id+'/_home')
 
 
-@auth_flask_login.route("/_profile/<handle>", methods=["POST"])
-@login_required
-def profile_wrong(handle):
-    
-    return redirect('/'+handle+'/_home')
-
-  
-
-@auth_flask_login.route("/_orgprofile/<handle>", methods=["GET"])
+@auth_flask_login.route("/<handle>/_orgprofile", methods=["GET"])
 @login_required
 def orgprofile_get(handle):
 
-    
-
     MAM = MainModel()
+    if MAM.user_belongs_org_team(current_user.id,handle,'owner'):
 
-    needs_reload = False
+        user = load_user(handle)
+        data = {}
+        data['user'] = user
+        data['handle'] = handle
 
-    print('orgprofile_get():')
-    rawuser = load_user(handle)
+    else:
+        return redirect('/'+current_user.id+'/_profile')
 
-    '''
-    print(rawuser)
-    print(rawuser.added)
-    profile_prerequisites = ['profilepic','name','url','location']
-    for prq in profile_prerequisites:
-        if rawuser[prq]:
-            needs_reload = True
-            # Repair elements that are missing in the profile
-            elements = [prq]           
-            if not MAM.repair_user_doc(elements,handle):
-                flash("The organization profile can't be updated right now. Error in: "+prq)
-                redirect('/'+handle+'/_home')
-
-    if needs_reload:
-        rawuser = load_user(handle)
-    '''
-
-
-    user = {}
-
-    prerequisites = ['profilepic','name','url','location']
-    for pr in prerequisites:
-        
-        '''
-        try:
-            user[pr] = rawuser[pr]
-            user[pr] = getattr(rawuser, pr, default_value)
-        except(AttributeError):
-            if MAM.repair_user_doc(pr,handle):
-                print('Repaired '+pr)
-                user[pr] = ''
-            else:
-                print('Could not repair '+pr)
-        '''
-
-        if hasattr(rawuser,pr):
-            print('Value is there for:'+pr)
-            user[pr] = getattr(rawuser, pr,'')
-        else:
-            if MAM.repair_user_doc(pr,handle):
-                print('Repaired '+pr)
-                user[pr] = ''
-            else:
-                print('Could not repair '+pr)
-
-
-    '''
-    user['profilepic'] = rawuser.profilepic
-    user['name'] = rawuser.name
-    user['url'] = rawuser.url
-    user['location'] = rawuser.location
-    '''
-
-    data = {}
-    data['user'] = user
-    data['handle'] = handle
+    #This is for the current user thumbnail in the upperbar only
+    MAM = MainModel()
+    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if user_doc:   
+        data['cu_profilepic'] = user_doc['profilepic']
 
 
     return render_template("/auth/orgprofile.html", data=data)
 
 
-@auth_flask_login.route("/_orgprofile/<handle>", methods=["POST"])
+
+@auth_flask_login.route("/<handle>/_orgprofile", methods=["POST"])
 @login_required
 def orgprofile_post(handle):
 
-
+    
     user = User(username=handle)
     if user.update_user_profile(request):
         flash('Organization information updated')
