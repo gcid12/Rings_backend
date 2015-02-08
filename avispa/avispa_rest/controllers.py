@@ -43,11 +43,14 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     data = {}
 
     MAM = MainModel()
-    if not MAM.user_is_authorized(current_user.id,method,depth,handle,ring,idx):
+    authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle,ring,idx)
+    if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
 
      
     data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
+
+    data['user_authorizations'] = authorization_result['user_authorizations']
 
 
     cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
@@ -218,16 +221,16 @@ def home_dispatcher(handle):
         cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if cu_user_doc:
 
-            data['cu_actualname'] = cu_user_doc['name']
+            #data['cu_actualname'] = cu_user_doc['name']
             data['cu_profilepic'] = cu_user_doc['profilepic']
-            data['cu_location'] = cu_user_doc['location']
-            data['cu_handle'] = current_user.id
+            #data['cu_location'] = cu_user_doc['location']
+            #data['cu_handle'] = current_user.id
 
         #Thisi is the data from the handle we are visiting
         if current_user.id == handle:
-            data['handle_actualname'] = data['cu_actualname']
-            data['handle_profilepic'] = data['cu_profilepic']
-            data['handle_location'] = data['cu_location']
+            data['handle_actualname'] = cu_user_doc['name']
+            data['handle_profilepic'] = cu_user_doc['profilepic']
+            data['handle_location'] = cu_user_doc['location']
 
         else:
             handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)

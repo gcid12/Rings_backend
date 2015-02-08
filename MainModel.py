@@ -409,11 +409,17 @@ class MainModel:
 
         print('auth:',m.lower()+depth.lower())
         
+        out={}
+        out['user_authorizations'] = user_authorizations
+
+        print('user_authorizations:',user_authorizations)
 
         if m.lower()+depth.lower() in user_authorizations:
-            return True
+            out['authorized'] = True
         else:
-            return False
+            out['authorized'] = False
+
+        return out
 
         
     def is_org_owner(self,handle,org):
@@ -424,13 +430,14 @@ class MainModel:
     def user_belongs_org_team(self,username,org,team):
 
         result = self.select_user_doc_view('orgs/peopleteams',org)
-        for teamd in result['teams']:
-            print('team:'+str(teamd))
-            if teamd['teamname'] == team:
-                print('teammember:',teamd['members'])
-                for member in teamd['members']:
-                    if member['handle'] == username:
-                        return True
+        if result:
+            for teamd in result['teams']:
+                print('team:'+str(teamd))
+                if teamd['teamname'] == team:
+                    print('teammember:',teamd['members'])
+                    for member in teamd['members']:
+                        if member['handle'] == username:
+                            return True
 
         return False
 
