@@ -573,6 +573,9 @@ def collections_route_a_x_y_b_c(handle,collection,idx):
 @login_required
 def route_a(handle):
 
+    if request.method == 'GET':
+        return redirect('/'+handle+'/_home')
+
 
 
     #if handle != current_user.id:
