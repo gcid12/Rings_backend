@@ -17,7 +17,7 @@ class MainModel:
 
         self.roles = {}
         self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
-        self.roles['handle_owner'] = ['get_a','get_a_b','get_a_b_c','post_a','put_a','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['handle_owner'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']

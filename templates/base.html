@@ -74,10 +74,12 @@
     <div class="row">
 
       <div class="col-sm-12">  
-      {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
+      
+      {{current_user.id}} credentials for this page:{{data.user_authorizations}}
       <br/>
         {% block content %}
         {% endblock %}
+
         <hr/>
       </div> <!-- close 9 -->
    
