@@ -83,7 +83,7 @@
                         <td colspan="2">
                           <table class="table table-striped">
                             {% for ring in collection.rings %}  
-                              {{ ui.panel_collections(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count , '85', '',data.handle+'/'+ring.ringname,collection.collectionname) }}
+                              {{ ui.panel_collections(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count , '85', '',data.handle+'/'+ring.ringname,collection.collectionname,data.user_authorizations) }}
                             {% endfor %}
                               
                           </table>
@@ -114,7 +114,7 @@
           <table class="table table-striped table-condensed">
           {% for ring in data.rings.ringlist %}
 
-            {{ ui.panel_rings(ring.ringname, ring.ringorigin, data.handle, '#924ea0', ring.count, '36', '',data.handle+'/'+ring.ringname) }}
+            {{ ui.panel_rings(ring.ringname, ring.ringorigin, data.handle, '#924ea0', ring.count, '36', '',data.handle+'/'+ring.ringname,data.user_authorizations) }}
 
           {% endfor %}
 

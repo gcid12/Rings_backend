@@ -43,7 +43,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     data = {}
 
     MAM = MainModel()
-    authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle,ring,idx)
+    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring,idx)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
 
@@ -158,7 +158,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     MAM = MainModel()
     cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    if user_doc:
+    if cu_user_doc:
         data['cu_actualname'] = cu_user_doc['name']
         data['cu_profilepic'] = cu_user_doc['profilepic']
         data['cu_location'] = cu_user_doc['location']
@@ -204,6 +204,15 @@ def home_dispatcher(handle):
     data = {}
 
     if MAM.user_exists(handle):
+
+        method= 'GET_a_home'
+        depth = '_a'
+        authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle)
+        if not authorization_result['authorized']:
+            return render_template('avispa_rest/error_401.html', data=data),401
+
+        data['user_authorizations'] = authorization_result['user_authorizations']
+
     
         ACF = AvispaCollectionsRestFunc()
         m = 'get_a_x'
