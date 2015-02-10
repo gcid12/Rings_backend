@@ -65,7 +65,8 @@
               
                   {% for collection in data.collections.collectionlist %}  
                     {% if collection.valid %}
-                      {{ ui.collection(collection.collectionname,6,1,'1 day ago','/'+data.handle,collection.collectionname) }}
+                      
+                      {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago') }}
                       <tr>
                         <td></td>
                         <td colspan="2">

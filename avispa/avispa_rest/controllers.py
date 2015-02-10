@@ -587,7 +587,7 @@ def route_a(handle):
 
     if request.method == 'GET':
         if ('rq' not in request.args) or ('method' not in request.args):
-        return redirect('/'+handle+'/_home')
+            return redirect('/'+handle+'/_home')
 
     #if handle != current_user.id:
      #   return redirect('/_logout') 
