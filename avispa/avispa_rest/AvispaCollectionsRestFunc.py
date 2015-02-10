@@ -27,11 +27,6 @@ class AvispaCollectionsRestFunc:
 
         collectionlistlen = count
 
-
-
-
-
-
         d = {'template':'avispa_rest/get_a_x.html', 'collectionlist':collectionlist, 'collectionlistlen':collectionlistlen}
         return d
 

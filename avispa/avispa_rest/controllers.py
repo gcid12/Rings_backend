@@ -48,7 +48,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         return render_template('avispa_rest/error_401.html', data=data),401
 
      
-    data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
+    data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection)
 
     data['user_authorizations'] = authorization_result['user_authorizations']
 
@@ -550,10 +550,13 @@ def collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
         result = route_dispatcher('_a',handle,collection=collection)
+        print('flagx1')
     else:
         result = collection_dispatcher('_a_x_y',handle,collection)
+        print('flagx2')
  
     if 'redirect' in result:
+        #pass
         return redirect(result['redirect'])        
     else:
         return result
