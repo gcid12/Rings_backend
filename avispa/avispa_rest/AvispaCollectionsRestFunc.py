@@ -190,7 +190,7 @@ class AvispaCollectionsRestFunc:
 
         collectionrings = []
         for ring in collectiond['rings']:
-            collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace(',','-'))
+            collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace('-','.'))
 
         
         d = {'message': 'Using Collection put_rq_a_x_y for handle '+handle , 
@@ -198,6 +198,9 @@ class AvispaCollectionsRestFunc:
              'ringlist': ringlist,
              'collectionlist': collectiond,
              'collectionrings': collectionrings}
+
+        print("dzzzzzzzzz:",d)
+
         return d
 
 
