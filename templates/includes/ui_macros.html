@@ -115,18 +115,18 @@
 </div>
 {% endmacro %}
 
-{% macro panel_collections(name, origin, handle, color, number, percent, active, resource, collection, user_authorizations) %} 
+{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
           
           <tr>
-            <td><p>{{ number }}</p></td>
-            <td>{{ icon_xsma(number, color) }}</td>
+            <td><p>{{ count }}</p></td>
+            <td>{{ icon_xsma(count, color) }}</td>
             <td>
               <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
               {% if 'get_a_b' in user_authorizations %} 
-              &nbsp;<a href="/{{ resource }}?collection={{collection}}"> {{origin}}/<span style="font-weight:700;">{{ name }}</span></a>{%else%}
-              &nbsp; {{origin}}/<span style="font-weight:700;">{{ name }}</span>
+              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> {{handle}}/<span style="font-weight:700;">{{ring}}</span></a>{%else%}
+              &nbsp; {{handle}}/<span style="font-weight:700;">{{ring}}</span>
               {%endif%} 
-              <span class="fc-g"><p class="fs-0-8">1x day ago</p></span>
+              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
             </td>
             <td>
               <div class="pull-right">
@@ -137,7 +137,7 @@
                 
                   <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
                   {% if 'post_a' in user_authorizations %}
-                  <a href="/{{ resource }}?rq=post&collection={{collection}}" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
                   {% endif %}
 
                   

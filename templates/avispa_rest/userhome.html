@@ -83,7 +83,7 @@
                         <td colspan="2">
                           <table class="table table-striped">
                             {% for ring in collection.rings %}  
-                              {{ ui.panel_collections(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count , '85', '',data.handle+'/'+ring.ringname,collection.collectionname,data.user_authorizations) }}
+                              {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                             {% endfor %}
                               
                           </table>
