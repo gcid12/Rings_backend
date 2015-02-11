@@ -207,7 +207,7 @@ class MainModel:
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
-        print('iterview result for '+dbview+' with key '+key+':',result)
+        #print('iterview result for '+dbview+' with key '+key+':',result)
         
         if batch == 1:
             for r in result:     

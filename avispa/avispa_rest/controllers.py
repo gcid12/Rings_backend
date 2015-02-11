@@ -4,6 +4,8 @@ from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
+from AvispaPeopleRestFunc import AvispaPeopleRestFunc
+#from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -327,19 +329,59 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
         status = 200
 
     if 'redirect' in data:
-        print('flag0')
-        print(data)
         return data             
-    elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-        print('flag1')
-        print(data)      
+    elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':     
         return render_template(data['template'], data=data), status     
     else:
-        print('flag2')
-        #print(data) 
         return render_template(data['template'], data=data)
-        #return 'ok'
+
     
+
+def people_dispatcher(depth,handle,person=None):
+
+    print('depth:',depth)
+    print('handle:',handle)
+    print('person:',person)
+
+    APR = AvispaPeopleRestFunc()
+    data = {}
+
+    if 'q' in request.args:
+        if request.args.get("q"):
+            method = 'search'
+        else:
+            method = 'search_rq'
+    elif request.args.get("rq"):
+        method = request.args.get("rq")+'_rq'
+    elif request.args.get("rs"):
+        method = request.args.get("rq")+'_rs'
+    elif request.args.get("method"):
+        method = request.args.get("method")
+    else:
+        method = request.method
+
+    #method = request.method
+    m = method+depth
+
+    data = getattr(APR, m.lower())(request,handle,person)
+    data['handle'] = handle
+
+    if 'redirect' in data:
+        return data                 
+    else:
+        return render_template(data['template'], data=data)
+
+
+def teams_dispatcher(handle,team=None):
+
+    APR = AvispaTeamRestFunc()
+    data = {}
+
+
+    if 'redirect' in data:
+        return data                 
+    else:
+        return render_template(data['template'], data=data)
     
 
 
@@ -436,6 +478,55 @@ def patch(patchnumber):
 def home(handle):
 
     result = home_dispatcher(handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+
+@avispa_rest.route('/<handle>/_people', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def people_a_p(handle):
+    print('flag1')
+
+    result = people_dispatcher('_a_p',handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_people/<person>', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def people_a_p_q(handle,person):
+    print('flag2')
+    
+    result = people_dispatcher('_a_p_q',handle,person)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+    
+
+
+@avispa_rest.route('/<handle>/_teams', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def teams_a_m(handle):
+
+    result = teams_dispatcher(handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_teams/<team>', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def teams_a_m_n(handle,team):
+
+    result = teams_dispatcher(handle,team)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
