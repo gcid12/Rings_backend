@@ -5,7 +5,7 @@ from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
 from AvispaPeopleRestFunc import AvispaPeopleRestFunc
-#from AvispaTeamsRestFunc import AvispaTeamsRestFunc
+from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -339,10 +339,6 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 
 def people_dispatcher(depth,handle,person=None):
 
-    print('depth:',depth)
-    print('handle:',handle)
-    print('person:',person)
-
     APR = AvispaPeopleRestFunc()
     data = {}
 
@@ -372,10 +368,30 @@ def people_dispatcher(depth,handle,person=None):
         return render_template(data['template'], data=data)
 
 
-def teams_dispatcher(handle,team=None):
+def teams_dispatcher(depth,handle,team=None):
 
-    APR = AvispaTeamRestFunc()
+    ATR = AvispaTeamsRestFunc()
     data = {}
+
+    if 'q' in request.args:
+        if request.args.get("q"):
+            method = 'search'
+        else:
+            method = 'search_rq'
+    elif request.args.get("rq"):
+        method = request.args.get("rq")+'_rq'
+    elif request.args.get("rs"):
+        method = request.args.get("rq")+'_rs'
+    elif request.args.get("method"):
+        method = request.args.get("method")
+    else:
+        method = request.method
+
+    #method = request.method
+    m = method+depth
+
+    data = getattr(ATR, m.lower())(request,handle,team)
+    data['handle'] = handle
 
 
     if 'redirect' in data:
@@ -488,7 +504,6 @@ def home(handle):
 @avispa_rest.route('/<handle>/_people', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 def people_a_p(handle):
-    print('flag1')
 
     result = people_dispatcher('_a_p',handle)
  
@@ -500,7 +515,6 @@ def people_a_p(handle):
 @avispa_rest.route('/<handle>/_people/<person>', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 def people_a_p_q(handle,person):
-    print('flag2')
     
     result = people_dispatcher('_a_p_q',handle,person)
  
@@ -515,7 +529,7 @@ def people_a_p_q(handle,person):
 #The home of user <handle>
 def teams_a_m(handle):
 
-    result = teams_dispatcher(handle)
+    result = teams_dispatcher('_a_m',handle)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
@@ -526,7 +540,7 @@ def teams_a_m(handle):
 #The home of user <handle>
 def teams_a_m_n(handle,team):
 
-    result = teams_dispatcher(handle,team)
+    result = teams_dispatcher('_a_m_n',handle,team)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        

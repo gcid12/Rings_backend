@@ -1,259 +1,117 @@
 # AvispaCollectionsRestFunc.py
 from flask import redirect, flash
 from AvispaModel import AvispaModel
-from AvispaCollectionsModel import AvispaCollectionsModel
-from CollectionBuilder import CollectionBuilder
+from MainModel import MainModel
+from flask.ext.login import current_user
 
-class AvispaCollectionsRestFunc:
+
+class AvispaTeamsRestFunc:
 
     def __init__(self):
         self.AVM = AvispaModel()
-        self.ACM = AvispaCollectionsModel()
+        self.MAM = MainModel()
+        
+        
 
     # GET/a
-    def get_a_x(self,request,handle,collection,idx,api=False,*args):
+    def get_a_m(self,request,handle,team,*args):
 
-        collectionlist = self.ACM.get_a_x(handle)
-        #print('collectionlist:',collectionlist)
+        d = {}
 
-        count = 0
-        if collectionlist:          
-            for collection in collectionlist:
-                if collection['valid']:
-                    count = count + 1
+        peopleteams = self.MAM.is_org(handle) 
+        if peopleteams: 
+            #This is an organization         
             
-        else:
-            collectionlist = []
-
-        collectionlistlen = count
-
-        d = {'template':'avispa_rest/get_a_x.html', 'collectionlist':collectionlist, 'collectionlistlen':collectionlistlen}
-        return d
-
-    def get_rq_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection get_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def get_rs_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection get_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def get_q_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection get_q_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    # POST/a
-    def post_a_x(self,request,handle,collection,idx,api=False,*args):
-
-        #Build the actual collection
-        CB = CollectionBuilder()
-        result = CB.post_a_x(request,handle)
+            d['teamlistlen'] = len(peopleteams['teams'])
             
-        if result:
-            print('Awesome , you just created a new Collection')
-            #msg = 'Item put with id: '+idx
-            flash("Your new Collection has been created")
-            redirect = '/'+handle+'/_collections'
-            d = {'redirect': redirect, 'status':200}
+            for team in peopleteams['teams']:
+                #get the profilepic for this person
+                for member in team['members']:
+                    person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',member['handle'])
+                    if person_user_doc:
+                        member['thumbnail'] = person_user_doc['profilepic']
+
+                    #d['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
+
+            d['teamlist'] = peopleteams['teams']            
+            d['template'] = 'avispa_rest/get_a_m.html'
+        else:
+            #This is a regular user
+         
+            d['redirect'] = '/'+handle+'/_home'
+     
+        return d
+
+
+        # POST/a
+    def post_a_m(self,request,handle,team,*args):
+
+        #We need to recover from request as it doesn't come via URL
+        team = request.form.get('newteam')
+
+        #Check if the team exists or not
+        d = {}
+
+        peopleteams = self.MAM.is_org(handle) 
+        if peopleteams: 
+            #This is an organization                  
+            for teamd in peopleteams['teams']:
+                
+                if teamd['teamname'] == team:
+                    #This team exists in this handle!
+                    flash('This team exists already. Use a different name')
+                    redirect = '/'+handle+'/_teams' 
+                    d = {'redirect': redirect, 'status':200}
+                    return d 
+
+            if self.MAM.add_team(handle,team,current_user.id):
+                print('Awesome , you just created team '+ team +'.')
+                #msg = 'Item put with id: '+idx
+                flash('Awesome , you just created team '+ team +'.')
+                redirect = '/'+handle+'/_teams'
+            else:
+                flash('There was an error adding team: '+ team +'.')
+                redirect = '/'+handle+'/_teams'
 
         else:
-            d = {'message': 'There was an error creating the Collection' , 'template':'avispa_rest/index.html'}
-        
+            #This is not an organization 
+            redirect = '/'+current_user.id        
+
+        d = {'redirect': redirect, 'status':200}
         return d
 
 
-    def post_rq_a_x(self,request,handle,collection,idx,api=False,*args):
+        #DELETE /a/b
+    def delete_a_m_n(self,request,handle,team,*args):
+        #Will delete an existing person
+        print('Trying to delete the following team: '+team)
 
-        ringlist = self.AVM.user_get_rings(handle)
+        d = {}
 
+        peopleteams = self.MAM.is_org(handle) 
+        if peopleteams: 
+            #This is an organization  
 
-        d = {'message': 'Using Collection post_rq_a_x for handle '+handle , 
-             'template':'avispa_rest/post_rq_a_x.html',
-             'ringlist':ringlist}
-        return d
-
-    def post_rs_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection post_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    #PUT /a
-    def put_a_x(self,request,handle,collection,idx,api=False,*args):
-    	d = {'message': 'Using Collection put_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def put_rq_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection put_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def put_rs_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection put_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    #PATCH /a
-    def patch_a_x(self,request,handle,collection,idx,api=False,*args):
-    	d = {'message': 'Using Collection patch_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def patch_rq_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection patch_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def patch_rs_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection patch_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    #DELETE /a
-    def delete_a_x(self,request,handle,collection,idx,api=False,*args):
-    	d = {'message': 'Using Collection delete_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def delete_rq_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection delete_rq_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-    
-    def delete_rs_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection delete_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    #SEARCH /a
-    def search_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection search_a for handle '+handle , 'template':'avispa_rest/search_a.html'}
-        return d
-
-    def search_rq_a_x(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection search_rq_a for handle '+handle , 'template':'avispa_rest/search_rq_a.html'}
-        return d
-
-    # /a/b
-    
-    #GET /a/b
-    def get_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        #THIS IS NOT USED . SEE AvispaRestFunc.get_a() instead 
-
-        d = {'message': 'Using Collection get_a_x_y for handle '+handle , 'template':'avispa_rest/get_a.html'}
-        return d
-
-    def get_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection get_rq_a_x_y for handle:'+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-    def get_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection get_rs_a_x_y for handle:'+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-
-    #POST /a/b
-    def post_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection post_a_x_y for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def post_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection post_rq_a_x_y for handle '+handle , 'template':'avispa_rest/index.html'}
-        return d
-
-    def post_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection post_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-
-    #PUT /a/b
-    def put_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        # Introduce de changes to the existing collection
-
-
-        CB = CollectionBuilder()
-        result = CB.put_a_x_y(request,handle,collection)
-
-        if result:
-            print('Awesome , you just updated a Collection')
-            #msg = 'Item put with id: '+idx
-            flash("Your Collection has been updated")
-            redirect = '/'+handle+'/_collections'
-            d = {'redirect': redirect, 'status':200}
+            for teamd in peopleteams['teams']:
+                
+                if teamd['teamname'] == team:
+                    
+                    if self.MAM.delete_team(handle,team):
+                        print('You just deleted team '+ team +'.')
+                        #msg = 'Item put with id: '+idx
+                        flash('You just deleted team '+ team +'.')
+                        redirect = '/'+handle+'/_teams'
+                    else:
+                        flash('There was an error deleting team: '+ team +'.')
+                        redirect = '/'+handle+'/_teams'
 
         else:
-            d = {'message': 'There was an error updating the collection' , 'template':'avispa_rest/index.html'}
-        
-        return d
+            #This is not an organization 
+            redirect = '/'+current_user.id        
 
-    def put_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        #Form to edit a collection
-        ringlist = self.AVM.user_get_rings(handle)
-        collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection
-
-        print('collectiond:',collectiond)
-
-        collectionrings = []
-        for ring in collectiond['rings']:
-            collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace('-','.'))
-
-        
-        d = {'message': 'Using Collection put_rq_a_x_y for handle '+handle , 
-             'template': 'avispa_rest/put_rq_a_x_y.html',
-             'ringlist': ringlist,
-             'collectionlist': collectiond,
-             'collectionrings': collectionrings}
-
-        print("dzzzzzzzzz:",d)
-
-        return d
-
-
-    def put_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection put_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-
-    #PATCH /a/b
-    def patch_a_x_y(self,request,handle,collection,idx,api=False,*args):
-    	d = {'message': 'Using Collection patch_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-    def patch_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection patch_rq_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-    def patch_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection patch_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-    
-    #DELETE /a/b
-    def delete_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        #Will delete an existing collection
-
-        result = self.ACM.delete_a_x_y(handle,collection)
-
-        if result:
-            print('Awesome , you just deleted a Collection')
-            #msg = 'Item put with id: '+idx
-            flash("Your Collection has been deleted")
-            redirect = '/'+handle+'/_collections'
-            d = {'redirect': redirect, 'status':200}
-
-        else:
-            d = {'message': 'There was an error deleting the collection' , 'template':'avispa_rest/index.html'}
-        
-        return d
-
-
-    def delete_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection delete_rq_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-
-    def delete_rs_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection delete_rs_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
-        return d
-    
-    #SEARCH /a/b
-    def search_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection search_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/search_a_b.html'}
-        return d
-
-    def search_rq_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        d = {'message': 'Using Collection search_rq_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/search_rq_a_b.html'}
+        d = {'redirect': redirect, 'status':200}
         return d
 
 
 
-    # a/x/y/b and a/x/y/b/c are served by the regular AvispaRestFunc.py
+ 
