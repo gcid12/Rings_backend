@@ -72,8 +72,7 @@ class CollectionBuilder:
             collectiond['handle'] = handle.lower()
             if request.form.get('CollectionVersion'):
                 collectiond['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
-            else:
-                collectiond['version'] = self.collectionprotocols['defaults']['CollectionVersion'].replace('.','-')
+            
             
             ringlist = []
           
@@ -85,7 +84,7 @@ class CollectionBuilder:
                     vparts = value.split('_')
                     ring['handle'] = vparts[0]
                     ring['ringname'] = vparts[1]
-                    ring['version'] = vparts[2]
+                    ring['version'] = vparts[2].replace('.','-')
                     # Will implement this later. This is to separate from primary and secondary rings
                     ring['layer'] = 1 
                     ringlist.append(ring)

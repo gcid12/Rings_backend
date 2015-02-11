@@ -18,7 +18,7 @@ avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 
 
-def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
+def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     
     ARF = AvispaRestFunc()
@@ -43,12 +43,12 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     data = {}
 
     MAM = MainModel()
-    authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle,ring,idx)
+    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring,idx)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
 
      
-    data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api)
+    data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection)
 
     data['user_authorizations'] = authorization_result['user_authorizations']
 
@@ -58,8 +58,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False):
     data['cu_profilepic'] = cu_user_doc['profilepic']
     data['cu_location'] = cu_user_doc['location']
 
-    if 'collection' in request.args:
-        data['collection'] = request.args.get('collection')
+    if collection:
+        data['collection'] = collection
 
     data['handle']=handle
     data['ring']=ring
@@ -158,7 +158,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     MAM = MainModel()
     cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    if user_doc:
+    if cu_user_doc:
         data['cu_actualname'] = cu_user_doc['name']
         data['cu_profilepic'] = cu_user_doc['profilepic']
         data['cu_location'] = cu_user_doc['location']
@@ -204,6 +204,15 @@ def home_dispatcher(handle):
     data = {}
 
     if MAM.user_exists(handle):
+
+        method= 'GET_a_home'
+        depth = '_a'
+        authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle)
+        if not authorization_result['authorized']:
+            return render_template('avispa_rest/error_401.html', data=data),401
+
+        data['user_authorizations'] = authorization_result['user_authorizations']
+
     
         ACF = AvispaCollectionsRestFunc()
         m = 'get_a_x'
@@ -539,18 +548,24 @@ def collections_route_a_x(handle):
 @login_required
 def collections_route_a_x_y(handle,collection):
 
-    result = collection_dispatcher('_a_x_y',handle,collection)
+    if ('rq' not in request.args) and ('method' not in request.args): 
+        result = route_dispatcher('_a',handle,collection=collection)
+        print('flagx1')
+    else:
+        result = collection_dispatcher('_a_x_y',handle,collection)
+        print('flagx2')
  
     if 'redirect' in result:
+        #pass
         return redirect(result['redirect'])        
     else:
         return result
 
 @avispa_rest.route('/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
-def collections_route_a_x_y_b(handle,collection,idx):
+def collections_route_a_x_y_b(handle,collection,ring):
 
-    result = collection_dispatcher('_a_x_y_b',handle,collection,idx)
+    result = route_dispatcher('_a_b',handle,ring,collection=collection)
 
     if 'redirect' in result:
         return redirect(result['redirect'])
@@ -559,9 +574,9 @@ def collections_route_a_x_y_b(handle,collection,idx):
 
 @avispa_rest.route('/<handle>/_collections/<collection>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
-def collections_route_a_x_y_b_c(handle,collection,idx):
+def collections_route_a_x_y_b_c(handle,collection,ring,idx):
 
-    result = collection_dispatcher('_a_x_y_b_c',handle,collection,idx)
+    result = route_dispatcher('_a_b_c',handle,ring,idx,collection=collection)
 
     if 'redirect' in result:
         return redirect(result['redirect'])
@@ -573,7 +588,9 @@ def collections_route_a_x_y_b_c(handle,collection,idx):
 @login_required
 def route_a(handle):
 
-
+    if request.method == 'GET':
+        if ('rq' not in request.args) or ('method' not in request.args):
+            return redirect('/'+handle+'/_home')
 
     #if handle != current_user.id:
      #   return redirect('/_logout') 

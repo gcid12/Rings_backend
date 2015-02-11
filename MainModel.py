@@ -17,14 +17,14 @@ class MainModel:
 
         self.roles = {}
         self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
-        self.roles['handle_owner'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['handle_owner'] = ['get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
         self.roles['moderator'] = ['get_a_b','get_a_b_c','put_a_b_c','delete_a_b_c']
         self.roles['capturist'] = ['get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
         self.roles['fact_checker'] = ['get_a_b_c','put_a_b_c']
-        self.roles['anonymous'] = ['get_a_b','get_a_b_c']
+        self.roles['anonymous'] = ['get_a_home','get_a_b','get_a_b_c']
 
         self.user_database = 'myring_users'
 
@@ -272,7 +272,10 @@ class MainModel:
 
 
     #ROLEMODEL
-    def user_is_authorized(self,current_user,method,depth,handle,ring,idx):
+    def user_is_authorized(self,current_user,method,depth,handle,ring=None,idx=None):
+
+        # @method : is what is going to be checked against the user_authorization list
+        # @depth : how deep to dig in the user_authorizations
         
         user_authorizations = []
 
@@ -294,7 +297,7 @@ class MainModel:
                 user_authorizations += self.roles['handle_owner']
             else:
                 print('This user is Anonymous')
-                user_authorizations += self.roles['handle_member']
+                user_authorizations += self.roles['anonymous']
 
 
 
@@ -402,19 +405,25 @@ class MainModel:
         print('user_authorizations:',user_authorizations)
 
         method_parts = method.split('_')
-        print('method_parts:',method_parts)
-        
-        
-        m = method_parts[0]
 
-        print('auth:',m.lower()+depth.lower())
+        separator = '_'
+        if 'rq' in method_parts:
+            position = method_parts.index('rq')
+            del method_parts[position]
+            method = separator.join(method_parts)
+
+        if 'rs' in method_parts:
+            position = method_parts.index('rs')
+            del method_parts[position]
+            method = separator.join(method_parts)
+       
         
         out={}
         out['user_authorizations'] = user_authorizations
 
-        print('user_authorizations:',user_authorizations)
+        print('Method for this screen:',method)
 
-        if m.lower()+depth.lower() in user_authorizations:
+        if method.lower() in user_authorizations:
             out['authorized'] = True
         else:
             out['authorized'] = False

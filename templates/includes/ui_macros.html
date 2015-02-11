@@ -115,12 +115,19 @@
 </div>
 {% endmacro %}
 
-{% macro panel_collections(name, origin, handle, color, number, percent, active, resource,collection) %} 
+{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
           
           <tr>
-            <td><p>{{ number }}</p></td>
-            <td>{{ icon_xsma(number, color) }}</td>
-            <td><span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> &nbsp;<a href="/{{ resource }}?collection={{collection}}"> {{origin}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1x day ago</span></p></td>
+            <td><p>{{ count }}</p></td>
+            <td>{{ icon_xsma(count, color) }}</td>
+            <td>
+              <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
+              {% if 'get_a_b' in user_authorizations %} 
+              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> {{handle}}/<span style="font-weight:700;">{{ring}}</span></a>{%else%}
+              &nbsp; {{handle}}/<span style="font-weight:700;">{{ring}}</span>
+              {%endif%} 
+              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
+            </td>
             <td>
               <div class="pull-right">
                 <div class="visible-xs">
@@ -129,7 +136,9 @@
                 <div class="btn-group" >
                 
                   <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
-                  <a href="/{{ resource }}?rq=post&collection={{collection}}" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+                  {% if 'post_a' in user_authorizations %}
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+                  {% endif %}
 
                   
 
@@ -144,12 +153,20 @@
                    
 {% endmacro %}
 
-{% macro panel_rings(name, origin, handle, color, number, percent, active, resource) %} 
+{% macro panel_rings(name, origin, handle, color, number, percent, active, resource, user_authorizations) %} 
           
           <tr>
             <td><p>{{ number }}</p></td>
             <td>{{ icon_xsma(number, color) }}</td>
-            <td><span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span></span> &nbsp;<a href="/{{ resource }}"> {{origin}}/<span style="font-weight:700;">{{ name }}</span></a> <span class="fc-g"><p class="fs-0-8">1 day ago</p></span></td>
+            <td>
+              <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
+              {% if 'get_a_b' in user_authorizations %} 
+              &nbsp;<a href="/{{ resource }}"> {{origin}}/<span style="font-weight:700;">{{ name }}</span></a>
+              {%else%}
+              &nbsp; {{origin}}/<span style="font-weight:700;">{{ name }}</span>
+              {%endif%} 
+              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
+            </td>
             <td>
               <div class="pull-right">
                 <div class="visible-xs">
@@ -158,10 +175,12 @@
                 <div class="btn-group" >
                 
                   <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
+                  {% if 'post_a' in user_authorizations %}
                   <a href="/{{ resource }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
-
+                  {% endif %}
+                  {% if 'put_a' in user_authorizations %}
                   <a href="/{{ resource }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-
+                  {% endif %}
                   
 
                 </div>
@@ -173,7 +192,9 @@
                    
 {% endmacro %}
 
-  {% macro collection(name, percent, role, update,link,collection) %}
+
+  {% macro collection(handle,collection,percent,role,update) %}
+
 
   <tr>
     
@@ -182,9 +203,9 @@
       
     </td>
     <td> 
-      <a class="nounder" href="{{link}}?collection={{collection}}"><h3 class="fs-1 text-gray text-s1 fw-c">
-      {{ name|upper() }}</h3></a>
-      <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
+      <a class="nounder" href="/{{handle}}/_collections/{{collection}}"><h3 class="fs-1 text-gray text-s1 fw-c">
+      {{ collection|upper() }}</h3></a>
+      <p class="text-gray fs-0-8 text-s1"><strong>1</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
     </td>
 
     <td> 
