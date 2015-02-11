@@ -253,6 +253,33 @@ overflow: hidden;
 }
 
 
+/*USER GRAPH*/
+.ugp-container{width:14%; float:left; height:150px; padding:10px 0;}
+
+.ugp{width:14.285%;
+float:left;
+position:relative; top:50%;
+-webkit-transform: translateY(-50%);
+-ms-transform: translateY(-50%);
+transform: translateY(-50%);
+border-radius: 0 20px;
+}
+
+.ugp-0{ height:1%; background-color:gray;}
+.ugp-1{ height:10%; background-color:#2fcfff;}
+.ugp-2{ height:20%; background-color:#2ec7ff;}
+.ugp-3{ height:30%; background-color:#29beff;}
+.ugp-4{ height:40%; background-color:#26b5ff;}
+.ugp-5{ height:50%; background-color:#24acff;}
+.ugp-6{ height:60%; background-color:#21a3ff;}
+.ugp-7{ height:70%; background-color:#1e9bff;}
+.ugp-8{ height:80%; background-color:#1b92ff;}
+.ugp-9{ height:90%; background-color:#1789ff;}
+.ugp-10{ height:100%; background-color:#147fff;}
+
+
+
+
 
 .fa01{
      
