@@ -167,6 +167,46 @@ class MainModel:
             
         return False
 
+    def add_team(self,handle,team,author,user_database=None):
+
+        if not user_database:
+            user_database=self.user_database
+        
+        db = self.select_db(user_database)
+        user_doc = MyRingUser.load(db,handle)
+        
+        user_doc.teams.append(teamname=team,addedby=author,added=datetime.now())
+
+        for teamd in user_doc.teams:
+            
+            if teamd['teamname'] == team:
+                
+                teamd.members.append(handle=author,addedby=author,added=datetime.now())
+                storeresult = user_doc.store(db)
+                return True
+
+        return False
+
+    def delete_team(self,handle,team,user_database=None):
+
+        if not user_database:
+            user_database=self.user_database
+        
+        db = self.select_db(user_database)
+        user_doc = MyRingUser.load(db,handle)
+
+        count = 0
+        for teamd in user_doc.teams:
+            if teamd['teamname'] == team:
+                del user_doc.teams[count] 
+                if user_doc.store(db):
+                    return True
+
+            count += 1
+
+                
+        return False
+
 
     #MAINMODEL
     def is_org(self,username,user_database=None):
@@ -207,7 +247,7 @@ class MainModel:
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
-        print('iterview result for '+dbview+' with key '+key+':',result)
+        #print('iterview result for '+dbview+' with key '+key+':',result)
         
         if batch == 1:
             for r in result:     
