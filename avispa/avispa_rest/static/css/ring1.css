@@ -254,15 +254,18 @@ overflow: hidden;
 
 
 /*USER GRAPH*/
-.ugp-container{width:14%; float:left; height:150px; padding:10px 0;}
 
-.ugp{width:14.285%;
+
+.ugp-container{width:100%; float:left; height:150px; padding:10px 0;}
+
+.ugp{
 float:left;
 position:relative; top:50%;
 -webkit-transform: translateY(-50%);
 -ms-transform: translateY(-50%);
 transform: translateY(-50%);
 border-radius: 0 20px;
+background-color:#24acff;;
 }
 
 .ugp-0{ height:1%; background-color:gray;}
@@ -278,7 +281,9 @@ border-radius: 0 20px;
 .ugp-10{ height:100%; background-color:#147fff;}
 
 
+.ugp{width:2%;} /*amount of lines to display divided by 100% */
 
+.ugp2{background-color: red;}
 
 
 .fa01{
