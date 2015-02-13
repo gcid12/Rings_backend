@@ -58,7 +58,7 @@
                 <div class="rn-b1">Team members</div>
                 
                 <div class="">
-                   <form action="" method="POST">
+                   <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
                    <div class="pull-right">
                       &nbsp; Add new member to this team &nbsp;
                       <select name="newmember">
@@ -97,7 +97,7 @@
                           <div class="pull-right">
                             <!--input type="checkbox" value="public" name="public"/-->
                             <div class="btn-group"> 
-                              <a href="/{{data.handle}}/_collections" type="button" class="btn btn-warning btn-xs pull-right">
+                              <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delmember={{ person.handle }}" type="button" class="btn btn-warning btn-xs pull-right">
                   REMOVE</a>
                             </div>
                             <br/><br/>
@@ -115,7 +115,7 @@
                 <div class="rn-b1">Rings</div>
 
                 <div class="">
-                   <form action="" method="POST">
+                   <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
                    <div class="pull-right">
                       &nbsp; Add a new ring to this team &nbsp;
                       <select name="newring">

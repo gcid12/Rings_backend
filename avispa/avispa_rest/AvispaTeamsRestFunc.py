@@ -3,6 +3,7 @@ from flask import redirect, flash
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from flask.ext.login import current_user
+from AvispaTeamsModel import AvispaTeamsModel
 
 
 class AvispaTeamsRestFunc:
@@ -10,6 +11,7 @@ class AvispaTeamsRestFunc:
     def __init__(self):
         self.AVM = AvispaModel()
         self.MAM = MainModel()
+        self.ATM = AvispaTeamsModel()
         
         
 
@@ -115,6 +117,56 @@ class AvispaTeamsRestFunc:
      
         return d
 
+    def put_a_m_n(self,request,handle,team,*args):
+
+        #This function should be refactored into multiple functions that obey RESTFUL:
+        # post_a_m_n_members , delete_a_m_n_members , post_a_m_n_rings, delete_a_m_n_rings
+
+        d = {}
+
+        print('flag1')
+
+        if 'newmember' in request.form: 
+            member = request.form.get('newmember')
+            if self.ATM.post_a_m_n_members(handle,team,member):
+                print(member + ' has been added to the team.')
+                flash(member + ' has been added to the team.')
+            else:
+                print(member + ' is already part of this team.')
+                flash(member + ' is already part of this team.')
+
+        if 'delmember' in request.args: 
+            print('flag2')
+            member = request.args.get('delmember')
+            if self.ATM.delete_a_m_n_members(handle,team,member):
+                print(member + ' has been deleted from the team.')
+                flash(member + ' has been deleted from the team.')
+            else:
+                print('There was an issue deleting: ' + member + '.')
+                flash('There was an issue deleting: ' + member + '.')
+            
+        if 'newring' in request.form:
+            ring = request.form.get('newring')
+            if self.ATM.post_a_m_n_rings(handle,team,ring):
+                print(ring + ' has been added to the team.')
+                flash(ring + ' has been added to the team.')
+            else:
+                print(ring + ' already  exists in this team.')
+                flash(ring + ' already  exists in this team.')           
+
+        if 'delring' in request.args:
+            ring = request.args.get('delring')
+            if self.ATM.delete_a_m_n_rings(handle,team,ring):
+                print(ring + ' has been deleted from the team.')
+                flash(ring + ' has been deleted from the team.')
+            else:
+                print('There was an issue deleting: ' + ring + '.')
+                flash('There was an issue deleting: ' + ring + '.')
+            
+            
+        d['redirect'] = '/'+handle+'/_teams/'+team
+
+        return d
 
 
         #DELETE /a/b
