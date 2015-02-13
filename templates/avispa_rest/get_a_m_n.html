@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block headscripts %}
+
+{% endblock %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+
+<!-- START NEW CONTENT --> 
+
+
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+    
+        {{ ui.org_header(data.handle,data.handle_actualname,data.handle_profilepic,data.user_authorizations) }}
+
+
+        <div class="row">
+          <div class="col-sm-12">
+
+            <div class="">
+
+              
+              <a href="/{{data.handle}}/_teams" type="button" class="btn btn-success btn-xs pull-right">
+              + New Team</a> 
+              <a href="/{{data.handle}}/_teams" type="button" class="btn btn-info btn-xs pull-right">
+              Your teams</a>
+              <br/><br/>
+              
+            </div> 
+          
+
+            <div class="rn-box-content"><br/>
+                <span class="rn-b2">{{data.team.teamname}}</span><span class="pull-right"> 2 Members | 1 Ring | Settings</span>  <br/>
+                          {#{data.team}#}<br/>
+                          {{data.team.description}}
+                          
+
+                  <br/><br/>
+                  This team grants <b>READ</b> permissions to its members
+                  <br/><br/><br/>
+                <div class="rn-b1">Team members</div>
+                
+                <div class="">
+                   <form action="" method="POST">
+                   <div class="pull-right">
+                      &nbsp; Add new member to this team &nbsp;
+                      <select name="newmember">
+                          {% for member in data.people%}
+                          <option value="{{member.handle}}">{{member.handle}}</option>
+                          {% endfor %}
+                      </select>
+                      <input  type="submit" class="btn btn-success btn-xs pull-right" style="margin:0 5px;" value="+"/>
+                      
+                   </div> 
+                   </form>    
+
+                </div>
+
+                <table class="table table"> <!-- inner row -->
+
+
+                  {% for person in data.team.members %}
+                    {% if person.handle %}
+                      <tr>
+                        <td>
+                          
+                        </td>
+                        <td> 
+                        </td>
+                        <td> 
+                          <a class="rn-b1" href="/{{ person.handle }}">
+                              <img class="img-responsive center-block user-small" src="{% if person.thumbnail %}/_images/{{person.handle}}/t150/{{person.thumbnail}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="float:left; margin-right:10px;" alt="">
+                              {{ person.handle }}
+                          </a>
+
+                          <hr/>
+                          
+                        </td>
+                        <td style="min-width:200px;"> 
+                          <div class="pull-right">
+                            <!--input type="checkbox" value="public" name="public"/-->
+                            <div class="btn-group"> 
+                              <a href="/{{data.handle}}/_collections" type="button" class="btn btn-warning btn-xs pull-right">
+                  REMOVE</a>
+                            </div>
+                            <br/><br/>
+                            <!--span class="label label-discrete pull-right">Yesterday</span-->
+                          </div>
+                        </td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+
+                  </table>
+
+
+
+                <div class="rn-b1">Rings</div>
+
+                <div class="">
+                   <form action="" method="POST">
+                   <div class="pull-right">
+                      &nbsp; Add a new ring to this team &nbsp;
+                      <select name="newring">
+                          {% for ring in data.rings %}
+                          <option value="{{data.handle}}/{{ring}}">{{data.handle}}/{{ring}}</option>
+                          {% endfor %}
+                      </select>
+                      <input  type="submit" class="btn btn-success btn-xs pull-right" style="margin:0 5px;" value="+"/>
+                      
+                   </div> 
+                   </form>    
+
+                </div>
+                <br/>
+                {% for ring in data.rings %}
+                
+                  <div class="rn-box-white gad100">
+                  {{ ui.panel(ring, data.handle, data.handle, '#fce121', data.rings[ring],'','','') }}
+                  </div>
+
+                {%endfor%}
+
+            </div><!-- //close box -->
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
