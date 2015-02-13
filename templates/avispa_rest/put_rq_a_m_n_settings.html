@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+
+{% block crumbs %}
+{% endblock %}
+
+
+
+{% block content %}
+
+<!-- START NEW CONTENT --> 
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+      {{ ui.org_header(data.handle,data.handle_actualname,data.handle_profilepic,'team',data.user_authorizations) }}
+
+
+        <div class="row">
+          <div class="col-sm-12">
+
+        
+            <div class="">
+
+              
+             
+              <br/><br/>
+              
+            </div> 
+
+              
+          
+
+            <div class="rn-box-content">
+
+            <span class="rn-b2">{{data.team.teamname}}</span><span class="pull-right">
+                <a href="/{{data.handle}}/_teams/{{data.team.teamname}}">back</a>
+                </span>  <br/><br/>
+                          
+
+              
+              <form action="" method="POST" role="form">
+              
+                <div class="form-group">
+                  <label for="">Description</label><br/>
+                  <textarea name="description" rows='8' cols='100'>{{data.team.description}}</textarea> 
+                </div>
+
+                <div class="form-group">
+                  <label for="">Team authorizations</label><br/>
+                  <input name="teamauth" type="radio"> Read <br/>
+                  <input name="teamauth" type="radio"> Read and Write<br/>
+                  <input name="teamauth" type="radio"> Administrator<br/>
+                </div>
+         
+                <button type="submit" class="btn btn-primary">Update team settings</button>
+              </form>
+            </div><!-- //close box -->
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+{% endblock %}
+
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}

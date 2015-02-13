@@ -201,6 +201,43 @@ class AvispaTeamsRestFunc:
         d = {'redirect': redirect, 'status':200}
         return d
 
+    def put_rq_a_m_n_settings(self,request,handle,team,*args):
+        
+        d = {}
+
+        peopleteams = self.MAM.is_org(handle) 
+        if peopleteams:   
+            
+            d['people'] = peopleteams['people']        
+            
+            for teamd in peopleteams['teams']:
+                #get the profilepic for this person
+
+                if teamd['teamname'] == team :
+
+                    for member in teamd['members']:
+                        person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',member['handle'])
+                        if person_user_doc:
+                            member['thumbnail'] = person_user_doc['profilepic']
+
+                    d['team'] = teamd
+                    break
+
+                      
+            d['template'] = 'avispa_rest/put_rq_a_m_n_settings.html'
+        else:
+            #This is a regular user
+         
+            d['redirect'] = '/'+handle+'/_home'
+     
+        return d
+
+
+
+
+    def put_a_m_n_settings(self,request,handle,team,*args):
+        pass    
+
 
 
  
