@@ -85,8 +85,13 @@ class AvispaTeamsRestFunc:
 
         d = {}
 
+        rings = self.MAM.select_user_doc_view('rings/count',handle)
+        d['rings'] = rings
+
         peopleteams = self.MAM.is_org(handle) 
-        if peopleteams:            
+        if peopleteams:   
+            
+            d['people'] = peopleteams['people']        
             
             for teamd in peopleteams['teams']:
                 #get the profilepic for this person
@@ -100,6 +105,7 @@ class AvispaTeamsRestFunc:
 
                     d['team'] = teamd
                     break
+
                       
             d['template'] = 'avispa_rest/get_a_m_n.html'
         else:
@@ -108,6 +114,7 @@ class AvispaTeamsRestFunc:
             d['redirect'] = '/'+handle+'/_home'
      
         return d
+
 
 
         #DELETE /a/b
