@@ -81,6 +81,35 @@ class AvispaTeamsRestFunc:
         return d
 
 
+    def get_a_m_n(self,request,handle,team,*args):
+
+        d = {}
+
+        peopleteams = self.MAM.is_org(handle) 
+        if peopleteams:            
+            
+            for teamd in peopleteams['teams']:
+                #get the profilepic for this person
+
+                if teamd['teamname'] == team :
+
+                    for member in teamd['members']:
+                        person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',member['handle'])
+                        if person_user_doc:
+                            member['thumbnail'] = person_user_doc['profilepic']
+
+                    d['team'] = teamd
+                    break
+                      
+            d['template'] = 'avispa_rest/get_a_m_n.html'
+        else:
+            #This is a regular user
+         
+            d['redirect'] = '/'+handle+'/_home'
+     
+        return d
+
+
         #DELETE /a/b
     def delete_a_m_n(self,request,handle,team,*args):
         #Will delete an existing person

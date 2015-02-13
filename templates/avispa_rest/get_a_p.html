@@ -16,40 +16,11 @@
     <div class="row">
             
       <div class="col-md-9">  
-
+        {{ ui.org_header(data.handle,data.handle_actualname,data.handle_profilepic,'people',data.user_authorizations) }}
 
         <div class="row">
           <div class="col-sm-12">
-            <div class="rn-box-title">
 
-              <strong>People @ {{ data.handle }}</strong>
-              
-              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-              <i class="fa fa-question-circle"></i>
-              </button-->
-
-              
-              <!--a href="?q" type="button" class="btn btn-success btn-xs pull-right">
-                <i class="fa fa-search"></i> SEARCH
-              </a-->
-            </div>
-            <div class="rn-box-solo">
-              <div class="pull-right rn-t3 text-right">
-                  <i class="fa fa-dot-circle-o fa-2x" style="color:#CCC; padding:0 10px;"></i>
-              </div>
-          
-              <div class="pull-right rn-t3 text-right"><strong> &nbsp;</strong>
-
-              </div>
-              <div class="rn-t2"><a href="/{{data.handle}}">Go back to main page</a></div>
-
-                
-            </div>
-              <!-- <div class="rn-box-space">
-                  
-                      <div class="rn-b1">123</div>
-                  
-              </div> -->
             <div class="">
                <form action="" method="POST">
                <div class="pull-right">

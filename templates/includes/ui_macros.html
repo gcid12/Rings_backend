@@ -527,4 +527,30 @@
 
 {% endmacro%}
 
+{% macro org_header(handle,actualname,profilepic,currentsection,user_authorizations) %}
+
+        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if profilepic %}/_images/{{handle}}/t150/{{profilepic}}_t150.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
+
+        {% if actualname %} 
+         <h4 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h4><br/>
+        {% else %}
+         <h3 class="text-lead fw-300 pull-left"><span class="text-gray">{{handle}}</span><br/><span class="text-lgray pull-left fs-0-6"></span></h3><br/>
+        {% endif %}
+
+        <span class=" pull-right">
+        {% if currentsection == 'people' %}
+        <b> People </b>&nbsp;&nbsp;
+        <a href="/{{handle}}/_teams" > Teams </a> &nbsp;&nbsp;
+        {% else %}
+        <a href="/{{handle}}/_people" > People </a>&nbsp;&nbsp;
+        <b> Teams </b> &nbsp;&nbsp;
+        {%endif%}
+        
+        {% if 'put_a' in user_authorizations %}
+        <a href="/{{data.handle}}/_orgprofile" > Settings </a> 
+        {% endif %}
+        </span>
+
+{% endmacro %}
+
 

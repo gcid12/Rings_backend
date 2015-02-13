@@ -230,7 +230,7 @@ def home_dispatcher(handle):
         data['collections'] = collections
 
 
-        #This is to be used by the current user bar
+        #This is to be used by the user bar
         cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if cu_user_doc:
 
@@ -340,6 +340,7 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 def people_dispatcher(depth,handle,person=None):
 
     APR = AvispaPeopleRestFunc()
+    MAM = MainModel()
     data = {}
 
     if 'q' in request.args:
@@ -362,6 +363,29 @@ def people_dispatcher(depth,handle,person=None):
     data = getattr(APR, m.lower())(request,handle,person)
     data['handle'] = handle
 
+    #This is to be used by the user bar
+    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if cu_user_doc:
+
+        #data['cu_actualname'] = cu_user_doc['name']
+        data['cu_profilepic'] = cu_user_doc['profilepic']
+        #data['cu_location'] = cu_user_doc['location']
+        #data['cu_handle'] = current_user.id
+
+    #Thisi is the data from the handle we are visiting
+    if current_user.id == handle:
+        data['handle_actualname'] = cu_user_doc['name']
+        data['handle_profilepic'] = cu_user_doc['profilepic']
+        data['handle_location'] = cu_user_doc['location']
+
+    else:
+        handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+        if handle_user_doc:
+            data['handle_actualname'] = handle_user_doc['name']
+            data['handle_profilepic'] = handle_user_doc['profilepic']
+            data['handle_location'] = handle_user_doc['location']
+
+
     if 'redirect' in data:
         return data                 
     else:
@@ -371,6 +395,7 @@ def people_dispatcher(depth,handle,person=None):
 def teams_dispatcher(depth,handle,team=None):
 
     ATR = AvispaTeamsRestFunc()
+    MAM = MainModel()
     data = {}
 
     if 'q' in request.args:
@@ -392,6 +417,29 @@ def teams_dispatcher(depth,handle,team=None):
 
     data = getattr(ATR, m.lower())(request,handle,team)
     data['handle'] = handle
+
+
+        #This is to be used by the user bar
+    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if cu_user_doc:
+
+        #data['cu_actualname'] = cu_user_doc['name']
+        data['cu_profilepic'] = cu_user_doc['profilepic']
+        #data['cu_location'] = cu_user_doc['location']
+        #data['cu_handle'] = current_user.id
+
+    #Thisi is the data from the handle we are visiting
+    if current_user.id == handle:
+        data['handle_actualname'] = cu_user_doc['name']
+        data['handle_profilepic'] = cu_user_doc['profilepic']
+        data['handle_location'] = cu_user_doc['location']
+
+    else:
+        handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+        if handle_user_doc:
+            data['handle_actualname'] = handle_user_doc['name']
+            data['handle_profilepic'] = handle_user_doc['profilepic']
+            data['handle_location'] = handle_user_doc['location']
 
 
     if 'redirect' in data:
