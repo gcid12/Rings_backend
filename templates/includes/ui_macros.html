@@ -1,6 +1,6 @@
 
 
-  {% macro panel(ring, origin, handle, color, count,description,link,collection,user_authorizations) %}
+  {% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations) %}
 
   <tr>
     <td> 
@@ -41,7 +41,7 @@
 
             </div>
             <br/><br/>
-            <span class="label label-discrete pull-right">1 day ago (fpo)</span>
+            <span class="label label-discrete pull-right">{{date}}</span>
           </div>
         </div>
       </div>  
@@ -49,6 +49,8 @@
   </tr>
 
 {% endmacro %}
+
+
 
 
   {% macro panel2(ring, handle, color, count,description) %}

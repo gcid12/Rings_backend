@@ -90,6 +90,7 @@ class AvispaTeamsRestFunc:
         rings = self.MAM.select_user_doc_view('rings/count',handle)
         d['rings'] = rings
 
+
         peopleteams = self.MAM.is_org(handle) 
         if peopleteams:   
             

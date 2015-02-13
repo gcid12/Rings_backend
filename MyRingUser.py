@@ -22,8 +22,19 @@ class MyRingUser(Document):
                 addedby = TextField(),
                 added = DateTimeField(default=datetime.now)
             ))),
+        rings = ListField(DictField(Mapping.build(
+            handle = TextField(),
+            ringname = TextField(),
+            addedby = TextField(),
+            added = DateTimeField(default=datetime.now)
+            ))),
+        roles = ListField(DictField(Mapping.build(
+            role = TextField(),
+            addedby = TextField(),
+            added = DateTimeField(default=datetime.now)
+            ))),
         addedby = TextField(),
-        added = DateTimeField(default=datetime.now)
+        added = DateTimeField(default=datetime.now)    
         )))
     salt = TextField()
     passhash = TextField()

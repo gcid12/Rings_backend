@@ -98,7 +98,8 @@
                             <!--input type="checkbox" value="public" name="public"/-->
                             <div class="btn-group"> 
                               <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delmember={{ person.handle }}" type="button" class="btn btn-warning btn-xs pull-right">
-                  REMOVE</a>
+                               REMOVE
+                              </a>
                             </div>
                             <br/><br/>
                             <!--span class="label label-discrete pull-right">Yesterday</span-->
@@ -120,7 +121,7 @@
                       &nbsp; Add a new ring to this team &nbsp;
                       <select name="newring">
                           {% for ring in data.rings %}
-                          <option value="{{data.handle}}/{{ring}}">{{data.handle}}/{{ring}}</option>
+                          <option value="{{ring}}">{{data.handle}}/{{ring}}</option>
                           {% endfor %}
                       </select>
                       <input  type="submit" class="btn btn-success btn-xs pull-right" style="margin:0 5px;" value="+"/>
@@ -130,11 +131,17 @@
 
                 </div>
                 <br/>
-                {% for ring in data.rings %}
+                {% for ring in data.team.rings %}
                 
-                  <div class="rn-box-white gad100">
-                  {{ ui.panel(ring, data.handle, data.handle, '#fce121', data.rings[ring],'','','') }}
+                  <div class="rn-box-white gad100">           
+                    {{ ui.panel(ring.ringname, data.handle, data.handle, '#fce121', data.rings[ring.ringname],'',ring.added,'','') }} 
+                                  
                   </div>
+                  <div class="btn-group" class="pull-right"> 
+                      <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delring={{ ring.ringname }}" type="button" class="btn btn-warning btn-xs">
+                        REMOVE
+                      </a>
+                  </div> 
 
                 {%endfor%}
 

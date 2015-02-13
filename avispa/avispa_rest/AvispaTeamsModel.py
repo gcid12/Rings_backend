@@ -36,6 +36,11 @@ class AvispaTeamsModel:
             if teamd['teamname'] == team:
                 print('Members for team '+team,teamd['members'])
                 memberlist = []
+
+                if 'members' not in teamd:
+                    teamd['members'] = []
+
+
                 for memberd in teamd['members']:
                     memberlist.append(memberd['handle'])
 
@@ -75,6 +80,76 @@ class AvispaTeamsModel:
                 for memberd in teamd['members']:
                     if member == memberd['handle']:
                         del user_doc['teams'][count1]['members'][count2]
+                    count2 += 1
+            count1 += 1
+                    
+        if user_doc.store(db):
+            return True 
+        else:
+            return False
+
+
+    #TEAMSMODEL
+    def post_a_m_n_rings(self,handle,team,ring,user_database=None):
+        #Creates new member in the team
+
+        if not user_database : 
+            user_database = self.user_database
+                      
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        print(user_doc['teams'])
+
+
+        for teamd in user_doc['teams']:
+            if teamd['teamname'] == team: 
+                ringlist = []
+
+                if 'rings' not in teamd:
+                    teamd['rings'] = []
+
+
+                for ringd in teamd['rings']:
+                    ringlist.append(ringd['ringname'])
+
+                if ring in ringlist:
+                    #Ring is already in the team list                
+                    return False                      
+                else:
+                    newring = {'handle' : handle,
+                     'ringname': ring,
+                     'addedby': current_user.id,
+                     'added': str(datetime.now())}
+                    teamd['rings'].append(newring)
+                    
+                break
+
+        user_doc.store(db)
+        return True 
+
+
+
+        #TEAMSMODEL
+    def delete_a_m_n_rings(self,handle,team,ring,user_database=None):
+        #Deletes an existing member from the team
+
+        if not user_database : 
+            user_database = self.user_database
+                      
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        print(user_doc['teams'])
+
+        count1 = 0
+        for teamd in user_doc['teams']:
+            if teamd['teamname'] == team:
+                ringlist = []
+                count2 = 0
+                for ringd in teamd['rings']:
+                    if ring == ringd['ringname']:
+                        del user_doc['teams'][count1]['rings'][count2]
                     count2 += 1
             count1 += 1
                     
