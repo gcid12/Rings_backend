@@ -754,7 +754,7 @@ def collections_route_a_x_y_b_c(handle,collection,ring,idx):
 def route_a(handle):
 
     if request.method == 'GET':
-        if ('rq' not in request.args) or ('method' not in request.args):
+        if ('rq' not in request.args) and ('method' not in request.args):         
             return redirect('/'+handle+'/_home')
 
     #if handle != current_user.id:
