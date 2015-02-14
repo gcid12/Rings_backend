@@ -101,6 +101,20 @@ class AvispaTeamsRestFunc:
 
                 if teamd['teamname'] == team :
 
+                    if teamd['roles']:
+
+                        if teamd['roles'][-1]['role'] == 'admin_team':
+                            teamauth = 'RWX'
+                        elif teamd['roles'][-1]['role'] == 'writer_team':
+                            teamauth = 'RW'
+                        elif teamd['roles'][-1]['role'] == 'reader_team':
+                            teamauth = 'R'
+                        else:
+                                teamauth = ''
+
+                        teamd['teamauth'] = teamauth
+
+
                     for member in teamd['members']:
                         person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',member['handle'])
                         if person_user_doc:
@@ -125,8 +139,6 @@ class AvispaTeamsRestFunc:
 
         d = {}
 
-        print('flag1')
-
         if 'newmember' in request.form: 
             member = request.form.get('newmember')
             if self.ATM.post_a_m_n_members(handle,team,member):
@@ -137,7 +149,6 @@ class AvispaTeamsRestFunc:
                 flash(member + ' is already part of this team.')
 
         if 'delmember' in request.args: 
-            print('flag2')
             member = request.args.get('delmember')
             if self.ATM.delete_a_m_n_members(handle,team,member):
                 print(member + ' has been deleted from the team.')
@@ -201,6 +212,14 @@ class AvispaTeamsRestFunc:
         d = {'redirect': redirect, 'status':200}
         return d
 
+    def get_a_m_n_settings(self,request,handle,team,*args):
+
+        redirect = '/'+handle+'/_teams/'+team        
+
+        d = {'redirect': redirect, 'status':200}
+        return d
+
+
     def put_rq_a_m_n_settings(self,request,handle,team,*args):
         
         d = {}
@@ -215,10 +234,17 @@ class AvispaTeamsRestFunc:
 
                 if teamd['teamname'] == team :
 
-                    for member in teamd['members']:
-                        person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',member['handle'])
-                        if person_user_doc:
-                            member['thumbnail'] = person_user_doc['profilepic']
+                    if teamd['roles']:
+                        if teamd['roles'][-1]['role'] == 'admin_team':
+                            teamauth = 'RWX'
+                        elif teamd['roles'][-1]['role'] == 'writer_team':
+                            teamauth = 'RW'
+                        elif teamd['roles'][-1]['role'] == 'reader_team':
+                            teamauth = 'R'
+                        else:
+                                teamauth = ''
+
+                        teamd['teamauth'] = teamauth
 
                     d['team'] = teamd
                     break
@@ -236,7 +262,23 @@ class AvispaTeamsRestFunc:
 
 
     def put_a_m_n_settings(self,request,handle,team,*args):
-        pass    
+        d = {}
+        p = {}     
+
+        if ('description' in request.form) or ('teamauth' in request.form): 
+            print('xx')
+            p['description'] = request.form.get('description')
+            p['teamauth'] = request.form.get('teamauth')
+            if self.ATM.put_a_m_n_settings(handle,team,p):
+                print(team + ' has been updated.')
+                flash(team + ' has been updated.')
+            else:
+                print(' There was a problem updating '+team+'.')
+                flash(' There was a problem updating '+team+'.')  
+
+        d['redirect'] = '/'+handle+'/_teams/'+team
+
+        return d 
 
 
 

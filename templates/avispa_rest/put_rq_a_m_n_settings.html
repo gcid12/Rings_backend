@@ -22,11 +22,10 @@
         <div class="row">
           <div class="col-sm-12">
 
-        
-            <div class="">
-
-              
-             
+             <div class="">
+ 
+              <a href="/{{data.handle}}/_teams" type="button" class="btn btn-info btn-xs pull-right">
+              Your teams</a>
               <br/><br/>
               
             </div> 
@@ -42,7 +41,7 @@
                           
 
               
-              <form action="" method="POST" role="form">
+              <form action="/{{data.handle}}/_teams/{{data.team.teamname}}/_settings?method=put" method="POST" role="form">
               
                 <div class="form-group">
                   <label for="">Description</label><br/>
@@ -50,10 +49,10 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="">Team authorizations</label><br/>
-                  <input name="teamauth" type="radio"> Read <br/>
-                  <input name="teamauth" type="radio"> Read and Write<br/>
-                  <input name="teamauth" type="radio"> Administrator<br/>
+                  <label for="">Team authorizations on the assigned rings</label><br/>
+                  <input name="teamauth" type="radio" value="R" {%if data.team.teamauth=='R'%}checked=""{%endif%}> Read <br/>
+                  <input name="teamauth" type="radio" value="RW" {%if data.team.teamauth=='RW'%}checked=""{%endif%}> Read and Write<br/>
+                  <input name="teamauth" type="radio" value="RWX" {%if data.team.teamauth=='RWX'%}checked=""{%endif%}> Administrator<br/>
                 </div>
          
                 <button type="submit" class="btn btn-primary">Update team settings</button>

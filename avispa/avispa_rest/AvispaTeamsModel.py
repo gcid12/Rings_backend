@@ -158,4 +158,47 @@ class AvispaTeamsModel:
         else:
             return False
  
+    def put_a_m_n_settings(self,handle,team,parameters,user_database=None):
+
+        if not user_database : 
+            user_database = self.user_database
+
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        for teamd in user_doc['teams']:
+            if teamd['teamname'] == team: 
+                if 'description' in parameters:
+                    teamd['description'] = parameters['description']
+
+                if 'teamauth' in parameters: 
+
+                    teamd['roles'] = []
+
+                    if parameters['teamauth'] == 'RWX':
+                        role = 'admin_team'
+
+                    elif parameters['teamauth'] == 'RW':  
+                        role = 'writer_team'
+                 
+                    elif parameters['teamauth'] == 'R':
+                        role = 'reader_team'
+                    else:
+                        role = False
+                        
+                    if role:
+
+                        newrole = {'handle' : handle,
+                         'role': role,
+                         'addedby': current_user.id,
+                         'added': str(datetime.now())}
+                        teamd['roles'].append(newrole)
+
+                break;
+
+        if user_doc.store(db):
+            return True 
+        else:
+            return False
+
   
