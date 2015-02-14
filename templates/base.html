@@ -71,12 +71,25 @@
 
 <section class="">
   <div class="container-fluid">
+    <div class="row hidden-xs">
+      <div class="col-sm-12">
+        <div class="text-right">
+          {% if data.today is defined %}
+            <p class="fs-0-8">
+            {{ data.today }}    
+            </p>
+          {%endif%}        
+        </div>
+      </div>
+    </div>
     <div class="row">
 
       <div class="col-sm-12">  
       
       {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
       <br/>
+
+
         {% block content %}
         {% endblock %}
 
