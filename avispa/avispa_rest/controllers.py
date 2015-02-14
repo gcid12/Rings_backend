@@ -415,7 +415,11 @@ def teams_dispatcher(depth,handle,team=None):
     #method = request.method
     m = method+depth
 
-    data = getattr(ATR, m.lower())(request,handle,team)
+    try:
+        data = getattr(ATR, m.lower())(request,handle,team)
+    except(AttributeError):
+        data['template'] = 'avispa_rest/error_404.html'
+
     data['handle'] = handle
 
 
