@@ -31,6 +31,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="spa20"></div>
+        
       </div>
       
     </div>
@@ -51,44 +52,83 @@
                 
                 <div class="col-sm-12">
 
-                
-
-                    
- 
+                <div class="spa20"></div>
                   <div id="usergraph" class="ugp-container">
 
                   </div>
+                  <div class="lead fs-1 text-lgray" id="chisme" style="float:right;"></div>
 
                   <!-- To use the graph, just load "days" with an array full of numbers, the javascript will adapt to them This is a Work in Progress.. -->
 
                   <script>
-                  days = ["20", "05", "30", "65","30", "50", "80", "55","95", "00", "60", "85","70","20", "15", "30", "65","20", "0", "0", "55","95", "10", "40", "35","70", "85","35", "20", "0", "5","7","0", "0", "2", "0","25", "33", "0", "65","90", "100","32", "60", "0", "5","7","20", "15", "30", "65","30", "50", "80", "55","95", "10", "60", "85","70","20", "15", "30", "65","20", "0", "0", "55","95", "10", "40", "35","70", "85","35", "20", "0", "5","7","0", "1", "2", "0","25", "33", "0", "65","90", "90","32", "60", "0", "5","7"];
+                  days = [20, 0, 0, 125, 0, 50, 80, 55,95, 00, 60, 85,103,20, 15, 30, 65,20, 0, 0, 55,95, 10, 40, 35,70, 85,35, 20, 0, 5,7,0, 0, 2, 0,25, 33, 0, 65,90, 67,32, 60, 0, 5,7,20, 15, 30, 65,30, 50, 80, 55,95, 10, 60, 115,70,20, 15, 30, 65,20, 0, 50, 90,95, 126, 40, 35,70, 85,35, 20, 0, 5,7,0, 1, 2, 0,25, 33, 0, 65,90, 90,32, 60, 0, 5,7];
+
+                  //days = [50, 100, 250, 300, 200, 0, 150];
+
+
+                 
+
+
+                  var length = days.length ,
+                      min = Math.min.apply(null, days),
+                      max = Math.max.apply(null, days),
+                      sum = days.reduce( function(total, num){ return total + num }, 0),
+                      avg = Math.round(sum / length) ;
+
+
+                  
+
+
+                 
+                    $("#chisme").append("<span> <strong>Items: </strong>"+ sum +" | </span>");
+
+                   $("#chisme").append("<span> <strong>Upload</strong> Average: "+ avg +" /day | </span>");
+                   
+                  
+                  $("#chisme").append("<span> Record: "+ max +" </span>");
+
+                  
 
                   var i;
-
-
                   for (i = 0; i < days.length; i++) {
 
 
-                      var dayplus= parseInt(days[i]) + 1;
-                      //1 day more, to avoid problems with zero (WIP)
-                      var selector = '' + i;
+                      //1 day more, to avoid problems with zero
+                      var d= parseInt(days[i]);
+                      var d1= parseInt(days[i]) + 1;
 
-                      if(selector)
+                      var pcent= (d1 * 100) / max;
 
-                      $("#usergraph").append("<div class='ugp' style='height: "+dayplus + "%; '></div>");
+                      //Setting opacity
+                      var opacity= (pcent +20) / 100;
+
+
+                      //Creating the day inside usergraph
+                      
+
+
+                        if (d != max) { 
+                          $("#usergraph").append("<div class='ugp' style='height: "+pcent + "%; opacity:"+ opacity + ";' data-toggle='tooltip' title=' " + d +"'></div>");
+                            
+                        }else{
+
+                          $("#usergraph").append("<div class='ugp ugp2' style='height: "+pcent + "%; opacity:"+ opacity + "; ' data-toggle='tooltip' title='Record: " + d +"'></div>");
+
+                        }  
 
                   }
 
-                  var divisions = 100 / days.length +"%";
-
-
+                  //defining the witdth of div (amount of items / 100%)
+                  var divisions = 100 / length +"%";
                   $('.ugp').css('width', divisions);
+
+                  
+                  
 
 
                   </script>
 
-                  
+
 
 
 
