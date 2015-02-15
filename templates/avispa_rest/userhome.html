@@ -25,7 +25,8 @@
         {% endif %}
 
 
-        <a class="btn btn-large btn-vader" href="javascript:void(0);" onclick="startIntro();" style="text-align:center;"><i class="fa fa-play-circle fa-3x"></i> <br/>Start Tour </a>
+        <a class="btn btn-large btn-vader" href="javascript:void(0);" onclick="startIntro().setOption('showProgress', true);" style="text-align:center;"><i class="fa fa-play-circle fa-3x"></i> <br/>Start Tour </a>
+
         
       </div>
     </div>
@@ -58,14 +59,18 @@
                   <div id="usergraph" class="ugp-container">
 
                   </div>
+
+
                   <div class="lead fs-1 text-lgray" id="chisme" style="float:right;">
                     
-                    <a href="/" type="button" class="btn btn-default btn-xs pull-right margin-x-10"><i class="fa fa-question-circle"></i></a>
+                    <a href="/" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4"><i class="fa fa-question-circle"></i></a>
                   </div>
 
                   <div style="position:absolute; left:10px;">
-                    <a href="/{{data.handle}}?rq=post&n=10" class="btn btn-default btn-warning">Take Graph Tour &nbsp; &nbsp;<i class="fa fa-play-circle fa-2x"></i>
-</a>
+                   
+                  
+                  <a class="btn btn-default btn-warning" href="javascript:void(0);" onclick="t002();" style="text-align:center;">Take Graph Tour &nbsp; &nbsp;<i class="fa fa-play-circle fa-2x"></i> </a>
+
                   </div>
                     
                   </div>
@@ -119,7 +124,7 @@
                             
                         }else{
 
-                          $("#usergraph").append("<div class='ugp ugp2' style='height: "+pcent + "%; opacity:"+ opacity + "; ' data-toggle='tooltip' title='Record: " + d +"'></div>");
+                          $("#usergraph").append("<div class='ugp ugp2' style='height: "+pcent + "%; opacity:"+ opacity + "; ' data-toggle='tooltip' title='Record: " + d +" <br/> Jan 23, 2015' id='t002_2'></div>");
 
                         }  
 
@@ -302,6 +307,41 @@
                 intro: "<table><tr><td><h4 class='fs-9'>4 </h4></td><td><h3 class='lh-1'>Join or create an<br/><strong>Organization</strong></h3></td></tr><tr><td colspan='2'><p>An Organization is how various users contribute in  MyRing.</p></td></tr></table>",
                 position: 'top'
               }
+            ]
+          });
+
+          intro.start();
+      }
+
+      function t002(){
+        var intro = introJs();
+          intro.setOptions({
+            steps: [
+              {
+                element: '#step1',
+                intro: "<h3 class='lh-1'>This is the user graph</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",position: 'bottom'
+              },
+              {
+                element: '#usergraph',
+                intro: "<h3 class='lh-1'>This graph measures your activity in MyRing</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                position: 'bottom'
+              },
+              {
+                element: '#t002_2',
+                intro: "<h3 class='lh-1'>Each strip represents a day of activity</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                position: 'right'
+              },
+              {
+                element: '#chisme',
+                intro: "<h3 class='lh-1'>Your hard numbers</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                position: 'left'
+              },
+              {
+                element: '#t002_4',
+                intro: "<h3 class='lh-1'>Help</h3><p>This button activates this modal. In case you have further questions please visit our <a href='/'>knowledge base</a> or contact us at myring.io",
+                position: 'left'
+              }
+              
             ]
           });
 
