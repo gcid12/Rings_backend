@@ -337,14 +337,19 @@ class AvispaModel:
 
 
         db = self.couch[self.user_database]
-        doc =  MyRingUser.load(db, handle)
-        rings = doc['rings']
+        user_doc =  MyRingUser.load(db, handle)
+        rings = user_doc['rings']
+        count = 0
         for ring in rings:
             if ring['ringname']==ringname and ring['version']==ringversion:
+                #Here you should also make a hard delete not only a tombstone
+                del user_doc['rings'][count]
+
+            count += 1
+
+                #ring['deleted']=True
                 
-                ring['deleted']=True
-                
-        if doc.store(db):
+        if user_doc.store(db):
             print('Deleted from USERDB')
             del2 = True
       
@@ -414,7 +419,7 @@ class AvispaModel:
         for r in ringprotocol:
             if(action == 'new'):
                 #if r in schema.rings[0]:
-                if pinput['rings'][0][r]:
+                if r in pinput['rings'][0]:
                     args_r[r] = pinput['rings'][0][r]
             
             elif(action == 'edit'):

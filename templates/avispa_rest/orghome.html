@@ -47,7 +47,32 @@
        
 
       <div class="row">
+
         <div class="col-sm-6">
+          <div class="rn-box-title">
+              <a href="/{{data.handle}}" type="button" class="btn btn-info btn-xs pull-right">
+              see all</a> 
+              
+                  My Rings
+              
+          </div>
+          <div class="rn-box-solo">
+
+          <table class="table table-striped table-condensed">
+          {% for ring in data.rings.ringlist %}
+
+            {{ ui.panel_rings(ring.ringname, ring.ringorigin, data.handle, '#924ea0', ring.count, '36', '',data.handle+'/'+ring.ringname,data.user_authorizations) }}
+
+          {% endfor %}
+
+          </table>                  
+                            
+          </div> 
+          <a href="/{{data.handle}}?rq=post&n=10">New Ring</a>
+          
+        </div><!-- close 2 --> 
+
+                <div class="col-sm-6">
           <!-- BOX CONTENT -->
           <div class="rn-box-title">
 
@@ -55,7 +80,7 @@
               see all</a> 
 
               <strong>
-                  <h4>Ring Collections</h4>
+                  <h4>Campaigns</h4>
               </strong>
 
 
@@ -89,30 +114,6 @@
           <a href="/{{data.handle}}/_collections?rq=post">New Collection</a>
           <br/><br/><br/>
         </div><!-- close  --> 
-
-        <div class="col-sm-6">
-          <div class="rn-box-title">
-              <a href="/{{data.handle}}" type="button" class="btn btn-info btn-xs pull-right">
-              see all</a> 
-              
-                  My Rings
-              
-          </div>
-          <div class="rn-box-solo">
-
-          <table class="table table-striped table-condensed">
-          {% for ring in data.rings.ringlist %}
-
-            {{ ui.panel_rings(ring.ringname, ring.ringorigin, data.handle, '#924ea0', ring.count, '36', '',data.handle+'/'+ring.ringname,data.user_authorizations) }}
-
-          {% endfor %}
-
-          </table>                  
-                            
-          </div> 
-          <a href="/{{data.handle}}?rq=post&n=10">New Ring</a>
-          
-        </div><!-- close 2 --> 
 
 
         <div class="col-sm-6">

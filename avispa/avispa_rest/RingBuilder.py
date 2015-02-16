@@ -129,12 +129,14 @@ class RingBuilder:
                 handle = handle.lower()
                 ringnameparts = pathparts[3].split('_')
                 ringname = ringnameparts[0]
-                ringversion = ringnameparts[1]
+                ringdbname = ringname
                 
                 #original schema
-                schema = self.AVM.ring_get_schema_from_view(origin_handle,ringname+'_'+ringversion)
+                schema = self.AVM.ring_get_schema_from_view(origin_handle,ringdbname)
                 print(schema) 
                 #Generate pinput from schema
+
+                ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
 
                 requestparameters = {}
 
@@ -205,6 +207,11 @@ class RingBuilder:
                     print('adding RingParent to requestparameters')
                     requestparameters['RingParent'] = requestparameters['RingName']
 
+                '''
+                if 'RingLabel' not in requestparameters:
+                    requestparameters['RingLabel'] = request.form.get('RingName') 
+                '''
+                
                 i = 0
                 for n in schema['fields']:
                     print('n')
@@ -243,7 +250,7 @@ class RingBuilder:
 
                 print('Schema inserted/updated')
                 return True
-            except(ValueError):
+            except(ValueError,KeyError):
                 #Delete db you just created
                 self.AVM.user_hard_delete_ring(handle,ringname,ringversion)
                 print('Schema could not be inserted, Delete all trace.')
@@ -274,7 +281,10 @@ class RingBuilder:
             requestparameters = {}
 
             if 'RingParent' not in request.form:
-                requestparameters['RingParent'] = request.form.get('RingName')            
+                requestparameters['RingParent'] = request.form.get('RingName')   
+
+            if 'RingLabel' not in request.form:
+                requestparameters['RingLabel'] = request.form.get('RingName')          
             
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
