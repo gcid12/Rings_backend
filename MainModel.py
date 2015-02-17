@@ -18,7 +18,7 @@ class MainModel:
         self.roles = {}
         self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_owner'] = ['get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
-        self.roles['owner_team'] = ['get_a_p','post_a_p','delete_a_p_q','get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['owner_team'] = ['get_a_p','post_a_p','delete_a_p_q','get_a_m','get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
@@ -450,7 +450,22 @@ class MainModel:
                 user_authorizations += self.roles['handle_owner']
 
             elif self.user_belongs_org_team(current_user,handle,'owner'):
-                print('This user is an Org Member')
+                print('This user is an owner team member')
+                user_authorizations += self.roles['owner_team']
+            else:
+                print('This user is Anonymous')
+                user_authorizations += self.roles['anonymous']
+
+        elif depth == '_a_m':
+            print('Testing authorizations for /_teams section')
+
+            if current_user == handle: 
+                #This would never happen as currentUser will never be the handle of an organization
+                print('This user is a Handle Owner')     
+                user_authorizations += self.roles['handle_owner']
+
+            elif self.user_belongs_org_team(current_user,handle,'owner'):
+                print('This user is an owner team member')
                 user_authorizations += self.roles['owner_team']
             else:
                 print('This user is Anonymous')

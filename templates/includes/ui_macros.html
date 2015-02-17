@@ -540,14 +540,16 @@
         {% endif %}
 
         <span class=" pull-right">
-          {% if 'get_a_p' in user_authorizations %}
-            {% if currentsection != 'people' %}
+            <a href="/{{handle}}" >go to<b> mainpage</b> </a> &nbsp;&nbsp;<br/>
+
+          {% if currentsection == 'teams' %}
+            {% if 'get_a_p' in user_authorizations %}     
             <a href="/{{handle}}/_people" >go to <b> People</b> </a> &nbsp;&nbsp;
             {% endif %}
           {%endif%}
 
-          {% if 'get_a_n' in user_authorizations %}
-            {% if currentsection != 'teams' %}
+          {% if currentsection == 'people' %}
+            {% if 'get_a_m' in user_authorizations %}     
             <a href="/{{handle}}/_teams" > go to <b>Teams</b> </a> &nbsp;&nbsp;
             {% endif %}
           {%endif%}

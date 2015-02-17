@@ -374,7 +374,7 @@ def people_dispatcher(depth,handle,person=None):
     m = method+depth
 
 
-    depth = '_a_p'
+    #depth = '_a_p'
     authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
@@ -438,8 +438,15 @@ def teams_dispatcher(depth,handle,team=None):
     #method = request.method
     m = method+depth
 
+    #depth = '_a_n'
+    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle)
+    if not authorization_result['authorized']:
+        return render_template('avispa_rest/error_401.html', data=data),401
+    data['user_authorizations'] = authorization_result['user_authorizations']
+
+
     try:
-        data = getattr(ATR, m.lower())(request,handle,team)
+        data.update(getattr(ATR, m.lower())(request,handle,team))
     except(AttributeError):
         data['template'] = 'avispa_rest/error_404.html'
 
