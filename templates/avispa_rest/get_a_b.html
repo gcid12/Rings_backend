@@ -19,6 +19,7 @@
         
         {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
         
+        
     </div>
 
     {% block result1 %}
@@ -50,13 +51,13 @@
           {% if not data.itemlist %}
           You have no items in this Ring. Create one, click here:
 
-          <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
+          <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
             <i class="fa fa-plus"></i> &nbsp; NEW
           </a>
 
           {% else %}
             <div class="pull-right">
-              <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+              <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
                  <i class="fa fa-plus"></i> &nbsp; NEW
                </a>
             </div> 
@@ -135,7 +136,7 @@
                           {% if not data.widget[k] == 'images' %} 
                           {% if v %}                   
                           {% if 'get_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}/{% endif %}{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
                           {% else %}
                             {{ v|truncate(170, true) }}
                           {% endif %}
@@ -156,13 +157,13 @@
                   <td style="width:90px;">
                       <div class="btn-group" role="group" aria-label="...">
                       {% if 'get_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
                       {%endif%}
                       {% if 'put_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
                       {%endif%}
                       {% if 'delete_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
                       {%endif%}
                       </div>
                   </td>
@@ -209,13 +210,13 @@
 
                       <div class="btn-group" role="group" aria-label="...">
                       {% if 'get_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
                       {% endif %}
                       {% if 'put_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
                       {% endif %}
                       {% if 'delete_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
                       {%endif%}
                       </div>
                              
@@ -283,7 +284,7 @@
                     <tr>
                       <td align="center">
                       {% if 'get_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
+                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
                                   title="
                                   {% for k,v in item.items() %}
                                     {% if k == 'name' %}
@@ -336,13 +337,13 @@
                       <td align="center">
                           <div class="btn-group" role="group" aria-label="...">
                           {% if 'get_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}{% if data.collection != '' %}?collection={{data.collection}}{% endif %}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
                           {%endif%}
                           {% if 'put_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>
                           {%endif%}
                           {% if 'delete_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}/{{data.ring}}/{{item._id}}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
                           {%endif%}
                           </div>
                                  
@@ -386,7 +387,7 @@
         </ul>
       {% if 'post_a' in data.user_authorizations %}
       <div class="pull-right">
-          <a href="/{{ data.handle }}/{{ data.ring }}?rq=post{% if data.collection != '' %}&collection={{data.collection}}{% endif %}" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+          <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
              <i class="fa fa-plus"></i> &nbsp; NEW
            </a>
       </div>  

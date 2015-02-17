@@ -81,7 +81,10 @@ class AvispaRestFunc:
             print('Awesome , you just created a new Ring Schema')
             #msg = 'Item put with id: '+idx
             flash("Your new Schema has been created")
-            redirect = '/'+handle
+            if collection:
+                redirect = '/'+handle+'/_collections/'+collection
+            else: 
+                redirect = '/'+handle
             d = {'redirect': redirect, 'status':200}
 
         else:
@@ -321,11 +324,17 @@ class AvispaRestFunc:
             print('Awesome , you just saved the item to the DB')
             msg = 'Item saved with id: '+idx
 
-        
-        if request.form.get('saveandnew'):
-            redirect = '/'+handle+'/'+ring+'?rq=post'
+
+        if collection:
+            if request.form.get('saveandnew'):
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring+'?rq=post'
+            else:
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
         else:
-            redirect = '/'+handle+'/'+ring
+            if request.form.get('saveandnew'):
+                redirect = '/'+handle+'/'+ring+'?rq=post'
+            else:
+                redirect = '/'+handle+'/'+ring
 
         print('Now redirect to:')
         print(redirect)
@@ -382,7 +391,11 @@ class AvispaRestFunc:
             print('Awesome , you just put the changes in the Ring Schema')
             #msg = 'Item put with id: '+idx
             flash("Changes saved in the Schema")
-            redirect = '/'+handle+'/'+ring
+            if collection:
+                redirect = '/'+handle+'/'+ring
+            else:
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+
             d = {'redirect': redirect, 'status':200}
 
         else:
@@ -441,7 +454,11 @@ class AvispaRestFunc:
         else:
             flash('Could not delete the Ring')
         
-        redirect = '/'+handle
+        if collection:
+            redirect = '/'+handle
+        else:
+            redirect = '/'+handle+'/_collections/'+collection
+
         d = {'redirect': redirect, 'status':200}
         return d
 
@@ -582,11 +599,15 @@ class AvispaRestFunc:
             print('Awesome , you just put the changes in the Item')
             #msg = 'Item put with id: '+idx
             flash("Changes saved")
-            redirect = '/'+handle+'/'+ring
+            if collection:
+                redirect = '/'+handle+'/'+ring
+            else:
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+
             d = {'redirect': redirect, 'status':200}
 
         else:
-            d = {'message': 'There waas an error updating this item' , 'template':'avispa_rest/index.html'}
+            d = {'message': 'There was an error updating this item' , 'template':'avispa_rest/index.html'}
         
         return d
 
@@ -657,10 +678,14 @@ class AvispaRestFunc:
         result = self.AVM.delete_a_b_c(request,handle,ring,idx)
 
         if result:
-            print('Awesome , you just put the changes in the Item')
+            print('Item deleted..')
             #msg = 'Item put with id: '+idx
-            flash("Item deleted")
-            redirect = '/'+handle+'/'+ring
+            flash('Item deleted.. Collection:'+collection)
+            if collection:
+                redirect = '/'+handle+'/'+ring
+            else:
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+
             d = {'redirect': redirect, 'status':200}
 
         else:

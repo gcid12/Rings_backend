@@ -32,9 +32,6 @@ class AvispaCollectionsModel:
             db = self.MAM.select_db(user_database)
             user_doc = self.MAM.select_user(user_database,handle) 
 
-
-            print('user_doc:',user_doc)
-
             collections = user_doc['collections']  
             rings = user_doc['rings']
             
@@ -75,9 +72,6 @@ class AvispaCollectionsModel:
                         ring['ringorigin'] = ringorigins[ring['ringname']+'_'+ring['version']]
                     
                         
-
-            print('NewCollections:', collections)
-
             return collections
                 
 
@@ -131,7 +125,7 @@ class AvispaCollectionsModel:
             user_doc = self.MAM.select_user(user_database,handle) 
 
 
-            print('user_doc:',user_doc)
+            #print('user_doc:',user_doc)
 
             collections = user_doc['collections'] 
             rings = user_doc['rings']

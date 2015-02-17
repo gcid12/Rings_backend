@@ -45,23 +45,23 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data = {}
 
     MAM = MainModel()
-    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring,idx)
+    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx)
     if not authorization_result['authorized']:
-        return render_template('avispa_rest/error_401.html', data=data),401
-
-     
-    data = getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection)
-
+        return render_template('avispa_rest/error_401.html', data=data),401]
     data['user_authorizations'] = authorization_result['user_authorizations']
 
+     
+    data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
+ 
 
     cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
     data['cu_actualname'] = cu_user_doc['name']
     data['cu_profilepic'] = cu_user_doc['profilepic']
     data['cu_location'] = cu_user_doc['location']
 
-    if collection:
+    if collection:       
         data['collection'] = collection
+
 
     data['handle']=handle
     data['ring']=ring
@@ -135,6 +135,7 @@ def patch_dispatcher(patchnumber):
 
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
+
     ACF = AvispaCollectionsRestFunc()
 
 
@@ -155,6 +156,14 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     #method = request.method
     m = method+depth
     data = {}
+
+
+    MAM = MainModel()
+    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,collection=collection)
+    if not authorization_result['authorized']:
+        return render_template('avispa_rest/error_401.html', data=data),401
+
+
 
     data = getattr(ACF, m.lower())(request,handle,collection,idx,api=api)
 
@@ -218,11 +227,14 @@ def home_dispatcher(handle):
     
         ACF = AvispaCollectionsRestFunc()
         m = 'get_a_x'
-        collections = getattr(ACF, m.lower())(request,handle,None,None)       
-        
+           
+        collections = getattr(ACF, m.lower())(request,handle,None,None)  
+
         ARF = AvispaRestFunc()
         m = 'get_a'
         rings = getattr(ARF, m.lower())(request,handle,None,None)
+
+
 
 
         data['handle'] = handle
@@ -360,7 +372,17 @@ def people_dispatcher(depth,handle,person=None):
     #method = request.method
     m = method+depth
 
-    data = getattr(APR, m.lower())(request,handle,person)
+
+    depth = '_a_p'
+    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle)
+    if not authorization_result['authorized']:
+        return render_template('avispa_rest/error_401.html', data=data),401
+    data['user_authorizations'] = authorization_result['user_authorizations']
+    
+    
+    data.update(getattr(APR, m.lower())(request,handle,person))
+
+    
     data['handle'] = handle
 
     #This is to be used by the user bar

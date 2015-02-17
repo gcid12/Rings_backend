@@ -21,8 +21,9 @@
 
         <div class="row">
           <div class="col-sm-12">
-            <div class="rn-box-white gad100">   
-              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount, 'ringdescription') }}      
+            <div class="rn-box-white gad100"> 
+            {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}  
+                 {{data.user_authorizations}}   
             </div>
             <div class="rn-box-title">
 
@@ -38,7 +39,7 @@
 
             <div class="rn-box-solo">
               <div class="row">
-                &nbsp;&nbsp;&nbsp; <strong></strong>Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" />
+                &nbsp;&nbsp;&nbsp; <strong></strong> {#{ Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" /> }#}
                 <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
                   <i class="fa fa-question-circle"></i>
                 </button>

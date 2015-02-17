@@ -12,7 +12,7 @@
 
           <h3 class="fs-1-5">
             <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
-            {% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{origin}}</a>{%else%}{{origin}}{%endif%}/<span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}/{{ ring }}{% if collection != '' %}?collection={{collection}}{% endif %}" class="nounder">{{ring}}
+            {% if 'get_a' in user_authorizations %}<a href="/{{ handle }}" class="nounder">{{origin}}</a>{%else%}{{origin}}{%endif%}/<span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
             </a>{%else%}{{ring}}{%endif%}</span>
           </h3>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
@@ -30,11 +30,11 @@
             
               <!-- <a href="/{{ handle }}/{{ ring }}" type="button" class="btn btn-info btn-xs">List</a> -->
               {% if 'post_a_b' in user_authorizations %}
-              <a href="/{{ handle }}/{{ ring }}?rq=post{% if collection != '' %}&collection={{collection}}{% endif %}" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
               {% endif %}
               
               {% if 'put_a_b' in user_authorizations %}
-              <a href="/{{ handle }}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
               {% endif %}
               
               
@@ -549,7 +549,7 @@
         {%endif%}
         
         {% if 'put_a' in user_authorizations %}
-        <a href="/{{data.handle}}/_orgprofile" > Settings </a> 
+        <a href="/{{handle}}/_orgprofile" > Settings </a> 
         {% endif %}
         </span>
 

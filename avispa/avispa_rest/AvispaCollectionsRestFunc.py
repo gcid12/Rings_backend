@@ -12,7 +12,7 @@ class AvispaCollectionsRestFunc:
 
     # GET/a
     def get_a_x(self,request,handle,collection,idx,api=False,*args):
-
+     
         collectionlist = self.ACM.get_a_x(handle)
         #print('collectionlist:',collectionlist)
 

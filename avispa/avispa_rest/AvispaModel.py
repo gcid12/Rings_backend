@@ -62,7 +62,7 @@ class AvispaModel:
             
             rings = user_doc['rings']
             
-            print(rings)
+            #print(rings)
          
 
             for ring in rings:
@@ -79,19 +79,19 @@ class AvispaModel:
                     ringversionh = ringversion.replace('-','.')
                     count = ring['count']
                     #print('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
-                    print('flag5b:'+str(handle)+'_'+ringname)
+                    #print('flag5b:'+str(handle)+'_'+ringname)
                     #ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
                     ringnamedb=str(handle)+'_'+ringname
-                    print('ringnamedb::'+ringnamedb) 
+                    #print('ringnamedb::'+ringnamedb) 
                     try:
                         db = self.MAM.select_db(ringnamedb)
-                        print('Get RingDescription:')
+                        #print('Get RingDescription:')
                         try: 
                             RingDescription = db['schema']['rings'][0]['RingDescription'] 
                         except KeyError:
                             RingDescription = False 
                         
-                        print('Get RingLabel:')
+                        #print('Get RingLabel:')
                         try:       
                             RingLabel = db['schema']['rings'][0]['RingLabel'] 
                         except KeyError:
@@ -108,6 +108,7 @@ class AvispaModel:
 
                         data.append(r)
                     except ResourceNotFound:
+                        pass
                         #print('skipping ring '+ ringname+'_'+ringversion + '. Schema does not exist')
                         print('skipping ring '+ ringname + '. Schema does not exist')
                         
