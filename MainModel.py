@@ -18,7 +18,7 @@ class MainModel:
         self.roles = {}
         self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_owner'] = ['get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
-        self.roles['team_owner'] = ['get_a_p','get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['owner_team'] = ['get_a_p','post_a_p','delete_a_p_q','get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
@@ -338,7 +338,7 @@ class MainModel:
             #elif self.is_org_owner(current_user,handle):
             elif self.user_belongs_org_team(current_user,handle,'owner'):
                 print('This user is an Org Member')
-                user_authorizations += self.roles['handle_owner']
+                user_authorizations += self.roles['owner_team']
             else:
                 print('This user is Anonymous')
                 user_authorizations += self.roles['anonymous']
@@ -451,7 +451,7 @@ class MainModel:
 
             elif self.user_belongs_org_team(current_user,handle,'owner'):
                 print('This user is an Org Member')
-                user_authorizations += self.roles['team_owner']
+                user_authorizations += self.roles['owner_team']
             else:
                 print('This user is Anonymous')
                 user_authorizations += self.roles['anonymous']

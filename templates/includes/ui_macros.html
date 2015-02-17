@@ -540,17 +540,17 @@
         {% endif %}
 
         <span class=" pull-right">
-        {% if currentsection == 'people' %}
-        <b> People </b>&nbsp;&nbsp;
-        <a href="/{{handle}}/_teams" > Teams </a> &nbsp;&nbsp;
-        {% else %}
-        <a href="/{{handle}}/_people" > People </a>&nbsp;&nbsp;
-        <b> Teams </b> &nbsp;&nbsp;
-        {%endif%}
-        
-        {% if 'put_a' in user_authorizations %}
-        <a href="/{{handle}}/_orgprofile" > Settings </a> 
-        {% endif %}
+          {% if 'get_a_p' in user_authorizations %}
+            {% if currentsection != 'people' %}
+            <a href="/{{handle}}/_people" >go to <b> People</b> </a> &nbsp;&nbsp;
+            {% endif %}
+          {%endif%}
+
+          {% if 'get_a_n' in user_authorizations %}
+            {% if currentsection != 'teams' %}
+            <a href="/{{handle}}/_teams" > go to <b>Teams</b> </a> &nbsp;&nbsp;
+            {% endif %}
+          {%endif%}
         </span>
 
 {% endmacro %}

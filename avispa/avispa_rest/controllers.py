@@ -47,7 +47,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     MAM = MainModel()
     authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx)
     if not authorization_result['authorized']:
-        return render_template('avispa_rest/error_401.html', data=data),401]
+        return render_template('avispa_rest/error_401.html', data=data),401
+
     data['user_authorizations'] = authorization_result['user_authorizations']
 
      
