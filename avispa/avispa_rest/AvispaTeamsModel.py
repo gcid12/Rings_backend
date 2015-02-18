@@ -176,13 +176,13 @@ class AvispaTeamsModel:
                     teamd['roles'] = []
 
                     if parameters['teamauth'] == 'RWX':
-                        role = 'admin_team'
+                        role = 'team_admin'
 
                     elif parameters['teamauth'] == 'RW':  
-                        role = 'writer_team'
+                        role = 'team_writer'
                  
                     elif parameters['teamauth'] == 'R':
-                        role = 'reader_team'
+                        role = 'team_reader'
                     else:
                         role = False
                         

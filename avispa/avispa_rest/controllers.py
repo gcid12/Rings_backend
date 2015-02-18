@@ -278,8 +278,15 @@ def home_dispatcher(handle):
                 if person_user_doc:
                     data['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
 
+            data['teammembership'] = {}
             for team in peopleteams['teams']:
-                team['count']=len(team['members'])              
+                team['count']=len(team['members'])
+                for member in team['members']:
+                    if current_user.id == member['handle']:
+                        data['teammembership'][team['teamname']] = team['roles'][-1]['role']
+
+
+
             data['teams'] = peopleteams['teams']
 
             data['template'] = 'avispa_rest/orghome.html'
@@ -439,7 +446,7 @@ def teams_dispatcher(depth,handle,team=None):
     m = method+depth
 
     #depth = '_a_n'
-    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle)
+    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle,team=team)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
     data['user_authorizations'] = authorization_result['user_authorizations']

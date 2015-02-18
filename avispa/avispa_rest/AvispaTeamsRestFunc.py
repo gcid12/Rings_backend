@@ -25,6 +25,7 @@ class AvispaTeamsRestFunc:
             #This is an organization         
             
             d['teamlistlen'] = len(peopleteams['teams'])
+            d['teammembership'] = {}
             
             for team in peopleteams['teams']:
                 #get the profilepic for this person
@@ -33,6 +34,12 @@ class AvispaTeamsRestFunc:
                     if person_user_doc:
                         member['thumbnail'] = person_user_doc['profilepic']
 
+                    if current_user.id == member['handle']:
+                        d['teammembership'][team['teamname']] = team['roles'][-1]['role']
+
+
+            
+           
                     #d['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
 
             d['teamlist'] = peopleteams['teams']            
@@ -47,7 +54,9 @@ class AvispaTeamsRestFunc:
 
         # POST/a
     def post_a_m(self,request,handle,team,*args):
-
+        '''
+        Creates a new team
+        '''
         #We need to recover from request as it doesn't come via URL
         team = request.form.get('newteam')
 
@@ -103,11 +112,11 @@ class AvispaTeamsRestFunc:
 
                     if teamd['roles']:
 
-                        if teamd['roles'][-1]['role'] == 'admin_team':
+                        if teamd['roles'][-1]['role'] == 'team_admin':
                             teamauth = 'RWX'
-                        elif teamd['roles'][-1]['role'] == 'writer_team':
+                        elif teamd['roles'][-1]['role'] == 'team_writer':
                             teamauth = 'RW'
-                        elif teamd['roles'][-1]['role'] == 'reader_team':
+                        elif teamd['roles'][-1]['role'] == 'team_reader':
                             teamauth = 'R'
                         else:
                                 teamauth = ''
@@ -235,11 +244,11 @@ class AvispaTeamsRestFunc:
                 if teamd['teamname'] == team :
 
                     if teamd['roles']:
-                        if teamd['roles'][-1]['role'] == 'admin_team':
+                        if teamd['roles'][-1]['role'] == 'team_admin':
                             teamauth = 'RWX'
-                        elif teamd['roles'][-1]['role'] == 'writer_team':
+                        elif teamd['roles'][-1]['role'] == 'team_writer':
                             teamauth = 'RW'
-                        elif teamd['roles'][-1]['role'] == 'reader_team':
+                        elif teamd['roles'][-1]['role'] == 'team_reader':
                             teamauth = 'R'
                         else:
                                 teamauth = ''

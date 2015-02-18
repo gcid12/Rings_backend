@@ -28,6 +28,7 @@
                       <div class="rn-b1">123</div>
                   
               </div> -->
+            {%if 'post_a_m' in data.user_authorizations %}
             <div class="">
                <form action="" method="POST">
                <div class="pull-right">
@@ -38,6 +39,7 @@
                </form>    
 
             </div>
+            {%endif%}
 
             <br/><br/>
 
@@ -49,21 +51,22 @@
 
 
               {% for team in data.teamlist %}
-                {% if team.teamname %}
+                {% if team.teamname in data.teammembership%}
                   <tr>
-                    <td>
-                      
+                    <td>                     
                     </td>
                     <td> 
                     </td>
                     <td> 
-                      <a class="rn-b1" href="/{{ data.handle }}/_teams/{{ team.teamname }}">
-                          {{ team.teamname }}
-                      </a>
-
-
-                      <hr/>
-                      <p class="rn-t3 rn-gray">Added on: {{ team.added }}</p>
+                      {%if 'get_a_m_n' in data.user_authorizations %}
+                        <a class="rn-b1" href="/{{ data.handle }}/_teams/{{ team.teamname }}">
+                            {{ team.teamname }}
+                        </a>
+                      {%else%}
+                        {{ team.teamname }}
+                      {%endif%}
+                        <hr/>
+                        <p class="rn-t3 rn-gray">Added on: {{ team.added }}</p>
                     </td>
                     <td>
                     {% for member in team.members%}
@@ -75,13 +78,18 @@
                     </td>
                     <td style="min-width:200px;"> 
                       <div class="pull-right">
-                        <!--input type="checkbox" value="public" name="public"/-->
+                        {%if 'get_a_m_n' in data.user_authorizations %}
                         <div class="btn-group"> 
                           <a href="/{{ data.handle }}/_teams/{{ team.teamname }}" >Show</a>
                         </div>
-                        <div class="btn-group"> 
+                        {%endif%}
+                        {%if 'delete_a_m_n' in data.user_authorizations %}
+                        {%if team.teamname!='owner' %}
+                        <div class="btn-group">                       
                           <a href="/{{ data.handle }}/_teams/{{ team.teamname }}?method=delete" >Delete</a>
                         </div>
+                        {%endif%}
+                        {%endif%}
                         <br/><br/>
                         <!--span class="label label-discrete pull-right">Yesterday</span-->
                       </div>
