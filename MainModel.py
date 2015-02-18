@@ -18,11 +18,11 @@ class MainModel:
         self.roles = {}
         self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['handle_owner'] = ['get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c','get_a_x']
-        self.roles['org_owner'] = ['get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','get_a_x']
+        self.roles['org_owner'] = ['get_a','get_a_b','get_a_b_c','get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','get_a_x']
         self.roles['team_generic'] = ['get_a_home','get_a_m','get_a_x']
-        self.roles['team_reader'] = ['get_a_home','get_a_b','get_a_b_c','get_a_m','get_a_m_n']
-        self.roles['team_writer'] = ['get_a_home','get_a_b','get_a_b_c','get_a_m','get_a_m_n']
-        self.roles['team_admin'] = ['get_a_home','get_a_b','get_a_b_c','get_a_m','get_a_m_n']
+        self.roles['team_reader'] = ['get_a_home','get_a_m','get_a_m_n']
+        self.roles['team_writer'] = ['get_a_home','get_a_m','get_a_m_n']
+        self.roles['team_admin'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c']
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
@@ -325,6 +325,7 @@ class MainModel:
         # @depth : how deep to dig in the user_authorizations
         
         user_authorizations = []
+        rolelist = []
 
         print('Method:', method)
         print('depth:',depth)
@@ -340,18 +341,14 @@ class MainModel:
                 
                 rolelist = self.user_belongs_org_team(current_user,handle)
                 if rolelist:
+                    print('rolelist1:',rolelist)
                     print('This user is a member of a team') 
 
                     for role in rolelist:
-                        if role == 'org_owner':
                             user_authorizations = self.sum_role_auth(user_authorizations,role)
-                            break
-
-                    if role != 'org_owner':
-                        user_authorizations = self.sum_role_auth(user_authorizations,'team_generic')
+                           
 
                     
- 
                 else:
                     print('This user is Anonymous')
                     user_authorizations += self.roles['anonymous']
@@ -360,7 +357,15 @@ class MainModel:
 
             if depth == '_a_b' or depth == '_a_b_c':
 
-                rolelist = self.user_belongs_org_team(current_user,handle,ring)
+                rolelist = self.user_belongs_org_team(current_user,handle,ring=ring)
+
+                if rolelist:
+                    print('rolelist2:',rolelist)
+                    print('This user can act on this ring:'+ring) 
+
+                    for role in rolelist:
+                            user_authorizations = self.sum_role_auth(user_authorizations,role)
+
 
                 
                 '''
@@ -464,6 +469,7 @@ class MainModel:
             team = 'owner'
             rolelist = self.user_belongs_org_team(current_user,handle,team)
             if rolelist:
+                print('rolelist3:',rolelist)
                 print('This user is a member of team:'+team)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -471,6 +477,7 @@ class MainModel:
             else:
                 print('This user is Anonymous')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
+                rolelist.append('anonymous')
 
 
         elif depth == '_a_m' or depth == '_a_m_n' or depth == '_a_m_n_settings':
@@ -484,35 +491,39 @@ class MainModel:
                       
             
             if rolelist:
+                print('rolelist4:',rolelist)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
                     
             else:
                 print('This user is Anonymous')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
+                rolelist.append('anonymous')
 
         elif depth == '_a_x' or depth == '_a_x_y':
 
             if current_user == handle: 
                 #This user is a Handle Owner
+                rolelist.append('handle_owner')
                 print('This user is a Handle Owner') 
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
 
             else:
                 rolelist = self.user_belongs_org_team(current_user,handle)
                 if rolelist:
-                    print('This user is a member of a team') 
+                    print('rolelist5:',rolelist)
+                    print('This user is a member of a team accesing a collection') 
                          
                     for role in rolelist:
-                        if role == 'org_owner':
-                            user_authorizations = self.sum_role_auth(user_authorizations,role)
-                            break
-
+                        user_authorizations = self.sum_role_auth(user_authorizations,role)
+                           
+                    '''
                     if role != 'org_owner':
                         user_authorizations = self.sum_role_auth(user_authorizations,'team_generic')
+                    '''
 
                         
-        print('rolelist:',rolelist)
+        
 
 
 
@@ -553,6 +564,7 @@ class MainModel:
     def sum_role_auth(self,user_authorizations,role):
 
         if role in self.roles:
+            print('Adding role:'+role,self.roles[role])
             user_authorizations += self.roles[role]
         else:
             print(role+' was not found')
@@ -565,36 +577,47 @@ class MainModel:
         return True
 
 
-    def user_belongs_org_team(self,username,org,team=None):
+    def user_belongs_org_team(self,username,org,team=None,ring=None):
         rolelist = []
         result = self.select_user_doc_view('orgs/peopleteams',org)
         if result:
-            if team:
+
+            if team: #Check if this usernname belongs to a team. Assign roles of that team only
                 for teamd in result['teams']:
-                      
-                    if teamd['teamname'] == team or teamd['teamname'] == 'owner':
-                        print('Found team:'+teamd['teamname'])
-                        #print('team:'+str(teamd)) 
-                        #print('teammember:',teamd['members'])
-                        if teamd['teamname'] == 'owner':    
-                            rolelist.append('org_owner')
-                            break
-                        else:
+                    for member in teamd['members']:                  
+                        if member['handle'] == username:  
+                            print(teamd['teamname']+' team has as member: '+member['handle'])
+                            #Will add only those roles of a team the user belongs to
+                            if teamd['teamname'] == 'owner':
+                                rolelist.append('org_owner')
+                            else:       
+                                for role in teamd['roles']:
+                                    rolelist.append(role['role'])
+                        
+
+            elif ring: #Check if this username can act on this ring
+                for teamd in result['teams']:
+                    print('flagx1')
+                    for ringd in teamd['rings']:
+                        print('flagx2',ringd['ringname'] , ring)
+                        if ringd['ringname'] == ring: 
+                            print('flagx3')
+                            #This team acts on this ring!
                             for member in teamd['members']:
-                                print('This team has as member:',member['handle'])
-                                if member['handle'] == username:  
+                                if member['handle'] == username:
+                                    #This user belongs to this team that can act on this ring!
                                     for role in teamd['roles']:
                                         rolelist.append(role['role'])
 
-                return rolelist
 
-            else:
+            else: #Check if it is the org owner
                 for teamd in result['teams']: 
-                    for member in teamd['members']:
-                        if member['handle'] == username:      
-                            rolelist.append(teamd['roles'][-1]['role'])
-                            if teamd['teamname'] == 'owner':
+                    if teamd['teamname'] == 'owner':
+                        for member in teamd['members']:
+                            if member['handle'] == username: 
                                 rolelist.append('org_owner')
-                return rolelist
+                            
+                            
+            return rolelist
                             
         return False

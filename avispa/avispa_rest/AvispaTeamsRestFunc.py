@@ -20,22 +20,35 @@ class AvispaTeamsRestFunc:
 
         d = {}
 
+        print('flag232x')
+
         peopleteams = self.MAM.is_org(handle) 
         if peopleteams: 
             #This is an organization         
             
             d['teamlistlen'] = len(peopleteams['teams'])
             d['teammembership'] = {}
+            d['nonteammembership'] = {}
             
-            for team in peopleteams['teams']:
+            for teamd in peopleteams['teams']:
                 #get the profilepic for this person
-                for member in team['members']:
+                for member in teamd['members']:
+
+                    print('flag666x')
+
                     person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',member['handle'])
                     if person_user_doc:
                         member['thumbnail'] = person_user_doc['profilepic']
 
                     if current_user.id == member['handle']:
-                        d['teammembership'][team['teamname']] = team['roles'][-1]['role']
+                        d['teammembership'][teamd['teamname']] = teamd['roles'][-1]['role']
+                    else:
+                        d['nonteammembership'][teamd['teamname']] = teamd['roles'][-1]['role']
+
+
+
+
+
 
 
             
