@@ -163,10 +163,9 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,collection=collection)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
+    data['user_authorizations'] = authorization_result['user_authorizations']
 
-
-
-    data = getattr(ACF, m.lower())(request,handle,collection,idx,api=api)
+    data.update(getattr(ACF, m.lower())(request,handle,collection,idx,api=api))
 
     MAM = MainModel()
     cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)

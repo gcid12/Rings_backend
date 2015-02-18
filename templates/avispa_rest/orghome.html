@@ -76,11 +76,13 @@
           <!-- BOX CONTENT -->
           <div class="rn-box-title">
 
+              {% if 'get_a_x' in data.user_authorizations %}
               <a href="/{{data.handle}}/_collections" type="button" class="btn btn-info btn-xs pull-right">
               see all</a> 
+              {%endif%}
 
               <strong>
-                  <h4>Campaigns</h4>
+                  <h4>Rings</h4>
               </strong>
 
 
@@ -111,7 +113,9 @@
               </table>  
 
           </div> 
+          {% if 'post_a_x' in data.user_authorizations %}
           <a href="/{{data.handle}}/_collections?rq=post">New Collection</a>
+          {%endif%}
           <br/><br/><br/>
         </div><!-- close  --> 
 

@@ -124,7 +124,8 @@
             <td>{{ icon_xsma(count, color) }}</td>
             <td>
               <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
-              {% if 'get_a_b' in user_authorizations %} 
+              {#% if 'get_a_b' in user_authorizations %#}
+              {% if True %} 
               &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> {{handle}}/<span style="font-weight:700;">{{ring}}</span></a>{%else%}
               &nbsp; {{handle}}/<span style="font-weight:700;">{{ring}}</span>
               {%endif%} 
