@@ -136,7 +136,7 @@
                           {% if not data.widget[k] == 'images' %} 
                           {% if v %}                   
                           {% if 'get_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}/{% endif %}{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
                           {% else %}
                             {{ v|truncate(170, true) }}
                           {% endif %}
