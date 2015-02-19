@@ -47,10 +47,6 @@
             <h2>TEAMS</h2>
               <table class="table table-striped"> <!-- inner row -->
 
-              {{data.teammembership}}
-              {{data.nonteammembership}}
-
-
               {% for team in data.teamlist %}
                 {% if team.teamname in data.teammembership%}
                   <tr>
