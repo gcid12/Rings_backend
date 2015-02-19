@@ -23,45 +23,15 @@
             
       <div class="col-md-9">  
 
+      {{ ui.org_header(data.handle,data.handle_actualname,data.handle_profilepic,'teams',data.user_authorizations) }}
+ 
 
         <div class="row">
           <div class="col-sm-12">
-            <div class="rn-box-title">
-
-              <strong>Showing {{data.collectionlistlen}} collections</strong>
-              
-              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-              <i class="fa fa-question-circle"></i>
-              </button-->
-
-              
-              <!--a href="?q" type="button" class="btn btn-success btn-xs pull-right">
-                <i class="fa fa-search"></i> SEARCH
-              </a-->
-            </div>
-            <div class="rn-box-solo">
-              <div class="pull-right rn-t3 text-right">
-                  <i class="fa fa-dot-circle-o fa-2x" style="color:#CCC; padding:0 10px;"></i>
-              </div>
-          
-              <div class="pull-right rn-t3 text-right"><strong> &nbsp;</strong>
-
-              </div>
-              <div class="rn-t2">Collections for {{ data.handle }}</div>
-
-              
-
-
-
-
-                
-            </div>
-              <!-- <div class="rn-box-space">
-                  
-                      <div class="rn-b1">123</div>
-                  
-              </div> -->
+          <br/>
+            
             <div class="rn-box-content">
+            <h2>RING COLLECTIONS</h2>  Showing {{data.collectionlistlen}} collections
               <table class="table table-striped"> <!-- inner row -->
 
 
@@ -101,7 +71,8 @@
             </div><!-- //close box -->
             
 
-
+            {%if 'post_a_x' in data.user_authorizations %}
+                
             <div class="">
                <!--ul class="pagination">
                   <li><a href="#">&laquo;</a></li>
@@ -117,6 +88,9 @@
                </div>     
 
             </div>
+
+            {%endif%}
+            
 
 
 

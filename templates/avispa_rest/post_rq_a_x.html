@@ -48,38 +48,23 @@
 <section class="bp-20 p-50">
   <div class="container">
     <div class="row">
-      <div class="col-md-9">  
+      <div class="col-md-9">
 
+        {{ ui.org_header(data.handle,data.handle_actualname,data.handle_profilepic,'teams',data.user_authorizations) }}
+        
         <div class="row">
           <div class="col-sm-12">
-            <div class="rn-box-title">
 
-              <strong> <!-- Ring owner  -->Creating 1 collection </strong> 
-
-              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                <i class="fa fa-question-circle"></i>
-              </button-->
-
-            </div>
-            
-             
-
+            <br/>
+            <div class="rn-b1">Creating a new collection</div>
+            <br/>
 
 
             <form class="form-horizontal" role="form" action="/{{ data.handle }}/_collections" method="POST">
 
-
-              <div class="rn-box-solo">
-                <div class="row">
-                  &nbsp;&nbsp;&nbsp; <strong>STEP 1.</strong> Name this Collection
-                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                    <i class="fa fa-question-circle"></i>
-                  </button> 
-                </div> 
-
-              </div>
-
               <div class="rn-box-content">
+              
+              <h5><b>STEP 1.</b> Name this Collection</h5>
                 Collection name: <input name="CollectionName" class="form-control" type="text"><br/>
                 Summary: <input name="CollectionDescription" class="form-control" type="text"><br/>
                 Version: <input name="CollectionVersion" class="form-control" type="text"><br/>
@@ -87,29 +72,24 @@
               </div>
 
 
-              <div class="rn-box-solo">
-                <div class="row">
-                  &nbsp;&nbsp;&nbsp; <strong>STEP 2.</strong> Select what Rings belong to this Collection
-                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                    <i class="fa fa-question-circle"></i>
-                  </button>
-                </div> 
-              </div>
+
                
               <!-- RING -->
-              <div class="rn-box-content">  
+              <div class="rn-box-content"> 
+              <h5><b>STEP 2.  (optional) </b> Select existing Rings belongs to this Collection. </h5> 
               <br/>           
                 <div class="form-group">
                   
                   <div class="col-sm-10">
 
-                  <br/><br/>
                   {% set n = 0 %}
                   {% for ring in data.ringlist %}
                     {% set n = n+1 %}
                     <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}_{{ring.ringversionh}}'/> <a href="/{{ data.handle }}/{{ring.ringname}}">{{ data.handle }}/{{ring.ringname}}</a>  ( v{{ring.ringversionh}} ) : {{ring.ringdescription}}<br/>
                     
                   {% endfor %}
+
+                  <input name="" type='checkbox' value=''/> I will create/add other rings later
 
                   </div>
 

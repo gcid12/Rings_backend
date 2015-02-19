@@ -81,10 +81,13 @@
               settings</a> 
               {%endif%}
 
-              <strong>
-                  <h4>Rings</h4>
-              </strong>
+              {% if 'post_a_x' in data.user_authorizations %}
+                <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i></a>
+                {%endif%}
 
+              <strong>
+                  <h4>Rings Collections</h4>
+              </strong>
 
             </div>
           <div class="rn-box-solo">
@@ -93,7 +96,7 @@
                   {% for collection in data.collections.collectionlist %}  
                     {% if collection.valid %}
                       
-                      {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago') }}
+                      {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
                       <tr>
                         <td></td>
                         <td colspan="2">
@@ -101,20 +104,25 @@
                             {% for ring in collection.rings %}    
                               {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                             {% endfor %}
+
+                              {{ ui.panel_collections_add_ring(data.handle) }}
+
                               
                           </table>
+                           
                         </td>
                         
                       </tr>
                     {% endif %}
                   {% endfor %}
-
                        
-              </table>  
+              </table> 
+
 
           </div> 
+
           {% if 'post_a_x' in data.user_authorizations %}
-          <a href="/{{data.handle}}/_collections?rq=post">New Collection</a>
+            <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right">New collection</a>
           {%endif%}
           <br/><br/><br/>
         </div><!-- close  --> 
@@ -124,8 +132,13 @@
           <div class="rn-box-title"> 
               {% if 'post_a_p' in data.user_authorizations %}
               <a href="/{{data.handle}}/_people" type="button" class="btn btn-info btn-xs pull-right">see all</a> 
+              <a href="/{{data.handle}}/_people" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i></a>
               {%endif%}
-              People    
+
+              <strong>
+                  <h4>People</h4>
+              </strong>
+   
           </div>
           <div class="rn-box-solo">
             <table class="table table-striped table-condensed">

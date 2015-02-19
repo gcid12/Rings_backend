@@ -130,12 +130,21 @@ def orgregister():
     data = {}
 
     MAM = MainModel()
-    user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    if user_doc:
-        data['handle'] = current_user.id
-        data['actualname'] = user_doc['name']
-        data['profilepic'] = user_doc['profilepic']
-        data['location'] = user_doc['location']
+
+    #This is to be used by the user bar
+    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if cu_user_doc:
+
+        #data['cu_actualname'] = cu_user_doc['name']
+        data['cu_profilepic'] = cu_user_doc['profilepic']
+        #data['cu_location'] = cu_user_doc['location']
+        #data['cu_handle'] = current_user.id
+
+        data['handle_actualname'] = cu_user_doc['name']
+        data['handle_profilepic'] = cu_user_doc['profilepic']
+        data['handle_location'] = cu_user_doc['location']
+
+
 
     return render_template("/auth/orgregister.html", data=data)
 

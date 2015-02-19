@@ -170,9 +170,23 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     MAM = MainModel()
     cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
     if cu_user_doc:
-        data['cu_actualname'] = cu_user_doc['name']
+        #data['cu_actualname'] = cu_user_doc['name']
         data['cu_profilepic'] = cu_user_doc['profilepic']
-        data['cu_location'] = cu_user_doc['location']
+        #data['cu_location'] = cu_user_doc['location']
+
+    #Thisi is the data from the handle we are visiting
+    if current_user.id == handle:
+        data['handle_actualname'] = cu_user_doc['name']
+        data['handle_profilepic'] = cu_user_doc['profilepic']
+        data['handle_location'] = cu_user_doc['location']
+
+    else:
+        handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+        if handle_user_doc:
+            data['handle_actualname'] = handle_user_doc['name']
+            data['handle_profilepic'] = handle_user_doc['profilepic']
+            data['handle_location'] = handle_user_doc['location']
+
 
     data['handle']=handle
     data['collection']=collection

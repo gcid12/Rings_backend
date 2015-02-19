@@ -143,9 +143,10 @@
                   <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
                   {% endif %}
 
-                  
-
-                  
+                  {% if 'put_a' in user_authorizations %}
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+                  {% endif %}
+     
 
                 </div>
                 
@@ -154,6 +155,23 @@
           </tr>
           
                    
+{% endmacro %}
+
+{% macro panel_collections_add_ring(handle) %} 
+          
+            <tr>
+              <td colspan="2" align="right" style="vertical-align:top;">
+                {{ icon_med('',"#28B62C") }}
+              </td>
+              <td  style="vertical-align:middle; align:center; ">
+                  <a href="/{{handle}}?rq=post&n=10" class="btn btn-default btn-success">
+                    <i class="fa fa-plus"></i> &nbsp; Add New Ring
+                  </a>        
+              </td>
+              <td  style="vertical-align:middle; align:center; ">
+              </td>
+            </tr>
+
 {% endmacro %}
 
 {% macro panel_rings(name, origin, handle, color, number, percent, active, resource, user_authorizations) %} 
@@ -196,7 +214,7 @@
 {% endmacro %}
 
 
-  {% macro collection(handle,collection,percent,role,update) %}
+  {% macro collection(handle,collection,percent,role,update,user_authorizations) %}
 
 
   <tr>
@@ -205,8 +223,8 @@
       <img class="block-center" src="/static/images/repo-icon.png" style="width:50px;" alt="MyRing"> <br/>
       
     </td>
-    <td> 
-      {% if 'get_a_b' in user_authorizations %}
+    <td>
+      {% if 'get_a' in user_authorizations %}
       <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
         <h3 class="fs-1 text-gray text-s1 fw-c">{{ collection|upper() }}</h3>
       </a>

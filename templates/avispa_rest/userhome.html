@@ -149,7 +149,67 @@
         
 
         <div class="col-sm-6 omega" >
-          <div id="step2"> <!-- This Div is for the tour -->
+
+                  <div id="step3">
+            <div class="rn-box-title">
+
+                <a href="/" type="button" class="btn btn-default btn-xs pull-right">
+                <i class="fa fa-question-circle"></i></a>
+                {% if 'get_a_x' in data.user_authorizations %}
+                  <a href="/{{data.handle}}/_collections" type="button" class="btn btn-warning btn-xs pull-right">
+                  settings</a>
+                {%endif%}
+
+                {% if 'post_a_x' in data.user_authorizations %}
+                <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i></a>
+                {%endif%}
+
+                
+                <strong>
+                  <h4>Ring Collections</h4>
+              </strong>
+                
+            </div>
+            <div class="rn-box-solo">
+                <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">
+                
+                    {% for collection in data.collections.collectionlist %}  
+                      {% if collection.valid %}
+                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                        <tr>
+                          <td></td>
+                          <td colspan="2">
+                            <table class="table table-striped">
+                              {% for ring in collection.rings %}  
+                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                              {% endfor %}
+
+                              {{ ui.panel_collections_add_ring(data.handle) }}
+                                
+                            </table>
+                          </td>
+                        </tr>
+                      {% endif %}
+                    {% endfor %}
+                    
+        
+                </table>  
+            </div>
+            {% if 'post_a_x' in data.user_authorizations %}
+            <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right">New collection</a>
+            {%endif%}
+          </div> 
+
+
+          
+          
+          
+        </div><!-- close 6 omega-->
+
+        <div class="col-sm-6 alpha">
+          <!-- BOX CONTENT -->
+
+          <div style="display:none;" id="step2"> <!-- This Div is for the tour -->
             <div class="rn-box-title">
 
                 <a href="/" type="button" class="btn btn-default btn-xs pull-right">
@@ -201,8 +261,12 @@
 
           <div id="step4">
             <div class="rn-box-title"> 
+              {% if 'post_a' in data.user_authorizations %}
                 <a href="/_orgregister" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i></a>
+              {%endif%}
+
                 Organizations       
+              
             </div>
             <div class="rn-box-solo">
               <table class="table table-striped table-condensed">
@@ -215,62 +279,20 @@
                       <br/>        
                   </div>
               {% endfor %}
-              </table>                                       
+              </table> 
+
             </div>
+            {% if 'post_a' in data.user_authorizations %}
+            <a href="/_orgregister" class="btn btn-success btn-xs pull-right">New organization</a>
+            {%endif%}
           </div>
+          
 
+
+  
 
           
-          
-        </div><!-- close 6 -->
-
-        <div class="col-sm-6 alpha">
-          <!-- BOX CONTENT -->
-          <div id="step3">
-            <div class="rn-box-title">
-
-                <a href="/" type="button" class="btn btn-default btn-xs pull-right">
-                <i class="fa fa-question-circle"></i></a>
-                {% if 'get_a_x' in data.user_authorizations %}
-                  <a href="/{{data.handle}}/_collections" type="button" class="btn btn-warning btn-xs pull-right">
-                  settings</a>
-                {%endif%}
-
-                {% if 'post_a_x' in data.user_authorizations %}
-                <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i></a>
-                {%endif%}
-
-                
-                Rings
-                
-            </div>
-            <div class="rn-box-solo">
-                <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">
-                
-                    {% for collection in data.collections.collectionlist %}  
-                      {% if collection.valid %}
-                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago') }}
-                        <tr>
-                          <td></td>
-                          <td colspan="2">
-                            <table class="table table-striped">
-                              {% for ring in collection.rings %}  
-                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
-                              {% endfor %}
-                                
-                            </table>
-                          </td>
-                        </tr>
-                      {% endif %}
-                    {% endfor %}
-                    
-        
-                </table>  
-            </div>
-          </div>   
-
-          
-        </div><!-- close  -->  
+        </div><!-- close 6 alpha -->  
 
         <div class="col-sm-6" >
           
