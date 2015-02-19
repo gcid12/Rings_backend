@@ -60,12 +60,16 @@
                           
 
                   <br/><br/>
-                  This team grants <b>
-                  {% if data.team.teamauth == 'R' %}Read{%endif%}
-                  {% if data.team.teamauth == 'RW' %}Read and Write{%endif%}
-                  {% if data.team.teamauth == 'RWX' %}Admin {%endif%}
-                  {% if not data.team.teamauth %}no{%endif%}
-                  </b> permissions to its members
+                  {%if data.team.teamname!='owner' %}
+                    This team grants <b>
+                    {% if data.team.teamauth == 'R' %}Read{%endif%}
+                    {% if data.team.teamauth == 'RW' %}Read and Write{%endif%}
+                    {% if data.team.teamauth == 'RWX' %}Admin {%endif%}
+                    {% if not data.team.teamauth %}no{%endif%}
+                    </b> permissions to its members
+                  {%else%}
+                    Members of this team get <b>full access </b> to all the Rings and organization's settings. Please grant with precaution!
+                  {%endif%}
                   <br/><br/><br/>
                 <div class="rn-b1">Team members</div>
                 
@@ -127,7 +131,7 @@
                   </table>
 
 
-
+                {%if data.team.teamname!='owner' %}
                 <div class="rn-b1">Rings</div>
 
                 {%if 'put_a_m_n' in data.user_authorizations %}
@@ -160,6 +164,8 @@
                   </div> 
 
                 {%endfor%}
+
+                {%endif%}
 
             </div><!-- //close box -->
 
