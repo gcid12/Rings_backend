@@ -31,8 +31,11 @@ class AvispaTeamsRestFunc:
             allteams = {}         
             for teamd in peopleteams['teams']:
                 #get the profilepic for this person
+                print('teamname:'+teamd['teamname'])
 
                 for member in teamd['members']:
+
+                    print('member:'+member['handle'])
 
                     
 
@@ -43,14 +46,21 @@ class AvispaTeamsRestFunc:
                     if current_user.id == member['handle']:
                         print(member['handle']+' is member')
                         #print('T writing'+teamd['roles'][-1]['role'])
-                        d['teammembership'][teamd['teamname']] = teamd['roles'][-1]['role']
+                        if teamd['teamname'] == 'owner':
+                            d['teammembership'][teamd['teamname']] = 'org_owner'
+                        else:
+                            if len(teamd['roles']) >= 1:
+                                d['teammembership'][teamd['teamname']] = teamd['roles'][-1]['role']
 
 
                 allteams[teamd['teamname']] = 'org_owner'
+                #print('allteams:',allteams)
 
 
             if 'owner' in d['teammembership']:
                 d['teammembership'] = allteams
+
+
 
            
                     #d['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']

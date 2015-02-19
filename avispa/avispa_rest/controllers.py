@@ -278,12 +278,21 @@ def home_dispatcher(handle):
                     data['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
 
             data['teammembership'] = {}
-            for team in peopleteams['teams']:
-                team['count']=len(team['members'])
-                for member in team['members']:
+            allteams = {}
+            for teamd in peopleteams['teams']:
+                teamd['count']=len(teamd['members'])
+                for member in teamd['members']:
                     if current_user.id == member['handle']:
-                        data['teammembership'][team['teamname']] = team['roles'][-1]['role']
+                        if teamd['teamname'] == 'owner':
+                            data['teammembership'][teamd['teamname']] = 'org_owner'
+                        else:
+                            if len(teamd['roles']) >= 1:
+                                data['teammembership'][teamd['teamname']] = teamd['roles'][-1]['role']
+                
+                allteams[teamd['teamname']] = 'org_owner'
 
+            if 'owner' in data['teammembership']:
+                data['teammembership'] = allteams
 
 
             data['teams'] = peopleteams['teams']
