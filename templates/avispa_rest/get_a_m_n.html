@@ -150,7 +150,7 @@
                 {% for ring in data.team.rings %}
                 
                   <div class="rn-box-white gad100">           
-                    {{ ui.panel(ring.ringname, data.handle, data.handle, '#fce121', data.rings[ring.ringname],'',ring.added,'','') }} 
+                    {{ ui.panel(ring.ringname, data.handle, data.handle, '#fce121', data.rings[ring.ringname],'',ring.added,'',data.user_authorizations) }} 
                                   
                   </div>
                   <div class="btn-group" class="pull-right"> 

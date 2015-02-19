@@ -17,19 +17,21 @@ class MainModel:
 
         self.roles = {}
         self.roles['root'] = ['get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
-        self.roles['handle_owner'] = ['get_a_home','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c','get_a_x']
-        self.roles['org_owner'] = ['get_a','get_a_b','get_a_b_c','get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','get_a_x']
+        self.roles['handle_owner'] = ['get_a_home','get_a_x','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['org_owner'] = ['get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','get_a_x','post_a_x','put_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['team_generic'] = ['get_a_home','get_a_m','get_a_x']
-        self.roles['team_reader'] = ['get_a_home','get_a_m','get_a_m_n']
-        self.roles['team_writer'] = ['get_a_home','get_a_m','get_a_m_n']
-        self.roles['team_admin'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c']
+        self.roles['team_reader'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c']
+        self.roles['team_writer'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
+        self.roles['team_admin'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['anonymous'] = ['get_a_home']
+
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
         self.roles['moderator'] = ['get_a_b','get_a_b_c','put_a_b_c','delete_a_b_c']
         self.roles['capturist'] = ['get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
         self.roles['fact_checker'] = ['get_a_b_c','put_a_b_c']
-        self.roles['anonymous'] = ['get_a_home','get_a_b','get_a_b_c']
+        
 
 
         self.user_database = 'myring_users'
@@ -350,7 +352,7 @@ class MainModel:
 
                     
                 else:
-                    print('This user is Anonymous')
+                    print('This user is Anonymous 1')
                     user_authorizations += self.roles['anonymous']
 
 
@@ -475,7 +477,7 @@ class MainModel:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
             else:
-                print('This user is Anonymous')
+                print('This user is Anonymous 2')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
                 rolelist.append('anonymous')
 
@@ -496,7 +498,7 @@ class MainModel:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
                     
             else:
-                print('This user is Anonymous')
+                print('This user is Anonymous 3')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
                 rolelist.append('anonymous')
 
@@ -578,13 +580,14 @@ class MainModel:
 
 
     def user_belongs_org_team(self,username,org,team=None,ring=None):
+        print('Will chech if '+username+' belongs to a team ')
         rolelist = []
         result = self.select_user_doc_view('orgs/peopleteams',org)
         if result:
 
             if team: #Check if this usernname belongs to a team. Assign roles of that team only
                 for teamd in result['teams']:
-                    for member in teamd['members']:                  
+                    for member in teamd['members']:               
                         if member['handle'] == username:  
                             print(teamd['teamname']+' team has as member: '+member['handle'])
                             #Will add only those roles of a team the user belongs to
@@ -610,12 +613,16 @@ class MainModel:
                                         rolelist.append(role['role'])
 
 
-            else: #Check if it is the org owner
-                for teamd in result['teams']: 
-                    if teamd['teamname'] == 'owner':
-                        for member in teamd['members']:
-                            if member['handle'] == username: 
+            else: #This is only used in  /_home and /_teams to prove membership in ANY team
+                for teamd in result['teams']:                    
+                    for member in teamd['members']:
+                        if member['handle'] == username: 
+                            if teamd['teamname'] == 'owner':
                                 rolelist.append('org_owner')
+                            else:
+                                rolelist.append('team_generic')
+                   
+
                             
                             
             return rolelist

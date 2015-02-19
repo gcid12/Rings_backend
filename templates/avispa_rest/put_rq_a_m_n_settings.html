@@ -47,13 +47,18 @@
                   <label for="">Description</label><br/>
                   <textarea name="description" rows='8' cols='100'>{{data.team.description}}</textarea> 
                 </div>
-
+                
                 <div class="form-group">
-                  <label for="">Team authorizations on the assigned rings</label><br/>
-                  <input name="teamauth" type="radio" value="R" {%if data.team.teamauth=='R'%}checked=""{%endif%}> Read <br/>
-                  <input name="teamauth" type="radio" value="RW" {%if data.team.teamauth=='RW'%}checked=""{%endif%}> Read and Write<br/>
-                  <input name="teamauth" type="radio" value="RWX" {%if data.team.teamauth=='RWX'%}checked=""{%endif%}> Administrator<br/>
+                  {% if data.team.teamname != 'owner' %}{{data.team.teamname}}
+                    <label for="">Team authorizations on the assigned rings</label><br/>
+                    <input name="teamauth" type="radio" value="R" {%if data.team.teamauth=='R'%}checked=""{%endif%}> Read <br/>
+                    <input name="teamauth" type="radio" value="RW" {%if data.team.teamauth=='RW'%}checked=""{%endif%}> Read and Write<br/>
+                    <input name="teamauth" type="radio" value="RWX" {%if data.team.teamauth=='RWX'%}checked=""{%endif%}> Administrator<br/>
+                  {%else%}
+                  This team has <b>Admin</b> access to all the rings
+                  {%endif%}
                 </div>
+                
          
                 <button type="submit" class="btn btn-primary">Update team settings</button>
               </form>
