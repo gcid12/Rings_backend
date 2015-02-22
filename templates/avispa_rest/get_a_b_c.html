@@ -33,10 +33,10 @@
                       <label for="inputPassword3" class="control-label"></label>
                       <div class="">
                           {% if 'put_a_b_c' in data.user_authorizations %}
-                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?rq=put{% if data.collection != '' %}&collection={{data.collection}}{% endif %}' type="submit" class="btn btn-success btn-xs">Edit</a>
+                          <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-success btn-xs">Edit</a>
                           {%endif%}
                           {% if 'delete_a_b_c' in data.user_authorizations %}
-                          <a href='/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=delete{% if data.collection != '' %}&collection={{data.collection}}{% endif %}' type="submit" class="btn btn-default btn-xs">DELETE THIS
+                          <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default btn-xs">DELETE THIS
                           </a>
                           {%endif%}
                           

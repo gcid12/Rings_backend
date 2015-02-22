@@ -392,9 +392,10 @@ class AvispaRestFunc:
             #msg = 'Item put with id: '+idx
             flash("Changes saved in the Schema")
             if collection:
-                redirect = '/'+handle+'/'+ring
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
             else:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                redirect = '/'+handle+'/'+ring
+                
 
             d = {'redirect': redirect, 'status':200}
 
@@ -455,9 +456,10 @@ class AvispaRestFunc:
             flash('Could not delete the Ring')
         
         if collection:
-            redirect = '/'+handle
+            redirect = '/'+handle+'/_collections/'+collection       
         else:
-            redirect = '/'+handle+'/_collections/'+collection
+            redirect = '/'+handle
+            
 
         d = {'redirect': redirect, 'status':200}
         return d
@@ -600,9 +602,10 @@ class AvispaRestFunc:
             #msg = 'Item put with id: '+idx
             flash("Changes saved")
             if collection:
-                redirect = '/'+handle+'/'+ring
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring     
             else:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                redirect = '/'+handle+'/'+ring
+                
 
             d = {'redirect': redirect, 'status':200}
 
@@ -682,9 +685,10 @@ class AvispaRestFunc:
             #msg = 'Item put with id: '+idx
             flash('Item deleted.. Collection:'+collection)
             if collection:
-                redirect = '/'+handle+'/'+ring
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
             else:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                redirect = '/'+handle+'/'+ring
+                
 
             d = {'redirect': redirect, 'status':200}
 
