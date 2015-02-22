@@ -175,18 +175,23 @@ class AvispaModel:
         if not specific or specific == 'ring/items':
             view = ViewDefinition('ring', 'items', 
                    '''
-                      function(doc) {
-                        if(doc.items) {
-                           if(!doc.deleted) {
-                              var x = new Object();  
-                              x['_public']=doc.public
-                              for (var key in doc.items[0]) { 
-                                 x[key]=doc.items[0][key]; 
-                              }
-                              emit(doc._id, x)
-                           }
-                        }
+                    function(doc) {
+                      if(doc.items) {
+                         if(!doc.deleted) {
+                            var x = new Object();  
+                            x['_public']=doc.public
+                            for (var key in doc.items[0]) { 
+                               x[key]=doc.items[0][key]; 
+                            }
+                            for (var key in doc.rich[0]) { 
+                               if(doc.rich[0][key].length!=0){
+                                  x[key+'_rich']=doc.rich[0][key]; 
+                               }
+                            }
+                            emit(doc._id, x)
+                         }
                       }
+                    }
                    ''')
 
             view.get_doc(db)
@@ -543,15 +548,18 @@ class AvispaModel:
 
             #d1={'source':TextField()}
             d1 = {}
-            d1['source']=TextField()
+            d1['_id']=TextField()
+            d1['_source']=TextField()
             print('len:',len(d1))
-            args_rich[field['FieldName']] = DictField()
+            args_rich[field['FieldName']] = ListField(DictField())
+            
 
             d2 = {}
             d2['date']=DateTimeField()
             d2['author']=TextField()
             d2['before']=TextField()
             d2['after']=TextField()
+            d2['action']=TextField()
             args_history[field['FieldName']] = ListField(DictField(Mapping.build(**d2)))
             
             args_meta[field['FieldName']] = DictField()
@@ -899,15 +907,25 @@ class AvispaModel:
             if field['FieldSource'] and field['FieldWidget']=='select' and len(request.form.get(field['FieldName']))!=0:
                 print(field['FieldName']+' is a RICH Field ')
                 external_id=int(request.form.get(field['FieldName'])) #need to sanitize this more
+                #This will cause an error if sending multiple ids
                 print('external_id',external_id)
                 urlparts = urlparse.urlparse(field['FieldSource'])
                 print('urlparts',urlparts)
 
                 pathparts = urlparts.path.split('/')
                 if pathparts[1]!='_api':
-                    corrected_path = '/_api'+urlparts.path
-                    external_handle = pathparts[1]
-                    external_ringname = pathparts[2]
+                    if pathparts[2]=='_collections':
+                        del pathparts[2] # /_collections
+                        del pathparts[3] # /<collection_name>
+                        sufix_corrected_path = '/'.join(pathparts)
+                        corrected_path = '/_api/'+sufix_corrected_path
+                        #corrected_path = '/_api'+urlparts.path
+                        external_handle = pathparts[1]
+                        external_ringname = pathparts[4]
+                    else:
+                        corrected_path = '/_api'+urlparts.path
+                        external_handle = pathparts[1]
+                        external_ringname = pathparts[2]
                 else:
                     corrected_path = urlparts.path
                     external_handle = pathparts[2]
@@ -917,6 +935,7 @@ class AvispaModel:
                 path = corrected_path+'/'+str(external_id)
                 query = 'schema=1'
                 url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, path , '', query, ''))
+                source_url = urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', '', ''))
 
 
                 external_host=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, '', '', '', ''))
@@ -959,13 +978,15 @@ class AvispaModel:
                 
                 rich_item_dict = {}
                 #Nice to include where we got the information from
-                rich_item_dict['_source'] = url  
+                rich_item_dict['_source'] = source_url
                 # Converting the ordered_dictionary to regular dictionary
                 for j in rich_item:
                     rich_item_dict[j] = rich_item[j]
           
                 
                 #Overwriting the default Field
+                '''
+                #DEPRECATED: The value is no longer stored in the in item_values but in Rich
                 if urlparts.query:
                     queryparts = urlparts.query.split('&')
                     print('queryparts:',queryparts)
@@ -976,23 +997,27 @@ class AvispaModel:
                             flparts = paramparts[1].split(',')
                             print('flparts:',flparts)   
                             external_FieldName = flparts[0]
-         
-
+                
                 #The value for the Field picked (or the first Field if default)
                 value = rich_item[external_FieldName]
-
                 print('value:',value)
-
-                print('rich_item_dict:',rich_item_dict)
-                
+                print('rich_item_dict:',rich_item_dict)            
                 item_values[field['FieldName']] = value
                 rich_values[field['FieldName']] = rich_item_dict
-               
+                '''
+
+                item_values[field['FieldName']] = ''
+
+                rich_value= []
+                rich_value.append(rich_item_dict)
+                rich_values[field['FieldName']] = rich_value
+                     
  
             else:
                 #Not a select. Will not have rich data
                 print(field['FieldName']+' is NOT a RICH Field ')
                 item_values[field['FieldName']] = request.form.get(field['FieldName'])
+                #rich_values[field['FieldName']] = [] #Empty list
 
 
             

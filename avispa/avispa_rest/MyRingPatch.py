@@ -536,7 +536,32 @@ class MyRingPatch:
         return d
 
 
-        pass
+    
+    def p20150221(self,request,*args):
+        '''
+        This patch updates ring/items to show <fieldname>_rich data
+
+        Run it for every ring you want to update
+        @input (GET) : handle
+        @input (GET) : ringname
+
+        http://127.0.0.1/_patch/p20120221?handle=blalab&ringname=salsarecipes
+        '''
+
+
+
+        handle = request.args.get('handle')
+        ringname = request.args.get('ringname')
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db_ringname = db_ringname.replace(" ","")
+
+        self.AVM.ring_set_db_views(db_ringname)
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
 
         
 
