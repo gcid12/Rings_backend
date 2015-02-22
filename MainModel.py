@@ -523,14 +523,6 @@ class MainModel:
                         user_authorizations = self.sum_role_auth(user_authorizations,'team_generic')
                     '''
 
-                        
-        
-
-
-
-
-
-
 
 
         #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
