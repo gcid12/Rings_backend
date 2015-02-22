@@ -26,7 +26,7 @@
          
       {% endif %}
     {% endwith %}
-
+<a name="top"></a>
 <header>
   <div class="topbar topbar-white" role="navigation">
     <div class="container-fluid">
@@ -42,8 +42,7 @@
             <img src="/static/images/myring02.png" style=" margin:10px 30px 10px 20px; width:80px;" alt="MyRing">
         </a>
       </div>
-        <div class="navbar-collapse collapse">
-            
+        <div class="navbar-collapse collapse">          
             {%if current_user.is_authenticated()%}
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/{{ data.handle }}/_home">Home</a></li>
@@ -60,9 +59,6 @@
                 </li>
             </ul>
             {%endif%}
-
-
-
         </div>
     </div>
   </div>
@@ -82,12 +78,13 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row scro_anchor">
 
       <div class="col-sm-12">  
       
       {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
       <br/>
+      
 
 
         {% block content %}
@@ -99,7 +96,7 @@
     </div>
   </div>
 </section>       
-
+<span class="scro"><a href='#top'>&nbsp;Top</a></span>
 
 <footer>
 {% include 'includes/footscripts.html' %}
