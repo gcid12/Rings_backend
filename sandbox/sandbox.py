@@ -11,7 +11,7 @@ def s1():
 
     data = {}
     #t = time.time()
-    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "unoname"
     
     return render_template("/sandbox/uno.html", data=data)
 
@@ -26,6 +26,7 @@ def landing_tech():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Tech Landing"
     
     return render_template("/sandbox/landing_tech.html", data=data)
 
@@ -40,6 +41,7 @@ def landing_orgs():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Organizations Landing"
     
     return render_template("/sandbox/landing_orgs.html", data=data)
 
@@ -54,6 +56,7 @@ def landing_travel():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Travel Landing"
     
     return render_template("/sandbox/landing_travel.html", data=data)
 
@@ -67,6 +70,7 @@ def landing_freelance():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Freelance Landing"
     
     return render_template("/sandbox/landing_freelance.html", data=data)
 
@@ -82,6 +86,7 @@ def landing_invite():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Invited Landing"
     
     return render_template("/sandbox/landing_invite.html", data=data)
 
@@ -96,23 +101,9 @@ def terms():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Terms & Conditions"
     
     return render_template("/sandbox/terms.html", data=data)
-
-
-
-@sandbox.route("/terms", methods=["GET", "POST"])
-#@login_required
-def terms():
-
-    flash("User not active")
-
-    data = {}
-    #t = time.time()
-    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-    
-    return render_template("/sandbox/terms.html", data=data)
-
 
 
 
@@ -131,6 +122,7 @@ def mail_welcome():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Welcome mail"
     
     return render_template("/sandbox/mail_welcome.html", data=data)  
 
@@ -139,30 +131,16 @@ def mail_welcome():
 
 @sandbox.route("/mail_welcome_founder", methods=["GET", "POST"])
 #@login_required
-def mail_welcome():
+def mail_welcome_founder():
 
     flash("User not active")
 
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Welcome from founder"
     
-    return render_template("/sandbox/mail_welcome.html", data=data)  
-
-
-
-
-@sandbox.route("/mail_welcome", methods=["GET", "POST"])
-#@login_required
-def mail_welcome():
-
-    flash("User not active")
-
-    data = {}
-    #t = time.time()
-    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-    
-    return render_template("/sandbox/mail_welcome.html", data=data)  
+    return render_template("/sandbox/mail_welcome_founder.html", data=data)  
 
 
 
@@ -190,6 +168,7 @@ def mail_invite():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Invite"
     
     return render_template("/sandbox/mail_invite.html", data=data)  
 
@@ -204,6 +183,7 @@ def mail_achievement():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Achievement"
     
     return render_template("/sandbox/mail_achievement.html", data=data)  
 
@@ -218,6 +198,7 @@ def mail_firsttime():
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "First Time"
     
     return render_template("/sandbox/mail_firsttime.html", data=data) 
 
