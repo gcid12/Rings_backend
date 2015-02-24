@@ -75,20 +75,62 @@ def landing_freelance():
     return render_template("/sandbox/landing_freelance.html", data=data)
 
 
+# A. INVITE FROM MYRING
 
-
-@sandbox.route("/landing_invite", methods=["GET", "POST"])
+@sandbox.route("/landing_a", methods=["GET", "POST"])
 #@login_required
-def landing_invite():
+def landing_a():
+
+    flash("User not active")
+
+    data = {}
+    data['section_name']= "Signing up first time"
+    data['t00']= "a"
+    data['t01']= "Hey welcome to MyRing"
+    data['t02']= "Please complete your registration"
+    
+    return render_template("/sandbox/landing_invite.html", data=data)
+
+
+
+# B. INVITE FROM INDIVIDUAL
+@sandbox.route("/landing_b", methods=["GET", "POST"])
+def landing_b():  
 
     flash("User not active")
 
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-    data['section_name']= "Invited Landing"
+    data['section_name']= "Invitation"
+    data['t00']= "b"
+    data['t01']= "Hey Jon, Thanks for accepting my invite/ RZ invite"
+    data['t02']= "Please complete your registration"
     
     return render_template("/sandbox/landing_invite.html", data=data)
+
+
+
+# C. INVITE FROM INDIVIDUAL
+@sandbox.route("/landing_c", methods=["GET", "POST"])
+def landing_c():  
+
+    flash("User not active")
+
+    data = {}
+    #t = time.time()
+    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Creating Organization"
+    data['t00']= "c"
+    data['t01']= "Let's create your Organization"
+    data['t02']= "Please complete your registration"
+    
+    return render_template("/sandbox/landing_invite.html", data=data)
+
+
+
+
+
 
 
 

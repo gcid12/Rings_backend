@@ -262,6 +262,11 @@ background-color: white;
 padding: 5px;
 
 }
+.pair_win200{height:200px;}
+.pair_win300{height:300px;}
+.pair_win400{height:400px;}
+.pair_win500{height:500px;}
+
 .numdot{
 background-color: gray; padding:0 3px;
 border-radius: 0 5px;
@@ -787,6 +792,12 @@ header .navbar-ring{padding:7px 15px; margin-top:50px; border:1px solid transpar
 .bird{background-color: yellow; color:black;}
 
 @media (max-width:768px){
+
+.pair_win200{height:100%;}
+.pair_win300{height:100%;}
+.pair_win400{height:100%;}
+.pair_win500{height:100%;}
+
     .bird{background-color: orange; color:black;}
 
     .tab-box-d{
@@ -841,4 +852,8 @@ margin: 1px auto;
     margin: 1px auto;
   }
   }
+
+
+
+
 
