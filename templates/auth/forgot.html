@@ -2,21 +2,57 @@
 
 {% block content %}
 
-  <div class="row">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-      <form action="/_forgot" method="POST" role="form">
-        <legend>Forgot your password? No problem</legend>
-      
-        <div class="form-group">
-          <label for="">What is your email? We'll send you instructions there</label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="Email">
-        </div>
-              
-        <button type="submit" class="btn btn-primary">Send</button>
-      </form>
-    </div>
+
+  <div class="row text-center">
+      <div class="col-sm-12 spa30">     
+        <h2>Forgot your password?</h2>
+      </div>
+      <hr/>
+           
   </div>
 
+  <div class="row">
+
+    <div class="col-sm-offset-3 col-sm-6">     
+
+        <div class="rn-box text-center" style="padding:20px 20px;">
+
+        <div class="spa20"></div>
+          <form action="/_forgot" method="POST" role="form">
+            <div class="input-group input-group-md">
+
+              <span class="input-group-addon fw-c" id="sizing-addon1"><i class="fa fa-envelope"></i></span>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="required">
+            </div>
+                
+
+            <div class="spa20">
+              <table style="width:100%;">
+                <tr>
+                  <td>
+                    
+                    
+                    <button type="submit" class="btn btn-warning fs-1">Reset My Password</button>
+
+                    <div class="spa10"></div>
+                    <hr/>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                    <p class="fs-0-9"> Change your mind? <a href="/_login"> Sign in.</a> </p>
+                  </td>
+                  
+                </tr>
+              </table>
+              
+            </div>
+          </form>
+        </div> <!-- close box -->
+
+
+    </div>             
+  </div>
   
 
  
