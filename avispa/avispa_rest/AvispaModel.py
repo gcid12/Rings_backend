@@ -914,23 +914,33 @@ class AvispaModel:
                 
                 print(field['FieldName']+' is a RICH Field ')
 
-                #1. Detect if this is a comma separated string
-                external_id_list = request.form.get(field['FieldName']).split(',')
+                #1. Convert values to list
+                external_uri_list = request.form.get(field['FieldName']).split(',')
                 item_value = []
   
-                for external_id in external_id_list:
+                for external_uri in external_uri_list:
                     
-                #2. The field['FieldCardinality'] should be 'multiple' in order to accept more than one value
-                # If cardinality is 'single' but still you are getting multiple entries you should only use the first one.
-                #3. In case of valid multiple cardinality you need to enter as many items in the rich list for that field.
+                    #2. The field['FieldCardinality'] should be 'multiple' in order to accept more than one value
+                    # If cardinality is 'single' but still you are getting multiple entries you should only use the first one.         
+                    count = 0 
+                    if field['FieldCardinality'] == 'Single' and count>1:
+                        break
+                    count += 1
+
+
+                    #3. In case of valid multiple cardinality you need to enter as many items in the rich list for that field.
+                    print('external_uri',external_uri)
+                    urlparts = urlparse.urlparse(external_uri)
+
+                    if urlparts.scheme == '' or urlparts.netloc == '':
+                        # You are getting ids not uris. Try to make it up with the suggested source indicated in the schema
+                        urlparts = urlparse.urlparse(field['FieldSource']) 
+                        p = urlparts.path +'/'+str(int(external_uri))
+                        p_url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, p , '', '', ''))
+                        urlparts = urlparse.urlparse(p_url)
 
 
 
-                    
-                    #external_id=int(request.form.get(field['FieldName'])) #need to sanitize this more
-                    #This will cause an error if sending multiple ids
-                    print('external_id',external_id)
-                    urlparts = urlparse.urlparse(field['FieldSource'])
                     print('urlparts',urlparts)
 
                     pathparts = urlparts.path.split('/')
@@ -940,22 +950,23 @@ class AvispaModel:
                             del pathparts[3] # /<collection_name>
                             sufix_corrected_path = '/'.join(pathparts)
                             corrected_path = '/_api/'+sufix_corrected_path
-                            #corrected_path = '/_api'+urlparts.path
                             external_handle = pathparts[1]
                             external_ringname = pathparts[4]
+                            external_idx = pathparts[5]
                         else:
                             corrected_path = '/_api'+urlparts.path
                             external_handle = pathparts[1]
                             external_ringname = pathparts[2]
+                            external_idx = pathparts[3]
                     else:
                         corrected_path = urlparts.path
                         external_handle = pathparts[2]
                         external_ringname = pathparts[3]
+                        external_idx = pathparts[4]
 
 
-                    path = corrected_path+'/'+str(external_id)
                     query = 'schema=1'
-                    url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, path , '', query, ''))
+                    url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', query, ''))
                     source_url = urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', '', ''))
 
 
@@ -969,7 +980,7 @@ class AvispaModel:
                     if local_host==external_host:
                         print('Data source is in the same server')
 
-                        rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_id)
+                        rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx)
 
                         rs = self.ring_get_schema_from_view(external_handle,external_ringname)
 
@@ -1026,12 +1037,9 @@ class AvispaModel:
                     item_values[field['FieldName']] = value
                     rich_values[field['FieldName']] = rich_item_dict
                     '''
-
                     
 
-                    #history_item_value = json.dumps(rich_item_dict)
-                    item_uri = rich_item_dict['_source']+'/'+ rich_item_dict['_id']
-                    item_value.append(item_uri)
+                    item_value.append(source_url)
                     
                     if field['FieldName'] not in rich_values:
                         rich_values[field['FieldName']] = []
@@ -1054,7 +1062,7 @@ class AvispaModel:
                     history_values[field['FieldName']].append(history_item_dict)
 
                 #Here you joint the values
-                item_values[field['FieldName']] = ', '.join(item_value)
+                item_values[field['FieldName']] = ','.join(item_value)
                                       
  
             else:
