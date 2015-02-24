@@ -560,6 +560,7 @@ class AvispaModel:
             d2['before']=TextField()
             d2['after']=TextField()
             d2['action']=TextField()
+            d2['doc']=DictField()
             args_history[field['FieldName']] = ListField(DictField(Mapping.build(**d2)))
             
             args_meta[field['FieldName']] = DictField()
@@ -895,143 +896,190 @@ class AvispaModel:
 
         for field in fields:
             
-
             print(field['FieldName']+' content: '+str(request.form.get(field['FieldName'])))
             print(field['FieldName']+' type: '+str(type(request.form.get(field['FieldName']))))
 
             print('FieldSource:',field['FieldSource'])
             print('FieldWidget:',field['FieldWidget'])
 
+            if field['FieldName'] not in history_values:
+                history_values[field['FieldName']] = []
+            elif type(history_values[field['FieldName']]) is not list:
+                history_values[field['FieldName']] = []
+
+
             #Detect if FieldWidget is "select" . If it is you are getting an ID. 
             #You need to query the source to get the real value and the _rich values
             if field['FieldSource'] and field['FieldWidget']=='select' and len(request.form.get(field['FieldName']))!=0:
+                
                 print(field['FieldName']+' is a RICH Field ')
-                external_id=int(request.form.get(field['FieldName'])) #need to sanitize this more
-                #This will cause an error if sending multiple ids
-                print('external_id',external_id)
-                urlparts = urlparse.urlparse(field['FieldSource'])
-                print('urlparts',urlparts)
 
-                pathparts = urlparts.path.split('/')
-                if pathparts[1]!='_api':
-                    if pathparts[2]=='_collections':
-                        del pathparts[2] # /_collections
-                        del pathparts[3] # /<collection_name>
-                        sufix_corrected_path = '/'.join(pathparts)
-                        corrected_path = '/_api/'+sufix_corrected_path
-                        #corrected_path = '/_api'+urlparts.path
-                        external_handle = pathparts[1]
-                        external_ringname = pathparts[4]
+                #1. Convert values to list
+                external_uri_list = request.form.get(field['FieldName']).split(',')
+                item_value = []
+  
+                for external_uri in external_uri_list:
+                    
+                    #2. The field['FieldCardinality'] should be 'multiple' in order to accept more than one value
+                    # If cardinality is 'single' but still you are getting multiple entries you should only use the first one.         
+                    count = 0 
+                    if field['FieldCardinality'] == 'Single' and count>1:
+                        break
+                    count += 1
+
+
+                    #3. In case of valid multiple cardinality you need to enter as many items in the rich list for that field.
+                    print('external_uri',external_uri)
+                    urlparts = urlparse.urlparse(external_uri)
+
+                    if urlparts.scheme == '' or urlparts.netloc == '':
+                        # You are getting ids not uris. Try to make it up with the suggested source indicated in the schema
+                        urlparts = urlparse.urlparse(field['FieldSource']) 
+                        p = urlparts.path +'/'+str(int(external_uri))
+                        p_url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, p , '', '', ''))
+                        urlparts = urlparse.urlparse(p_url)
+
+
+
+                    print('urlparts',urlparts)
+
+                    pathparts = urlparts.path.split('/')
+                    if pathparts[1]!='_api':
+                        if pathparts[2]=='_collections':
+                            del pathparts[2] # /_collections
+                            del pathparts[3] # /<collection_name>
+                            sufix_corrected_path = '/'.join(pathparts)
+                            corrected_path = '/_api/'+sufix_corrected_path
+                            external_handle = pathparts[1]
+                            external_ringname = pathparts[4]
+                            external_idx = pathparts[5]
+                        else:
+                            corrected_path = '/_api'+urlparts.path
+                            external_handle = pathparts[1]
+                            external_ringname = pathparts[2]
+                            external_idx = pathparts[3]
                     else:
-                        corrected_path = '/_api'+urlparts.path
-                        external_handle = pathparts[1]
-                        external_ringname = pathparts[2]
-                else:
-                    corrected_path = urlparts.path
-                    external_handle = pathparts[2]
-                    external_ringname = pathparts[3]
+                        corrected_path = urlparts.path
+                        external_handle = pathparts[2]
+                        external_ringname = pathparts[3]
+                        external_idx = pathparts[4]
 
 
-                path = corrected_path+'/'+str(external_id)
-                query = 'schema=1'
-                url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, path , '', query, ''))
-                source_url = urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', '', ''))
+                    query = 'schema=1'
+                    url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', query, ''))
+                    source_url = urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', '', ''))
 
 
-                external_host=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, '', '', '', ''))
-                print('external_host:',external_host)
+                    external_host=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, '', '', '', ''))
+                    print('external_host:',external_host)
 
-                rqurl = urlparse.urlparse(request.url)
-                local_host=urlparse.urlunparse((rqurl.scheme, rqurl.netloc, '', '', '', ''))
-                print('local_host:',local_host)
-            
-                if local_host==external_host:
-                    print('Data source is in the same server')
-
-                    rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_id)
-
-                    rs = self.ring_get_schema_from_view(external_handle,external_ringname)
-
-                    print('rich_rs:',rs)
-                    print('rich_item:',rich_item)
-                    
-                    external_FieldName = rs['fields'][0]['FieldName']
-
-                    
-                else:
-                    print('Data source is in another server')
-                 
-                    print('Retrieving source at:',url)
-                    r = requests.get(url)
-                    print('Raw JSON schema:')
-                    print(r.text)
-                    rs = json.loads(r.text)
-                    print('rich_rs:',rs)
-                    rich_item = rs['items'][0]
-                    print('rich_item:',rich_item)
-                    external_FieldName = rs['fields'][0]['FieldName']
-
-                if not rich_item:
-                    #It didn't find the external item
-                    break
-
+                    rqurl = urlparse.urlparse(request.url)
+                    local_host=urlparse.urlunparse((rqurl.scheme, rqurl.netloc, '', '', '', ''))
+                    print('local_host:',local_host)
                 
-                rich_item_dict = {}
-                #Nice to include where we got the information from
-                rich_item_dict['_source'] = source_url
-                # Converting the ordered_dictionary to regular dictionary
-                for j in rich_item:
-                    rich_item_dict[j] = rich_item[j]
-          
-                
-                #Overwriting the default Field
-                '''
-                #DEPRECATED: The value is no longer stored in the in item_values but in Rich
-                if urlparts.query:
-                    queryparts = urlparts.query.split('&')
-                    print('queryparts:',queryparts)
-                    for querypart in queryparts:
-                        paramparts = querypart.split('=')
-                        print('paramparts:',paramparts)
-                        if paramparts[0]=='fl':
-                            flparts = paramparts[1].split(',')
-                            print('flparts:',flparts)   
-                            external_FieldName = flparts[0]
-                
-                #The value for the Field picked (or the first Field if default)
-                value = rich_item[external_FieldName]
-                print('value:',value)
-                print('rich_item_dict:',rich_item_dict)            
-                item_values[field['FieldName']] = value
-                rich_values[field['FieldName']] = rich_item_dict
-                '''
+                    if local_host==external_host:
+                        print('Data source is in the same server')
 
-                item_values[field['FieldName']] = ''
+                        rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx)
 
-                rich_value= []
-                rich_value.append(rich_item_dict)
-                rich_values[field['FieldName']] = rich_value
+                        rs = self.ring_get_schema_from_view(external_handle,external_ringname)
+
+                        print('rich_rs:',rs)
+                        print('rich_item:',rich_item)
+                        
+                        external_FieldName = rs['fields'][0]['FieldName']
+
+                        
+                    else:
+                        print('Data source is in another server')
                      
+                        print('Retrieving source at:',url)
+                        r = requests.get(url)
+                        print('Raw JSON schema:')
+                        print(r.text)
+                        rs = json.loads(r.text)
+                        print('rich_rs:',rs)
+                        rich_item = rs['items'][0]
+                        print('rich_item:',rich_item)
+                        external_FieldName = rs['fields'][0]['FieldName']
+
+                    if not rich_item:
+                        #It didn't find the external item
+                        break
+
+                    
+                    rich_item_dict = {}
+                    #Nice to include where we got the information from
+                    rich_item_dict['_source'] = source_url
+                    # Converting the ordered_dictionary to regular dictionary
+                    for j in rich_item:
+                        rich_item_dict[j] = rich_item[j]
+              
+                    
+                    #Overwriting the default Field
+                    '''
+                    #DEPRECATED: The value is no longer stored in the in item_values but in Rich
+                    if urlparts.query:
+                        queryparts = urlparts.query.split('&')
+                        print('queryparts:',queryparts)
+                        for querypart in queryparts:
+                            paramparts = querypart.split('=')
+                            print('paramparts:',paramparts)
+                            if paramparts[0]=='fl':
+                                flparts = paramparts[1].split(',')
+                                print('flparts:',flparts)   
+                                external_FieldName = flparts[0]
+                    
+                    #The value for the Field picked (or the first Field if default)
+                    value = rich_item[external_FieldName]
+                    print('value:',value)
+                    print('rich_item_dict:',rich_item_dict)            
+                    item_values[field['FieldName']] = value
+                    rich_values[field['FieldName']] = rich_item_dict
+                    '''
+                    
+
+                    item_value.append(source_url)
+                    
+                    if field['FieldName'] not in rich_values:
+                        rich_values[field['FieldName']] = []
+                    elif type(rich_values[field['FieldName']]) is not list:
+                        rich_values[field['FieldName']] = []
+
+                    rich_values[field['FieldName']].append(rich_item_dict)
+                        #rich_values[field['FieldName']] = rich_value
+
+
+
+                    history_item_dict = {}
+                    history_item_dict['date'] = datetime.now()
+                    history_item_dict['author'] = handle
+                    history_item_dict['before'] = ''
+                    history_item_dict['after'] = rich_item_dict['_source']+'/'+ rich_item_dict['_id']
+                    history_item_dict['action'] = 'New item. RICH field'
+                    history_item_dict['doc'] = rich_item_dict
+
+                    history_values[field['FieldName']].append(history_item_dict)
+
+                #Here you joint the values
+                item_values[field['FieldName']] = ','.join(item_value)
+                                      
  
             else:
                 #Not a select. Will not have rich data
                 print(field['FieldName']+' is NOT a RICH Field ')
                 item_values[field['FieldName']] = request.form.get(field['FieldName'])
-                #rich_values[field['FieldName']] = [] #Empty list
-
-
-            
-            #This will record the history for the first entry in the item history
-            history_item = {}
-            history_item['date'] = datetime.now()
-            history_item['author'] = handle
-            history_item['before'] = ''
-            history_item['after'] = item_values[field['FieldName']]
-
-            history_list = []
-            history_list.append(history_item)
-
-            history_values[field['FieldName']] = history_list
+                            
+                #This will record the history for the first entry in the item history
+                history_item_dict = {}
+                history_item_dict['date'] = datetime.now()
+                history_item_dict['author'] = handle
+                history_item_dict['before'] = ''
+                history_item_dict['after'] = item_values[field['FieldName']]
+                history_item_dict['action'] = 'New item'
+                
+                history_values[field['FieldName']].append(history_item_dict)
+                #history_values[field['FieldName']] = history_list
 
 
         RingClass = self.ring_create_class(schema)

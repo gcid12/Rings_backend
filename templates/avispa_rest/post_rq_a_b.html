@@ -65,7 +65,7 @@
             </div>
             <div class="rn-box-gray">
 
-              <form role="form" action="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?method=post" method="POST" autocomplete="off">
+              <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?method=post" method="POST" autocomplete="off">
               
                 <button name="saveandnew" type="submit" value="saveandnew" class="btn btn-success btn-xs pull-right"><i class="fa fa-save"></i> &nbsp;<i class="fa fa-plus"></i></button>
 
