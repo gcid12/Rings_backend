@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	My Ring - {{ data.section_name}}
+{% endblock %}
+
+
+
+         
+{% block content %}
+
+
+	<div class="row ">
+	    <div class="col-sm-offset-1 col-sm-1 spa30">     
+	    	<img class="img-responsive left-block" src="/static/images/myringpurple.png" style="width:300px;"/>
+	    	
+	    </div>
+	    <div class="col-sm-9 spa30">     
+	    	<h1>Terms of Service</h1>
+	    	<h4 style="purple">Thank you for using MyRing!</h4>
+	    	
+	    </div>
+	    <hr/>
+           
+	</div>
+
+
+
+
+	<div class="row">
+
+	    <div class="col-sm-offset-1 col-sm-10">     
+
+	    	<div role="tabpanel">
+
+			  <!-- Nav tabs -->
+			  <ul class="nav nav-tabs" role="tablist">
+			    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Terms of Service</a></li>
+			    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Privacy Policy</a></li>
+			    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Acceptable Use</a></li>
+			  </ul>
+
+			  <!-- Tab panes -->
+			  <div class="tab-content">
+			    <div role="tabpanel" class="tab-pane active" id="home">
+			      	
+			    	<div class="row">
+			    		<div class="spa20"></div>
+			    		<h3><span class="label label-default">1. Using MyRing</span></h3>
+			    		
+				    	<hr/>
+			    	</div>
+			      	<div class="row">
+
+				    	<div class="col-sm-8">
+				    		
+
+				    		<h4>a. Who can use MyRing</h4>
+
+				    		
+				    		You may use our Products only if you can form a binding contract with MyRing, and only in compliance with these Terms and all applicable laws. When you create your MyRing account, you must provide us with accurate and complete information. Any use or access by anyone under the age of 13 is prohibited. If you open an account on behalf of a company, organization, or other entity, then (a) "you" includes you and that entity, and (b) you represent and warrant that you are authorized to grant all permissions and licenses provided in these Terms and bind the entity to these Terms, and that you agree to these Terms on the entity's behalf. Some of our Products may be software that is downloaded to your computer, phone, tablet, or other device. You agree that we may automatically upgrade those Products, and these Terms will apply to such upgrades.
+
+				    		<br/><br/>
+				    		<h4>b. Our license to you</h4>
+
+				    		Subject to these Terms and our policies (including our Acceptable Usage Policy), we grant you a limited, non-exclusive, non-transferable, and revocable license to use our Products.
+				    	</div>
+
+				    	<div class="col-sm-4">
+				    		<div class="spa30"></div>
+				    		<div class="rn-box" style="padding-left:20px;" >
+				    			<h5 class="text-lgray">basically:</h5>
+				    			<h4>Every company has its terms . These are ours</h4>
+				    		</div>
+				    	</div>
+				    </div>
+
+
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="profile">...</div>
+			    <div role="tabpanel" class="tab-pane" id="messages">...</div>
+			    
+			  </div>
+
+			</div>
+
+	    </div>
+
+	               
+	</div>
+
+
+
+    
+    
+
+    {% endblock %}
+
+

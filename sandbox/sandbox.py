@@ -111,27 +111,6 @@ def landing_b():
 
 
 
-# C. INVITE FROM INDIVIDUAL
-@sandbox.route("/landing_c", methods=["GET", "POST"])
-def landing_c():  
-
-    flash("User not active")
-
-    data = {}
-    #t = time.time()
-    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-    data['section_name']= "Creating Organization"
-    data['t00']= "c"
-    data['t01']= "Let's create your Organization"
-    data['t02']= "Please complete your registration"
-    
-    return render_template("/sandbox/landing_invite.html", data=data)
-
-
-
-
-
-
 
 
 @sandbox.route("/terms", methods=["GET", "POST"])
