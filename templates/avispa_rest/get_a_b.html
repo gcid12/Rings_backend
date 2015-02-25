@@ -12,7 +12,6 @@
 
 {% block tabcontent %}
 
-
   <!-- COLUMN 1 -->
   <div class="col-sm-12">
     <div class="rn-box-white gad100">
@@ -29,9 +28,6 @@
       
       <!-- TABSSSSSSS -->
       <div role="tabpanel">
-
-        
-
           <!-- Nav tabs -->
           <ul class="nav nav-tabs text-right" role="tablist">
             
@@ -39,11 +35,9 @@
             <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
             {% endif %}
             <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-            <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
-
-            
-            </ul> 
-        <div class="spa5"></div>
+            <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>  
+          </ul> 
+          <div class="spa5"></div>
     <!-- ITEM N -->
         
 
@@ -110,22 +104,6 @@
                   {% endif %}
                       
                   
-                  <td>
-                             
-                        
-                         {% for k,v in item.items() %}
-     
-                            {% if k =='_public' %}
-                              {% if v == True %}
-                                
-                                <span class="label label-info">PUBLIC</span>
-                              {% else%}
-                                <span class="label label-info">NOT PUBLIC</span>
-                              {% endif %}
-                            {% endif %}
-                            
-                          {% endfor %}
-                  </td>
 
                   {% for k,v in item.items() %}
                   <td>
@@ -220,19 +198,8 @@
                       {%endif%}
                       </div>
                              
-                        <br/>
-                         {% for k,v in item.items() %}
-                            
-                            {% if k =='_public' %}
-                              {% if v ==True %}
-                                
-                                <span class="label label-info">PUBLIC</span>
-                              {% else%}
-                                <span class="label label-info">NOT PUBLIC</span>
-                              {% endif %}
-                            {% endif %}
-                            
-                          {% endfor %}
+                        
+
                   </td>
                   <td>
                       <table>
@@ -347,19 +314,6 @@
                           {%endif%}
                           </div>
                                  
-                          <br/>
-                           {% for k,v in item.items() %}
-                              
-                              {% if k =='_public' %}
-                                {% if v ==True %}
-                                  
-                                  <span class="label label-info">PUBLIC</span>
-                                {% else%}
-                                  <span class="label label-info">NOT PUBLIC</span>
-                                {% endif %}
-                              {% endif %}
-                              
-                            {% endfor %}
                       </td>
                     </tr>
                   </table>
