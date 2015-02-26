@@ -322,7 +322,8 @@ class AvispaRestFunc:
 
         if idx:
             print('Awesome , you just saved the item to the DB')
-            msg = 'Item saved with id: '+idx
+            print('Item saved with id: '+idx)
+            
 
 
         if collection:
@@ -336,11 +337,12 @@ class AvispaRestFunc:
             else:
                 redirect = '/'+handle+'/'+ring
 
-        print('Now redirect to:')
+        #print('Now redirect to:')
         print(redirect)
         flash("The new item has been created")
 
-        d = {'redirect': redirect, 'status':201}
+        d = {'newresource':idx,'template':'avispa_rest/close_child_iframe.html'}
+        #d = {'redirect': redirect, 'status':201}
         return d
 
         #return redirect('/'+handle+'/'+ring)

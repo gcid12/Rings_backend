@@ -24,13 +24,7 @@
 <script src="{{ url_for('static',filename='assets/imagegallery/js/bootstrap-image-gallery.min.js') }}"></script>
 
 <script type="text/javascript" src="{{ url_for('static',filename='js/intro.js') }}"></script>
-<script type="text/javascript">
-      document.getElementById('startButton').onclick = function() {
-        introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-          window.location.href = 'second.html?multipage=true';
-        });
-      };
-    </script>
+
 
 
 

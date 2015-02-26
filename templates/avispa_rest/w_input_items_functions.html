@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".iframe").colorbox({
+            iframe:true, 
+            width:"80%", 
+            height:"80%",
+            opacity:0.7
+        });
+
+        $(".callbacks").colorbox({
+            onOpen:function(){ alert('onOpen: colorbox is about to open'); },
+            onLoad:function(){ alert('onLoad: colorbox has started to load the targeted content'); },
+            onComplete:function(){ alert('onComplete: colorbox has displayed the loaded content'); },
+            onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
+            onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
+        });
+
+
+    });
+</script>
+<script type="text/javascript">
+    
+        // Create IE + others compatible event handler
+        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventer = window[eventMethod];
+        var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+        // Listen to message from child window
+        eventer(messageEvent,function(e) {
+          console.log('parent received message!:  ',e.data); 
+          newitem = "<div><a href="+e.data+">"+e.data+"</a></div>"
+            $( '#addeditem_{{ field.FieldOrder }}' ).append(newitem);
+        },false);
+
+</script>
