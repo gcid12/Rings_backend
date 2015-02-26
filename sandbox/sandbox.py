@@ -150,18 +150,18 @@ def mail_welcome():
 
 
 
-@sandbox.route("/mail_welcome_founder", methods=["GET", "POST"])
+@sandbox.route("/mail_welcome2", methods=["GET", "POST"])
 #@login_required
-def mail_welcome_founder():
+def mail_welcome2():
 
     flash("User not active")
 
     data = {}
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-    data['section_name']= "Welcome from founder"
+    data['section_name']= "Welcome"
     
-    return render_template("/sandbox/mail_welcome_founder.html", data=data)  
+    return render_template("/sandbox/mail_welcome2.html", data=data)  
 
 
 
