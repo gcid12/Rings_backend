@@ -191,7 +191,39 @@ def mail_invite():
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
     data['section_name']= "Invite"
     
-    return render_template("/sandbox/mail_invite.html", data=data)  
+    return render_template("/sandbox/mail_invite.html", data=data) 
+
+
+@sandbox.route("/mail_invite_r1", methods=["GET", "POST"])
+#@login_required
+def mail_invite_r1():
+
+    flash("User not active")
+
+    data = {}
+    #t = time.time()
+    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Invite reminder 1"
+    
+    return render_template("/sandbox/mail_invite_r1.html", data=data) 
+
+
+
+
+@sandbox.route("/mail_invite_r2", methods=["GET", "POST"])
+#@login_required
+def mail_invite_r2():
+
+    flash("User not active")
+
+    data = {}
+    #t = time.time()
+    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= "Invite reminder 2"
+    
+    return render_template("/sandbox/mail_invite_r2.html", data=data) 
+
+
 
 
 
