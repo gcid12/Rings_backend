@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+{% block title %}
+	My Ring
+{% endblock %}
+</title>
+<style>
+/* -------------------------------------
+		GLOBAL
+------------------------------------- */
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+	font-size: 100%;
+	line-height: 1.6;
+}
+
+img {
+	max-width: 100%;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-size-adjust: none;
+	width: 100%!important;
+	height: 100%;
+	text-align:center;
+}
+
+
+/* -------------------------------------
+		ELEMENTS
+------------------------------------- */
+a {
+	color: #348eda;
+}
+
+
+
+.btn-primary {
+	text-decoration: none;
+	color: #FFF;
+	background-color: #348eda;
+	border: solid #348eda;
+	border-width: 10px 20px;
+	line-height: 2;
+	font-weight: bold;
+	margin-right: 10px;
+	text-align: center;
+	cursor: pointer;
+	display: inline-block;
+	border-radius: 10px;
+}
+
+.btn-secondary {
+	text-decoration: none;
+	color: #FFF;
+	background-color: #aaa;
+	border: solid #aaa;
+	border-width: 10px 20px;
+	line-height: 2;
+	font-weight: bold;
+	margin-right: 10px;
+	text-align: center;
+	cursor: pointer;
+	display: inline-block;
+	border-radius: 25px;
+}
+
+.btn{
+	display: inline-block;
+	margin-bottom: 0px;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	white-space: nowrap;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857;
+	border-radius: 4px;
+	-moz-user-select: none;
+}
+
+.btn-info {
+    color: #FFF;
+    background-color: #5BC0DE;
+    border-color: #46B8DA;
+}
+.btn-success{
+	color: #FFF;
+background-color: #28B62C;
+border-color: #23A127;
+}
+.btn-warning {
+    color: #FFF;
+    background-color: #FF851B;
+    border-color: #FF7701;
+}
+
+.btn-purple{
+    color: #FFF;
+    background-color: #6a76cc;
+    border-color: #4554a0;
+}
+
+
+
+.last {
+	margin-bottom: 0;
+}
+
+.first {
+	margin-top: 0;
+}
+
+.padding {
+	padding: 10px 0;
+}
+
+
+/* -------------------------------------
+		BODY
+------------------------------------- */
+table.body-wrap {
+	width: 100%;
+	padding: 0px;
+}
+
+table.body-wrap .container {
+	border: 1px solid #f0f0f0;
+}
+
+
+/* -------------------------------------
+		FOOTER
+------------------------------------- */
+table.footer-wrap {
+	width: 100%;	
+	clear: both!important;
+}
+
+.footer-wrap .container p {
+	font-size: 12px;
+	color: #666;
+	
+}
+
+table.footer-wrap a {
+	color: #999;
+}
+
+
+/* -------------------------------------
+		TYPOGRAPHY
+------------------------------------- */
+h1, h2, h3 {
+	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	line-height: 1.1;
+	margin-bottom: 15px;
+	color: #000;
+	margin: 40px 0 10px 0;
+	line-height: 1.2;
+	font-weight: 200;
+}
+
+h1 {
+	font-size: 36px;
+}
+h2 {
+	font-size: 28px;
+}
+h3 {
+	font-size: 22px;
+}
+
+p, ul, ol {
+	margin-bottom: 5px;
+	font-weight: normal;
+	font-size: 14px;
+}
+
+ul li, ol li {
+	margin-left: 5px;
+	list-style-position: inside;
+}
+
+/* ---------------------------------------------------
+		RESPONSIVENESS
+------------------------------------------------------ */
+
+/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+.container {
+	display: block!important;
+	max-width: 600px!important;
+	margin: 7px auto!important; /* makes it centered */
+	clear: both!important;
+}
+
+/* Set the padding on the td rather than the div for Outlook compatibility */
+.body-wrap .container {
+	padding: 0px;
+}
+
+/* This should also be a block element, so that it will fill 100% of the .container */
+.content {
+	max-width: 600px;
+	margin: 5px auto;
+	display: block;
+}
+
+/* Let's make sure tables in the content area are 100% wide */
+.content table {
+	width: 100%;
+}
+
+.fs-10{font-size: 10px;}
+.fs-15{font-size: 15px;}
+.fs-20{font-size: 20px;}
+
+.fw-200{font-weight:200;}
+.fw-400{font-weight:400;}
+
+</style>
+</head>
+
+<body bgcolor="#f6f6f6">
+
+<!-- body -->
+
+<table class="body-wrap">
+	<tr>
+		<td></td>
+		<td class="container" bgcolor="#FFFFFF">
+
+			<!-- content -->
+			<div class="content">
+			
+
+			<table>
+				<tr style="margin:5px;">
+					<td bgcolor="#f6f6f6" align="left" ><h4><a href="http://myring.io"><img class="img-responsive" src="http://myring.io/static/images/mail/myring02.png" style="width:80px; padding:10px;" alt="myRing.io"/></a></h4></td>
+				</tr>
+
+				
+				{% block content %}
+
+				{% endblock %}
+
+				
+
+
+
+			</table>
+			</div>
+			<!-- /content -->
+			
+		</td>
+		<td></td>
+	</tr>
+</table>
+<!-- /body -->
+
+<!-- footer -->
+<table class="footer-wrap">
+	<tr>
+		<td></td>
+		<td class="container">
+			
+			<!-- content -->
+			<div class="content">
+				<table>
+					<tr>
+						<td align="center">
+							<p style="font-size:10px; color:#CCC;"><a href="http://myring.io"><strong>MyRing.io</strong></a> 1407 Broadway 24th Floor NewYork, NY 10018 |  <a href="https://twitter.com/myring_io">Follow @myring_io on Twitter</a> |  <a href="http://myring.io"><unsubscribe>Unsubscribe</unsubscribe></a></p>
+							
+							
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!-- /content -->
+			
+		</td>
+		<td></td>
+	</tr>
+</table>
+<!-- /footer -->
+
+</body>
+</html>

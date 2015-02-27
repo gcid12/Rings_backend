@@ -174,7 +174,52 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 
 }
 
+/*BACKGROUNDS*/
 
+
+.bg-ai{  
+  background: url(../images/clip/cwaves2.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+  .bg-05{  
+  background: url(../images/grass4.jpg), -webkit-linear-gradient(60deg, #FFF, #eae5df);
+  background: url(../images/grass4.jpg), -o-linear-gradient(60deg, #FFF, #eae5df);
+  background: url(../images/grass4.jpg), -moz-linear-gradient(60deg, #FFF, #eae5df);
+  background: url(../images/grass4.jpg), linear-gradient(60deg, #FFF, #eae5df);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+  .bg-05b{  
+  background: url(../images/phantom.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+  .bg-07{  
+  background: -webkit-linear-gradient(60deg, #FFF, #eae5df);
+  background: -o-linear-gradient(60deg, #FFF, #eae5df);
+  background: -moz-linear-gradient(60deg, #FFF, #eae5df);
+  background:linear-gradient(60deg, #FFF, #eae5df);
+}
+
+
+.bg-white{background-color: #FFF;}
+.bg-black{background-color: #000;}
+.bg-gray{background-color: #CCC;}
+.bg-yellow{background-color: #FFE045;}
+.bg-a{background-color: #d40044; }
+.bg-b{background-color: #298fff; }
+.bg-c{background-color: #ffd033; }
+
+
+
+
+/*//////*/
 .nogut {
     margin-left:  (@gutter / -2);
     margin-right: (@gutter / -2);
@@ -217,6 +262,11 @@ background-color: white;
 padding: 5px;
 
 }
+.pair_win200{height:200px;}
+.pair_win300{height:300px;}
+.pair_win400{height:400px;}
+.pair_win500{height:500px;}
+
 .numdot{
 background-color: gray; padding:0 3px;
 border-radius: 0 5px;
@@ -742,6 +792,12 @@ header .navbar-ring{padding:7px 15px; margin-top:50px; border:1px solid transpar
 .bird{background-color: yellow; color:black;}
 
 @media (max-width:768px){
+
+.pair_win200{height:100%;}
+.pair_win300{height:100%;}
+.pair_win400{height:100%;}
+.pair_win500{height:100%;}
+
     .bird{background-color: orange; color:black;}
 
     .tab-box-d{
@@ -796,4 +852,8 @@ margin: 1px auto;
     margin: 1px auto;
   }
   }
+
+
+
+
 
