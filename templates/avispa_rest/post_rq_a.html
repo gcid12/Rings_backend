@@ -102,18 +102,44 @@
                 </div> 
               </div>
 
+{% set numfields = request.args.get('n')|int %}
 
- 
-
-              {% set numfields = request.args.get('n')|int %}
-              
-              
-
-              {% for f in range( 1, numfields+1) %}
+        <div class="column"> <!-- A. START DRAG AREA -->
+        {% for f in range( 1, numfields+1) %}
               
 
               
-              <!-- N FIELD -->
+          <!-- N FIELD -->
+
+          <div class="portlet"> <!-- B. -->
+            <div class="portlet-header">
+                <table><tr>
+                  <td><span class="handler"><i class="fa fa-bars"></i></span></td>
+                  <td><span class="label label-danger">{{ f }}</span> </td>
+                  <td><input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text" placeholder="name"></td>
+                  <td>
+                    <select name="FieldWidget_{{ f }}">
+                          <option value="">SELECT ONE</option>
+                          <option>checkbox</option>
+                          <option>date</option>
+                          <option>file</option>
+                          <option>images</option>
+                          <option>location</option>
+                          <option>password</option>
+                          <option>radio</option>
+                          <option>select</option>
+                          <option selected="">text</option>
+                          <option>textarea</option>
+                          <option>url</option>
+                          <option>url_flickr</option>
+                          <option>url_video</option>
+                    </select>
+                  </td>
+                  <td><span class="tog"></span></td>
+                </tr></table>
+            </div> <!-- C1 -->
+            <div class="portlet-content"> <!-- C2. DETAILS -->
+
               <div class="rn-box-content ringbuilder">
                 <br/>
                 <table class="form-group" style="width:100%;">
@@ -122,14 +148,14 @@
                       <td style="text-align:left;" ><h2>&nbsp;&nbsp;&nbsp;{{ f }}</h2></td>
                       <td>
 
-                        UP | DOWN | DELETE
+                 
                         <br/><br/>
                       </td>
                     </tr>
                     <tr>
                       <td>field:name</td>
                       <td>
-                        <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text">
+                        <!-- <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text"> -->
                       </td>
                     </tr>
                     <tr>
@@ -158,22 +184,7 @@
                     <tr>
                       <td>field:widget</td>
                       <td>
-                        <select name="FieldWidget_{{ f }}">
-                          <option value="">SELECT ONE</option>
-                          <option>checkbox</option>
-                          <option>date</option>
-                          <option>file</option>
-                          <option>images</option>
-                          <option>location</option>
-                          <option>password</option>
-                          <option>radio</option>
-                          <option>select</option>
-                          <option selected="">text</option>
-                          <option>textarea</option>
-                          <option>url</option>
-                          <option>url_flickr</option>
-                          <option>url_video</option>
-                        </select>
+                        
                       </td>
                     </tr>
                     <tr>
@@ -221,11 +232,21 @@
                 </table>
               </div>
 
-              <!-- N FIELD END -->
-
-              {% endfor %}
+              qwerty
 
               <!-- SUBMIT -->
+
+            </div> <!-- C. PORTLET CONTENT -->
+          </div> <!-- B. CLOSE PORTLET -->
+        
+
+
+            <!-- N FIELD END -->
+
+        {% endfor %}
+        </div> <!-- A. CLOSE DRAG AREA  -->
+
+      </div>
 
               <div class="rn-box-content">
                 <br/>
@@ -257,7 +278,7 @@ TEST  1
 
 
 
-<div class="column">
+<!-- <div class="column">
   <div class="portlet">
     <div class="portlet-header">Feeds</div>
     <div class="portlet-content">qwerty</div>
@@ -278,7 +299,7 @@ TEST  1
     <div class="portlet-header">Images</div>
     <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
   </div>
-</div>
+</div> -->
 
 
  <style>
@@ -343,7 +364,7 @@ $(function() {
   $(".portlet-content").hide();
 $( ".column" ).sortable({
 connectWith: ".column",
-handle: ".portlet-header",
+handle: ".handler",
 cancel: ".portlet-toggle",
 placeholder: "portlet-placeholder ui-corner-all"
 });
@@ -351,7 +372,8 @@ $( ".portlet" )
 
   .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
   .find( ".portlet-header" )
-  .addClass( "ui-widget-header ui-corner-all" )
+  .addClass( "ui-widget-header ui-corner-all" );
+$(".tog")
   .prepend( "<i class='fa fa-minus-circle portlet-toggle'></i>");
 $( ".portlet-toggle" ).click(function() {
   var icon = $( this );
