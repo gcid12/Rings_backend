@@ -9,8 +9,9 @@
 
 
 <section>
-
+  
   {% if data.collection %} <!-- TABS WILL SHOW -->
+  {% if not data.raw %} 
     <div class="row">
       <div class="col-sm-12">
          <div class="rn-box">
@@ -20,9 +21,14 @@
         </div>     
       </div>
     </div>
+  {%endif%}
+  {%endif%}
+
+
       <!-- BOX CONTENT -->  
     <div class="row">
-
+      {% if data.collection %}
+      {% if not data.raw %} 
       <!-- COLUMN 1 -->
       <div class="col-sm-1 col-xs-12 omega">
         <a href="/{{ data.handle }}/_collections/{{ data.collection }}" class="text-center">
@@ -30,8 +36,7 @@
             <i class="fa fa-circle-o fa-1x"></i>
             <p class="visible-lg fs-0-6">Rings</p>
           </span>
-        </a>
-        
+        </a>      
         <a href="#" class="text-center">
           <span class="tab-box-d {% if tab=='mon' %}tab-on2{% endif %}">
             <i class="fa fa-crosshairs fa-1x"></i>
@@ -43,66 +48,33 @@
             <i class="fa fa-users fa-1x"></i>
             <p class="visible-lg fs-0-6">Collaborators</p>
           </span>
-        </a> 
-        
+        </a>  
         <a href="#" class="text-center">
           <span class="tab-box-d  {% if tab=='cam' %}tab-on2{% endif %}">
            <i class="fa fa-globe fa-1x"></i>
            <p class="visible-lg fs-0-6">Campaigns</p>
           </span>
         </a>
-
         <a href="#" class="text-center">
           <span class="tab-box-d  {% if tab=='set' %}tab-on2{% endif %}">
            <i class="fa fa-wrench fa-1x"></i>
            <p class="visible-lg fs-0-6">Settings</p>
           </span>
         </a> 
-
       </div>
-
-      <!-- COLUMN 2 -->
+ 
       <div class="col-sm-11 alpha" >
+      {% endif %}
+      {%endif%}
+        {% block tabcontent %}
+        {% endblock %}
+      {% if data.collection %} 
+      {% if not data.raw %} 
+      </div>
+      {%endif%}
+      {%endif%}
+    </div> 
 
-  {% endif %}
-
-      
-
-        <!-- RINGS -->
-        <div class="row">
-          <div class="col-sm-12 pl-40 pb-10" >
-  
-            {% if data.collection == '' or not data.collection %}
-
-               
-
-              <ol class="breadcrumb fs-1" style="padding:5px 15px 0 20px; ">
-                <li>
-                 {% if data.api_url is defined %}
-                   <a href="{{data.api_url}}" type="button" class="btn btn-vader btn-xs">{ }</a>
-                 {%endif%}
-                </li>
-                <li><div class="rn-hp5 pull-left">
-                <span class="label label-m">AVISPA</span></div> 
-                </li>    
-                <li><a href="/{{ data.handle }}">{{ data.handle }}</a> </li> 
-              {% block crumbs %}
-              {% endblock %}
-
-            {% endif %}
-            </ol>
-          </div> 
-        </div>
-        
-            {% block tabcontent %}
-
-            {% endblock %} 
-         
-
-  {% if 1+1== 2 %}        
-      </div><!--  close col-10 -->
-    </div> <!-- close row -->
-  {% endif %} <!-- CLOSING THE TABS, IN CASE TRUE -->
 
 
 </section>

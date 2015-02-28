@@ -25,11 +25,107 @@
         var eventer = window[eventMethod];
         var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
+
         // Listen to message from child window
         eventer(messageEvent,function(e) {
-          console.log('parent received message!:  ',e.data); 
-          newitem = "<div><a href="+e.data+">"+e.data+"</a></div>"
-            $( '#addeditem_{{ field.FieldOrder }}' ).append(newitem);
+            console.log(e)
+            if(e.origin !== '{{data.host_url}}') return;
+            
+            //http://stackoverflow.com/questions/10715801/javascript-decoding-html-entities
+            //var doc = $('<div/>').html(e.data).text();
+            //console.log('parent received message!:  ',doc); 
+            //var obj = jQuery.parseJSON(doc);
+            //console.log('JSON:',obj)
+
+            if(e.error){
+                alert(e.error);
+            }else{
+                console.log('will change the value')
+                var value = $( '#input_items_{{ field.FieldOrder }}' ).val();
+                console.log('val:'+value);
+
+                comma = '';
+                if(value != ''){ var comma = ','; } 
+                var canonical_uri = '{{data.host_url}}/'+e.data;          
+                $( '#input_items_{{ field.FieldOrder }}' ).val(value+comma+canonical_uri);
+                console.log('Value Changed');
+ 
+                
+                var api_url = '{{data.host_url}}/_api/'+e.data+'?schema=1';
+                var parts = e.data.split('/')
+                var handle = parts[0]
+                var ring = parts[1]
+                var idx = parts[2]
+
+                //out = '<iframe style="width:100%;" src="'+complete_url+'?raw=1"></iframe>'
+
+                $.get( api_url, function( data_raw ) {
+                    //$( ".result" ).html( data );
+                    console.log(data_raw);
+                    i = jQuery.parseJSON( data_raw );
+                    console.log(typeof data);
+                    console.log('data.items[0]:');
+
+                    console.log(i.items[0]);
+
+                    var widgets = new Array();
+                    for(f in i.fields){  
+                        ff = i.fields[f];
+                        console.log(ff);
+                        widgets[ff.FieldName] = ff.FieldWidget;
+                    }
+
+                    console.log(widgets);
+
+                    out = '';       
+
+                    out += '<div style="box-shadow: 1px 1px 2px #555555; border-radius: 5px; padding: 10px 25px 10px 25px;"><b><h4>'+ring+'</h4></b>';
+
+                    out += '<a class="iframe cboxElement" href="/'+e.data+'?raw=1" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>';
+
+                    out += '<a class="iframe cboxElement" href="/'+e.data+'?rq=put&raw=1" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>';
+
+                    out += '<a class="iframe cboxElement" href="/'+e.data+'?method=delete&raw=1" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>';
+
+                    out +='<br/>';
+
+                    out += '<table class="table table-condensed table-striped">';    
+                    for( p in i.items[0] ){
+                        //#REFACTOR This needs to be replaced soon .
+                        if(p != '_id'){
+                            console.log(p);
+                            out += '<tr>';
+                            out += '<td><b>'+p+'</b>:</td>';
+                            if(widgets[p]=='images'){
+                                ii = i.items[0][p];
+                                console.log(ii);
+                                if(typeof ii == 'object'){
+                                    img_list = ii;
+                                }else{
+                                    img_list = ii.split(',');
+                                }
+
+                                
+                                var content = ''
+                                for (img in img_list){
+                                    content += '<img style="width:75px;" src="{{data.host_url}}/_images/'+handle+'/t75/'+img_list[img]+'_t75.jpg" class="img-thumbnail" >';
+                                }
+                                
+                            }else{
+                                var content = i.items[0][p];
+                            }
+                            out += '<td>'+content+'</td>';
+                            out += '</tr>';
+                        }
+                    }
+                    out += '</table>';
+                    out +='</div>';
+                    console.log(out)
+                    $( '#addeditem_{{ field.FieldOrder }}' ).append(out);
+                });
+
+                
+            }
         },false);
 
 </script>

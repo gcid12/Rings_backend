@@ -17,6 +17,7 @@
 
 </head>
 <body>
+  {%if not data.raw%}
     {% with messages = get_flashed_messages() %}
       {% if messages %}
  
@@ -26,7 +27,9 @@
          
       {% endif %}
     {% endwith %}
+  {%endif%}
 <a name="top"></a>
+{%if not data.raw%}
 <header>
   <div class="topbar topbar-white" role="navigation">
     <div class="container-fluid">
@@ -63,10 +66,12 @@
     </div>
   </div>
 </header>
+{%endif%}
 
 
 <section class="">
   <div class="container-fluid">
+    {%if not data.raw%}
     <div class="row hidden-xs">
       <div class="col-sm-12">
         <div class="text-right">
@@ -78,21 +83,14 @@
         </div>
       </div>
     </div>
-    <div class="row scro_anchor">
-
-      <div class="col-sm-12">  
-      
-      {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
-      <br/>
-      
-
-
-        {% block content %}
-        {% endblock %}
-
+    {%endif%}
+    <div class="row">
+      <div class="col-sm-12">     
+        {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
+          {% block content %}
+          {% endblock %}
         <hr/>
       </div> <!-- close 9 -->
-   
     </div>
   </div>
 </section>       

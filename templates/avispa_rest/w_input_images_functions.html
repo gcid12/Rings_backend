@@ -44,9 +44,9 @@ myDropzone{{ field.FieldOrder }}.on("success", function(file,success) {
 
         }else{
             console.log('will change the value')
-    	  var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
+    	    var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
     	    console.log('val:'+value)
-    	  $( '#input_images_{{ field.FieldOrder }}' ).val(value+','+obj.imgid);
+    	    $( '#input_images_{{ field.FieldOrder }}' ).val(value+','+obj.imgid);
             console.log('Value Changed')
         }
   });

@@ -1,4 +1,5 @@
 import json, collections
+import urlparse, time, datetime
 from flask import redirect, flash
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
@@ -302,18 +303,18 @@ class AvispaRestFunc:
 
         return d
 
-    def get_rq_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
+    def get_rq_a_b(self,request,handle,ring,idx=False,api=False,collection=None,*args):
         # To find something inside of this ring
         d = {'message': 'Using get_rq_a_b for handle:'+handle+', ring:'+ring , 'template':'avispa_rest/get_rq_a_b.html'}
         return d
 
-    def get_rs_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
+    def get_rs_a_b(self,request,handle,ring,idx=False,api=False,collection=None,*args):
         d = {'message': 'Using get_rs_a_b for handle:'+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
 
     #POST /a/b
-    def post_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
+    def post_a_b(self,request,handle,ring,idx=False,api=False,collection=None,*args):
         '''
         Creates new item
         '''
@@ -323,8 +324,6 @@ class AvispaRestFunc:
         if idx:
             print('Awesome , you just saved the item to the DB')
             print('Item saved with id: '+idx)
-            
-
 
         if collection:
             if request.form.get('saveandnew'):
@@ -341,8 +340,33 @@ class AvispaRestFunc:
         print(redirect)
         flash("The new item has been created")
 
-        d = {'newresource':idx,'template':'avispa_rest/close_child_iframe.html'}
-        #d = {'redirect': redirect, 'status':201}
+        if 'raw' in request.args:
+            
+            '''
+            out = {}
+            out['items'] = self.AVM.get_a_b_c(request,handle,ring,idx)
+            schema= self.AVM.ring_get_schema(handle,ring)
+            out['fields']  = schema['fields']
+            out['rings']  = schema['rings']
+
+            o = urlparse.urlparse(request.url)
+            host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+            out['source'] = host_url+'/'+handle+'/'+ring+'/'+idx
+
+            data_string = json.dumps(out)
+
+            '''
+            o = urlparse.urlparse(request.url)
+            host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+            #data_string = host_url+'/'+handle+'/'+ring+'/'+idx
+            data_string = handle+'/'+ring+'/'+idx
+
+
+
+            d = {'data_string':data_string,'template':'avispa_rest/post_a_b_raw.html'}
+        else:      
+            d = {'redirect': redirect, 'status':201}
+
         return d
 
         #return redirect('/'+handle+'/'+ring)
