@@ -143,7 +143,7 @@
                       <td><textarea name="FieldSource_{{ f }}" class="form-control">{{ field.FieldSource }}</textarea></td>
                     </tr>
                     <tr>
-                      <td>field:widget</td>
+                      <td>field:widget</td> {{field.FieldWidget}}
                       <td>
                         <select name="FieldWidget_{{ f }}">
                           <option value="">SELECT ONE</option>
@@ -151,6 +151,7 @@
                           <option value="date" {% if field.FieldWidget == "date" %}selected{% endif %}>date</option>
                           <option value="file" {% if field.FieldWidget == "file" %}selected{% endif %}>file</option>
                           <option value="images" {% if field.FieldWidget == "images" %}selected{% endif %}>images</option>
+                          <option value="items" {% if field.FieldWidget == "items" %}selected{% endif %}>items</option>
                           <option value="location" {% if field.FieldWidget == "location" %}selected{% endif %}>location</option>
                           <option value="password" {% if field.FieldWidget == "password" %}selected{% endif %}>password</option>
                           <option value="radio" {% if field.FieldWidget == "radio" %}selected{% endif %}>radio</option>

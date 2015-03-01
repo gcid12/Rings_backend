@@ -63,6 +63,9 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     if collection:       
         data['collection'] = collection
 
+    if request.args.get("raw"):
+        data['raw'] = True 
+
 
     data['handle']=handle
     data['ring']=ring

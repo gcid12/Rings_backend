@@ -1,0 +1,31 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label" for='{{ field.FieldName }}'>{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+     <!--span>FieldCardinality:{{ field.FieldCardinality }}</span-->
+     
+    <div class="col-sm-10"> 
+    {% if not data.item[field.FieldName] %}
+
+        <input type="hidden" name="{{ field.FieldName }}" class="form-control" id="input_items_{{ field.FieldOrder }}" value="{{ data.item[field.FieldName] }}" />
+
+
+        <p>
+        {% for source in field.FieldSource.split(',') %}
+          {% set sourceparts = source.split('/') %}
+          {% set sourceparts2 = sourceparts[-1].split('?') %}
+          {%if separator %} | {%else%}{%set separator = True %}{%endif%}
+          <a class='iframe' href="{{source|trim}}?rq=post&raw=1">{{sourceparts2[0]|trim}}</a> 
+        {%endfor%}
+        </p>
+        <p id="addeditem_{{ field.FieldOrder }}"></p>
+
+            
+    {% else %}  
+    
+        <input name="{{ field.FieldName }}" class="form-control" id="text{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
+    
+    {% endif %}
+    </div>
+</div>
+
+
+                                    

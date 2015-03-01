@@ -17,18 +17,22 @@
 
           <div class="col-sm-12">
             <div class="rn-box-white gad100">
-              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection,data.user_authorizations) }} 
+            {% if not data.raw %}
+              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection,data.user_authorizations,data.idx) }} 
+            {% else %}
+              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121','' , '','','','',data.idx) }}
+            {% endif %}
             </div>
           {% if data.item %} 
-            <div class="rn-box-title-slim">
+            <!--div class="rn-box-title-slim">
               Showing item: {{ data.idx}}
-
-              
-            </div>
+            </div-->
             <div class="rn-box-solo">
               <div class="row">
                 
                   <div class="col-sm-5 col-md-4 col-lg-3">
+
+                    {% if not data.raw %}
                     <div class="form-group">
                       <label for="inputPassword3" class="control-label"></label>
                       <div class="">
@@ -42,11 +46,11 @@
                           
                       </div>
                     </div>
+                    {%endif%}
             
                   <form class="form-horizontal" role="form">
                     
                     <table class="table table-condensed table-striped">   
-
                        
                             {% for k,v in data.item.items() %}
                       <tr> 

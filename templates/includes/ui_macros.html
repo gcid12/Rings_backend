@@ -1,6 +1,6 @@
 
 
-  {% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations) %}
+  {% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
 
   <tr>
     <td> 
@@ -13,7 +13,7 @@
           <h3 class="fs-1-5">
             <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
             {% if 'get_a' in user_authorizations %}<a href="/{{ handle }}" class="nounder">{{origin}}</a>{%else%}{{origin}}{%endif%}/<span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
-            </a>{%else%}{{ring}}{%endif%}</span>
+            </a>{%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
           </h3>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
 
