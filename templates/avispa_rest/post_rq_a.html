@@ -19,64 +19,47 @@
 
 
         <div class="row">
-          <div class="col-sm-10">
-            <div class="rn-box-title">
-
-               <!-- Ring owner  -->Modeling new Ring 
-
-              <!-- <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                <i class="fa fa-question-circle"></i>
-              </button> -->
-
-            </div>
-            <div class="rn-box-solo">
-              <div class="row">
-                &nbsp;&nbsp;&nbsp; <strong>STEP 1.</strong> Fork a ring (optional, if you want to start from scratch skip to Step 2)
-                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                  <i class="fa fa-question-circle"></i>
-                </button> 
-              </div> 
-
-            </div>
-
-
-
-            <form id="post_rq_a" action="/{{ data.handle }}" method="POST" >
-            <div class="rn-box-content">
-              Load Parent Ring from this URL: <input name="ringurl" class="form-control" type="text"><br>
-              <!--input name="submit" value="load" type="submit"-->
-              <input name="submit" value="load and save" type="submit">
-            </div>
-             </form>
-
-            <div class="rn-box-solo">
-              <div class="row">
-                &nbsp;&nbsp;&nbsp; <strong>STEP 2.</strong> Define the Ring's characteristics
-                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                  <i class="fa fa-question-circle"></i>
+          <div class="col-sm-8">
+            <h1>Create a New Ring</h1>
+            <hr/>
+          </div>
+          <div class="col-sm-4">
+            <p class="fs-0-8">..Or maybe you prefer to Fork an existing Ring? 
+                <button type="button" class="btn btn-vader btn-sm" data-toggle="modal" data-target="#forkModal">
+                    <i class="fa fa-code-fork fa-2x"></i>
                 </button>
-              </div> 
-            </div>
+            </p>
 
-            <form class="form-horizontal" role="form" action="/{{ data.handle }}" method="POST">
-               
-              <!-- RING -->
-              <div class="rn-box-content">  
-              <br/>           
-                <div class="form-group">
-                  <label for="RingName" class="col-sm-2 control-label">ring:name</label>
-                  <div class="col-sm-10">
-                     <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new ring">
-                  </div>
-                  <label for="RingLabel" class="col-sm-2 control-label">ring:label</label>
-                  <div class="col-sm-10">
-                     <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label for this ring">
-                  </div>
-                  <label for="RingDescription" class="col-sm-2 control-label">ring:description</label>
-                  <div class="col-sm-10">
-                    <textarea name="RingDescription" class="form-control" rows="4" placeholder="What makes this ring unique?"></textarea>
-                  </div>
-                  <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
+          </div>
+        </div>
+
+        
+        <div class="row">
+          <div class="col-sm-2">
+            <h2 class="fs-4">1</h2> <p class=" text-s1 text-lgray fs-1-5">Ring Name and Description</p>
+
+          </div>
+          <div class="col-sm-10">
+
+            <div class="rn-box p-15">
+                <form class="form-horizontal" role="form" action="/{{ data.handle }}" method="POST">
+
+                
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
+                  <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new ring">
+                </div>
+                <!-- <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="sizing-addon1">label</span>
+                  <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label for this ring">
+                </div> -->
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="sizing-addon1">Description</span>
+                  <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" ></textarea>
+                </div>
+
+                
+                  <!-- <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
                   <div class="col-sm-10">
                     <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="if this ring is new it must be version 1">
                   </div>
@@ -87,301 +70,329 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">ring:build</label>
                   <div class="col-sm-10">
                     <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="">
-                  </div>
-                </div>
-              </div>
+                  </div> -->
+                
+            </div>
 
+          </div>
+        </div>
 
-              <div class="rn-box-solo">
-                <div class="row">
-                  &nbsp;&nbsp;&nbsp; <strong>STEP 3.</strong>  Define the Field's characteristics
-                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                  <i class="fa fa-question-circle"></i>
-                  </button>
-
-                </div> 
-              </div>
-
-{% set numfields = request.args.get('n')|int %}
-
-        <div class="column"> <!-- A. START DRAG AREA -->
-        {% for f in range( 1, numfields+1) %}
-              
-
-              
-          <!-- N FIELD -->
-
-          <div class="portlet"> <!-- B. -->
-            <div class="portlet-header">
-                <table><tr>
-                  <td><span class="handler"><i class="fa fa-bars"></i></span></td>
-                  <td><span class="label label-danger">{{ f }}</span> </td>
-                  <td><input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text" placeholder="name"></td>
-                  <td>
-                    <select name="FieldWidget_{{ f }}">
-                          <option value="">SELECT ONE</option>
-                          <option>checkbox</option>
-                          <option>date</option>
-                          <option>file</option>
-                          <option>images</option>
-                          <option>location</option>
-                          <option>password</option>
-                          <option>radio</option>
-                          <option>select</option>
-                          <option selected="">text</option>
-                          <option>textarea</option>
-                          <option>url</option>
-                          <option>url_flickr</option>
-                          <option>url_video</option>
-                    </select>
-                  </td>
-                  <td><span class="tog"></span></td>
-                </tr></table>
-            </div> <!-- C1 -->
-            <div class="portlet-content"> <!-- C2. DETAILS -->
-
-              <div class="rn-box-content ringbuilder">
-                <br/>
-                <table class="form-group" style="width:100%;">
-                  <tbody>
-                    <tr>
-                      <td style="text-align:left;" ><h2>&nbsp;&nbsp;&nbsp;{{ f }}</h2></td>
-                      <td>
-
-                 
-                        <br/><br/>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:name</td>
-                      <td>
-                        <!-- <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="text"> -->
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:label</td>
-                      <td><textarea name="FieldLabel_{{ f }}" class="form-control"></textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:semantic</td>
-                      <td><textarea name="FieldSemantic_{{ f }}" class="form-control"></textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:type</td>
-                      <td>
-                        <select name="FieldType_{{ f }}">
-                          <option value="">SELECT ONE</option>
-                          <option>INT</option>
-                          <option selected="">TEXT</option>
-                          <option>VARCHAR(120)</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:source</td>
-                      <td><textarea name="FieldSource_{{ f }}" class="form-control"></textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:widget</td>
-                      <td>
-                        
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:cardinality</td>
-                      <td>
-                        <select name="FieldCardinality_{{ f }}">
-                          <option>Single</option>
-                          <option>Multiple</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:multilingual</td>
-                      <td>
-                        <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:required</td>
-                      <td>
-                        <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:default</td>
-                      <td>
-                        <input name="FieldDefault_{{ f }}" value="" class="form-control" type="text"></td>
-                    </tr>
-                    <tr>
-                      <td>field:hint</td>
-                      <td>
-                        <textarea name="FieldHint_{{ f }}" class="form-control"></textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:layer</td>
-                      <td>
-                        <input name="FieldLayer_{{ f }}" value="" class="form-control" type="text"></td>
-                    </tr>
-                    <tr>
-                      <td>field:order</td>
-                      <td>
-                        <input name="FieldOrder_{{ f }}" value="{{ f }}" class="form-control" type="text"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              qwerty
-
-              <!-- SUBMIT -->
-
-            </div> <!-- C. PORTLET CONTENT -->
-          </div> <!-- B. CLOSE PORTLET -->
-        
-
-
-            <!-- N FIELD END -->
-
-        {% endfor %}
-        </div> <!-- A. CLOSE DRAG AREA  -->
-
-      </div>
-
-              <div class="rn-box-content">
-                <br/>
-                <div class="form-group">
-                  <label for="inputPassword3" class="col-sm-2 control-label"></label>
-                  <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
-                  </div>
-                </div>
-              </div>
-
-              <!-- SUBMIT END -->
-              <!-- RING END -->
-
-            </form> 
-          </div> 
+        <div class="row">
+          <div class="col-sm-12">
+            <hr/>
+          </div>          
         </div>
 
 
-  </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <h2 class="fs-4 ">2</h2> <p class="text-s1 text-lgray fs-1-5">Ring fields</p>
+              
+          </div>
+          <div class="col-sm-10">
+            
+  
+              {% set numfields = request.args.get('n')|int %}
+
+              <div id="columnfields"> <!-- A. START DRAG AREA -->
+              {% for f in range( 1, numfields+1) %}
+                    
+
+                <div id="portlet_{{ f }}" class="portlet"> <!-- B. -->
+
+
+                  <!-- THE VALUE TO WRITE -->
+                  <input id="tagvalue_{{ f }}" type="hidden" name="FieldLayer_{{ f }}" value="">
+
+                  <div class="tagged{{ f }} portlet-header bt-7">
+                  <!-- <div id="tagged{{ f }}" class="bt-7">G</div> -->
+                    <table>
+                      <tr>
+                        <td><span class="handler m-10" ><i class="fa fa-bars fa-1x text-white"></i></span></td>
+                        <td>
+                          <span class="label label-danger m-10">{{ f }}</span>
+                          
+                        </td>
+                        <td style="width:40%;">
+                          <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control input-sm" type="text" placeholder="name">
+                        </td>
+                        <td>
+                          <select name="FieldWidget_{{ f }}" class="form-control input-sm" style="background-color:#666; color:white;">
+                                <option value="">SELECT ONE</option>
+                                <option>checkbox</option>
+                                <option>date</option>
+                                <option>file</option>
+                                <option>images</option>
+                                <option>location</option>
+                                <option>password</option>
+                                <option>radio</option>
+                                <option>select</option>
+                                <option selected="">text</option>
+                                <option>textarea</option>
+                                <option>url</option>
+                                <option>url_flickr</option>
+                                <option>url_video</option>
+                          </select>
+                        </td>
+                        <td style="background-color:red; " >
+                          
+                            <!-- <div class="input-group input-group-sm m-10">
+                              <span class="input-group-addon" id="sizing-addon1">*Source</span>
+                              <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="source"/>
+                            </div> -->
+                        </td>
+                        <td><span class="tog"></span></td>
+                      </tr>
+                    </table>
+                  </div> <!-- C1 -->
+                  <div class="portlet-content"> <!-- C2. DETAILS -->
+
+                      <div class="row">
+                        <div class="col-sm-7">
+                          
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox">
+                              required
+                            </span>
+
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox">
+                              multilingual
+                            </span>
+
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldCardinality_{{ f }}" value="TRUE" type="checkbox">
+                              cardinal
+                            </span>
+
+                            
+
+                            <hr/>
+                            
+                            <div class="input-group input-group-sm">
+                                  <span class="input-group-addon" id="sizing-addon1">Field Hint</span>
+                                  <input type="text" name="FieldHint_{{ f }}" class="form-control" placeholder="What people see before typing "/>
+                            </div>
+
+                            <div class="input-group input-group-sm">
+                                  <span class="input-group-addon" id="sizing-addon1">Source</span>
+                                  <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="URI of "/>
+                            </div>
+                              
+                              <!-- <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1">Default</span>
+                                <input type="text" name="FieldDefault_{{ f }}" class="form-control" placeholder="in case you want to leave this"/>
+                              </div> -->
+                              <input type="hidden" name="FieldDefault_{{ f }}">
+                             
+                        </div>
+                        <div class="col-sm-5">
+
+                          <table>
+                            <tr>
+                              <td><div id="tag1-{{ f }}" class="treset{{ f }} r-tag bt-0 bb-1"></div></td>
+                              <td><div id="tag2-{{ f }}" class="treset{{ f }} r-tag bt-0 bb-2"></div></td>
+                              <td><div id="tag3-{{ f }}" class="treset{{ f }} r-tag bt-0 bb-3"></div></td>
+                              <td><div id="tag4-{{ f }}" class="treset{{ f }} r-tag bt-0 bb-4"></div></td>
+                              <td><div id="tag5-{{ f }}" class="treset{{ f }} r-tag bt-0 bb-5"></div></td>
+                              <td><div id="tag6-{{ f }}" class="treset{{ f }} r-tag bt-0 bb-6"></div></td>
+                              <td><div id="tag7-{{ f }}" class="treset{{ f }} r-tag bt-7 bb-7"></div></td>
+                            </tr>
+                          </table>
+
+                          <hr/>
+
+
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon" id="sizing-addon1">Context</span>
+                            <textarea name="FieldSemantic_{{ f }}" class="form-control" placeholder="please provide context of what this field is. You can post a link to wikipedia or other website" rows="4" style="height:100%; width:100%;"></textarea>
+                          </div>
+                          <div class="input-group input-group-sm">
+                              <span class="input-group-addon" id="sizing-addon1">label</span>
+                              <input type="text" name="FieldLabel_{{ f }}" class="form-control" placeholder="label"/>
+                            </div> 
+                          
+
+                        </div>
+                        
+
+                      </div><!-- CLOSE ROW 1 -->
+
+                            <!-- NEW ORDER -->
+
+                            
+
+                            <!-- TYPE -->
+                            <!-- <select name="FieldType_{{ f }}">
+                                      <option value="">SELECT ONE</option>
+                                      <option>INT</option>
+                                      <option selected="">TEXT</option>
+                                      <option>VARCHAR(120)</option>
+                            </select> -->
+                            <input type="hidden" name="FieldType_{{ f }}">
+
+                            <div class="input-group input-group-sm">
+                              <!-- <span class="input-group-addon" id="sizing-addon1">Order</span>
+                              <input type="text" name="FieldOrder_{{ f }}" value="" class="form-control" placeholder="Order"/> -->
+                              <input type="hidden" name="FieldOrder_{{ f }}">
+                            </div>
+                    <!-- SUBMIT -->
+                  </div> <!-- C. PORTLET CONTENT -->
+                </div> <!-- B. CLOSE PORTLET -->
+
+                <script type="text/javascript">
+                    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
+                    var allbb= "bb-1 bb-2 bb-3 bb-4 bb-5 bb-6 bb-7 ";
+
+                      $(document).ready(function(){
+
+                        
+                        $("#tag1-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-1");
+                          $("#tagvalue_{{ f }}").attr("value","1");
+                        }); 
+                        $("#tag2-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-2");
+                          $("#tagvalue_{{ f }}").attr("value","2");
+                        }); 
+                        $("#tag3-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-3");
+                          $("#tagvalue_{{ f }}").attr("value","3");
+                        }); 
+                        $("#tag4-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-4");
+                          $("#tagvalue_{{ f }}").attr("value","4");
+                        }); 
+                        $("#tag5-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-5");
+                          $("#tagvalue_{{ f }}").attr("value","5");
+                        }); 
+                        $("#tag6-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-6");
+                          $("#tagvalue_{{ f }}").attr("value","6");
+                        }); 
+                        $("#tag7-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-7");
+                          $("#tagvalue_{{ f }}").attr("value","7");
+                        }); 
+
+                        
+                       
+                      });
+                </script>
+                  <!-- N FIELD END -->
+
+              {% endfor %}
+              </div> <!-- A. CLOSE COLUMN  -->
+
+            
+          </div><!-- CLOSE COLSM12 -->
+        </div><!-- CLOSE ROW -->
+
+        <div class="row">
+          <div class="col-sm-12">
+            <hr/>
+          </div>          
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2">
+            
+            <h2 class="fs-4 ">3</h2> <p class="text-s1 text-lgray fs-1-5">Save</p>
+          </div>
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a> 
+
+          </div>
+        </div>
+
+  </div> <!-- CLOSE CONTAINER -->
 </section>
 
-TEST  1
 
 
-
-
-
-
-
-<!-- <div class="column">
-  <div class="portlet">
-    <div class="portlet-header">Feeds</div>
-    <div class="portlet-content">qwerty</div>
+<!-- ForkModal -->
+<div class="modal fade" id="forkModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-code-fork fa-2x"></i> Fork existing Ring</h4>
+      </div>
+      <div class="modal-body">
+        <form id="post_rq_a" action="/{{ data.handle }}" method="POST" >
+              
+           Load Parent Ring from this URL: <input name="ringurl" class="form-control" type="text">
+      </div>
+      <div class="modal-footer">
+        <input name="submit" value="load and save" type="submit" class="btn btn-success">
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="portlet">
-    <div class="portlet-header">News</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
-  <div class="portlet">
-    <div class="portlet-header">Shopping</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
-  <div class="portlet">
-    <div class="portlet-header">Links</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
-  <div class="portlet">
-    <div class="portlet-header">Images</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
-</div> -->
-
-
- <style>
-body {
-min-width: 520px;
-}
-.column {
-width: 100%;
-float: left;
-padding-bottom: 100px;
-}
-.portlet {
-margin: 0 1em 1em 0;
-padding: 0em;
-}
-.portlet-header {
-padding: 0.2em 0em;
-margin-bottom: 0em;
-position: relative;
-}
-.portlet-toggle {
-position: absolute;
-top: 50%;
-right: 10px;
-margin-top: -8px;
-}
-.portlet-content {
-padding: 0.4em;
-background-color: yellow;
-margin-left:10px;
-}
-.portlet-placeholder {
-border: 1px dotted black;
-margin: 0 1em 1em 0;
-height: 50px;
-}
-
-/*FROM JQUERY UI*/
-
-
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background: url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCC;
-    color: #222;
-    font-weight: bold;
-}
-.ui-sortable-handle {
-}
-.ui-widget-content {
-    color: #222;
-}
-.ui-widget {
-    font-family: Verdana,Arial,sans-serif;
-    font-size: 1.1em;
-}
+</div>
 
 
 
-</style>
+
+
 <script>
+
+//PORTLET
 $(function() {
   $(".portlet-content").hide();
-$( ".column" ).sortable({
-connectWith: ".column",
-handle: ".handler",
-cancel: ".portlet-toggle",
-placeholder: "portlet-placeholder ui-corner-all"
-});
-$( ".portlet" )
+  $( "#columnfields" ).sortable({
+  // connectWith: ".columnfields",
+  handle: ".handler",
+  cancel: ".portlet-toggle",
+  placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
+  opacity:0.7,
+  cursor: "move",
+  axis: 'y',
+  stop: function(event,ui){
+    var pOrder = $(this).sortable('toArray').toString();
+    $(".exit").prepend( pOrder);
+  }
 
-  .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-  .find( ".portlet-header" )
-  .addClass( "ui-widget-header ui-corner-all" );
-$(".tog")
-  .prepend( "<i class='fa fa-minus-circle portlet-toggle'></i>");
-$( ".portlet-toggle" ).click(function() {
-  var icon = $( this );
-  icon.toggleClass( "fa-minus-circle fa-plus-circle" );
-  icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+
+  });
+  $( ".portlet" )
+
+    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+    .find( ".portlet-header" )
+    .addClass( "ui-widget-header ui-corner-all" );
+
+  $(".tog")
+    .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
+  $( ".portlet-toggle" ).click(function() {
+    var icon = $( this );
+    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+  });
+
+  $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
+
+
 });
-});
+
+
 </script>
+
 
 
 
