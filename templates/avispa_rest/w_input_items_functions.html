@@ -1,5 +1,39 @@
 <script type="text/javascript">
     $(document).ready(function(){
+        
+        var value = $( '#input_items_{{ field.FieldOrder }}' ).val();
+        var items = value.split(',');
+        console.log(items)
+        for(i in items){
+            //item is a URI, you need to subtract host,handle,ring,idx from it
+            //  http://127.0.0.1:8080/_api/blalab/chiles/4033241872
+            console.log(items[i]);
+            item_parts = items[i].split('/');
+            console.log('item_parts:');
+            console.log(item_parts);
+            host = item_parts[0]+'//'+item_parts[2];
+
+            if(item_parts[3]=='_api'){
+                handle = item_parts[4];
+                ring = item_parts[5]
+                idx = item_parts[6];
+            }else{
+                handle = item_parts[3];
+                ring = item_parts[4];
+                idx = item_parts[5];
+            }
+            
+            if(load_item_preview(host,handle,ring,idx)){
+                console.log('Item added to the interface');
+            }else{
+                console.log('Item could not be added to the interface');
+            }
+        }
+
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
         $(".iframe").colorbox({
             iframe:true, 
             width:"80%", 
@@ -16,7 +50,82 @@
         });
 
 
+
     });
+</script>
+<script type="text/javascript">
+    
+    function load_item_preview(host,handle,ring,idx){
+
+        var api_url = host+'/_api/'+handle+'/'+ring+'/'+idx+'?schema=1'
+
+
+        $.get( api_url, function( data_raw ) {
+            //$( ".result" ).html( data );
+            console.log(data_raw);
+            i = jQuery.parseJSON( data_raw );
+
+            console.log(i.items[0]);
+
+            var widgets = new Array();
+            for(f in i.fields){  
+                ff = i.fields[f];
+                console.log(ff);
+                widgets[ff.FieldName] = ff.FieldWidget;
+            }
+
+            console.log(widgets);
+
+            out = '';       
+
+            out += '<div style="box-shadow: 1px 1px 2px #555555; border-radius: 5px; padding: 10px 25px 10px 25px;"><b><h4>'+ring+'</h4></b>';
+
+            out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?raw=1" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>';
+
+            out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?rq=put&raw=1" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>';
+
+            out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?method=delete&raw=1" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>';
+
+            out +='<br/>';
+
+            out += '<table class="table table-condensed table-striped">';    
+            for( p in i.items[0] ){
+                //#REFACTOR This needs to be replaced soon .
+                if(p != '_id'){
+                    console.log(p);
+                    out += '<tr>';
+                    out += '<td><b>'+p+'</b>:</td>';
+                    if(widgets[p]=='images'){
+                        ii = i.items[0][p];
+                        console.log(ii);
+                        if(typeof ii == 'object'){
+                            img_list = ii;
+                        }else{
+                            img_list = ii.split(',');
+                        }
+
+                        
+                        var content = ''
+                        for (img in img_list){
+                            content += '<img style="width:75px;" src="{{data.host_url}}/_images/'+handle+'/t75/'+img_list[img]+'_t75.jpg" class="img-thumbnail" >';
+                        }
+                        
+                    }else{
+                        var content = i.items[0][p];
+                    }
+                    out += '<td>'+content+'</td>';
+                    out += '</tr>';
+                }
+            }
+            out += '</table>';
+            out +='</div>';
+            console.log(out)
+            $( '#addeditem_{{ field.FieldOrder }}' ).append(out);
+        });
+
+        return true;
+
+    }
 </script>
 <script type="text/javascript">
     
@@ -24,6 +133,7 @@
         var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
         var eventer = window[eventMethod];
         var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
 
 
         // Listen to message from child window
@@ -40,89 +150,31 @@
             if(e.error){
                 alert(e.error);
             }else{
-                console.log('will change the value')
+                //console.log('will change the value')
                 var value = $( '#input_items_{{ field.FieldOrder }}' ).val();
-                console.log('val:'+value);
+                //console.log('val:'+value);
 
                 comma = '';
                 if(value != ''){ var comma = ','; } 
                 var canonical_uri = '{{data.host_url}}/'+e.data;          
                 $( '#input_items_{{ field.FieldOrder }}' ).val(value+comma+canonical_uri);
                 console.log('Value Changed');
- 
-                
-                var api_url = '{{data.host_url}}/_api/'+e.data+'?schema=1';
+  
                 var parts = e.data.split('/')
+                var host = '{{data.host_url}}'
                 var handle = parts[0]
                 var ring = parts[1]
                 var idx = parts[2]
 
                 //out = '<iframe style="width:100%;" src="'+complete_url+'?raw=1"></iframe>'
 
-                $.get( api_url, function( data_raw ) {
-                    //$( ".result" ).html( data );
-                    console.log(data_raw);
-                    i = jQuery.parseJSON( data_raw );
-                    console.log(typeof data);
-                    console.log('data.items[0]:');
+                if(load_item_preview(host,handle,ring,idx)){
+                    console.log('Item added to the interface');
+                }else{
+                    console.log('Item could not be added to the interface');
+                }
 
-                    console.log(i.items[0]);
-
-                    var widgets = new Array();
-                    for(f in i.fields){  
-                        ff = i.fields[f];
-                        console.log(ff);
-                        widgets[ff.FieldName] = ff.FieldWidget;
-                    }
-
-                    console.log(widgets);
-
-                    out = '';       
-
-                    out += '<div style="box-shadow: 1px 1px 2px #555555; border-radius: 5px; padding: 10px 25px 10px 25px;"><b><h4>'+ring+'</h4></b>';
-
-                    out += '<a class="iframe cboxElement" href="/'+e.data+'?raw=1" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>';
-
-                    out += '<a class="iframe cboxElement" href="/'+e.data+'?rq=put&raw=1" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>';
-
-                    out += '<a class="iframe cboxElement" href="/'+e.data+'?method=delete&raw=1" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>';
-
-                    out +='<br/>';
-
-                    out += '<table class="table table-condensed table-striped">';    
-                    for( p in i.items[0] ){
-                        //#REFACTOR This needs to be replaced soon .
-                        if(p != '_id'){
-                            console.log(p);
-                            out += '<tr>';
-                            out += '<td><b>'+p+'</b>:</td>';
-                            if(widgets[p]=='images'){
-                                ii = i.items[0][p];
-                                console.log(ii);
-                                if(typeof ii == 'object'){
-                                    img_list = ii;
-                                }else{
-                                    img_list = ii.split(',');
-                                }
-
-                                
-                                var content = ''
-                                for (img in img_list){
-                                    content += '<img style="width:75px;" src="{{data.host_url}}/_images/'+handle+'/t75/'+img_list[img]+'_t75.jpg" class="img-thumbnail" >';
-                                }
-                                
-                            }else{
-                                var content = i.items[0][p];
-                            }
-                            out += '<td>'+content+'</td>';
-                            out += '</tr>';
-                        }
-                    }
-                    out += '</table>';
-                    out +='</div>';
-                    console.log(out)
-                    $( '#addeditem_{{ field.FieldOrder }}' ).append(out);
-                });
+                
 
                 
             }
