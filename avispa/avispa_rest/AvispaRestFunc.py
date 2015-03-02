@@ -340,30 +340,14 @@ class AvispaRestFunc:
         print(redirect)
         flash("The new item has been created")
 
-        if 'raw' in request.args:
-            
-            '''
-            out = {}
-            out['items'] = self.AVM.get_a_b_c(request,handle,ring,idx)
-            schema= self.AVM.ring_get_schema(handle,ring)
-            out['fields']  = schema['fields']
-            out['rings']  = schema['rings']
-
-            o = urlparse.urlparse(request.url)
-            host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-            out['source'] = host_url+'/'+handle+'/'+ring+'/'+idx
-
-            data_string = json.dumps(out)
-
-            '''
-            o = urlparse.urlparse(request.url)
-            host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-            #data_string = host_url+'/'+handle+'/'+ring+'/'+idx
-            data_string = handle+'/'+ring+'/'+idx
-
-
-
-            d = {'data_string':data_string,'template':'avispa_rest/post_a_b_raw.html'}
+        if 'raw' in request.args:          
+            #o = urlparse.urlparse(request.url)
+            #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+            m = {}
+            m['uri'] = handle+'/'+ring+'/'+idx
+            m['ui_action'] = 'post'
+            message = json.dumps(m)
+            d = {'message':message,'template':'avispa_rest/post_a_b_raw.html'}
         else:      
             d = {'redirect': redirect, 'status':201}
 
@@ -631,9 +615,17 @@ class AvispaRestFunc:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring     
             else:
                 redirect = '/'+handle+'/'+ring
-                
 
-            d = {'redirect': redirect, 'status':200}
+            if 'raw' in request.args:          
+                #o = urlparse.urlparse(request.url)
+                #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+                m = {}
+                m['uri'] = handle+'/'+ring+'/'+idx
+                m['ui_action'] = 'put'
+                message = json.dumps(m)
+                d = {'message':message,'template':'avispa_rest/put_a_b_c_raw.html'}
+            else:      
+                d = {'redirect': redirect, 'status':201}
 
         else:
             d = {'message': 'There was an error updating this item' , 'template':'avispa_rest/index.html'}
@@ -714,9 +706,21 @@ class AvispaRestFunc:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
             else:
                 redirect = '/'+handle+'/'+ring
+
+
+            if 'raw' in request.args:          
+                #o = urlparse.urlparse(request.url)
+                #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+                m = {}
+                m['uri'] = handle+'/'+ring+'/'+idx
+                m['ui_action'] = 'delete'
+                message = json.dumps(m)
+                d = {'message':message,'template':'avispa_rest/delete_a_b_c_raw.html'}
+            else:      
+                d = {'redirect': redirect, 'status':200}
                 
 
-            d = {'redirect': redirect, 'status':200}
+            
 
         else:
             d = {'message': 'There was an error deleting this item' , 'template':'avispa_rest/index.html'}

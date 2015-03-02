@@ -53,6 +53,19 @@ $('#userNameField').tooltip({
 $('#userNameField').tooltip('show');
 </script>
 
+{% if data.raw %}
+<script type="text/javascript">
+if(parent){
+	var h = $( 'body' ).height();
+	console.log('iframe should have this height:'+h)
+	console.log(parent)
+	parent.$.fn.colorbox.resize({
+		'innerHeight':h
+	});
+}
+</script>
+{%endif%}
+
 <!-- SCRIPT FOR SCROLLER STOP -->
 <!--script>
 // This function will be executed when the user scrolls the page.
