@@ -16,19 +16,20 @@
 <!-- START NEW CONTENT --> 
 
           <div class="col-sm-12">
-            <div class="rn-box-white gad100">
             {% if not data.raw %}
+            <div class="rn-box-white gad100">
+            
               {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection,data.user_authorizations,data.idx) }} 
-            {% else %}
-              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121','' , '','','','',data.idx) }}
-            {% endif %}
+            
             </div>
+            {% endif %}
           {% if data.item %} 
             <!--div class="rn-box-title-slim">
               Showing item: {{ data.idx}}
             </div-->
             <div class="rn-box-solo">
               <div class="row">
+                  <h3>{{data.ring}}</h3>
                 
                   <div class="col-sm-5 col-md-4 col-lg-3">
 
@@ -102,7 +103,7 @@
                           {% endif %}
 
                         {% endfor %} 
-                        <hr/>   
+                          
 
                         </div>         
 
@@ -160,7 +161,7 @@
       {% endif %}
 
     {% endfor %} 
-    <hr/>            
+               
 
   {% endif %}
 {% endfor %}

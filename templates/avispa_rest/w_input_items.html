@@ -3,7 +3,8 @@
      <!--span>FieldCardinality:{{ field.FieldCardinality }}</span-->
      
     <div class="col-sm-10"> 
-    {% if not data.item[field.FieldName] %}
+    {#% if not data.item[field.FieldName] %#}
+    {% if True %}
 
         <input type="hidden" name="{{ field.FieldName }}" class="form-control" id="input_items_{{ field.FieldOrder }}" value="{{ data.item[field.FieldName] }}" />
 
