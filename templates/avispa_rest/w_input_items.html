@@ -6,7 +6,7 @@
     {#% if not data.item[field.FieldName] %#}
     {% if True %}
 
-        <input type="hidden" name="{{ field.FieldName }}" class="form-control" id="input_items_{{ field.FieldOrder }}" value="{{ data.item[field.FieldName] }}" />
+        <input type="text" name="{{ field.FieldName }}" class="form-control" id="input_items_{{ field.FieldOrder }}" value="{{ data.item[field.FieldName] }}" />
 
 
         <p>

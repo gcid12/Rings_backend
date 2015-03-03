@@ -26,10 +26,10 @@
                         idx = item_parts[5];
                     }
                     
-                    if(load_item_preview(host,handle,ring,idx)){
-                        console.log('Item added to the interface');
+                    if(load_item_preview(host,handle,ring,idx,'get')){
+                        console.log('Item retrieved and placed in the interface');
                     }else{
-                        console.log('Item could not be added to the interface');
+                        console.log('Item could not be placed in the interface');
                     }
                 }
             }
@@ -38,32 +38,12 @@
     });
 </script>
 <script type="text/javascript">
-    $(document).ready(function(){
-        $(".iframe").colorbox({
-            transition:"none",
-            iframe:true, 
-            width:"50%", 
-            height:"80%",
-            opacity:0.7
-        });
-
-        $(".callbacks").colorbox({
-            onOpen:function(){ alert('onOpen: colorbox is about to open'); },
-            onLoad:function(){ alert('onLoad: colorbox has started to load the targeted content'); },
-            onComplete:function(){ alert('onComplete: colorbox has displayed the loaded content'); },
-            onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
-            onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
-        });
-
-
-
-    });
-</script>
-<script type="text/javascript">
     
-    function load_item_preview(host,handle,ring,idx){
+    function load_item_preview(host,handle,ring,idx,action){
 
-        var api_url = host+'/_api/'+handle+'/'+ring+'/'+idx+'?schema=1'
+        var api_url = host+'/_api/'+handle+'/'+ring+'/'+idx+'?schema=1';
+        var canonical_uri = host+'/'+handle+'/'+ring+'/'+idx;
+        var slug_uri = 'u'+canonical_uri.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
 
 
         $.get( api_url, function( data_raw ) {
@@ -84,7 +64,7 @@
 
             out = '';       
 
-            out += '<div style="box-shadow: 1px 1px 2px #555555; border-radius: 5px; padding: 10px 25px 10px 25px;"><b><h4>'+ring+'</h4></b>';
+            out += '<div id="'+slug_uri+'" style="box-shadow: 1px 1px 2px #555555; border-radius: 5px; padding: 10px 25px 10px 25px;"><b><h4>'+ring+'</h4></b>';
 
             out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?raw=1" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>';
 
@@ -126,7 +106,14 @@
             out += '</table>';
             out +='</div>';
             console.log(out)
-            $( '#addeditem_{{ field.FieldOrder }}' ).append(out);
+
+            if(action=='post' || action=='get'){
+                $( '#addeditem_{{ field.FieldOrder }}' ).append(out);
+            }else if(action=='put'){
+                $( "#"+slug_uri ).replaceWith( out );
+            }
+
+            
 
             $(".iframe").colorbox({
                         transition:"none",
@@ -140,6 +127,28 @@
         return true;
 
     }
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".iframe").colorbox({
+            transition:"none",
+            iframe:true, 
+            width:"50%", 
+            height:"80%",
+            opacity:0.7
+        });
+
+        $(".callbacks").colorbox({
+            onOpen:function(){ alert('onOpen: colorbox is about to open'); },
+            onLoad:function(){ alert('onLoad: colorbox has started to load the targeted content'); },
+            onComplete:function(){ alert('onComplete: colorbox has displayed the loaded content'); },
+            onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
+            onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
+        });
+
+
+
+    });
 </script>
 <script type="text/javascript">
     
@@ -175,11 +184,13 @@
                 var obj = jQuery.parseJSON(data);
                 console.log(obj)
 
+                var canonical_uri = '{{data.host_url}}/'+obj.uri;
+                var slug_uri = 'u'+canonical_uri.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+
                 if(obj.ui_action=='post'){
                     //Create this item in the UI
                     comma = '';
-                    if(value != ''){ var comma = ','; }
-                    var canonical_uri = '{{data.host_url}}/'+obj.uri;          
+                    if(value != ''){ var comma = ','; }                
                     $( '#input_items_{{ field.FieldOrder }}' ).val(value+comma+canonical_uri);
                     console.log('Value Changed');
 
@@ -189,18 +200,41 @@
                     var ring = parts[1]
                     var idx = parts[2]
 
-                    if(load_item_preview(host,handle,ring,idx)){  
+                    if(load_item_preview(host,handle,ring,idx,obj.ui_action)){  
                         console.log('Item added to the interface');
                     }else{
                         console.log('Item could not be added to the interface');
                     }
 
 
-                }else if(obj.ui_action=='put'){
+                }else if(obj.ui_action=='put'){  
+                    //Make the load_item_preview function reload in the id=slug_uri
                     // Refresh this item in the UI
+                    var parts = obj.uri.split('/')
+                    var host = '{{data.host_url}}'
+                    var handle = parts[0]
+                    var ring = parts[1]
+                    var idx = parts[2]
+                    
+                    if(load_item_preview(host,handle,ring,idx,obj.ui_action)){  
+                        console.log('Item updated in the interface');
+                    }else{
+                        console.log('Item could not be updated in the interface');
+                    }
 
                 }else if(obj.ui_action=='delete'){
                     // Delete this item from the UI
+                    valueparts = value.split(',')
+                    var key = jQuery.inArray( canonical_uri, valueparts )
+                    valueparts.splice(key)
+                    value = valueparts.join()
+                    $( '#input_items_{{ field.FieldOrder }}' ).val(value);
+                    //Find the part and remove it
+                    console.log('Remove id:'+slug_uri)
+                    //Remove id:uhttp1270018080blalabchiles1523381356
+                    //          uhttp1270018080blalabchiles1523381356
+                    
+                    $( "#"+slug_uri ).remove();
 
                 }
 

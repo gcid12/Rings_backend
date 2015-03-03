@@ -701,7 +701,7 @@ class AvispaRestFunc:
         if result:
             print('Item deleted..')
             #msg = 'Item put with id: '+idx
-            flash('Item deleted.. Collection:'+collection)
+            flash('Item deleted..')
             if collection:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
             else:
