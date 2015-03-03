@@ -66,11 +66,11 @@
 
             out += '<div id="'+slug_uri+'" style="box-shadow: 1px 1px 2px #555555; border-radius: 5px; padding: 10px 25px 10px 25px;"><b><h4>'+ring+'</h4></b>';
 
-            out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?raw=1" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>';
+            //out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?raw=1" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>';
 
             out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?rq=put&raw=1" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>';
 
-            out += '<a class="iframe cboxElement" href="/'+handle+'/'+ring+'/'+idx+'?method=delete&raw=1" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>';
+            out += '<a class="iframe cboxElement pull-right" href="/'+handle+'/'+ring+'/'+idx+'?method=delete&raw=1" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>';
 
             out +='<br/>';
 
@@ -215,7 +215,7 @@
                     var handle = parts[0]
                     var ring = parts[1]
                     var idx = parts[2]
-                    
+
                     if(load_item_preview(host,handle,ring,idx,obj.ui_action)){  
                         console.log('Item updated in the interface');
                     }else{
