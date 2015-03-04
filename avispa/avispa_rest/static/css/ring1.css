@@ -88,6 +88,7 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .fc-h{color:#d40044;} /*red*/
 .fc-i{color:#28b62c;} /*green*/
 .fc-j{color:#80deff;} /*superlightblue*/
+.fc-k{color:#c9a614;} /*darkyellow*/
 
 
 .lh-0-5{line-height:0.5em;}
@@ -210,6 +211,17 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
   background-size: cover;
 }
 
+.bg-hand{  
+  
+  background: url(/static/images/csiri.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color:#ffe045;
+}
+
+
   .bg-05{  
   background: url(../images/grass4.jpg), -webkit-linear-gradient(60deg, #FFF, #eae5df);
   background: url(../images/grass4.jpg), -o-linear-gradient(60deg, #FFF, #eae5df);
@@ -276,6 +288,26 @@ border-style:solid;
 border-width:1px;
 margin:2px 3px 2px 0;
 }
+
+
+/*STYLED FORM*/
+.remove-s{
+    -webkit-appearance: none;
+    border: 0px solid #000;
+    border-width: 0px 0px 1px 1px;
+    background-color: #FFE045;
+
+}
+
+
+.remove-b{
+    -webkit-appearance: none;
+    border: 0px solid #000;
+    background-color: #FFE045;
+    padding: 10px;
+
+}
+
 
 
 

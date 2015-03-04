@@ -17,6 +17,21 @@ def s1():
 
 
 
+@sandbox.route("/landing", methods=["GET", "POST"])
+#@login_required
+def landing():
+
+    flash("User not active")
+
+    data = {}
+    #t = time.time()
+    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    data['section_name']= ""
+    
+    return render_template("/sandbox/landing.html", data=data)
+
+
+
 @sandbox.route("/landing_tech", methods=["GET", "POST"])
 #@login_required
 def landing_tech():
