@@ -816,10 +816,11 @@ class AvispaModel:
 
         result = db.iterview('ring/items',batch,**options)
 
-        #print ('ITEMS FROM VIEW:',result)
+        print ('ITEMS FROM VIEW:',result)
 
         presorteditems = []
         for row in result:
+            print ('row:',row)
             presorteditems.append(row)
 
         #print('PRESORTEDITEMS:', presorteditems)
@@ -847,6 +848,9 @@ class AvispaModel:
             for fieldname in OrderedFields:
                 if fieldname in row['value']:
                     item[fieldname] = row['value'][fieldname]
+
+                if fieldname+'_rich' in row['value']:
+                    item[fieldname+'_rich'] = row['value'][fieldname+'_rich']
 
             #item.update(row['value'])
 

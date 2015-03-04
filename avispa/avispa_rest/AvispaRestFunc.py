@@ -204,10 +204,12 @@ class AvispaRestFunc:
         layers = {}
         labels = {}
         widgets = {}
+        sources = {}
         for schemafield in schema['fields']:
             layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])
             labels[schemafield['FieldName']]=schemafield['FieldLabel']
             widgets[schemafield['FieldName']]=schemafield['FieldWidget']
+            sources[schemafield['FieldName']]=schemafield['FieldSource']
 
         print('widgets:',widgets)
 
@@ -241,9 +243,79 @@ class AvispaRestFunc:
                     if layers[fieldname]<=layer:
                     #if True:
                         #Only include those fields above the PREVIEWLAYER
-                        print("Layer for "+fieldname+'->'+str(layers[fieldname]))
+                        print("Including in the preview:"+fieldname+'. Layer:'+str(layers[fieldname]))
                         previewItem[fieldname] = item[fieldname] 
-                    #Include id anyway     
+
+                        if fieldname+'_rich' in item:
+
+                            previewItem[fieldname+'_rich'] = item[fieldname+'_rich']
+
+                            # Retrieve all the fl from the fieldsources for this specific field
+                            field_sources = {}
+                            list_sources = sources[fieldname].split(',')
+                            for source in list_sources:
+                                print('source:',source.strip())
+                                if source == '':
+                                    continue
+                                o = urlparse.urlparse(source.strip())
+                                #source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
+                                
+                                print('o.netloc:',o.netloc)
+                                print('o.path:',o.path)
+
+                                path_parts = o.path.split('/')
+                                if path_parts[1] == '_api':
+                                    del path_parts[1]
+                                    path = '/'.join(path_parts)
+                                else:
+                                    path = o.path   
+                                    print('corrected xo.path:',path)
+
+                                source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
+
+
+                                print('o.query:',o.query)
+                                queryparts = o.query.split('&')
+                                for querypart in queryparts:
+                                    qp = querypart.split('=')
+                                    if 'fl' in qp:
+                                        qp_parts = qp[1].split('+')
+                                        field_sources[source_id] = qp_parts
+
+                            print ('field_sources:',field_sources)
+
+                            # Create _repr based on field_sources
+                            for rich_item in item[fieldname+'_rich']:
+                                if '_source' in rich_item:
+                                    o = urlparse.urlparse(rich_item['_source'].strip())
+                                    print('xo.netloc:',o.netloc)
+                                    print('xo.path:',o.path)
+
+                                    path_parts = o.path.split('/')
+                                    if path_parts[1] == '_api':
+                                        del path_parts[1]
+                                        
+                                    del path_parts[-1]
+                                    path = '/'.join(path_parts)  
+                                    
+                                    print('adjusted xo.path:',path)
+                                    
+                                    source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
+                                    print('source_id',source_id)
+                                    if source_id in field_sources:
+                                        #There is a way to translate
+
+                                        #We are going to overwrite the URLs for the REPRESENTATION
+                                        previewItem[fieldname] = ''
+                                        for fl in field_sources[source_id]:
+                                            if fl in rich_item:
+                                                previewItem[fieldname] += rich_item[fl]+' '
+                                            else:
+                                                print('Not found: Fl is case sensitive')
+
+                                        print('REPR:', previewItem[fieldname])
+ 
+                       
 
                         if  widgets[fieldname]=='images':
                             
@@ -252,8 +324,8 @@ class AvispaRestFunc:
                             del images[0]
                             previewItem[fieldname]=images
 
-            #print('previewItem:')
-            #print(previewItem)
+            print('PREVIEW ITEM:')
+            print(previewItem)
 
             itemlist.append(previewItem)
 
@@ -364,6 +436,21 @@ class AvispaRestFunc:
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
+
+        #clean FieldSource
+        
+        for field in schema.fields:
+            sources = field['FieldSource'].split(',')
+            canonical_uri_list = []
+            
+            for source in sources:
+                o = urlparse.urlparse(source.strip())
+                canonical_uri= urlparse.urlunparse((o.scheme, o.netloc, o.path,'', '', ''))
+                canonical_uri_list.append(canonical_uri)
+
+            
+            field['FieldSource'] = ','.join(canonical_uri_list)
+
 
         d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html', 
              'ringschema':ringschema,
