@@ -32,7 +32,7 @@
 {%if not data.raw%}
 <header>
   <div class="topbar topbar-white" role="navigation">
-    <div class="container-fluid">
+    <div class="container-fluid bg-black">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -45,7 +45,7 @@
             <img src="/static/images/myring02.png" style=" margin:10px 30px 10px 20px; width:80px;" alt="MyRing">
         </a>
       </div>
-        <div class="navbar-collapse collapse">          
+        <div class="navbar-collapse collapse text-right">          
             {%if current_user.is_authenticated()%}
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/{{ data.handle }}/_home">Home</a></li>
@@ -61,6 +61,11 @@
                   </ul>
                 </li>
             </ul>
+            {% else %}
+              <div class="spa5"></div>
+              <a href="/_login" class="btn btn-default btn-sm">LOG IN</a> 
+              <a href="/_register" class="btn btn-success btn-sm">SIGN UP</a>
+
             {%endif%}
         </div>
     </div>

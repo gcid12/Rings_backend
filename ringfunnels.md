@@ -1,6 +1,17 @@
 
 ## Onboarding Funnels
 
+
+
+####ONBOARDING 
+
+- ONB-001: New Individual from Invite  (students accesign for 1st time)
+- ONB-002: New individual from landing (Individual Invitees trying Rings)
+- ONB-003: New Organization from landing
+
+
+____
+
 ####INVITE
 
 - INV-001: Individual invite via email
@@ -11,19 +22,12 @@
 
 ____
 
-####ONBOARDING 
-
-- ONB-001: Individual from Invite 
-- ONB-002: individual from landing
-- ONB-003: Individual + Organization from landing
-
-____
 	
 ####FIRST TIMES
 
-- FIR-001: Create First Collection
-- FIR-002: Create First Ring
-- FIR-003: Create First Organization
+- FIR-001: Individual Create First Collection
+- FIR-002: Individual Create First Ring
+- FIR-003: Individual Create First Organization
 - FIR-004: Invite First People
 - FIR-005: Invite First Collaborator
 - FIR-006: Create New Item
@@ -43,7 +47,6 @@ ____
 ____
 
 ####CREATE
-
 - NEW-001: Create Item 
 - NEW-002: Create Ring in existent Collection
 - NEW-003: Create Collection
