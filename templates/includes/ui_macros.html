@@ -50,6 +50,56 @@
 
 {% endmacro %}
 
+{% macro cta1() %}
+    <section id="header" class="bg-yellow">
+      <div class="row">
+        <div class="col-sm-offset-3 col-sm-7 text-left">
+            <div class="spa40"></div>
+            <h3 class="text-black " style="font-size:6em; line-height:0.8em;">Start today</h3>
+            <p class="fs-1-5">No Commitment, no credit card required</p>
+            <div class="spa20"></div>
+
+            
+            <form action='/thankyou' method='post'/>
+
+                <h2 class="text-white lh-1" style="font-size:3em;">email: <br/>
+                  <span class="text-white">
+                    <input type="email" id="email" name="email" required="required" class="text-gray remove-s" placeholder="email">
+                  </span>
+                </h2>
+
+                <h2 class="text-white lh-1" style="font-size:3em;">Create a password: <br/>
+                  <span class="text-white">
+                      <input type="password" name="password" id="password" class="text-gray remove-s" required="required" title="" placeholder="password">
+                  </span>
+                </h2>
+
+
+                <h2 class="text-white lh-1" style="font-size:3.5em; float:right;">
+                <input type="submit" value="go" class="remove-b text-black">
+                </h2>
+            </form>
+
+            <div class="spa20 clearboth"></div>
+
+        </div>
+      </div>  
+    </section> 
+{% endmacro %}
+
+
+<div class="form-group">
+              <label class="sr-only" for="exampleInputEmail3">Email</label>
+              <input type="email" class="form-control input-lg" id="" placeholder="Enter email">
+
+            </div>
+            <div class="form-group">
+              <label class="sr-only" for="exampleInputPassword3">Password</label>
+              <input type="password" class="form-control input-lg" id="" placeholder="Create a Password">
+              <input type="password" name="password" id="password" class="form-control" required="required" title="" placeholder="create a password">
+
+            </div>
+
 
 
 

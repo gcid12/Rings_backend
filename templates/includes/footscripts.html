@@ -1,20 +1,35 @@
+<section class="bg-black top">
+      <div class="container">
+        <div class="row spa20">
+
+        
+        <div class="col-sm-offset-2 col-sm-8 text-center">
+
+        <p><strong>MyRing.io</strong> 1407 Broadway Ave. 24 Floor New York, NY 10018  &nbsp; &nbsp; &nbsp;| <i class="fa fa-envelope"></i> info@myring.io</p>
+
+        <br/>
+        </div>
+      </div>
+    </div>
+
+</section>   
+
 
 <!-- JavaScript -->
 
 
 
 <script type="text/javascript" src="{{ url_for('static',filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
+
+<script type="text/javascript" src="{{ url_for('static',filename='assets/textillate/jquery.lettering.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='assets/textillate/jquery.textillate.js') }}"></script>
+
+
+<!-- <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.easing.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static',filename='assets/simple-slider/simple-slider.js') }}"></script> 
+<script type="text/javascript" src="{{ url_for('static',filename='assets/simple-slider/simple-slider.js') }}"></script>  -->
 
-<!-- COMMENTED ON 02/15/2015   if more than 30 days passed from this date and you haven't miss us please delete us.
 
-<script src="{{ url_for('static',filename='js/wow.min.js') }}"></script>
-<script src="{{ url_for('static',filename='js/jquery.isotope.min.js') }}"></script>
-<script src="{{ url_for('static',filename='js/jquery.validate.min.js') }}"></script>
-<script src="{{ url_for('static',filename='js/main.js') }}"></script>
- -->
 
 <link href="{{ url_for('static',filename='assets/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet" type="text/css" media="screen">
 <link href="{{ url_for('static',filename='assets/imagegallery/css/bootstrap-image-gallery.css') }}" rel="stylesheet" type="text/css" media="screen">
@@ -33,6 +48,14 @@
     <script src="{{ url_for('static',filename='js/html5shiv.js') }}"></script>
     <script src="{{ url_for('static',filename='js/respond.min.js') }}"></script>
 <![endif]-->
+
+
+<script type="text/javascript">
+
+	$(function (){
+    $('.tlt').textillate();
+	})
+</script>
 
 <!-- TOOLTIP + POPOVER SCRIPT -->
 <script type="text/javascript">
