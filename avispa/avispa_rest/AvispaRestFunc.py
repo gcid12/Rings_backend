@@ -439,17 +439,18 @@ class AvispaRestFunc:
 
         #clean FieldSource
         
-        for field in schema.fields:
-            sources = field['FieldSource'].split(',')
-            canonical_uri_list = []
-            
-            for source in sources:
-                o = urlparse.urlparse(source.strip())
-                canonical_uri= urlparse.urlunparse((o.scheme, o.netloc, o.path,'', '', ''))
-                canonical_uri_list.append(canonical_uri)
-
-            
-            field['FieldSource'] = ','.join(canonical_uri_list)
+        for field in schema['fields']:
+            if 'FieldSource' in field:
+                if field['FieldSource']:
+                    sources = field['FieldSource'].split(',')
+                    canonical_uri_list = []
+                    
+                    for source in sources:
+                        o = urlparse.urlparse(source.strip())
+                        canonical_uri= urlparse.urlunparse((o.scheme, o.netloc, o.path,'', '', ''))
+                        canonical_uri_list.append(canonical_uri)
+                
+                    field['FieldSource'] = ','.join(canonical_uri_list)
 
 
         d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html', 
