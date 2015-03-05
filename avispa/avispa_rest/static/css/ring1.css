@@ -31,6 +31,12 @@ a{cursor:pointer;}
 a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
 
 
+.clearlink:link{text-decoration:none !important; outline:0 !important;}
+.clearlink:active{text-decoration:none !important; outline:0 !important;}
+.clearlink:focus{text-decoration:none !important; outline:0 !important;}
+.clearlink:hover{color:#CCC; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
+.clearlink:focus{color:#CCC; text-decoration:none !important; outline:0 !important;}
+
 /* RING */
 /*MyRing green: #D9E021*/
 
@@ -248,6 +254,7 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bg-white{background-color: #FFF;}
 .bg-black{background-color: #000;}
 .bg-gray{background-color: #CCC;}
+.bg-lgray{background-color: #e2e2e2;}
 .bg-yellow{background-color: #FFE045;}
 .bg-a{background-color: #d40044; }
 .bg-b{background-color: #298fff; }

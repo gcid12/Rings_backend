@@ -16,7 +16,22 @@
   {% endblock %}
 
 </head>
-<body>
+<body >
+
+<!-- SIDEBAR OPEN-->
+<script type="text/javascript">
+      $(function() {
+        $('nav#menu').mmenu();
+
+      });
+</script>
+
+    <div id="page" >
+      
+      <div class="content">
+<!-- SIDEBAR OPEN-->
+
+
   {%if not data.raw%}
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -30,52 +45,96 @@
   {%endif%}
 <a name="top"></a>
 {%if not data.raw%}
-<header>
-  <div class="topbar topbar-white" role="navigation">
-    <div class="container-fluid bg-black">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
 
-        <a href="/{{ current_user.id }}/_home">
-            <img src="/static/images/myring02.png" style=" margin:10px 30px 10px 20px; width:80px;" alt="MyRing">
-        </a>
-      </div>
-        <div class="navbar-collapse collapse text-right">          
-            {%if current_user.is_authenticated()%}
-            <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/{{ data.handle }}/_home">Home</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:20px;"> {{ current_user.id }}<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="/{{ current_user.id }}/_profile">My profile</a></li>
-                    <li><a href="/_roles/{{ current_user.id }}">Roles</a></li>
-                    <li><a href="/{{ current_user.id }}?rq=post">New Ring</a></li>
-                    <li><a href="/{{ current_user.id }}/_collections?rq=post">New Collection</a></li>
-                    <li><a href="/_orgregister">New Organization</a></li>
-                    <li><a href="/_logout">log-Out</a></li>
-                  </ul>
-                </li>
-            </ul>
-            {% else %}
-              <div class="spa5"></div>
+
+
+<header>
+
+
+<nav class="navbar navbar-default " style="padding-top:0px;">
+  <div class="container-fluid bg-white">
+    <!-- Brand and toggle get grouped for better mobile display -->
+
+      <ul class="nav navbar-nav navbar-left hidden-xs">
+        {%if current_user.is_authenticated()%}
+
+        <li class="active hidden-xs">
+          <table style="margin:10px 0 0 0;">
+            <tr>
+              <td><i class="fa fa-chevron-left fa-1x text-lgray"></i> 
+              </td>
+              <td><a id="nameswitch" href="#menu" class="text-gray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> <span class="fs-1-5 text-s1">{{ current_user.id }}</span></a>
+              </td>
+            </tr>
+          </table>
+          
+        </li>
+
+        <li><div style="padding-left:30px;"> &nbsp;</div></li>
+        <li class="dropdown hidden-xs bg-lgray">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-plus-circle fa-2x"></i> add </span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/{{ current_user.id }}/_profile">My profile</a></li>
+            <li><a href="/_roles/{{ current_user.id }}">Roles</a></li>
+            <li><a href="/{{ current_user.id }}?rq=post">New Ring</a></li>
+            <li><a href="/{{ current_user.id }}/_collections?rq=post">New Collection</a></li>
+            <li><a href="/_orgregister">New Organization</a></li>
+            <li><a href="/_logout">log-Out</a></li>
+          </ul>
+        </li>
+        {% else %}
+
+            <div class="spa5"></div>
               <a href="/_login" class="btn btn-default btn-sm">LOG IN</a> 
               <a href="/_register" class="btn btn-success btn-sm">SIGN UP</a>
+        {%endif%}
+      </ul>
 
-            {%endif%}
-        </div>
-    </div>
-  </div>
+
+      <ul class="nav navbar-nav navbar-left hidden-sm hidden-md hidden-lg hidden-xl">
+        {%if current_user.is_authenticated()%}
+        <li class="active">
+          <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i> <img src="/static/images/myring02.png" style=" margin:10px 30px 10px 20px; width:100px;" alt="MyRing"></a>
+          
+        </li>
+
+        {% else %}
+
+            <div class="spa5"></div>
+              <a href="/_login" class="btn btn-default btn-sm">LOG IN</a> 
+              <a href="/_register" class="btn btn-success btn-sm">SIGN UP</a>
+        {%endif%}
+      </ul>
+
+
+      <ul class="nav navbar-nav navbar-right hidden-xs">
+        <a class="navbar-brand clearlink" href="#"><img src="/static/images/myring02.png" style=" margin:10px 30px 10px 20px; width:100px;" alt="MyRing"> </a>
+      </ul>
+
+
+
+
+
+
+      
+    
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
 </header>
 {%endif%}
 
 
+
+
+
 <section class="">
+
+
   <div class="container-fluid">
+
     {%if not data.raw%}
     <div class="row hidden-xs">
       <div class="col-sm-12">
@@ -100,12 +159,48 @@
 </section>       
 <!--span class="scro"><a href='#top'>&nbsp;Top</a></span-->
 
+
 <footer>
 {% include 'includes/footscripts.html' %}
 </footer> 
 
-</body>
-</html>
+
+<!-- SIDEBAR CLOSE-->
+        <p><strong>This is a demo.</strong><br />
+          Click the menu icon to open the menu.</p>
+        <p></p>     
+      </div>
+      <nav id="menu">
+        <ul>
+            <li>
+              <table>
+                <tr>
+                  <td style="padding:10px 3px 10px 20px;"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:100px;"></td>
+                  <td>
+                    <h2 class="fc-a">Gerardo Cid</h2>
+                    <span class="fc-a fs-1-5">{{ current_user.id }}</span>
+                  </td>
+                </tr>
+                
+              </table>
+               
+            </li>
+            <li class="active"><a href="/{{ data.handle }}/_home">Home</a></li>
+            <li><a href="/{{ current_user.id }}/_profile">My profile</a></li>
+            <li><a href="/_roles/{{ current_user.id }}">Roles</a></li>
+            <li><a href="#about/team">New</a>
+              <ul>
+                <li><a href="/{{ current_user.id }}?rq=post">New Ring</a></li>
+                <li><a href="/{{ current_user.id }}/_collections?rq=post">New Collection</a></li>
+                <li><a href="/_orgregister">New Organization</a></li>
+              </ul>
+            </li>
+            <li><a href="/_logout">log-Out</a></li>
+        </ul>
+      </nav>
+    </div>
+<!-- SIDEBAR CLOSE-->
+
 
 
 

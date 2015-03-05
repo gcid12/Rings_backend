@@ -1,3 +1,5 @@
+
+<div class="spa60"></div>
 <section class="bg-black top">
       <div class="container">
         <div class="row spa20">
@@ -19,6 +21,15 @@
 
 
 
+<script src="{{ url_for('static',filename='js/d3.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/Chart.js') }}"></script>
+
+
+
+
+
+
+<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.sidr.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static',filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
 
 <script type="text/javascript" src="{{ url_for('static',filename='assets/textillate/jquery.lettering.js') }}"></script>
@@ -39,6 +50,7 @@
 <script src="{{ url_for('static',filename='assets/imagegallery/js/bootstrap-image-gallery.min.js') }}"></script>
 
 <script type="text/javascript" src="{{ url_for('static',filename='js/intro.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.mmenu.min.all.js') }}"></script>
 
 
 
@@ -89,42 +101,41 @@ if(parent){
 </script>
 {%endif%}
 
-<!-- SCRIPT FOR SCROLLER STOP -->
-<!--script>
-// This function will be executed when the user scrolls the page.
-$(window).scroll(function(e) {
-	// Get the position of the location where the scroller starts.
-	var scroller_anchor = $(".scro_anchor").offset().top;
 
-	// Check if the user has scrolled and the current position is after the scroller's start location and if its not already fixed at the top
-	if ($(this).scrollTop() >= scroller_anchor && $('.scro').css('position') != 'fixed')
-	{    // Change the CSS of the scroller to hilight it and fix it at the top of the screen.
-		$('.scro').css({
-			// 'background': '#CCC',
-			'position': 'fixed',
-			'top': '70px'
-		});
-		// Changing the height of the scroller anchor to that of scroller so that there is no change in the overall height of the page.
-		$('.scro_anchor').css('height', '100px');
-	}
-	else if ($(this).scrollTop() < scroller_anchor && $('.scro').css('position') != 'relative')
-	{    // If the user has scrolled back to the location above the scroller anchor place it back into the content.
+<!-- SIDR SCRIPT -->
 
-		// Change the height of the scroller anchor to 0 and now we will be adding the scroller back to the content.
-		$('.scro_anchor').css('height', '0px');
+<script>
+$(document).ready(function() {
+	$('#buttonRight').sidr({
+		name: 'Right',
+		source: '#headerRight, #contentRight',
+		side:'right'
 
-		// Change the CSS and put it back to its original position.
-		$('.scro').css({
-		   // 'background': '#440000',
-			'position': 'relative',
+	});
+
+	$('#buttonLeft').sidr({
+		name: 'Left',
+		source: '#headerLeft, #contentLeft',
+		side:'left'
+
+	});
+
+	// $( '#closeRight' ).click(function() {
+ //    	$.sidr('close', 'menuRight');
+	// });
 
 
-			
-		});
-	}
+
 });
-</script-->
+</script> 
 
+<!-- SIDEBAR -->
 
+<script type="text/javascript">
+      $(function() {
+        $('nav#menu').mmenu();
+
+      });
+</script>
 
 

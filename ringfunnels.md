@@ -5,9 +5,18 @@
 
 ####ONBOARDING 
 
-- ONB-001: New Individual from Invite  (students accesign for 1st time)
-- ONB-002: New individual from landing (Individual Invitees trying Rings)
-- ONB-003: New Organization from landing
+- ONB-001: New individual from landing
+    (Random arriving to Landing and signing up)
+- ONB-002: New Organization from Landing
+    (Random arriving to Landing and creating an organization)
+
+- ONB-003: New Individual from (ind/ org) Personalized Invite  
+    (New user signing up for 1st time from personalized invite)
+- ONB-004: New Individual from (ind/ org) Open Invite  
+    (New user signing up for 1st time from open invite)
+
+- ONB-005: New Individual from MR Founders personalized Invite
+- ONB-006: New Individual from MR personalized Invite
 
 
 ____
