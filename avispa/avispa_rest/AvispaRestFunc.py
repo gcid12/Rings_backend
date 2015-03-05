@@ -356,7 +356,10 @@ class AvispaRestFunc:
 
             out = {}
 
-            out['source'] = "/"+str(handle)+"/"+str(ring)
+            o = urlparse.urlparse(request.url)
+            host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+            out['source'] = host_url+"/"+str(handle)+"/"+str(ring)
 
             if 'schema' in request.args:
                 out['rings'] = schema['rings']
@@ -437,8 +440,7 @@ class AvispaRestFunc:
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
 
-        #clean FieldSource
-        
+        #Make FieldSource canonical
         for field in schema['fields']:
             if 'FieldSource' in field:
                 if field['FieldSource']:
@@ -742,6 +744,21 @@ class AvispaRestFunc:
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
+
+        #Make FieldSource canonical
+        for field in schema['fields']:
+            if 'FieldSource' in field:
+                if field['FieldSource']:
+                    sources = field['FieldSource'].split(',')
+                    canonical_uri_list = []
+                    
+                    for source in sources:
+                        o = urlparse.urlparse(source.strip())
+                        canonical_uri= urlparse.urlunparse((o.scheme, o.netloc, o.path,'', '', ''))
+                        canonical_uri_list.append(canonical_uri)
+                
+                    field['FieldSource'] = ','.join(canonical_uri_list)
+
 
         d = {'message': 'Using put_rq_a_b_c for handle '+handle+', ring:'+ring , 
              'template':'avispa_rest/put_rq_a_b_c.html', 

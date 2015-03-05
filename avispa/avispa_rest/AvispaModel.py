@@ -1033,7 +1033,7 @@ class AvispaModel:
             
             if field['FieldName'] not in r_rich_values:
                 r_rich_values[field['FieldName']] = []
-            elif type(rich_values[field['FieldName']]) is not list:
+            elif type(r_rich_values[field['FieldName']]) is not list:
                 r_rich_values[field['FieldName']] = []
 
             r_rich_values[field['FieldName']].append(rich_item_dict)

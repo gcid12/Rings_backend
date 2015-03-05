@@ -1,15 +1,19 @@
 <script>
+
+
+var existing_values_{{ field.FieldOrder }} = "{{data.item[field.FieldName]}}".split(',')
+
+
 $("#chosen_{{ field.FieldOrder }}").chosen({width: "100%"}); 
 
-    
 /*
-@USAGE urlo="http://anyurl.com/anyuser/equiposfutbol?fields=NombreDelEquipo";
+@USAGE urlo="http://anyurl.com/anyuser/equiposfutbol?fl=NombreDelEquipo";
 */
-console.log('chosen_{{ field.FieldOrder }}')
+
 //The FieldSource should have a "fields" indicated
 var urlo_{{ field.FieldOrder }}="{{ field.FieldSource }}";
 
-console.log('FieldSource: {{ field.FieldSource }} {{ field.FieldOrder }}')
+
 
 //Select widget can't work without a source
 if(urlo_{{ field.FieldOrder }}!='undefined'){
@@ -52,20 +56,36 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
         if( typeof urldata_{{ field.FieldOrder }}['fl']=='undefined'){
             var thefield_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }}.fields[0].FieldName;
         }else{ //But it is better if the source is explicitly indicated by &fl=<name_of_field>
-            var urlfields_{{ field.FieldOrder }} = urldata_{{ field.FieldOrder }}['fl'].split(",");
-            //Take just the first field mentioned
-            var thefield_{{ field.FieldOrder }}=urlfields_{{ field.FieldOrder }}[0];
+            if(urldata_{{ field.FieldOrder }}['fl']){
+                var urlfields_{{ field.FieldOrder }} = urldata_{{ field.FieldOrder }}['fl'].split("+");
+                //Take just the first field mentioned
+                var thefield_{{ field.FieldOrder }}=urlfields_{{ field.FieldOrder }}[0];
+            }
         }
         
         var i;
         var newoption;
+
+        
+
+
         for(i=0;i<returnedData_{{ field.FieldOrder }}.items.length; ++i){      
             //This grabs the indicated field and displays it as the option
             var id = '_id';
-            newoption = "<option value='"+returnedData_{{ field.FieldOrder }}.items[i][id]+"'>"+returnedData_{{ field.FieldOrder }}.items[i][thefield_{{ field.FieldOrder }}]+"</option>";
+            var source = returnedData_{{ field.FieldOrder }}.source;
+            var idx = returnedData_{{ field.FieldOrder }}.items[i][id];
+            var repr = returnedData_{{ field.FieldOrder }}.items[i][thefield_{{ field.FieldOrder }}]
+            var selected = '';
+            
+            
+            if($.inArray(source+'/'+idx, existing_values_{{ field.FieldOrder }}) >= 0){
+                
+                selected = 'selected';
+            }
+            newoption = "<option value='"+source+"/"+idx+"' "+selected+" >"+repr+"</option>";
             $( '#chosen_{{ field.FieldOrder }}' ).append(newoption);
         
-        }
+        }  
     
         $('#chosen_{{ field.FieldOrder }}').trigger("chosen:updated");
     
