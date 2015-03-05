@@ -61,25 +61,24 @@
         <li class="active hidden-xs">
           <table style="margin:10px 0 0 0;">
             <tr>
-              <td><i class="fa fa-chevron-left fa-1x text-lgray"></i> 
+              <td><a href="#menu" class="text-gray clearlink"><i class="fa fa-chevron-left fa-1x text-lgray"></i> </a>
               </td>
-              <td><a id="nameswitch" href="#menu" class="text-gray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> <span class="fs-1-5 text-s1">{{ current_user.id }}</span></a>
+              <td><a href="#menu" class="text-gray clearlink"><!-- <img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> --> <span class="fs-1-5 text-s1" style="padding:0 50px 0 20px;"> {{ current_user.id }} </span></a>
               </td>
             </tr>
           </table>
           
         </li>
 
-        <li><div style="padding-left:30px;"> &nbsp;</div></li>
+        
         <li class="dropdown hidden-xs bg-lgray">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-plus-circle fa-2x"></i> add </span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-plus fa-2x"></i> new </span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/{{ current_user.id }}/_profile">My profile</a></li>
-            <li><a href="/_roles/{{ current_user.id }}">Roles</a></li>
-            <li><a href="/{{ current_user.id }}?rq=post">New Ring</a></li>
-            <li><a href="/{{ current_user.id }}/_collections?rq=post">New Collection</a></li>
-            <li><a href="/_orgregister">New Organization</a></li>
-            <li><a href="/_logout">log-Out</a></li>
+            
+            <li><a href="/{{ current_user.id }}?rq=post"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li>
+            <li><a href="/{{ current_user.id }}/_collections?rq=post"><i class="fa fa-plus-circle"></i> &nbsp;  New <span class="fw-c text-gray">Collection</span></a></li>
+            <li><a href="/_orgregister"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray"><i class="fa fa-universit"></i> Organization</span></a></li>
+            
           </ul>
         </li>
         {% else %}
@@ -177,25 +176,56 @@
                 <tr>
                   <td style="padding:10px 3px 10px 20px;"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:100px;"></td>
                   <td>
-                    <h2 class="fc-a">Gerardo Cid</h2>
+                    <h2 class="fc-a">{{data.handle_actualname}}</h2>
                     <span class="fc-a fs-1-5">{{ current_user.id }}</span>
+
                   </td>
                 </tr>
                 
               </table>
-               
+               <div class="spa60"></div>
             </li>
-            <li class="active"><a href="/{{ data.handle }}/_home">Home</a></li>
-            <li><a href="/{{ current_user.id }}/_profile">My profile</a></li>
-            <li><a href="/_roles/{{ current_user.id }}">Roles</a></li>
-            <li><a href="#about/team">New</a>
+            
+            
+            <!-- COLEX 1 -->
+            <li class="active"><a href="/{{ data.handle }}/_home"><br/><i class="fa fa-circle-o fa-2x pad-x-20 fc-c"></i> <span class="text-s1 fs-1-5">Art_Exhibitions</span></a>
+              <ul>
+                <li><a href="/{{ current_user.id }}?rq=post">˚Museums</a></li>
+                <li><a href="/{{ current_user.id }}/_collections?rq=post">˚Artists</a></li>
+                <li><a href="/_orgregister">˚Curators</a></li>
+              </ul>
+            </li>
+            <!-- COLEX 1 -->
+            <li class="active"><a href="/{{ data.handle }}/_home"><br/><i class="fa fa-circle-o fa-2x pad-x-20 fc-c"></i> <span class="text-s1 fs-1-5">Zoo</span></a>
+              <ul>
+                <li><a href="/{{ current_user.id }}?rq=post">˚Zoo</a></li>
+                <li><a href="/{{ current_user.id }}/_collections?rq=post">˚Artists</a></li>
+                <li><a href="/_orgregister">˚Curators</a></li>
+              </ul>
+            </li>
+            <!-- COLEX 1 -->
+            <li class="active"><a href="/{{ data.handle }}/_home"><br/><i class="fa fa-circle-o fa-2x pad-x-20 fc-c"></i> <span class="text-s1 fs-1-5">Animals</span></a>
+              <ul>
+                <li><a href="/{{ current_user.id }}?rq=post">Vacations</a></li>
+                <li><a href="/{{ current_user.id }}/_collections?rq=post">Artists</a></li>
+                <li><a href="/_orgregister">Curators</a></li>
+              </ul>
+            </li>
+
+
+            <li class="active" style="padding-top:20px;"><a href="/{{ data.handle }}/_home"> <i class="fa fa-home pad-x-20"></i> <span class="text-s1">Home</span></a></li>
+            <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user pad-x-20"></i> <span class="text-s1">My Profile</span></a></li>
+
+            <li><a href="#about/team"><i class="fa fa-plus pad-x-20"></i> New</a>
               <ul>
                 <li><a href="/{{ current_user.id }}?rq=post">New Ring</a></li>
-                <li><a href="/{{ current_user.id }}/_collections?rq=post">New Collection</a></li>
+                <li><a href="/{{ current_user.id }}/_collections?rq=post"> New Collection</a></li>
                 <li><a href="/_orgregister">New Organization</a></li>
               </ul>
             </li>
-            <li><a href="/_logout">log-Out</a></li>
+            
+            <li><a href="/_roles/{{ current_user.id }}"><i class="fa fa-certificate pad-x-20"></i> <span class="text-s1">Roles</span></a></li>
+            <li><a href="/_logout"><i class="fa fa-sign-out pad-x-20"></i>  log-Out</a></li>
         </ul>
       </nav>
     </div>

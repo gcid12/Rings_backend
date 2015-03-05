@@ -169,9 +169,9 @@
 
 {% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
           
-          <tr>
-            <td><p>{{ count }}</p></td>
-            <td>{{ icon_xsma(count, color) }}</td>
+          <tr style="margin-top:200px;">
+            
+            <td>{{ icon_sma(count, color) }}</td>
             <td>
               <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
               {% if 'get_a_b' in user_authorizations %}
@@ -207,22 +207,37 @@
                    
 {% endmacro %}
 
-{% macro panel_collections_add_ring(handle) %} 
+
+{% macro panel_collections_add_ring2(handle) %} 
           
             <tr>
-              <td colspan="2" align="right" style="vertical-align:top;">
-                {{ icon_med('',"#28B62C") }}
-              </td>
-              <td  style="vertical-align:middle; align:center; ">
-                  <a href="/{{handle}}?rq=post&n=10" class="btn btn-default btn-success">
-                    <i class="fa fa-plus"></i> &nbsp; Add New Ring
+              <td colspan="4" align="right" style="vertical-align:top; align:right;" class="text-right">
+                
+              
+                  <a href="/{{handle}}?rq=post&n=10" class="btn btn-default btn-success text-right" bgcolor="yellow">
+                    <i class="fa fa-plus-circle fa-1x"></i> &nbsp; Add New Ring
                   </a>        
               </td>
-              <td  style="vertical-align:middle; align:center; ">
-              </td>
+              
             </tr>
 
 {% endmacro %}
+
+{% macro panel_collections_add_ring(handle) %} 
+          
+            <tr>
+              <td><a href="/{{handle}}?rq=post&n=10" class="clearlink">{{ icon_sma('+', '#B3C5CE') }}</a></td>
+              <td colspan="2" align="right" style="vertical-align:top; ">
+                  <a href="/{{handle}}?rq=post&n=10" class="clearlink">
+                    <p style="color:#B3C5CE; padding-top:5px;" class="fs-0-8">Add a new Ring </p>  
+                  </a>            
+              </td>
+              
+            </tr>
+
+{% endmacro %}
+
+
 
 {% macro panel_rings(name, origin, handle, color, number, percent, active, resource, user_authorizations) %} 
           
@@ -270,25 +285,29 @@
   <tr>
     
     <td align="center"> 
-      <img class="block-center" src="/static/images/repo-icon.png" style="width:50px;" alt="MyRing"> <br/>
+      <img class="block-center" src="/static/images/repo-icon.png" style="width:60px; padding-top:10px;" alt="MyRing"> <br/>
       
     </td>
     <td>
       {% if 'get_a' in user_authorizations %}
       <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-        <h3 class="fs-1 text-gray text-s1 fw-c">{{ collection|upper() }}</h3>
+        <h3 class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</h3>
       </a>
       {%else%}
-        <h3 class="fs-1 text-gray text-s1 fw-c">{{ collection|upper() }}</h3>
+        <h3 class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</h3>
       {%endif%}
 
-      <p class="text-gray fs-0-8 text-s1"><strong>1</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab <br/>  Deadline <strong>March 12, 2015 12:00 EST</strong></p>
+      <p class="text-gray fs-1 text-s1"><strong>1</strong> Rings | <strong>{{percent}}%</strong> sparcity | <strong>3</strong> Collaborators  <br/>  
+      <!-- Deadline <strong>March 12, 2015 12:00 EST</strong> --></p>
+
     </td>
 
     <td> 
       <div class="pull-right">
         {{ label(role) }}
+
       </div>
+      <!-- <div class="text-gray fs-0-8 text-s1">Last Update: Feb 12, 2015</div> -->
     </td>
   </tr>
 {% endmacro %}
@@ -395,9 +414,10 @@
 {% endmacro %}
 
 {% macro icon_sma(number,color) %}
-  <svg height="40" width="80" style="margin:-5px;">
+  <svg height="40" width="50" style="margin:-5px;">
     <circle cx="30" cy="20" r="15" stroke="#e5e5e5" stroke-width="3" fill="none" />
     <circle cx="28" cy="22" r="15" stroke="{{ color }}" stroke-width="2" fill="none" />
+    <text x="29" y="26" fill="gray" class="fs-1" text-anchor="middle">{{ number }}</text>
   </svg>
 {% endmacro %}
 
