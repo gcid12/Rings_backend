@@ -70,8 +70,32 @@
 <!-- AS LIST -->
       <div role="tabpanel" class="tab-pane fade in active" id="list">
         <div class="row">
-          <div class="col-sm-12">            
+          <div class="col-sm-12">   
+                  
             <table class="table table-striped table-condensed">
+              
+              <tr>
+                 <th></th>
+              {% for value in data.FieldLabel %}                   
+                 
+                 {% if not data.widget[value] == 'images' %}
+                  <th>
+                     
+                     {%if data.FieldLabel[value] == '' %}
+                         {{value}}
+                     {%else%}
+                         {{data.FieldLabel[value]}}
+                     {%endif%}
+                     <br/>
+                  </th>
+                 {%endif%}
+                               
+              {% endfor %}
+                 <th></th>
+                 <th></th>
+
+              </tr>
+
 
               {% for item in data.itemlist %}
               <tr>
@@ -97,34 +121,25 @@
                       <!--img style="width:20px;" src="/static/images/d3-a.png"  alt="Rings"-->
                       <!-- IMAGE PLACEHOLDER FINISH -->
                   </td>
+                  {%else%}
+                  <td></td>
                   {% endif %}
-                      
-                  
+    
 
-                  {% for k,v in item.items() %}
-                  
-                  <td>
-                        
+                  {% for value in data.FieldLabel %}        
+                    {% if not data.widget[value] == 'images' %}  
+                        <td>
+                            {% if item[value] %}                   
+                            {% if 'get_a_b_c' in data.user_authorizations %}
 
-                          {% if not k =='_public' %} 
-                          {% if not k =='_id' %} 
-                          {% if not data.widget[k] == 'images' %}  
-                          {% if v %}                   
-                          {% if 'get_a_b_c' in data.user_authorizations %}
+                              <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ item[value]|truncate(170, true) }} </a>
 
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ v|truncate(170, true) }} </a>
-
-                          {% else %}
-                            {{ v|truncate(170, true) }}
-                          {% endif %}
-                          {% endif %}
-                          {% endif %}
-                          {% endif %}
-                          {% endif %}
-
-                        
-
-                  </td>
+                            {% else %}
+                              {{ item[value]|truncate(170, true) }}
+                            {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endif %}                
                   {% endfor %}
 
                   <td style="width:150px;">
@@ -205,10 +220,8 @@
                       <table>
                       
                           {% for k,v in item.items() %}
-                            {% if not k =='Images' %}
-                            {% if not k =='Description' %} 
                             {% if not k =='_public' %} 
-                            {% if not k =='_id' %} 
+                            {% if not k =='_id' %}
                             {% if v %} 
                           <tr>
                             <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</p></td>
@@ -216,8 +229,6 @@
                                 <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">{{ v|truncate(170, true) }}</p>
                             </td>
                           </tr>
-                            {% endif %}
-                            {% endif %}
                             {% endif %}
                             {% endif %}
                             {% endif %}
