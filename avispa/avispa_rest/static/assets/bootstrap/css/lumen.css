@@ -5469,7 +5469,7 @@ button.close {
     width: 900px;
   }
 }
-.tooltip {
+/*.tooltip {
   position: absolute;
   z-index: 1070;
   display: block;
@@ -5566,7 +5566,7 @@ button.close {
   right: 5px;
   border-width: 0 5px 5px;
   border-bottom-color: #000000;
-}
+}*/
 .popover {
   position: absolute;
   top: 0;

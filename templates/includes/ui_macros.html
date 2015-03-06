@@ -88,21 +88,6 @@
 {% endmacro %}
 
 
-<div class="form-group">
-              <label class="sr-only" for="exampleInputEmail3">Email</label>
-              <input type="email" class="form-control input-lg" id="" placeholder="Enter email">
-
-            </div>
-            <div class="form-group">
-              <label class="sr-only" for="exampleInputPassword3">Password</label>
-              <input type="password" class="form-control input-lg" id="" placeholder="Create a Password">
-              <input type="password" name="password" id="password" class="form-control" required="required" title="" placeholder="create a password">
-
-            </div>
-
-
-
-
   {% macro panel2(ring, handle, color, count,description) %}
 
   <tr>
@@ -167,6 +152,52 @@
 </div>
 {% endmacro %}
 
+{% macro collection(handle,collection,percent,role,update,user_authorizations) %}
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+      <div class="spa10"></div>
+      <img class="block-center" src="/static/images/repo-icon.png" style="width:40px;" alt="MyRing">
+        
+      {% if 'get_a' in user_authorizations %}
+        <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
+          <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
+        </a>
+        {%else%}
+          <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
+      {%endif%}
+
+      <div class="spa10"></div>
+      <p class="text-gray fs-1 text-s1">
+        <strong>1</strong> Rings | 
+        <strong>{{percent}}%</strong> sparcity |  
+        <i class="fa fa-user text-lgray"></i> <strong> 3</strong>  
+      </p>
+
+      <hr/>
+      <span class="dropdown">
+        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+          Actions
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings for {{collection}}</a></li>
+          <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite to collaborate</a></li>
+          <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
+        </ul>
+      </span>
+
+      <br/>
+      
+    </div>
+
+    <!-- <div class="col-sm-12 text-center">
+      <p class="text-gray fs-1 text-s1">Deadline <strong>March 12, 2015 12:00 EST</strong> </p>
+    </div> -->
+      <!-- <div class="text-gray fs-0-8 text-s1">Last Update: Feb 12, 2015</div> -->
+  </div>
+{% endmacro %}
+
 {% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
           
           <tr style="margin-top:200px;">
@@ -183,19 +214,17 @@
             </td>
             <td>
               <div class="pull-right">
-                <div class="visible-xs">
-                  {{ icon_med(count,color) }}
-                </div>
+                
                 <div class="btn-group" >
                 
                   <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
                   {% if 'post_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i> item</a>
                   {% endif %}
 
-                  {% if 'put_a' in user_authorizations %}
+                  <!-- {% if 'put_a' in user_authorizations %}
                   <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-                  {% endif %}
+                  {% endif %} -->
      
 
                 </div>
@@ -206,6 +235,7 @@
           
                    
 {% endmacro %}
+
 
 
 {% macro panel_collections_add_ring2(handle) %} 
@@ -226,10 +256,10 @@
 {% macro panel_collections_add_ring(handle) %} 
           
             <tr>
-              <td><a href="/{{handle}}?rq=post&n=10" class="clearlink">{{ icon_sma('+', '#B3C5CE') }}</a></td>
+              <td></td>
               <td colspan="2" align="right" style="vertical-align:top; ">
                   <a href="/{{handle}}?rq=post&n=10" class="clearlink">
-                    <p style="color:#B3C5CE; padding-top:5px;" class="fs-0-8">Add a new Ring </p>  
+                    <p class="blueprint"><i class="fa fa-plus"></i> Add a new Ring </p>  
                   </a>            
               </td>
               
@@ -279,60 +309,7 @@
 {% endmacro %}
 
 
-  {% macro collection(handle,collection,percent,role,update,user_authorizations) %}
 
-
-
-  <div class="row">
-
-    
-    
-    <div class="col-xs-3 col-sm-12">
-      
-
-      <table>
-        <tr>
-          <td>
-            <img class="block-center" src="/static/images/repo-icon.png" style="width:60px; padding-top:10px;" alt="MyRing">
-          </td>
-          <td>
-            {% if 'get_a' in user_authorizations %}
-            <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-              <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</span>
-            </a>
-            {%else%}
-              <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</span>
-            {%endif%}
-          </td>
-        </tr>
-      </table>
-      
-      
-
-    </div> 
-    <div class="col-xs-3 col-sm-12 ">
-      <p class="text-gray fs-1 text-s1 pl-30">
-        <strong>1</strong> Rings | 
-        <strong>{{percent}}%</strong> sparcity  <br/>
-        <strong>3</strong> Collaborators
-        
-         
-                                   
-      </p>
-      <span class="pl-30">{{ label(role) }}</span>
-    </div>
-
-
-
-    <!-- <div class="col-sm-12 text-center">
-      <p class="text-gray fs-1 text-s1">Deadline <strong>March 12, 2015 12:00 EST</strong> </p>
-    </div> -->
-
-    
-      <!-- <div class="text-gray fs-0-8 text-s1">Last Update: Feb 12, 2015</div> -->
-    
-  </div>
-{% endmacro %}
 
   {% macro collection_big(name, percent, role, update,link) %}
 

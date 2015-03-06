@@ -37,6 +37,8 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .clearlink:hover{color:#CCC; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
 .clearlink:focus{color:#CCC; text-decoration:none !important; outline:0 !important;}
 
+
+
 .float-right{float:right;}
 .float-left{float:left;}
 /* RING */
@@ -212,7 +214,34 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 
 
 .bg-ai{  
+  background: url(/static/images/back03.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.bg-bits{  
   background: url(/static/images/back01.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.bg-bits2{  
+  background: url(/static/images/back03.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+
+
+.bg-grass{  
+  background: url(/static/images/grass.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -228,6 +257,27 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
   background-size: cover;
   background-color:#ffe045;
 }
+
+.bg-people{  
+  
+  background: url(/static/images/back02.gif) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color:#ffe045;
+}
+
+.bg-people2{  
+  
+  background: url(/static/images/back04.gif) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color:#ffe045;
+}
+
 
 
   .bg-05{  
@@ -261,6 +311,8 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bg-a{background-color: #d40044; }
 .bg-b{background-color: #298fff; }
 .bg-c{background-color: #ffd033; }
+.bg-d{background-color: #33ccff; }
+
 
 
 /*TAGS*/
@@ -627,6 +679,55 @@ font-size: 0.9em;
 font-family: 'Raleway', sans-serif; font-weight: 200;
 }
 
+.rn-box-naked-title{
+
+border-style: solid;
+border-color: #ddd;
+border-top-color: #fff;
+border-left-color: #fff;
+border-width: 1px 1px 1px 1px;
+border-radius: 12px 12px 0 0;
+padding: 4px 2px 4px 30px;
+margin: 4px 4px 0 4px;
+color:#ACBDC4;
+font-size: 0.9em;
+font-family: 'Raleway', sans-serif; font-weight: 200;
+}
+
+.rn-box-naked{
+
+border-style: solid;
+border-color: #ddd;
+border-top-color: #fff;
+border-left-color: #fff;
+border-width: 1px 1px 1px 1px;
+border-radius: 5px 5px 5px 5px;
+padding: 4px 2px 4px 30px;
+margin: 4px 4px 0 4px;
+color:#ACBDC4;
+font-size: 0.9em;
+font-family: 'Raleway', sans-serif; font-weight: 200;
+}
+
+.rn-box-naked-clear{
+
+border-style: solid;
+border-color: #ddd;
+border-top-color: #fff;
+border-left-color: #fff;
+background-color:#fff;
+border-width: 1px 1px 1px 1px;
+border-radius: 5px 5px 5px 5px;
+padding: 4px 2px 4px 30px;
+margin: 4px 4px 0 4px;
+color:#ACBDC4;
+font-size: 0.9em;
+font-family: 'Raleway', sans-serif; font-weight: 200;
+}
+
+
+
+
 .rn-box-solo{
 margin-right: 0;
 margin-left: 0;
@@ -852,6 +953,62 @@ border:1px solid #FFF;
 -moz-border-radius: 5px;
 border-radius: 5px;  }
 
+
+.profile-1{
+    width:70%; 
+    max-width:200px; 
+    margin:20px 0 0 0;
+    border:1px solid #FFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px; 
+}
+
+
+.pic-org-1{
+    width:40px; 
+    height:40px; 
+    margin:10px 0 0 0;
+    border:1px solid #FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+.pic-org-new{
+
+    margin:10px 0 0 0;
+    border:1px solid #FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+
+
+.blueprint{
+    border:1px dashed #33ccff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+    border-color:#33ccff;; 
+    color:#33ccff;
+    /*background-color: white; */
+    font-weight: 100; 
+    padding:2px; 
+
+}
+
+.blueprint:link{text-decoration:none !important; outline:0 !important;}
+.blueprint:active{text-decoration:none !important; outline:0 !important;}
+.blueprint:focus{text-decoration:none !important; outline:0 !important;}
+.blueprint:hover{color:#FFF; background-color:#33ccff; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
+.blueprint:focus{color:#CCC; text-decoration:none !important; outline:0 !important;}
+
+
+
+
+
 /*SORTABLE RINGMODELER*/
 
 .columnfields {
@@ -915,11 +1072,6 @@ border-radius: 10px 0px 10px 10px;
 
 
 
-
-
-
-
-
 /*FINISH SORTABLE */
 
 /* Navigation Bar */
@@ -976,9 +1128,9 @@ border-radius: 10px 0px 10px 10px;
 .topbar h4{color:#FFF;}
 
 
-header .navbar-default{margin:0; padding:14px 0; background:url(none) repeat; border:0; border-radius:0;}
+header .navbar-default{margin:0; padding:0; background:url(none) repeat; border:0; border-radius:0;}
 .navbar-brand{padding: 1px; margin:3px 0; border:1px solid transparent; border-radius:0px;}
-header .navbar-ring{padding:7px 15px; margin-top:50px; border:1px solid transparent; border-radius:3px;}
+header .navbar-ring{padding:0px; margin-top:50px; border:1px solid transparent; border-radius:3px;}
 
 
 
@@ -986,6 +1138,12 @@ header .navbar-ring{padding:7px 15px; margin-top:50px; border:1px solid transpar
 .bird{background-color: yellow; color:black;}
 
 @media (max-width:768px){
+
+
+
+.profile-1{width:100%; max-width:400px; margin:10px 0 0 0;}
+
+
 
 .pair_win200{height:100%;}
 .pair_win300{height:100%;}
