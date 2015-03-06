@@ -994,8 +994,14 @@ class AvispaModel:
                 external_FieldName = rs['fields'][0]['FieldName']
 
             if not rich_item:
+
+                rich_item = {
+                           '_source': url,
+                           'error':404
+                           }
                 #It didn't find the external item
-                break
+
+                
 
             
             rich_item_dict = {}
@@ -1102,7 +1108,7 @@ class AvispaModel:
                
                 item_values.update(r_item_values)
                 rich_values.update(r_rich_values)
-                history_values.update(r_history_values)
+                #history_values.update(r_history_values)
                                    
             else:
 
@@ -1113,20 +1119,21 @@ class AvispaModel:
                             
                 #This will record the history for the first entry in the item history
 
-                if field['FieldName'] not in history_values:
-                    history_values[field['FieldName']] = []
-                elif type(history_values[field['FieldName']]) is not list:
-                    history_values[field['FieldName']] = []
+            if field['FieldName'] not in history_values:
+                history_values[field['FieldName']] = []
+            elif type(history_values[field['FieldName']]) is not list:
+                history_values[field['FieldName']] = []
 
 
-                history_item_dict = {}
-                history_item_dict['date'] = datetime.now()
-                history_item_dict['author'] = handle
-                history_item_dict['before'] = ''
-                history_item_dict['after'] = item_values[field['FieldName']]
-                history_item_dict['action'] = 'New item'
-                
-                history_values[field['FieldName']].append(history_item_dict)
+
+            history_item_dict = {}
+            history_item_dict['date'] = datetime.now()
+            history_item_dict['author'] = handle
+            history_item_dict['before'] = ''
+            history_item_dict['after'] = item_values[field['FieldName']]
+            history_item_dict['action'] = 'New item'
+            
+            history_values[field['FieldName']].append(history_item_dict)
                 #history_values[field['FieldName']] = history_list
 
 
@@ -1205,6 +1212,7 @@ class AvispaModel:
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
         item = RingClass.load(db,idx)
+        needs_store = False
         
         item_values = {}
         history_values = {}
@@ -1225,26 +1233,85 @@ class AvispaModel:
             new = new.strip()
 
             if old == new:
-                print(field['FieldName']+' did not change')             
+                print(field['FieldName']+' did not change')  
+
             else:
+                needs_store = True
                 print(field['FieldName']+' changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
                                 '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
-                #args[f] = new
-                item.items[0][field['FieldName']] = new
 
-                #This will record the history for the item update 
+                                    #This will record the history for the item update 
                 history_item_dict = {}
                 history_item_dict['date'] = str(datetime.now())
                 history_item_dict['author'] = handle
                 history_item_dict['before'] = str(old) +' '+ str(type(old)) 
                 history_item_dict['after'] = str(new) + ' '+ str(type(new))
                 history_item_dict['action'] = 'Update item'
-                
 
                 item.history[0][field['FieldName']].append(history_item_dict)
 
-        if item.store(db):      
-            return item._id
+                item.items[0][field['FieldName']] = new
+
+
+                
+            if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items') and len(request.form.get(field['FieldName']))!=0:
+            
+                needs_store = True
+                
+                external_uri_list = request.form.get(field['FieldName']).split(',')
+                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,handle)
+
+
+                if 'rich' not in item:
+                    item.rich = []
+                    rich_dict = {}
+                    item.rich.append(rich_dict)
+                elif type(item.rich) is not list:
+                    item.rich = []
+                    rich_dict = {}
+                    item.rich.append(rich_dict)
+                elif type(item.rich[0]) is not dict:
+                    rich_dict = {}
+                    item.rich.append(rich_dict)
+
+                #1. Save what is in rich data just in case we got a 404
+                old_rich = item.rich[0][field['FieldName']]
+                old_rich_dictionary = {}
+                for old_r in old_rich:
+                    old_rich_dictionary[old_r['_source']] = old_r
+                #2. Check if we got a 404
+                for new_rich_value in r_rich_values[field['FieldName']]:
+                    if 'error' in new_rich_value:
+                        #3. Check if we can at least have old version (better than nothing)
+                        if new_rich_value['_source'] in old_rich_dictionary: 
+                            new_rich_value = old_rich_dictionary[new_rich_value['_source']]
+
+                if r_rich_values:
+                    #item.rich[0][field['FieldName']]            
+                    item.rich[0][field['FieldName']] = r_rich_values[field['FieldName']]
+
+                if old != new:
+                    #Different than the rich, history just keeps adding to the list 
+                    '''
+                    for history_item_dict in r_history_values:
+                        item.history[0][field['FieldName']].append(history_item_dict[field['FieldName']])
+                    '''
+
+
+                    #This updates data for just the field that changed
+                    '''
+                    if r_item_values:
+                        item.items[0][field['FieldName']] = r_item_values[field['FieldName']]
+                    else:
+                        item.items[0][field['FieldName']] = new
+                    '''
+ 
+            
+
+
+        if needs_store:
+            if item.store(db):      
+                return item._id
 
         return False
 

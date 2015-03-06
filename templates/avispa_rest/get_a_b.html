@@ -165,6 +165,29 @@
               </tr>
             {% endfor %}
               <!-- END ITEM N -->
+
+              <tr>
+                 <th></th>
+              {% for value in data.FieldLabel %}                   
+                 
+                 {% if not data.widget[value] == 'images' %}
+                  <th>
+                     
+                     {%if data.FieldLabel[value] == '' %}
+                         {{value}}
+                     {%else%}
+                         {{data.FieldLabel[value]}}
+                     {%endif%}
+                     <br/>
+                  </th>
+                 {%endif%}
+                               
+              {% endfor %}
+                 <th></th>
+                 <th></th>
+
+              </tr>
+              
             </table>
           </div>  
           <!-- <div class="col-sm-2">
