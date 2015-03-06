@@ -15,6 +15,10 @@
         <div class="row">
             <div class="col-sm-3 omega">
                 {% if data.handle_actualname %} 
+
+                <div class="spa10"></div>
+                <img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:250px;">
+
                 <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle_actualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1><br/>
                 {% else %}
                     <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle}}</span><br/><span class="text-lgray pull-left fs-0-6"></span></h1><br/>
@@ -119,7 +123,7 @@
                         </strong>
                     
                     </div>
-                    <div class="rn-box-solo">
+                    <div class="rn-box-soloX">
                         
 
                         {% for collection in data.collections.collectionlist %}  
@@ -129,10 +133,11 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="bg-" style=" margin-bottom:-20px;">
-                                            <table class="table table-condensed " cellpadding="0" cellspacing="0">
-                                                {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                            </table>
+                                            
+                                            {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                            
                                         </div>
+                                          
                                     
                                     </div>
                                     <div class="col-sm-8">
@@ -149,6 +154,7 @@
                                             </tr>
                                         </table>
                                     </div>
+                                    
                                 </div>
                                 
                                 

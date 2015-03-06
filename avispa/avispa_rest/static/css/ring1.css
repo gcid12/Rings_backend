@@ -646,12 +646,13 @@ position: relative;
 margin-right: 0;
 margin-left: 0;
 border-style: solid;
-border-color: #CCC;
-border-width: 2px;
+border-color: #e2e2e2;
+border-width: 1px 1px 1px 20px;
 border-radius:0 20px 20px 20px;
-padding: 10px 6px 10px 6px;
+padding: 5px 10px 0px 30px;
 margin: 4px 4px 4px 4px;
 position: relative;
+background-color: #FFF;
 
 
 }

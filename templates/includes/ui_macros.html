@@ -282,34 +282,56 @@
   {% macro collection(handle,collection,percent,role,update,user_authorizations) %}
 
 
-  <tr>
+
+  <div class="row">
+
     
-    <td align="center"> 
-      <img class="block-center" src="/static/images/repo-icon.png" style="width:60px; padding-top:10px;" alt="MyRing"> <br/>
+    
+    <div class="col-xs-3 col-sm-12">
       
-    </td>
-    <td>
-      {% if 'get_a' in user_authorizations %}
-      <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-        <h3 class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</h3>
-      </a>
-      {%else%}
-        <h3 class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</h3>
-      {%endif%}
 
-      <p class="text-gray fs-1 text-s1"><strong>1</strong> Rings | <strong>{{percent}}%</strong> sparcity | <strong>3</strong> Collaborators  <br/>  
-      <!-- Deadline <strong>March 12, 2015 12:00 EST</strong> --></p>
+      <table>
+        <tr>
+          <td>
+            <img class="block-center" src="/static/images/repo-icon.png" style="width:60px; padding-top:10px;" alt="MyRing">
+          </td>
+          <td>
+            {% if 'get_a' in user_authorizations %}
+            <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
+              <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</span>
+            </a>
+            {%else%}
+              <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }}</span>
+            {%endif%}
+          </td>
+        </tr>
+      </table>
+      
+      
 
-    </td>
+    </div> 
+    <div class="col-xs-3 col-sm-12 ">
+      <p class="text-gray fs-1 text-s1 pl-30">
+        <strong>1</strong> Rings | 
+        <strong>{{percent}}%</strong> sparcity  <br/>
+        <strong>3</strong> Collaborators
+        
+         
+                                   
+      </p>
+      <span class="pl-30">{{ label(role) }}</span>
+    </div>
 
-    <td> 
-      <div class="pull-right">
-        {{ label(role) }}
 
-      </div>
+
+    <!-- <div class="col-sm-12 text-center">
+      <p class="text-gray fs-1 text-s1">Deadline <strong>March 12, 2015 12:00 EST</strong> </p>
+    </div> -->
+
+    
       <!-- <div class="text-gray fs-0-8 text-s1">Last Update: Feb 12, 2015</div> -->
-    </td>
-  </tr>
+    
+  </div>
 {% endmacro %}
 
   {% macro collection_big(name, percent, role, update,link) %}
