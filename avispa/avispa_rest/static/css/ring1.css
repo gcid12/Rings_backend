@@ -328,6 +328,25 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 
 
 
+.bord-left{
+    border-left-style: solid;
+    border-left-color:#CCC;
+    border-left-width:1px;
+    padding-left:10px;
+}
+
+.bord-right{
+    border-right-style: solid;
+    border-right-color:#CCC;
+    border-right-width:1px;
+}
+
+.bord-top{
+    border-top-style: solid;
+    border-top-color:#CCC;
+    border-top-width:1px;
+}
+
 .bb-1{border-color: #ffa0a0;}
 .bb-2{border-color: #fed160;}
 .bb-3{border-color: #feef53;}
@@ -335,6 +354,10 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bb-5{border-color: #a7dbfe;}
 .bb-6{border-color: #f0c8fe;}
 .bb-7{border-color: #d2d2d2;}
+.bb-8{border-color: #f5f5f5;}
+
+
+
 
 
 
@@ -399,19 +422,8 @@ margin:2px 3px 2px 0;
 .rhr4{height:0.5px; width:100%; background-color:#CCC;}
 .rvr{padding:5px 5px; height:30%; margin: 0 0 0 -10px;}
 
-.bord-left{
-    border-left-style: solid;
-    border-left-color:#CCC;
-    border-left-width:1px;
-    padding-left:10px;
 
-}
 
-.bord-right{
-    border-right-style: solid;
-    border-right-color:#CCC;
-    border-right-width:1px;
-}
 
 
 /*GRAPH WRAPPER*/

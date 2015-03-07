@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'avispa_rest/tabs.html' %}
 
 {% block title %} Avispa {% endblock %}
 
@@ -39,75 +39,47 @@
 
 {% endblock %}
 
-{% block content %}
+{% block tabcontent %}
 
 
 <!-- START NEW CONTENT --> 
 
 
-<section class="">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-9">  
 
                 
-                        <div class="rn-box-naked-title">
+                       
  
-                            <div class="btn-group pull-right" role="group" style="padding-top:10px;">
-                                <a href="/" type="button" class="btn btn-default btn-xs pull-right">
-                                      <i class="fa fa-question-circle"></i>
-                                  </a>
+                            
 
                               
 
-                                <div class="btn-group" role="group">
-                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    Settings
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                      
-                                  </ul>
-                                </div>
-                            </div>
+                  
 
 
 
 
 
 
-              <strong>
-                  <h4>Your Data Collections <span class="text-lgray"> 
-                   
-                  </span></h4>
-              </strong>
+            
+                  <h4>Settings </h4>
+              
           
-          </div>
+          
 
-            <div class="rn-box-title">
+           
 
-              <strong> <!-- Ring owner  -->Updating 1 collection </strong> 
+              <span class="label label-warning"> <!-- Ring owner  -->Updating {{data.collectionlist.collectionname}}</span> 
 
               <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
                 <i class="fa fa-question-circle"></i>
               </button-->
 
-            </div>
+            
 
 
             <form class="form-horizontal" role="form" action="/{{ data.handle }}/_collections/{{ data.collection }}?method=PUT" method="POST">
 
 
-              <div class="rn-box-solo">
-                <div class="row">
-                  &nbsp;&nbsp;&nbsp; <strong>STEP 1.</strong> Name this Collection
-                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                    <i class="fa fa-question-circle"></i>
-                  </button> 
-                </div> 
-
-              </div>
 
               <div class="rn-box-content">
                 Collection name: <input name="CollectionNameDisabled" class="form-control" type="text" value="{{data.collectionlist.collectionname}}" disabled><input name="CollectionName" class="form-control" type="hidden" value="{{data.collectionlist.collectionname}}"><br/>
@@ -178,14 +150,11 @@
             </form> 
 
 
-      </div> 
-    </div>
-  </div>
-</section>
 
 
 
-{% endblock content%}
+
+{% endblock %}
 
 
 {% block modals %}

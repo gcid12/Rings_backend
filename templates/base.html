@@ -63,7 +63,7 @@
             <tr>
               <td><a href="#menu" class="text-gray clearlink"><i class="fa fa-chevron-left fa-1x text-lgray"></i> </a>
               </td>
-              <td><a href="#menu" class="text-gray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> <span class="fs-1-5 text-s1" style="padding:0 50px 0 20px;"> {{ current_user.id }} </span></a>
+              <td><a href="/{{ data.handle }}/_home" class="text-gray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> <span class="fs-1-5 text-s1" style="padding:0 50px 0 20px;"> {{ current_user.id }} </span></a>
               </td>
             </tr>
           </table>

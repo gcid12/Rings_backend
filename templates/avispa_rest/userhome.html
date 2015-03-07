@@ -18,7 +18,12 @@
 
                 <div class="row pl-20" >
                     <div class="col-xs-4 col-sm-12">
-                        <img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/users/perry.png{%endif%}" class="profile-1"> 
+                        <img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" class="profile-1"> 
+
+                     
+
+
+
                     </div>
                     <div class="col-xs-8 col-sm-12">
                         <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle_actualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1><br/>
@@ -192,7 +197,7 @@
                                               <td colspan="3" style="padding:0 2px 0px 2px;">
                                                 <table class="table table-striped table-bordered">
                                                   {% for ring in collection.rings %}  
-                                                    {{ ui.collection_item(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                                    {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                                                   {% endfor %}
                                                   {{ ui.collection_item_add(data.handle) }} 
                                                 </table>
