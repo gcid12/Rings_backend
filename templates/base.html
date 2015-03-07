@@ -51,11 +51,11 @@
 <header>
 
 
-<nav class="navbar navbar-default " style="padding-top:0px;">
-  <div class="container-fluid bg-white">
+<nav class="navbar navbar-default color-a-bar" style="padding-top:0px;">
+  <div class="container-fluid bg-bargray">
     <!-- Brand and toggle get grouped for better mobile display -->
 
-      <ul class="nav navbar-nav navbar-left hidden-xs">
+      <ul class="nav navbar-nav navbar-left hidden-xs w-links">
         {%if current_user.is_authenticated()%}
 
         <li class="active hidden-xs">
@@ -63,7 +63,7 @@
             <tr>
               <td><a href="#menu" class="text-gray clearlink"><i class="fa fa-chevron-left fa-1x text-lgray"></i> </a>
               </td>
-              <td><a href="/{{ data.handle }}/_home" class="text-gray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> <span class="fs-1-5 text-s1" style="padding:0 50px 0 20px;"> {{ current_user.id }} </span></a>
+              <td><a href="/{{ data.handle }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> <span class="fs-1-5 text-s1" style="padding:0 50px 0 20px;"> {{ current_user.id }} </span></a>
               </td>
             </tr>
           </table>

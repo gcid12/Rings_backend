@@ -4094,7 +4094,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #555555;
 }
 .navbar-default .navbar-nav > li > a {
-  color: #999999;
+  /*color: #999999;*/
+  color: #bbbbbb;
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
