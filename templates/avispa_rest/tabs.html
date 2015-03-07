@@ -7,18 +7,20 @@
 {% block content %}
 <!-- CONTENT HERE -->
 
-
+<div class="container rn-box">
 <section>
+
   
   {% if data.collection %} <!-- TABS WILL SHOW -->
   {% if not data.raw %} 
     <div class="row">
       <div class="col-sm-12">
-         <div class="rn-box">
+         
               <table class="table " cellpadding="0" cellspacing="0">
                     {{ ui.collection_big(data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
               </table>
-        </div>     
+        <hr/>
+    
       </div>
     </div>
   {%endif%}
@@ -29,8 +31,20 @@
     <div class="row">
       {% if data.collection %}
       {% if not data.raw %} 
+      
+
+      <div class="col-sm-10 pl-40" >
+
+      {% endif %}
+      {%endif%}
+        {% block tabcontent %}
+        {% endblock %}
+      {% if data.collection %} 
+      {% if not data.raw %} 
+      </div>
+
       <!-- COLUMN 1 -->
-      <div class="col-sm-1 col-xs-12 omega">
+      <div class="col-sm-2 col-xs-12 alpha">
         <a href="/{{ data.handle }}/_collections/{{ data.collection }}" class="text-center">
           <span class="tab-box-d tab-on2{% if tab=='rep' %} tab-on2 {% endif %}">
             <i class="fa fa-circle-o fa-1x"></i>
@@ -62,15 +76,7 @@
           </span>
         </a> 
       </div>
- 
-      <div class="col-sm-11 alpha" >
-      {% endif %}
-      {%endif%}
-        {% block tabcontent %}
-        {% endblock %}
-      {% if data.collection %} 
-      {% if not data.raw %} 
-      </div>
+
       {%endif%}
       {%endif%}
     </div> 
@@ -78,6 +84,8 @@
 
 
 </section>
+
+</div>
 
 
 <!-- IMAGE GALLERY BODY -->

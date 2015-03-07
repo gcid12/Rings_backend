@@ -13,61 +13,53 @@
 
             {% endblock %}
                  
-            {% block tabcontent %}
+{% block tabcontent %}
 
             
-          <div class="row">
-            <div class="col-sm-9 omega">     
+        
+            <h4>Rings in this collection</h4>    
 
-            
-              <div class="rn-box-title gad100">
-                Rings
-              </div>
-              <div class="rn-box-solo gad100">
-
-                <table class="table table-striped" cellpadding="0" cellspacing="0">
+        
+            <table class="table table-striped" cellpadding="0" cellspacing="0">
                   
-                  {% for ring in data.ringlist %}
+                {% for ring in data.ringlist %}
                     
-                    {{ ui.panel(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection, data.user_authorizations) }}
-                  {% endfor %}
+                    {{ ui.collection_item_big(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection, data.user_authorizations) }}
+                {% endfor %}
 
-                </table> 
-                <div class="row">
-                  <div class="col-sm-12 ">
+            </table> 
+            <!-- <div class="row">
+                <div class="col-sm-12 ">
                     <div class="pull-right">
-                      <ul class="pagination">
-                        <li><a href="#">&laquo;</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li class="disable"><a href="#">2</a></li>
-                        <li class="disable"><a href="#">3</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                      </ul>
+                        <ul class="pagination">
+                            <li><a href="#">&laquo;</a></li>
+                            <li class="active"><a href="#">1</a></li>
+                            <li class="disable"><a href="#">2</a></li>
+                            <li class="disable"><a href="#">3</a></li>
+                            <li><a href="#">&raquo;</a></li>
+                        </ul>
                     </div>
-                   
-                  </div>
-                </div 
-              </div>
-            </div>
-            {% if not data.collection %}
-            <div class="col-sm-3 alpha">
-              <div class="rn-box-title-slim gad100">
+                </div>
+            </div>  -->
+        
+        {% if not data.collection %}
+        <div class="rn-box-title-slim">
                 Actions
-              </div>
-              <div class="rn-box-solo gad100">
+        </div>
+        <div class="rn-box-solo ">
                 
                  {% if 'post_a' in data.user_authorizations %}
                  <a href="?rq=post&n=10" type="button" class="btn btn-warning btn-xs" style="margin:0 5px;">
                     <i class="fa fa-plus"></i> &nbsp; NEW RING.
                  </a>
                  {% endif %}            
-            </div>
-            {% endif %}
+        </div>
+        {% endif %}
 
-          </div>
+
             
 
-            {% endblock %} 
+{% endblock %} 
 
 
 {% block findme %} get_a {% endblock %}

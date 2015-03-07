@@ -1,54 +1,6 @@
 
 
-  {% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
 
-  <tr>
-    <td> 
-      <div class="row">
-        <div class=" col-sm-2 hidden-xs">
-          {{ icon_big(count,color) }} 
-        </div> 
-        <div class="col-xs-7 col-sm-7">
-
-          <h3 class="fs-1-5">
-            <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
-            {% if 'get_a' in user_authorizations %}<a href="/{{ handle }}" class="nounder">{{origin}}</a>{%else%}{{origin}}{%endif%}/<span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
-            </a>{%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
-          </h3>    
-          <p class="rn-t3 text-lgray">{{ description }}</p>
-
-        </div> 
-        <div class="col-xs-5 col-sm-3">
-          <div class="pull-right">
-            <div class="visible-xs">
-              {{ icon_med(count,color) }}
-
-            </div>
-            <!--br/><a>[ Invite a Moderator ]</a>
-              <br/><a>[ Invite a Capturist ]</a-->
-            <div class="btn-group">
-            
-              <!-- <a href="/{{ handle }}/{{ ring }}" type="button" class="btn btn-info btn-xs">List</a> -->
-              {% if 'post_a_b' in user_authorizations %}
-              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
-              {% endif %}
-              
-              {% if 'put_a_b' in user_authorizations %}
-              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              {% endif %}
-              
-              
-
-            </div>
-            <br/><br/>
-            <span class="label label-discrete pull-right">{{date}}</span>
-          </div>
-        </div>
-      </div>  
-    </td>
-  </tr>
-
-{% endmacro %}
 
 {% macro cta1() %}
     <section id="header" class="bg-yellow">
@@ -186,19 +138,34 @@
           <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
         </ul>
       </span>
-
       <br/>
-      
     </div>
-
-    <!-- <div class="col-sm-12 text-center">
-      <p class="text-gray fs-1 text-s1">Deadline <strong>March 12, 2015 12:00 EST</strong> </p>
-    </div> -->
-      <!-- <div class="text-gray fs-0-8 text-s1">Last Update: Feb 12, 2015</div> -->
   </div>
 {% endmacro %}
 
-{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
+  {% macro collection_big(name, percent, role, update,link) %}
+
+  <tr>
+    
+    <td align="center"> 
+      <img class="block-center" src="/static/images/case-44.png" style="width:70px;" alt="MyRing"> <br/>
+      <span class="label label-default fs-0-7 ">Data Collection</span> 
+    </td>
+    <td> 
+      <a class="nounder" href="{{link}}"><h3 class="fs-1-5 text-gray text-s1 fw-c">
+      {{ name|upper() }}</h3></a>
+      <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
+    </td>
+
+    <td> 
+      <div class="pull-right">
+        {{ label(role) }}
+      </div>
+    </td>
+  </tr>
+{% endmacro %}
+
+{% macro collection_item(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
           
           <tr style="margin-top:200px;">
             
@@ -236,24 +203,59 @@
                    
 {% endmacro %}
 
+{% macro collection_item_big(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
 
+  <tr>
+    <td> 
+      <div class="row">
+        <div class=" col-sm-2 hidden-xs">
+          {{ icon_big(count,color) }} 
+        </div> 
+        <div class="col-xs-7 col-sm-7">
 
-{% macro panel_collections_add_ring2(handle) %} 
-          
-            <tr>
-              <td colspan="4" align="right" style="vertical-align:top; align:right;" class="text-right">
-                
+          <h3 class="fs-1-2">
+            <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
+            {% if 'get_a' in user_authorizations %}<a href="/{{ handle }}" class="nounder">{{origin}}</a>{%else%}{{origin}}{%endif%}/<span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
+            </a>{%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
+          </h3>    
+          <p class="rn-t3 text-lgray">{{ description }}</p>
+
+        </div> 
+        <div class="col-xs-5 col-sm-3">
+          <div class="pull-right">
+            <div class="visible-xs">
+              {{ icon_med(count,color) }}
+
+            </div>
+            <!--br/><a>[ Invite a Moderator ]</a>
+              <br/><a>[ Invite a Capturist ]</a-->
+            <div class="btn-group">
+            
+              <!-- <a href="/{{ handle }}/{{ ring }}" type="button" class="btn btn-info btn-xs">List</a> -->
+              {% if 'post_a_b' in user_authorizations %}
+              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              {% endif %}
               
-                  <a href="/{{handle}}?rq=post&n=10" class="btn btn-default btn-success text-right" bgcolor="yellow">
-                    <i class="fa fa-plus-circle fa-1x"></i> &nbsp; Add New Ring
-                  </a>        
-              </td>
+              {% if 'put_a_b' in user_authorizations %}
+              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              {% endif %}
               
-            </tr>
+              
+
+            </div>
+            <br/><br/>
+            <span class="label label-discrete pull-right">{{date}}</span>
+          </div>
+        </div>
+      </div>  
+    </td>
+  </tr>
 
 {% endmacro %}
 
-{% macro panel_collections_add_ring(handle) %} 
+
+
+{% macro collection_item_add(handle) %} 
           
             <tr>
               <td></td>
@@ -311,27 +313,7 @@
 
 
 
-  {% macro collection_big(name, percent, role, update,link) %}
 
-  <tr>
-    
-    <td align="center"> 
-      <img class="block-center" src="/static/images/case-44.png" style="width:70px;" alt="MyRing"> <br/>
-      <span class="label label-default fs-0-7 ">Data Collection</span> 
-    </td>
-    <td> 
-      <a class="nounder" href="{{link}}"><h3 class="fs-1-5 text-gray text-s1 fw-c">
-      {{ name|upper() }}</h3></a>
-      <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
-    </td>
-
-    <td> 
-      <div class="pull-right">
-        {{ label(role) }}
-      </div>
-    </td>
-  </tr>
-{% endmacro %}
 
 
 

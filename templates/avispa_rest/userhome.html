@@ -133,9 +133,6 @@
                 <div id="step3">
                     <div class="rn-box-naked-title">
                         
-                        
-
-
                         <div class="btn-group pull-right" role="group" style="padding-top:10px;">
                             <a href="/" type="button" class="btn btn-default btn-xs pull-right">
                                 <i class="fa fa-question-circle"></i>
@@ -165,18 +162,13 @@
                           </div>
                         </div>
 
-
-
-
-
-
                         <strong>
                             <h4>Your Data Collections <span class="text-lgray"> 
                              ( {{ data.collections.collectionlist|length }} )
                             </span></h4>
                         </strong>
-                    
                     </div>
+
                     <div>
                         
 
@@ -200,9 +192,9 @@
                                               <td colspan="3" style="padding:0 2px 0px 2px;">
                                                 <table class="table table-striped table-bordered">
                                                   {% for ring in collection.rings %}  
-                                                    {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                                    {{ ui.collection_item(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                                                   {% endfor %}
-                                                  {{ ui.panel_collections_add_ring(data.handle) }} 
+                                                  {{ ui.collection_item_add(data.handle) }} 
                                                 </table>
                                               </td>
                                             </tr>
