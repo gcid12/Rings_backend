@@ -732,6 +732,36 @@ class MyRingPatch:
         return d
 
 
+    def p20150308b(self,request,*args):
+        '''
+        This patch creates new view 'dailyactivity' in every database for the indicated user
+
+        Run it for every user you want to update
+        @input (GET) : handle
+ 
+
+        http://127.0.0.1/_patch/p20150221?handle=blalab
+        '''
+
+        handle = request.args.get('handle')
+        
+
+        rings = self.MAM.select_user_doc_view('rings/count',handle)
+
+        for ring in rings:
+            try:
+                db_ringname=str(handle)+'_'+str(ring)
+                db_ringname = db_ringname.replace(" ","")
+                self.AVM.ring_set_db_views(db_ringname)
+            except(ResourceNotFound):
+                print(db_ringname+' not found. Going to the next one')
+
+
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
  
  
 

@@ -296,6 +296,55 @@ class AvispaModel:
             view.get_doc(db)
             view.sync(db)
 
+        if not specific or specific == 'ring/dailyactivity':
+            view = ViewDefinition('ring', 'dailyactivity', 
+                   '''
+                    function(doc) {
+                      if(doc.history) {
+                         if(!doc.deleted) {
+                            var c = new Object(); 
+                            
+                            for (var key in doc.history[0]) {           
+                               for (var h in doc.history[0][key]){ 
+                                   var author = doc.history[0][key][h]['author'];
+                                   var action = doc.history[0][key][h]['action'];
+                                   var date = doc.history[0][key][h]['date'].substring(0,10);
+                                   var before = doc.history[0][key][h]['before']
+                                   var after = doc.history[0][key][h]['after']
+                                   
+                                   if(!(author in c)){               
+                                       var a = new Object();
+                                       a['new'] = new Object();
+                                       a['update'] = new Object();                
+                                       c[author] = a;
+                                   }
+
+                                   if(doc.history[0][key][h]['action'] == 'New item'){                
+                                       if(!(date in c[author]['new'])){
+                                           c[author]['new'][date] = 0;
+                                       }
+                                       if(before != after){
+                                           c[author]['new'][date] += 1;
+                                       }
+                                   }else if(doc.history[0][key][h]['action'] == 'Update item'){              
+                                       if(!(date in c[author]['update'])){
+                                           c[author]['update'][date] = 0;
+                                       }
+                                       c[author]['update'][date] += 1;
+                                   }                              
+                               }
+                            }
+                            for(ax in c){
+                                emit(ax, c[ax]); 
+                            }       
+                         }
+                      }
+                    }
+                   ''')
+
+            view.get_doc(db)
+            view.sync(db)
+
         return True
 
 
