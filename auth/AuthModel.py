@@ -322,13 +322,31 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.is_org) {
-
-                        for (var key in doc.people){
-                            emit(doc.people[key]['handle'],doc._id)
-                            
+                        var x = new Object();
+                        x['handle']=doc._id
+                        
+                        x['name']=''
+                        if(doc.name){
+                            x['name']=doc.name
                         }
 
-                        
+                        x['profilepic']=''      
+                        if(doc.profilepic){
+                            if(doc.profilepic==''){
+                                x['profilepic'] = ''
+                            }else{        
+                                parts = doc.profilepic.split(',')
+                                if(parts[0]==''){
+                                  x['profilepic'] = parts[1];
+                                }else{
+                                  x['profilepic'] = parts[0];
+                                }
+                            }
+                        }
+
+                        for (var key in doc.people){
+                            emit(doc.people[key]['handle'],x)           
+                        }      
                     }
                 }
                 ''')

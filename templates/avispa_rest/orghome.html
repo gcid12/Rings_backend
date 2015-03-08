@@ -14,6 +14,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 text-right">
+        <br/>
         <img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="float:left; margin-right:10px;" alt="">
 
         {% if data.handle_actualname %} 
@@ -91,32 +92,25 @@
 
             </div>
           <div class="rn-box-solo">
-              <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">
+              
               
                   {% for collection in data.collections.collectionlist %}  
+                  
                     {% if collection.valid %}
-                      
                       {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                      <tr>
-                        <td></td>
-                        <td colspan="2">
-                          <table class="table table-striped">
-                            {% for ring in collection.rings %}    
+                      <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">     {% for ring in collection.rings %}    
                               {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                             {% endfor %}
 
-                              {{ ui.panel_collections_add_ring(data.handle) }}
+                              {#{ ui.panel_collections_add_ring(data.handle) }#}  
+                              {{ ui.collection_item_add(data.handle) }}               
 
-                              
-                          </table>
-                           
-                        </td>
-                        
-                      </tr>
+                    
+                    </table> 
                     {% endif %}
                   {% endfor %}
                        
-              </table> 
+              
 
 
           </div> 

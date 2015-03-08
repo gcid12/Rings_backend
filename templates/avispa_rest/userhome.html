@@ -40,27 +40,17 @@
                         <p class="text-lgray">Organizations  </p> 
                     </div>
                     <div class="col-xs-12 col-sm-12">
-
                         {% for organization in data.organizations %}
                             
-                            <a href="/{{organization}}/_home" data-toggle="tooltip" title="{{organization}}"><img src="/static/images/users/unam.jpg" class="pic-org-1"/></a> 
-                                
-                                      
-                            
+                            <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
+
+                                <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" class="pic-org-1">
+
+                            </a>
+    
                         {% endfor %}
                     
-                        <a href="/_orgregister" data-toggle="tooltip" title="XX"><img src="/static/images/users/compo.png" class="pic-org-1"/></a> 
-                        <a href="/_orgregister" data-toggle="tooltip" title="Delta"><img src="/static/images/users/seg.png" class="pic-org-1"/> </a>
-                        <a href="/_orgregister" data-toggle="tooltip" title="Nike"><img src="/static/images/users/type.png" class="pic-org-1"/> </a>
-                        <a href="/_orgregister" data-toggle="tooltip" title="Spade"><img src="/static/images/users/spade.jpeg" class="pic-org-1"/> </a>
-                       
-                        
-                        <!-- <img src="/static/images/users/oreo.jpeg" class="pic-org-1"/> 
-                        <img src="/static/images/users/mac.jpeg" class="pic-org-1"/> 
-                        <img src="/static/images/users/wp.png" class="pic-org-1"/> 
-                        <img src="/static/images/users/dunkin.jpeg" class="pic-org-1"/> 
-                        <img src="/static/images/users/gap.jpeg" class="pic-org-1"/> 
-                        <img src="/static/images/users/jcp.jpeg" class="pic-org-1"/>  -->
+
                         
                         {% if 'post_a' in data.user_authorizations %}
                         
@@ -136,7 +126,9 @@
                 </div>
 
                 <div id="step3">
-                    <div class="rn-box-naked-title" style="background-color:rgba(0, 0, 0, 0.03);">
+                <br/>
+                <p class="text-lgray">Data Collections </p>
+                    <div class="rn-box-naked-title" style="display:none;">
                         
                         <div class="btn-group pull-right" role="group" style="padding-top:10px;">
                             <a href="/" type="button" class="btn btn-default btn-xs pull-right">

@@ -716,6 +716,26 @@ class MyRingPatch:
         return d
 
 
+    def p20150308(self,request,*args):
+        '''
+        This patch updates orgs/user2orgs
+        Run it once per system 
+        '''
+
+        from auth.AuthModel import AuthModel
+
+        ATM = AuthModel()
+
+        ATM.userdb_set_db_views()
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
+ 
+ 
+
+
 
 
 

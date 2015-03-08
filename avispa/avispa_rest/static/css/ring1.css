@@ -665,7 +665,7 @@ font-weight:bold;
 }
 
 .rn-box-title{
-background-color:#E9EFF2; 
+background-color: rgba(0, 0, 0, 0.03);  
 border-style: solid;
 border-color: #ddd;
 border-top-color: #fff;
@@ -708,6 +708,7 @@ margin: 4px 4px 0 4px;
 color:#ACBDC4;
 font-size: 0.9em;
 font-family: 'Raleway', sans-serif; font-weight: 200;
+background-color: rgba(0, 0, 0, 0.03); 
 }
 
 .rn-box-naked{
