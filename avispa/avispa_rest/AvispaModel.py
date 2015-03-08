@@ -24,6 +24,9 @@ from MyRingUser import MyRingUser
 from MainModel import MainModel
 from env_config import COUCHDB_USER, COUCHDB_PASS
 
+from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+
+
 
 class AvispaModel:
 
@@ -638,6 +641,24 @@ class AvispaModel:
                 print('Could not increase item count')
                 return False
 
+        #AVISPAMODEL
+    def decrease_item_count(self,handle,ringname):
+
+        self.db = self.couch[self.user_database]
+        user =  MyRingUser.load(self.db, handle)
+
+        if user:
+            for ring in user['rings']:
+                if ring['ringname'] == ringname:
+                    ring['count'] -= 1
+                    print('Item Count decreased')
+
+            if user.store(self.db):       
+                return True
+            else:
+                print('Could not decrease item count')
+                return False
+
     def set_ring_origin(self,handle,ringname,origin):
 
         self.db = self.couch[self.user_database]
@@ -1104,7 +1125,7 @@ class AvispaModel:
             if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items') and len(request.form.get(field['FieldName']))!=0:
                 
                 external_uri_list = request.form.get(field['FieldName']).split(',')
-                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,handle)
+                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,current_user.id)
                
                 item_values.update(r_item_values)
                 rich_values.update(r_rich_values)
@@ -1128,7 +1149,7 @@ class AvispaModel:
 
             history_item_dict = {}
             history_item_dict['date'] = datetime.now()
-            history_item_dict['author'] = handle
+            history_item_dict['author'] = current_user.id
             history_item_dict['before'] = ''
             history_item_dict['after'] = item_values[field['FieldName']]
             history_item_dict['action'] = 'New item'
@@ -1243,7 +1264,7 @@ class AvispaModel:
                                     #This will record the history for the item update 
                 history_item_dict = {}
                 history_item_dict['date'] = str(datetime.now())
-                history_item_dict['author'] = handle
+                history_item_dict['author'] = current_user.id
                 history_item_dict['before'] = str(old) +' '+ str(type(old)) 
                 history_item_dict['after'] = str(new) + ' '+ str(type(new))
                 history_item_dict['action'] = 'Update item'
@@ -1259,7 +1280,7 @@ class AvispaModel:
                 needs_store = True
                 
                 external_uri_list = request.form.get(field['FieldName']).split(',')
-                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,handle)
+                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,current_user.id)
 
 
                 if 'rich' not in item:
@@ -1357,9 +1378,24 @@ class AvispaModel:
                 item.items[0][f] = new
         '''
 
+        fields = schema['fields']
+        for field in fields:
+        
+            old = unicode(item.items[0][field['FieldName']])
+
+            history_item_dict = {}
+            history_item_dict['date'] = str(datetime.now())
+            history_item_dict['author'] = current_user.id
+            history_item_dict['before'] = str(old) +' '+ str(type(old)) 
+            history_item_dict['after'] = ''
+            history_item_dict['action'] = 'Delete item'
+            item.history[0][field['FieldName']].append(history_item_dict)
+
         item.deleted = True
 
         if item.store(db): 
+
+            self.decrease_item_count(handle,ringname)
 
             return item._id
 

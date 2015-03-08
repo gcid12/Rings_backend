@@ -1145,7 +1145,7 @@ border-radius: 10px 0px 10px 10px;
 .topbar h4{color:#FFF;}
 
 
-header .navbar-default{margin:0; padding:0; background:url(none) repeat; border:0; border-radius:0;}
+header .navbar-default{margin:0; padding:0; background:url() repeat; border:0; border-radius:0;}
 .navbar-brand{padding: 1px; margin:3px 0; border:1px solid transparent; border-radius:0px;}
 header .navbar-ring{padding:0px; margin-top:50px; border:1px solid transparent; border-radius:3px;}
 

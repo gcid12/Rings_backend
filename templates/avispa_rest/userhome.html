@@ -49,15 +49,10 @@
 
                         
                         {% if 'post_a' in data.user_authorizations %}
-                        
-                       
 
                         <div style="width:40px; height:40px;">
                             <a href="/_orgregister" data-toggle="tooltip" title="Join or Create" class="hidden-xs"><div class="pic-org-1 blueprint"><i class="fa fa-plus"></i></div></a>
                         </div>
-
-                        
-
 
                         {%endif%}
 
@@ -187,7 +182,9 @@
                                                   {% for ring in collection.rings %}  
                                                     {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                                                   {% endfor %}
-                                                  {{ ui.collection_item_add(data.handle) }} 
+                                                  {% if 'post_a' in data.user_authorizations %}
+                                                      {{ ui.collection_item_add(data.handle) }} 
+                                                  {%endif%}
                                                 </table>
                                               </td>
                                             </tr>

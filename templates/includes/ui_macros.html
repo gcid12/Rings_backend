@@ -127,6 +127,7 @@
       </p>
 
       <hr/>
+      {% if 'put_a_x_y' in user_authorizations %}
       <span class="dropdown">
         <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
           Actions
@@ -138,6 +139,7 @@
           <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
         </ul>
       </span>
+      {% endif %}
       <br/>
     </div>
   </div>
@@ -610,9 +612,9 @@
         <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if profilepic %}/_images/{{handle}}/t150/{{profilepic}}_t150.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
 
         {% if actualname %} 
-         <h4 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h4><br/>
+         <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h3><br/>
         {% else %}
-         <h3 class="text-lead fw-300 pull-left"><span class="text-gray">{{handle}}</span><br/><span class="text-lgray pull-left fs-0-6"></span></h3><br/>
+         <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{handle}}</span></a><br/><span class="text-lgray pull-left fs-0-6"></span></h3><br/>
         {% endif %}
 
         <span class=" pull-right">
