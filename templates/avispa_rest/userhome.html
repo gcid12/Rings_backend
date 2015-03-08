@@ -14,18 +14,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 omega">
-                {% if data.handle_actualname %} 
+                
 
                 <div class="row pl-20" >
                     <div class="col-xs-4 col-sm-12">
-                        <img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" class="profile-1"> 
-
-                     
-
-
-
+                        <img src="{%if data.cu_profilepic%}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" class="profile-1"> 
                     </div>
                     <div class="col-xs-8 col-sm-12">
+                        {% if data.handle_actualname %} 
                         <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle_actualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1><br/>
                         {% else %}
                         <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle}}</span><br/><span class="text-lgray pull-left fs-0-6"></span></h1><br/>
