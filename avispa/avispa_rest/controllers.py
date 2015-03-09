@@ -296,6 +296,8 @@ def home_dispatcher(handle):
             ring_dac = MAM.select_ring_doc_view(ringdb,'ring/dailyactivity',current_user.id,5000)
             for item_dac in ring_dac:
                 for n in item_dac['new']:
+                    if n == str(today):
+                        print('NEW TODAY:',item_dac['new'][n])
 
                     if n in h_generic:
                         h_generic[n] += item_dac['new'][n]
@@ -308,6 +310,8 @@ def home_dispatcher(handle):
                     
 
                 for n in item_dac['update']:
+                    if n == str(today):
+                        print('UPDATED TODAY:',item_dac['update'][n])
 
                     if n in h_generic:
                         h_generic[n] += item_dac['update'][n]
