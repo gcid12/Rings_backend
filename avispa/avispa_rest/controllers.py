@@ -282,11 +282,12 @@ def home_dispatcher(handle):
         one_day = datetime.timedelta(days=1)
         needle = today
         for d in range(93):
-            needle = needle - one_day
-            print('NEEDLE:',needle)
+            
+            #print('NEEDLE:',needle)
             h_new[str(needle)] = 0
             h_update[str(needle)] = 0
             h_generic[str(needle)] = 0
+            needle = needle - one_day
 
         #print('h_new:',h_new)
 
