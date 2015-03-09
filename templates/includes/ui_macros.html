@@ -145,17 +145,31 @@
   </div>
 {% endmacro %}
 
-  {% macro collection_big(name, percent, role, update,link) %}
+  {% macro collection_big(handle, name, percent, role, update,link) %}
 
   <tr>
     
-    <td align="center"> 
-      <img class="block-center" src="/static/images/case-44.png" style="width:70px;" alt="MyRing"> <br/>
-      <span class="label label-default fs-0-7 ">Data Collection</span> 
+    <td align="center" class="hidden-xs" style="width:15%;">
+      <div class="bord-right bb-9">
+        <img class="block-center" src="/static/images/case-44.png" style="width:110px;" alt="MyRing"> <br/>
+      </div>
     </td>
+    <td align="center" valign="center" class="visible-xs" style="width:10%";> 
+      <div class="bord-right bb-9" style="margin-top:20px;">
+        <img class="block-center" src="/static/images/case-44.png" style="width:70px;" alt="MyRing"> <br/>
+      </div>
+    </td>
+
     <td> 
-      <a class="nounder" href="{{link}}"><h3 class="fs-1-5 text-gray text-s1 fw-c">
-      {{ name|upper() }}</h3></a>
+      
+      
+
+      <a class="nounder" href="{{link}}">
+        <h3 class="fs-1-5 text-lgray text-s1">
+        <img class="user-bar" src="/static/images/generic_thumbnail.jpg" style="pull-left">
+      {{ handle|upper() }} / <span class="fw-c text-gray">{{ name|upper() }}</span>
+        </h3>
+      </a>
       <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
     </td>
 

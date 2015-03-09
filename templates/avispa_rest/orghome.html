@@ -11,7 +11,7 @@
 
 
 <section>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
       <div class="col-xs-12 text-right">
         <br/>
@@ -24,14 +24,48 @@
         {% endif %}
 
         {% if 'put_a' in data.user_authorizations %}
-        <a href="/{{data.handle}}/_orgprofile" type="button" class="btn btn-info btn-xs pull-right">Organization profile</a> 
+        <a href="/{{data.handle}}/_orgprofile" class="pull-right"> <i class="fa fa-pencil"></i> edit profile</a> 
         {%endif%}
              
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <div class="spa20"></div>
+        
+      </div>
+      <div class="col-xs-12">
+        <div class="spa20">
+
+          {% for person in data.people %}
+                
+                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t150/{{data.peoplethumbnails[person.handle]}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="margin-right:8px;" alt=""/>
+                 
+                    <!-- <span class="text-lead fw-300 pull-left">
+                        <a href="/{{person.handle}}/_home">{{ person.handle_actualname }}</a>
+                        <span class="text-gray"></span>
+                        <br/>
+                        <span class="text-lgray fs-0-6">{{person.handle}}</span>
+                    </span> -->
+  
+          {% endfor %}
+          <a href="/{{data.handle}}/_people" type="button" class=""><i class="fa fa-pencil"></i> edit people</a> <br/>
+
+          <!-- <span class="dropdown pull-right">
+            <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+              Actions
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_people"><i class="fa fa-wrench"></i> Manage </a></li>
+              <li role="presentation" class="disabled"><a role="/{{data.handle}}/_people" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Add / Invite People</a></li>
+              
+            </ul>
+          </span> -->
+
+
+
+
+        </div>
       </div>
       
     </div>
@@ -41,41 +75,14 @@
 
 
 <section>
-  <div class="container-fluid">
+  <div class="container">
       <div class="row">
-        
-
-       
 
       <div class="row">
 
-        <!--div style="display:none;" class="col-sm-6">
-          <div class="rn-box-title">
-              <a href="/{#{data.handle}#}" type="button" class="btn btn-info btn-xs pull-right">
-              see all</a> 
-              
-                  My Rings
-              
-          </div>
-          <div class="rn-box-solo">
-
-          <table class="table table-striped table-condensed">
-          {#% for ring in data.rings.ringlist %#}
-
-            {#{ ui.panel_rings(ring.ringname, ring.ringorigin, data.handle, '#924ea0', ring.count, '36', '',data.handle+'/'+ring.ringname,data.user_authorizations) }#}
-
-          {#% endfor %#}
-
-          </table>                  
-                            
-          </div> 
-          <a href="/{#{data.handle}#}?rq=post&n=10">New Ring</a>
-          
-        </div--><!-- close 2 --> 
-
-                <div class="col-sm-6">
+        <div class="col-sm-9 omega">
           <!-- BOX CONTENT -->
-          <div class="rn-box-title">
+          <div class="rn-box-naked-title">
 
               {% if 'get_a_x' in data.user_authorizations %}
               <a href="/{{data.handle}}/_collections" type="button" class="btn btn-warning btn-xs pull-right">
@@ -87,32 +94,25 @@
               {%endif%}
 
               <strong>
-                  <h4>Rings Collections</h4>
+                  <h4><span class="label label-default">{{data.handle}} </span> &nbsp; data collections:</h4>
               </strong>
 
             </div>
           <div class="rn-box-solo">
+
+              {% for collection in data.collections.collectionlist %}  
               
-              
-                  {% for collection in data.collections.collectionlist %}  
-                  
-                    {% if collection.valid %}
-                      {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                      <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">     {% for ring in collection.rings %}    
-                              {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
-                            {% endfor %}
+                {% if collection.valid %}
+                  {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                  <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">     {% for ring in collection.rings %}    
+                          {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                        {% endfor %}
 
-                              {#{ ui.panel_collections_add_ring(data.handle) }#}  
-                              {{ ui.collection_item_add(data.handle) }}               
-
-                    
-                    </table> 
-                    {% endif %}
-                  {% endfor %}
-                       
-              
-
-
+                          {#{ ui.panel_collections_add_ring(data.handle) }#}  
+                          {{ ui.collection_item_add(data.handle) }}               
+                </table> 
+                {% endif %}
+              {% endfor %}
           </div> 
 
           {% if 'post_a_x' in data.user_authorizations %}
@@ -122,65 +122,76 @@
         </div><!-- close  --> 
 
 
-        <div class="col-sm-6">
-          <div class="rn-box-title"> 
-              {% if 'post_a_p' in data.user_authorizations %}
-              <a href="/{{data.handle}}/_people" type="button" class="btn btn-info btn-xs pull-right">see all</a> 
-              <a href="/{{data.handle}}/_people" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i></a>
-              {%endif%}
-
-              <strong>
-                  <h4>People</h4>
-              </strong>
-   
-          </div>
-          <div class="rn-box-solo">
-            <table class="table table-striped table-condensed">
-            {% for person in data.people %}
-                <div class="col-xs-12 text-right">
-                    <img class="img-responsive center-block user-small" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t150/{{data.peoplethumbnails[person.handle]}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="float:left; margin-right:10px;" alt="">
-                    
-                    <h4 class="text-lead fw-300 pull-left">
-                        <a href="/{{person.handle}}/_home">{{person.handle}}</a>
-                        <span class="text-gray"></span>
-                        <br/>
-                        <span class="text-lgray pull-left fs-0-6">{{person.handle}}</span>
-                    </h4>
-                    <br/>        
-                </div>
-            {% endfor %}
-            </table>                                       
-          </div> 
-          {% if 'post_a_p' in data.user_authorizations %}
-          <a href="/{{data.handle}}/_people">New Person</a> 
-          {%endif%}        
-        </div><!-- close 2 --> 
-
 
         {% if 'get_a_m' in data.user_authorizations %}
-        <div class="col-sm-6">
-          <div class="rn-box-title"> 
-            <a href="/{{data.handle}}/_teams" type="button" class="btn btn-info btn-xs pull-right">see all</a> 
-              Your teams     
-          </div>
-          <div class="rn-box-solo">
-            <table class="table table-striped table-condensed">
-            {% for team in data.teams %}
-              {% if team.teamname in data.teammembership %}
-                <div class="col-xs-12 text-right">
-                    
-                    <h4 class="text-lead fw-300 pull-left">
-                        <a href="/{{data.handle}}/_teams/{{team.teamname}}">{{team.teamname}}</a>
-                        <span class="text-gray"></span>
-                        <br/>
-                        <span class="text-lgray pull-left fs-0-6">{{team.count}} {% if team.count==1%}member{%else%}members{%endif%}</span>
+        <div class="col-sm-3">
+          
+            
+              
+              <a href="/{{data.handle}}/_teams" type="button" class="pull-right"><i class="fa fa-pencil"></i> edit teams</a> 
+              <h4>Teams  </h4>  
+          
+         
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              {% for team in data.teams %}
+                {% if team.teamname in data.teammembership %}
+                  
+
+                  <div class="panel panel-default">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class=" text-lgray darklink">
+                      <div class="panel-heading" role="tab" id="headingOne">
+                      
+                        <h4 class="panel-title">
+                          {{team.teamname}}
+                        </h4>
+                        <span class="caret"></span>
+                      </div>
+                    </a>
+                    <div id="{{team.teamname}}" class="panel-collapse collapse inXX" role="tabpanel">
+                      <div class="p-15">
+
+                      <a href="" data-toggle="tooltip" title="Name">
+                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
+                      </a>
+                      <a href="" data-toggle="tooltip" title="Name">
+                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
+                      </a>
+                      <a href="" data-toggle="tooltip" title="Name">
+                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
+                      </a>
+                      <a href="" data-toggle="tooltip" title="Name">
+                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
+                      </a>
+                      <a href="" data-toggle="tooltip" title="Name">
+                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
+                      </a>
+                      <a href="" data-toggle="tooltip" title="Name">
+                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
+                      </a>
+                      <a href="" data-toggle="tooltip" title="Name">
+                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
+                      </a>
+                       
+
+                        <hr/>
+                        <div class="" style="height:25px;">
+                            <a href="/_orgregister" class="hidden-xs"><div class=" blueprint fs-0-9"><i class="fa fa-plus"></i> add team member</div></a>
+                        </div>
                         
-                    </h4>
-                    <br/>        
-                </div>
-              {%endif%}
-            {% endfor %}
-            </table>                                       
+
+
+                      </div>
+                    </div>
+                  </div>
+
+                {%endif%}
+              {% endfor %}
+
+              
+              
+            
+                                     
           </div> 
           {%if 'post_a_m' in data.user_authorizations %}
             <a href="/{{data.handle}}/_teams">New Team</a> 
@@ -188,6 +199,11 @@
 
         </div><!-- close 2 --> 
         {%endif%}
+
+
+
+
+
 
 
 
