@@ -249,7 +249,9 @@ class AuthModel:
                     if(doc.email) {
                         var x = new Object();
                         for (var key in doc.rings){
-                            x[doc.rings[key]['ringname']]=doc.rings[key]['count']
+                            if(!doc.rings[key]['deleted']){
+                                x[doc.rings[key]['ringname']]=doc.rings[key]['count']
+                            }        
                         }
                         emit(doc._id,x)
                     }

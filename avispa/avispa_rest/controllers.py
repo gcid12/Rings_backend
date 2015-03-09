@@ -1,5 +1,5 @@
 # Import flask dependencies
-import urlparse, time, datetime
+import urlparse, time, datetime, collections
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
@@ -245,18 +245,109 @@ def home_dispatcher(handle):
         ACF = AvispaCollectionsRestFunc()
         m = 'get_a_x'
            
-        collections = getattr(ACF, m.lower())(request,handle,None,None)  
+        collectionsd = getattr(ACF, m.lower())(request,handle,None,None)  
 
-        ARF = AvispaRestFunc()
-        m = 'get_a'
-        rings = getattr(ARF, m.lower())(request,handle,None,None)
+        #ARF = AvispaRestFunc()
+        #m = 'get_a'
+        #rings = getattr(ARF, m.lower())(request,handle,None,None)
 
 
 
 
         data['handle'] = handle
-        data['rings'] = rings
-        data['collections'] = collections
+        #data['rings'] = rings
+        data['collections'] = collectionsd
+
+        
+        # Daily Activity Graph steps
+        #0. Create the general count dictionary (with 365 slots)
+        #1. Retrieve all rings for this handle. Use view myringusers:ring/count
+        ringcounts = MAM.select_user_doc_view('rings/count',current_user.id)
+        if ringcounts:
+            data['ring_counts'] = ringcounts
+            data['total_items'] = 0
+            for c in ringcounts:
+                data['total_items'] += ringcounts[c]
+
+
+        #2. Rerieve all the rings of all organizations where this user has something to do
+        #3. For each of the rings found:
+        
+
+        h_new = collections.OrderedDict()
+        h_update = collections.OrderedDict()
+        h_generic = collections.OrderedDict()
+
+        today = datetime.date.today()
+        one_day = datetime.timedelta(days=1)
+        needle = today
+        for d in range(93):
+            needle = needle - one_day
+            print('NEEDLE:',needle)
+            h_new[str(needle)] = 1
+            h_update[str(needle)] = 1
+            h_generic[str(needle)] = 1
+
+        #print('h_new:',h_new)
+
+            
+        for ringx in ringcounts:
+            ringdb = current_user.id+'_'+ringx
+            ring_dac = MAM.select_ring_doc_view(ringdb,'ring/dailyactivity',current_user.id,500)
+            for item_dac in ring_dac:
+                for n in item_dac['new']:
+
+                    if n in h_generic:
+                        h_generic[n] += item_dac['new'][n]
+
+                    
+                    if n in h_new:
+                        h_new[n] += item_dac['new'][n]
+                    else:
+                        h_new[n] = item_dac['new'][n]
+                    
+
+                for n in item_dac['update']:
+
+                    if n in h_generic:
+                        h_generic[n] += item_dac['update'][n]
+                    
+                    
+                    if n in h_update:
+                        h_update[n] += item_dac['update'][n]
+                    else:
+                        h_update[n] = item_dac['update'][n]
+                    
+
+
+
+
+        data['dac_totals_date'] = h_generic
+        totals_list = [ h_generic.get(k, 0) for k in h_generic]
+        for tl in totals_list:
+            if tl==0:
+                del tl
+
+        data['dac_totals'] = totals_list[::-1]
+
+
+
+        #data['dac_totals_date'] = { k: h_new.get(k, 0) + h_update.get(k, 0) for k in h_new | h_update }
+        #data['dac_totals'] = [ h_new.get(k, 0) + h_update.get(k, 0) for k in h_new | h_update ]
+
+        #data['dac_new'] = h_new
+        #data['dac_update'] = h_update
+
+
+        #3a: Load its database
+        #3b: Call its dailyactivity view with key=handle
+        #3c: If something is found iterate through each one of the rows looking for the last 365 days
+        #3d: add "New" and "Update "counts to the general count for that specific day
+        
+
+
+        # END DAILYGRAPH
+        
 
 
         #This is to be used by the user bar

@@ -756,16 +756,7 @@ class MyRingPatch:
             except(ResourceNotFound):
                 print(db_ringname+' not found. Going to the next one')
 
-
-
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
-
-
- 
- 
-
-
-
 
 

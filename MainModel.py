@@ -251,7 +251,6 @@ class MainModel:
         db = self.select_db(self.user_database)
         options = {}
         options['key']=str(key)
-        #Retrieving from ring/items view
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
@@ -268,6 +267,50 @@ class MainModel:
 
 
         return False
+
+    def select_ring_doc_view(self,ringdb,dbview,key,batch=None):
+
+
+        if not batch : 
+            batch = 1
+
+        db = self.select_db(ringdb)
+        options = {}
+        options['key']=str(key)
+        result = db.iterview(dbview,batch,**options)
+        # This is a generator. If it comes empty, the username didn't exist.
+        # The only way to figure that out is trying to iterate in it.
+        #print('iterview result for '+dbview+' with key '+key+':',result)
+        
+        if batch == 1:
+            for r in result:     
+                return r['value']
+        else:
+            out = []
+            for r in result:
+                out.append(r['value'])
+            return out
+
+
+        return False
+
+
+
+    def general_daily_activity(self,handle,user_database=None):
+
+        #0. Create the general count dictionary (with 365 slots)
+        #1. Retrieve all rings for this handle. Use view myringusers:ring/count
+        #2. Rerieve all the rings of all organizations where this user has something to do
+        #3. For each of the rings found:
+        #3a: Load its database
+        #3b: Call its dailyactivity view with key=handle
+        #3c: If something is found iterate through each one of the rows looking for the last 365 days
+        #3d: add "New" and "Update "counts to the general count for that specific day
+        pass
+
+
+
+
 
 
     #MAINMODEL  
