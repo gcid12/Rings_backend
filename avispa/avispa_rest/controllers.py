@@ -293,7 +293,7 @@ def home_dispatcher(handle):
             
         for ringx in ringcounts:
             ringdb = current_user.id+'_'+ringx
-            ring_dac = MAM.select_ring_doc_view(ringdb,'ring/dailyactivity',current_user.id,500)
+            ring_dac = MAM.select_ring_doc_view(ringdb,'ring/dailyactivity',current_user.id,5000)
             for item_dac in ring_dac:
                 for n in item_dac['new']:
 
