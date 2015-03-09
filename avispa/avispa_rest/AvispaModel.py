@@ -831,12 +831,7 @@ class AvispaModel:
 
         return False
 
-
-
-
-
-
-    
+  
 
     #AVISPAMODEL
     def get_a_b(self,handle,ringname,limit=100,lastkey=None,sort=None):
