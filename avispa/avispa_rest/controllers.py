@@ -284,9 +284,9 @@ def home_dispatcher(handle):
         for d in range(93):
             needle = needle - one_day
             print('NEEDLE:',needle)
-            h_new[str(needle)] = 1
-            h_update[str(needle)] = 1
-            h_generic[str(needle)] = 1
+            h_new[str(needle)] = 0
+            h_update[str(needle)] = 0
+            h_generic[str(needle)] = 0
 
         #print('h_new:',h_new)
 

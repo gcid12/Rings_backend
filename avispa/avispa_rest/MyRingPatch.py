@@ -760,3 +760,111 @@ class MyRingPatch:
         return d
 
 
+    def p20150309(self,request,*args):
+        '''
+        This patch pulls every single item and corrects history to have action in all history items
+        @input (GET): handle
+
+        Run it for every user you want to update
+        Overwrites p20150221
+
+        @input (GET) : handle
+
+
+        http://127.0.0.1/_patch/p20150309?handle=blalab
+
+        '''
+
+        #Select schema for this Ring
+        print('check_and_repair_history_action')
+
+        handle = request.args.get('handle')
+        #ringname = request.args.get('ringname')
+
+        print('handle:',handle)
+        #print('ringname:',ringname)
+
+
+        rings = self.MAM.select_user_doc_view('rings/count',handle)
+        for ringname in rings:
+            print('Trying to patch'+ringname)
+            try:
+
+                if handle and ringname:
+                    schema = self.AVM.ring_get_schema_from_view(handle,ringname)
+                    #print('schema:',schema['fields'])
+
+                    #Pre: Obtain the fields
+                    fieldlist = []
+                    for f in schema['fields']:
+                        fieldlist.append(f['FieldName'])
+
+                    print('fieldlist:',fieldlist)
+
+                    #Pre: Obtain the items
+                    items = self.AVM.get_a_b(handle,ringname,limit=1000000)
+                    itemlist = []
+                    for i in items:
+                        itemlist.append(i['_id'])
+                        
+                    print('itemlist:',itemlist)
+
+                    #Get each one of the items and check its structure
+
+
+                    
+                    for idx in itemlist:
+                       
+                        #item = self.AVM.get_a_b_c(None,handle,ringname,idx)
+
+                        #item_x = self.AVM.ring_get_item_document(handle,ringname,idx)
+
+                        from MyRingCouchDB import MyRingCouchDB
+                        from env_config import COUCHDB_USER, COUCHDB_PASS
+                        from datetime import datetime 
+
+                        db_ringname=str(handle)+'_'+str(ringname)
+
+                        MCD = MyRingCouchDB()
+                        self.couch=MCD.instantiate_couchdb_as_admin()    
+                        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
+
+                        db = self.couch[db_ringname]
+
+                        schema = self.AVM.ring_get_schema(handle,ringname)
+                        RingClass = self.AVM.ring_create_class(schema)
+                        item_x = RingClass.load(db,idx)
+
+                        #print('item_x:',item_x)
+                        print('item_x[items]:',item_x['items'])
+
+                        needs_saving=False
+
+                        for history_field in item_x['history'][0]:
+                            for history_event in item_x['history'][0][history_field]:
+                                if 'action' in history_event:
+                                    if history_event['action'] == '':
+                                        history_event['action'] = 'New item';
+                                        needs_saving=True
+                                else:
+                                    history_event['action'] = 'New item';
+                                    needs_saving=True
+
+                        if needs_saving:
+                            if item_x.store(db): 
+                                print('item document saved:',item_x)
+                        else:
+                            print('Nothing to patch here')   
+
+                else:
+                    print('Handle or Ringname missing')  
+
+
+            except(ResourceNotFound):
+                print('Resource not found. Going to the next one')
+                        
+
+        d = {'rq': current_user,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
+
