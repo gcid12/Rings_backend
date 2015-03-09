@@ -120,23 +120,31 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .no-padding{padding:0 !important;}
 .no-margin{margin:0 !important;}
 
+.p-0{padding:0px !important;}
 .p-5{padding:5px !important;}
 .p-7{padding:7px !important;}
 .p-10{padding:10px !important;}
 .p-15{padding:15px !important;}
 .p-50{padding:50px 0 !important;}
 
+.m-0{margin:0px !important;}
 .m-10{margin:10px !important;}
 .m-15{margin:15px !important;}
 .m-50{margin:50px !important;}
+.mr-50{margin-right:50px !important;}
+.mr-70{margin-right:70px !important;}
+.ml-15{margin-left:15px !important;}
 
 .pb-10{padding-bottom:10px;}
 .pb-20{padding-bottom:20px;}
 .pt-10{padding-top:10px;}
 .pt-20{padding-top:20px;}
+.pl-5{padding-left:5px;}
 .pl-20{padding-left:20px;}
 .pl-30{padding-left:30px;}
 .pl-40{padding-left:40px;}
+.pr-20{padding-right:20px;}
+
 
 .mt-20{margin-top:20px;}
 .mb-20{margin-bottom:20px;}
@@ -146,7 +154,7 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .pad-x-8{padding:0 8px;}
 .pad-x-16{padding:0 16px;}
 .pad-x-20{padding:0 20px;}
-.pad-x-32{padding:0 32x;}
+.pad-x-32{padding:0 32px;}
 .pad-y-20{padding:20px 0 !important;}
 
 .margin-b-10{margin-bottom:10px;}
@@ -308,13 +316,14 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bg-black{background-color: #000;}
 .bg-gray{background-color: #CCC;}
 .bg-bargray{background-color:#818181;}
-/*.bg-lgray{background-color: #e2e2e2;}*/
+.bg-lgray{background-color: #e2e2e2;}
 .bg-lgray{background-color: rgba(0, 0, 0, 0.25);}
 .bg-yellow{background-color: #FFE045;}
 .bg-a{background-color: #d40044; }
 .bg-b{background-color: #298fff; }
 .bg-c{background-color: #ffd033; }
 .bg-d{background-color: #33ccff; }
+.bg-e{background-color: #f2f0ed; }
 
 
 
@@ -359,6 +368,9 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bb-6{border-color: #f0c8fe;}
 .bb-7{border-color: #d2d2d2;}
 .bb-8{border-color: #f5f5f5;}
+.bb-9{border-color: #000;}
+.bb-10{border-color: #FFF;}
+.bb-11{border-color: #CCC;}
 
 
 
@@ -969,6 +981,14 @@ border:1px solid #FFF;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
 border-radius: 5px;  }
+
+.user-bar{
+width:28px;    
+/*border:1px solid #FFF;*/
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;  }
+
 
 
 .profile-1{

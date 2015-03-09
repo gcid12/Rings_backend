@@ -10,37 +10,50 @@
 <div class="container rn-box">
 <section>
 
-  
-  {% if data.collection %} <!-- TABS WILL SHOW -->
-  {% if not data.raw %} 
-    <div class="row">
-      <div class="col-sm-12">
-         
-              <table class="table " cellpadding="0" cellspacing="0">
-                    {{ ui.collection_big(data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
-              </table>
+    <!-- TABS WILL SHOW -->
+  {% if data.collection %} 
+      {% if not data.raw %} 
+        <div class="row">
+          <div class="col-sm-12">
+             
+                  <table class="table " cellpadding="0" cellspacing="0">
+                        {{ ui.collection_big(data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
+                  </table>
+            
         
+          </div>
+        </div>
+      {%endif%}
+
+   {%endif%}
+
+
+
+
     
-      </div>
-    </div>
-  {%endif%}
-  {%endif%}
-
-
       <!-- BOX CONTENT -->  
     <div class="row">
       {% if data.collection %}
       {% if not data.raw %} 
-      
 
-      <div class="col-sm-11 pl-40 bord-top bb-8" >
-
-      {% endif %}
-      {%endif%}
-        {% block tabcontent %}
-        {% endblock %}
-      {% if data.collection %} 
-      {% if not data.raw %} 
+        <div class="col-sm-11 bord-top bb-8" >
+  
+            <div class="bg-eX" style="margin:0 0 0 -10px; padding:1px 40px;">
+                <h3 class="fc-g">
+                    {% block tabtitle %}<i class="fa fa-wrench"></i> Settings 
+                    {% endblock %}
+                </h3>
+            </div>
+            <br/>
+            <div class="pl-40">
+                {% endif %}
+                  {%endif%}
+                    {% block tabcontent %}
+                    {% endblock %}
+                  {% if data.collection %} 
+                  {% if not data.raw %} 
+                
+            </div>
       </div>
 
       <!-- COLUMN 1 -->
@@ -70,7 +83,7 @@
           </span>
         </a> -->
         <a href="/{{ data.handle }}/_collections/{{ data.collection }}?rq=put" class="text-center">
-        
+
           <span class="tab-box-d  {% if tab=='set' %}tab-on2{% endif %}">
            <i class="fa fa-wrench fa-1x"></i>
            <p class="visible-lg fs-0-6">Settings</p>

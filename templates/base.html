@@ -55,32 +55,45 @@
   <div class="container-fluid bg-bargray">
     <!-- Brand and toggle get grouped for better mobile display -->
     {%if current_user.is_authenticated()%}
-      <ul class="nav navbar-nav navbar-left hidden-xs w-links">
-        
-
+      <ul class="nav navbar-nav navbar-right hidden-xs w-links">
         <li class="active hidden-xs">
-          <table style="margin:10px 0 0 0;">
-            <tr>
-              <td><a href="#menu" class="text-gray clearlink"><i class="fa fa-chevron-left fa-1x text-lgray"></i> </a>
-              </td>
-              <td><a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:40px;"> <span class="fs-1-5 text-s1" style="padding:0 50px 0 20px;"> {{ current_user.id }}</span></a>
-              </td>
-            </tr>
-          </table>
+          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" class="user-bar"><span class="fs-1-5 text-s1 pr-20 pl-5"> {{ current_user.id }}</span></a>
           
         </li>
 
-        
         <li class="dropdown hidden-xs bg-lgray">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-plus fa-2x"></i> new </span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-plus fa-2x"></i> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            
-            <li><a href="/{{ current_user.id }}?rq=post"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li>
+            <li><a href="/{{ current_user.id }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li>
             <li><a href="/{{ current_user.id }}/_collections?rq=post"><i class="fa fa-plus-circle"></i> &nbsp;  New <span class="fw-c text-gray">Collection</span></a></li>
             <li><a href="/_orgregister"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray"><i class="fa fa-universit"></i> Organization</span></a></li>
             
           </ul>
         </li>
+
+        <li class="dropdown hidden-xs bg-dgray">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-gear fa-2x"></i> <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+          
+
+            <li><a href="/{{ data.handle }}/_home"> <i class="fa fa-home"></i> <span class="text-s1">Home</span></a></li>
+
+            <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user"></i> <span class="text-s1">My Profile</span></a>
+            </li>
+            <li><a href="/_roles/{{ current_user.id }}"><i class="fa fa-certificate"></i> <span class="text-s1">Roles</span></a></li>
+            <li><a href="/_logout"><i class="fa fa-sign-out "></i>  log-Out</a></li>
+
+
+            
+         </ul>
+        </li>
+        <!-- <li class="active hidden-xs">
+          <a href="/{{ current_user.id }}/_home" class="clearlink  ">
+            <i class="fa fa-sign-out fa-2x text-gray"></i>
+          </a>
+        </li> -->
+
+
         
       </ul>
 
@@ -92,11 +105,10 @@
       {%endif%}
 
 
-      <ul class="nav navbar-nav navbar-left hidden-sm hidden-md hidden-lg hidden-xl">
+      <ul class="nav navbar-nav navbar-left visible-xs">
         {%if current_user.is_authenticated()%}
         <li class="active">
-          <a href="/{{current_user.id}}" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/myring02.png" style=" margin:10px 30px 10px 20px; width:100px;" alt="MyRing"></a>
-          
+          <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/myring04.png" style=" margin:10px 30px 10px 20px; width:100px; float:right;" alt="MyRing"></a>
         </li>
 
         {% else %}
@@ -107,29 +119,15 @@
         {%endif%}
       </ul>
 
+      <ul class="nav navbar-nav navbar-left hidden-xs">
 
-      <ul class="nav navbar-nav navbar-right hidden-xs">
-        <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/myring02.png" style=" margin:10px 30px 10px 20px; width:100px;" alt="MyRing"></a>
+        <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/myring04.png" style=" margin:10px 30px 10px 20px; width:100px;" alt="MyRing"></a>
       </ul>
-
-
-
-
-
-
-      
-    
   </div><!-- /.container-fluid -->
 </nav>
 
-
-
 </header>
 {%endif%}
-
-
-
-
 
 <section class="">
 
@@ -171,13 +169,17 @@
       </div>
       <nav id="menu">
         <ul>
+             <li class="active">
+              <a class="clearlink" href="/{{current_user.id}}"><img src="/static/images/myring04.png" style="width:120px;" alt="MyRing"></a>
+
+            </li>
             <li>
               <table>
                 <tr>
-                  <td style="padding:10px 3px 10px 20px;"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:100px;"></td>
+                  <td style="padding:10px 3px 10px 20px;"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" style=" margin:0 5px; width:50px;"></td>
                   <td>
-                    <h2 class="fc-a">{{data.handle_actualname}}</h2>
-                    <span class="fc-a fs-1-5">{{ current_user.id }}</span>
+                    <h2 class="fc-a fs-1-5 text-lgray">{{data.handle_actualname}}</h2>
+                    <span class="text-s1 fc-a fs-1-2">{{ current_user.id }}</span>
 
                   </td>
                 </tr>
@@ -185,36 +187,7 @@
               </table>
                <div class="spa60"></div>
             </li>
-            
-            
-            <!-- COLEX 1 -->
-            <li class="active"><a href="/{{ data.handle }}/_home"><br/><i class="fa fa-circle-o fa-2x pad-x-20 fc-c"></i> <span class="text-s1 fs-1-5">Art_Exhibitions</span></a>
-              <ul>
-                <li><a href="/{{ current_user.id }}?rq=post">˚Museums</a></li>
-                <li><a href="/{{ current_user.id }}/_collections?rq=post">˚Artists</a></li>
-                <li><a href="/_orgregister">˚Curators</a></li>
-              </ul>
-            </li>
-            <!-- COLEX 1 -->
-            <li class="active"><a href="/{{ data.handle }}/_home"><br/><i class="fa fa-circle-o fa-2x pad-x-20 fc-c"></i> <span class="text-s1 fs-1-5">Zoo</span></a>
-              <ul>
-                <li><a href="/{{ current_user.id }}?rq=post">˚Zoo</a></li>
-                <li><a href="/{{ current_user.id }}/_collections?rq=post">˚Artists</a></li>
-                <li><a href="/_orgregister">˚Curators</a></li>
-              </ul>
-            </li>
-            <!-- COLEX 1 -->
-            <li class="active"><a href="/{{ data.handle }}/_home"><br/><i class="fa fa-circle-o fa-2x pad-x-20 fc-c"></i> <span class="text-s1 fs-1-5">Animals</span></a>
-              <ul>
-                <li><a href="/{{ current_user.id }}?rq=post">Vacations</a></li>
-                <li><a href="/{{ current_user.id }}/_collections?rq=post">Artists</a></li>
-                <li><a href="/_orgregister">Curators</a></li>
-              </ul>
-            </li>
-
-
-            <li class="active" style="padding-top:20px;"><a href="/{{ data.handle }}/_home"> <i class="fa fa-home pad-x-20"></i> <span class="text-s1">Home</span></a></li>
-            <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user pad-x-20"></i> <span class="text-s1">My Profile</span></a></li>
+           
 
             <li><a href="#about/team"><i class="fa fa-plus pad-x-20"></i> New</a>
               <ul>
@@ -224,8 +197,7 @@
               </ul>
             </li>
             
-            <li><a href="/_roles/{{ current_user.id }}"><i class="fa fa-certificate pad-x-20"></i> <span class="text-s1">Roles</span></a></li>
-            <li><a href="/_logout"><i class="fa fa-sign-out pad-x-20"></i>  log-Out</a></li>
+            
         </ul>
       </nav>
     </div>

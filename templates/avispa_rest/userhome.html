@@ -31,9 +31,23 @@
                     </div>
                 </div>
                 <div class="row pl-20">
+                    <br/>
+                    <div class="bord-top bb-11 mr-70 ml-15 spa5"></div>
                     <div class="col-xs-12 hidden-xs">
-                        <hr/>
-                        <p class="text-lgray">Organizations  </p> 
+                    
+                        <span class="text-s1 text-lgray">Organizations</span>
+                        <!-- <span class="dropdown">
+                            <a class="dropdown-toggle text-s1" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                              Organizations
+                              <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="/_orgregister">New Organization</a></li>
+                              <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">  Join Orgs</a></li>
+                              <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Explore Orgs</a></li>
+                            </ul>
+                        </span> -->
+
                     </div>
                     <div class="col-xs-12 col-sm-12">
                         {% for organization in data.organizations %}
@@ -131,8 +145,8 @@
                 <div id="step3">
                 <br/>
                 <p class="text-lgray">Data Collections </p>
+
                     <div class="rn-box-naked-title" style="display:none;">
-                        
                         <div class="btn-group pull-right" role="group" style="padding-top:10px;">
                             <a href="/" type="button" class="btn btn-default btn-xs pull-right">
                                 <i class="fa fa-question-circle"></i>
