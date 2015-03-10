@@ -18,7 +18,11 @@
 
                 <div class="row pl-20" >
                     <div class="col-xs-4 col-sm-12">
+                        {% if data.handle_profilepic %}
                         <img src="{%if data.cu_profilepic%}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" class="profile-1"> 
+                        {%else%}
+                        <img src="/static/images/generic_thumbnail.png" class="profile-1"> 
+                        {%endif%}
                     </div>
                     <div class="col-xs-8 col-sm-12">
                         {% if data.handle_actualname %} 
@@ -205,11 +209,13 @@
                                             <tr bgcolor="">
                                               <td colspan="3" style="padding:0 2px 0px 2px;">
                                                 <table class="table table-striped table-bordered">
-                                                  {% for ring in collection.rings %}  
-                                                    {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                                  {% for ring in collection.rings %}
+                                                      {% if not ring.invalid %}  
+                                                        {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                                      {%endif%}
                                                   {% endfor %}
                                                   {% if 'post_a' in data.user_authorizations %}
-                                                      {{ ui.collection_item_add(data.handle) }} 
+                                                      {{ ui.collection_item_add(data.handle,collection.collectionname) }} 
                                                   {%endif%}
                                                 </table>
                                               </td>

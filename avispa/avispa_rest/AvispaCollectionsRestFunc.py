@@ -158,7 +158,7 @@ class AvispaCollectionsRestFunc:
 
     #PUT /a/b
     def put_a_x_y(self,request,handle,collection,idx,api=False,*args):
-        # Introduce de changes to the existing collection
+        # Introduce the changes to the existing collection
 
 
         CB = CollectionBuilder()
@@ -194,7 +194,7 @@ class AvispaCollectionsRestFunc:
              'collectionlist': collectiond,
              'collectionrings': collectionrings}
 
-        print("dzzzzzzzzz:",d)
+        print("d:",d)
 
         return d
 

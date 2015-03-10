@@ -58,18 +58,24 @@ class AvispaCollectionsModel:
 
 
         
-
+            print('BEFORE COLLECTIONS',collections)
+            
             for coll in collections:
                 coll['valid'] = True
                 for ring in coll['rings']:
                     
                     if ring['ringname']+'_'+ring['version'] not in validring:
                         #InValid Collection, at least one of its rings is marked as deleted             
-                        coll['valid'] = False
-                        break
+                        #coll['valid'] = False
+                        print('EXCLUDING RING:',ring['ringname']+'_'+ring['version'])
+                        ring['invalid'] = True
+
+                        #break
                     else:
                         ring['count'] = ringcounts[ring['ringname']+'_'+ring['version']]
                         ring['ringorigin'] = ringorigins[ring['ringname']+'_'+ring['version']]
+
+            print('AFTER COLLECTIONS',collections)
                     
                         
             return collections
@@ -151,7 +157,7 @@ class AvispaCollectionsModel:
                     for ring in coll['rings']:       
                         if ring['ringname']+'_'+ring['version'] not in validring:
                             #InValid Collection, at least one of its rings is marked as deleted             
-                            coll['valid'] = False
+                            #coll['valid'] = False
                             break
                         else:
                             ring['count'] = validring[ring['ringname']+'_'+ring['version']]
@@ -212,6 +218,64 @@ class AvispaCollectionsModel:
         user_doc.store(db)
 
         return True  
+
+
+        #COLLECTIONSMODEL
+    def patch_a_x_y(self,handle,collection,collectiond,user_database=None):
+
+        if not user_database : 
+            user_database = self.user_database
+                     
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        print('user_doc[colections]:',user_doc['collections'])
+        
+        path = {}
+        if 'name' in collectiond:
+            patch['collectionname'] = str(collectiond['name'])
+        if 'description' in collectiond:
+            patch['collectiondescription'] = str(collectiond['description'])
+        if 'version' in collectiond:
+            patch['version'] = str(collectiond['version'])
+        if 'rings' in collectiond:
+            patch['rings'] = collectiond['ringlist']
+
+        i = 0
+        for coll in user_doc['collections']:
+
+            if coll['collectionname'] ==  collection:
+                
+                for p in patch:
+                    user_doc['collections'][i][p] = patch[p]
+
+            i = i+1
+
+                #user_doc['collections'].append(newcollection)
+        print('user_doc PATCHED:',user_doc)
+        user_doc.store(db)
+
+        return True  
+
+    def add_ring_to_collection(self,handle,collection,ringd,user_database=None):
+
+        if not user_database : 
+            user_database = self.user_database
+
+                     
+        db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(user_database,handle) 
+
+        for coll in user_doc['collections']:
+
+            if coll['collectionname'] ==  collection:
+                coll['rings'].append(ringd)
+
+        print('Ring added to collection:',user_doc)
+        user_doc.store(db)
+
+        return True
+
 
 
     #COLLECTIONSMODEL

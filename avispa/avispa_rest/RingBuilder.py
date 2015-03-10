@@ -73,11 +73,18 @@ class RingBuilder:
 
             print(pinput)
             
-            
-            if self.AVM.ring_set_db(handle,ringname,ringversion):
+            #Check if a database with that name already exists
+
+            try:
+                self.AVM.ring_set_db(handle,ringname,ringversion)
                 print('New Ring database created: '+ ringname)
-            else:
+
+            except(PreconditionFailed):
                 print('The Ring '+ ringname +' database already exists')
+                flash('The Ring '+ ringname+' already exists')
+                return False
+
+
 
             if self.AVM.ring_set_schema(handle,
                                         ringname,
@@ -86,8 +93,9 @@ class RingBuilder:
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol']):
 
+                ringd = {'handle':handle,'ringname':ringname,'version':ringversion}
                 print('Schema inserted/updated')
-                return True
+                return ringd
             else:
                 print('Schema could not be inserted')
                 return False
@@ -248,8 +256,10 @@ class RingBuilder:
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol'])
 
+                
+                ringd = {'handle':handle,'ringname':ringname,'version':ringversion}
                 print('Schema inserted/updated')
-                return True
+                return ringd
             except(ValueError,KeyError):
                 #Delete db you just created
                 self.AVM.user_hard_delete_ring(handle,ringname,ringversion)

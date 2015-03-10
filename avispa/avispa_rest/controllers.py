@@ -45,7 +45,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data = {}
 
     MAM = MainModel()
-    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx)
+    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
 
@@ -74,7 +74,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     o = urlparse.urlparse(request.url)
     data['host_url'] = urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-
     data['api_url'] = urlparse.urlunparse((o.scheme, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
 
     t = time.time()
@@ -876,11 +875,29 @@ def collections_route_a_x(handle):
 def collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
-        result = route_dispatcher('_a',handle,collection=collection)
-        print('flagx1')
+        print('FLAGx1')
+        result = route_dispatcher('_a',handle,collection=collection)       
+    elif request.method == 'POST':
+        if 'method' in request.args:
+            if request.args.get('method').lower()=='put':
+                print('FLAGx4')
+                result = collection_dispatcher('_a_x_y',handle,collection) 
+            elif request.args.get('method').lower()=='post':
+                print('FLAGx3')
+                result = route_dispatcher('_a',handle,collection=collection)
+        else:
+            print('FLAGx3')
+            result = route_dispatcher('_a',handle,collection=collection)
+
+    elif 'rq' in request.args:
+        if request.args.get('rq').lower() == 'post':
+            result = route_dispatcher('_a',handle,collection=collection)
+
+
     else:
+        print('FLAGx5')
+        #Every collection specific GET
         result = collection_dispatcher('_a_x_y',handle,collection)
-        print('flagx2')
  
     if 'redirect' in result:
         #pass
