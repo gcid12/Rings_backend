@@ -150,12 +150,12 @@
   <tr>
     
     <td align="center" class="hidden-xs" style="width:15%;">
-      <div class="bord-right bb-9">
+      <div class="bord-right bb-11">
         <img class="block-center" src="/static/images/case-44.png" style="width:110px;" alt="MyRing"> <br/>
       </div>
     </td>
     <td align="center" valign="center" class="visible-xs" style="width:10%";> 
-      <div class="bord-right bb-9" style="margin-top:20px;">
+      <div class="bord-right " style="margin-top:20px;">
         <img class="block-center" src="/static/images/case-44.png" style="width:70px;" alt="MyRing"> <br/>
       </div>
     </td>
@@ -165,18 +165,36 @@
       
 
       <a class="nounder" href="{{link}}">
-        <h3 class="fs-1-5 text-lgray text-s1">
+        <h3 class="fs-1-7 text-lgray text-s1">
         <img class="user-bar" src="/static/images/generic_thumbnail.jpg" style="pull-left">
       {{ handle|upper() }} / <span class="fw-c text-gray">{{ name|upper() }}</span>
         </h3>
       </a>
-      <p class="text-gray fs-0-8 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
+      <p class="text-gray fs-1 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
     </td>
 
     <td> 
-      <div class="pull-right">
-        {{ label(role) }}
+      <div class="pull-rightx">
+         
+          <div class="label label-info"> Owner </div>
+          
+            
+          <div class="spa10"></div>
+
+        <span class="dropdown">
+          <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+            Actions
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Rings</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i> Settings</a></li>
+          </ul>
+        </span>
       </div>
+
+      <!-- COLUMN 1 -->
+
     </td>
   </tr>
 {% endmacro %}
@@ -222,31 +240,39 @@
 {% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
 
   <tr>
+    <td width="50px" class="hidden-xs">
+    </td>
     <td> 
       <div class="row">
         <div class=" col-sm-2 hidden-xs">
-          {{ icon_big(count,color) }} 
+          {{ icon_stack(count,color) }} 
         </div> 
-        <div class="col-xs-7 col-sm-7">
+        <div class=" col-xs-2 visible-xs">
+              {{ icon_sma(count,color) }}
+        </div>
 
-          <h3 class="fs-1-2">
+        <div class="col-xs-8 col-sm-7">
+          <div class="spa5"></div>
+          <h3 class="text-s2 fs-1-7">
             <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
-            {% if 'get_a' in user_authorizations %}<a href="/{{ handle }}" class="nounder">{{origin}}</a>{%else%}{{origin}}{%endif%}/<span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
-            </a>{%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
+            <!-- {% if 'get_a' in user_authorizations %}
+            <a href="/{{ handle }}" class="nounder">{{origin}}</a>
+            {%else%}
+            {{origin}}
+            {%endif%}/ -->
+            <span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
+            </a>
+            {%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
           </h3>    
           <p class="rn-t3 text-lgray">{{ description }}</p>
 
         </div> 
-        <div class="col-xs-5 col-sm-3">
+        <div class="col-xs-1 col-sm-3">
           <div class="pull-right">
-            <div class="visible-xs">
-              {{ icon_med(count,color) }}
-
-            </div>
+            
             <!--br/><a>[ Invite a Moderator ]</a>
               <br/><a>[ Invite a Capturist ]</a-->
             <div class="btn-group">
-            
               <!-- <a href="/{{ handle }}/{{ ring }}" type="button" class="btn btn-info btn-xs">List</a> -->
               {% if 'post_a_b' in user_authorizations %}
               <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
@@ -255,9 +281,6 @@
               {% if 'put_a_b' in user_authorizations %}
               <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
               {% endif %}
-              
-              
-
             </div>
             <br/><br/>
             <span class="label label-discrete pull-right">{{date}}</span>
@@ -268,6 +291,7 @@
   </tr>
 
 {% endmacro %}
+
 
 
 
@@ -402,6 +426,7 @@
   </svg>
 {% endmacro %}
 
+
 {% macro icon_med(number,color) %}
   <svg height="85" width="80" style="margin:-5px;">
     <circle cx="50" cy="48" r="22" stroke="#e5e5e5" stroke-width="3" fill="none" />
@@ -424,6 +449,24 @@
     <circle cx="22" cy="16" r="10" stroke="{{ color }}" stroke-width="2" fill="none" />
   </svg>
 {% endmacro %}
+
+
+{% macro icon_stack(number,color,last) %}
+  <svg height="120" width="100" style="margin:-28px -5px -5px -5px;">
+    <!-- <line x1="3" y1="0" x2="3" y2="40" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
+    <line x1="3" y1="40" x2="32" y2="55" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" /> -->
+    <circle cx="57" cy="85" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
+    <circle cx="60" cy="80" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
+    <text x="59" y="88" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
+
+    <line x1="0" y1="0" x2="0" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:1" />
+    <line x1="0" y1="84" x2="35" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:1" />
+
+
+  </svg>
+{% endmacro %}
+
+
 
 
 {% macro collab_collapse(order,colname, avatar, graph, color, assets, percent, last,role, active) %}

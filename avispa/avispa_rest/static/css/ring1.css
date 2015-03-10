@@ -766,6 +766,15 @@ font-family: 'Raleway', sans-serif; font-weight: 200;
 }
 
 
+.rn-curtain-out{margin:0 30px 50px 30px;
+
+}
+
+.rn-curtain-in{background-color:#F9F9F9; 
+    padding-bottom:40px;
+    border-radius: 0px 0px 10px 10px;
+
+}
 
 
 .rn-box-solo{

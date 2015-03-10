@@ -8,97 +8,66 @@
 <!-- CONTENT HERE -->
 
 
-<div class="container rn-box">
+<div class="container" >
 
 <section>
-<span class="label label-md bg-e text-lgray" style="margin-left:-8px;">     Data Collection
-</span> 
-    <!-- TABS WILL SHOW -->
-  {% if data.collection %} 
-      {% if not data.raw %} 
-        <div class="row">
-          <div class="col-sm-12">
-             
-                  <table class="table " cellpadding="0" cellspacing="0">
-                        {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
-                  </table>
-            
-        
-          </div>
-        </div>
-      {%endif%}
 
-   {%endif%}
+    <div class="rn-box">
+        <span class="label label-md bg-e text-lgray" style="margin-left:-8px;">     Data Collection
+        </span> 
+            <!-- TABS WILL SHOW -->
+          {% if data.collection %} 
+              {% if not data.raw %} 
+                <div class="row">
+                  <div class="col-sm-12">
+                     
+                          <table class="table " cellpadding="0" cellspacing="0">
+                                {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
+                          </table>
+                    
+                
+                  </div>
+                </div>
+              {%endif%}
 
+           {%endif%}
+    </div>
 
 
 
     
       <!-- BOX CONTENT -->  
-    <div class="row">
+    <div class="row" >
+        <div class="rn-curtain-out">
       {% if data.collection %}
       {% if not data.raw %} 
 
-        <div class="col-sm-11 bord-top bb-8" >
-  
-            <div class="" style="margin:0 0 0 -10px; padding:1px 40px;">
-                <h3 class="fc-g">
-                    {% block tabtitle %}
-                    {% endblock %}
-                </h3>
-            </div>
-            <br/>
-            <div class="pl-40">
-                {% endif %}
-                  {%endif%}
-                    {% block tabcontent %}
-                    {% endblock %}
-                  {% if data.collection %} 
-                  {% if not data.raw %} 
+            <div class="col-sm-12 bord-top bb-8 bg-e rn-curtain-in">
+      
+                <div class="" style="margin:0 0 0 -10px; padding:1px 10px; " >
+                    <h3 class="fc-g">
+                        {% block tabtitle %}
+                        {% endblock %}
+                    </h3>
+                </div>
                 
+                <div>
+                    {% endif %}
+                      {%endif%}
+                        {% block tabcontent %}
+                        {% endblock %}
+                      {% if data.collection %} 
+                      {% if not data.raw %} 
+                    
+                </div>
             </div>
-      </div>
 
-      <!-- COLUMN 1 -->
-      <div class="col-sm-1 col-xs-12 alpha">
-        <a href="/{{ data.handle }}/_collections/{{ data.collection }}" class="text-center">
-          <span class="tab-box-d tab-on2{% if tab=='rep' %} tab-on2 {% endif %}">
-            <i class="fa fa-circle-o fa-1x"></i>
-            <p class="visible-lg fs-0-6">Rings</p>
-          </span>
-        </a>      
-        <!-- <a href="#" class="text-center">
-          <span class="tab-box-d {% if tab=='mon' %}tab-on2{% endif %}">
-            <i class="fa fa-crosshairs fa-1x"></i>
-            <p class="visible-lg fs-0-6">Monitoring</p>
-          </span>
-        </a>
-        <a href="#" class="text-center">
-          <span class="tab-box-d {% if tab=='col' %}tab-on2{% endif %}">
-            <i class="fa fa-users fa-1x"></i>
-            <p class="visible-lg fs-0-6">Collaborators</p>
-          </span>
-        </a>  
-        <a href="#" class="text-center">
-          <span class="tab-box-d  {% if tab=='cam' %}tab-on2{% endif %}">
-           <i class="fa fa-globe fa-1x"></i>
-           <p class="visible-lg fs-0-6">Campaigns</p>
-          </span>
-        </a> -->
-        <a href="/{{ data.handle }}/_collections/{{ data.collection }}?rq=put" class="text-center">
-
-          <span class="tab-box-d  {% if tab=='set' %}tab-on2{% endif %}">
-           <i class="fa fa-wrench fa-1x"></i>
-           <p class="visible-lg fs-0-6">Settings</p>
-          </span>
-        </a> 
-      </div>
+      
 
       {%endif%}
       {%endif%}
+        </div>
     </div> 
-
-
 
 </section>
 

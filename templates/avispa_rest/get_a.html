@@ -20,20 +20,13 @@
 {% block tabcontent %}
 
 <div class="row">
-    <div class="col-sm-2 bg-ax omega" style="padding-right:5px;">
-        <h1 class="text-llgray fs-5 text-right" style="float:right;"> {{ data.ringlist|length }}</h4>
-        <h3 class="text-lgray fw-a">Rings </h3>
-        <h5 class="text-lgray fw-a text-right">5,342 <br/>Items</h5>
-
-
-    </div>
     <div class=" alpha col-sm-10">
-        <div></div>
-        <table class="table table-striped bord-colex " cellpadding="0" cellspacing="0">
+        <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">
               
             {% for ring in data.ringlist %}
                 
                 {{ ui.panel(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection, data.user_authorizations) }}
+
             {% endfor %}
 
         </table> 

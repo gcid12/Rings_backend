@@ -13,64 +13,90 @@
 {% block tabcontent %}
 
   <!-- COLUMN 1 -->
-  <div class="col-sm-12 alpha omega">
-    <div class="rn-naked">
-        
-        {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
-        
-        
+
+
+    <table class="table table-striped table-condensed " cellpadding="0" cellspacing="0" style="margin:0px; padding:0px;">
+    {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
+    </table>
+
+    <div class="row">
+      {% if 'post_a' in data.user_authorizations %}
+        {% if not data.itemlist %}
+          <div class="col-xs-12 text-center">
+            <div class="spa20">
+              <h4>You have no items in this Ring. Create one, click here:
+                <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
+                  <i class="fa fa-plus"></i> &nbsp; ADD FIRST ITEM
+                </a>
+              </h4>
+            </div>
+          </div>
+
+        {% endif %}
+      {% endif %}
     </div>
+    
+
+        
+        
+    
 
     {% block result1 %}
 
     <!-- RESULT LIST START -->
-    <div class="rn-naked">
-      
-      <!-- TABSSSSSSS -->
-      <div role="tabpanel">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs text-right" role="tablist">
-            
-            {% if data.imagesui==True %}
-            <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
-            {% endif %}
-            <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-            <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>  
-          </ul> 
-          <div class="spa5"></div>
-    <!-- ITEM N -->
-        
+    
+ 
+<div class="row">
+  <div class="col-xs-12 col-sm-1 text-right omega">
+      {% if 'post_a' in data.user_authorizations %}
+        {% if not data.itemlist %}
 
-        {% if 'post_a' in data.user_authorizations %}
-          {% if not data.itemlist %}
-          You have no items in this Ring. Create one, click here:
-
-          <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
-            <i class="fa fa-plus"></i> &nbsp; NEW
-          </a>
-
+            Empty
           {% else %}
-            <div class="pull-right">
-              <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
-                 <i class="fa fa-plus"></i> &nbsp; NEW
-               </a>
-            </div> 
-
-          {% endif %}
-        {% endif %}
-          
-        <!-- <p class="fs-0-8 fc-g pull-left">Filters: None (<a href='/{{data.handle}}/{{data.ring}}?q'>add one</a>)</p> -->
-        <div class="spa20"></div>
-
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-        
-
-<!-- AS LIST -->
-      <div role="tabpanel" class="tab-pane fade in active" id="list">
         <div class="row">
-          <div class="col-sm-12">        
+          <div class="col-sm-12 hidden-xs">
+            <div class="spa5"></div>
+            <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-lg" >
+               <i class="fa fa-plus fa-3x"></i>
+             </a>
+             <br/>
+          </div>
+          <div class="col-xs-2 visible-xs">
+            <div class="spa5"></div>
+            <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-lg" >
+               <i class="fa fa-plus fa-1x"></i>New
+             </a>
+             <br/>
+          </div>
+
+          <div class="col-xs-10 col-sm-12">
+            <div class="spa20"></div>
+            <ul class="nav nav-pills text-right" role="tablist">
+              <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
+              <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
+            {% if data.imagesui==True %}
+              <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
+              {% endif %}
+            </ul> 
+          </div>
+        </div> 
+          
+
+        {% endif %}
+      {% endif %}
+    
+  </div> 
+  <div class="col-xs-12 col-sm-11 alpha">
+ 
+  <div role="tabpanel">
+    <div class="tab-content">
+
+{% if data.itemlist %}
+
+      <!-- AS LIST -->
+      <div role="tabpanel" class="tab-pane fade in active" id="list" style="">
+
+          <div class="rn-box">   
             <table class="table table-striped table-condensed">
               
               <tr>
@@ -171,17 +197,26 @@
               
             </table>
           </div>  
-          <!-- <div class="col-sm-2">
-              {{ graphs.dona('Data completion','85','#a2b2c5',) }}
 
-          </div>  -->
-        </div><!-- close row -->
+      
+        {% if 'post_a' in data.user_authorizations %}
+            <div class="pull-right">
+                <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
+                   <i class="fa fa-plus"></i> &nbsp; NEW
+                 </a>
+            </div>  
+        {% endif %} 
       </div> <!-- close tab -->
- <!-- AS A LIST close -->
 
- <!-- AS MEGA LIST -->
-          <div role="tabpanel" class="tab-pane fade" id="biglist">
-          
+      
+
+      <!-- AS A LIST close -->
+{% endif %}
+
+      <!-- AS MEGA LIST -->
+      <div role="tabpanel" class="tab-pane fade" id="biglist">
+        
+          <div class="rn-box"> 
             <table class="table table-striped">
               {% for item in data.itemlist %}
               <tr>
@@ -246,11 +281,11 @@
             {% endfor %}
               <!-- END ITEM N -->
             </table>
-
           </div>
- <!-- AS A BIGLIST close -->
+      </div>
+      <!-- AS A BIGLIST close -->
 
- {% if data.imagesui==True %}
+{% if data.imagesui==True %}
 
   <!-- AS MOSAIC -->
           <div role="tabpanel" class="tab-pane fade" id="mosaic">
@@ -332,39 +367,31 @@
                       </td>
                     </tr>
                   </table>
-              </div>
+
+              </div><!-- CLOSE BOX -->
               {% endfor %}
               <!-- END ITEM N -->            
           </div>
   <!-- AS MOSAIC close -->  
 {% endif %}  
 
+
+              
+          
+
         </div>
-
       </div>
-
-    </div><!-- //close box content -->
-    <div class="">
-        <ul class="pagination">
-          <li><a href="/{{ data.handle }}/{{ data.ring }}">&laquo;</a></li>
-          <!--li class="active"><a href="#">1</a></li>
-          <li class="disable"><a href="#">2</a></li>
-          <li class="disable"><a href="#">3</a></li-->
-          {% if data.lastkey %}
-          <li><a href="?lastkey={{ data.lastkey }}">&raquo;</a></li>
-          {% endif %}
-        </ul>
-      {% if 'post_a' in data.user_authorizations %}
-      <div class="pull-right">
-          <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs pull-right" style="margin:0 5px;">
-             <i class="fa fa-plus"></i> &nbsp; NEW
-           </a>
-      </div>  
-      {% endif %}   
-    </div>
+    
+    
     <!-- RESULT LIST FIN -->
-</div><!-- close 12 -->  
-  {% endblock %}
+
+  
+  </div><!-- CLOSE COL 11 -->
+</div><!--  CLOSE ROW    --> 
+
+
+
+{% endblock result1 %}
    
 
 
