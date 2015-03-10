@@ -151,8 +151,6 @@ class AvispaModel:
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             raise
-
-
             return False
 
 

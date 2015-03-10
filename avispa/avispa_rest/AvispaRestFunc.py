@@ -26,7 +26,7 @@ class AvispaRestFunc:
             collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection 
             print('collectiond:',collectiond)            
             if collectiond:
-                if 'valid' in collectiond:
+                if collectiond['valid']:
                     collectionname = collectiond['collectionname']                 
                     ringd = {}
                     for rc in collectiond['rings']:
@@ -79,18 +79,43 @@ class AvispaRestFunc:
         result = RB.JSONRingGenerator(request,handle)
             
         if result:
-            print('Awesome , you just created a new Ring Schema')
+            print('Awesome , you just created a new Ring Schema',result)
             #msg = 'Item put with id: '+idx
-            flash("Your new Schema has been created")
+            flash(" Your new Ring has been created. ")
             if collection:
-                redirect = '/'+handle+'/_collections/'+collection
+
+                # Add this new ring to the collection ring list
+                self.ACM = AvispaCollectionsModel()
+
+                try:
+                    if self.ACM.add_ring_to_collection(handle, collection,result):
+                        flash(" The ring has been added to the collection.")
+                        redirect = '/'+handle+'/_collections/'+collection
+                except:
+                    redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
+
+
+                
             else: 
                 redirect = '/'+handle
-            d = {'redirect': redirect, 'status':200}
+            
 
         else:
-            d = {'message': 'There was an error creating the Schema' , 'template':'avispa_rest/index.html'}
+            param_list = []
+            for p in request.form:
+                q =  p+'='+request.form.get(p)
+                param_list.append(q)
+
+            lpl = str(len(param_list))
+            recovery_string = '&'.join(param_list)
+
+            if collection:
+                redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n=10&'+str(recovery_string)
+            else:
+                redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
+            
         
+        d = {'redirect': redirect, 'status':200}
         return d
 
     def post_rq_a(self,request,handle,ring,idx,api=False,collection=None,*args):
@@ -246,7 +271,7 @@ class AvispaRestFunc:
                         print("Including in the preview:"+fieldname+'. Layer:'+str(layers[fieldname]))
                         previewItem[fieldname] = item[fieldname] 
 
-                        if fieldname+'_rich' in item:
+                        if fieldname+'_rich' in item and (sources[fieldname] is not None):
 
                             previewItem[fieldname+'_rich'] = item[fieldname+'_rich']
 

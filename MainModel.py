@@ -16,8 +16,8 @@ class MainModel:
         self.user_database = 'myring_users'
 
         self.roles = {}
-        self.roles['handle_owner'] = ['get_a_home','get_a_x','post_a_x','put_a_x_y','delete_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
-        self.roles['org_owner'] = ['get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','get_a_x','post_a_x','put_a_x_y','delete_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['handle_owner'] = ['get_a_home','get_a_x','post_a_x','post_a_x_y','put_a_x_y','delete_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['org_owner'] = ['get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','get_a_x','post_a_x','post_a_x_y','put_a_x_y','delete_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['team_generic'] = ['get_a_home','get_a_m','get_a_x']
         self.roles['team_reader'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c']
         self.roles['team_writer'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
@@ -27,6 +27,7 @@ class MainModel:
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
         self.roles['item_owner'] = ['get_a_b_c','put_a_b_c','delete_a_b_c']
+        self.roles['api_user'] = ['get_a_b','get_a_b_c']
         self.roles['moderator'] = ['get_a_b','get_a_b_c','put_a_b_c','delete_a_b_c']
         self.roles['capturist'] = ['get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
         self.roles['fact_checker'] = ['get_a_b_c','put_a_b_c']
@@ -363,7 +364,7 @@ class MainModel:
 
 
     #ROLEMODEL
-    def user_is_authorized(self,current_user,method,depth,handle,ring=None,idx=None,collection=None,team=None):
+    def user_is_authorized(self,current_user,method,depth,handle,ring=None,idx=None,collection=None,team=None,api=False):
 
         # @method : is what is going to be checked against the user_authorization list
         # @depth : how deep to dig in the user_authorizations
@@ -373,6 +374,9 @@ class MainModel:
 
         print('Method:', method)
         print('depth:',depth)
+
+        if api:
+            user_authorizations = self.sum_role_auth(user_authorizations,'api_user')
 
         
         if depth == '_a' or depth == '_a_b' or depth == '_a_b_c':
@@ -565,6 +569,8 @@ class MainModel:
                     if role != 'org_owner':
                         user_authorizations = self.sum_role_auth(user_authorizations,'team_generic')
                     '''
+
+        
 
 
 

@@ -20,7 +20,7 @@
 
         <div class="row">
           <div class="col-sm-8">
-            <h1>Create a New Ringx</h1>
+            <h1>Create a New Ring {%if data.collection %}in {{data.collection}}{%endif%}</h1>
             <hr/>
           </div>
           <div class="col-sm-4">
@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        
+         <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
         <div class="row">
           <div class="col-sm-2">
             <h2 class="fs-4">1</h2> <p class=" text-s1 text-lgray fs-1-5">Ring Name and Description</p>
@@ -42,8 +42,11 @@
           <div class="col-sm-10">
 
             <div class="rn-box p-15">
-                <form class="form-horizontal" role="form" action="/{{ data.handle }}" method="POST">
+               
 
+                {%if data.collection %}
+                <input type="hidden" name="collection" value="{{data.collection}}">
+                {%endif%}
                 
                 <div class="input-group input-group-sm">
                   <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
@@ -301,7 +304,7 @@
               </div> <!-- A. CLOSE COLUMN  -->
 
             
-          </div><!-- CLOSE COLSM12 -->
+          </div><!-- CLOSE COLSM10 -->
         </div><!-- CLOSE ROW -->
 
         <div class="row">
@@ -322,7 +325,10 @@
           </div>
         </div>
 
+    </form>
+
   </div> <!-- CLOSE CONTAINER -->
+
 </section>
 
 
@@ -335,15 +341,14 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><i class="fa fa-code-fork fa-2x"></i> Fork existing Ring</h4>
       </div>
-      <div class="modal-body">
-        <form id="post_rq_a" action="/{{ data.handle }}" method="POST" >
-              
+      <form id="post_rq_a" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST" >
+      <div class="modal-body">       
            Load Parent Ring from this URL: <input name="ringurl" class="form-control" type="text">
       </div>
       <div class="modal-footer">
-        <input name="submit" value="load and save" type="submit" class="btn btn-success">
-        </form>
+        <input name="submit" value="load and save" type="submit" class="btn btn-success">       
       </div>
+      </form>
     </div>
   </div>
 </div>
