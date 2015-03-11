@@ -36,7 +36,35 @@
       {% endif %}
     </div>
     
+<div class="row">
+  <div class="col-xs-12 visible-xs">
+    <hr/>
+  </div>
+</div> 
 
+<div class="row">
+    <div class="col-xs-2 visible-xs">
+        
+        <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs" >
+          <i class="fa fa-plus fa-1x"></i>New
+        </a>
+             
+    </div>
+
+    <div class="col-xs-10 col-sm-12">
+      
+      <ul class="nav nav-pills text-right" role="tablist">
+        {% if data.imagesui==True %}
+        <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
+        {% endif %}
+        <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
+        <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
+        
+      
+      </ul> 
+    </div>
+
+</div>
         
         
     
@@ -45,14 +73,13 @@
 
     <!-- RESULT LIST START -->
     
- 
-<div class="row">
-  <div class="col-xs-12 col-sm-1 text-right omega">
-      {% if 'post_a' in data.user_authorizations %}
-        {% if not data.itemlist %}
 
-            Empty
-          {% else %}
+<div class="row">
+  <div class="col-xs-12 col-sm-1 text-right">
+      {% if 'post_a' in data.user_authorizations %}
+        {% if data.itemlist %}
+
+          
         <div class="row">
           <div class="col-sm-12 hidden-xs">
             <div class="spa5"></div>
@@ -61,24 +88,6 @@
              </a>
              <br/>
           </div>
-          <div class="col-xs-2 visible-xs">
-            <div class="spa5"></div>
-            <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-lg" >
-               <i class="fa fa-plus fa-1x"></i>New
-             </a>
-             <br/>
-          </div>
-
-          <div class="col-xs-10 col-sm-12">
-            <div class="spa20"></div>
-            <ul class="nav nav-pills text-right" role="tablist">
-              <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
-              <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-            {% if data.imagesui==True %}
-              <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
-              {% endif %}
-            </ul> 
-          </div>
         </div> 
           
 
@@ -86,7 +95,7 @@
       {% endif %}
     
   </div> 
-  <div class="col-xs-12 col-sm-11 alpha">
+  <div class="col-xs-12 col-sm-11 ">
  
   <div role="tabpanel">
     <div class="tab-content">
@@ -96,15 +105,15 @@
       <!-- AS LIST -->
       <div role="tabpanel" class="tab-pane fade in active" id="list" style="">
 
-          <div class="rn-box">   
+          <div class="bg-white">   
             <table class="table table-striped table-condensed">
               
-              <tr>
+              <tr >
                  <th></th>
               {% for value in data.FieldLabel %}                   
                  
                  {% if not data.widget[value] == 'images' %}
-                  <th>
+                  <th class="text-s1 fw-c">
                      
                      {%if data.FieldLabel[value] == '' %}
                          {{value}}
@@ -216,7 +225,7 @@
       <!-- AS MEGA LIST -->
       <div role="tabpanel" class="tab-pane fade" id="biglist">
         
-          <div class="rn-box"> 
+          <div class="bg-white"> 
             <table class="table table-striped">
               {% for item in data.itemlist %}
               <tr>
