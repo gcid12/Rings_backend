@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-xs-12 text-right">
         <br/>
-        <img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="float:left; margin-right:10px;" alt="">
+        <img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
 
         {% if data.handle_actualname %} 
          <h1 class="text-lead fw-300 pull-left"><span class="text-gray">{{data.handle_actualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1><br/>
@@ -38,7 +38,7 @@
 
           {% for person in data.people %}
                 
-                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t150/{{data.peoplethumbnails[person.handle]}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="margin-right:8px;" alt=""/>
+                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t150/{{data.peoplethumbnails[person.handle]}}_t150.jpg{% else %}/static/images/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
                  
                     <!-- <span class="text-lead fw-300 pull-left">
                         <a href="/{{person.handle}}/_home">{{ person.handle_actualname }}</a>

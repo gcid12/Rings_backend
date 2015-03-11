@@ -164,7 +164,7 @@
  
       <h3 class="fs-1-7 text-lgray text-s1">
         <a class="nounder" href="/{{handle}}">
-          <img class="user-bar" src="/static/images/generic_thumbnail.jpg" style="pull-left">&nbsp;
+          <img class="user-bar" src="/static/images/ph_org2.gif" style="pull-left">&nbsp;
           {{ handle|upper() }}     
         </a>
         <a class="nounder" href="{{link}}">
@@ -668,7 +668,7 @@
 
 {% macro org_header(handle,actualname,profilepic,currentsection,user_authorizations) %}
 
-        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if profilepic %}/_images/{{handle}}/t150/{{profilepic}}_t150.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
+        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if profilepic %}/_images/{{handle}}/t150/{{profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
 
         {% if actualname %} 
          <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h3><br/>
