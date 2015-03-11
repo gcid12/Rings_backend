@@ -159,21 +159,21 @@
                     {% if not data.widget[value] == 'images' %}  
                         <td>
                             {% if item[value] %}                   
-                            {% if 'get_a_b_c' in data.user_authorizations %}
+                              {% if 'get_a_b_c' in data.user_authorizations %}
 
-                              <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ item[value]|truncate(170, true) }} </a>
+                                <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ item[value]|truncate(170, true) }} </a>
 
-                            {% else %}
-                              {{ item[value]|truncate(170, true) }}
-                            {% endif %}
+                              {% else %}
+                                {{ item[value]|truncate(170, true) }}
+                              {% endif %}
                             {% endif %}
                         </td>
                     {% endif %}                
                   {% endfor %}
 
                   <td style="width:150px;">
-                  <!-- 1st FIELD -->
-                      {{ ui.pbar('35') }}
+                  <!-- 1st FIELD -->{#{((item['_fullcount']/item['_fieldcount'])*100)|round(1)|int}#}
+                      {{ ui.pbar((item['_fullcount']/item['_fieldcount'])*100) }}
                   </td>  
 
                   <td style="width:90px;">
@@ -261,6 +261,8 @@
                           {% for k,v in item.items() %}
                             {% if not k =='_public' %} 
                             {% if not k =='_id' %}
+                            {% if not k =='_fieldcount' %}
+                            {% if not k =='_fullcount' %}
                             {% if v %} 
                           <tr>
                             <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</p></td>
@@ -268,6 +270,8 @@
                                 <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">{{ v|truncate(170, true) }}</p>
                             </td>
                           </tr>
+                            {% endif %}
+                            {% endif %}
                             {% endif %}
                             {% endif %}
                             {% endif %}

@@ -206,7 +206,7 @@ class AvispaRestFunc:
         if request.args.get('resultsperpage'):
             resultsperpage = int(request.args.get('resultsperpage'))
         else:
-            resultsperpage = 1000
+            resultsperpage = 2000
 
         if request.args.get('sort'):
             sort = request.args.get('sort')
@@ -259,12 +259,19 @@ class AvispaRestFunc:
             print('item:',item)
             #previewItem = {}
             previewItem = collections.OrderedDict()  
+            previewItem[u'_id'] = item[u'_id']
+            previewItem['_fieldcount'] = 0
+            previewItem['_fullcount'] = 0
 
             for fieldname in item:
-                print('fieldname:',fieldname)
                 
-                previewItem[u'_id'] = item[u'_id']
                 if fieldname in layers:
+                    previewItem['_fieldcount'] += 1
+
+                    
+                    if item[fieldname] != '':
+                        previewItem['_fullcount'] += 1
+
                     if layers[fieldname]<=layer:
                     #if True:
                         #Only include those fields above the PREVIEWLAYER

@@ -880,22 +880,26 @@ def collections_route_a_x_y(handle,collection):
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
-                print('FLAGx4')
+                print('FLAGx2')
                 result = collection_dispatcher('_a_x_y',handle,collection) 
             elif request.args.get('method').lower()=='post':
                 print('FLAGx3')
                 result = route_dispatcher('_a',handle,collection=collection)
         else:
-            print('FLAGx3')
+            print('FLAGx4')
             result = route_dispatcher('_a',handle,collection=collection)
 
     elif 'rq' in request.args:
+        if request.args.get('rq').lower() == 'put':
+            print('FLAGx5')
+            result = collection_dispatcher('_a_x_y',handle,collection)
         if request.args.get('rq').lower() == 'post':
+            print('FLAGx6')
             result = route_dispatcher('_a',handle,collection=collection)
 
 
     else:
-        print('FLAGx5')
+        print('FLAGx7')
         #Every collection specific GET
         result = collection_dispatcher('_a_x_y',handle,collection)
  

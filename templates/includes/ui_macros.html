@@ -115,7 +115,7 @@
         <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
           <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
         </a>
-        {%else%}
+      {%else%}
           <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
       {%endif%}
 
@@ -164,12 +164,18 @@
       
       
 
-      <a class="nounder" href="{{link}}">
-        <h3 class="fs-1-7 text-lgray text-s1">
-        <img class="user-bar" src="/static/images/generic_thumbnail.jpg" style="pull-left">
-      {{ handle|upper() }} / <span class="fw-c text-gray">{{ name|upper() }}</span>
-        </h3>
-      </a>
+      
+      <h3 class="fs-1-7 text-lgray text-s1">
+        <a class="nounder" href="/{{handle}}">
+          <img class="user-bar" src="/static/images/generic_thumbnail.jpg" style="pull-left">&nbsp;
+          {{ handle|upper() }}     
+        </a>
+        <a class="nounder" href="{{link}}">
+       / <span class="fw-c text-gray">{{ name|upper() }}</span>
+       </a>
+        
+      </h3>
+      
       <p class="text-gray fs-1 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed | <strong>3</strong> Collab</p>
     </td>
 

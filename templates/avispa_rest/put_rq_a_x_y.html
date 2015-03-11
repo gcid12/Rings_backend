@@ -123,8 +123,9 @@
                   <label for="inputPassword3" class="col-sm-2 control-label"></label>
                   <div class="col-sm-10">
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <a href="/{{ data.handle }}/_collections" type="submit" class="btn btn-default">Leave without saving anything</a>  
+                    <a href="/{{ data.handle }}/_collections" type="submit" class="btn btn-default">Leave without saving anything</a>                      
                   </div>
+                  <a style="float:right; padding:25px;" href="/{{ data.handle }}/_collections/{{ data.collection }}?method=delete" ><b>Delete this Collection</b>  No Ring or item will be deleted.</a>
                 </div>
               </div>
 
