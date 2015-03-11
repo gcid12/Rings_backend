@@ -38,8 +38,8 @@
 
           {% for person in data.people %}
                 
-                    <a href="/{{person.handle}}">
-                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t150/{{data.peoplethumbnails[person.handle]}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="margin-right:8px;" alt=""/>
+                    <a href="/{{person.handle}}" data-toggle="tooltip" title="{{person.handle}}">
+                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}_t75.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="margin-right:8px;" alt=""/>
                     </a>
                  
                     <!-- <span class="text-lead fw-300 pull-left">
@@ -166,38 +166,28 @@
                         <h4 class="panel-title">
                           {{team.teamname}}
                         </h4>
+
                         <span class="caret"></span>
                       </div>
                     </a>
+                    
                     <div id="{{team.teamname}}" class="panel-collapse collapse inXX" role="tabpanel">
                       <div class="p-15">
+                      {%for member in team.members%}
 
-                      <a href="" data-toggle="tooltip" title="Name">
-                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
-                      </a>
-                      <a href="" data-toggle="tooltip" title="Name">
-                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
-                      </a>
-                      <a href="" data-toggle="tooltip" title="Name">
-                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
-                      </a>
-                      <a href="" data-toggle="tooltip" title="Name">
-                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
-                      </a>
-                      <a href="" data-toggle="tooltip" title="Name">
-                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
-                      </a>
-                      <a href="" data-toggle="tooltip" title="Name">
-                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
-                      </a>
-                      <a href="" data-toggle="tooltip" title="Name">
-                        <img class="user-team" src="/static/images/generic_thumbnail.jpg"alt="">
-                      </a>
+                        
+                        <a href="/{{member.handle}}" data-toggle="tooltip" title="{{member.handle}}">
+                          <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}/_images/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}_t75.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="margin-right:8px;" alt=""/>
+                        </a>
+
+                      {%endfor%}
+
+
                        
 
                         <hr/>
                         <div class="" style="height:25px;">
-                            <a href="/_orgregister" class="hidden-xs"><div class=" blueprint fs-0-9"><i class="fa fa-plus"></i> add team member</div></a>
+                            <a href="/{{data.handle}}/_teams/{{team.teamname}}" class="hidden-xs"><div class=" blueprint fs-0-9"><i class="fa fa-plus"></i> add team member</div></a>
                         </div>
                         
 

@@ -10,7 +10,8 @@ class EmailModel:
 
     def send_one_email(self,to,subject,content):
            
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        #server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP('smtp.sendgrid.net', 587)
         server.ehlo()
         server.starttls()
 
