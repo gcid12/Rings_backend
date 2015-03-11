@@ -13,19 +13,74 @@
 <section>
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 text-right">
+      <div class="col-xs-12">
         <br/>
-        <img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="float:left; margin-right:10px;" alt="">
 
-        {% if data.handle_actualname %} 
-         <h1 class="text-lead fw-300 pull-left"><span class="text-gray">{{data.handle_actualname}}</span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span></h1><br/>
+        <!-- PHOTO  -->
+
+        {% if data.handle_profilepic %}
+          <img class="img-responsive center-block user-big" src="/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="width:; float:left; margin-right:10px;" alt="">
+        
         {% else %}
-         <h1 class="text-lead fw-300 pull-left"><span class="text-gray">{{data.handle}}</span><br/><span class="text-lgray pull-left fs-0-6"></span></h1><br/>
+          <table style="float:left;">
+            <tr>
+              <td>
+                <img class="img-responsive center-block user-big" src="/static/images/ph_org.gif" style="float:left; margin-right:10px;" alt="">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {% if 'get_a_p' in data.user_authorizations %}
+                <a href="/{{data.handle}}/_orgprofile" class="pull-left"> <i class="fa fa-pencil"></i> Add Logo</a>
+                {%endif%}
+              </td>
+            </tr>
+          </table>
+
         {% endif %}
 
-        {% if 'put_a' in data.user_authorizations %}
-        <a href="/{{data.handle}}/_orgprofile" class="pull-right"> <i class="fa fa-pencil"></i> edit profile</a> 
-        {%endif%}
+        <!-- NAME -->
+
+        {% if data.handle_actualname %} 
+         <div class="text-lead fw-300">
+            <span class="text-s1 text-gray fs-2">{{data.handle_actualname}}</span>
+              {% if 'put_a' in data.user_authorizations %}
+                <a href="/{{data.handle}}/_orgprofile"> 
+                  <span class="pl-20"> <i class="fa fa-pencil"></i> </span>
+                </a> 
+
+              {%endif%}
+            
+              <br/>
+            <span class="text-s2 text-lgray fs-1-7">{{data.handle}}</span>
+         </div>
+
+        {% else %}
+          <div class="text-lead fw-300">
+            {% if 'get_a_p' in data.user_authorizations %}
+            <span class="text-s1 text-lgray fs-2">Organization full name</span>
+                 
+                <a href="/{{data.handle}}/_orgprofile"> 
+                  <span class="pl-20"> <i class="fa fa-pencil"></i> Edit Name</span>
+                </a> 
+              
+            
+              <br/>
+            <span class="text-s2 text-gray fs-1-7">{{data.handle}}</span>
+            {%else%}
+              <a href="/{{data.handle}}/_orgprofile">
+                <span class="text-s1 text-lgray fs-2">{{data.handle}}</span>
+              </a>
+            {%endif%}
+         </div>
+
+
+         
+         
+         
+        {% endif %}
+
+        
              
       </div>
     </div>
@@ -37,10 +92,15 @@
         <div class="spa20">
 
           {% for person in data.people %}
-                
-                    <a href="/{{person.handle}}" data-toggle="tooltip" title="{{person.handle}}">
-                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}_t75.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="margin-right:8px;" alt=""/>
-                    </a>
+
+               
+                  
+                  <a href="/{{person.handle}}/_home" class="clearlink" data-toggle="tooltip" title="{{person.handle}}">
+                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}_t75.jpg{% else %}/static/images/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
+                      
+                  </a>
+                  
+
                  
                     <!-- <span class="text-lead fw-300 pull-left">
                         <a href="/{{person.handle}}/_home">{{ person.handle_actualname }}</a>
@@ -50,7 +110,10 @@
                     </span> -->
   
           {% endfor %}
-          <a href="/{{data.handle}}/_people" type="button" class=""><i class="fa fa-pencil"></i> edit people</a> <br/>
+
+          {% if 'get_a_p' in data.user_authorizations %}
+          <a href="/{{data.handle}}/_people" type="button" class=""><i class="fa fa-plus-circle"></i> add people</a> <br/>
+          {%endif%}
 
           <!-- <span class="dropdown pull-right">
             <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
@@ -102,25 +165,6 @@
             </div>
           <div class="rn-box-solo">
 
-              
-                  {% for collection in data.collections.collectionlist %}  
-                  
-                    {% if collection.valid %}
-                      {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                      <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">     {% for ring in collection.rings %}    
-                              {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
-                            {% endfor %}
-
-                              {#{ ui.panel_collections_add_ring(data.handle) }#}  
-                              {{ ui.collection_item_add(data.handle,collection.collectionname) }}               
-
-                    
-                    </table> 
-                    {% endif %}
-                  {% endfor %}
-                       
-
-
               {% for collection in data.collections.collectionlist %}  
               
                 {% if collection.valid %}
@@ -129,8 +173,9 @@
                           {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                         {% endfor %}
 
-                          {#{ ui.panel_collections_add_ring(data.handle) }#}  
-                          {{ ui.collection_item_add(data.handle) }}               
+                          {% if 'post_a' in data.user_authorizations %} 
+                          {{ ui.collection_item_add(data.handle) }} 
+                          {% endif %}              
                 </table> 
                 {% endif %}
               {% endfor %}
@@ -177,7 +222,7 @@
 
                         
                         <a href="/{{member.handle}}" data-toggle="tooltip" title="{{member.handle}}">
-                          <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}/_images/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}_t75.jpg{% else %}/static/images/generic_thumbnail.jpg{% endif %}" style="margin-right:8px;" alt=""/>
+                          <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}/_images/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}_t75.jpg{% else %}/static/images/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
                         </a>
 
                       {%endfor%}

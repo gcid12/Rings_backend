@@ -19,53 +19,50 @@
     {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
     </table>
 
-    <div class="row">
-      {% if 'post_a' in data.user_authorizations %}
-        {% if not data.itemlist %}
-          <div class="col-xs-12 text-center">
-            <div class="spa20">
-              <h4>You have no items in this Ring. Create one, click here:
-                <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
-                  <i class="fa fa-plus"></i> &nbsp; ADD FIRST ITEM
-                </a>
-              </h4>
+
+  {% if 'post_a' in data.user_authorizations %}
+    {% if not data.itemlist %}
+
+      <div class="row">
+            <div class="col-xs-12 text-center">
+              <div class="spa20">
+                <h4>You have no items in this Ring. Create one, click here:
+                  <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
+                    <i class="fa fa-plus"></i> &nbsp; ADD FIRST ITEM
+                  </a>
+                </h4>
+              </div>
             </div>
+      </div>
+
+    {% else %}
+
+      <div class="row">
+        <div class="col-xs-12 visible-xs">
+          <hr/>
+        </div>
+      </div> 
+      <div class="row">
+          <div class="col-xs-2 visible-xs">
+              <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs" >
+                <i class="fa fa-plus fa-1x"></i>New
+              </a>    
           </div>
 
-        {% endif %}
+          <div class="col-xs-10 col-sm-12">
+            
+            <ul class="nav nav-pills text-right" role="tablist">
+              {% if data.imagesui==True %}
+              <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
+              {% endif %}
+              <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
+              <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
+            </ul> 
+          </div>
+      </div>
+
       {% endif %}
-    </div>
-    
-<div class="row">
-  <div class="col-xs-12 visible-xs">
-    <hr/>
-  </div>
-</div> 
-
-<div class="row">
-    <div class="col-xs-2 visible-xs">
-        
-        <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs" >
-          <i class="fa fa-plus fa-1x"></i>New
-        </a>
-             
-    </div>
-
-    <div class="col-xs-10 col-sm-12">
-      
-      <ul class="nav nav-pills text-right" role="tablist">
-        {% if data.imagesui==True %}
-        <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
-        {% endif %}
-        <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-        <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
-        
-      
-      </ul> 
-    </div>
-
-</div>
-        
+  {% endif %}   
         
     
 
@@ -113,7 +110,8 @@
               {% for value in data.FieldLabel %}                   
                  
                  {% if not data.widget[value] == 'images' %}
-                  <th class="text-s1 fw-c">
+                  <th class="text-s1 fs-0-8 ">
+                    <span class="label lable-xs label-leia">
                      
                      {%if data.FieldLabel[value] == '' %}
                          {{value}}
@@ -124,6 +122,7 @@
                            {{data.FieldLabel[value]}}
                          {%endif%}
                      {%endif%}
+                     </span>
                      <br/>
                   </th>
                  {%endif%}
@@ -145,11 +144,15 @@
 
                           {% if v[0] %}                      
                               <img style="width:40px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{v[0]}}_t75.jpg" class="img-thumbnail" >
+                          {% else %}
+                              <img style="width:40px;" src="/static/images/ph_img2.gif" class="img-thumbnail" >
                           {% endif %}
 
                           {#% for image in v %}
                             {% if image %}                      
                               <img style="width:40px;" src="{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
+                            {% else %}
+                              <img style="width:40px;" src="/static/images/ph_img2.gif" class="img-thumbnail" >
                             {% endif %}
                           {% endfor %#} 
 
@@ -237,11 +240,17 @@
 
                             {% if v[0] %}                      
                               <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                              {% else %}
+                              <img style="width:150px;" src="/static/images/ph_img.gif" class="img-thumbnail" >
+
                             {% endif %}
 
                             {#% for image in v %}       
                               {% if image %}                      
                                 <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" class="img-thumbnail" >
+                              {% else %}
+                              <img style="width:150px;" src="/static/images/ph_img.gif" class="img-thumbnail" >
+
                               {% endif %}
                             {% endfor %#}                    
                           {% endif %}
@@ -331,8 +340,12 @@
                       {% for k,v in item.items() %}
                         {% if data.widget[k] == 'images' %}       
                           
+
+
                             {% if v[0] %}                      
                               <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                            {% else %}
+                              <img style="width:150px;" src="/static/images/ph_img.gif" class="img-thumbnail" >
                             {% endif %}
                                              
                         {% endif %}
@@ -344,6 +357,8 @@
                             
                               {% if v[0] %}                      
                                 <img style="width:150px;" src="{{data.host_url}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                              {% else %}
+                              <img style="width:150px;" src="/static/images/ph_img.gif" class="img-thumbnail" >
                               {% endif %}
                                                
                           {% endif %}

@@ -57,7 +57,7 @@
     {%if current_user.is_authenticated()%}
       <ul class="nav navbar-nav navbar-right hidden-xs w-links">
         <li class="active hidden-xs">
-          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/generic_thumbnail.png{%endif%}" class="user-bar"><span class="fs-1-5 text-s1 pr-20 pl-5"> {{ current_user.id }}</span></a>
+          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s1 pr-20 pl-5"> {{ current_user.id }}</span></a>
           
         </li>
 
