@@ -38,7 +38,9 @@
 
           {% for person in data.people %}
                 
+                    <a href="/{{person.handle}}">
                     <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}/_images/{{person.handle}}/t150/{{data.peoplethumbnails[person.handle]}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="margin-right:8px;" alt=""/>
+                    </a>
                  
                     <!-- <span class="text-lead fw-300 pull-left">
                         <a href="/{{person.handle}}/_home">{{ person.handle_actualname }}</a>

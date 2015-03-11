@@ -414,45 +414,7 @@ class MainModel:
                     for role in rolelist:
                             user_authorizations = self.sum_role_auth(user_authorizations,role)
 
-
-                
-                '''
-                user_doc = self.select_user(self.user_database,handle)          
-                rings = user_doc['rings']
-
-                for r in rings:
-
-                    if r['ringname']==ring:
-                        print('r:',r)
-
-                        if 'owner' in r:
-                            if current_user in r['owner']:
-                                print('This user is a Ring Owner:'+r['ringname']+'_'+r['version']) 
-                                user_authorizations = self.sum_role_auth(user_authorizations,'ring_owner')                      
-                        else:
-                            #This ring has no owner. Should correct. Orphans will become handle's property
-                            r['owner'] = [handle] 
-                            user_doc.store(self.db)
-                            print('This user just became a Ring Owner of this orphan:'+r['ringname']+'_'+r['version']) 
-                            user_authorizations = self.sum_role_auth(user_authorizations,'ring_owner')
-
-
-
-                        if 'moderator' in r:
-                            print('Moderator list:',r['moderator'])
-                            if current_user in r['moderator']:
-                                print('This user is a Ring Moderator:'+r['ringname']+'_'+r['version']) 
-                                user_authorizations = self.sum_role_auth(user_authorizations,'moderator')
-
-                        if 'capturist' in r:
-                            print('Capturist list:',r['capturist'])
-                            if current_user in r['capturist']:
-                                print('This user is a Ring Capturist:'+r['ringname']+'_'+r['version'])
-                                user_authorizations = self.sum_role_auth(user_authorizations,'capturist')
-                '''
-                            
-
-                        
+     
                 if depth == '_a_b_c':
 
                     db_ringname=str(handle)+'_'+str(ring) 
@@ -511,7 +473,7 @@ class MainModel:
                                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
 
-        elif depth == '_a_p':
+        elif depth == '_a_p' or depth == '_a_p_q':
             print('Testing authorizations for /_people section')
 
             team = 'owner'
