@@ -5,6 +5,7 @@ from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from env_config import FROMEMAIL, FROMPASS
 from MainModel import MainModel
+from EmailModel import EmailModel
 
 from User import User
 
@@ -173,6 +174,21 @@ def forgot():
                 print("key:"+key)
                 userObj.set_password_key(key)
 
+
+                to = user.email
+                subject = "Password Recovery Email for: "+user.email
+                content = "Click here "+host_url+"/_forgot?k="+key+"&e="+email
+
+
+                EMO = EmailModel()
+                if EMO.send_one_email(to,subject,content):
+                    print("Sending password recovery email to: "+user.email)
+                    flash("Please check your mail's inbox for the password recovery instructions.")
+                else:
+                    print("Something went wrong with sending the email but no error was raised")
+
+                '''
+
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.ehlo()
                 server.starttls()
@@ -192,9 +208,11 @@ def forgot():
                 server.sendmail(FROMEMAIL, user.email, msg)
                 server.quit()
 
+                '''
 
-                print("Sending password recovery email to: "+user.email)
-                flash("Please check your mail's inbox for the password recovery instructions.")
+
+
+                
                 
 
             except:
