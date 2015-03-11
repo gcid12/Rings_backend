@@ -56,8 +56,8 @@
                     <input name="teamauth" type="radio" value="RWX" {%if data.team.teamauth=='RWX'%}checked=""{%endif%}> Administrator<br/>
                   {%else%}
                   As an owner you can do a lot of things that not even Admins can do: <br/><br/>
-                  + <a href="/{{data.handle}}?rq=post" >Create a new Ring</a> <br/>
-                  + <a href="/{{data.handle}}/_collections?rq=post" >Create a new Collections </a><br/>
+                  + <a href="/{{data.handle}}" >Create a new Ring</a> <br/>
+                  + <a href="/{{data.handle}}/_collections?rq=post" >Create a new Collection </a><br/>
                   + <a href="/{{data.handle}}/_orgprofile" >Change the Organization's profile</a> <br/>
                   + <a href="/{{data.handle}}/_people" >Invite people to the organization</a> <br/>
                   + <a href="/{{data.handle}}/_teams" >Create, edit and delete teams </a><br/>
