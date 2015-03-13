@@ -1,140 +1,67 @@
 
-<!-- <section class="bg-black top" style="position:relative; bottom:0;">
-      <div class="container">
-        <div class="row spa20">
-
-        
-        <div class="col-sm-offset-2 col-sm-8 text-center">
-
-        <p><strong>MyRing.io</strong> 1407 Broadway Ave. 24 Floor New York, NY 10018  &nbsp; &nbsp; &nbsp;| <i class="fa fa-envelope"></i> info@myring.io</p>
-
-        <br/>
-        </div>
-      </div>
-    </div>
-
-</section>    -->
-
-
-<!-- JavaScript -->
-
-
-
-<script src="{{ url_for('static',filename='js/d3.min.js') }}"></script>
-<script src="{{ url_for('static',filename='js/Chart.js') }}"></script>
-
-
-
-
-
-
-<!--script type="text/javascript" src="{{ url_for('static',filename='js/jquery.sidr.min.js') }}"></script-->
-<script type="text/javascript" src="{{ url_for('static',filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
-
-<script type="text/javascript" src="{{ url_for('static',filename='assets/textillate/jquery.lettering.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static',filename='assets/textillate/jquery.textillate.js') }}"></script>
-
-
-<!-- <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.easing.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static',filename='assets/simple-slider/simple-slider.js') }}"></script>  -->
-
-
-
-<link href="{{ url_for('static',filename='assets/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet" type="text/css" media="screen">
-<link href="{{ url_for('static',filename='assets/imagegallery/css/bootstrap-image-gallery.css') }}" rel="stylesheet" type="text/css" media="screen">
-
-<!-- IMAGE GALLERY -->
-<script src="{{ url_for('static',filename='assets/blueimp/js/jquery.blueimp-gallery.min.js') }}"></script>
-<script src="{{ url_for('static',filename='assets/imagegallery/js/bootstrap-image-gallery.min.js') }}"></script>
-
-<script type="text/javascript" src="{{ url_for('static',filename='js/intro.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.mmenu.min.all.js') }}"></script>
-
-
-
-
-
-<!--[if lt IE 9]>
-    <script src="{{ url_for('static',filename='js/html5shiv.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/respond.min.js') }}"></script>
-<![endif]-->
-
-
 <script type="text/javascript">
+$(window).load(function(){
 
-	$(function (){
+  	$(function (){
     $('.tlt').textillate();
 	})
+
+});
 </script>
 
 <!-- TOOLTIP + POPOVER SCRIPT -->
 <script type="text/javascript">
+$(window).load(function(){
+
 	$('[data-toggle="tooltip"]').tooltip({
-    'placement': 'bottom'
-});
-$('[data-toggle="popover"]').popover({
-    trigger: 'hover',
-        'placement': 'left'
-});
+	    'placement': 'bottom'
+	});
+	$('[data-toggle="popover"]').popover({
+	    trigger: 'hover',
+	        'placement': 'left'
+	});
 
-$('#userNameField').tooltip({
-    'show': true,
-        'placement': 'bottom',
-        'title': "Please remember to..."
-});
+	$('#userNameField').tooltip({
+	    'show': true,
+	        'placement': 'bottom',
+	        'title': "Please remember to..."
+	});
 
-$('#userNameField').tooltip('show');
+	$('#userNameField').tooltip('show');
+
+});
 </script>
 
 {% if data.raw %}
 <script type="text/javascript">
-if(parent){
-	var h = $( 'body' ).height();
-	console.log('iframe should have this height:'+h)
-	console.log(parent)
-	parent.$.fn.colorbox.resize({
-		'innerHeight':h
-	});
-}
+$(window).load(function(){
+
+	if(parent){
+		var h = $( 'body' ).height();
+		console.log('iframe should have this height:'+h)
+		console.log(parent)
+		parent.$.fn.colorbox.resize({
+			'innerHeight':h
+		});
+	}
+
+});
 </script>
 {%endif%}
 
 
-<!-- SIDR SCRIPT -->
-
-<!--script>
-$(document).ready(function() {
-	$('#buttonRight').sidr({
-		name: 'Right',
-		source: '#headerRight, #contentRight',
-		side:'right'
-
-	});
-
-	$('#buttonLeft').sidr({
-		name: 'Left',
-		source: '#headerLeft, #contentLeft',
-		side:'left'
-
-	});
-
-	// $( '#closeRight' ).click(function() {
- //    	$.sidr('close', 'menuRight');
-	// });
-
-
-
-});
-</script--> 
-
 <!-- SIDEBAR -->
 
 <script type="text/javascript">
+$(window).load(function(){
+
+
       $(function() {
         $('nav#menu').mmenu();
 
       });
+
+});   
 </script>
 
 
