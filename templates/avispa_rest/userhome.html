@@ -12,100 +12,101 @@
 
 <section>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 omega">
-                
+        <div class="row m-10">
+            <div class="col-sm-3  omega">
+                <div >
 
-                <div class="row pl-20" >
-                    <div class="col-xs-4 col-sm-12">
-                        {% if data.handle_profilepic %}
-                        <img src="{%if data.cu_profilepic%}/_images/{{data.handle}}/t75/{{data.handle_profilepic}}_t75.jpg{%else%}/static/images/ph_user.gif{%endif%}" class="profile-1"> 
-                        {%else%}
-                        <img src="/static/images/ph_user.gif" class="profile-1">
-                        <br/> 
-                        <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
-
-                        {%endif%}
-                    </div>
-                    <div class="col-xs-8 col-sm-12">
-                        {% if data.handle_actualname %} 
-                        <h1 class="text-lead fw-300 ">
-                            <span class="text-gray">{{data.handle_actualname}}
-                                <span class="dropdown">
-                                    <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                                      <span class="caret text-lgray"></span>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                                      
-                                      <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
-                                    </ul>
-                                </span>
-                            </span><br/><span class="text-lgray pull-left fs-0-6">{{data.handle}}</span>
-                        </h1><br/>
-                        {% else %}
-                        <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle}}</span><br/><span class="text-lgray pull-left fs-0-6"></span>
-                        </h1><br/>
-                        {% endif %}
-
-                        <!-- <a class="btn btn-large btn-vader" href="javascript:void(0);" onclick="startIntro().setOption('showProgress', true);" style="text-align:center;"><i class="fa fa-play-circle fa-3x"></i> <br/>Start Tour </a> -->
-                    </div>
-                </div>
-                <div class="row pl-20">
-                    <br/>
-                    <div class="bord-top bb-11 mr-70 ml-15 spa5"></div>
-                    <div class="col-xs-12 hidden-xs">
-                    
-                        <span class="text-s1 text-lgray">Organizations</span>
-                        <!-- <span class="dropdown">
-                            <a class="dropdown-toggle text-s1" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                              Organizations
-                              <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                              <li role="presentation"><a role="menuitem" tabindex="-1" href="/_orgregister">New Organization</a></li>
-                              <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">  Join Orgs</a></li>
-                              <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Explore Orgs</a></li>
-                            </ul>
-                        </span> -->
-
-                    </div>
-                    <div class="col-xs-12 col-sm-12">
-                        {% for organization in data.organizations %}
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-12">
                             
-                            <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
+                            {% if data.handle_profilepic %}
+                            <img src="{%if data.cu_profilepic%}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{%else%}/static/images/ph_user.gif{%endif%}" class="profile-1"> 
+                            {%else%}
+                            <img src="/static/images/ph_user.gif" class="profile-1">
+                            <br/> 
+                                {% if  'put_a'  in data.user_authorizations %}
+                                    <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
+                                {%endif%}
 
-                                <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org.gif{%endif%}" class="pic-org-1">
-
-                            </a>
-    
-                        {% endfor %}
-                    
-
+                            {%endif%}
                         
-                        {% if 'post_a' in data.user_authorizations %}
-
-                        <div style="width:40px; height:40px;">
-                            <a href="/_orgregister" data-toggle="tooltip" title="Join or Create" class="hidden-xs"><div class="pic-org-1 blueprint"><i class="fa fa-plus"></i></div></a>
                         </div>
+                        <div class="col-xs-8 col-sm-12">
+                            {% if data.handle_actualname %} 
+                            <h2 class="fw-300 ">
+                                <span class="text-gray fs-0-7 fw-c">{{data.handle_actualname}}
+                                    <span class="dropdown">
+                                        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                          <span class="caret text-lgray"></span>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                                          
+                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
+                                        </ul>
+                                    </span>
+                                </span><br/><span class="text-gray pull-left fs-0-6">{{data.handle}}</span>
+                            </h2><br/>
+                            {% else %}
+                            <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle}}</span><br/><span class="text-gray fs-0-6"></span>
+                            </h1><br/>
+                            {% endif %}
 
-                        {%endif%}
-
-
+                            <!-- <a class="btn btn-large btn-vader" href="javascript:void(0);" onclick="startIntro().setOption('showProgress', true);" style="text-align:center;"><i class="fa fa-play-circle fa-3x"></i> <br/>Start Tour </a> -->
+                        </div>
                     </div>
 
+                    <div class="row">
+                        <br/>
+                        <div class="bb-11 mr-70 ml-15 spa5"></div>
+                        <div class="col-xs-12 hidden-xs">
                         
+                            <span class="text-s1 text-lgray">Organizations</span>
+                            <!-- <span class="dropdown">
+                                <a class="dropdown-toggle text-s1" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                  Organizations
+                                  <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="/_orgregister">New Organization</a></li>
+                                  <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">  Join Orgs</a></li>
+                                  <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Explore Orgs</a></li>
+                                </ul>
+                            </span> -->
+
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            {% for organization in data.organizations %}
+                                
+                                <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
+
+                                    <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1">
+
+                                </a>
+        
+                            {% endfor %}
                     
+                            
+                            {% if 'post_a' in data.user_authorizations %}
+
+                            <div style="width:40px; height:40px;">
+                                <a href="/_orgregister" data-toggle="tooltip" title="Join or Create" class="hidden-xs"><div class="pic-org-1 blueprint"><i class="fa fa-plus"></i></div></a>
+                            </div>
+
+                            {%endif%}
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div class="col-sm-9">
-                <br/>
-                <div class="rn-box-naked" style="background-color:rgba(255, 255, 255, 0.6);">
-                {#{data.dac_totals}#}
-                {#{data.dac_totals_date}#}
-                {#{data.ring_counts}#}
-                {#{data.total_items}#}
+                
+                <div class="box box-clear p-15">
+                    {#{data.dac_totals}#}
+                    {#{data.dac_totals_date}#}
+                    {#{data.ring_counts}#}
+                    {#{data.total_items}#}
                     <div class="row">
-                        <div class="col-sm-12 " id="step1">
+                        <div class="col-sm-12" id="step1">
 
                             <div id="usergraph" class="ugp-container">
                             </div>
@@ -162,23 +163,25 @@
                     </div>
                 </div>
 
+                
+                    
+                
+                
                 <div id="step3">
-                <br/>
-                <p class="text-lgray">Data Collections </p>
+                    <br/>
 
-                    <div class="rn-box-naked-title" style="display:none;">
+                    <!-- START TITLE OF COLLECTIONS -->
+                    <div class="box box-title pt-10">
                         <div class="btn-group pull-right" role="group" style="padding-top:10px;">
-                            <a href="/" type="button" class="btn btn-default btn-xs pull-right">
-                                <i class="fa fa-question-circle"></i>
-                            </a>
-
+                            
+                        
                         {% if 'post_a_x' in data.user_authorizations %}
                             <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs pull-right" data-toggle="tooltip" title="Create new collection" data-placement="top"><i class="fa fa-plus"></i></a>
                         {%endif%}
 
                           <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              Settings
+                                <i class="fa fa-wrench"></i>
                               <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -196,68 +199,71 @@
                           </div>
                         </div>
 
-                        <strong>
-                            <h4>Your Data Collections <span class="text-lgray"> 
+                        
+                            <h4 class="fs-1-2 fw-c text-lgray"><span class="text-gray">{{data.handle|upper }}</span> Data Collections <span class="text-lgray"> 
                              ( {{ data.collections.collectionlist|length }} )
                             </span></h4>
-                        </strong>
-                    </div>
-
-                    <div>
                         
+                    </div>
+                    <!-- END TITLE OF COLLECTIONS -->
 
-                        {% for collection in data.collections.collectionlist %}  
-                            {% if collection.valid %}
+                    <!-- START COLLECTION LOOP-->
+                    {% for collection in data.collections.collectionlist %}  
+                        {% if collection.valid %}
 
-                            <div class="rn-box-naked-clear" style="padding:10px 10px 0 20px;">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-3">
-                                        <div class="bg-" style=" margin-bottom:-20px;">
-                                            
-                                            {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                            
-                                        </div>
-                                          
-                                    
+                        <div class="box box-clear" style="padding:10px 10px 0 20px; margin:5px 0;">
+                            <div class="row">
+                                <!-- START COLLECTION TITLE -->
+                                <div class="col-xs-12 col-sm-3">
+                                    <div class="" style=" margin-bottom:-20px;">
+                                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                        
                                     </div>
-                                    <div class="col-xs-12 col-sm-9">
-                                        <table width="100%" border="0">
-                                            <tr bgcolor="">
-                                              <td colspan="3" style="padding:0 2px 0px 2px;">
-                                                <table class="table table-striped table-bordered">
-                                                  {% for ring in collection.rings %}
-                                                      {% if not ring.invalid %}  
-                                                        {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
-                                                      {%endif%}
-                                                  {% endfor %}
-                                                  {% if 'post_a' in data.user_authorizations %}
-                                                      {{ ui.collection_item_add(data.handle,collection.collectionname) }} 
-                                                  {%endif%}
-                                                </table>
-                                              </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    
                                 </div>
-                                
+                                <!-- END COLLECTION TITLE -->
+
+                                <!-- START RING LIST -->
+                                <div class="col-xs-12 col-sm-9">
+                                    <table width="100%" border="0">
+                                        <tr bgcolor="">
+                                          <td colspan="3" style="padding:0 2px 0px 2px;">
+                                            <table class="table table-striped table-bordered">
+                                              {% for ring in collection.rings %}
+                                                  {% if not ring.invalid %}  
+                                                    {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                                  {%endif%}
+                                              {% endfor %}
+                                              {% if 'post_a' in data.user_authorizations %}
+                                                  {{ ui.collection_item_add(data.handle,collection.collectionname) }} 
+                                              {%endif%}
+                                            </table>
+                                          </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- FINISH RING LIST -->
                                 
                             </div>
-                            {% endif %}
-                        {% endfor %}
-                        
-                    </div>
+                            
+                            
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    <!-- END COLLECTION LOOP -->
+                    
+
+
                     {% if 'post_a_x' in data.user_authorizations %}
                         <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right">New collection</a>
                     {%endif%}
                 </div> 
             
 
-                <!--div style="display:none;" id="step2"> 
-                    <div class="rn-box-title">
+                <div style="display:none;" id="step2"> 
+                    <div class="box box-title">
 
-                        <a href="/" type="button" class="btn btn-default btn-xs pull-right">
-                        <i class="fa fa-question-circle"></i></a>
+                        <!-- <a href="/" type="button" class="btn btn-default btn-xs pull-right">
+                        <i class="fa fa-question-circle"></i></a> -->
                         {#% if 'get_a' in data.user_authorizations %#}
                             <a href="/{{data.handle}}" type="button" class="btn btn-info btn-xs pull-right">
                             see all</a> 
@@ -269,7 +275,7 @@
 
                         My Rings
                     </div>
-                    <div class="rn-box-solo">
+                    <div class="box box-clear">
                         <table class="table table-striped table-condensed">
                             {#% for ring in data.rings.ringlist %#}
 
@@ -293,7 +299,7 @@
                             {#%endif%#}
                         </table>                                  
                     </div>
-                </div--> 
+                </div> 
             </div><!-- close 6 alpha -->  
         </div><!-- close ROW--> 
 

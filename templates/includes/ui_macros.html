@@ -109,36 +109,35 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12">
       <div class="spa10"></div>
-      <img class="block-center" src="/static/images/repo-icon.png" style="width:40px;" alt="MyRing">
+      
         
       {% if 'get_a' in user_authorizations %}
         <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-          <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
+          <img class="block-center" src="/static/images/rico_01.png" style="width:40px;" alt="MyRing"><br/>
+          <span class="fs-1-2 text-gray fw-c">{{ collection|upper() }} </span>
         </a>
+
+          {% if 'put_a_x_y' in user_authorizations %}
+            <span class="dropdown">
+              <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                
+                <span class="caret text-lgray"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
+                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
+                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
+              </ul>
+            </span>
+          {% endif %}
+
       {%else%}
-          <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
+          <img class="block-center" src="/static/images/rico_01.png" style="width:70px;" alt="MyRing"><br/>
+          <span class="fs-1-2 fc-l text-s1 fw-c">{{ collection|upper() }} </span>
       {%endif%}
 
-      <div class="spa10"></div>
-      <p class="text-gray fs-1 text-s1">
-        <strong>1</strong> Rings | 
-        <strong>{{percent}}%</strong> sparcity 
-      </p>
-
-      <hr/>
-      {% if 'put_a_x_y' in user_authorizations %}
-      <span class="dropdown">
-        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-          Actions
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings for {{collection}}</a></li>
-          <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite to collaborate</a></li>
-          <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
-        </ul>
-      </span>
-      {% endif %}
+    
+      
       <br/>
     </div>
   </div>
@@ -150,18 +149,18 @@
     
     <td align="center" class="hidden-xs" style="width:15%;">
       <div class="bord-right bb-11">
-        <img class="block-center" src="/static/images/case-44.png" style="width:110px;" alt="MyRing"> <br/>
+        <img class="block-center" src="/static/images/rico_01.png" style="width:70px;" alt="MyRing"> <br/>
       </div>
     </td>
     <td align="center" valign="center" class="visible-xs" style="width:10%";> 
       <div class="bord-right " style="margin-top:20px;">
-        <img class="block-center" src="/static/images/case-44.png" style="width:70px;" alt="MyRing"> <br/>
+        <img class="block-center" src="/static/images/rico_01.png" style="width:70px;" alt="MyRing"> <br/>
       </div>
     </td>
 
     <td> 
  
-      <h3 class="fs-1-7 text-lgray text-s1">
+      <h3 class="fs-1-7 text-s1">
         <a class="nounder" href="/{{handle}}">
           <img class="user-bar" src="/static/images/ph_org2.gif" style="pull-left">&nbsp;
           {{ handle|upper() }}     
@@ -185,7 +184,7 @@
 
         <span class="dropdown">
           <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-            Actions
+            
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
