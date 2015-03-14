@@ -284,6 +284,16 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
   background-color:#ffe045;
 }
 
+.bg-yellow{  
+  background: url(/static/images/back02.gif) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color:#ffe045;
+}
+
+
 .bg-people{  
   
   background: url(/static/images/back02.gif) no-repeat center center fixed; 
@@ -732,7 +742,7 @@ font-family: 'Raleway', sans-serif; font-weight: 200;
 .box{
 padding: 10px 10px 10px 10px;
 font-size: 0.9em;
-font-family: 'Raleway', sans-serif; font-weight: 200;
+/*font-family: 'Raleway', sans-serif; font-weight: 200;*/
 }
 
 .box-title{

@@ -12,44 +12,40 @@
 
 <section>
 
-    <div class="rn-box">
-        <span class="label label-md bg-e text-lgray" style="margin-left:-8px;">     Data Collection
-        </span> 
-            <!-- TABS WILL SHOW -->
-          {% if data.collection %} 
-              {% if not data.raw %} 
-                <div class="row">
-                  <div class="col-sm-12">
-                     
-                          <table class="table " cellpadding="0" cellspacing="0">
-                                {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
-                          </table>
-                    
-                
-                  </div>
-                </div>
-              {%endif%}
-
-           {%endif%}
+  <div class="row" >
+    <div class="col-sm-12 text-right">
+      <div class="box-title">
+        <a class="fs-0-7 pad-x-20">gcid | 
+        my_collection | art_event</a>
+      </div>
     </div>
+  
+    <div class="col-sm-12" >
+              
+      <div class="box-clear">
 
-
-
-    
+              <!-- TABS WILL SHOW -->
+            {% if data.collection %} 
+                {% if not data.raw %} 
+                       
+                    <table class="table " cellpadding="0" cellspacing="0">
+                          {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
+                    </table>
+                       
+                {%endif%}
+             {%endif%}
+      </div>
+    </div>
+  </div>
       <!-- BOX CONTENT -->  
     <div class="row" >
         <div class="rn-curtain-out">
       {% if data.collection %}
       {% if not data.raw %} 
 
-            <div class="col-sm-12 bord-top bb-8 bg-e rn-curtain-in">
+            <div class="col-sm-12 bb-8 bg-e rn-curtain-in">
       
-                <div class="" style="margin:0 0 0 -10px; padding:1px 10px; " >
-                    <h3 class="fc-g">
-                        {% block tabtitle %}
-                        {% endblock %}
-                    </h3>
-                </div>
+              
                 
                 <div>
                     {% endif %}

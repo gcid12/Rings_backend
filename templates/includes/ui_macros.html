@@ -113,7 +113,7 @@
         
       {% if 'get_a' in user_authorizations %}
         <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-          <img class="block-center" src="/static/images/rico_01.png" style="width:40px;" alt="MyRing"><br/>
+          <img class="block-center" src="/static/images/case_44.png" style="width:40px;" alt="MyRing"><br/>
           <span class="fs-1-2 text-gray fw-c">{{ collection|upper() }} </span>
         </a>
 
@@ -132,7 +132,7 @@
           {% endif %}
 
       {%else%}
-          <img class="block-center" src="/static/images/rico_01.png" style="width:70px;" alt="MyRing"><br/>
+          <img class="block-center" src="/static/images/case_44.png" style="width:70px;" alt="MyRing"><br/>
           <span class="fs-1-2 fc-l text-s1 fw-c">{{ collection|upper() }} </span>
       {%endif%}
 
@@ -149,7 +149,10 @@
     
     <td align="center" class="hidden-xs" style="width:15%;">
       <div class="bord-right bb-11">
-        <img class="block-center" src="/static/images/rico_01.png" style="width:70px;" alt="MyRing"> <br/>
+        <img class="block-center" src="/static/images/rico_01.png" style="width:50px;" alt="MyRing"> 
+        <br/>
+        <span class="label label-md bg-e text-lgray" style="margin-left:-8px;">     Data Collection.
+        </span> 
       </div>
     </td>
     <td align="center" valign="center" class="visible-xs" style="width:10%";> 
@@ -160,9 +163,10 @@
 
     <td> 
  
-      <h3 class="fs-1-7 text-s1">
+      <h3 class="fs-1-5 text-s1">
+      
         <a class="nounder" href="/{{handle}}">
-          <img class="user-bar" src="/static/images/ph_org2.gif" style="pull-left">&nbsp;
+          <img class="user-bar" src="/_images/{{handle}}/t75/{{ XXX }}_t75.jpg" style="pull-left">&nbsp;
           {{ handle|upper() }}     
         </a>
         <a class="nounder" href="{{link}}">
@@ -171,7 +175,7 @@
         
       </h3>
 
-      <p class="text-gray fs-1 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
+      <p class="text-lgray fs-0-8 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
     </td>
 
     <td> 
@@ -195,7 +199,6 @@
       </div>
 
       <!-- COLUMN 1 -->
-
     </td>
   </tr>
 {% endmacro %}
@@ -256,7 +259,17 @@
         <div class="col-xs-8 col-sm-7">
           <div class="spa5"></div>
           <h3 class="text-s2 fs-1-7">
-            <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
+
+
+            <!-- <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
+
+            {% if handle == origin %}
+
+            <img src="/static/images/slave.png" style="width:30px;">
+            {% else %}
+            {%endif%}
+
+
             <!-- {% if 'get_a' in user_authorizations %}
             <a href="/{{ handle }}" class="nounder">{{origin}}</a>
             {%else%}
