@@ -12,42 +12,25 @@
 
 <section>
 
-  <div class="row" >
-    <div class="col-sm-12 text-right">
-      <div class="box-title">
-        <a class="fs-0-7 pad-x-20">gcid | 
-        my_collection | art_event</a>
-      </div>
-    </div>
-  
-    <div class="col-sm-12" >
-              
-      <div class="box-clear">
 
-              <!-- TABS WILL SHOW -->
-            {% if data.collection %} 
-                {% if not data.raw %} 
-                       
-                    <table class="table " cellpadding="0" cellspacing="0">
-                          {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
-                    </table>
-                       
-                {%endif%}
-             {%endif%}
-      </div>
-    </div>
-  </div>
-      <!-- BOX CONTENT -->  
-    <div class="row" >
-        <div class="rn-curtain-out">
+      <!-- TABS WILL SHOW -->
+    {% if data.collection %} 
+        {% if not data.raw %} 
+
+                  {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
+
+        {%endif%}
+     {%endif%}
+
+
+    <div class="row">
+        
       {% if data.collection %}
       {% if not data.raw %} 
-
-            <div class="col-sm-12 bb-8 bg-e rn-curtain-in">
-      
-              
+            
+          <div class="col-sm-offset-1 col-sm-11 bb-8 bg-w-0-3 ">
+            
                 
-                <div>
                     {% endif %}
                       {%endif%}
                         {% block tabcontent %}
@@ -55,14 +38,11 @@
                       {% if data.collection %} 
                       {% if not data.raw %} 
                     
-                </div>
-            </div>
-
-      
-
+                
+          </div>
       {%endif%}
       {%endif%}
-        </div>
+        
     </div> 
 
 </section>

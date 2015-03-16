@@ -106,34 +106,30 @@
 
 {% macro collection(handle,collection,percent,role,update,user_authorizations) %}
 
+  
+
   <div class="row">
     <div class="col-xs-12 col-sm-12">
-      <div class="spa10"></div>
-      
-        
+ 
       {% if 'get_a' in user_authorizations %}
-        <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-          <img class="block-center" src="/static/images/case_44.png" style="width:40px;" alt="MyRing"><br/>
-          <span class="fs-1-2 text-gray fw-c">{{ collection|upper() }} </span>
-        </a>
 
-          {% if 'put_a_x_y' in user_authorizations %}
-            <span class="dropdown">
-              <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                
-                <span class="caret text-lgray"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
-                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
-                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
-              </ul>
-            </span>
-          {% endif %}
+
+        
+        <img class="block-center" src="/static/images/case-49.png" style="width:60px;" alt="MyRing"><br/>
+        <a class="nounder fs-1-2" href="/{{handle}}/_collections/{{collection}}">
+          <span style="opacity: 0.5;">  
+            {{ handle|lower() }}   
+          </span> / 
+          <span class="fw-c">
+            {{ collection|upper() }} 
+          </span>
+        </a>
+        <p class="text-lgray fs-0-9 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
 
       {%else%}
-          <img class="block-center" src="/static/images/case_44.png" style="width:70px;" alt="MyRing"><br/>
+          <img class="block-center" src="/static/images/case-49.png" style="width:70px;" alt="MyRing"><br/>
           <span class="fs-1-2 fc-l text-s1 fw-c">{{ collection|upper() }} </span>
+          <p class="text-lgray fs-0-8 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
       {%endif%}
 
     
@@ -144,63 +140,76 @@
 {% endmacro %}
 
   {% macro collection_big(handle, name, percent, role, update,link) %}
-
-  <tr>
+<div class="row">
+  <div class="col-sm-12 bg-f bord-left bc-2 bw-7">
+    <div style="padding:2px 0px 5px 0px;">
+      <span class="label label-xs bl bl-orange ">Data Collection
+      </span> 
     
-    <td align="center" class="hidden-xs" style="width:15%;">
-      <div class="bord-right bb-11">
-        <img class="block-center" src="/static/images/rico_01.png" style="width:50px;" alt="MyRing"> 
-        <br/>
-        <span class="label label-md bg-e text-lgray" style="margin-left:-8px;">     Data Collection.
+      <div class="pull-right">
+        <span class="label label-xs bl bl-white">
+          <a href="" class="fc-l">{{ handle }}</a>
+            <i class="fa fa-arrow-right"></i>
+          <a href="" class="fc-l">{{ name }}</a>
+            <i class="fa fa-arrow-right"></i>
+          <a href="">˚Ringname</a>
         </span> 
       </div>
-    </td>
-    <td align="center" valign="center" class="visible-xs" style="width:10%";> 
-      <div class="bord-right " style="margin-top:20px;">
-        <img class="block-center" src="/static/images/rico_01.png" style="width:70px;" alt="MyRing"> <br/>
-      </div>
-    </td>
 
-    <td> 
- 
-      <h3 class="fs-1-5 text-s1">
-      
-        <a class="nounder" href="/{{handle}}">
-          <img class="user-bar" src="/_images/{{handle}}/t75/{{ XXX }}_t75.jpg" style="pull-left">&nbsp;
-          {{ handle|upper() }}     
-        </a>
-        <a class="nounder" href="{{link}}">
-       / <span class="fw-c text-gray">{{ name|upper() }}</span>
-       </a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 bg-white bord-left bc-2 bw-7">
+    <table class="table " cellpadding="0" cellspacing="0">
+      <tr>
         
-      </h3>
-
-      <p class="text-lgray fs-0-8 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
-    </td>
-
-    <td> 
-      <div class="pull-rightx">
-         
-          <div class="label label-info"> Owner </div>
+        <td align="center" class="hidden-xs" style="width:15%;">
+          <div class="bord-right bb-11">
+            <img class="block-center" src="/static/images/case-49.png" style="width:70px;" alt="MyRing"> 
+            <br/>
+            
+          </div>
+        </td>
+        <td align="center" valign="center" class="visible-xs" style="width:10%";> 
+          <div class="bord-right " style="margin-top:20px;">
+            <img class="block-center" src="/static/images/case-49.png" style="width:70px;" alt="MyRing"> <br/>
+          </div>
+        </td>
+        <td> 
+          <h3 class="fs-1-5 text-s1">
           
-            
-          <div class="spa10"></div>
+            <a class="nounder" href="/{{handle}}">
+              <img class="user-bar" src="/_images/{{handle}}/t75/{{ XXX }}_t75.jpg" style="pull-left">&nbsp;
+              {{ handle|lower() }}     
+            </a> /
+            <a class="nounder" href="{{link}}">
+            <span class="fw-c text-gray">{{ name|upper() }}</span>
+           </a>
+          </h3>
+          <p class="text-lgray fs-0-8 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
+        </td>
+        <td> 
+          <div class="pull-rightx">
+              <div class="label label-info"> Owner </div>
+              <div class="spa10"></div>
+            <span class="dropdown">
+              <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Rings</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i> Settings</a></li>
+              </ul>
+            </span>
+          </div>
 
-        <span class="dropdown">
-          <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-            
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Rings</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i> Settings</a></li>
-          </ul>
-        </span>
-      </div>
-
-      <!-- COLUMN 1 -->
-    </td>
-  </tr>
+          <!-- COLUMN 1 -->
+        </td>
+      </tr>
+    </table>
+  </div>
+</div> 
 {% endmacro %}
 
 {% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
@@ -257,8 +266,8 @@
         </div>
 
         <div class="col-xs-8 col-sm-7">
-          <div class="spa5"></div>
-          <h3 class="text-s2 fs-1-7">
+          
+          <h3 class=" fs-1-5">
 
 
             <!-- <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
@@ -275,11 +284,11 @@
             {%else%}
             {{origin}}
             {%endif%}/ -->
-            <span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
+            <span>{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
             </a>
             {%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
           </h3>    
-          <p class="rn-t3 text-lgray">{{ description }}</p>
+          <span class="rn-t3 text-lgray">{{ description }}</span>
 
         </div> 
         <div class="col-xs-1 col-sm-3">
@@ -465,15 +474,15 @@
 
 
 {% macro icon_stack(number,color,last) %}
-  <svg height="120" width="100" style="margin:-28px -5px -5px -5px;">
+  <svg height="120" width="100" style="margin:-20px -5px -5px -5px;">
     <!-- <line x1="3" y1="0" x2="3" y2="40" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
     <line x1="3" y1="40" x2="32" y2="55" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" /> -->
     <circle cx="57" cy="85" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
     <circle cx="60" cy="80" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
     <text x="59" y="88" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
 
-    <line x1="0" y1="0" x2="0" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:1" />
-    <line x1="0" y1="84" x2="35" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:1" />
+    <line x1="0" y1="0" x2="0" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
+    <line x1="0" y1="84" x2="35" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
 
 
   </svg>

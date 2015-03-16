@@ -35,7 +35,7 @@
                         <div class="col-xs-8 col-sm-12">
                             {% if data.handle_actualname %} 
                             <h2 class="fw-300 ">
-                                <span class="text-gray fs-0-7 fw-c">{{data.handle_actualname}}
+                                <span class="text-gray fs-1 text-s2">{{data.handle_actualname}}
                                     <span class="dropdown">
                                         <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
                                           <span class="caret text-lgray"></span>
@@ -45,10 +45,10 @@
                                           <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
                                         </ul>
                                     </span>
-                                </span><br/><span class="text-gray pull-left fs-0-6">{{data.handle}}</span>
+                                </span><br/><span class="text-lgray pull-left fs-0-8 fw-c">{{data.handle}}</span>
                             </h2><br/>
                             {% else %}
-                            <h1 class="text-lead fw-300 "><span class="text-gray">{{data.handle}}</span><br/><span class="text-gray fs-0-6"></span>
+                            <h1 class="text-lead fw-300 "><span class="text-gray pull-left fs-0-8 fw-c">{{data.handle}}</span>
                             </h1><br/>
                             {% endif %}
 
@@ -61,7 +61,7 @@
                         <div class="bb-11 mr-70 ml-15 spa5"></div>
                         <div class="col-xs-12 hidden-xs">
                         
-                            <span class="text-s1 text-lgray">Organizations</span>
+                            <p class="fs-0-9 fw-a text-gray">Organizations</p>
                             <!-- <span class="dropdown">
                                 <a class="dropdown-toggle text-s1" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
                                   Organizations
@@ -172,8 +172,8 @@
                     <br/>
 
                     <!-- START TITLE OF COLLECTIONS -->
-                    <div class="box box-title pt-10">
-                        <div class="btn-group pull-right" role="group" style="padding-top:10px;">
+                    <div class="box box-title pt-10 mb-10">
+                        <div class="btn-group pull-right" role="group" style="">
                             
                         
                         {% if 'post_a_x' in data.user_authorizations %}
@@ -201,7 +201,9 @@
                         </div>
 
                         
-                            <h4 class="fs-1-2 fw-c text-lgray"><span class="text-gray">{{data.handle|upper }}</span> Data Collections <span class="text-lgray"> 
+                            <p class="fs-0-9 fw-a text-gray">
+                                
+                                 <span>{{data.handle|upper }}</span> Data Collections <span> 
                              ( {{ data.collections.collectionlist|length }} )
                             </span></h4>
                         
@@ -212,10 +214,36 @@
                     {% for collection in data.collections.collectionlist %}  
                         {% if collection.valid %}
 
-                        <div class="box box-clear" style="padding:10px 10px 0 20px; margin:5px 0;">
+                        
+                        <div class="box bord-left bc-2 bg-f bw-7 p-5">
+                          
+                            <span class="label label-sm bl bl-orange ">DC
+                            </span> 
+                          
+                            {% if 'get_a_x' in data.user_authorizations %}
+                            
+                                <span class="dropdown">
+                                  <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                    
+                                    <span class="caret text-black"></span>
+                                  </a>
+                                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
+                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
+                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
+                                  </ul>
+                                </span>
+                              
+                          
+                            {% endif %}
+
+                         
+                        </div>
+
+                        <div class="box box-clear bord-left bc-2 bw-7" style="padding:0px 10px 0 20px; margin:0 0 10px 0;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
-                                <div class="col-xs-12 col-sm-3">
+                                <div class="col-xs-12 col-sm-4">
                                     <div class="" style=" margin-bottom:-20px;">
                                         {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
                                         
@@ -224,7 +252,7 @@
                                 <!-- END COLLECTION TITLE -->
 
                                 <!-- START RING LIST -->
-                                <div class="col-xs-12 col-sm-9">
+                                <div class="col-xs-12 col-sm-8">
                                     <table width="100%" border="0">
                                         <tr bgcolor="">
                                           <td colspan="3" style="padding:0 2px 0px 2px;">
