@@ -108,6 +108,8 @@
 </div> 
 {% endmacro %}
 
+
+
 {% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
           
           
@@ -212,20 +214,7 @@
 
 
 
-{% macro collection_item_add(handle,collection) %} 
 
-          
-            <tr>
-              <td></td>
-              <td colspan="2" align="right" style="vertical-align:top; ">
-                  <a href="/{{handle}}/_collections/{{collection}}?rq=post&n=10" class="clearlink">
-                    <p class="blueprint"><i class="fa fa-plus"></i> Add a new Ring </p>  
-                  </a>            
-              </td>
-              
-            </tr>
-
-{% endmacro %}
 
 
 {% macro cta1() %}

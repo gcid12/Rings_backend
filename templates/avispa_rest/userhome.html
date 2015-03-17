@@ -227,8 +227,8 @@
                                   </a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
-                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
-                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=put"> <i class="fa fa-link"></i> Add Ring</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=post&n=10"><i class="fa fa-plus"></i> Create Ring</a></li>
                                   </ul>
                                 </span>
                               
@@ -260,13 +260,20 @@
                                                     {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
                                                   {%endif%}
                                               {% endfor %}
-                                              {% if 'post_a' in data.user_authorizations %}
-                                                  {{ ui.collection_item_add(data.handle,collection.collectionname) }} 
-                                              {%endif%}
+                                              
                                             </table>
                                           </td>
                                         </tr>
                                     </table>
+                                    <div class="text-right">
+                                        <div class="pull-right fs-0-9">
+                                            <a href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=post&n=10" class="clearlink">
+                                              <p class="blueprint2 fc-d"><i class="fa fa-plus"></i> Add Ring</p>  
+                                            </a>  
+                                        </div>
+                                        
+                                    </div>    
+
                                 </div>
                                 <!-- FINISH RING LIST -->
                                 
@@ -316,9 +323,12 @@
                                     {#{ ui.icon_med('',"#28B62C") }#}
                                     </td>
                                     <td  style="vertical-align:middle; align:center; ">
+                                        
                                         <a href="/{#{data.handle}#}?rq=post&n=10" class="btn btn-default btn-success">
-                                            <i class="fa fa-plus"></i> &nbsp; Create New Ring
-                                        </a>        
+                                            <i class="fa fa-plus"></i> &nbsp; Link Ring
+                                        </a>
+                                                
+                                              
                                     </td>
                                     <td  style="vertical-align:middle; align:center; ">
                                     </td>
