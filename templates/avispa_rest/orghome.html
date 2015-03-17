@@ -148,8 +148,8 @@
 
 
                 <!-- START TITLE OF COLLECTIONS -->
-                    <div class="box box-title pt-10">
-                        <div class="btn-group pull-right" role="group" style="padding-top:10px;">
+                    <div class="box box-title pt-10 mb-10">
+                        <div class="btn-group pull-right" role="group">
                             
                         
                         {% if 'post_a_x' in data.user_authorizations %}
@@ -176,18 +176,43 @@
                           </div>
                         </div>
 
-                        <strong>
-                            <h4 class="fs-1-2 fw-c text-lgray"><span class="text-gray">{{data.handle|upper }}</span> Data Collections <span class="text-lgray"> 
-                             ( {{ data.collections.collectionlist|length }} )
-                            </span></h4>
-                        </strong>
+                        
+                            <p class="fs-0-9 fw-a text-gray">   
+                            Collections ( {{ data.collections.collectionlist|length }} )
+                            </p>
+                        
                     </div>
                     <!-- END TITLE OF COLLECTIONS -->
 
 
                     {% for collection in data.collections.collectionlist %}  
                       {% if collection.valid %}
-                        <div class="box box-clear" style="padding:10px 10px 0 20px; margin:5px 0;">
+
+                        <div class="box bord-left bg-f bw-7 p-5">
+                          
+                            <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | DataCollection
+                            </span> 
+                          
+                            {% if 'get_a_x' in data.user_authorizations %}
+                            
+                                <span class="dropdown">
+                                  <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                    
+                                    <span class="caret text-black"></span>
+                                  </a>
+                                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
+                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
+                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
+                                  </ul>
+                                </span>
+                              
+                          
+                            {% endif %}
+
+                         
+                        </div>
+                        <div class="box box-clear bord-left  bw-7" style="padding:0px 10px 0 20px; margin:0 0 10px 0;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-3">

@@ -176,7 +176,6 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .pad-x-16{padding:0 16px;}
 .pad-x-20{padding:0 20px;}
 .pad-x-32{padding:0 32px;}
-.pad-y-10{padding:10px 0;}
 .pad-y-20{padding:20px 0 !important;}
 
 .margin-b-10{margin-bottom:10px;}
@@ -413,6 +412,7 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bc-9{border-color: #000;}
 .bc-10{border-color: #FFF;}
 .bc-11{border-color: #CCC;}
+.bc-12{border-color: #666;}
 
 .bw-2{border-width:2px;}
 .bw-5{border-width:5px;}
@@ -1176,7 +1176,7 @@ border-radius: 10px 0px 10px 10px;
 .ui-widget-header {
     /*border: 1px solid #AAA;*/
     color: #222;
-    border-radius: 10px 0px 10px 10px;
+    border-radius: 0px 0px 0px 10px;
     padding-left: 10px;
     /*box-shadow: 3px 3px 5px #CCC;*/
 }
