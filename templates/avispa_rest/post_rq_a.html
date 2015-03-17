@@ -13,7 +13,7 @@
 
 <!-- START NEW CONTENT --> 
 
-  
+
 
 <div class="row">
     <div class="col-sm-8 alpha omega">
@@ -36,7 +36,7 @@
 </div>
 
          
-<div class="row">
+<div class="row bg-g">
     <div class="col-sm-3">
         <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
         <h2 class="fs-4">1</h2> 
@@ -78,19 +78,18 @@
                     <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="">
                   </div> -->
                 
-            </div>
-
-          </div>
         </div>
-
-        <div class="row">
+    </div>
+</div>
+ 
+        <div class="row bg-g">
           <div class="col-sm-12">
             <hr/>
           </div>          
         </div>
 
 
-        <div class="row">
+        <div class="row bg-g">
           <div class="col-sm-3">
             <h2 class="fs-4 ">2</h2> <p class="text-s1 text-lgray fs-1-5">Ring fields</p>
               
@@ -103,205 +102,7 @@
               <div id="columnfields"> <!-- A. START DRAG AREA -->
               {% for f in range( 1, numfields+1) %}
 
-              <!-- N FIELD END -->         
-
-                <div id="portlet_{{ f }}" class="portlet"> <!-- B. -->
-
-
-                  <!-- THE VALUE TO WRITE -->
-                  <input id="tagvalue_{{ f }}" type="hidden" name="FieldLayer_{{ f }}" value="">
-
-                  <div class="tagged{{ f }} portlet-header bt-7">
-                  <!-- <div id="tagged{{ f }}" class="bt-7">G</div> -->
-                    <table>
-                      <tr>
-                        <td><span class="handler m-10" ><i class="fa fa-bars fa-1x text-white"></i></span></td>
-                        <td>
-                          <span class="label label-danger m-10">{{ f }}</span>
-                          
-                        </td>
-                        <td style="width:40%;">
-                          <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control input-sm" type="text" placeholder="name">
-                        </td>
-                        <td>
-                          <select name="FieldWidget_{{ f }}" class="form-control input-sm" style="background-color:#666; color:white;">
-                                <option value="">SELECT ONE</option>
-                                <option>checkbox</option>
-                                <option>date</option>
-                                <option>file</option>
-                                <option>images</option>
-                                <option>location</option>
-                                <option>password</option>
-                                <option>radio</option>
-                                <option>select</option>
-                                <option selected="">text</option>
-                                <option>textarea</option>
-                                <option>url</option>
-                                <option>url_flickr</option>
-                                <option>url_video</option>
-                          </select>
-                        </td>
-                        <td style="background-color:red; " >
-                          
-                            <!-- <div class="input-group input-group-sm m-10">
-                              <span class="input-group-addon" id="sizing-addon1">*Source</span>
-                              <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="source"/>
-                            </div> -->
-                        </td>
-                        <td><span class="tog"></span></td>
-                      </tr>
-                    </table>
-                  </div> <!-- C1 -->
-                  <div class="portlet-content"> <!-- C2. DETAILS -->
-
-                      <div class="row">
-                        <div class="col-sm-7">
-                          
-                            <span class="label bg-gray margin-x-7">
-                              <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox">
-                              required
-                            </span>
-
-                            <span class="label bg-gray margin-x-7">
-                              <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox">
-                              multilingual
-                            </span>
-
-                            <span class="label bg-gray margin-x-7">
-                              <input name="FieldCardinality_{{ f }}" value="TRUE" type="checkbox">
-                              cardinal
-                            </span>
-
-                            
-
-                            <hr/>
-                            
-                            <div class="input-group input-group-sm">
-                                  <span class="input-group-addon" id="sizing-addon1">Field Hint</span>
-                                  <input type="text" name="FieldHint_{{ f }}" class="form-control" placeholder="What people see before typing "/>
-                            </div>
-
-                            <div class="input-group input-group-sm">
-                                  <span class="input-group-addon" id="sizing-addon1">Source</span>
-                                  <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="URI of "/>
-                            </div>
-                              
-                              <!-- <div class="input-group input-group-sm">
-                                <span class="input-group-addon" id="sizing-addon1">Default</span>
-                                <input type="text" name="FieldDefault_{{ f }}" class="form-control" placeholder="in case you want to leave this"/>
-                              </div> -->
-                              <input type="hidden" name="FieldDefault_{{ f }}">
-                             
-                        </div>
-                        <div class="col-sm-5">
-
-                          <table>
-                            <tr>
-                              <td><div id="tag1-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-1"></div></td>
-                              <td><div id="tag2-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-2"></div></td>
-                              <td><div id="tag3-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-3"></div></td>
-                              <td><div id="tag4-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-4"></div></td>
-                              <td><div id="tag5-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-5"></div></td>
-                              <td><div id="tag6-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-6"></div></td>
-                              <td><div id="tag7-{{ f }}" class="treset{{ f }} r-tag bt-7 bc-7"></div></td>
-                            </tr>
-                          </table>
-
-                          <hr/>
-
-
-                          <div class="input-group input-group-sm">
-                            <span class="input-group-addon" id="sizing-addon1">Context</span>
-                            <textarea name="FieldSemantic_{{ f }}" class="form-control" placeholder="please provide context of what this field is. You can post a link to wikipedia or other website" rows="4" style="height:100%; width:100%;"></textarea>
-                          </div>
-                          <div class="input-group input-group-sm">
-                              <span class="input-group-addon" id="sizing-addon1">label</span>
-                              <input type="text" name="FieldLabel_{{ f }}" class="form-control" placeholder="label"/>
-                            </div> 
-                          
-
-                        </div>
-                        
-
-                      </div><!-- CLOSE ROW 1 -->
-
-                            <!-- NEW ORDER -->
-
-                            
-
-                            <!-- TYPE -->
-                            <!-- <select name="FieldType_{{ f }}">
-                                      <option value="">SELECT ONE</option>
-                                      <option>INT</option>
-                                      <option selected="">TEXT</option>
-                                      <option>VARCHAR(120)</option>
-                            </select> -->
-                            <input type="hidden" name="FieldType_{{ f }}">
-
-                            <div class="input-group input-group-sm">
-                              <!-- <span class="input-group-addon" id="sizing-addon1">Order</span>
-                              <input type="text" name="FieldOrder_{{ f }}" value="" class="form-control" placeholder="Order"/> -->
-                              <input type="hidden" name="FieldOrder_{{ f }}">
-                            </div>
-                    <!-- SUBMIT -->
-                  </div> <!-- C. PORTLET CONTENT -->
-                </div> <!-- B. CLOSE PORTLET -->
-
-                <script type="text/javascript">
-                    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
-                    var allbb= "bb-1 bb-2 bb-3 bb-4 bb-5 bb-6 bb-7 ";
-
-                      $(document).ready(function(){
-
-                        
-                        $("#tag1-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-1");
-                          $("#tagvalue_{{ f }}").attr("value","1");
-                        }); 
-                        $("#tag2-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-2");
-                          $("#tagvalue_{{ f }}").attr("value","2");
-                        }); 
-                        $("#tag3-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-3");
-                          $("#tagvalue_{{ f }}").attr("value","3");
-                        }); 
-                        $("#tag4-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-4");
-                          $("#tagvalue_{{ f }}").attr("value","4");
-                        }); 
-                        $("#tag5-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-5");
-                          $("#tagvalue_{{ f }}").attr("value","5");
-                        }); 
-                        $("#tag6-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-6");
-                          $("#tagvalue_{{ f }}").attr("value","6");
-                        }); 
-                        $("#tag7-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-7");
-                          $("#tagvalue_{{ f }}").attr("value","7");
-                        }); 
-
-                        
-                       
-                      });
-                </script>
-                  <!-- N FIELD END -->
+                {{ ui.portlet(f) }}
 
               {% endfor %}
               </div> <!-- A. CLOSE COLUMN  -->
@@ -310,13 +111,13 @@
           </div><!-- CLOSE COLSM10 -->
         </div><!-- CLOSE ROW -->
 
-        <div class="row">
+        <div class="row bg-g">
           <div class="col-sm-12">
             <hr/>
           </div>          
         </div>
 
-        <div class="row">
+        <div class="row bg-g">
           <div class="col-sm-3">
             
             <span class="fs-4">3</span> <p class="text-s1 text-lgray fs-1-5">Save</p>

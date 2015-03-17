@@ -11,207 +11,320 @@
 {% block tabcontent %}
 
 
-<!-- START NEW CONTENT --> 
-
-
-<section>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9">  
-
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="rn-box-white gad100"> 
+<!-- ROW RING INFO --> 
+<div class="row">
+    <div class="col-sm-12">
+        <div class="rn-box-white gad100"> 
             {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}  
                    
-            </div>
-            <div class="rn-box-title">
-
-               <!-- Ring owner  -->Modifying the ring schema for "{{ data.handle }}/{{ data.ring }}"
-
-              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                <i class="fa fa-question-circle"></i>
-              </button-->
-            </div>
-
-            <form class="form-horizontal" role="form" action="/{{ data.handle }}/{{ data.ring }}?method=PUT" method="POST">
-
-
-            <div class="rn-box-solo">
-              <div class="row">
-                &nbsp;&nbsp;&nbsp; <strong></strong> {#{ Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" /> }#}
-                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                  <i class="fa fa-question-circle"></i>
-                </button>
-              </div> 
-            </div>
-
+        </div>
             
-               
-              <!-- RING -->
-              <div class="rn-box-content">
-              <br/>           
-                <div class="form-group">
-                  <label for="RingName" class="col-sm-2 control-label">ring:name</label>
-                  <div class="col-sm-10">
-                     <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}" disabled>
+        <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
+                   <span class="fs-1-2"><i class="fa fa-pencil pad-x-10"></i> <strong> Modifying</strong> the ring schema for "{{ data.handle }}/{{ data.ring }}"</span>
+        </div>
+    </div>    
+</div>   
+
+<!-- ROW NAME AND DESCRIPTION -->
+<div class="row bg-g">
+    <div class="col-sm-2">
+        
+        <form class="form-horizontal" role="form" action="/{{ data.handle }}/{{ data.ring }}?method=PUT" method="POST">
+        <h2 class="fs-4">1</h2> 
+        <p class=" text-s1">Ring Name and Description</p>
+
+    </div>
+    <div class="col-sm-10">
+        <div class="spa20">
+        </div>
+
+                {%if data.collection %}
+                <input type="hidden" name="collection" value="{{data.collection}}">
+                {%endif%}
+                
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
+                  <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}" disabled>
                      <input name="RingName" type="hidden" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}">
-                    
-                  </div>
-                  <label for="RingLabel" class="col-sm-2 control-label">ring:label</label>
-                  <div class="col-sm-10">
-                     <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the ring" value="{{ data.ringschema.RingLabel }}">
-                    
-                  </div>
-                  <label for="RingDescription" class="col-sm-2 control-label">ring:description</label>
-                  <div class="col-sm-10">
-                    <textarea name="RingDescription" class="form-control" rows="4" placeholder="What makes this ring unique?">{{ data.ringschema.RingDescription }}</textarea>
-                  </div>
-                  <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
-                  <div class="col-sm-10">
-                    <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="" value="{{ data.ringschema.RingVersion }}">
-                  </div>
-                  <label for="RingURI" class="col-sm-2 control-label">ring:URI</label>
-                  <div class="col-sm-10">
-                    <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="" value="{{ data.ringschema.RingURI }}">
-                  </div>
-                  <label for="inputEmail3" class="col-sm-2 control-label">ring:build</label>
-                  <div class="col-sm-10">
-                    <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="" value="{{ data.ringschema.RingBuild }}">
-                  </div>
                 </div>
-              </div>
+                
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="sizing-addon1">Description</span>
+                  <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this ring unique?" style="height:100px;" >{{ data.ringschema.RingDescription }}</textarea>
+                </div>
 
 
-              <div class="rn-box-solo">
-                <div class="row">
-                  &nbsp;&nbsp;&nbsp; <strong></strong>Field's characteristics
-                  <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                  <i class="fa fa-question-circle"></i>
-                  </button>
+                <div class="text-right spa10">
+                    <a class="clearlink" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      <p><i class="fa fa-wrench"></i>Advanced settings</p>
+                    </a>
+                </div>
+                    
+                <div class="collapse" id="collapseExample">
+                    <div class="box box-clear">
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon" id="sizing-addon1">Label</span>
+                          <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the ring" value="{{ data.ringschema.RingLabel }}">
+                        </div>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon" id="sizing-addon1">Version</span>
+                          <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="" value="{{ data.ringschema.RingVersion }}">
+                        </div>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon" id="sizing-addon1">URI</span>
+                          <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="" value="{{ data.ringschema.RingURI }}">
+                        </div>
+                        <div class="input-group input-group-sm">
+                          <span class="input-group-addon" id="sizing-addon1">Build</span>
+                          <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="" value="{{ data.ringschema.RingBuild }}">
+                        </div>
+                        <div class="text-right">
+                            {#{ Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" /> }#}
+                        </div>
+                    </div>
+                    <br/>
+                </div>
 
-                </div> 
-              </div>
+
+                
+        
+    </div>
+</div>
+<div class="row bg-g">
+    <div class="col-sm-12">
+        <hr/>
+    </div>          
+</div>
+
+<div class="row bg-g">
+          <div class="col-sm-2">
+            <h2 class="fs-4 ">2</h2> <p class="text-s1">Ring fields</p>
+              
+          </div>
+          <div class="col-sm-10">
+
+            {% set f = 0 %}
+              <div id="columnfields"> <!-- A. START DRAG AREA -->
+                {% for field in data.fieldsschema %}
+
+                    {% set f = f+1 %}
+
+
+                            <!-- N FIELD END -->         
+
+                <div id="portlet_{{ f }}" class="portlet"> <!-- B. -->
+
+
+                <!-- TAGS -->
+                  <input id="tagvalue_{{ f }}" name="FieldLayer_{{ f }}" value="{{ field.FieldLayer }}" type="hidden">
+                  <!-- <input name="FieldLayer_{{ f }}" value="{{ field.FieldLayer }}" class="form-control" type="text"> -->
+                 
+                  
+                  <div class="tagged{{ f }} portlet-header bt-7">
+                  
+                    <table>
+                      <tr>
+                        <td><span class="handler m-10" ><i class="fa fa-bars fa-1x text-white"></i></span></td>
+                        <td>
+                          <span class="label label-danger m-10">{{ f }}</span>
+                          
+                        </td>
+                        <td style="width:40%;">
+                          <input id="FieldName_{{ f }}disabled" name="FieldName_{{ f }}disabled" class="form-control" type="text" value="{{ field.FieldName }}" disabled>
+                          <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="hidden" value="{{ field.FieldName }}">
+                        </td>
+                        <td>
+                          <select name="FieldWidget_{{ f }}" class="form-control input-sm" style="background-color:#666; color:white;">
+                            <option value="">SELECT ONE</option>
+                            <option value="checkbox" {% if field.FieldWidget == "checkbox" %}selected{% endif %}>checkbox</option>
+                            <option value="date" {% if field.FieldWidget == "date" %}selected{% endif %}>date</option>
+                            <option value="file" {% if field.FieldWidget == "file" %}selected{% endif %}>file</option>
+                            <option value="images" {% if field.FieldWidget == "images" %}selected{% endif %}>images</option>
+                            <option value="items" {% if field.FieldWidget == "items" %}selected{% endif %}>items</option>
+                            <option value="location" {% if field.FieldWidget == "location" %}selected{% endif %}>location</option>
+                            <option value="password" {% if field.FieldWidget == "password" %}selected{% endif %}>password</option>
+                            <option value="radio" {% if field.FieldWidget == "radio" %}selected{% endif %}>radio</option>
+                            <option value="select" {% if field.FieldWidget == "select" %}selected{% endif %}>select</option>
+                            <option value="text" {% if field.FieldWidget == "text" %}selected{% endif %}>text</option>
+                            <option value="textarea" {% if field.FieldWidget == "textarea" %}selected{% endif %}>textarea</option>
+                            <option value="url" {% if field.FieldWidget == "url" %}selected{% endif %}>url</option>
+                            <option value="url_flickr" {% if field.FieldWidget == "url_flickr" %}selected{% endif %}>url_flickr</option>
+                            <option value="url_video" {% if field.FieldWidget == "url_video" %}selected{% endif %}>url_video</option>
+                          </select>
+                        </td>
+                        <td style="background-color:red; " >
+                          
+                            
+                        </td>
+                        <td><span class="tog"></span></td>
+                      </tr>
+                    </table>
+                  </div> <!-- C1 -->
+                  <div class="portlet-content"> <!-- C2. DETAILS -->
+
+                      <div class="row">
+                        <div class="col-sm-7">
+                          
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox" {% if field.FieldRequired %}checked{% endif %}>
+                              required
+                            </span>
+
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox" {% if field.FieldMultilingual %}checked{% endif %}>
+                              multilingual
+                            </span>
+
+                            <span class="label bg-gray margin-x-7">
+                              <select name="FieldCardinality_{{ f }}">
+                                <option value="Single" {% if field.FieldCardinality == "Single" %} selected {% endif %} >Single</option>
+                                <option value="Multiple" {% if field.FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
+                              </select>
+                              cardinal
+                            </span>
+
+                            
+
+                            <hr/>
+                            
+                            <div class="input-group input-group-sm">
+                                  <span class="input-group-addon" id="sizing-addon1">Field Hint</span>
+                                  
+                                  <textarea name="FieldHint_{{ f }}" class="form-control">{{ field.FieldHint }}</textarea>
+                            </div>
+
+                            <div class="input-group input-group-sm">
+                                  <span class="input-group-addon" id="sizing-addon1">Source</span>
+                                  <textarea name="FieldSource_{{ f }}" class="form-control">{{ field.FieldSource }}</textarea>
+                            </div>
+                              
+                              
+                              <input type="hidden" name="FieldDefault_{{ f }}">
+                             
+                        </div>
+                        <div class="col-sm-5">
+
+                        
+
+                        <!-- FieldLayer as tags-->
+                        <table>
+                            <tr>
+                              <td><div id="tag1-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-1"></div></td>
+                              <td><div id="tag2-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-2"></div></td>
+                              <td><div id="tag3-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-3"></div></td>
+                              <td><div id="tag4-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-4"></div></td>
+                              <td><div id="tag5-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-5"></div></td>
+                              <td><div id="tag6-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-6"></div></td>
+                              <td><div id="tag7-{{ f }}" class="treset{{ f }} r-tag bt-7 bc-7"></div></td>
+                            </tr>
+                          </table>
+
+                          <hr/>
+
+
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon" id="sizing-addon1">Context</span>
+                            
+                            <textarea name="FieldSemantic_{{ f }}" class="form-control" rows="4" style="height:100%; width:100%;">{{ field.FieldSemantic }}</textarea>
+
+                          </div>
+                          <div class="input-group input-group-sm">
+                              <span class="input-group-addon" id="sizing-addon1">label</span>
+                              <input type="text" name="FieldLabel_{{ f }}" class="form-control" value="{{ field.FieldLabel }}" placeholder="label">
+                              
+                          </div> 
+                          
+
+                        </div>
+                        
+
+                      </div><!-- CLOSE ROW 1 -->
+
+                           
+                            <input type="hidden" name="FieldType_{{ f }}">
+
+                            <div class="input-group input-group-sm">
+                              
+                              
+                            </div>
+                    <!-- SUBMIT -->
+                  </div> <!-- C. PORTLET CONTENT -->
+                </div> <!-- B. CLOSE PORTLET -->
+
+                <script type="text/javascript">
+                    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
+                    var allbb= "bb-1 bb-2 bb-3 bb-4 bb-5 bb-6 bb-7 ";
+
        
-              {% set f = 0 %}
-              
-              {% for field in data.fieldsschema %}
 
-              {% set f = f+1 %}
-              
-              <!-- FIELD {{ f }} -->
-              <div class="rn-box-content ringbuilder">
-                <br/>
-                <table class="form-group" style="width:100%;">
-                  <tbody>
-                    <tr>
-                      <td style="text-align:left;" ><h2>&nbsp;&nbsp;&nbsp;{{ f }}</h2></td>
-                      <td>
 
-                        UP | DOWN | DELETE
-                        <br/><br/>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:name</td>
-                      <td>
-                        <input id="FieldName_{{ f }}disabled" name="FieldName_{{ f }}disabled" class="form-control" type="text" value="{{ field.FieldName }}" disabled>
-                        <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="hidden" value="{{ field.FieldName }}">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:label</td>
-                      <td><textarea name="FieldLabel_{{ f }}" class="form-control">{{ field.FieldLabel }}</textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:semantic</td>
-                      <td><textarea name="FieldSemantic_{{ f }}" class="form-control">{{ field.FieldSemantic }}</textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:type</td>
-                      <td>
-                        <select name="FieldType_{{ f }}" disabled>
-                          <option value="">SELECT ONE</option>
-                          <option value="INT" {% if field.FieldType == "INT" %}selected{% endif %}>INT</option>
-                          <option value="TEXT" {% if field.FieldType == "TEXT" %}selected{% endif %}>TEXT</option>
-                          <option value="VARCHAR(120)" {% if field.FieldType == "VARCHAR(120)" %}selected{% endif %}>VARCHAR(120)</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:source</td>
-                      <td><textarea name="FieldSource_{{ f }}" class="form-control">{{ field.FieldSource }}</textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:widget</td> {{field.FieldWidget}}
-                      <td>
-                        <select name="FieldWidget_{{ f }}">
-                          <option value="">SELECT ONE</option>
-                          <option value="checkbox" {% if field.FieldWidget == "checkbox" %}selected{% endif %}>checkbox</option>
-                          <option value="date" {% if field.FieldWidget == "date" %}selected{% endif %}>date</option>
-                          <option value="file" {% if field.FieldWidget == "file" %}selected{% endif %}>file</option>
-                          <option value="images" {% if field.FieldWidget == "images" %}selected{% endif %}>images</option>
-                          <option value="items" {% if field.FieldWidget == "items" %}selected{% endif %}>items</option>
-                          <option value="location" {% if field.FieldWidget == "location" %}selected{% endif %}>location</option>
-                          <option value="password" {% if field.FieldWidget == "password" %}selected{% endif %}>password</option>
-                          <option value="radio" {% if field.FieldWidget == "radio" %}selected{% endif %}>radio</option>
-                          <option value="select" {% if field.FieldWidget == "select" %}selected{% endif %}>select</option>
-                          <option value="text" {% if field.FieldWidget == "text" %}selected{% endif %}>text</option>
-                          <option value="textarea" {% if field.FieldWidget == "textarea" %}selected{% endif %}>textarea</option>
-                          <option value="url" {% if field.FieldWidget == "url" %}selected{% endif %}>url</option>
-                          <option value="url_flickr" {% if field.FieldWidget == "url_flickr" %}selected{% endif %}>url_flickr</option>
-                          <option value="url_video" {% if field.FieldWidget == "url_video" %}selected{% endif %}>url_video</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:cardinality </td>
-                      <td>
-                        <select name="FieldCardinality_{{ f }}">
-                          <option value="Single" {% if field.FieldCardinality == "Single" %} selected {% endif %} >Single</option>
-                          <option value="Multiple" {% if field.FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:multilingual</td>
-                      <td>
-                        <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox" {% if field.FieldMultilingual %}checked{% endif %}>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:required</td>
-                      <td>
-                        <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox" {% if field.FieldRequired %}checked{% endif %}>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>field:default</td>
-                      <td>
-                        <input name="FieldDefault_{{ f }}" value="{{ field.FieldDefault }}" class="form-control" type="text"></td>
-                    </tr>
-                    <tr>
-                      <td>field:hint</td>
-                      <td>
-                        <textarea name="FieldHint_{{ f }}" class="form-control">{{ field.FieldHint }}</textarea></td>
-                    </tr>
-                    <tr>
-                      <td>field:layer</td>
-                      <td>
-                        <input name="FieldLayer_{{ f }}" value="{{ field.FieldLayer }}" class="form-control" type="text"></td>
-                    </tr>
-                    <tr>
-                      <td>field:order</td>
-                      <td>
-                        <input name="FieldOrder_{{ f }}" value="{{ field.FieldOrder }}" class="form-control" type="text"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                      $(document).ready(function(){
 
-              <!-- FIELD {{ f }} END -->
+                        $(".tagged{{ f }}").removeClass("bt-7").addClass("bt-{{ field.FieldLayer }}");
+                        
+
+                        
+                        $("#tag1-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-1");
+                          $("#tagvalue_{{ f }}").attr("value","1");
+                        }); 
+                        $("#tag2-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-2");
+                          $("#tagvalue_{{ f }}").attr("value","2");
+                        }); 
+                        $("#tag3-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-3");
+                          $("#tagvalue_{{ f }}").attr("value","3");
+                        }); 
+                        $("#tag4-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-4");
+                          $("#tagvalue_{{ f }}").attr("value","4");
+                        }); 
+                        $("#tag5-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-5");
+                          $("#tagvalue_{{ f }}").attr("value","5");
+                        }); 
+                        $("#tag6-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-6");
+                          $("#tagvalue_{{ f }}").attr("value","6");
+                        }); 
+                        $("#tag7-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-7");
+                          $("#tagvalue_{{ f }}").attr("value","7");
+                        }); 
+
+                       
+                      });
+                </script>
+                  <!-- N FIELD END -->
 
               {% endfor %}
+              </div> <!-- A. CLOSE COLUMN  -->
+
+            
+          </div><!-- CLOSE COLSM10 -->
+        </div><!-- CLOSE ROW -->
+
+
+
+
+         
+<div>
+
 
               <!-- SUBMIT -->
 
@@ -234,10 +347,51 @@
           </div> 
         </div>
 
-      </div> 
-    </div>
-  </div>
-</section>
+
+
+        <script>
+
+//PORTLET
+$(function() {
+  $(".portlet-content").hide();
+  $( "#columnfields" ).sortable({
+  // connectWith: ".columnfields",
+  handle: ".handler",
+  cancel: ".portlet-toggle",
+  placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
+  opacity:0.7,
+  cursor: "move",
+  axis: 'y',
+  stop: function(event,ui){
+    var pOrder = $(this).sortable('toArray').toString();
+    $(".exit").prepend( pOrder);
+  }
+
+
+  });
+  $( ".portlet" )
+
+    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+    .find( ".portlet-header" )
+    .addClass( "ui-widget-header ui-corner-all" );
+
+  $(".tog")
+    .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
+  $( ".portlet-toggle" ).click(function() {
+    var icon = $( this );
+    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+  });
+
+  $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
+
+
+});
+
+
+</script>
+
+
 
 
 

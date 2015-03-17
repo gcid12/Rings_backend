@@ -13,14 +13,19 @@
 <section>
 
 
-      <!-- TABS WILL SHOW -->
-    {% if data.collection %} 
-        {% if not data.raw %} 
+      <!-- BOX CONTENT --> 
 
-                  {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
+    
 
-        {%endif%}
-     {%endif%}
+        
+          <!-- TABS WILL SHOW -->
+        {% if data.collection %} 
+            {% if not data.raw %} 
+
+                      {{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }}
+
+            {%endif%}
+         {%endif%}
 
 
     <div class="row">
@@ -28,7 +33,7 @@
       {% if data.collection %}
       {% if not data.raw %} 
             
-          <div class="col-sm-offset-1 col-sm-11 bb-8 bg-w-0-3 ">
+          <div class="col-sm-offset-1 col-sm-11 bb-8 bg-g">
             
                 
                     {% endif %}

@@ -356,6 +356,8 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bg-d{background-color: #33ccff; }
 .bg-e{background-color: #f2f0ed; }
 .bg-f{background-color: rgba(0, 0, 0, 0.05); }
+.bg-g{background-color: #f8f7f6;}
+
 
 
 .bg-b-0-3{background-color: rgba(0, 0, 0, 0.3); }
@@ -1176,7 +1178,7 @@ border-radius: 10px 0px 10px 10px;
 .ui-widget-header {
     /*border: 1px solid #AAA;*/
     color: #222;
-    border-radius: 0px 0px 0px 10px;
+    border-radius: 0px 0px 10px 10px;
     padding-left: 10px;
     /*box-shadow: 3px 3px 5px #CCC;*/
 }
