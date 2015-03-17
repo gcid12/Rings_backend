@@ -194,12 +194,13 @@
               <div class="label label-info"> Owner </div>
               <div class="spa10"></div>
             <span class="dropdown">
-              <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                <span class="caret"></span>
+              <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>Actions
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Rings</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i> Settings</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
               </ul>
             </span>
           </div>
@@ -295,15 +296,15 @@
           <div class="pull-right">
             
             
-            <!-- <div class="btn-group">
-              {% if 'post_a_b' in user_authorizations %}
+            <div class="btn-group">
+              <!--{% if 'post_a_b' in user_authorizations %}
               <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
-              {% endif %}
+              {% endif %} -->
               
               {% if 'put_a_b' in user_authorizations %}
               <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
               {% endif %}
-            </div> -->
+            </div>
             
             <span class="label label-discrete pull-right">{{date}}</span>
           </div>

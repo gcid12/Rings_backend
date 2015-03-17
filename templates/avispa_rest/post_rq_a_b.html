@@ -46,29 +46,37 @@
 {% endblock %}
 
 {% block tabcontent %}
+
 <!-- START NEW CONTENT --> 
+
           <div class="col-sm-12">
             <form  role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?method=post{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
             
             {% if not data.raw %}
-            <div class="rn-box-white">   
+            <div class="rn-box-white">  
               {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , 'ringdescription','',data.collection, data.user_authorizations) }}
             </div>
             {%endif%}
             {% if not data.raw %}
-            <div class="rn-box-title">
 
-              <!-- Ring owner  -->Creating 1 item. {%if data.raw%}Raw is in the house{%endif%}
+            <div class="alert  alert-success alert-dismissible alert-top" role="alert">
+                        <span class="fs-1-2"><i class="fa fa-info-circle pad-x-10"></i> <strong>New Item</strong> |  Please complete the following fields {%if data.raw%}Raw is in the house{%endif%}</span>
+            </div>
 
-              <span class="pull-right"> Public: <input type="checkbox" value="public" name="public"/></span>
+            <div class="box box-title text-right">
 
-              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-              <i class="fa fa-question-circle"></i>
-              </button>
-              <button name="saveandnew" type="submit" value="saveandnew" class="btn btn-success btn-xs pull-right"><i class="fa fa-save"></i> &nbsp;<i class="fa fa-plus"></i></button>             
-            </div>                    
+                <span class="pad-x-20"> Public: <input type="checkbox" value="public" name="public"/></span>
+                
+                <button name="saveandnew" type="submit" value="saveandnew" class="btn btn-success btn-xs"><i class="fa fa-save"></i> &nbsp;<i class="fa fa-plus"></i></button> 
+                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#helpmodal">
+                <i class="fa fa-question-circle"></i>
+                </button>
+                  
+              
+            </div>  
+
             {%endif%}
-            <div class="rn-box-solo">
+            <div class="box box-clear">
               <div class="row">
                   {% if data.raw %}
                   <h3>{{data.ring}}</h3>
@@ -98,6 +106,7 @@
                 </div>               
               </div> 
             </div><!-- //close box content -->
+            <div class="spa40"></div>
             </form> 
           </div><!-- close 12 --> 
 {% endblock %}

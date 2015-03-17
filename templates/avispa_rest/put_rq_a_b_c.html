@@ -61,85 +61,82 @@
 <!-- START NEW CONTENT --> 
 
 
-<section >
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9">  
-
-        <div class="row">
           <div class="col-sm-12">
             <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=put{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
 
             {% if not data.raw %}
-              <div class="rn-box-white gad100"> 
+              <div class="rn-box-white"> 
               {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , 'ringdescription','',data.collection, data.user_authorizations) }}       
               </div>
             {%endif%}
 
             {% if not data.raw %}
-            <div class="rn-box-title">
-             Updating 1 item 
-              <span class="pull-right"> Public: <input type="checkbox" value="public" name="_public" {% if data.item._public == True %}checked{% endif %} > </span>
-              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-              <i class="fa fa-question-circle"></i>
-              </button>
-              <button name="saveandnew" type="submit" value="saveandnew" class="btn btn-success btn-xs pull-right"><i class="fa fa-save"></i> &nbsp;<i class="fa fa-plus"></i></button>
 
-              
+            <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
+                   <span class="fs-1-2"><i class="fa fa-pencil pad-x-10"></i> <strong>Updating</strong> 1 item </span>
+            </div>
+
+            <div class="box box-title text-right">
+
+            	<span class="pad-x-20"> Public: <input type="checkbox" value="public" name="_public" {% if data.item._public == True %}checked{% endif %} > 
+            	</span>
+	              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#helpmodal">
+	              <i class="fa fa-question-circle"></i>
+	              </button>
+	              <button name="saveandnew" type="submit" value="saveandnew" class="btn btn-success btn-xs"><i class="fa fa-save"></i> &nbsp;<i class="fa fa-plus"></i></button>
+             
+
             </div>
             {%endif%}
 
               
-              <div class="rn-box-solo">
-              <div class="row">
+              <div class="box box-clear">
+	              <div class="row">
 
-                  <div class="form-group">
-                  {% if data.raw %} 
-                    <input value="update" type="submit" class="btn btn-primary pull-right"> 
-                  {%endif%} 
-                  </div>
+	                  <div class="form-group">
+	                  {% if data.raw %} 
+	                    <input value="update" type="submit" class="btn btn-primary pull-right"> 
+	                  {%endif%} 
+	                  </div>
 
-                  
+	                  
 
-                  {% if data.raw %}
-                  <h3>{{data.ring}}</h3>
-                  {%endif%}
-                                                   
+	                  {% if data.raw %}
+	                  <h3>{{data.ring}}</h3>
+	                  {%endif%}
+	                                                   
 
-                  {% for field in data.fieldsschema %}
+	                  {% for field in data.fieldsschema %}
 
-                    &nbsp;
-                    {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
-                    {% include widget  %} 
-                      
-                  {% endfor %}
+	                    &nbsp;
+	                    {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
+	                    {% include widget  %} 
+	                      
+	                  {% endfor %}
 
-                  &nbsp;
-                  <div class="form-group">
-                      <label for="inputPassword3" class="col-sm-2 control-label"></label>
-                      <div class="col-sm-10">
+	                  &nbsp;
+	                  <div class="form-group">
+	                      <label for="inputPassword3" class="col-sm-2 control-label"></label>
+	                      <div class="col-sm-10">
 
-                        {% if not data.raw %} 
-                        <input value="save" type="submit" class="btn btn-primary">   
-                        <a href="/{{ data.handle }}/{{ data.ring }}" type="submit" class="btn btn-default">Leave without saving anything</a>
-                        {%else%}
-                        <input value="update" type="submit" class="btn btn-primary pull-right"> 
-                        {%endif%}                                         
+	                        {% if not data.raw %} 
+	                        <input value="save" type="submit" class="btn btn-primary">   
+	                        <a href="/{{ data.handle }}/{{ data.ring }}" type="submit" class="btn btn-default">Leave without saving anything</a>
+	                        {%else%}
+	                        <input value="update" type="submit" class="btn btn-primary pull-right"> 
+	                        {%endif%}                                         
 
-                      </div>
-                  </div>
-                  &nbsp;
+	                      </div>
+	                  </div>
+	                  &nbsp;
 
-              </div>           
+	              </div>           
               </div><!-- //close box content -->
+              <div class="spa40"></div>
             </form>  
-          </div><!-- close 12 -->   
-        </div> <!-- close row -->
+          </div><!-- close 12 -->  
 
-      </div> <!-- close 9 -->   
-    </div>
-  </div>
-</section>
+
 
 
 

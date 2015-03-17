@@ -169,12 +169,14 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .mt-20{margin-top:20px;}
 .mb-20{margin-bottom:20px;}
 
-.pad-y-10{padding:10px 0;}
+
 .pad-x-4{padding:0 4px;}
 .pad-x-8{padding:0 8px;}
+.pad-x-10{padding:0 10px;}
 .pad-x-16{padding:0 16px;}
 .pad-x-20{padding:0 20px;}
 .pad-x-32{padding:0 32px;}
+.pad-y-10{padding:10px 0;}
 .pad-y-20{padding:20px 0 !important;}
 
 .margin-b-10{margin-bottom:10px;}
@@ -702,6 +704,7 @@ font-size:0.6em;
 
 .bl-red{border-color: red; color:red;}
 .bl-orange{border-color: orange; color:orange;}
+.bl-green{border-color: #28B62C; color:#28B62C;}
 .bl-gray{border-color: gray; color:gray;}
 .bl-blue{border-color:#00acdd; color:#00acdd;}
 .bl-white{border-color:#FFF; color:#CCC;}
@@ -792,6 +795,21 @@ font-size: 0.9em;
 color:#ACBDC4;
 background-color: rgba(0, 0, 0, 0.03); 
 }
+
+.box-card{
+  /*
+background-color:#FFF;
+background-color: rgba(0, 0, 0, 0.01); 
+box-shadow: 1px 1px 5px #d5d5d5;
+*/
+
+padding:0px 0px 60px 20px; 
+border-radius: 0px 0px 10px 10px;
+margin-top:-11px;
+margin-bottom:20px;
+
+}
+
 
 .box-title-outline{
 border-style: solid;
