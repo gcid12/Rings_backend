@@ -83,7 +83,7 @@
 	              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#helpmodal">
 	              <i class="fa fa-question-circle"></i>
 	              </button>
-	              <button name="saveandnew" type="submit" value="saveandnew" class="btn btn-success btn-xs"><i class="fa fa-save"></i> &nbsp;<i class="fa fa-plus"></i></button>
+	              
              
 
             </div>
@@ -106,15 +106,53 @@
 	                  {%endif%}
 	                                                   
 
-	                  {% for field in data.fieldsschema %}
+                    <table class="table table-condensed" style="width:100%;">
+                    {% for field in data.fieldsschema %}
+                      <tr>
 
-	                    &nbsp;
-	                    {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
-	                    {% include widget  %} 
-	                      
-	                  {% endfor %}
+                        <td>
+                          {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
+                          {% include widget  %}    
+                        </td>
+                        <td bgcolor="">
+                        
 
-	                  &nbsp;
+                          <div class="dropdown">
+                            <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
+                              <i class="fa fa-caret-left fa-2x fc-{{field.FieldLayer}}"></i>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-4 "></i>Live</a></li>
+                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-2"></i>Work in Progress</a></li>
+                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-3"></i>Correct this</a></li>
+                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-1"></i>Urgent</a></li>
+                            </ul>
+                          </div>
+
+
+
+                          <!-- <span class="dropdown">
+                              <a class="dropdown-toggle" id="flag_{{field.idx}}" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-caret-left fa-2x fc-{{field.FieldLayer}}"></i>
+                              </a>
+                              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="flag_{{field.idx}}">
+                                
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Ready to Go</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
+                              </ul>
+                          </span> -->
+
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                     {% endfor %}
+                  </table>
+
+	                  
 	                  <div class="form-group">
 	                      <label for="inputPassword3" class="col-sm-2 control-label"></label>
 	                      <div class="col-sm-10">
