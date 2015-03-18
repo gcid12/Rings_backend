@@ -53,7 +53,7 @@ class AvispaCollectionsRestFunc:
             print('Awesome , you just created a new Collection')
             #msg = 'Item put with id: '+idx
             flash("Your new Collection has been created")
-            redirect = '/'+handle+'/_collections/'+collection
+            redirect = '/'+handle
             d = {'redirect': redirect, 'status':200}
 
         else:

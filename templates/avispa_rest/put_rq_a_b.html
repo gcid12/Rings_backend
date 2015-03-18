@@ -34,7 +34,7 @@
               </button-->
             </div>
 
-            <form class="form-horizontal" role="form" action="/{{ data.handle }}/{{ data.ring }}?method=PUT" method="POST">
+            <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}/{{ data.ring }}?method=PUT" method="POST">
 
 
             <div class="rn-box-solo">

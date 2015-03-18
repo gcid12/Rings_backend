@@ -10,12 +10,14 @@
 
         
         <p>
-        {% for source in field.FieldSource.split(',') %}
-          {% set sourceparts = source.split('/') %}
-          {% set sourceparts2 = sourceparts[-1].split('?') %}
-          {%if separator %} | {%else%}{%set separator = True %}{%endif%}
-          <a class='iframe' href="{{source|trim}}?rq=post&raw=1">{{sourceparts2[0]|trim}}</a> 
-        {%endfor%}
+        {% if field.FieldSource %}
+          {% for source in field.FieldSource.split(',') %}
+            {% set sourceparts = source.split('/') %}
+            {% set sourceparts2 = sourceparts[-1].split('?') %}
+            {%if separator %} | {%else%}{%set separator = True %}{%endif%}
+            <a class='iframe' href="{{source|trim}}?rq=post&raw=1">{{sourceparts2[0]|trim}}</a> 
+          {%endfor%}
+        {%endif%}
         </p>
         <p id="addeditem_{{ field.FieldOrder }}"></p>
 

@@ -174,7 +174,7 @@
                         {% endfor %}
 
                           {% if 'post_a' in data.user_authorizations %} 
-                          {{ ui.collection_item_add(data.handle) }} 
+                             {{ ui.collection_item_add(data.handle,collection.collectionname) }} 
                           {% endif %}              
                 </table> 
                 {% endif %}
@@ -229,11 +229,12 @@
 
 
                        
-
+                        {%if 'post_a_m' in data.user_authorizations %}
                         <hr/>
                         <div class="" style="height:25px;">
                             <a href="/{{data.handle}}/_teams/{{team.teamname}}" class="hidden-xs"><div class=" blueprint fs-0-9"><i class="fa fa-plus"></i> add team member</div></a>
                         </div>
+                        {%endif%}
                         
 
 
