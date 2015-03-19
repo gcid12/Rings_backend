@@ -67,7 +67,18 @@
     {%if current_user.is_authenticated()%}
       <ul class="nav navbar-nav navbar-right hidden-xs w-links">
         <li class="active hidden-xs">
-          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s1 pr-20 pl-5"> {{ current_user.id }}</span></a>
+          <a class="navbar-brand clearlink hidden-xs" href="/">
+            {%if not data.raw%}
+              {% if data.today is defined %}
+                <span class="text-s2 fs-0-8 text-gray">
+                {{ data.today }}    
+                </span>
+              {%endif%}        
+            {%endif%}
+          </a>
+        </li>
+        <li class="active hidden-xs">
+          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s2 pr-20 pl-5 text-black"> {{ current_user.id }}</span></a>
           
         </li>
 
@@ -102,27 +113,26 @@
             <i class="fa fa-sign-out fa-2x text-gray"></i>
           </a>
         </li> -->
-
-
         
       </ul>
 
-    
       {%endif%}
-
-
      
         {%if current_user.is_authenticated()%}
        <ul class="nav navbar-nav navbar-left visible-xs">
+
           <li class="active">
             <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/myring04.png" style=" margin:10px 30px 10px 20px; width:100px; float:right;" alt="MyRing"></a>
           </li>
         </ul>
 
       <ul class="nav navbar-nav navbar-left hidden-xs">
+        
         <li>
         <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing"></a>
         </li>
+        
+
       </ul>
 
       {% else %}
@@ -156,19 +166,7 @@
 
   <div class="container-fluid">
 
-    {%if not data.raw%}
-    <div class="row hidden-xs">
-      <div class="col-sm-12">
-        <div class="text-right">
-          {% if data.today is defined %}
-            <p class="fs-0-8">
-            {{ data.today }}    
-            </p>
-          {%endif%}        
-        </div>
-      </div>
-    </div>
-    {%endif%}
+    
     <div class="row">
       <div class="col-sm-12 alpha omega">     
         {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}

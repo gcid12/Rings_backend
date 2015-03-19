@@ -65,7 +65,7 @@
             <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=put{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
 
             {% if not data.raw %}
-              <div class="rn-box-white"> 
+              <div class="box"> 
               {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , 'ringdescription','',data.collection, data.user_authorizations) }}       
               </div>
             {%endif%}
