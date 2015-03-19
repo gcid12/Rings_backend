@@ -34,7 +34,8 @@
   </div>
 {% endmacro %}
 
-  {% macro collection_big(handle, name, percent, role, update,link) %}
+
+  {% macro collection_big(handle, collection, ring , percent, role, update,handle_profilepic) %}
 <div class="row">
   <div class="col-sm-12 bg-f bord-left bw-7">
     <div style="padding:2px 0px 5px 0px;">
@@ -45,9 +46,11 @@
         <span class="label label-xs bl bl-white">
           <a href="" class="fc-l">{{ handle }}</a>
             <i class="fa fa-arrow-right"></i>
-          <a href="" class="fc-l">{{ name }}</a>
-            <i class="fa fa-arrow-right"></i>
-          <a href="">˚Ringname</a>
+          <a href="" class="fc-l">{{ collection }}</a>
+          {%if ring=='None' %}
+            <i class="fa fa-arrow-right"></i>        
+          <a href="">˚{{ ring }}</a>
+          {%endif%}
         </span> 
       </div>
 
@@ -75,11 +78,11 @@
           <h3 class="fs-1-5 text-s1">
           
             <a class="nounder" href="/{{handle}}">
-              <img class="user-bar" src="/_images/{{handle}}/t75/{{ XXX }}_t75.jpg" style="pull-left">&nbsp;
+              <img class="user-bar" src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style="pull-left">&nbsp;
               {{ handle|lower() }}     
             </a> /
             <a class="nounder" href="{{link}}">
-            <span class="fw-c text-gray">{{ name|upper() }}</span>
+            <span class="fw-c text-gray">{{ collection|upper() }}</span>
            </a>
           </h3>
           <p class="text-lgray fs-0-8 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
@@ -93,9 +96,9 @@
                 <span class="caret"></span>Actions
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ name}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
               </ul>
             </span>
           </div>
