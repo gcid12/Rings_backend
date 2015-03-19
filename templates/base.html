@@ -37,7 +37,17 @@
       {% if messages %}
  
         {% for message in messages %}
-          {{ message }}
+
+        <div class="alert  alert-info alert-dismissible alert-top" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <i class="fa fa-info-circle "></i> {{ message }} 
+        </div>
+
+
+
+          
+
+          
         {% endfor %}
          
       {% endif %}
@@ -97,32 +107,44 @@
         
       </ul>
 
-      {% else %}
-
-            <div class="spa5"></div>
-              <a href="/_login" class="btn btn-default btn-sm">LOG IN</a> 
-              <a href="/_register" class="btn btn-success btn-sm">SIGN UP</a>
+    
       {%endif%}
 
 
-      <ul class="nav navbar-nav navbar-left visible-xs">
+     
         {%if current_user.is_authenticated()%}
-        <li class="active">
-          <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/myring04.png" style=" margin:10px 30px 10px 20px; width:100px; float:right;" alt="MyRing"></a>
-        </li>
-
-        {% else %}
-
-            <div class="spa5"></div>
-              <a href="/_login" class="btn btn-default btn-sm">LOG IN</a> 
-              <a href="/_register" class="btn btn-success btn-sm">SIGN UP</a>
-        {%endif%}
-      </ul>
+       <ul class="nav navbar-nav navbar-left visible-xs">
+          <li class="active">
+            <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/myring04.png" style=" margin:10px 30px 10px 20px; width:100px; float:right;" alt="MyRing"></a>
+          </li>
+        </ul>
 
       <ul class="nav navbar-nav navbar-left hidden-xs">
-
-        <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/myring04.png" style=" margin:10px 30px 10px 20px; width:100px;" alt="MyRing"></a>
+        <li>
+        <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing"></a>
+        </li>
       </ul>
+
+      {% else %}
+
+       
+          <div class="pull-left spa15"> 
+            <a href="/" class="clearlink spa20"><img src="/static/images/myring04.png" style=" width:100px;" alt="MyRing"></a>
+          </div>
+          
+          
+            <div class="pull-right spa15"> 
+              <a href="/_login" class="btn btn-default btn-sm">LOG IN</a> 
+              <a href="/_register" class="btn btn-success btn-sm">SIGN UP</a>
+            </div>
+         
+       
+        {%endif%}
+
+
+
+
+
   </div><!-- /.container-fluid -->
 </nav>
 

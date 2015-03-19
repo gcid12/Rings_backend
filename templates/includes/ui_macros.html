@@ -1,4 +1,219 @@
 
+{% macro collection(handle,collection,percent,role,update,user_authorizations) %}
+
+  
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+ 
+      {% if 'get_a' in user_authorizations %}
+
+
+        
+        <img class="block-center" src="/static/images/case-49.png" style="width:60px;" alt="MyRing"><br/>
+        <a class="nounder fs-1-2" href="/{{handle}}/_collections/{{collection}}">
+          <span style="opacity: 0.5;">  
+            {{ handle|lower() }}   
+          </span> / 
+          <span class="fw-c">
+            {{ collection|upper() }} 
+          </span>
+        </a>
+        <p class="text-lgray fs-0-9 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
+
+      {%else%}
+          <img class="block-center" src="/static/images/case-49.png" style="width:70px;" alt="MyRing"><br/>
+          <span class="fs-1-2 fc-l text-s1 fw-c">{{ collection|upper() }} </span>
+          <p class="text-lgray fs-0-8 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
+      {%endif%}
+
+    
+      
+      <br/>
+    </div>
+  </div>
+{% endmacro %}
+
+  {% macro collection_big(handle, name, percent, role, update,link) %}
+<div class="row">
+  <div class="col-sm-12 bg-f bord-left bw-7">
+    <div style="padding:2px 0px 5px 0px;">
+      <span class="label label-xs bl bl-orange ">Data Collection
+      </span> 
+    
+      <div class="pull-right">
+        <span class="label label-xs bl bl-white">
+          <a href="" class="fc-l">{{ handle }}</a>
+            <i class="fa fa-arrow-right"></i>
+          <a href="" class="fc-l">{{ name }}</a>
+            <i class="fa fa-arrow-right"></i>
+          <a href="">˚Ringname</a>
+        </span> 
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 bg-white bord-left bw-7">
+    <table class="table " cellpadding="0" cellspacing="0">
+      <tr>
+        
+        <td align="center" class="hidden-xs" style="width:15%;">
+          <div class="bord-right bb-11">
+            <img class="block-center" src="/static/images/case-49.png" style="width:70px;" alt="MyRing"> 
+            <br/>
+            
+          </div>
+        </td>
+        <td align="center" valign="center" class="visible-xs" style="width:10%";> 
+          <div class="bord-right " style="margin-top:20px;">
+            <img class="block-center" src="/static/images/case-49.png" style="width:70px;" alt="MyRing"> <br/>
+          </div>
+        </td>
+        <td> 
+          <h3 class="fs-1-5 text-s1">
+          
+            <a class="nounder" href="/{{handle}}">
+              <img class="user-bar" src="/_images/{{handle}}/t75/{{ XXX }}_t75.jpg" style="pull-left">&nbsp;
+              {{ handle|lower() }}     
+            </a> /
+            <a class="nounder" href="{{link}}">
+            <span class="fw-c text-gray">{{ name|upper() }}</span>
+           </a>
+          </h3>
+          <p class="text-lgray fs-0-8 "><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
+        </td>
+        <td> 
+          <div class="pull-rightx">
+              <div class="label label-info"> Owner </div>
+              <div class="spa10"></div>
+            <span class="dropdown">
+              <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>Actions
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ name}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
+              </ul>
+            </span>
+          </div>
+
+          <!-- COLUMN 1 -->
+        </td>
+      </tr>
+    </table>
+  </div>
+</div> 
+{% endmacro %}
+
+
+
+{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
+          
+          
+          <tr style="margin-top:200px;">
+            
+            <td>{{ icon_sma(count, color) }}</td>
+            <td>
+              <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
+              {% if 'get_a_b' in user_authorizations %}
+              
+              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
+              &nbsp; <span style="font-weight:700;">{{ring}}</span>
+              {%endif%} 
+              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
+            </td>
+            <td>
+              <div class="pull-right">
+                
+                <div class="btn-group" >
+                
+                  <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
+                  {% if 'post_a' in user_authorizations %}
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i> item</a>
+                  {% endif %}
+
+                  <!-- {% if 'put_a' in user_authorizations %}
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+                  {% endif %} -->
+     
+
+                </div>
+                
+              </div>
+            </td>
+          </tr>
+          
+                   
+{% endmacro %}
+
+{% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
+
+  <tr>
+    <td width="50px" class="hidden-xs">
+    </td>
+    <td> 
+      <div class="row">
+        <div class=" col-sm-2 hidden-xs">
+          {{ icon_stack(count,color) }} 
+        </div> 
+        <div class=" col-xs-2 visible-xs">
+              {{ icon_sma(count,color) }}
+        </div>
+
+        <div class="col-xs-8 col-sm-7">
+          
+          <h3 class=" fs-1-5">
+
+
+            <!-- <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
+
+            {% if handle == origin %}
+
+            <img src="/static/images/slave.png" style="width:30px;">
+            {% else %}
+            {%endif%}
+
+
+            <!-- {% if 'get_a' in user_authorizations %}
+            <a href="/{{ handle }}" class="nounder">{{origin}}</a>
+            {%else%}
+            {{origin}}
+            {%endif%}/ -->
+            <span>{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
+            </a>
+            {%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
+          </h3>    
+          <span class="rn-t3 text-lgray">{{ description }}</span>
+
+        </div> 
+        <div class="col-xs-1 col-sm-3">
+          <div class="pull-right">
+            
+
+            <div class="btn-group">
+              {% if 'post_a_b' in user_authorizations %}
+              <!--a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a-->
+              {% endif %}
+
+              
+              {% if 'put_a_b' in user_authorizations %}
+              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/json.png"></a>
+              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              {% endif %}
+
+            </div> 
+            
+            <span class="label label-discrete pull-right">{{date}}</span>
+          </div>
+        </div>
+      </div>  
+    </td>
+  </tr>
+
+{% endmacro %}
 
 
 
@@ -103,216 +318,6 @@
   </div>
 </div>
 {% endmacro %}
-
-{% macro collection(handle,collection,percent,role,update,user_authorizations) %}
-
-  <div class="row">
-    <div class="col-xs-12 col-sm-12">
-      <div class="spa10"></div>
-      <img class="block-center" src="/static/images/repo-icon.png" style="width:40px;" alt="MyRing">
-        
-      {% if 'get_a' in user_authorizations %}
-        <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-          <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
-        </a>
-      {%else%}
-          <span class="fs-1-2 text-gray text-s1 fw-c">{{ collection|upper() }} </span>
-      {%endif%}
-
-      <div class="spa10"></div>
-      <p class="text-gray fs-1 text-s1">
-        <strong>1</strong> Rings | 
-        <strong>{{percent}}%</strong> sparcity 
-      </p>
-
-      <hr/>
-      {% if 'put_a_x_y' in user_authorizations %}
-      <span class="dropdown">
-        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-          Actions
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings for {{collection}}</a></li>
-          <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite to collaborate</a></li>
-          <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
-        </ul>
-      </span>
-      {% endif %}
-      <br/>
-    </div>
-  </div>
-{% endmacro %}
-
-  {% macro collection_big(handle, name, percent, role, update,link) %}
-
-  <tr>
-    
-    <td align="center" class="hidden-xs" style="width:15%;">
-      <div class="bord-right bb-11">
-        <img class="block-center" src="/static/images/case-44.png" style="width:110px;" alt="MyRing"> <br/>
-      </div>
-    </td>
-    <td align="center" valign="center" class="visible-xs" style="width:10%";> 
-      <div class="bord-right " style="margin-top:20px;">
-        <img class="block-center" src="/static/images/case-44.png" style="width:70px;" alt="MyRing"> <br/>
-      </div>
-    </td>
-
-    <td> 
- 
-      <h3 class="fs-1-7 text-lgray text-s1">
-        <a class="nounder" href="/{{handle}}">
-          <img class="user-bar" src="/static/images/ph_org2.gif" style="pull-left">&nbsp;
-          {{ handle|upper() }}     
-        </a>
-        <a class="nounder" href="{{link}}">
-       / <span class="fw-c text-gray">{{ name|upper() }}</span>
-       </a>
-        
-      </h3>
-
-      <p class="text-gray fs-1 text-s1"><strong>5,345</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
-    </td>
-
-    <td> 
-      <div class="pull-rightx">
-         
-          <div class="label label-info"> Owner </div>
-          
-            
-          <div class="spa10"></div>
-
-        <span class="dropdown">
-          <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-            Actions
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}"><i class="fa fa-circle-o"></i> Rings</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ name }}?rq=put"> <i class="fa fa-wrench"></i> Settings</a></li>
-          </ul>
-        </span>
-      </div>
-
-      <!-- COLUMN 1 -->
-
-    </td>
-  </tr>
-{% endmacro %}
-
-{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
-          
-          
-          <tr style="margin-top:200px;">
-            
-            <td>{{ icon_sma(count, color) }}</td>
-            <td>
-              <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
-              {% if 'get_a_b' in user_authorizations %}
-              
-              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
-              &nbsp; <span style="font-weight:700;">{{ring}}</span>
-              {%endif%} 
-              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
-            </td>
-            <td>
-              <div class="pull-right">
-                
-                <div class="btn-group" >
-                
-                  <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
-                  {% if 'post_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i> item</a>
-                  {% endif %}
-
-                  <!-- {% if 'put_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-                  {% endif %} -->
-     
-
-                </div>
-                
-              </div>
-            </td>
-          </tr>
-          
-                   
-{% endmacro %}
-
-{% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
-
-  <tr>
-    <td width="50px" class="hidden-xs">
-    </td>
-    <td> 
-      <div class="row">
-        <div class=" col-sm-2 hidden-xs">
-          {{ icon_stack(count,color) }} 
-        </div> 
-        <div class=" col-xs-2 visible-xs">
-              {{ icon_sma(count,color) }}
-        </div>
-
-        <div class="col-xs-8 col-sm-7">
-          <div class="spa5"></div>
-          <h3 class="text-s2 fs-1-7">
-            <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span>
-            <!-- {% if 'get_a' in user_authorizations %}
-            <a href="/{{ handle }}" class="nounder">{{origin}}</a>
-            {%else%}
-            {{origin}}
-            {%endif%}/ -->
-            <span style="font-weight:500;">{% if 'get_a' in user_authorizations %}<a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">{{ring}}
-            </a>
-            {%else%}{{ring}}{%endif%}</span>{%if idx %}<span>/{{idx}}</span>{%endif%}
-          </h3>    
-          <p class="rn-t3 text-lgray">{{ description }}</p>
-
-        </div> 
-        <div class="col-xs-1 col-sm-3">
-          <div class="pull-right">
-            
-          
-            <div class="btn-group">
-              {% if 'post_a_b' in user_authorizations %}
-              <!--a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a-->
-              {% endif %}
-              
-              {% if 'put_a_b' in user_authorizations %}
-              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/json.png"></a>
-              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              {% endif %}
-            </div> 
-            
-            <span class="label label-discrete pull-right">{{date}}</span>
-          </div>
-        </div>
-      </div>  
-    </td>
-  </tr>
-
-{% endmacro %}
-
-
-
-{% macro collection_item_add(handle,collection) %} 
-
-          
-            <tr>
-              <td></td>
-              <td colspan="2" align="right" style="vertical-align:top; ">
-                  <a href="/{{handle}}/_collections/{{collection}}?rq=post&n=11" class="clearlink">
-                    <p class="blueprint"><i class="fa fa-plus"></i> Add a new Ring </p>  
-                  </a>            
-              </td>
-              
-            </tr>
-
-{% endmacro %}
-
-
-
 {% macro panel_rings(name, origin, handle, color, number, percent, active, resource, user_authorizations) %} 
           
           <tr>
@@ -354,8 +359,211 @@
 
 
 
+{% macro portlet(f) %}
+
+<!-- N FIELD END -->         
+
+                <div id="portlet_{{ f }}" class="portlet"> <!-- B. -->
 
 
+                  <!-- TAGS -->
+                  <input id="tagvalue_{{ f }}" type="hidden" name="FieldLayer_{{ f }}" value="">
+
+                  <div class="tagged{{ f }} portlet-header bt-7">
+                  <!-- <div id="tagged{{ f }}" class="bt-7">G</div> -->
+                    <table>
+                      <tr>
+                        <td><span class="handler m-10" ><i class="fa fa-bars fa-1x text-white"></i></span></td>
+                        <td>
+                          <span class="label label-danger m-10">{{ f }}</span>
+                          
+                        </td>
+                        <td style="width:40%;">
+                          <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control input-sm" type="text" placeholder="name">
+                        </td>
+                        <td>
+                          <select name="FieldWidget_{{ f }}" class="form-control input-sm" style="background-color:#666; color:white;">
+                                <option value="">SELECT ONE</option>
+                                <option>checkbox</option>
+                                <option>date</option>
+                                <option>file</option>
+                                <option>images</option>
+                                <option>items</option>
+                                <option>location</option>
+                                <option>password</option>
+                                <option>radio</option>
+                                <option>select</option>
+                                <option selected="">text</option>
+                                <option>textarea</option>
+                                <option>url</option>
+                                <option>url_flickr</option>
+                                <option>url_video</option>
+                          </select>
+                        </td>
+                        <td style="background-color:red; " >
+                          
+                            <!-- <div class="input-group input-group-sm m-10">
+                              <span class="input-group-addon" id="sizing-addon1">*Source</span>
+                              <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="source"/>
+                            </div> -->
+                        </td>
+                        <td><span class="tog"></span></td>
+
+                      </tr>
+                    </table>
+                  </div> <!-- C1 -->
+                  <div class="portlet-content"> <!-- C2. DETAILS -->
+
+                      <div class="row">
+                        <div class="col-sm-7">
+                          
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox">
+                              required
+                            </span>
+
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox">
+                              multilingual
+                            </span>
+
+                            <span class="label bg-gray margin-x-7">
+                              <input name="FieldCardinality_{{ f }}" value="TRUE" type="checkbox">
+                              cardinal
+                            </span>
+
+                            
+
+                            <hr/>
+                            
+                            <div class="input-group input-group-sm">
+                                  <span class="input-group-addon" id="sizing-addon1">Field Hint</span>
+                                  <input type="text" name="FieldHint_{{ f }}" class="form-control" placeholder="What people see before typing "/>
+                            </div>
+
+                            <div class="input-group input-group-sm">
+                                  <span class="input-group-addon" id="sizing-addon1">Source</span>
+                                  <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="URI of "/>
+                            </div>
+                              
+                              <!-- <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1">Default</span>
+                                <input type="text" name="FieldDefault_{{ f }}" class="form-control" placeholder="in case you want to leave this"/>
+                              </div> -->
+                              <input type="hidden" name="FieldDefault_{{ f }}">
+                             
+                        </div>
+                        <div class="col-sm-5">
+
+                          <table>
+                            <tr>
+                              <td><div id="tag1-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-1"></div></td>
+                              <td><div id="tag2-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-2"></div></td>
+                              <td><div id="tag3-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-3"></div></td>
+                              <td><div id="tag4-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-4"></div></td>
+                              <td><div id="tag5-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-5"></div></td>
+                              <td><div id="tag6-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-6"></div></td>
+                              <td><div id="tag7-{{ f }}" class="treset{{ f }} r-tag bt-7 bc-7"></div></td>
+                            </tr>
+                          </table>
+
+                          <hr/>
+
+
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon" id="sizing-addon1">Context</span>
+                            <textarea name="FieldSemantic_{{ f }}" class="form-control" placeholder="please provide context of what this field is. You can post a link to wikipedia or other website" rows="4" style="height:100%; width:100%;"></textarea>
+                          </div>
+                          <div class="input-group input-group-sm">
+                              <span class="input-group-addon" id="sizing-addon1">label</span>
+                              <input type="text" name="FieldLabel_{{ f }}" class="form-control" placeholder="label"/>
+                            </div> 
+                          
+
+                        </div>
+                        
+
+                      </div><!-- CLOSE ROW 1 -->
+
+                            <!-- NEW ORDER -->
+
+                            
+
+                            <!-- TYPE -->
+                            <!-- <select name="FieldType_{{ f }}">
+                                      <option value="">SELECT ONE</option>
+                                      <option>INT</option>
+                                      <option selected="">TEXT</option>
+                                      <option>VARCHAR(120)</option>
+                            </select> -->
+                            <input type="hidden" name="FieldType_{{ f }}">
+
+                            <div class="input-group input-group-sm">
+                              <!-- <span class="input-group-addon" id="sizing-addon1">Order</span>
+                              <input type="text" name="FieldOrder_{{ f }}" value="" class="form-control" placeholder="Order"/> -->
+                              <input type="hidden" name="FieldOrder_{{ f }}">
+                            </div>
+                    <!-- SUBMIT -->
+                  </div> <!-- C. PORTLET CONTENT -->
+                </div> <!-- B. CLOSE PORTLET -->
+
+                <script type="text/javascript">
+                    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
+                    var allbb= "bc-1 bc-2 bc-3 bc-4 bc-5 bc-6 bc-7 ";
+
+                      $(document).ready(function(){
+
+                        
+                        $("#tag1-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-1");
+                          $("#tagvalue_{{ f }}").attr("value","1");
+                        }); 
+                        $("#tag2-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-2");
+                          $("#tagvalue_{{ f }}").attr("value","2");
+                        }); 
+                        $("#tag3-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-3");
+                          $("#tagvalue_{{ f }}").attr("value","3");
+                        }); 
+                        $("#tag4-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-4");
+                          $("#tagvalue_{{ f }}").attr("value","4");
+                        }); 
+                        $("#tag5-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-5");
+                          $("#tagvalue_{{ f }}").attr("value","5");
+                        }); 
+                        $("#tag6-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-6");
+                          $("#tagvalue_{{ f }}").attr("value","6");
+                        }); 
+                        $("#tag7-{{ f }}").click(function(){
+                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
+                          $(".treset{{ f }}").removeClass(allbt);
+                          $(this).addClass("bt-7");
+                          $("#tagvalue_{{ f }}").attr("value","7");
+                        }); 
+
+                        
+                       
+                      });
+                </script>
+                  <!-- N FIELD END -->
+
+{% endmacro%}
 
 
 
@@ -454,15 +662,15 @@
 
 
 {% macro icon_stack(number,color,last) %}
-  <svg height="120" width="100" style="margin:-28px -5px -5px -5px;">
+  <svg height="120" width="100" style="margin:-20px -5px -5px -5px;">
     <!-- <line x1="3" y1="0" x2="3" y2="40" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
     <line x1="3" y1="40" x2="32" y2="55" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" /> -->
     <circle cx="57" cy="85" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
     <circle cx="60" cy="80" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
     <text x="59" y="88" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
 
-    <line x1="0" y1="0" x2="0" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:1" />
-    <line x1="0" y1="84" x2="35" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:1" />
+    <line x1="0" y1="0" x2="0" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
+    <line x1="0" y1="84" x2="35" y2="84" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
 
 
   </svg>

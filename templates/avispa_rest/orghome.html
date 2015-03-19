@@ -25,7 +25,7 @@
           <table style="float:left;">
             <tr>
               <td>
-                <img class="img-responsive center-block user-big" src="/static/images/ph_org.gif" style="float:left; margin-right:10px;" alt="">
+                <img class="img-responsive center-block user-big" src="/static/images/ph_org2.gif" style="float:left; margin-right:10px;" alt="">
               </td>
             </tr>
             <tr>
@@ -140,51 +140,116 @@
 
 
 <section>
-  <div class="container">
-      <div class="row">
-
-      <div class="row">
-
-        <div class="col-sm-9 omega">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 omega">
           <!-- BOX CONTENT -->
-          <div class="rn-box-naked-title">
 
-              {% if 'get_a_x' in data.user_authorizations %}
-              <a href="/{{data.handle}}/_collections" type="button" class="btn btn-warning btn-xs pull-right">
-              settings</a> 
-              {%endif%}
 
-              {% if 'post_a_x' in data.user_authorizations %}
-                <a href="/{#{data.handle}#}/_collections?rq=post" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i></a>
-              {%endif%}
 
-              <strong>
-                  <h4><span class="label label-default">{{data.handle}} </span> &nbsp; data collections:</h4>
-              </strong>
+                <!-- START TITLE OF COLLECTIONS -->
+                    <div class="box box-title pt-10 mb-10">
+                        <div class="btn-group pull-right" role="group">
+                            
+                        
+                        {% if 'post_a_x' in data.user_authorizations %}
+                            <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs pull-right" data-toggle="tooltip" title="Create new collection" data-placement="top"><i class="fa fa-plus"></i></a>
+                        {%endif%}
 
-            </div>
-          <div class="rn-box-solo">
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-wrench"></i>
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                              <li>
+                                {% if 'get_a_x' in data.user_authorizations %}
+                                    <a href="/{{data.handle}}/_collections">
+                                    All Collections</a>
+                                {%endif%}</li>
+                                {% for collection in data.collections.collectionlist %}  
+                                    {% if collection.valid %}
+                                        <li><a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">{{ collection.collectionname }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+           
+                            <p class="fs-0-9 fw-a text-gray">   
+                            Collections ( {{ data.collections.collectionlist|length }} )
+                            </p>
+                        
+                    </div>
+                    <!-- END TITLE OF COLLECTIONS -->
 
-              {% for collection in data.collections.collectionlist %}  
-              
-                {% if collection.valid %}
-                  {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                  <table class="table table-striped table-condensed" cellpadding="0" cellspacing="0">     {% for ring in collection.rings %}    
-                          {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
-                        {% endfor %}
 
-                          {% if 'post_a' in data.user_authorizations %} 
-                             {{ ui.collection_item_add(data.handle,collection.collectionname) }} 
-                          {% endif %}              
-                </table> 
-                {% endif %}
-              {% endfor %}
-          </div> 
+                    {% for collection in data.collections.collectionlist %}  
+                      {% if collection.valid %}
 
-          {% if 'post_a_x' in data.user_authorizations %}
-            <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right">New collection</a>
-          {%endif%}
-          <br/><br/><br/>
+                        <div class="box bord-left bg-f bw-7 p-5">
+                          
+                            <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | DataCollection
+                            </span> 
+                          
+                            {% if 'get_a_x' in data.user_authorizations %}
+                            
+                                <span class="dropdown">
+                                  <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                    
+                                    <span class="caret text-black"></span>
+                                  </a>
+                                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
+                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
+                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
+                                  </ul>
+                                </span>
+                              
+                          
+                            {% endif %}
+
+                         
+                        </div>
+                        <div class="box box-clear bord-left  bw-7" style="padding:0px 10px 0 20px; margin:0 0 10px 0;">
+                            <div class="row">
+                                <!-- START COLLECTION TITLE -->
+                                <div class="col-xs-12 col-sm-3">
+                                    <div class="" style=" margin-bottom:-20px;">
+       
+                                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                    </div>
+                                </div>
+                                <!-- END COLLECTION TITLE -->
+
+                                <!-- START RING LIST -->
+                                <div class="col-xs-12 col-sm-9">
+                                    <table width="100%" border="0">
+                                        <tr bgcolor="">
+                                          <td colspan="3" style="padding:0 2px 0px 2px;">
+                                            <table class="table table-striped table-bordered">
+
+                                            {% for ring in collection.rings %}    
+                                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                            {% endfor %}
+  
+
+                                            </table>
+                                          </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- FINISH RING LIST -->
+                            </div>
+                        </div>             
+
+                    {% endif %}
+                  {% endfor %}
+                  <!-- END COLLECTION LOOP -->
+                       
+
+
+    
         </div><!-- close  --> 
 
 
@@ -194,7 +259,7 @@
           
             
               
-              <a href="/{{data.handle}}/_teams" type="button" class="pull-right"><i class="fa fa-pencil"></i> edit teams</a> 
+            <a href="/{{data.handle}}/_teams" type="button" class="pull-right"><i class="fa fa-pencil"></i> edit teams</a> 
               <h4>Teams  </h4>  
           
          
@@ -249,7 +314,7 @@
               
             
                                      
-          </div> 
+            </div> 
           {%if 'post_a_m' in data.user_authorizations %}
             <a href="/{{data.handle}}/_teams">New Team</a> 
           {%endif%}
