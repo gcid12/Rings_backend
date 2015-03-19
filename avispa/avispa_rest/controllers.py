@@ -60,6 +60,18 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data['cu_profilepic'] = cu_user_doc['profilepic']
     data['cu_location'] = cu_user_doc['location']
 
+    if current_user.id == handle:
+        data['handle_actualname'] = cu_user_doc['name']
+        data['handle_profilepic'] = cu_user_doc['profilepic']
+        data['handle_location'] = cu_user_doc['location']
+
+    else:
+        handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+        if handle_user_doc:
+            data['handle_actualname'] = handle_user_doc['name']
+            data['handle_profilepic'] = handle_user_doc['profilepic']
+            data['handle_location'] = handle_user_doc['location']
+
     if collection:       
         data['collection'] = collection
 

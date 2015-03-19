@@ -85,9 +85,23 @@
         <li class="dropdown hidden-xs bg-lgray">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-plus fa-2x"></i> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/{{ current_user.id }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li>
+            {%if data.handle != current_user.id%}
+            <li><b>&nbsp;&nbsp;{{ current_user.id }}</b></li>
+            {%endif%}
+            <!--li><a href="/{{ current_user.id }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li-->
             <li><a href="/{{ current_user.id }}/_collections?rq=post"><i class="fa fa-plus-circle"></i> &nbsp;  New <span class="fw-c text-gray">Collection</span></a></li>
             <li><a href="/_orgregister"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray"><i class="fa fa-universit"></i> Organization</span></a></li>
+
+            {%if data.handle != current_user.id%}
+            {% if 'post_a_x' in data.user_authorizations %}
+            <hr/>
+            <li><b>&nbsp;&nbsp;{{ data.handle }}</b></li>
+
+            <!--li><a href="/{{ data.handle }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li-->
+            <li><a href="/{{ data.handle }}/_collections?rq=post"><i class="fa fa-plus-circle"></i> &nbsp;  New  <span class="fw-c text-gray">Collection</span></a></li>
+            {%endif%}
+            {%endif%}
+            
             
           </ul>
         </li>
