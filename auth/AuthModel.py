@@ -6,17 +6,17 @@ from couchdb.http import PreconditionFailed
 from couchdb.design import ViewDefinition
 from flask import flash
 
-from MyRingCouchDB import MyRingCouchDB
+
+import couchdb
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_USER, COUCHDB_PASS, IMAGE_STORE
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, IMAGE_STORE
 
 class AuthModel:
 
     def __init__(self):
 
-        MCD = MyRingCouchDB()
-        self.couch=MCD._instantiate_couchdb_as_admin()
+        self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         #print('self.couch :ATM')
         #print(self.couch)

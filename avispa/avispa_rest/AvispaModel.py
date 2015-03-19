@@ -19,10 +19,10 @@ from couchdb.http import ResourceNotFound
 from MyRingSchema import MyRingSchema
 from CouchViewSync import CouchViewSync
 
-from MyRingCouchDB import MyRingCouchDB
+import couchdb
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_USER, COUCHDB_PASS
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
@@ -32,9 +32,8 @@ class AvispaModel:
 
 
     def __init__(self):
-
-        MCD = MyRingCouchDB()
-        self.couch=MCD.instantiate_couchdb_as_admin()    
+ 
+        self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         #print('self.couch :AVM')
         #print(self.couch)

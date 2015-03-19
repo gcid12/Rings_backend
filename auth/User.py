@@ -103,8 +103,10 @@ class User(UserMixin):
             elif self.username:
                 dbUser =self.ATM.userdb_get_user_by_handle(self.username)
 
-            print('DBUSER:',dbUser['value']['name'])
+            
             if dbUser:
+
+                print('DBUSER:',dbUser['value']['name'])
                 
                 self.name = dbUser['value']['name']
                 self.email = dbUser['value']['email']
