@@ -629,7 +629,8 @@ def index():
 
     data = {}
     data['handle']='x' #you have to grab this from the session user
-    return render_template("avispa_rest/intro.html", data=data)
+    #return render_template("avispa_rest/intro.html", data=data)
+    return redirect('/'+current_user.id+'/_home')
 
 
 @avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
