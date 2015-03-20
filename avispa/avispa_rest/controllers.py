@@ -637,6 +637,8 @@ def index():
 
 def imageserver(filename,depth1,depth2):
 
+    print('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
+
     avispa_rest.static_folder=IMAGE_STORE+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
 
