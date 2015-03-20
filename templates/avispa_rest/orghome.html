@@ -195,12 +195,12 @@
                             {% if 'get_a_x' in data.user_authorizations %}
                             
                                 <span class="dropdown">
-                                  <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                  <a class="dropdown-toggle" id="menu_{{collection.collectionname}}" data-toggle="dropdown" aria-expanded="false">
                                     
                                     <span class="caret text-black"></span>
                                   </a>
-                                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
+                                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection.collectionname}}">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{collection.collectionname}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
                                     <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
                                     <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
                                   </ul>
