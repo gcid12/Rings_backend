@@ -14,7 +14,7 @@
 
   <!-- COLUMN 1 -->
 
-
+<div class="rn-curtain">
     
     <table class="table table-condensed"> 
     {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
@@ -39,7 +39,7 @@
 
     {% else %}
 
-      <div class="row" style="margin-top:-40px;">
+      <div class="row" style="margin-top:-15px;">
           <div class="col-xs-2 visible-xs">
               <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs" >
                 <i class="fa fa-plus fa-1x"></i>New
@@ -66,10 +66,10 @@
     {% block result1 %}
 
     <!-- RESULT LIST START -->
-    
+</div>  
 
-<div class="row">
-  <div class="col-xs-12 col-sm-1 text-right">
+<div class="row rn-box-content">
+  <div class="col-xs-12 col-sm-1 text-right ">
       {% if 'post_a' in data.user_authorizations %}
         {% if data.itemlist %}
 
@@ -89,7 +89,7 @@
       {% endif %}
     
   </div> 
-  <div class="col-xs-12 col-sm-11 ">
+  <div class="col-xs-12 col-sm-11">
  
   <div role="tabpanel">
     <div class="tab-content">
@@ -99,10 +99,10 @@
       <!-- AS LIST -->
       <div role="tabpanel" class="tab-pane fade in active" id="list" style="">
 
-          <div class="bg-white">   
-            <table class="table table-striped table-condensed">
+          <div class="">   
+            <table class="table table-condensed">
               
-              <tr >
+              <tr class="bord-bottom bc-8 bw-2">
                  <th></th>
               {% for value in data.FieldLabel %}                   
                  
@@ -132,7 +132,7 @@
 
 
               {% for item in data.itemlist %}
-              <tr>
+              <tr class="bord-bottom bc-8 bw-2">
                   
                   {% if data.imagesui==True %}
                   <td style="width:100px;" class="text-right">
@@ -225,10 +225,10 @@
       <!-- AS MEGA LIST -->
       <div role="tabpanel" class="tab-pane fade" id="biglist">
         
-          <div class="bg-white"> 
-            <table class="table table-striped">
+          <div class=""> 
+            <table class="table">
               {% for item in data.itemlist %}
-              <tr>
+              <tr class="bord-bottom bc-8 bw-2">
                   <td>
 
                       {% if data.imagesui==True %}
@@ -402,11 +402,12 @@
 
 
               
-          
+        
 
         </div>
+       
       </div>
-    
+      <div class="spa20"></div>
     
     <!-- RESULT LIST FIN -->
 
@@ -418,6 +419,7 @@
 
 {% endblock result1 %}
    
+
 
 
 

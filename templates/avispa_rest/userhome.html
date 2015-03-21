@@ -172,7 +172,7 @@
                     <br/>
 
                     <!-- START TITLE OF COLLECTIONS -->
-                    <div class="box box-title pt-10 mb-10">
+                    <div class="box box-title pt-10 mb-10 bord-left  bw-7">
                         <div class="btn-group pull-right" role="group">
                             
                         
@@ -213,36 +213,13 @@
                         {% if collection.valid %}
 
                         
-                        <div class="box bord-left bg-f bw-7 p-5">
-                          
-                            <span class="label bl bl-gray "><i class="fa fa-user"></i> {{data.handle|upper }} | Data Collection
-                            </span> 
-                          
-                            {% if 'get_a_x' in data.user_authorizations %}
-                            
-                                <span class="dropdown">
-                                  <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                                    
-                                    <span class="caret text-black"></span>
-                                  </a>
-                                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=put"> <i class="fa fa-link"></i> Add Ring</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=post&n=10"><i class="fa fa-plus"></i> Create Ring</a></li>
-                                  </ul>
-                                </span>
-                              
-                          
-                            {% endif %}
+                      
 
-                         
-                        </div>
-
-                        <div class="box box-clear bord-left  bw-7" style="padding:0px 10px 0 20px; margin:0 0 10px 0;">
+                        <div class="box box-clear bord-left  bw-1" style="padding:20px 20px 0 20px; margin:0 0 10px 0;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
-                                    <div class="" style=" margin-bottom:-20px;">
+                                    <div>
                                         {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
                                         
                                     </div>
@@ -255,7 +232,7 @@
                                     <table width="100%" border="0">
                                         <tr bgcolor="">
                                           <td colspan="3" style="padding:0 2px 0px 2px;">
-                                            <table class="table table-striped table-bordered">
+                                            <table class="table table-bordered">
                                               {% for ring in collection.rings %}
                                                   {% if not ring.invalid %}  
                                                     {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
