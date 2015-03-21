@@ -189,7 +189,7 @@ class RingBuilder:
                     r = requests.get(ring_url)
                 except(requests.exceptions.ConnectionError):
                     print('The connection was refused')
-                    flash('The connection was refused')
+                    flash('The connection to the parent ring was refused. Check the URL in your browser.')
                     return False
                 #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
                 
