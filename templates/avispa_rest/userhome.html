@@ -178,14 +178,14 @@
                         
                         {% if 'post_a_x' in data.user_authorizations %}
                             <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs pull-right" data-toggle="tooltip" title="Create new collection" data-placement="top"><i class="fa fa-plus"></i></a>
-                        {%endif%}
+                        
 
                           <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-wrench"></i>
                               <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
                               <li>
                                 {% if 'get_a_x' in data.user_authorizations %}
                                     <a href="/{{data.handle}}/_collections">
@@ -193,17 +193,22 @@
                                 {%endif%}</li>
                                 {% for collection in data.collections.collectionlist %}  
                                     {% if collection.valid %}
-                                        <li><a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">{{ collection.collectionname }}</a></li>
+                                        <li> /<a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">{{ collection.collectionname }}</a></li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>
                           </div>
+                        {%endif%}
+
                         </div>
 
+
                         
-                            <p class="fs-0-9 fw-a text-gray">   
-                            Collections ( {{ data.collections.collectionlist|length }} )
-                            </p>
+                        <p class="fs-0-9 fw-a text-gray">
+                          {% if 'post_a_x' in data.user_authorizations %} Your {% endif %}
+
+                          Collections ( {{ data.collections.collectionlist|length }} )
+                        </p>
                         
                     </div>
                     <!-- END TITLE OF COLLECTIONS -->
