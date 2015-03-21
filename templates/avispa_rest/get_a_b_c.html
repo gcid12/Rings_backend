@@ -14,25 +14,26 @@
 
 
 <!-- START NEW CONTENT --> 
-
-          <div class="col-sm-12">
+  <div class="rn-curtain">
+          
             {% if not data.raw %}
-            <div class="rn-box-white"> 
+            <table class="table table-condensed"> 
             
               {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection,data.user_authorizations,data.idx) }} 
             
-            </div>
+            </table>
             {% endif %}
           {% if data.item %} 
 
           <div class="alert  alert-info alert-dismissible alert-top" role="alert">
                         <span class="fs-1-2"><i class="fa fa-eye pad-x-10"></i><strong>viewing</strong> {{data.ring}} / {{ data.idx }}</span>
            </div>
+  </div>
 
             <!--div class="rn-box-title-slim">
               Showing item: {{ data.idx}}
             </div-->
-            <div class="box box-clear">
+            <div class="rn-box-content">
               <div class="row">
 
                   <div class="col-sm-5 col-md-4 col-lg-3">
