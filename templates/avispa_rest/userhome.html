@@ -13,7 +13,7 @@
 <section>
     <div class="container-fluid">
         <div class="row m-10">
-            <div class="col-sm-3 omega box-card">
+            <div class="col-sm-3 omega">
                 <div >
 
 
@@ -172,20 +172,20 @@
                     <br/>
 
                     <!-- START TITLE OF COLLECTIONS -->
-                    <div class="box box-title pt-10 mb-10 bord-left  bw-7">
+                    <div class="box box-title pt-10 mb-10 bord-left  bw-9">
                         <div class="btn-group pull-right" role="group">
                             
                         
                         {% if 'post_a_x' in data.user_authorizations %}
                             <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs pull-right" data-toggle="tooltip" title="Create new collection" data-placement="top"><i class="fa fa-plus"></i></a>
-                        {%endif%}
+                        
 
                           <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-wrench"></i>
                               <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
                               <li>
                                 {% if 'get_a_x' in data.user_authorizations %}
                                     <a href="/{{data.handle}}/_collections">
@@ -193,17 +193,22 @@
                                 {%endif%}</li>
                                 {% for collection in data.collections.collectionlist %}  
                                     {% if collection.valid %}
-                                        <li><a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">{{ collection.collectionname }}</a></li>
+                                        <li> <a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">{{ collection.collectionname }}</a></li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>
                           </div>
+                        {%endif%}
+
                         </div>
 
+
                         
-                            <p class="fs-0-9 fw-a text-gray">   
-                            Collections ( {{ data.collections.collectionlist|length }} )
-                            </p>
+                        <p class="fs-0-9 fw-a text-gray">
+                          {% if 'post_a_x' in data.user_authorizations %} Your {% endif %}
+
+                          Collections ( {{ data.collections.collectionlist|length }} )
+                        </p>
                         
                     </div>
                     <!-- END TITLE OF COLLECTIONS -->
@@ -214,8 +219,11 @@
 
                         
                       
-
-                        <div class="box box-clear bord-left  bw-1" style="padding:20px 20px 0 20px; margin:0 0 10px 0;">
+                        <div class="box bord-left bg-f bw-9 p-5">
+                            <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | RingCollection
+                            </span> 
+                        </div>
+                        <div class="box box-clear bord-left  bw-2 " style="padding:20px 20px 0 20px; margin:0 0 10px 0;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
@@ -249,9 +257,9 @@
                                     {% if 'get_a_x' in data.user_authorizations %}
 
                                     <div class="text-right">
-                                        <div class="pull-right fs-0-9">
+                                        <div class="pull-right fs-1">
                                             <a href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=post&n=10" class="clearlink">
-                                              <p class="blueprint2 fc-d"><i class="fa fa-plus"></i> Add Ring</p>  
+                                              <p class="blueprint2 fc-d"><i class="fa fa-plus-circle"></i> Add Ring</p>  
                                             </a>  
                                         </div>
                                         
@@ -273,9 +281,27 @@
 
 
                     {% if 'post_a_x' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-success btn-xs pull-right">New collection</a>
-                    {%endif%}
-                </div> 
+                       
+                    
+
+                        <!-- NEW COLLECTION -->
+
+                    <div class="box box-title mb-10 bord-left  bw-9">
+                        
+                        {% if 'post_a_x' in data.user_authorizations %}
+                          <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-md pull-right">
+                            <i class="fa fa-plus"></i>
+                        New collection</a>
+                        {%endif%}
+                    </div>
+                    <!-- NEW COLLECTION END-->
+
+                  {%endif%}
+
+                </div>
+
+
+
             
 
                 <div style="display:none;" id="step2"> 

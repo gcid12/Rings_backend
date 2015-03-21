@@ -60,14 +60,13 @@
 
 <!-- START NEW CONTENT --> 
 
-
-          <div class="col-sm-12">
+          
             <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=put{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
-
+      <div class="rn-curtain">
             {% if not data.raw %}
-              <div class="box"> 
+              <table class="table table-condensed"> 
               {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , 'ringdescription','',data.collection, data.user_authorizations) }}       
-              </div>
+              </table>
             {%endif%}
 
             {% if not data.raw %}
@@ -75,17 +74,16 @@
             <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
                    <span class="fs-1-2"><i class="fa fa-pencil pad-x-10"></i> <strong>Updating</strong> 1 item </span>
             </div>
+      </div>
 
-            <div class="box box-title text-right">
+            <div class="box box-clear text-right">
 
             	<span class="pad-x-20"> Public: <input type="checkbox" value="public" name="_public" {% if data.item._public == True %}checked{% endif %} > 
             	</span>
-	              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#helpmodal">
-	              <i class="fa fa-question-circle"></i>
-	              </button>
-	              
-             
-
+              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#helpmodal">
+              <i class="fa fa-question-circle"></i>
+              </button>
+              
             </div>
             {%endif%}
 
@@ -172,7 +170,7 @@
               </div><!-- //close box content -->
               <div class="spa40"></div>
             </form>  
-          </div><!-- close 12 -->  
+         
 
 
 

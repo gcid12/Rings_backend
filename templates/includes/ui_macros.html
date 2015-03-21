@@ -6,16 +6,16 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12">
 
-            <img class="block-center" src="/static/images/case-49.png" style="width:35px;" alt="MyRing">
+            <img class="block-center" src="/static/images/case-44.png" style="width:45px;" alt="MyRing">
             <br/>
  
         {% if 'get_a' in user_authorizations %}
             
             <a class="nounder fs-1-3" href="/{{handle}}/_collections/{{collection}}">
-              <!-- <span style="opacity: 0.5;">  
-                {{ handle|lower() }}   
-              </span> / --> 
-                <span class="fw-c">
+              <!-- <span style="opacity: 0.3;">  
+                {{ handle|lower() }}  / 
+              </span>  --> 
+                <span class="fw-c text-gray">
                     {{ collection|upper() }} 
                 </span>
                 {% if 'get_a_x' in user_authorizations %}
@@ -39,12 +39,15 @@
 
         {%else%}
             
+            
+            <!-- <span class="fs-1-3 " style="opacity: 0.3;">  {{ handle|lower() }}  / </span>  -->
             <span class="fs-1-3 fw-c">{{ collection|upper() }} </span>
             
         {%endif%}
              <br/>
-            <div class="label bl spa5"> Ring Collection
-            </div> 
+            <!-- <div class="label bl spa5"> 
+            Ring Collection
+            </div>  -->
             <p class="text-lgray fs-0-9 spa5"><strong>5,346</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
 
     </div>
@@ -76,7 +79,7 @@
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="rn-box-solo">
+    <div class="rn-box-solo bw-9 ">
       
 
       <div class="spa5"></div>
@@ -85,31 +88,43 @@
         <tr>
           <td align="center" class="hidden-xs" style="width:10%;">
             <div class="bord-right bb-11 pr-20">
-              <img class="block-center" src="/static/images/case-49.png" style="width:65px;" alt="MyRing"> 
+              <img class="block-center" src="/static/images/case-44.png" style="width:85px;" alt="MyRing"> 
               
-              <!-- <span class="label label-xs bl "><img class="block-center" src="/static/images/case-49.png" style="width:0px;" alt="MyRing">  Data Collection
-      </span>  -->
+              <span class="label bl bl-gray"><img class="block-center" src="/static/images/case-49.png" style="width:0px;" alt="MyRing">  <i class="fa fa-user"></i> {{ handle|lower() }} | RingCollection</span> 
+                </span> 
               
 
               
             </div>
           </td>
-          <td align="center" valign="center" class="visible-xs" style="width:10%";> 
-            <div class="" style="margin-top:20px;">
-              <img class="block-center" src="/static/images/case-49.png" style="width:30px;" alt="MyRing"> <br/>
-            </div>
-          </td>
+          
           <td> 
+
+            <div class="pull-right text-right">
+                <div class="label label-info hidden-xs"> Owner: <strong>you</strong> </div>
+                <div class="spa10"></div>
+                <span class="dropdown">
+                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span><span class="hidden-xs">Actions</span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{collection}}">
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
+                  </ul>
+                </span>
+            </div>
 
 
 
             <div class="fs-1-7 text-s1">
               <a class="nounder" href="/{{handle}}">
-                  <img class="user-bar" src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style="pull-left">
+                  <img class="user-bar bord-all bg-1 desaturate" src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style="width:28px;">
                 
-                {{ handle|lower() }}     
+                <!-- <span class="op-0-5">{{ handle|lower() }}</span>  -->  
               </a> 
-              /
+              <!-- <span class="op-0-5">/</span> -->
+              
               <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
               <span class="fw-c text-gray">{{ collection|upper() }}</span>
              </a>
@@ -117,34 +132,25 @@
             <!-- <div class="label bl bl-grayx"><i class="fa fa-user"></i> {{handle|upper }} | Data Collection</div>  -->
 
             <div class="spa10">
-              <span class="label bl2 bl-grayx ">
+              <span class="label bl bl-gray visible-xs" style="width:120px;">
               <!-- <img src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style=" width:20px;">  -->
-              Ring Collection</span> 
+              <i class="fa fa-user"></i> {{ handle|lower() }} | RingCollection</span> 
             </div>
 
 
             <div class="">
             <p class="text-lgray fs-1"><strong>5,346</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
             </div>
+
+            
+
+
           </td>
           
           
 
           <td> 
-            <div class="pull-right text-right">
-                <div class="label label-info"> Owner </div>
-                <div class="spa10"></div>
-                <span class="dropdown">
-                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                    <span class="caret"></span><span class="hidden-xs">Actions</span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{collection}}">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
-                  </ul>
-                </span>
-            </div>
+            
 
             <!-- COLUMN 1 -->
           </td>
@@ -181,7 +187,7 @@
                 
                   <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
                   {% if 'post_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i> item</a>
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i>ADD item</a>
                   {% endif %}
                   <!-- {% if 'put_a' in user_authorizations %}
                   <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
