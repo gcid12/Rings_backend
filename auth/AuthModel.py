@@ -221,6 +221,7 @@ class AuthModel:
                         var x = new Object();
                         x['name'] = doc.name;  
                         x['location'] = doc.location;
+                        x['is_org'] = doc.is_org;
 
                         if(doc.profilepic==''){
                             x['profilepic'] = ''
