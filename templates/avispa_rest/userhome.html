@@ -245,6 +245,9 @@
                                           </td>
                                         </tr>
                                     </table>
+
+                                    {% if 'get_a_x' in data.user_authorizations %}
+
                                     <div class="text-right">
                                         <div class="pull-right fs-0-9">
                                             <a href="/{{data.handle}}/_collections/{{ collection.collectionname }}?rq=post&n=10" class="clearlink">
@@ -252,7 +255,9 @@
                                             </a>  
                                         </div>
                                         
-                                    </div>    
+                                    </div>  
+
+                                    {% endif %}  
 
                                 </div>
                                 <!-- FINISH RING LIST -->
