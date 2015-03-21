@@ -11,7 +11,7 @@
 
 
 <section>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12">
         <br/>
@@ -140,7 +140,7 @@
 
 
 <section>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-9 omega">
           <!-- BOX CONTENT -->
@@ -148,9 +148,9 @@
 
 
                 <!-- START TITLE OF COLLECTIONS -->
-                    <div class="box box-title pt-10 mb-10">
+                    <div class="box box-title pt-10 mb-10 bord-left  bw-9">
                         <div class="btn-group pull-right" role="group">
-                            
+                        
                         
                         {% if 'post_a_x' in data.user_authorizations %}
                             <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs pull-right" data-toggle="tooltip" title="Create new collection" data-placement="top"><i class="fa fa-plus"></i></a>
@@ -161,18 +161,7 @@
                                 <i class="fa fa-wrench"></i>
                               <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
-                              <li>
-                                {% if 'get_a_x' in data.user_authorizations %}
-                                    <a href="/{{data.handle}}/_collections">
-                                    All Collections</a>
-                                {%endif%}</li>
-                                {% for collection in data.collections.collectionlist %}  
-                                    {% if collection.valid %}
-                                        <li><a href="/{{ data.handle }}/_collections/{{ collection.collectionname }}?rq=put">{{ collection.collectionname }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
+                            
                           </div>
                         </div>
            
@@ -187,34 +176,14 @@
                     {% for collection in data.collections.collectionlist %}  
                       {% if collection.valid %}
 
-                        <div class="box bord-left bg-f bw-7 p-5">
-                          
-                            <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | DataCollection
+                        <div class="box bord-left bg-f bw-9 " >
+                            <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | RingCollection
                             </span> 
-                          
-                            {% if 'get_a_x' in data.user_authorizations %}
-                            
-                                <span class="dropdown">
-                                  <a class="dropdown-toggle" id="menu_{{collection.collectionname}}" data-toggle="dropdown" aria-expanded="false">
-                                    
-                                    <span class="caret text-black"></span>
-                                  </a>
-                                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection.collectionname}}">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{collection.collectionname}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
-                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Invite</a></li>
-                                    <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-arrow-right"></i> Share</a></li>
-                                  </ul>
-                                </span>
-                              
-                          
-                            {% endif %}
-
-                         
                         </div>
-                        <div class="box box-clear bord-left  bw-7" style="padding:0px 10px 0 20px; margin:0 0 10px 0;">
+                        <div class="box box-clear bord-left  bw-2" style="padding:20px 20px 0 20px; margin:0 0 10px 0;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
-                                <div class="col-xs-12 col-sm-3">
+                                <div class="col-xs-12 col-sm-4">
                                     <div class="" style=" margin-bottom:-20px;">
        
                                         {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
@@ -223,14 +192,14 @@
                                 <!-- END COLLECTION TITLE -->
 
                                 <!-- START RING LIST -->
-                                <div class="col-xs-12 col-sm-9">
+                                <div class="col-xs-12 col-sm-8">
                                     <table width="100%" border="0">
                                         <tr bgcolor="">
                                           <td colspan="3" style="padding:0 2px 0px 2px;">
-                                            <table class="table table-striped table-bordered">
+                                            <table class="table table-bordered">
 
                                             {% for ring in collection.rings %}    
-                                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#965aa9', ring.count , '85', '',data.user_authorizations) }}
                                             {% endfor %}
   
 
@@ -316,7 +285,7 @@
                                      
             </div> 
           {%if 'post_a_m' in data.user_authorizations %}
-            <a href="/{{data.handle}}/_teams">New Team</a> 
+            <a href="/{{data.handle}}/_teams"><i class="fa fa-plus-circle"></i> New Team</a> 
           {%endif%}
 
         </div><!-- close 2 --> 

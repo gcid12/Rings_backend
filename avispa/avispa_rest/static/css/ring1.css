@@ -52,6 +52,10 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .darklink:focus{color:#000; text-decoration:none !important; outline:0 !important;}
 
 
+img.desaturate { 
+-webkit-filter: grayscale(100%);
+filter: grayscale(100%);
+}
 
 .float-right{float:right;}
 .float-left{float:left;}
@@ -236,6 +240,8 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .spa5{padding:3px 0;}
 
 }
+
+.op-0-5{opacity:0.5;}
 
 /*BACKGROUNDS*/
 
@@ -440,10 +446,12 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .bc-11{border-color: #CCC;}
 .bc-12{border-color: #666;}
 .bc-13{border-color: #818181;}
+.bc-14{border-color: rgba(0, 0, 0, 0.05); }
 
 .bw-2{border-width:2px;}
 .bw-5{border-width:5px;}
 .bw-7{border-width:7px;}
+.bw-9{border-width:9px;}
 
 
 .r-tag{
@@ -891,7 +899,7 @@ margin-left: 0;
 background-color: #FFF;
 border-style: solid;
 border-color: #ddd;
-border-width: 0 0 2px 0;
+border-width: 0 0 2px 9px;
 border-radius: 0 0 8px 8px;
 padding: 7px 30px;
 margin: 0px 4px 4px 4px;
