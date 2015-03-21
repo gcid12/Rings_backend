@@ -8,10 +8,15 @@
 <!-- CONTENT HERE -->
 
 
-<div class="container" >
+<div class="container-fluid" >
 
 <section>
       <!-- BOX CONTENT --> 
+
+
+      
+
+
           <!-- TABS WILL SHOW -->
         {% if data.collection %} 
             {% if not data.raw %} 
@@ -28,7 +33,8 @@
       {% if data.collection %}
       {% if not data.raw %} 
             
-          <div class="col-sm-offset-1 col-sm-11 bb-8 bg-g">
+          <div class="col-sm-12">
+            <div class="bb-8" style="margin:0 3%;">
             
                 
                     {% endif %}
@@ -38,7 +44,7 @@
                       {% if data.collection %} 
                       {% if not data.raw %} 
                     
-                
+            </div>    
           </div>
       {%endif%}
       {%endif%}
