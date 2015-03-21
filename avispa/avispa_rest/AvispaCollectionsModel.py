@@ -4,16 +4,16 @@ import sys
 from datetime import datetime 
 from couchdb.http import ResourceNotFound
 
-from MyRingCouchDB import MyRingCouchDB
+import couchdb
 from MainModel import MainModel
-from env_config import COUCHDB_USER, COUCHDB_PASS
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 
 class AvispaCollectionsModel:
 
     def __init__(self):
 
-        MCD = MyRingCouchDB()
-        self.couch=MCD.instantiate_couchdb_as_admin()
+
+        self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.user_database = 'myring_users'
 

@@ -1,7 +1,8 @@
 # AuthModel.py
-from MyRingCouchDB import MyRingCouchDB
+
+import couchdb
 from MyRingUser import MyRingUser
-from env_config import COUCHDB_USER, COUCHDB_PASS
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
 
@@ -10,8 +11,8 @@ class MainModel:
 
     def __init__(self):
 
-        MCD = MyRingCouchDB()
-        self.couch=MCD._instantiate_couchdb_as_admin()
+
+        self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.user_database = 'myring_users'
 

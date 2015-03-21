@@ -629,12 +629,15 @@ def index():
 
     data = {}
     data['handle']='x' #you have to grab this from the session user
-    return render_template("avispa_rest/intro.html", data=data)
+    #return render_template("avispa_rest/intro.html", data=data)
+    return redirect('/'+current_user.id+'/_home')
 
 
 @avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
 
 def imageserver(filename,depth1,depth2):
+
+    print('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
 
     avispa_rest.static_folder=IMAGE_STORE+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
