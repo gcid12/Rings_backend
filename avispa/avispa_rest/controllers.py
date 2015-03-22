@@ -60,10 +60,12 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data['cu_profilepic'] = cu_user_doc['profilepic']
     data['cu_location'] = cu_user_doc['location']
 
+
     if current_user.id == handle:
         data['handle_actualname'] = cu_user_doc['name']
         data['handle_profilepic'] = cu_user_doc['profilepic']
         data['handle_location'] = cu_user_doc['location']
+        data['is_org'] = False
 
     else:
         handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
@@ -71,6 +73,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             data['handle_actualname'] = handle_user_doc['name']
             data['handle_profilepic'] = handle_user_doc['profilepic']
             data['handle_location'] = handle_user_doc['location']
+            if 'is_org' in handle_user_doc:
+                if handle_user_doc['is_org']:
+                    data['is_org'] = True
+                else:
+                    data['is_org'] = False
 
     if collection:       
         data['collection'] = collection
@@ -193,6 +200,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         data['handle_actualname'] = cu_user_doc['name']
         data['handle_profilepic'] = cu_user_doc['profilepic']
         data['handle_location'] = cu_user_doc['location']
+        data['is_org'] = False
 
     else:
         handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
@@ -200,6 +208,12 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
             data['handle_actualname'] = handle_user_doc['name']
             data['handle_profilepic'] = handle_user_doc['profilepic']
             data['handle_location'] = handle_user_doc['location']
+
+            if 'is_org' in handle_user_doc:
+                if handle_user_doc['is_org']:
+                    data['is_org'] = True
+                else:
+                    data['is_org'] = False
 
 
     data['handle']=handle
@@ -380,6 +394,7 @@ def home_dispatcher(handle):
             data['handle_actualname'] = cu_user_doc['name']
             data['handle_profilepic'] = cu_user_doc['profilepic']
             data['handle_location'] = cu_user_doc['location']
+            data['is_org'] = False
 
         else:
             handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
@@ -387,7 +402,13 @@ def home_dispatcher(handle):
                 data['handle_actualname'] = handle_user_doc['name']
                 data['handle_profilepic'] = handle_user_doc['profilepic']
                 data['handle_location'] = handle_user_doc['location']
-    
+
+                if 'is_org' in handle_user_doc:
+                    if handle_user_doc['is_org']:
+                        data['is_org'] = True
+                    else:
+                        data['is_org'] = False
+
 
         
         peopleteams = MAM.is_org(handle) 
@@ -539,6 +560,7 @@ def people_dispatcher(depth,handle,person=None):
         data['handle_actualname'] = cu_user_doc['name']
         data['handle_profilepic'] = cu_user_doc['profilepic']
         data['handle_location'] = cu_user_doc['location']
+        data['is_org'] = False
 
     else:
         handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
@@ -546,6 +568,12 @@ def people_dispatcher(depth,handle,person=None):
             data['handle_actualname'] = handle_user_doc['name']
             data['handle_profilepic'] = handle_user_doc['profilepic']
             data['handle_location'] = handle_user_doc['location']
+
+            if 'is_org' in handle_user_doc:
+                if handle_user_doc['is_org']:
+                    data['is_org'] = True
+                else:
+                    data['is_org'] = False
 
 
     if 'redirect' in data:
@@ -606,6 +634,7 @@ def teams_dispatcher(depth,handle,team=None):
         data['handle_actualname'] = cu_user_doc['name']
         data['handle_profilepic'] = cu_user_doc['profilepic']
         data['handle_location'] = cu_user_doc['location']
+        data['is_org'] = False
 
     else:
         handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
@@ -613,6 +642,13 @@ def teams_dispatcher(depth,handle,team=None):
             data['handle_actualname'] = handle_user_doc['name']
             data['handle_profilepic'] = handle_user_doc['profilepic']
             data['handle_location'] = handle_user_doc['location']
+
+            if 'is_org' in handle_user_doc:
+                if handle_user_doc['is_org']:
+                    data['is_org'] = True
+                else:
+                    data['is_org'] = False
+
 
 
     if 'redirect' in data:
