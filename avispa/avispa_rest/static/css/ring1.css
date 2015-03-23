@@ -159,6 +159,27 @@ filter: grayscale(100%);
 .p-15{padding:15px !important;}
 .p-50{padding:50px 0 !important;}
 
+.p-x-4{padding:0 4px;}
+.p-x-8{padding:0 8px;}
+.p-x-10{padding:0 10px;}
+.p-x-16{padding:0 16px;}
+.p-x-20{padding:0 20px;}
+.p-x-32{padding:0 32px;}
+.p-y-20{padding:20px 0 !important;}
+.p-y-10{padding:10px 0 !important;}
+
+/*DEPRECATED DONT USE, USE SIMPLER CLASS*/
+.pad-x-4{padding:0 4px;}
+.pad-x-8{padding:0 8px;}
+.pad-x-10{padding:0 10px;}
+.pad-x-16{padding:0 16px;}
+.pad-x-20{padding:0 20px;}
+.pad-x-32{padding:0 32px;}
+.pad-y-20{padding:20px 0 !important;}
+.pad-y-10{padding:10px 0 !important;}
+
+
+
 .m-0{margin:0px !important;}
 .m-10{margin:10px !important;}
 .m-15{margin:15px !important;}
@@ -185,14 +206,7 @@ filter: grayscale(100%);
 .mb-20{margin-bottom:20px;}
 
 
-.pad-x-4{padding:0 4px;}
-.pad-x-8{padding:0 8px;}
-.pad-x-10{padding:0 10px;}
-.pad-x-16{padding:0 16px;}
-.pad-x-20{padding:0 20px;}
-.pad-x-32{padding:0 32px;}
-.pad-y-20{padding:20px 0 !important;}
-.pad-y-10{padding:10px 0 !important;}
+
 
 .margin-b-10{margin-bottom:10px;}
 .margin-b-20{margin-bottom:20px;}
@@ -876,6 +890,36 @@ background-color:#fff;
 color:#ACBDC4;
 }
 
+.box-help{
+    border:1px dashed #33ccff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+    border-color:#33ccff;
+    color:#33ccff;
+    /*background-color: white; */
+    font-weight: 100; 
+}
+
+.alert-dismissible-help .close {
+    position: relative;
+    top: -2px;
+    right: 0px;
+    color: inherit;
+}
+
+
+.btn-help{
+  -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+  color:#fff;
+  padding:3px 10px;
+  font-size:0.9em;
+  margin:0 0px;
+
+}
+
 
 .rn-curtain-out{margin:0 30px 50px 30px;
 
@@ -1196,6 +1240,8 @@ border-radius: 50px;  }
 
 }
 
+
+
 .blueprint:link{text-decoration:none !important; outline:0 !important;}
 .blueprint:active{text-decoration:none !important; outline:0 !important;}
 .blueprint:focus{text-decoration:none !important; outline:0 !important;}
@@ -1408,8 +1454,18 @@ margin: 1px auto;
   color: #dddddd;
 }
 
+/*REWRITES*/
 
+.modal-header {
+border-bottom: 0px solid #E5E5E5;
+color:#33ccff;
+}
 
+.modal-footer {
+    border-top: 0px solid #E5E5E5;
+    color:#33ccff;
+
+  }
 
 
 

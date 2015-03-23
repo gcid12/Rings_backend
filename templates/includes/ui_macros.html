@@ -121,9 +121,9 @@
               <a class="nounder" href="/{{handle}}">
                   <img class="user-bar bord-all bg-1 desaturate" src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style="width:28px;">
                 
-                <!-- <span class="op-0-5">{{ handle|lower() }}</span>  -->  
+                <span class="op-0-5">{{ handle|lower() }}</span>   
               </a> 
-              <!-- <span class="op-0-5">/</span> -->
+              <span class="op-0-5">/</span>
               
               <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
               <span class="fw-c text-gray">{{ collection|upper() }}</span>
@@ -964,5 +964,52 @@
         </span>
 
 {% endmacro %}
+
+
+{% macro whatis(title, text, icon, iconfile) %}
+
+  <div class="box box-help">
+
+    <table>
+      <tr>
+        <td colspan="2">
+          <div class="pull-right">
+            <i class="fa fa-arrow-up fa-2x"></i>
+          </div>
+        
+          <p class="fs-1-3">What is a Data collection?</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:20px;">
+          <img src="/static/images/box.png" class="img-responsive block-center" style="width:80px;"> 
+        </td>
+      
+        <td>
+          
+           <p class="fs-0-8">
+
+
+            It's a collection of information that you want to make available to the world via an API. It can be text, photos, videos and/ or any digital format.
+            </p>
+            
+            
+            <div class="pull-right fs-1">
+              <a href="" class="clearlink">
+                <p class="blueprint2 fc-d"><i class="fa fa-times"></i> Close</p>  
+              </a>  
+          </div>
+
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+{% endmacro %}
+
+
+
+
 
 

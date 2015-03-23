@@ -61,7 +61,7 @@
                         <div class="bb-11 mr-70 ml-15 spa5"></div>
                         <div class="col-xs-12 hidden-xs">
                         
-                            <p class="fs-0-9 fw-a text-gray">Organizations</p>
+                            <p class="fs-0-9 fw-a text-gray" id="step666">Organizations</p>
                             <!-- <span class="dropdown">
                                 <a class="dropdown-toggle text-s1" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
                                   Organizations
@@ -90,10 +90,13 @@
                             {% if 'post_a' in data.user_authorizations %}
 
                             <div style="width:40px; height:40px;">
-                                <a href="/_orgregister" data-toggle="tooltip" title="Join or Create" class="hidden-xs"><div class="pic-org-1 blueprint"><i class="fa fa-plus"></i></div></a>
+                                <a href="/_orgregister" data-toggle="tooltip" title="Create a Data organization" class="hidden-xs"><div class="pic-org-1 blueprint"><i class="fa fa-plus"></i></div></a>
                             </div>
 
                             {%endif%}
+
+                      
+
                         </div>
                     </div>
                 </div>
@@ -107,12 +110,47 @@
                     {#{data.ring_counts}#}
                     {#{data.total_items}#}
                     <div class="row">
-                        <div class="col-sm-12" id="step1">
+                        <div class="col-sm-12 " id="step1">
+
+                            <!-- <div class="box box-help" style="margin-bottom:-90px; width:200px;">
+                                <a href="/"><i class="fa fa-times pull-right fc-d"></i></a>
+
+                                <p class="fs-1-3">
+                                  This is your <br/> user graph
+                                </p>
+                                <a data-toggle="modal" data-target="#intro-graph" class="btn-help btn-info text-s1 text-center">
+                                  <i class="fa fa-lightbulb-o"></i>
+                                   &nbsp; Learn More
+                                </a>
+
+
+
+                                  
+                            </div> -->
+                            <div class="box box-help alert-dismissible-help" role="alert" style="margin-bottom:-200px;">
+
+                           
+
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="right:0px;">&times;</span></button>
+
+                                <strong>This is your User Graph! </strong> It shows your progress.
+
+                                <a data-toggle="modal" data-target="#intro-graph" class="btn-help btn-info text-s1 text-center">
+                                
+                                 Learn More </a>
+
+                                
+                                 <img src="/static/images/graphfake.jpg" class="img-responsive"> 
+                                 
+
+                            </div>
+
 
                             <div id="usergraph" class="ugp-container">
+
                             </div>
                             <div class="lead fs-1 text-lgray hidden-xs" id="chisme" style="float:right;">
-                                <a href="/" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4"><i class="fa fa-question-circle"></i></a>
+                                <a data-toggle="modal" data-target="#intro-graph" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4"><i class="fa fa-question-circle"></i></a>
                             </div>
                              <!-- To use the graph, just load "days" with an array full of numbers, the javascript will adapt to them This is a Work in Progress.. -->
 
@@ -282,19 +320,63 @@
 
                     {% if 'post_a_x' in data.user_authorizations %}
                        
+                       {% if data.collections.collectionlist|length ==0  %}
+
+                          
+                          <div class="row">
+                            <div class="col-xs-12 text-center">
+                             
+                              <div class="box box-help">
+
+                              <img src="/static/images/box2.png" class="img-responsive block-center pull-left" style="width:100px;"> 
+
+
+                                <p class="fs-1-3"><i class="fa fa-arrow-up"></i>You have no Collections. Create one here:
+                                  
+                                </p>
+
+                                
+                                  <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
+                                    <i class="fa fa-plus"></i> &nbsp; Create My first collection
+                                  </a>
+
+                                  
+
+                                  <a data-toggle="modal" data-target="#intro-collection" class="btn-help btn-info" style="margin:0 5px;">
+                                    <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Collection?
+                                  </a>
+
+                                  
+                              </div>
+                                
+                            </div>
+                           </div>
+
+                           
+
+                         
+
+                       {% else %}
+                          
+                            <!-- NEW COLLECTION -->
+
+                            <div class="box box-title mb-10 bord-left bw-9">
+                                
+                                {% if 'post_a_x' in data.user_authorizations %}
+                                  <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-md ">
+                                    <i class="fa fa-plus"></i>
+                                New collection</a>
+                                {%endif%}
+                            </div>
+
+                            
+                            <!-- NEW COLLECTION END-->
+
+
+                       {% endif %}
                     
 
-                        <!-- NEW COLLECTION -->
-
-                    <div class="box box-title mb-10 bord-left  bw-9">
-                        
-                        {% if 'post_a_x' in data.user_authorizations %}
-                          <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-md pull-right">
-                            <i class="fa fa-plus"></i>
-                        New collection</a>
-                        {%endif%}
-                    </div>
-                    <!-- NEW COLLECTION END-->
+                    
 
                   {%endif%}
 
@@ -423,7 +505,72 @@
 
           intro.start();
       }
-    </script>   
+    </script>  
+
+
+<!-- MODALS FOR THIS PAGE / LOAD AT THE END -->
+
+
+<!-- MODAL WHAT IS A USER GRAPH -->
+
+
+ <div class="modal fade" id="intro-graph" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <!-- <h4 class="modal-title" id="myModalLabel">The User Graph</h4> -->
+        <p class="fs-2">The User Graph</p>
+        <p class="fs-0-8">The User graph measures your progress and shows your records.</p>
+      </div>
+      <div class="modal-body">
+
+      
+        <img class="img-responsive" src="/static/images/graphexample.jpg">
+        <div class="box box-help alert-dismissible-help" role="alert">
+
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="right:0px;">&times;</span></button>
+          <a href="#" class="alert-link nounder"> <i class="fa fa-warning"></i> NOTE: If you don't see any graph in your home is because there's not enough activity recorded.</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL WHAT IS A COLLECTION -->
+
+ <div class="modal fade" id="intro-collection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <!-- <h4 class="modal-title" id="myModalLabel">The User Graph</h4> -->
+        <p class="fs-2">What is a Data Collection?</p>
+        
+      </div>
+      <div class="modal-body">
+          <p class="fs-2">Answer:</p>
+      
+            <p class="fs-1-2">
+            A collection it's a grouped set of data or digital content that is available to the world via an API. It can be text, photos, videos or any digital file. <!-- <a href="" class="clearlink fs-0-8">(long answer here)</a> -->
+            </p>
+            <img class="img-responsive" src="/static/images/wcollection.gif">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
   
 {% endblock %}
 
