@@ -870,7 +870,7 @@ class MyRingPatch:
 
     def p20150321(self,request,*args):
         '''
-        This patch updates auth/userbasic to have flag org_user installed'
+        This patch updates auth/userbasic to have flag org_user installed
         Run it once per system 
         '''
 
