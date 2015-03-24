@@ -26,8 +26,7 @@
 
 <script type="text/javascript">
 $(window).load(function(){
-		mixpanel.track("REST activity", {
-		{% if data.method %}"method":"{{data.method}}",{%endif%}
+		mixpanel.track("{{data.method}}", {
 		{% if data.collection %}"collection":"{{data.collection}}",{%endif%}
 	    {% if data.handle %}"handle": "{{data.handle}}",{%endif%}
 	    {% if data.ring %}"ring":"{{data.ring}}",{%endif%}
