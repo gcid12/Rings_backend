@@ -23,6 +23,20 @@
 <script type="text/javascript" src="{{ url_for('static',filename='js/intro.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.mmenu.min.all.js') }}"></script>
 
+
+<script type="text/javascript">
+$(window).load(function(){
+		mixpanel.track("{{data.method}}", {
+		{% if data.collection %}"collection":"{{data.collection}}",{%endif%}
+	    {% if data.handle %}"handle": "{{data.handle}}",{%endif%}
+	    {% if data.ring %}"ring":"{{data.ring}}",{%endif%}
+	    {% if data.idx %}"idx": "{{data.idx}}",{%endif%}
+	    "currentuser": "{{ current_user.id }}"
+	});
+
+});
+</script>
+
 <script type="text/javascript">
 $(window).load(function(){
 

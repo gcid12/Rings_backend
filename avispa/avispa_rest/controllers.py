@@ -41,8 +41,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     else:
         method = request.method
 
-    m = method+depth
     data = {}
+
+    m = method+depth
+    data['method'] = m
+    
 
     MAM = MainModel()
     authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
@@ -176,8 +179,12 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         method = request.method
 
     #method = request.method
-    m = method+depth
+
     data = {}
+
+    m = method+depth
+    data['method'] = m
+    
 
 
     MAM = MainModel()
@@ -259,6 +266,7 @@ def home_dispatcher(handle):
     if MAM.user_exists(handle):
 
         method= 'GET_a_home'
+        data['method'] = method
         depth = '_a'
         authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle)
         if not authorization_result['authorized']:
@@ -533,6 +541,8 @@ def people_dispatcher(depth,handle,person=None):
     #method = request.method
     m = method+depth
 
+    data['method'] = m
+
 
     #depth = '_a_p'
     authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle)
@@ -604,6 +614,7 @@ def teams_dispatcher(depth,handle,team=None):
 
     #method = request.method
     m = method+depth
+    data['method'] = m
 
     #depth = '_a_n'
     authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle,team=team)

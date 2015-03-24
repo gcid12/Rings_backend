@@ -24,7 +24,7 @@
           <hr/>
 
 
-          <form action="" method="POST" role="form">
+          <form action="" method="POST" role="form" id="login">
             <div class="input-group input-group-md">
 
               <span class="input-group-addon fw-c" id="sizing-addon1"><i class="fa fa-envelope"></i></span>
@@ -69,5 +69,12 @@
 
   
 </div>
+{% endblock %}
  
+{% block footscripts %}
+  <script type="text/javascript">
+    $(window).load(function(){
+        mixpanel.track_forms("#login", "Login Request");
+      });  
+  </script>
 {% endblock %}
