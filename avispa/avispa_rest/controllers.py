@@ -41,8 +41,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     else:
         method = request.method
 
-    m = method+depth
     data = {}
+
+    m = method+depth
+    data['method'] = m
+    
 
     MAM = MainModel()
     authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
