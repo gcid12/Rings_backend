@@ -26,13 +26,13 @@
 
 <script type="text/javascript">
 $(window).load(function(){
-
-		mixpanel.track("{{data.method}}", {
-		"currentuser": {{ current_user.id }},
-		"method":{{data.method}},
-	    "handle": {{data.handle}},
-	    "ring":{{data.ring}},
-	    "idx": {{data.idx}}
+		mixpanel.track("REST activity", {
+		{% if data.method %}"method":"{{data.method}}",{%endif%}
+		{% if data.collection %}"collection":"{{data.collection}}",{%endif%}
+	    {% if data.handle %}"handle": "{{data.handle}}",{%endif%}
+	    {% if data.ring %}"ring":"{{data.ring}}",{%endif%}
+	    {% if data.idx %}"idx": "{{data.idx}}",{%endif%}
+	    "currentuser": "{{ current_user.id }}"
 	});
 
 });
