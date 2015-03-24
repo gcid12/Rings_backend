@@ -1,4 +1,4 @@
-{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% with errors = get_flashed_messages(category_filter=["ER"]) %}
 {% if errors %}
   { "error": "{% for msg in errors %}{{ msg }}{% endfor %}"}
 {% else %}

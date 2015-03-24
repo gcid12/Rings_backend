@@ -279,7 +279,7 @@ class MyRingTool:
     def delete_via_aud(self,request,*args):
 
         rq = 'DELETE image/'+request.args.get('id')
-        flash(u'Succesfully deleted','message')
+        flash(u'Succesfully deleted','message','UI')
 
         d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
 
@@ -295,7 +295,7 @@ class MyRingTool:
 
         self.AVM.ring_set_db_views(db_ringname)
 
-        flash(u'Views synced to ring :'+db_ringname,'message')
+        flash(u'Views synced to ring :'+db_ringname,'message','UI')
         rq='Loading the Views into CouchDB via python'
 
         d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}

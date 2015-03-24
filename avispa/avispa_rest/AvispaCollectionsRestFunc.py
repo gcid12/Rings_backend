@@ -52,7 +52,7 @@ class AvispaCollectionsRestFunc:
         if result:
             print('Awesome , you just created a new Collection')
             #msg = 'Item put with id: '+idx
-            flash("Your new Collection has been created")
+            flash("Your new Collection has been created",'UI')
             redirect = '/'+handle
             d = {'redirect': redirect, 'status':200}
 
@@ -167,7 +167,7 @@ class AvispaCollectionsRestFunc:
         if result:
             print('Awesome , you just updated a Collection')
             #msg = 'Item put with id: '+idx
-            flash("Your Collection has been updated")
+            flash("Your Collection has been updated",'UI')
             redirect = '/'+handle+'/_collections/'+collection
             d = {'redirect': redirect, 'status':200}
 
@@ -227,7 +227,7 @@ class AvispaCollectionsRestFunc:
         if result:
             print('Awesome , you just deleted a Collection')
             #msg = 'Item put with id: '+idx
-            flash("Your Collection has been deleted")
+            flash("Your Collection has been deleted",'UI')
             redirect = '/'+handle
             d = {'redirect': redirect, 'status':200}
 

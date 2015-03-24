@@ -81,7 +81,7 @@ class RingBuilder:
 
             except(PreconditionFailed):
                 print('The Ring '+ ringname +' database already exists')
-                flash('The Ring '+ ringname+' already exists')
+                flash('The Ring '+ ringname+' already exists','ER')
                 return False
 
 
@@ -189,7 +189,7 @@ class RingBuilder:
                     r = requests.get(ring_url)
                 except(requests.exceptions.ConnectionError):
                     print('The connection was refused')
-                    flash('The connection to the parent ring was refused. Check the URL in your browser.')
+                    flash('The connection to the parent ring was refused. Check the URL in your browser.','ER')
                     return False
                 #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
                 
@@ -251,7 +251,7 @@ class RingBuilder:
                 print('New Ring database created:'+handle+'_'+ringname+'_'+ringversion)
             except(PreconditionFailed):
                 print('The Ring '+ ringname +' database already exists')
-                flash('The Ring '+ ringname+'_'+ringversion +' already exists')
+                flash('The Ring '+ ringname+'_'+ringversion +' already exists','ER')
                 return False
 
             try:

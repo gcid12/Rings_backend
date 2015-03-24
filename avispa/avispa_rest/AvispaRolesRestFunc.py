@@ -88,7 +88,7 @@ class AvispaRolesRestFunc:
             content = "Click here to start: "+host_url+"/_roles/"+handle+"/"+ring+"?rq=put&k="+token+"&e="+to
             self.EMM.send_one_email(to,subject,content)
             
-        flash("Invitation emails sent.")
+        flash("Invitation emails sent.",'UI')
 
         #3. If it appears to be a MyRingID, check if it exists
 
@@ -114,7 +114,7 @@ class AvispaRolesRestFunc:
                 
             else:
                 print(invite_handle+' is not a MyRingID. What do you want to do with it?')
-                flash('Could not find '+invite_handle+'. ')
+                flash('Could not find '+invite_handle+'. ','ER')
 
 
         

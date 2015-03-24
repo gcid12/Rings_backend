@@ -29,15 +29,19 @@ def login():
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
-                    flash("Logged in!")
+                    flash("Logged in!",'UI')
+                    flash("_login OK",'MP')
                     #flash("Redirecting to : /"+user.id)
                     return redirect('/'+user.id+'/_home')
                 else:
                     flash("unable to log you in")
+                    flash("_login FAILED",'MP')
             else:
-                flash("User/Password is not correct")
+                flash("User/Password is not correct",'UI')
+                flash("_login FAILED User/Password incorrect",'MP')
         else:
-            flash("User not active")
+            flash("User not active",'UI')
+            flash("_login FAILED User not active",'MP')
 
     data = {}
     data['method'] = '_login'
@@ -71,19 +75,22 @@ def register():
 
                 #return redirect('/_login')
                 print('Now log in the user')
+                flash("_register OK",'MP')
 
                 #Go through regular login process
                 userObj = User(email=email)
                 userview = userObj.get_user()
                 print(userObj)
                 if login_user(userObj, remember="no"):
-                        flash("Logged in. Welcome to MyRing!")
+                        flash("Logged in. Welcome to MyRing!",'UI')
+                        flash("_login OK, Automatic",'MP')
                         #flash("Redirecting to : /"+user.id)
                         return redirect('/'+userview.id+'/_home')
       
                 else:
-                    flash("Please enter your credentials ")
-                    return redirect('/_login')
+                    flash("Please enter your credentials ",'UI')
+                    flash("_login KO, Automatic",'MP')
+                    return redirect('/_login','UI')
             else:
                 
                 return redirect('/_register')
@@ -92,7 +99,8 @@ def register():
         except(KeyError):
         #else:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
-            flash("unable to register with that email address")
+            flash("unable to register with that email address",'UI')
+            flash("_register KO, Unable to register with that email address",'MP')
             current_app.logger.error("Error on registration ")
         
     data = {}
@@ -122,12 +130,14 @@ def orgregister():
         #try:
         if True:
             user.set_user()
+            flash("_orgregister OK",'MP')
             return redirect('/'+username+'/_home')
 
         #except:
         else:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
-            flash("unable to register with that email address")
+            flash("unable to register with that email address",'UI')
+            flash("_orgregister KO, Unable to register with that email address",'MP')
             current_app.logger.error("Error on registration ")
         
     data = {}
@@ -186,7 +196,8 @@ def forgot():
                 EMO = EmailModel()
                 if EMO.send_one_email(to,subject,content):
                     print("Sending password recovery email to: "+user.email)
-                    flash("Please check your mail's inbox for the password recovery instructions.")
+                    flash("Please check your mail's inbox for the password recovery instructions.",'UI')
+                    flash("_forgot OK, sent recovery email",'MP')
                 else:
                     print("Something went wrong with sending the email but no error was raised")
 
@@ -222,10 +233,12 @@ def forgot():
                 print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
                 print("Error sending password revovery email")
                 flash("There was an error sending the password recovery instructions")
+                flash("_forgot KO, error sending recovery email",'MP')
                 pass
 
         else:
             flash("Could not find this email")
+            flash("_forgot KO, could not find email",'MP')
 
     elif request.method == 'GET' and request.args.get('k') and request.args.get('e'):
         data = {}
@@ -234,9 +247,11 @@ def forgot():
         userObj = User()
         if userObj.is_valid_password_key(data['email'],data['key']):
             print('Token authorized')
+            flash("_forgot OK, Token authorized",'MP')
             return render_template("/auth/new_password.html", data=data)
         else:
             print('Token Rejected')
+            flash("_forgot KO, Token not authorized",'MP')
             
 
     elif (request.method == 'POST' and 
@@ -255,12 +270,15 @@ def forgot():
                 passhash = flask_bcrypt.generate_password_hash(request.form.get('password'))
                 userObj.set_password(passhash)
                 flash('Password changed')
+                flash("_forgot OK, Password changed",'MP')
                 return redirect('_login')
             else:
                 flash('Token Rejected')
+                flash("_forgot KO, Token rejected",'MP')
                 return redirect('_login')
         else:
             flash('Both passwords need to match')
+            flash("_forgot KO, passwords don't match",'MP')
             return redirect('/_forgot?k='+request.form.get('k')+'&e='+request.form.get('e'))
             
               
@@ -306,9 +324,11 @@ def profile_post(handle):
     
     user = User(username=current_user.id)
     if user.update_user_profile(request):
-        flash('Profile updated')
+        flash('Profile updated','UI')
+        flash("_profile OK, Profile updated",'MP')
     else:
         flash('Profile not updated. There was a problem')
+        flash("_profile KO, Profile not updated",'MP')
 
     return redirect('/'+current_user.id+'/_home')
 
@@ -325,8 +345,10 @@ def orgprofile_get(handle):
         data['user'] = user
         data['handle'] = handle
         data['method'] = '_orgprofile'
+        flash("_orgprofile OK, Showing orgprofile",'MP')
 
     else:
+        flash("_orgprofile KO, User doesn't belong to owner team",'MP')
         return redirect('/'+current_user.id+'/_profile')
 
     #This is for the current user thumbnail in the upperbar only
@@ -347,9 +369,11 @@ def orgprofile_post(handle):
     
     user = User(username=handle)
     if user.update_user_profile(request):
-        flash('Organization information updated')
+        flash('Organization information updated','UI')
+        flash("_profile OK, Orgprofile updated",'MP')
     else:
-        flash('Organization information not updated. There was a problem')
+        flash('Organization information not updated. There was a problem','UI')
+        flash("_profile KO, Profile not updated",'MP')
 
     return redirect('/'+handle+'/_home')
 
@@ -365,7 +389,8 @@ def reauth():
 @auth_flask_login.route("/_logout")
 def logout():
     logout_user()
-    flash("Logged out.")
+    flash("Logged out.",'UI')
+    flash('_logout OK','PM')
     return redirect('/_login')
 
 

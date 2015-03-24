@@ -93,7 +93,7 @@ class AvispaTeamsRestFunc:
                 
                 if teamd['teamname'] == team:
                     #This team exists in this handle!
-                    flash('This team exists already. Use a different name')
+                    flash('This team exists already. Use a different name','ER')
                     redirect = '/'+handle+'/_teams' 
                     d = {'redirect': redirect, 'status':200}
                     return d 
@@ -101,10 +101,10 @@ class AvispaTeamsRestFunc:
             if self.MAM.add_team(handle,team,current_user.id):
                 print('Awesome , you just created team '+ team +'.')
                 #msg = 'Item put with id: '+idx
-                flash('Awesome , you just created team '+ team +'.')
+                flash('Awesome , you just created team '+ team +'.','UI')
                 redirect = '/'+handle+'/_teams'
             else:
-                flash('There was an error adding team: '+ team +'.')
+                flash('There was an error adding team: '+ team +'.','UI')
                 redirect = '/'+handle+'/_teams'
 
         else:
@@ -175,37 +175,37 @@ class AvispaTeamsRestFunc:
             member = request.form.get('newmember')
             if self.ATM.post_a_m_n_members(handle,team,member):
                 print(member + ' has been added to the team.')
-                flash(member + ' has been added to the team.')
+                flash(member + ' has been added to the team.','UI')
             else:
                 print(member + ' is already part of this team.')
-                flash(member + ' is already part of this team.')
+                flash(member + ' is already part of this team.','UI')
 
         if 'delmember' in request.args: 
             member = request.args.get('delmember')
             if self.ATM.delete_a_m_n_members(handle,team,member):
                 print(member + ' has been deleted from the team.')
-                flash(member + ' has been deleted from the team.')
+                flash(member + ' has been deleted from the team.','UI')
             else:
                 print('There was an issue deleting: ' + member + '.')
-                flash('There was an issue deleting: ' + member + '.')
+                flash('There was an issue deleting: ' + member + '.','UI')
             
         if 'newring' in request.form:
             ring = request.form.get('newring')
             if self.ATM.post_a_m_n_rings(handle,team,ring):
                 print(ring + ' has been added to the team.')
-                flash(ring + ' has been added to the team.')
+                flash(ring + ' has been added to the team.','UI')
             else:
                 print(ring + ' already  exists in this team.')
-                flash(ring + ' already  exists in this team.')           
+                flash(ring + ' already  exists in this team.','UI')           
 
         if 'delring' in request.args:
             ring = request.args.get('delring')
             if self.ATM.delete_a_m_n_rings(handle,team,ring):
                 print(ring + ' has been deleted from the team.')
-                flash(ring + ' has been deleted from the team.')
+                flash(ring + ' has been deleted from the team.','UI')
             else:
                 print('There was an issue deleting: ' + ring + '.')
-                flash('There was an issue deleting: ' + ring + '.')
+                flash('There was an issue deleting: ' + ring + '.','UI')
             
             
         d['redirect'] = '/'+handle+'/_teams/'+team
@@ -231,10 +231,10 @@ class AvispaTeamsRestFunc:
                     if self.MAM.delete_team(handle,team):
                         print('You just deleted team '+ team +'.')
                         #msg = 'Item put with id: '+idx
-                        flash('You just deleted team '+ team +'.')
+                        flash('You just deleted team '+ team +'.','UI')
                         redirect = '/'+handle+'/_teams'
                     else:
-                        flash('There was an error deleting team: '+ team +'.')
+                        flash('There was an error deleting team: '+ team +'.','ER')
                         redirect = '/'+handle+'/_teams'
 
         else:
@@ -303,10 +303,10 @@ class AvispaTeamsRestFunc:
             p['teamauth'] = request.form.get('teamauth')
             if self.ATM.put_a_m_n_settings(handle,team,p):
                 print(team + ' has been updated.')
-                flash(team + ' has been updated.')
+                flash(team + ' has been updated.','UI')
             else:
                 print(' There was a problem updating '+team+'.')
-                flash(' There was a problem updating '+team+'.')  
+                flash(' There was a problem updating '+team+'.','ER')  
 
         d['redirect'] = '/'+handle+'/_teams/'+team
 
