@@ -27,7 +27,7 @@
             <div class="alert alert-success" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Error:</span>
-            <p class="fw-c">Please complete your registration</p>
+            <p class="fs-1-2">Please complete your registration</p>
           </div>
             <hr/>
              <form action="" method="POST" role="form">
@@ -71,7 +71,7 @@
 
           <hr/>
 
-          <p class="fs-0-8 text-lgray pad-x-20">Creating an account means you’re okay with MyRing's <a href="_sandbox/terms">Terms of Service and Privacy Policy.</a> </p>
+          <p class="fs-0-8 text-lgray pad-x-20">Creating an account means you’re okay with MyRing's <br/><a href="_sandbox/terms">Terms of Service and Privacy Policy.</a> </p>
 
           </div>
       </div>
@@ -91,24 +91,20 @@
 
             <!-- OPTION 1 -->
             <p class="fs-0-9">
-              <input type = radio id = "rad1" name = "org" checked ></input> 
+
+              <input type="checkbox"></input><!-- CHECKBOX FAKE -->
+              <!-- <input type = radio id = "rad1" name = "org" checked ></input>  -->
 
               I'll create it later <span class="fs-0-8">(super easy)</span> 
             </p>
             
-            
-            
-              <div id="op2" class="input-group input-group-md text-center">
-            <!-- <span class="input-group-addon fw-c" id="sizing-addon1">myring.io/</span> -->
-            <input  type="text" class="form-control" placeholder="organization_name" aria-describedby="sizing-addon1">
-          </div>
           
         <!-- OPTION 3 -->
-        <p class="fs-0-9">
+        <!-- <p class="fs-0-9">
           <input type = radio id = "rad3" name = "org" ></input>
 
           I'm creating an account for an organization
-        </p>
+        </p> -->
 
 
               <div id="op3" class="input-group input-group-md">
@@ -121,61 +117,7 @@
             
           </div>
 
-        <script type="text/javascript">
-              $(document).ready(function() {
-                  $('#username').keyup(function() {
-                   $('#myOutputText').val($(this).val());
-                   $('#myDIVTag').html("<i class='fa fa-user'></i><span class='text-dgray fw-c'> " + $(this).val() + " </span> will be the admin.");
-                  });
-              });    
-          </script>
 
-        <script type="text/javascript">
-
-        $(document).ready(function(){
-          $("#op2").hide();
-          $("#op3").hide();
-
-          $("#rad1").click(function(){
-
-              if ($("#rad1").is(":checked")) {
-                   
-                  //show the hidden div
-                   $("#op1").show("slide");
-                   $("#op2").hide("fade");
-                   $("#op3").hide("fade");
-                  
-              }
-          });
-
-          $("#rad2").click(function(){
-
-              if ($("#rad2").is(":checked")) {
-                   
-                  //show the hidden div
-                   $("#op2").show("slide");
-                   $("#op1").hide("fade");
-                   $("#op3").hide("fade");
-                  
-              }
-          });
-
-          $("#rad3").click(function(){
-
-              if ($("#rad3").is(":checked")) {
-                   
-                  //show the hidden div
-                   $("#op3").show("slide");
-                   $("#op2").hide("fade");
-                   $("#op1").hide("fade");
-                  
-              } 
-          });
-
-
-        });
-
-        </script>
 
           </div>
     </div> 
