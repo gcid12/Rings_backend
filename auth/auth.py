@@ -40,6 +40,7 @@ def login():
             flash("User not active")
 
     data = {}
+    data['method'] = '_login'
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
     
@@ -95,6 +96,7 @@ def register():
             current_app.logger.error("Error on registration ")
         
     data = {}
+    data['method'] = '_register'
 
     return render_template("/auth/register.html", data=data)
 
@@ -129,6 +131,7 @@ def orgregister():
             current_app.logger.error("Error on registration ")
         
     data = {}
+    data['method'] = '_orgregister'
 
     MAM = MainModel()
 
@@ -262,6 +265,7 @@ def forgot():
             
               
     data = {}
+    data['method'] = '_forgot'
 
     
     return render_template("/auth/forgot.html", data=data)
@@ -280,6 +284,7 @@ def profile_get(handle):
 
         o = urlparse.urlparse(request.url)
         data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['method'] = '_profile'
 
         
         #This is for the upperbar only
@@ -319,6 +324,7 @@ def orgprofile_get(handle):
         data = {}
         data['user'] = user
         data['handle'] = handle
+        data['method'] = '_orgprofile'
 
     else:
         return redirect('/'+current_user.id+'/_profile')
