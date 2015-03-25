@@ -30,7 +30,8 @@ def login():
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
                     flash("Logged in!",'UI')
-                    flash("_login OK",'MP')
+                    #flash("_login OK",'MP')
+                    flash({'track':'_login OK'},'MP')
                     #flash("Redirecting to : /"+user.id)
                     return redirect('/'+user.id+'/_home')
                 else:
@@ -76,6 +77,8 @@ def register():
                 #return redirect('/_login')
                 print('Now log in the user')
                 flash("_register OK",'MP')
+                flash({'alias':'username'},'MP')
+
 
                 #Go through regular login process
                 userObj = User(email=email)

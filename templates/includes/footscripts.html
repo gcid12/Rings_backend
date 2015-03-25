@@ -26,6 +26,11 @@
 
 <script type="text/javascript">
 $(window).load(function(){
+
+    {%if current_user.id%}
+        mixpanel.identify('{{ current_user.id }}');
+    {%endif%}
+
     mixpanel.track("{{data.method}}", {
 		{% if data.collection %}"collection":"{{data.collection}}",{%endif%}
 	    {% if data.handle %}"handle": "{{data.handle}}",{%endif%}
@@ -43,7 +48,14 @@ $(window).load(function(){
 		{% with messages = get_flashed_messages(category_filter=["MP"]) %}
 		      {% if messages %}
 		        {% for message in messages %}
-		            mixpanel.track("{{message}}");
+		            {%if message is iterable %}
+		                {%for m in message%}
+		                    mixpanel.{{m}}("{{message[m]}}");
+		                {%endfor%}
+		            {%else%}
+		                mixpanel.track("{{message}}");
+		            {%endif%}
+		            
 		        {% endfor %}     
 		      {% endif %}
 		{% endwith %}
