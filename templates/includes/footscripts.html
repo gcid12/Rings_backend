@@ -132,3 +132,64 @@ $(window).load(function(){
 
 
 
+
+<!-- REGISTER SCRIPTS -->
+
+        <script type="text/javascript">
+              $(document).ready(function() {
+                  $('#username').keyup(function() {
+                   $('#myOutputText').val($(this).val());
+                   $('#myDIVTag').html("<i class='fa fa-user'></i><span class='text-dgray fw-c'> " + $(this).val() + " </span> will be the admin.");
+                  });
+              });    
+          </script>
+
+        <script type="text/javascript">
+
+        $(document).ready(function(){
+          $("#op2").hide();
+          $("#op3").hide();
+
+          $("#rad1").click(function(){
+
+              if ($("#rad1").is(":checked")) {
+                   
+                  //show the hidden div
+                   $("#op1").show("slide");
+                   $("#op2").hide("fade");
+                   $("#op3").hide("fade");
+                  
+              }
+          });
+
+          $("#rad2").click(function(){
+
+              if ($("#rad2").is(":checked")) {
+                   
+                  //show the hidden div
+                   $("#op2").show("slide");
+                   $("#op1").hide("fade");
+                   $("#op3").hide("fade");
+                  
+              }
+          });
+
+          $("#rad3").click(function(){
+
+              if ($("#rad3").is(":checked")) {
+                   
+                  //show the hidden div
+                   $("#op3").show("slide");
+                   $("#op2").hide("fade");
+                   $("#op1").hide("fade");
+                  
+              } 
+          });
+
+
+        });
+
+        </script>
+
+<!-- END REGISTER SCRIPTS -->
+

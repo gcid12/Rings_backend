@@ -58,49 +58,43 @@
 {% macro collection_big(handle, collection, ring , percent, role, update,handle_profilepic) %}
 <div class="row">
 
-  <div class="col-sm-12 p-5 bg-f">
-    <div style="padding:10 3% 10 4%;">
-
-    
-      <div class="pull-right fc-l">
-        <span class="fs-1 pr-20">
-          <a href="" class="fc-l">{{ handle }}</a>
+  <div class="col-sm-12 alpha omega" style="background-color:#757575;">
+   
+      <div class="pull-right text-lgray " style="padding-left:50px;">
+        <span class="pr-20 fs-0-8">
+          <a href="" class="text-lgray">{{ handle }}</a>
             <i class="fa fa-arrow-right"></i>
-          <a href="" class="fc-l">{{ collection }}</a>
+          <a href="" class="fc-c">{{ collection }}</a>
           {%if ring=='None' %}
             <i class="fa fa-arrow-right"></i>        
-          <a href="" class="fc-l">˚{{ ring }}</a>
+          <a href="" class="fc-c">˚{{ ring }}</a>
           {%endif%}
         </span> 
       </div>
-
-    </div>
+    
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="rn-box-solo bw-9 ">
+    <div class="rn-box-solo bw-9">
       
 
-      <div class="spa5"></div>
-      <table class="table " cellpadding="0" cellspacing="0">
-
-        <tr>
-          <td align="center" class="hidden-xs" style="width:10%;">
+        <div class="row spa20">
+          <div class="col-sm-2 hidden-xs">
             <div class="bord-right bb-11 pr-20">
               <img class="block-center" src="/static/images/case-44.png" style="width:85px;" alt="MyRing"> 
               
-              <span class="label bl bl-gray"><img class="block-center" src="/static/images/case-49.png" style="width:0px;" alt="MyRing">  <i class="fa fa-user"></i> {{ handle|lower() }} | RingCollection</span> 
-                </span> 
-              
-
+              <span class="label bl bl-gray"><img class="block-center" src="/static/images/case-49.png" style="width:0px;" alt="MyRing">  <i class="fa fa-user"></i> {{ handle|lower() }} | Collection</span> 
               
             </div>
-          </td>
+          </div>
           
-          <td> 
+          <div class="col-sm-10"> 
+
+
 
             <div class="pull-right text-right">
+
                 <div class="label label-info hidden-xs"> Owner: <strong>you</strong> </div>
                 <div class="spa10"></div>
                 <span class="dropdown">
@@ -131,7 +125,7 @@
             </div> 
             <!-- <div class="label bl bl-grayx"><i class="fa fa-user"></i> {{handle|upper }} | Data Collection</div>  -->
 
-            <div class="spa10">
+            <div class="spa5">
               <span class="label bl bl-gray visible-xs" style="width:120px;">
               <!-- <img src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style=" width:20px;">  -->
               <i class="fa fa-user"></i> {{ handle|lower() }} | RingCollection</span> 
@@ -145,17 +139,10 @@
             
 
 
-          </td>
-          
-          
+          </div><!-- close col-->
 
-          <td> 
-            
-
-            <!-- COLUMN 1 -->
-          </td>
-        </tr>
-      </table>
+        </div> <!-- close row -->
+    
     </div>
   </div>
 </div> 
@@ -217,13 +204,8 @@
 
         <div class="col-xs-8 col-sm-7">
 
-          <div class="spa10 text-left bg-">
+          <div class="spa10 text-left ">
             <div class="fs-1-5">
-
-             <!--  <span class="mega-octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
-
-              
-
 
               <!-- {% if 'get_a' in user_authorizations %}
               <a href="/{{ handle }}" class="nounder">{{origin}}</a>
@@ -231,7 +213,7 @@
               {{origin}}
               {%endif%}/ -->
               {% if 'get_a' in user_authorizations %}
-              <p>
+              <div>
                 <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">
                 <img src="/static/images/ico_linked.png" style="width:25px; opacity:0.5;">
                  {{ring}}
@@ -243,9 +225,11 @@
 
                 {%endif%}
                 {%if idx %}<span>/{{idx}}</span>{%endif%}
-              </p>
+
+              </div>
+              <p class="text-lgray fs-0-6 pl-20">{{ description }}</p>
             </div>
-            <span class="text-gray fs-0-9 pl-20">{{ description }}</span>
+            
           </div>
             
           

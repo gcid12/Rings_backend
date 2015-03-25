@@ -25,6 +25,41 @@
             {% endfor %}
 
         </table> 
+
+
+
+        {% if not data.ringlist %}
+       <div class="row">
+        <div class="col-sm-offset-1 col-sm-10 text-center">
+         
+          <div class="box box-help">
+
+            <div style="clear:both;">{{ ui.icon_med(':(','#FFF') }}</div>
+
+            <p class="fs-1-3"><i class="fa fa-arrow-up"></i>You have no Rings in this collection. Create one here:</p>
+            
+            <a href="/{{data.handle}}/_collections/{{data.collection}}?rq=post&n=10" type="button" class="btn-help btn-success" style="margin:5px;">
+              <i class="fa fa-plus"></i> &nbsp; Create a Ring
+              </a>
+                
+              <br class="visible-xs" />
+              <a href="/{{data.handle}}/_collections/{{data.collection}}?rq=put" type="button" class="btn-help btn-warning" style="margin:5px;">
+                <i class="fa fa-arrow-right"></i> &nbsp; Choose an existing one.
+              </a>
+              <br class="visible-xs" />
+
+              <a data-toggle="modal" data-target="#no-ring" class="btn-help btn-info" style="margin:5px;">
+                <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Ring?
+              </a>
+              
+              
+          </div>
+            
+        </div>
+       </div>
+       {% endif %}
+
+
         </div>
             <!-- <div class="row">
                 <div class="col-sm-12 ">
@@ -40,6 +75,8 @@
                 </div>
             </div>  -->
         
+        
+
         {% if not data.collection %}
         <div class="rn-box-title-slim">
                 Actions
@@ -58,6 +95,77 @@
     </div>
         
 </div>
+
+<!-- MODAL WHAT IS A COLLECTION -->
+
+ <div class="modal fade" id="no-ring" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <!-- <h4 class="modal-title" id="myModalLabel">The User Graph</h4> -->
+        <p class="fs-2">What is a Ring?</p>
+        
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+            <div class="col-sm-offset-1 col-sm-4">
+                <p class="fs-2">Answer:</p>
+      
+                <p class="fs-1 text-s1">
+                <strong>A Ring is a Data repository </strong> that lives in the cloud and/or locally in connected devices. What makes Ring different from other repositories or databases is that it connects with a <strong>Global Ring</strong> where all the data is merged to create <strong>Super Datasets</strong>. 
+                </p>
+
+
+                <!-- <p class="fs-1-2 text-s1">
+                Altough all the data is <strong>merged in bigger datasets</strong>, every bit of information keeps it's <strong>original license</strong> so mobile applications, websites, A.I. or any system understand how to handle it.
+                </p>
+
+                <p class="fs-1-2 text-s1">
+                The global Ring uses a <strong>Blockchain</strong> system similar to the one used in <strong>Bitcoin</strong> to manage the <strong>licenses and</strong> keep track on transactions.
+                </p> -->
+
+                <!-- <br/>
+                A ring helps other people and organizations find you and your data.
+                <br/> -->
+
+                
+            </div>
+            <div class="col-sm-7">
+                <img class="img-responsive" src="/static/images/globaldiagram.gif">
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-1 col-sm-9">
+
+                <hr/>
+                <p class="fs-2">How it works:</p>
+                <p class="fs-1 text-s1">
+                    Rich Data sets allows apps or A.I. systems to digg into more complex and granular queries than the regular 'Scrapping' approach used nowadays. 
+                    <!-- The logic is simple:
+                    Easy capture + a social media flair = More participation and richer datasets. -->
+                </p>
+
+                <img class="img-responsive" src="/static/images/query.gif">
+            </div>
+            
+        </div>
+          
+
+       </div>
+            
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
             
 
 {% endblock %} 
