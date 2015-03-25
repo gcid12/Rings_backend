@@ -11,26 +11,23 @@
 {% block tabcontent %}
 
 
-<!-- ROW RING INFO --> 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="rn-box-white gad100"> 
+<div class="rn-curtain"> 
+        <table class="table table-condensed"> 
             {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}  
                    
-        </div>
+        </table>
             
         <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
                    <span class="fs-1-2"><i class="fa fa-pencil pad-x-10"></i> <strong> Modifying</strong> the ring schema for "{{ data.handle }}/{{ data.ring }}"</span>
         </div>
-    </div>    
-</div>   
+   
 
 <!-- ROW NAME AND DESCRIPTION -->
 
 <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}/{{ data.ring }}?method=PUT" method="POST">
 
 
-<div class="row bg-g">
+<div class="row rn-box-content">
     <div class="col-sm-2">
         
         
@@ -62,7 +59,7 @@
 
                 <div class="text-right spa10">
                     <a class="clearlink" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                      <p><i class="fa fa-wrench"></i>Advanced settings</p>
+                      <p><i class="fa fa-wrench"></i> &nbsp; Advanced settings</p>
                     </a>
                 </div>
                     
@@ -96,13 +93,13 @@
         
     </div>
 </div>
-<div class="row bg-g">
+<div class="row rn-box-content">
     <div class="col-sm-12">
         <hr/>
     </div>          
 </div>
 
-<div class="row bg-g">
+<div class="row rn-box-content">
           <div class="col-sm-2">
             <h2 class="fs-4 ">2</h2> <p class="text-s1">Ring fields</p>
               
@@ -337,7 +334,10 @@
               <button type="submit" class="btn btn-primary">Save</button>
               <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
             </div>
-            <a style="float:right; padding:25px;" href="/{{ data.handle }}/{{ data.ring }}?method=delete" >Delete this Ring</a>
+            <a style="float:right; padding:25px;" href="/{{ data.handle }}/{{ data.ring }}?method=delete" ><p><i class="fa fa-trash-o"></i> &nbsp; Delete this Ring</p></a>
+
+            
+
           </div>
         </div>
 
@@ -345,7 +345,7 @@
         <!-- RING END -->          
     </div> 
 </div>
-
+<br/><br/><br/>
 </form> 
 
 

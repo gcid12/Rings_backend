@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% include 'includes/headscripts.html' %}
+    {% import 'includes/ui_macros.html' as ui %}
+
+
+{% block content %}
+
+<div class="label label-danger">LISTS</div>
+<hr/>
+
+<div class="row bg-g">
+    <div class="col-sm-3">
+        
+        <h2 class="fs-4">1</h2> 
+        <p class=" text-s1 text-lgray fs-1-5">Step by step</p>
+
+    </div>
+    <div class="col-sm-9">
+        <div class="spa40">
+               
+
+                
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="sizing-addon1">TextInput</span>
+                  <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring">
+                </div>
+
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon" id="sizing-addon1">Textarea</span>
+                  <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" ></textarea>
+                </div>
+
+            
+                
+        </div>
+    </div>
+</div>
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<hr/><div class="label label-danger">BANNER</div><hr/>
+<!-- /////////////////////////////////////////////////////////////////// -->
+
+
+<div class="row">
+    <div class="col-sm-8 alpha omega">
+        <div class="alert  alert-success alert-top" style="height:60px;">
+            <span class="fs-1-5"><i class="fa fa-info-circle"></i> Create a New Ring in <strong> Here</strong></span>
+            <p>Please complete the following steps.</p>
+        </div>
+
+    </div>
+    <div class="col-sm-4 alpha omega text-right">
+        <div class="alert  bg-gray alert-top" style="height:60px;">
+            <p class="fs-1">or, use an existing Ring : 
+                <button type="button" class="btn btn-vader btn-sm" data-toggle="modal" data-target="#forkModal">
+                    <i class="fa fa-code-fork fa-2x fc-a"></i>
+                </button>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<hr/><div class="label label-danger">TITLE</div><hr/>
+<!-- /////////////////////////////////////////////////////////////////// -->
+
+
+
+<div class="box box-title pt-10 mb-10 bord-left  bw-9">
+    123
+    <div class="btn-group pull-right" role="group">
+    456
+    </div>  
+</div>
+
+
+
+
+
+{% endblock %}
+

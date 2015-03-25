@@ -127,13 +127,16 @@
 
                                   
                             </div> -->
-                            <div class="box box-help alert-dismissible-help" role="alert" style="margin-bottom:-200px;">
+                          {% if 'post_a_x' in data.user_authorizations %}
+                            {% if data.dac_totals|sum<=0 %}
+                              
+                            <div class="box box-help alert-dismissible-help hidden-xs" role="alert" style="margin-bottom:-200px;">
 
                            
 
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="right:0px;">&times;</span></button>
 
-                                <strong>This is your User Graph! </strong> It shows your progress.
+                                <strong>This is your User Graph! </strong> It shows your progress. 
 
                                 <a data-toggle="modal" data-target="#intro-graph" class="btn-help btn-info text-s1 text-center">
                                 
@@ -145,10 +148,12 @@
 
                             </div>
 
+                            {%endif%}
+                          {%endif%}
 
                             <div id="usergraph" class="ugp-container">
-
                             </div>
+
                             <div class="lead fs-1 text-lgray hidden-xs" id="chisme" style="float:right;">
                                 <a data-toggle="modal" data-target="#intro-graph" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4"><i class="fa fa-question-circle"></i></a>
                             </div>
