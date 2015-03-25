@@ -56,13 +56,13 @@ class AvispaPeopleRestFunc:
             if result:
                 print('Awesome , you just added '+ person +' to the organization')
                 #msg = 'Item put with id: '+idx
-                flash('Awesome , you just added '+ person +' to the organization')
+                flash('Awesome , you just added '+ person +' to the organization','UI')
 
             else:
-                flash('There was an error adding '+ person +' to the organization.')
+                flash('There was an error adding '+ person +' to the organization.','ER')
 
         else:
-            flash(person+' is not a MyRing user. Please create it first.')
+            flash(person+' is not a MyRing user. Please create it first.','ER')
 
 
         
@@ -84,13 +84,13 @@ class AvispaPeopleRestFunc:
             if result:
                 print('You just deleted '+ person +' from the organization')
                 #msg = 'Item put with id: '+idx
-                flash('You just deleted '+ person +' from the organization')
+                flash('You just deleted '+ person +' from the organization','UI')
 
             else:
-                flash('There was an error deleting '+ person +' from the organization.')
+                flash('There was an error deleting '+ person +' from the organization.','ER')
 
         else:
-            flash(person+' is not a MyRing user.')
+            flash(person+' is not a MyRing user.','ER')
 
 
         

@@ -4,128 +4,156 @@
 
 {% block content %}
 
-
-
 <div class="container-fluid bg-people2" style="padding:0 0 300px 0;">
   <div class="row text-center">
-      <div class="col-sm-12 spa30">     
-        <h1 class="text-gray fs-4 fw-a" style="">Welcome!</h1>
-      
-      </div>
-      <hr/>
-           
+    <div class="col-sm-12 spa30">     
+      <h1 class="text-gray fs-4 fw-a" style="">Welcome!</h1>   
+    </div>
+      <hr/>          
   </div>
   <div class="row">
-
-   
-      <div class="col-sm-offset-1 col-sm-6">  
-        
-          
-          <div class="box box-clear text-center" style="padding:0 50px 20px 50px;">
-
-
-            <div class="alert alert-success" role="alert">
+    <form action="" method="POST" role="form" id="register">
+      <div class="col-sm-offset-1 col-sm-6">   
+        <div class="box box-clear text-center" style="padding:0 50px 20px 50px;">
+          <div class="alert alert-success" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Error:</span>
             <p class="fs-1-2">Please complete your registration</p>
           </div>
-            <hr/>
-             <form action="" method="POST" role="form">
-              <span class="fc-g">choose your personal username</span>
-              <div class="input-group input-group-md text-center">
-                
+          <hr/>       
+          <span class="fc-g">choose your personal username</span>
+          <div class="input-group input-group-md text-center">     
             <span class="input-group-addon fw-c" id="sizing-addon1"><i class="fa fa-user"></i></span>
             <input id="username" name="username" type="text" required="required" class="form-control" placeholder="username" aria-describedby="sizing-addon1">
-
             <!-- <input type="text" id="username" name="username" required="required" class="form-control" placeholder="This will be your unique id"> -->
-
           </div>
-
-          <div class="spa5"></div>
-              
+          <div class="spa5"></div>   
           <div class="input-group input-group-md text-center">
             <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-envelope-o"></i></span>
             <input type="email" id="email" name="email" required="required" class="form-control" placeholder="email" aria-describedby="sizing-addon1">
-
             <!-- <input type="email" id="email" name="email" required="required" class="form-control" placeholder="Email"> -->
-
           </div>
-
           <div class="spa5"></div>
           <div class="input-group input-group-md text-center">
             <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-key"></i></span>
             <!-- <input type="password" name="password" required="required" class="form-control" placeholder="password" aria-describedby="sizing-addon1" title=""> -->
             <input type="password" name="password" id="password" class="form-control" required="required" title="" placeholder="password">
-
             <!-- CONFIRMATION -->
             <input type="password" name="confirm" id="confirm" class="form-control" required="required" title="" placeholder="repeat password" >
-
           </div>
-
-
           <div class="spa20"></div>
-
-          
           <button type="submit" class="btn btn-success btn-lg fs-1-2">Next</button>
           <p class="fs-0-8 text-lgray spa10">Are you already a user?, <a href="_login">please Log-In.</a></p>
-
           <hr/>
-
-          <p class="fs-0-8 text-lgray pad-x-20">Creating an account means you’re okay with MyRing's <br/><a href="_sandbox/terms">Terms of Service and Privacy Policy.</a> </p>
-
-          </div>
+          <p class="fs-0-8 text-lgray pad-x-20">Creating an account means you’re okay with MyRing's <a href="_sandbox/terms">Terms of Service and Privacy Policy.</a> </p>
+        </div>
       </div>
-
       <div class="col-sm-4">     
-
         <div class="pad-x-20">
 
-            <div class="spa50"></div>
 
-            <h4 class="fc-b">Optional: </h4>
-
-            <p class="text-gray fs-0-8">
-            You can also create an acount for an organization, it's free!. <span class="fc-i">An organization is any company, non-profit, school , museum, punk band, etc. </span>.</p>
-
-            <div class="spa20"></div>
-
+          <div class="spa50"></div>
+          <h4 class="fc-b">Optional: </h4>
+          <p class="text-gray fs-0-8">
+              You can also create an acount for an organization, it's free!. <span class="fc-i">An organization is any company, non-profit, school , museum, punk band, etc. </span>.</p>
+          <div class="spa20"></div>
             <!-- OPTION 1 -->
-            <p class="fs-0-9">
-
-              <input type="checkbox"></input><!-- CHECKBOX FAKE -->
+          <p class="fs-0-9">
+              <input type="checkbox"/><!-- CHECKBOX FAKE -->
               <!-- <input type = radio id = "rad1" name = "org" checked ></input>  -->
-
               I'll create it later <span class="fs-0-8">(super easy)</span> 
-            </p>
-            
-          
-        <!-- OPTION 3 -->
-        <!-- <p class="fs-0-9">
-          <input type = radio id = "rad3" name = "org" ></input>
-
-          I'm creating an account for an organization
-        </p> -->
-
-
-              <div id="op3" class="input-group input-group-md">
-            
+          </p>
+          <!-- OPTION 3 -->
+          <!-- <p class="fs-0-9">
+            <input type = radio id = "rad3" name = "org" ></input>
+            I'm creating an account for an organization
+          </p> -->
+          <div id="op3" class="input-group input-group-md">    
             <input type="text" class="form-control" placeholder="organization_name" aria-describedby="sizing-addon1">
+
             <div id="myDIVTag" class="fs-0-8">
               <span class=""><em>please choose a ' <strong><i class='fa fa-user'></i> username </strong> ' first. <br/>She will be the admin of this organization</em></span>
-            </div>
-            
-            
+            </div>    
           </div>
-
-
-
-          </div>
-    </div> 
-  </form> 
-
-
+        </div>
+      </div> 
+    </form> 
+  </div>
 </div>
+{% endblock %}
+
+{% block footafterfunctions %}
+        <script type="text/javascript">
+          $(window).load(function(){
+              mixpanel.track_forms("#register", "_register RQ sent");
+            });  
+        </script>
+
+
+
+<!-- REGISTER SCRIPTS -->
+
+        <script type="text/javascript">
+              $(document).ready(function() {
+                  $('#username').keyup(function() {
+                   $('#myOutputText').val($(this).val());
+                   $('#myDIVTag').html("<i class='fa fa-user'></i><span class='text-dgray fw-c'> " + $(this).val() + " </span> will be the admin.");
+                  });
+              });    
+          </script>
+
+        <script type="text/javascript">
+
+        $(document).ready(function(){
+          $("#op2").hide();
+          $("#op3").hide();
+
+          $("#rad1").click(function(){
+
+              if ($("#rad1").is(":checked")) {
+                   
+                  //show the hidden div
+                   $("#op1").show("slide");
+                   $("#op2").hide("fade");
+                   $("#op3").hide("fade");
+                  
+              }
+          });
+
+          $("#rad2").click(function(){
+
+              if ($("#rad2").is(":checked")) {
+                   
+                  //show the hidden div
+                   $("#op2").show("slide");
+                   $("#op1").hide("fade");
+                   $("#op3").hide("fade");
+                  
+              }
+          });
+
+          $("#rad3").click(function(){
+
+              if ($("#rad3").is(":checked")) {
+                   
+                  //show the hidden div
+                   $("#op3").show("slide");
+                   $("#op2").hide("fade");
+                   $("#op1").hide("fade");
+                  
+              } 
+          });
+
+
+        });
+
+        </script>
+
+<!-- END REGISTER SCRIPTS -->
+
  
-</div>
+
 
 {% endblock %}
+
+

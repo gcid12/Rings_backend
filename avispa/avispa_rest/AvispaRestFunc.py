@@ -46,7 +46,7 @@ class AvispaRestFunc:
             else:
                 invalid_collection = True            
             if invalid_collection:
-                flash('Invalid Collection')
+                flash('Invalid Collection','ER')
                 redirect = '/'+handle+'/_home'                
                 d = {'redirect': redirect, 'status':404}
                 return d
@@ -81,7 +81,7 @@ class AvispaRestFunc:
         if result:
             print('Awesome , you just created a new Ring Schema',result)
             #msg = 'Item put with id: '+idx
-            flash(" Your new Ring has been created. ")
+            flash(" Your new Ring has been created. ",'UI')
             if collection:
 
                 # Add this new ring to the collection ring list
@@ -89,7 +89,7 @@ class AvispaRestFunc:
 
                 try:
                     if self.ACM.add_ring_to_collection(handle, collection,result):
-                        flash(" The ring has been added to the collection.")
+                        flash(" The ring has been added to the collection.",'UI')
                         redirect = '/'+handle+'/_collections/'+collection
                 except:
                     redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
@@ -445,7 +445,7 @@ class AvispaRestFunc:
 
         #print('Now redirect to:')
         print(redirect)
-        flash("The new item has been created")
+        flash("The new item has been created",'UI')
 
         if 'raw' in request.args:          
             #o = urlparse.urlparse(request.url)
@@ -522,7 +522,7 @@ class AvispaRestFunc:
         if result:
             print('Awesome , you just put the changes in the Ring Schema')
             #msg = 'Item put with id: '+idx
-            flash("Changes saved in the Schema")
+            flash("Changes saved in the Schema",'UI')
             if collection:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
             else:
@@ -583,9 +583,9 @@ class AvispaRestFunc:
     def delete_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
         
         if self.AVM.user_delete_ring(handle,ring):
-            flash('Ring '+ring+' deleted')
+            flash('Ring '+ring+' deleted','UI')
         else:
-            flash('Could not delete the Ring')
+            flash('Could not delete the Ring','ER')
         
         if collection:
             redirect = '/'+handle+'/_collections/'+collection       
@@ -693,7 +693,7 @@ class AvispaRestFunc:
 
         else: 
             d['error_status'] = '500'                      
-            flash('This item does not exist')
+            flash('This item does not exist','ER')
             print('This item does not exist')
 
 
@@ -732,7 +732,7 @@ class AvispaRestFunc:
         if result:
             print('Awesome , you just put the changes in the Item')
             #msg = 'Item put with id: '+idx
-            flash("Changes saved")
+            flash("Changes saved",'UI')
             if collection:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring     
             else:
@@ -838,7 +838,7 @@ class AvispaRestFunc:
         if result:
             print('Item deleted..')
             #msg = 'Item put with id: '+idx
-            flash('Item deleted..')
+            flash('Item deleted..','UI')
             if collection:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
             else:

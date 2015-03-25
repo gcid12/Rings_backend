@@ -173,6 +173,7 @@ class User(UserMixin):
             if request.form.get('name') != dbUser['value']['name']:
                 print('name changed!')
                 changes['name'] = request.form.get('name')
+                mp_change = True
             
             if request.form.get('url') != dbUser['value']['url']:
                 print('url changed!')
@@ -181,6 +182,8 @@ class User(UserMixin):
             if request.form.get('location') != dbUser['value']['location']:
                 print('location changed!')
                 changes['location'] = request.form.get('location')
+
+
 
         return self.ATM.saas_update_user_profile(self.username,changes)
 
