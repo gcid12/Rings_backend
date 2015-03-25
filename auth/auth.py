@@ -29,20 +29,25 @@ def login():
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
+                    flash({'identify':"{{ current_user.id }}"})
+                    flash({'people.set':{ "$name": "{{ current_user.id }}"  }})
+
                     flash("Logged in!",'UI')
                     #flash("_login OK",'MP')
                     flash({'track':'_login OK'},'MP')
+
                     #flash("Redirecting to : /"+user.id)
                     return redirect('/'+user.id+'/_home')
                 else:
                     flash("unable to log you in")
-                    flash("_login FAILED",'MP')
+                    flash("_login KO, Try again",'MP')
             else:
                 flash("User/Password is not correct",'UI')
-                flash("_login FAILED User/Password incorrect",'MP')
+                #flash("_login KO, User/Password incorrect",'MP')
+                flash({'track':'_login KO, User/Password incorrect'},'MP')
         else:
             flash("User not active",'UI')
-            flash("_login FAILED User not active",'MP')
+            flash("_login KO, User not active",'MP')
 
     data = {}
     data['method'] = '_login'
@@ -329,6 +334,8 @@ def profile_post(handle):
     if user.update_user_profile(request):
         flash('Profile updated','UI')
         flash("_profile OK, Profile updated",'MP')
+
+
     else:
         flash('Profile not updated. There was a problem')
         flash("_profile KO, Profile not updated",'MP')
