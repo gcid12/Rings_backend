@@ -282,7 +282,20 @@ def mail_retention():
     #t = time.time()
     #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
     
-    return render_template("/sandbox/mail_retention.html", data=data)  
+    return render_template("/sandbox/mail_retention.html", data=data) 
+
+
+@sandbox.route("/examples", methods=["GET", "POST"])
+#@login_required
+def examples():
+
+    data = {}
+    #t = time.time()
+    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    
+    return render_template("/sandbox/examples.html", data=data) 
+
+
 
 
 

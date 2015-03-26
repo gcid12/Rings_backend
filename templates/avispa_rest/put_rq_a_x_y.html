@@ -50,47 +50,75 @@
 
 
 <!-- START NEW CONTENT --> 
-   
+
 <div class="row">
-    <div class="col-sm-3">
-        <div class="spa40 text-left">
-            <i class="fa fa-wrench fa-3x "></i>
-            <h2>SETTINGS</h2>
-            <span class="label label-xs bl bl-orange ">Data Collection</span> 
-            <h4 class="fs-1-5 fw-c text-gray">{{data.collectionlist.collectionname|upper}}</h4>
+    <div class="col-sm-8 omega">
+        <div class="alert  alert-warning alert-top" style="height:60px;">
+            <span class="fs-1-5"><i class="fa fa-wrench fa-2x"></i> Updating Setting for Data Collection: <strong> {{data.collectionlist.collectionname|upper}}</strong></span>
             
         </div>
+
     </div>
-    <div class="col-sm-9">
-        <div class="spa10"></div>
-        <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
-            <span class="fs-1-2"><strong>Updating</strong> Settings for Data Collection:  {{data.collectionlist.collectionname|upper}} </span>
+    <div class="col-sm-4 text-right alpha">
+        <div class="alert  bg-gray alert-top" style="height:60px;">
+            <span class="fs-1-2"> cancel without saving: 
+                <button type="button" class="btn btn-vader btn-sm" data-toggle="modal" data-target="#forkModal">
+                    <i class="fa fa-times fa-2x fc-a"></i>
+                </button>
+            </span>
         </div>
 
-             
+    </div>
+</div>
 
-              <!--button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#helpmodal">
-                <i class="fa fa-question-circle"></i>
-              </button-->
+
+<div class="row">
+
+    <div class="col-sm-7">
+        <div class="spa10"></div>
 
         <form class="form-horizontal" role="form" action="/{{ data.handle }}/_collections/{{ data.collection }}?method=PUT" method="POST">
 
 
+            
+            {{ ui.rntitle('Collection Info','') }}
 
-            <div class="box box-clear">
+            <div class="box box-clear p-50">
+
+
                 Collection name: <input name="CollectionNameDisabled" class="form-control" type="text" value="{{data.collectionlist.collectionname}}" disabled><input name="CollectionName" class="form-control" type="hidden" value="{{data.collectionlist.collectionname}}"><br/>
-                Summary: <input name="CollectionDescription" class="form-control" type="text" value="{{data.collectionlist.collectiondescription}}"><br/>
-                Version: <input name="CollectionVersion" class="form-control" type="text" value="{{data.collectionlist.version}}" ><br/>
+
+                Summary: <textarea name="CollectionDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" >{{data.collectionlist.collectiondescription}}
+                  </textarea>
+                  <br/>
+                Version: <input name="CollectionVersion" class="form-control" type="text" value="{{data.collectionlist.version}}" >
 
             </div>
-
-            <div class="box">
-                
-                <div class="spa30 fs-1-2">
-                    <h4><strong>RINGS</strong> included in this Data Collection</h4>
+            <br/>
+            <div class="box box-clear spa20">
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label"></label>
                     
-                    <p class="fs-0-9 text-gray">(Rings can be used in more than one collection)</p>
-                </div> 
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <a href="/{{ data.handle }}/_collections" type="submit" class="btn btn-default">Leave without saving anything</a>                        
+                </div>
+            </div>
+            <div class="box box-title text-center">
+                <a href="/{{ data.handle }}/_collections/{{ data.collection }}?method=delete" ><i class="fa fa-trash-o"></i><b>Delete this Collection</b> </a>
+                <div class="text-gray">No Ring or item will be deleted.</div>
+                        
+            </div>
+            <div class="spa20"></div>
+    </div>
+    <div class="col-sm-5">
+            <div class="spa10"></div>
+
+            {{ ui.rntitle('Rings included in this Collection','') }}
+
+            <div class="box box-clear" style="padding:60px;">
+                
+                <p class="fs-0-9 text-gray">(One ring can be used in more than one collection)</p>
+                
                
                 <div class="form-group">
                   
@@ -101,13 +129,18 @@
 
                     {{ ui.icon_xsma('','#fce121') }}
 
-                    <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}_{{ring.ringversionh}}' {% if data.handle+'_'+ring.ringname+'_'+ring.ringversionh in data.collectionrings %} checked {% endif %}/> <a href="/{{ data.handle }}/{{ring.ringname}}">{{ data.handle }}/{{ring.ringname}}</a>  ( v{{ring.ringversionh}} ) : {{ring.ringdescription}}<br/>
+                    <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}_{{ring.ringversionh}}' {% if data.handle+'_'+ring.ringname+'_'+ring.ringversionh in data.collectionrings %} checked {% endif %}/> 
+                   
 
+
+                    <a tabindex="0"  data-toggle="popover" data-trigger="focus" title="{{ data.handle }}/{{ring.ringname}}" data-content=" {{ring.ringdescription}} [ version: {{ring.ringversionh}} ]">{{ data.handle }}/{{ring.ringname}}</a>
+
+                    <hr/>
                     
                     {% endfor %}
 
                     <div class="spa20">
-                        <a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{data.collectionlist.collectionname}}?rq=post&n=10" class="fc-i"><i class="fa fa-plus"></i> Create a new Ring</a>
+                        <a role="menuitem" tabindex="-1" href="/{{data.handle}}/_collections/{{data.collectionlist.collectionname}}?rq=post&n=10" class="fc-i fs-1-4"><i class="fa fa-plus"></i> Create a new Ring</a>
                     </div>
 
 
@@ -118,18 +151,6 @@
 
               <!-- SUBMIT -->
 
-            <div class="box">
-                
-                <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label"></label>
-                    
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <a href="/{{ data.handle }}/_collections" type="submit" class="btn btn-default">Leave without saving anything</a>                      
-                    
-                        <hr/>
-                        <a style="float:right; padding:25px;" href="/{{ data.handle }}/_collections/{{ data.collection }}?method=delete" ><b>[Delete this Collection]</b>  No Ring or item will be deleted.</a>
-                </div>
-            </div>
 
               <!-- SUBMIT END -->
               <!-- RING END -->
