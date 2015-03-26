@@ -1,4 +1,4 @@
-import sys, os, time, datetime, smtplib, urlparse, random
+import sys, os, time, datetime, smtplib, urlparse, random, json
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
@@ -29,12 +29,18 @@ def login():
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
-                    flash({'identify':"{{ current_user.id }}"},'MP')
-                    flash({'people.set':{ "$name": "{{ current_user.id }}"  }},'MP')
+
+                    flash({'track':'_login OK'},'MP')
+                    flash({'identify':current_user.id},'MP')
+
+                    #msg = json.dumps({"$name":'"'+current_user.id+'"'})
+                    msg = {"$name":current_user.id}
+                    flash({'people.set': msg },'MP')
+
 
                     flash("Logged in!",'UI')
                     #flash("_login OK",'MP')
-                    flash({'track':'_login OK'},'MP')
+                    
 
                     #flash("Redirecting to : /"+user.id)
                     return redirect('/'+user.id+'/_home')

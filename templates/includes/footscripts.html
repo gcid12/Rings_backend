@@ -29,12 +29,17 @@ $(window).load(function(){
 
 	{% with messages = get_flashed_messages(category_filter=["MP"]) %}
 	      {% if messages %}
+	      //{{message}}
 	        {% for message in messages %}
 	            {%if message is iterable %}
+	                //Its iterable
 	                {%for m in message%}
-	mixpanel.{{m}}("{{message[m]}}");
+	                //m                    
+	mixpanel.{{m}}({{message[m]|tojson|safe}});
+
 	                {%endfor%}
 	            {%else%}
+	                 //Not iterable
 	mixpanel.track("{{message}}");
 	            {%endif%}
 	            
