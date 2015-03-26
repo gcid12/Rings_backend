@@ -29,8 +29,8 @@ def login():
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
-                    flash({'identify':"{{ current_user.id }}"})
-                    flash({'people.set':{ "$name": "{{ current_user.id }}"  }})
+                    flash({'identify':"{{ current_user.id }}"},'MP')
+                    flash({'people.set':{ "$name": "{{ current_user.id }}"  }},'MP')
 
                     flash("Logged in!",'UI')
                     #flash("_login OK",'MP')
