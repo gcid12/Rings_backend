@@ -37,13 +37,13 @@ class AuthModel:
         print("self.userdb_get_user_by_email")     
         if self.userdb_get_user_by_email(user['email']):
             print('User with this email already exists')
-            flash('User with this email already exists')
+            flash('User with this email already exists','UI')
             return False
 
         print("self.userdb_get_user_by_handle")
         if self.userdb_get_user_by_handle(user['username']):
             print('Organization or User with this username already exists')
-            flash('Organization or User with this username already exists')
+            flash('Organization or User with this username already exists','UI')
             return False
 
 
@@ -61,7 +61,7 @@ class AuthModel:
         print("self.userdb_get_user_by_handle")
         if self.userdb_get_user_by_handle(user['username']):
             print('Organization or User with this username already exists')
-            flash('Organization or User with this username already exists')
+            flash('Organization or User with this username already exists','UI')
             return False
 
         if self.MAM.create_orguser(user):

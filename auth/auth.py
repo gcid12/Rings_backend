@@ -30,30 +30,41 @@ def login():
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
 
-                    flash({'track':'_login OK'},'MP')
-                    flash({'identify':current_user.id},'MP')
+                    mpp = {'status':'OK'}
+                    flash({'f':'track','v':'_login','p':mpp},'MP')
+                    #flash({'track':'_login OK'},'MP')
 
-                    #msg = json.dumps({"$name":'"'+current_user.id+'"'})
-                    msg = {"$name":current_user.id}
-                    flash({'people.set': msg },'MP')
+                    
+                    flash({'f':'identify','v':current_user.id},'MP')
+                    #flash({'identify':current_user.id},'MP')
 
+                    mpp = {'$name':current_user.id}
+                    flash({'f':'people.set','p':mpp},'MP')
+                    #msg = {"$name":current_user.id}
+                    #flash({'people.set': msg },'MP')
 
                     flash("Logged in!",'UI')
-                    #flash("_login OK",'MP')
-                    
 
-                    #flash("Redirecting to : /"+user.id)
                     return redirect('/'+user.id+'/_home')
                 else:
-                    flash("unable to log you in")
-                    flash("_login KO, Try again",'MP')
+                    flash("unable to log you in",'UI')
+
+                    mpp = {'status':'KO','msg':'Unable to log in'}
+                    flash({'f':'track','v':'_login','p':mpp},'MP')
+                    #flash({'track':'_login KO, Try again'},'MP')
             else:
                 flash("User/Password is not correct",'UI')
-                #flash("_login KO, User/Password incorrect",'MP')
-                flash({'track':'_login KO, User/Password incorrect'},'MP')
+
+                mpp = {'status':'KO','msg':'User/Password incorrect'}
+                flash({'f':'track','v':'_login','p':mpp},'MP')
+                #flash({'track':'_login KO, User/Password incorrect'},'MP')
         else:
             flash("User not active",'UI')
-            flash("_login KO, User not active",'MP')
+
+            mpp = {'status':'KO','msg':'User not active'}
+            flash({'f':'track','v':'_login','p':mpp},'MP')
+            #flash("_login KO, User not active",'MP')
+
 
     data = {}
     data['method'] = '_login'
@@ -87,8 +98,14 @@ def register():
 
                 #return redirect('/_login')
                 print('Now log in the user')
-                flash("_register OK",'MP')
-                flash({'alias':'username'},'MP')
+
+                mpp = {'status':'OK'}
+                flash({'f':'track','v':'_register','p':mpp},'MP')
+                #flash({'track':'_register OK'},'MP')
+
+                
+                flash({'f':'alias','v':username},'MP')
+                #flash({'alias':'username'},'MP')
 
 
                 #Go through regular login process
@@ -97,13 +114,21 @@ def register():
                 print(userObj)
                 if login_user(userObj, remember="no"):
                         flash("Logged in. Welcome to MyRing!",'UI')
-                        flash("_login OK, Automatic",'MP')
-                        #flash("Redirecting to : /"+user.id)
+
+                        mpp = {'status':'OK','msg':'Automatic'}
+                        flash({'f':'track','v':'_login','p':mpp},'MP')
+                        #flash({'track':'_login OK, Automatic'},'MP')
+                        
+
                         return redirect('/'+userview.id+'/_home')
       
                 else:
                     flash("Please enter your credentials ",'UI')
-                    flash("_login KO, Automatic",'MP')
+
+                    mpp = {'status':'KO','msg':'Automatic'}
+                    flash({'f':'track','v':'_login','p':mpp},'MP') 
+                    #flash({'track':'_login KO, Automatic'},'MP')
+
                     return redirect('/_login','UI')
             else:
                 
@@ -114,7 +139,11 @@ def register():
         #else:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address",'UI')
-            flash("_register KO, Unable to register with that email address",'MP')
+
+            mpp = {'status':'KO','msg':'Unable to register with that email address'}
+            flash({'f':'track','v':'_register','p':mpp},'MP')
+            #flash({'track':'_register KO, Unable to register with that email address'},'MP')
+
             current_app.logger.error("Error on registration ")
         
     data = {}
@@ -144,14 +173,22 @@ def orgregister():
         #try:
         if True:
             user.set_user()
-            flash("_orgregister OK",'MP')
+
+            mpp = {'status':'OK'}
+            flash({'f':'track','v':'_orgregister','p':mpp},'MP')
+            #flash({'track':'_orgregister OK'},'MP')
+
             return redirect('/'+username+'/_home')
 
         #except:
         else:
             print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             flash("unable to register with that email address",'UI')
-            flash("_orgregister KO, Unable to register with that email address",'MP')
+
+            mpp = {'status':'KO','msg':'Unable to register with that email address'}
+            flash({'f':'track','v':'_orgregister','p':mpp},'MP')
+            #flash({'track':'_orgregister KO, Unable to register with that email address'},'MP')
+            
             current_app.logger.error("Error on registration ")
         
     data = {}
@@ -211,7 +248,11 @@ def forgot():
                 if EMO.send_one_email(to,subject,content):
                     print("Sending password recovery email to: "+user.email)
                     flash("Please check your mail's inbox for the password recovery instructions.",'UI')
-                    flash("_forgot OK, sent recovery email",'MP')
+
+
+                    mpp = {'status':'OK','msg':'Sent recovery email'}
+                    flash({'f':'track','v':'_forgot','p':mpp},'MP')
+                    #flash({'track':'_forgot OK, sent recovery email'},'MP')
                 else:
                     print("Something went wrong with sending the email but no error was raised")
 
@@ -247,12 +288,15 @@ def forgot():
                 print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
                 print("Error sending password revovery email")
                 flash("There was an error sending the password recovery instructions")
-                flash("_forgot KO, error sending recovery email",'MP')
+                flash({'track':'_forgot KO, error sending recovery email'},'MP')
                 pass
 
         else:
-            flash("Could not find this email")
-            flash("_forgot KO, could not find email",'MP')
+            flash("Could not find this email",'UI')
+
+            mpp = {'status':'KO','msg':'Could not find email'}
+            flash({'f':'track','v':'_forgot','p':mpp},'MP')
+            #flash({'track':'_forgot KO, could not find email'},'MP')
 
     elif request.method == 'GET' and request.args.get('k') and request.args.get('e'):
         data = {}
@@ -261,11 +305,15 @@ def forgot():
         userObj = User()
         if userObj.is_valid_password_key(data['email'],data['key']):
             print('Token authorized')
-            flash("_forgot OK, Token authorized",'MP')
+            mpp = {'status':'OK','msg':'Token authorized'}
+            flash({'f':'track','v':'_forgot','p':mpp},'MP')
+            #flash({'track':'_forgot OK, Token authorized'},'MP')
             return render_template("/auth/new_password.html", data=data)
         else:
             print('Token Rejected')
-            flash("_forgot KO, Token not authorized",'MP')
+            mpp = {'status':'KO','msg':'Token not authorized'}
+            flash({'f':'track','v':'_forgot','p':mpp},'MP')
+            #flash({'track':'_forgot KO, Token not authorized'},'MP')
             
 
     elif (request.method == 'POST' and 
@@ -283,16 +331,23 @@ def forgot():
                 # generate password hash
                 passhash = flask_bcrypt.generate_password_hash(request.form.get('password'))
                 userObj.set_password(passhash)
-                flash('Password changed')
-                flash("_forgot OK, Password changed",'MP')
+                flash('Password changed','UI')
+                mpp = {'status':'OK','msg':'Password changed'}
+                flash({'f':'track','v':'_forgot','p':mpp},'MP')
+                #flash({'track':'_forgot OK, Password changed'},'MP')
                 return redirect('_login')
             else:
-                flash('Token Rejected')
-                flash("_forgot KO, Token rejected",'MP')
+                flash('Token Rejected','UI')
+                mpp = {'status':'KO','msg':'Token rejected'}
+                flash({'f':'track','v':'_forgot','p':mpp},'MP')
+                #flash({'track':'_forgot KO, Token rejected'},'MP')
                 return redirect('_login')
         else:
-            flash('Both passwords need to match')
-            flash("_forgot KO, passwords don't match",'MP')
+            flash('Both passwords need to match','UI')
+            mpp = {'status':'KO','msg':'Password do not match'}
+            flash({'f':'track','v':'_forgot','p':mpp},'MP')
+            #flash({'track':'_forgot KO, passwords do not match'},'MP')
+
             return redirect('/_forgot?k='+request.form.get('k')+'&e='+request.form.get('e'))
             
               
@@ -324,10 +379,15 @@ def profile_get(handle):
         user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if user_doc:   
             data['cu_profilepic'] = user_doc['profilepic']
+            flash({'track':'_profile'},'MP')
 
         return render_template("/auth/profile.html", data=data)
 
     else:
+        flash('Redirected to your own profile','UI')
+        mpp = {'status':'KO','msg':'Redirecting users profile'}
+        flash({'f':'track','v':'_profile','p':mpp},'MP')
+        #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
         return redirect('/'+current_user.id+'/_profile')
 
 
@@ -339,12 +399,15 @@ def profile_post(handle):
     user = User(username=current_user.id)
     if user.update_user_profile(request):
         flash('Profile updated','UI')
-        flash("_profile OK, Profile updated",'MP')
-
+        mpp = {'status':'OK','msg':'Profile updated'}
+        flash({'f':'track','v':'_profile','p':mpp},'MP')
+        #flash({'track':'_profile OK, Profile updated'},'MP')
 
     else:
-        flash('Profile not updated. There was a problem')
-        flash("_profile KO, Profile not updated",'MP')
+        flash('Profile not updated. There was a problem','UI')
+        mpp = {'status':'KO','msg':'Profile not updated'}
+        flash({'f':'track','v':'_profile','p':mpp},'MP')
+        #flash({'track':'_profile KO, Profile not updated'},'MP')
 
     return redirect('/'+current_user.id+'/_home')
 
@@ -361,10 +424,12 @@ def orgprofile_get(handle):
         data['user'] = user
         data['handle'] = handle
         data['method'] = '_orgprofile'
-        flash("_orgprofile OK, Showing orgprofile",'MP')
+        flash({'track':'_orgprofile'},'MP')
 
     else:
-        flash("_orgprofile KO, User doesn't belong to owner team",'MP')
+        mpp = {'status':'KO','msg':'Not owner'}
+        flash({'f':'track','v':'_orgprofile','p':mpp},'MP')
+        #flash({'track':'_orgprofile KO, User does not belong to owner team'},'MP')
         return redirect('/'+current_user.id+'/_profile')
 
     #This is for the current user thumbnail in the upperbar only
@@ -386,10 +451,16 @@ def orgprofile_post(handle):
     user = User(username=handle)
     if user.update_user_profile(request):
         flash('Organization information updated','UI')
-        flash("_profile OK, Orgprofile updated",'MP')
+
+        mpp = {'status':'OK','msg':'Updated'}
+        flash({'f':'track','v':'_orgprofile','p':mpp},'MP')
+        #flash({'track':'_orgprofile OK, Updated'},'MP')
     else:
         flash('Organization information not updated. There was a problem','UI')
-        flash("_profile KO, Profile not updated",'MP')
+
+        mpp = {'status':'OK','msg':'Not Updated'}
+        flash({'f':'track','v':'_orgprofile','p':mpp},'MP')
+        #flash({'track':'_orgprofile KO, Not Updated'},'MP')
 
     return redirect('/'+handle+'/_home')
 
@@ -405,8 +476,15 @@ def reauth():
 @auth_flask_login.route("/_logout")
 def logout():
     logout_user()
-    flash("Logged out.",'UI')
-    flash('_logout OK','PM')
+    flash("Logged out.",'UI') 
+
+    mpp = {'status':'OK'}
+    flash({'f':'track','v':'_logout','p':mpp},'MP')
+    #flash({'track':'_logout OK'},'MP')
+
+    flash({'f':'cookie.clear'},'MP')
+    #flash({'cookie.clear':None},'MP')
+    
     return redirect('/_login')
 
 
