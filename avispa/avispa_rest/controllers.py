@@ -461,9 +461,9 @@ def home_dispatcher(handle):
             #data['collections'] = {}
             #data['collections']['collectionlistlen'] = 1
             #data['collections']['collectionlist'] = []
-            if data['organizations'][0]:
+            if 0 in data['organizations']:
                 if 'collections' in data['organizations'][0]:
-                    if data['organizations'][0]['collections'][0]:
+                    if 0 in data['organizations'][0]['collections']:
                         collection_dict = data['organizations'][0]['collections'][0]
                         
                         collection_dict['valid'] = True
