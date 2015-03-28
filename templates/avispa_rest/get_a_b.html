@@ -50,10 +50,10 @@
             
             <ul class="nav nav-pills text-right" role="tablist">
               {% if data.imagesui==True %}
-              <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
+              <li role="presentation" class="active pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
               {% endif %}
               <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-              <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
+              <li role="presentation" class="pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
             </ul> 
           </div>
       </div>
@@ -97,7 +97,7 @@
     {% if data.itemlist %}
 
       <!-- AS LIST -->
-      <div role="tabpanel" class="tab-pane fade in active" id="list" style="">
+      <div role="tabpanel" class="tab-pane fade" id="list" style="">
 
           <div class="">   
             <table class="table table-condensed">
@@ -307,8 +307,7 @@
 {% if data.imagesui==True %}
 
   <!-- AS MOSAIC -->
-          <div role="tabpanel" class="tab-pane fade" id="mosaic">
-
+          <div role="tabpanel" class="tab-pane fade in active" id="mosaic">
             
             
               {% for item in data.itemlist %}
