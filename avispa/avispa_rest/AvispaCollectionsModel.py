@@ -34,6 +34,8 @@ class AvispaCollectionsModel:
 
             collections = user_doc['collections']  
             rings = user_doc['rings']
+
+            # 1. Here we need to call the DB again but now to get which 
             
             validring = {}
             ringorigins = {}

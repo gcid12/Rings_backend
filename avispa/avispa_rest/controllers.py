@@ -456,6 +456,22 @@ def home_dispatcher(handle):
          
             data['organizations'] = MAM.user_orgs(handle)
             data['template'] = 'avispa_rest/userhome.html'
+
+            
+            #data['collections'] = {}
+            #data['collections']['collectionlistlen'] = 1
+            #data['collections']['collectionlist'] = []
+            collection_dict = data['organizations'][0]['collections'][0]
+            
+            collection_dict['valid'] = True
+            collection_dict['external'] = True
+            collection_dict['handle'] = data['organizations'][0]['handle']
+            #cd = []
+            #cd['collectionlist'].append(collection_dict)
+            #data['collections'] = cd
+            data['collections']['collectionlist'].append(collection_dict)
+            #raise
+
      
         return render_template(data['template'], data=data)
 

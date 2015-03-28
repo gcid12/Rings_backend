@@ -257,8 +257,11 @@
                     <!-- END TITLE OF COLLECTIONS -->
 
                     <!-- START COLLECTION LOOP-->
-                    {% for collection in data.collections.collectionlist %}  
+                    
+                    {% for collection in data.collections.collectionlist %} 
+                        
                         {% if collection.valid %}
+
 
                         
                       
@@ -271,7 +274,11 @@
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
                                     <div>
-                                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                        {% if 'handle' in collection %}
+                                          {{ ui.collection(collection.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                        {%else%}
+                                          {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                        {%endif%}
                                         
                                     </div>
 
@@ -286,7 +293,7 @@
                                             <table class="table table-bordered">
                                               {% for ring in collection.rings %}
                                                   {% if not ring.invalid %}  
-                                                    {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                                    {{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
 
                                                   {%endif%}
                                               {% endfor %}
@@ -323,9 +330,12 @@
                     
 
 
+
                     {% if 'post_a_x' in data.user_authorizations %}
                        
                        {% if data.collections.collectionlist|length ==0  %}
+
+
 
                           
                           <div class="row">
@@ -362,6 +372,8 @@
                          
 
                        {% else %}
+
+
                           
                             <!-- NEW COLLECTION -->
 
