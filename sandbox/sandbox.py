@@ -299,6 +299,21 @@ def examples():
 
 
 
+@sandbox.route("/launchpad", methods=["GET", "POST"])
+#@login_required
+def launchpad():
+
+    data = {}
+    #t = time.time()
+    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+    
+    return render_template("/sandbox/launchpad.html", data=data) 
+
+
+
+
+
+
 
     
 
