@@ -266,7 +266,7 @@
                                 {% endif %}
                               
                             </div>
-                            <div class="col-sm-12 col-xs-5 text-left alpha omega" >
+                            <div class="col-sm-12 col-xs-5 omega" >
                                 <div class="btn-group" role="group" aria-label="...">
                                 {% if 'get_a_b_c' in data.user_authorizations %}
                                   <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
@@ -299,7 +299,7 @@
                         <div class="col-sm-9 alpha">
                         
                           <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ v|truncate(90, true) }}</p>
+                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ v|truncate(70, true) }}</p>
                           </a>
                         </div>
                       </div>
@@ -311,7 +311,7 @@
                         <div class="col-xs-12 alpha omega">
                         
                           <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ v|truncate(90, true) }}</p>
+                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ v|truncate(110, true) }}</p>
                           </a>
                         </div>
                       </div>

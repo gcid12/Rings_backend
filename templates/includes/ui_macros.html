@@ -113,7 +113,9 @@
 
             <div class="fs-1-7 text-s1">
               <a class="nounder" href="/{{handle}}">
-                  <img class="user-bar bord-all bg-1 desaturate" src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style="width:28px;">
+
+
+                  <img class="user-bar bord-all bg-1 desaturate" src="{% if handle_profilepic %} /_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg{% else %} /static/images/ph_user2.gif{% endif %}" style="width:28px;">
                 
                 <span class="op-0-5">{{ handle|lower() }}</span>   
               </a> 
