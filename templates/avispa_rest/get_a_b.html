@@ -1,7 +1,7 @@
 {% extends 'avispa_rest/tabs.html' %}
 
 {% block title %} myRing {% endblock %}
-{% block findme %} get_a_b {% endblock %}
+
 
 {% block crumbs %}
 
@@ -17,8 +17,10 @@
 <div class="rn-curtain">
     
     <table class="table table-condensed"> 
-    {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
+    {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }}
     </table>
+
+
     
 
 
@@ -47,13 +49,14 @@
           </div>
 
           <div class="col-xs-10 col-sm-12">
+
             
             <ul class="nav nav-pills text-right" role="tablist">
               {% if data.imagesui==True %}
               <li role="presentation" class="active pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
               {% endif %}
-              <li role="presentation" class="pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-              <li role="presentation" class="pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
+              <li role="presentation" class="{% if data.imagesui==False %}active {% endif %}pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
+              <!-- <li role="presentation" class="pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li> -->
             </ul> 
           </div>
       </div>
@@ -110,12 +113,12 @@
                   <th class="text-s1 fs-0-8 ">
                     <span class="label lable-xs label-leia">
                      
-                     {%if data.FieldLabel[value] == '' %}
-                         {{value}}
-                     {%else%}
-                         {%if data.FieldLabel[value] == None %}
-                           {{value}}
-                         {%else%}
+                     {%if data.FieldLabel[value] == '' %} 123
+                         {{ value}}
+                     {%else%} 456
+                         {%if data.FieldLabel[value] == None %} 
+                           {{ value }}
+                         {%else%} 789
                            {{data.FieldLabel[value]}}
                          {%endif%}
                      {%endif%}
@@ -167,15 +170,17 @@
                   {% for value in data.FieldLabel %}        
                     {% if not data.widget[value] == 'images' %}  
                         <td>
+                            <p class="fs-0-7">
                             {% if item[value] %}                   
                               {% if 'get_a_b_c' in data.user_authorizations %}
 
-                                <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ item[value]|truncate(170, true) }} </a>
+                                <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ item[value]|truncate(20, true) }} </a>
 
                               {% else %}
-                                {{ item[value]|truncate(170, true) }}
+                                {{ item[value]|truncate(20, true) }}
                               {% endif %}
                             {% endif %}
+                            </p>
                         </td>
                     {% endif %}                
                   {% endfor %}
@@ -223,13 +228,15 @@
 {% endif %}
 
       <!-- AS MEGA LIST -->
-      <div role="tabpanel" class="tab-pane fade" id="biglist">
+      <div role="tabpanel" class="tab-pane fade {% if data.imagesui==False %}in active{% endif %}" id="biglist">
+      
+          
         
           <div class=""> 
             <table class="table">
               {% for item in data.itemlist %}
-              <tr class="bord-bottom bc-8 bw-2">
-                  <td>
+              <tr class="bord-bottom bord-left bc-8 bw-2">
+                  <td class="text-center">
 
                       {% if data.imagesui==True %}
                         {% for k,v in item.items() %}
@@ -254,6 +261,7 @@
                         {% endfor %}
                       {% endif %}
 
+                      <br/>
 
                       <div class="btn-group" role="group" aria-label="...">
                       {% if 'get_a_b_c' in data.user_authorizations %}
@@ -282,7 +290,9 @@
                           <tr>
                             <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</p></td>
                             <td>
-                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">{{ v|truncate(170, true) }}</p>
+                              <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
+                                <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ v|truncate(90, true) }}</p>
+                              </a>
                             </td>
                           </tr>
                             {% endif %}
@@ -308,6 +318,7 @@
 
   <!-- AS MOSAIC -->
           <div role="tabpanel" class="tab-pane fade in active" id="mosaic">
+
             
             
               {% for item in data.itemlist %}
@@ -431,3 +442,4 @@
 
 
 {% endblock %}
+{% block findme %} get_a_b {% endblock %}

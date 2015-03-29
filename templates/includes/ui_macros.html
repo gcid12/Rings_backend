@@ -113,7 +113,10 @@
 
             <div class="fs-1-7 text-s1">
               <a class="nounder" href="/{{handle}}">
-                  <img class="user-bar bord-all bg-1 desaturate" src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style="width:28px;">
+
+              
+
+                  <img class="user-bar bord-all bg-1 desaturate" src="{%if handle_profilepic%} /_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg{%else%} /static/images/ph_user.gif {%endif%}" style="width:28px;">
                 
                 <span class="op-0-5">{{ handle|lower() }}</span>   
               </a> 
@@ -150,12 +153,12 @@
 
 
 
-{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
+{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations,description) %} 
           
           
           <tr class="bord-bottom bc-8 bw-2">
             
-            <td>{{ icon_sma(count, color) }}</td>
+            <td width="20%">{{ icon_sma(count, color) }}</td>
             <td>
               <img src="/static/images/ico_schema.png" style="width:15px; opacity:0.5;">
 
@@ -165,7 +168,7 @@
               &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
               &nbsp; <span style="font-weight:700;">{{ring}}</span>
               {%endif%} 
-              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
+              <span class="fc-g"><p class="fs-0-8">{{description}}</p></span>
             </td>
             <td>
               <div class="pull-right">
@@ -241,14 +244,17 @@
 
             <div class="btn-group">
               {% if 'post_a_b' in user_authorizations %}
-              <!--a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a-->
+              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
               {% endif %}
 
               
               {% if 'put_a_b' in user_authorizations %}
-              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/json.png"></a>
+              
               <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+
+
               {% endif %}
+              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/json.png"></a>
 
             </div> 
             
@@ -1005,6 +1011,46 @@
 {% endmacro %}
 
 
+{% macro demotitle(number, title,org,user,position, picuser, picorg,mail,pass) %}
+<tr>
+    <td><span class="label label-vader">Demo {{number}}</span>
+    </td>
+    <td>
+
+      <img src="/static/images/demo/{{picorg}}" class="pic-org-1" style="width:100px; height:100px;">
+        
+        <img class="user-small user-round" src="/static/images/demo/{{picuser}}" style="margin-left:-40px; margin-top:90px;" alt=""/>
+
+    </td>
+    <td>
+
+      <div class="spa20">
+        <h4 class="fw-c">
+        {{title}}</h4>
+        <hr/>
+
+        <div class="fs-0-8"><strong>Organization</strong>:
+         
+
+         {{org}} | <strong>User</strong>:
+
+        
+
+         {{user}} ( {{position}} )</div>
+      </div>
+      
+    </td>
+    
+    <td>
+      <form action="/_login" method="POST" target="_blank">
+      <input type="hidden" name="email" value="{{mail}}" />
+      <input type="hidden" name="password" value="{{pass}}"/>
+      <input class="btn btn-info" type="submit" value="Go to Demo">
+    </form>
+    </td>
+    
+  </tr>
+{% endmacro %}
 
 
 
