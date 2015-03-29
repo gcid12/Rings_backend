@@ -215,6 +215,41 @@
                     {% endif %}
                   {% endfor %}
                   <!-- END COLLECTION LOOP -->
+
+
+                  {% if 'post_a_x' in data.user_authorizations %}
+                       
+                       {% if data.collections.collectionlist|length ==0  %}
+
+                          <div class="row">
+                            <div class="col-xs-12 text-center">
+                             
+                              <div class="box box-help">
+                              
+                                <p class="fs-1-3"><i class="fa fa-arrow-up"></i> &nbsp; This Organization don't have collections yet. </p>
+                                <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
+                                  <i class="fa fa-plus"></i> &nbsp; Create first collection
+                                </a>
+                                <a data-toggle="modal" data-target="#intro-collection" class="btn-help btn-info" style="margin:0 5px;">
+                                  <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Collection?
+                                </a> 
+                              </div> 
+                            </div>
+                           </div>
+                       {% else %}
+                            <!-- NEW COLLECTION -->
+                            <div class="box box-title mb-10 bord-left bw-9">
+                                {% if 'post_a_x' in data.user_authorizations %}
+                                  <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-md ">
+                                    <i class="fa fa-plus"></i>
+                                New collection</a>
+                                {%endif%}
+                            </div>
+                            <!-- NEW COLLECTION END-->
+                       {% endif %}
+                  {%endif%}
+
+
                        
 
 
@@ -304,7 +339,35 @@
   </div>
 </section>
 
-    
+
+<!-- MODAL WHAT IS A COLLECTION -->
+
+<div class="modal fade" id="intro-collection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <!-- <h4 class="modal-title" id="myModalLabel">The User Graph</h4> -->
+        <p class="fs-2">What is a Data Collection?</p>
+        
+      </div>
+      <div class="modal-body">
+          <p class="fs-2">Answer:</p>
+      
+            <p class="fs-1-2">
+            Data or digital content that is available to the world via an API. It can be text, photos, videos or any digital file. <!-- <a href="" class="clearlink fs-0-8">(long answer here)</a> -->
+            </p>
+            <img class="img-responsive" src="/static/images/wcollection.gif">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 	
 {% endblock %}
 
