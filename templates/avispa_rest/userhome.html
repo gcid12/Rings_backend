@@ -271,7 +271,14 @@
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
                                     <div>
-                                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                    {% if collection.external %}External Collection{%endif%}
+                                        {%if not collection.handle%}
+
+                                            {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                        {%else%}
+                                            {{ ui.collection(collection.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+        
+                                        {%endif%}
                                         
                                     </div>
 
@@ -287,7 +294,7 @@
                                               {% for ring in collection.rings %}
 
                                                   {% if not ring.invalid %} 
-                                                    {{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'') }}
+                                                    {{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
 
 
                                                   {%endif%}
