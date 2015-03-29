@@ -257,11 +257,8 @@
                     <!-- END TITLE OF COLLECTIONS -->
 
                     <!-- START COLLECTION LOOP-->
-                    
-                    {% for collection in data.collections.collectionlist %} 
-                        
+                    {% for collection in data.collections.collectionlist %}  
                         {% if collection.valid %}
-
 
                         
                       
@@ -274,11 +271,7 @@
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
                                     <div>
-                                        {% if 'handle' in collection %}
-                                          {{ ui.collection(collection.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                        {%else%}
-                                          {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                        {%endif%}
+                                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
                                         
                                     </div>
 
@@ -292,13 +285,15 @@
                                           <td colspan="3" style="padding:0 2px 0px 2px;">
                                             <table class="table table-bordered">
                                               {% for ring in collection.rings %}
+
                                                   {% if not ring.invalid %} 
                                                     {{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'') }}
+
 
                                                   {%endif%}
                                               {% endfor %}
 
-                                              <!-- ring.ringdescription -->
+                                              
                                             </table>
                                           </td>
                                         </tr>
@@ -329,36 +324,67 @@
                     <!-- END COLLECTION LOOP -->
                     
 
+
                     {% if 'post_a_x' in data.user_authorizations %}
                        
                        {% if data.collections.collectionlist|length ==0  %}
 
+                          
                           <div class="row">
                             <div class="col-xs-12 text-center">
                              
                               <div class="box box-help">
+
                               <img src="/static/images/box2.png" class="img-responsive block-center pull-left" style="width:100px;"> 
-                                <p class="fs-1-3"><i class="fa fa-arrow-up"></i>You have no Collections. Create one here: </p>
-                                <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
-                                  <i class="fa fa-plus"></i> &nbsp; Create My first collection
-                                </a>
-                                <a data-toggle="modal" data-target="#intro-collection" class="btn-help btn-info" style="margin:0 5px;">
-                                  <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Collection?
-                                </a> 
-                              </div> 
+
+
+                                <p class="fs-1-3"><i class="fa fa-arrow-up"></i>You have no Collections. Create one here:
+                                  
+                                </p>
+
+                                
+                                  <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
+                                    <i class="fa fa-plus"></i> &nbsp; Create My first collection
+                                  </a>
+
+                                  
+
+                                  <a data-toggle="modal" data-target="#intro-collection" class="btn-help btn-info" style="margin:0 5px;">
+                                    <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Collection?
+                                  </a>
+
+                                  
+                              </div>
+                                
                             </div>
                            </div>
+
+                           
+
+                         
+
                        {% else %}
+                          
                             <!-- NEW COLLECTION -->
+
                             <div class="box box-title mb-10 bord-left bw-9">
+                                
                                 {% if 'post_a_x' in data.user_authorizations %}
                                   <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-md ">
                                     <i class="fa fa-plus"></i>
                                 New collection</a>
                                 {%endif%}
                             </div>
+
+                            
                             <!-- NEW COLLECTION END-->
+
+
                        {% endif %}
+                    
+
+                    
+
                   {%endif%}
 
                 </div>
@@ -538,7 +564,7 @@
           <p class="fs-2">Answer:</p>
       
             <p class="fs-1-2">
-            Data or digital content that is available to the world via an API. It can be text, photos, videos or any digital file. <!-- <a href="" class="clearlink fs-0-8">(long answer here)</a> -->
+            A collection it's a grouped set of data or digital content that is available to the world via an API. It can be text, photos, videos or any digital file. <!-- <a href="" class="clearlink fs-0-8">(long answer here)</a> -->
             </p>
             <img class="img-responsive" src="/static/images/wcollection.gif">
 
