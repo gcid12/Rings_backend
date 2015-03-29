@@ -187,6 +187,7 @@ filter: grayscale(100%);
 .mb-10{margin-bottom:10px !important;}
 .mb-20{margin-bottom:20px !important;}
 .mb-30{margin-bottom:30px !important;}
+.mt-10{margin-top:10px !important;}
 .mr-50{margin-right:50px !important;}
 .mr-70{margin-right:70px !important;}
 .ml-15{margin-left:15px !important;}
@@ -464,7 +465,15 @@ filter: grayscale(100%);
 .bc-15{border-color: #e8e8e8;}
 
 
+.bc-org{border-color: #6078ef;} /*orgs*/
+.bc-user{border-color: #fce121;} /*user*/
+
+
+
+
 .bw-2{border-width:2px;}
+.bw-3{border-width:3px;}
+.bw-4{border-width:4px;}
 .bw-5{border-width:5px;}
 .bw-7{border-width:7px;}
 .bw-9{border-width:9px;}
@@ -1211,12 +1220,13 @@ border-radius: 50px;  }
 .pic-org-1{
     width:40px; 
     height:40px; 
-    margin:10px 0 0 0;
     border:1px solid #FFF;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px; 
 }
+
+
 
 .pic-org-new{
 

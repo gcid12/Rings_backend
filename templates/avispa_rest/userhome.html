@@ -82,7 +82,7 @@
                                 
                                 <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
 
-                                    <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1">
+                                    <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1 mt-10">
 
                                 </a>
         
@@ -92,7 +92,7 @@
                             {% if 'post_a' in data.user_authorizations %}
 
                             <div style="width:40px; height:40px;">
-                                <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs"><div class="pic-org-1 blueprint"><i class="fa fa-plus"></i></div></a>
+                                <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs"><div class="pic-org-1 mt-10 blueprint"><i class="fa fa-plus"></i></div></a>
                             </div>
 
                             {%endif%}
@@ -264,27 +264,35 @@
 
                         
                       
-                        <div class="box bord-left bg-f bw-9 p-5">
-                            <span class="label bl bl-gray "><i class="fa fa-users"></i>{% if collection.external %} {{collection.handle|upper }} {% else %} {{data.handle|upper }} {%endif%}  | RingCollection
-                            </span> 
+                        <div class="box bord-left bg-f bw-9 p-5 {% if collection.external %}bc-org {%else%} bc-user {%endif%}">
+
+
+                                
+
+                          {% if collection.external %}
+
+                              {% for organization in data.organizations %}
+                                  {%if organization['handle']|trim == collection.handle|trim %} 
+
+                                  <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}">    
+                                     <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" width="50px" class="pic-org-1">
+                                  </a>
+                                  {%endif%}
+                              {% endfor %}
+
+                          {%endif%}
+                          <span class="fs-1-3">
+                            <span class="label bl bl-gray bc-15 ">{% if collection.external %} {{collection.handle|upper }} {% else %} <i class="fa fa-user"></i> &nbsp;{{data.handle|upper }} {%endif%}  | DataCollection           
+                            </span>
+                          </span>
+
+
                         </div>
-                        <div class="box box-clear bord-left  bw-2 " style="padding:20px 20px 0 20px; margin:0 0 10px 0;">
+                        <div class="box box-clear bord-left bw-5 bc-15 " style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:100px;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
                                     <div>
-
-                                    {% if collection.external %}
-
-                                    External Collection
-
-                                      {% for organization in data.organizations %}
-                                          {%if organization['handle']|trim == collection.handle|trim %}    
-                                             <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1">
-                                          {%endif%}
-                                      {% endfor %}
-
-                                    {%endif%}
 
                                         {%if not collection.handle%}
 
@@ -306,9 +314,20 @@
                                           <td colspan="3" style="padding:0 2px 0px 2px;">
                                             <table class="table table-bordered">
                                               {% for ring in collection.rings %}
-
                                                   {% if not ring.invalid %} 
-                                                    {{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+
+                                                  {% if collection.external %} 
+                                              
+                                                  {{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#6078ef', ring.count , '85', '',data.user_authorizations) }}
+
+                                                  {% else %} 
+
+                                                  {{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+
+                                                  {% endif %}
+
+
+                                                    
 
 
                                                   {%endif%}

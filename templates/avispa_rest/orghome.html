@@ -176,7 +176,7 @@
                     {% for collection in data.collections.collectionlist %}  
                       {% if collection.valid %}
 
-                        <div class="box bord-left bg-f bw-9 " >
+                        <div class="box bord-left bg-f bw-9 bc-org" >
                             <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | RingCollection
                             </span> 
                         </div>
@@ -199,7 +199,7 @@
                                             <table class="table table-bordered">
 
                                             {% for ring in collection.rings %}    
-                                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#965aa9', ring.count , '85', '',data.user_authorizations) }}
+                                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#6078EF', ring.count , '85', '',data.user_authorizations) }}
                                             {% endfor %}
   
 
