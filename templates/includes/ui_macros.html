@@ -241,13 +241,14 @@
 
             <div class="btn-group">
               {% if 'post_a_b' in user_authorizations %}
-              <!--a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a-->
+              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
               {% endif %}
 
               
               {% if 'put_a_b' in user_authorizations %}
-              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/json.png"></a>
+              
               <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/json.png"></a>
               {% endif %}
 
             </div> 
