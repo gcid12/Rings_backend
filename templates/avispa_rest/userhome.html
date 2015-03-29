@@ -273,9 +273,7 @@
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
                                     <div>
-<<<<<<< HEAD
-                                    {% if collection.external %}External Collection{%endif%}
-=======
+
                                     {% if collection.external %}
 
                                     External Collection
@@ -287,7 +285,7 @@
                                       {% endfor %}
 
                                     {%endif%}
->>>>>>> fd33c6dc7cf0b6e77f783a5a62fc5740f14a5b11
+
                                         {%if not collection.handle%}
 
                                             {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
