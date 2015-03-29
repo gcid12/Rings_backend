@@ -461,6 +461,8 @@ filter: grayscale(100%);
 .bc-12{border-color: #666;}
 .bc-13{border-color: #818181;}
 .bc-14{border-color: rgba(0, 0, 0, 0.05); }
+.bc-15{border-color: #e8e8e8;}
+
 
 .bw-2{border-width:2px;}
 .bw-5{border-width:5px;}
