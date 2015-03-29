@@ -462,14 +462,16 @@ def home_dispatcher(handle):
             #data['collections']['collectionlistlen'] = 1
             #data['collections']['collectionlist'] = []
             if len(data['organizations'])!=0:
-                collection_dict = data['organizations'][0]['collections'][0]
-                
-                collection_dict['valid'] = True
-                collection_dict['handle'] = data['organizations'][0]['handle']
-                #cd = []
-                #cd['collectionlist'].append(collection_dict)
-                #data['collections'] = cd
-                data['collections']['collectionlist'].append(collection_dict)
+                if len(data['organizations'][0]['collections'])!=0:
+                    collection_dict = data['organizations'][0]['collections'][0]
+                    
+                    collection_dict['valid'] = True
+                    collection_dict['handle'] = data['organizations'][0]['handle']
+                    collection_dict['external'] = True
+                    #cd = []
+                    #cd['collectionlist'].append(collection_dict)
+                    #data['collections'] = cd
+                    data['collections']['collectionlist'].append(collection_dict)
             #raise
 
      
