@@ -74,8 +74,11 @@
                                 </ul>
                             </span> -->
 
+
+
                         </div>
                         <div class="col-xs-12 col-sm-12">
+                        {{data.organizations}}
                             {% for organization in data.organizations %}
                                 
                                 <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
@@ -271,7 +274,17 @@
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
                                     <div>
-                                    {% if collection.external %}External Collection{%endif%}
+                                    {% if collection.external %}
+
+                                    External Collection
+
+                                      {% for organization in data.organizations %}
+                                          {%if organization['handle']|trim == collection.handle|trim %}    
+                                             <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1">
+                                          {%endif%}
+                                      {% endfor %}
+
+                                    {%endif%}
                                         {%if not collection.handle%}
 
                                             {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
