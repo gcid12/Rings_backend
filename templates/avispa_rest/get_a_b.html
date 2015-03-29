@@ -1,7 +1,7 @@
 {% extends 'avispa_rest/tabs.html' %}
 
 {% block title %} myRing {% endblock %}
-{% block findme %} get_a_b {% endblock %}
+
 
 {% block crumbs %}
 
@@ -17,8 +17,10 @@
 <div class="rn-curtain">
     
     <table class="table table-condensed"> 
-    {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}
+    {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }}
     </table>
+
+
     
 
 
@@ -440,3 +442,4 @@
 
 
 {% endblock %}
+{% block findme %} get_a_b {% endblock %}
