@@ -41,9 +41,12 @@ def login():
                     mpp = {'$name':current_user.id}
                     flash({'f':'people.set','p':mpp},'MP')
                     #msg = {"$name":current_user.id}
-                    #flash({'people.set': msg },'MP')
+                    #flash({'people.set': msg },'MP') 
 
                     flash("Logged in!",'UI')
+
+                    if 'redirect' in request.form:
+                        return redirect('/'+request.form.get('redirect')+'/_home')
 
                     return redirect('/'+user.id+'/_home')
                 else:

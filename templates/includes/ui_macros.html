@@ -1008,7 +1008,7 @@
 {% endmacro %}
 
 
-{% macro demotitle(number, title,org,user,position, picuser, picorg,mail,pass) %}
+{% macro demotitle(number, title,org,user,position, picuser, picorg,mail,pass,redirect) %}
 <tr>
     <td><span class="label label-vader">Demo {{number}}</span>
     </td>
@@ -1042,6 +1042,7 @@
       <form action="/_login" method="POST" target="_blank">
       <input type="hidden" name="email" value="{{mail}}" />
       <input type="hidden" name="password" value="{{pass}}"/>
+      <input type="hidden" name="redirect" value ="{{redirect}}"/>
       <input class="btn btn-info" type="submit" value="Go to Demo">
     </form>
     </td>
