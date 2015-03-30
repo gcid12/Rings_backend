@@ -225,6 +225,8 @@ class AvispaRestFunc:
 
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         #print(schema['fields'])
+       
+        d['ringdescription'] = schema['rings'][0]['RingDescription']
 
         layers = {}
         labels = {}
@@ -235,6 +237,8 @@ class AvispaRestFunc:
             labels[schemafield['FieldName']]=schemafield['FieldLabel']
             widgets[schemafield['FieldName']]=schemafield['FieldWidget']
             sources[schemafield['FieldName']]=schemafield['FieldSource']
+
+
 
         print('widgets:',widgets)
 
@@ -468,6 +472,10 @@ class AvispaRestFunc:
         '''
         #print(ring)
         schema = self.AVM.ring_get_schema(handle,ring)
+
+        d = {}
+        d['ringdescription'] = schema['rings'][0]['RingDescription']
+
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
@@ -487,11 +495,12 @@ class AvispaRestFunc:
                     field['FieldSource'] = ','.join(canonical_uri_list)
 
 
-        d = {'message': 'Using post_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/post_rq_a_b.html', 
-             'ringschema':ringschema,
-             'fieldsschema':fieldsschema,
-             'numfields':numfields,
-             'item':{} }
+        d['message'] = 'Using post_rq_a_b for handle '+handle+', ring:'+ring 
+        d['template'] = 'avispa_rest/post_rq_a_b.html' 
+        d['ringschema'] = ringschema
+        d['fieldsschema'] = fieldsschema
+        d['numfields'] = numfields
+        d['item'] = {}
 
         
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
@@ -635,6 +644,9 @@ class AvispaRestFunc:
         schema = self.AVM.ring_get_schema(handle,ring)
         print('schema:',schema)
 
+        d['ringdescription'] = schema['rings'][0]['RingDescription']
+
+
         d['widget'] = {}
         d['imagesui'] = False
 
@@ -764,6 +776,10 @@ class AvispaRestFunc:
           #  item['Images']=images
         
         schema = self.AVM.ring_get_schema(handle,ring)
+
+        d = {}
+
+        d['ringdescription'] = schema['rings'][0]['RingDescription']
   
         labels = {}
         for schemafield in schema['fields']:
@@ -787,14 +803,14 @@ class AvispaRestFunc:
                 
                     field['FieldSource'] = ','.join(canonical_uri_list)
 
-
-        d = {'message': 'Using put_rq_a_b_c for handle '+handle+', ring:'+ring , 
-             'template':'avispa_rest/put_rq_a_b_c.html', 
-             'ringschema':ringschema,
-             'fieldsschema':fieldsschema,
-             'numfields':numfields,
-             'item':item,
-             'labels':labels }
+        
+        d['message'] = 'Using put_rq_a_b_c for handle '+handle+' ring:'+ring  
+        d['template'] = 'avispa_rest/put_rq_a_b_c.html' 
+        d['ringschema'] = ringschema
+        d['fieldsschema'] = fieldsschema
+        d['numfields'] = numfields
+        d['item'] = item
+        d['labels'] = labels 
 
 
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)

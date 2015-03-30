@@ -7,7 +7,6 @@
 
 <li class="active">˚{{ data.ring}} </li>
 
-
 {% endblock %}
 
 {% block tabcontent %}
@@ -15,9 +14,11 @@
   <!-- COLUMN 1 -->
 
 <div class="rn-curtain">
-    
+  
     <table class="table table-condensed"> 
+
     {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }}
+    
     </table>
 
 
