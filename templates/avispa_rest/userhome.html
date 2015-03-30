@@ -275,7 +275,7 @@
                                   {%if organization['handle']|trim == collection.handle|trim %} 
 
                                   <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}">    
-                                     <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" width="50px" class="pic-org-1">
+                                     <img src="{%if organization['profilepic'] %}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1" style="width:34px; height:34px;" >
                                   </a>
                                   {%endif%}
                               {% endfor %}
@@ -288,7 +288,7 @@
 
 
                         </div>
-                        <div class="box box-clear bord-left bw-5 bc-15 " style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:100px;">
+                        <div class="box box-clear bord-left bw-5 bc-15 " style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:110px;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">

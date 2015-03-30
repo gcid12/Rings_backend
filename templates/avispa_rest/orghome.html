@@ -19,7 +19,7 @@
         <!-- PHOTO  -->
 
         {% if data.handle_profilepic %}
-          <img class="img-responsive center-block user-big" src="/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="width:; float:left; margin-right:10px;" alt="">
+          <img class="img-responsive center-block user-big" src="/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="width:100px; float:left; margin-right:10px;" alt="">
         
         {% else %}
           <table style="float:left;">
@@ -176,11 +176,11 @@
                     {% for collection in data.collections.collectionlist %}  
                       {% if collection.valid %}
 
-                        <div class="box bord-left bg-f bw-9 bc-org" >
+                        <div class="box bord-left bg-f bw-9 " >
                             <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | RingCollection
                             </span> 
                         </div>
-                        <div class="box box-clear bord-left  bw-2" style="padding:20px 20px 0 20px; margin:0 0 10px 0;">
+                        <div class="box box-clear bord-left  bw-5 bc-15" style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:110px;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
                                 <div class="col-xs-12 col-sm-4">
