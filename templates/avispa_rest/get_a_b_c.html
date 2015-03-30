@@ -36,7 +36,11 @@
             <div class="rn-box-content">
               <div class="row">
 
-                  <div class="col-sm-5 col-md-4 col-lg-3">
+                  {% if data.imagesui==True %}
+                  <div class="col-sm-5 col-md-4 col-lg-3 bg-a">
+                  {% else %}
+                  <div class="col-sm-offset-1 col-sm-11">
+                  {% endif %}
 
                     {% if not data.raw %}
                     <div class="form-group">
@@ -54,40 +58,29 @@
                     </div>
                     {%endif%}
             
-                  <form class="form-horizontal" role="form">
-                    
-                    <table class="table table-condensed table-striped">   
-                       
-                            {% for k,v in data.item.items() %}
-                      <tr> 
-                        <!-- <td>
-                              {% if k =='_public' %} 
-                                      <div><b>&nbsp;PUBLIC</b></div>
-
-                              {% endif %}
-                        </td> -->
-
-                               {% if not k =='_public' %} 
-                               {% if not k =='_id' %} 
-                               {% if data.widget[k] != 'images' %}
-                        <td>  
-                              <p class="fs-0-8 fw-a fc-g">{{ k }}:</p>
-                        </td>
-                        <td>
-                              <p class="fs-0-8 fw-b">{{ v }}</p>
-                        </td> 
-                                {% endif %}
-                                {% endif %}
-                                {% endif %}
-
-                      </tr>
-                            {% endfor %}
-                      
-                           
+                      <form class="form-horizontal" role="form">
                         
-                    </table>         
-                    
-                  </form>  
+                        <table class="table table-condensed table-striped">   
+                           
+                                {% for k,v in data.item.items() %}
+                          <tr> 
+                                   {% if not k =='_public' %} 
+                                   {% if not k =='_id' %} 
+                                   {% if data.widget[k] != 'images' %}
+                            <td>  
+                                  <p class="fs-0-8 fw-a fc-g">{{ k }}:</p>
+                            </td>
+                            <td>
+                                  <p class="fs-0-8 fw-b">{{ v }}</p>
+                            </td> 
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                          </tr>
+                                {% endfor %}
+                        </table>         
+                        
+                      </form>  
                 </div>
 
                 <div class="col-sm-7 col-md-8 col-lg-9">
