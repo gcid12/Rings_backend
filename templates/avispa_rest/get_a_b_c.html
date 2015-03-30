@@ -33,14 +33,8 @@
             <!--div class="rn-box-title-slim">
               Showing item: {{ data.idx}}
             </div-->
-            <div class="rn-box-content">
-              <div class="row">
-
-                  {% if data.imagesui==True %}
-                  <div class="col-sm-5 col-md-4 col-lg-3 bg-a">
-                  {% else %}
-                  <div class="col-sm-offset-1 col-sm-11">
-                  {% endif %}
+        
+                  <div class="{% if data.imagesui==True %}col-sm-5 col-md-4 col-lg-3 {% else %} col-sm-offset-1 col-sm-10{%endif%}">
 
                     {% if not data.raw %}
                     <div class="form-group">
@@ -64,6 +58,13 @@
                            
                                 {% for k,v in data.item.items() %}
                           <tr> 
+                            <!-- <td>
+                                  {% if k =='_public' %} 
+                                          <div><b>&nbsp;PUBLIC</b></div>
+
+                                  {% endif %}
+                            </td> -->
+
                                    {% if not k =='_public' %} 
                                    {% if not k =='_id' %} 
                                    {% if data.widget[k] != 'images' %}
@@ -76,8 +77,12 @@
                                     {% endif %}
                                     {% endif %}
                                     {% endif %}
+
                           </tr>
                                 {% endfor %}
+                          
+                               
+                            
                         </table>         
                         
                       </form>  
