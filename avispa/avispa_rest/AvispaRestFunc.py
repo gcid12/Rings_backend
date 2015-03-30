@@ -636,8 +636,8 @@ class AvispaRestFunc:
         print('schema:',schema)
 
         d['widget'] = {}
+        d['imagesui'] = False
 
-        
         for field in schema['fields']:
             
 
@@ -651,14 +651,10 @@ class AvispaRestFunc:
                 print('images:',images)
                 del images[0]
                 item[field['FieldName']] = images
+                d['imagesui'] = True
 
         print('postitem:',item)
-
-
-
-        
-        
-        
+                
         if item:
             print('Awesome , you just retrieved the item from the DB')
             print(item)
