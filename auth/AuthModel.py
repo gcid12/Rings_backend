@@ -194,7 +194,7 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.email) {
-                        emit(doc.email,doc)
+                        emit(doc.email,doc);
                     }
                 }
                 ''')
@@ -206,7 +206,7 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.email) {
-                        emit(doc._id,doc)
+                        emit(doc._id,doc);
                     }
                 }
                 ''')
@@ -218,13 +218,13 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.email) {
-                        var x = new Object();
+                        var x = {};
                         x['name'] = doc.name;  
                         x['location'] = doc.location;
                         x['is_org'] = doc.is_org;
 
-                        if(doc.profilepic==''){
-                            x['profilepic'] = ''
+                        if(doc.profilepic===''){
+                            x['profilepic'] = '';
                         }else{        
                             parts = doc.profilepic.split(',')
                             if(parts[0]==''){
@@ -236,7 +236,7 @@ class AuthModel:
 
                         
                         
-                        emit(doc._id,x)
+                        emit(doc._id,x);
                     }
                 }
                 ''')
@@ -248,13 +248,13 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.email) {
-                        var x = new Object();
+                        var x = {};
                         for (var key in doc.rings){
                             if(!doc.rings[key]['deleted']){
-                                x[doc.rings[key]['ringname']]=doc.rings[key]['count']
+                                x[doc.rings[key]['ringname']]=doc.rings[key]['count'];
                             }        
                         }
-                        emit(doc._id,x)
+                        emit(doc._id,x);
                     }
                 }
                 ''')
@@ -267,14 +267,13 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.email) {
-                        var x = new Object();
+                        var x = {};
                             for (var key in doc.rings){
                                 if(!doc.rings[key]['deleted']){
-                                    x[doc.rings[key]['origin']] = doc.rings[key]['origin']
-                
+                                    x[doc.rings[key]['origin']] = doc.rings[key]['origin'];
                                 }
                             }
-                        emit(doc._id,x)
+                        emit(doc._id,x);
                     }
                 }
                 ''')
@@ -287,7 +286,7 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.email) {
-                        var x = new Object();
+                        var x = {};
                         for (var key in doc.rings){
                             if(!doc.rings[key]['deleted']){
                                 x[doc.rings[key]['ringname']] = new Object();
@@ -296,7 +295,7 @@ class AuthModel:
                                 x[doc.rings[key]['ringname']]['moderator']=doc.rings[key]['moderator'];
                             }
                         }
-                        emit(doc._id,x)
+                        emit(doc._id,x);
                     }
                 }
                 ''')
@@ -309,10 +308,10 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.is_org) {
-                        var x = new Object();
-                        x['people']=doc.people
-                        x['teams']=doc.teams
-                        emit(doc._id,x)
+                        var x = {};
+                        x['people']=doc.people;
+                        x['teams']=doc.teams;
+                        emit(doc._id,x);
                     }
                 }
                 ''')
@@ -325,18 +324,18 @@ class AuthModel:
                 '''
                 function(doc) {
                     if(doc.is_org) {
-                        var x = new Object();
-                        x['handle']=doc._id
+                        var x = {};
+                        x['handle']=doc._id;
                         
                         x['name']=''
                         if(doc.name){
-                            x['name']=doc.name
+                            x['name']=doc.name;
                         }
 
-                        x['profilepic']=''      
+                        x['profilepic']='';     
                         if(doc.profilepic){
-                            if(doc.profilepic==''){
-                                x['profilepic'] = ''
+                            if(doc.profilepic===''){
+                                x['profilepic'] = '';
                             }else{        
                                 parts = doc.profilepic.split(',')
                                 if(parts[0]==''){
@@ -347,8 +346,12 @@ class AuthModel:
                             }
                         }
 
+                        if(doc.collections){
+                            x['collections'] = doc.collections;
+                        }
+
                         for (var key in doc.people){
-                            emit(doc.people[key]['handle'],x)           
+                            emit(doc.people[key]['handle'],x);          
                         }      
                     }
                 }
