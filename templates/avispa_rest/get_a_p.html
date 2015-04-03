@@ -16,7 +16,7 @@
     <div class="row">
             
       <div class="col-md-9">  
-        {{ ui.org_header(data.handle,data.handle_actualname,data.handle_profilepic,'people',data.user_authorizations) }}
+        {{ ui.org_header(data,data.handle) }}
 
         <div class="row">
           <div class="col-sm-12">
@@ -53,7 +53,7 @@
                     </td>
                     <td> 
                       <a class="rn-b1" href="/{{ person.handle }}">
-                          <img class="img-responsive center-block user-small" src="{% if person.thumbnail %}/_images/{{person.handle}}/t150/{{person.thumbnail}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="float:left; margin-right:10px;" alt="">
+                          <img class="img-responsive center-block user-small" src="{% if person.thumbnail %}{{data.image_cdn_root}}/_images/{{person.handle}}/t150/{{person.thumbnail}}_t150.jpg{% else %}/static/images/generic_thumbnail.png{% endif %}" style="float:left; margin-right:10px;" alt="">
                           {{ person.handle }}
                       </a>
 

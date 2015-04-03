@@ -353,10 +353,11 @@
                       {% if 'get_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
                                   title="
+                                  
                                   {% for k,v in item.items() %}
-                                    {% if k == 'name' %}
-                                      {{ v }}
-                                    {% endif %}
+                                    
+                                      {#{ v }#}
+                                    
                                   {% endfor %}"
                                   data-content="
                                     {% for k,v in item.items() %}

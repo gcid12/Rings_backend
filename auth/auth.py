@@ -3,7 +3,7 @@ from flask import current_app, Blueprint, render_template, abort, request, flash
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-from env_config import FROMEMAIL, FROMPASS
+from env_config import FROMEMAIL, FROMPASS, IMAGE_CDN_ROOT
 from MainModel import MainModel
 from EmailModel import EmailModel
 
@@ -150,6 +150,7 @@ def register():
             current_app.logger.error("Error on registration ")
         
     data = {}
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
     data['method'] = '_register'
 
     return render_template("/auth/register.html", data=data)
@@ -195,6 +196,7 @@ def orgregister():
             current_app.logger.error("Error on registration ")
         
     data = {}
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
     data['method'] = '_orgregister'
 
     MAM = MainModel()
@@ -374,6 +376,7 @@ def profile_get(handle):
 
         o = urlparse.urlparse(request.url)
         data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
         data['method'] = '_profile'
 
         
@@ -427,6 +430,7 @@ def orgprofile_get(handle):
         data['user'] = user
         data['handle'] = handle
         data['method'] = '_orgprofile'
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
         flash({'track':'_orgprofile'},'MP')
 
     else:

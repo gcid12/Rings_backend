@@ -55,7 +55,7 @@
 {% endmacro %}
 
 
-{% macro collection_big(handle, collection, ring , percent, role, update,handle_profilepic) %}
+{% macro collection_big(handle, collection, ring , percent, role, update,handle_profilepic,user_authorizations,data) %}
 <div class="row">
 
   <div class="col-sm-12 alpha omega" style="background-color:#757575;">
@@ -115,7 +115,7 @@
               <a class="nounder" href="/{{handle}}">
 
 
-                  <img class="user-bar bord-all bg-1 desaturate" src="{% if handle_profilepic %} /_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg{% else %} /static/images/ph_user2.gif{% endif %}" style="width:28px;">
+                  <img class="user-bar bord-all bg-1 desaturate" src="{% if handle_profilepic %}{{data.image_cdn_root}}/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg{% else %} /static/images/ph_user2.gif{% endif %}" style="width:28px;">
                 
                 <span class="op-0-5">{{ handle|lower() }}</span>   
               </a> 
@@ -129,7 +129,7 @@
 
             <div class="spa5">
               <span class="label bl bl-gray visible-xs" style="width:120px;">
-              <!-- <img src="/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style=" width:20px;">  -->
+              <!-- <img src="{{data.image_cdn_root}}/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style=" width:20px;">  -->
               <i class="fa fa-user"></i> {{ handle|lower() }} | RingCollection</span> 
             </div>
 
@@ -924,12 +924,12 @@
 
 {% endmacro%}
 
-{% macro org_header(handle,actualname,profilepic,currentsection,user_authorizations) %}
+{% macro org_header(data,handle) %}
 
-        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if profilepic %}/_images/{{handle}}/t150/{{profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
+        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
 
-        {% if actualname %} 
-         <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h3><br/>
+        {% if data.handle_actualname %} 
+         <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{data.handle_actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h3><br/>
         {% else %}
          <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{handle}}</span></a><br/><span class="text-lgray pull-left fs-0-6"></span></h3><br/>
         {% endif %}
@@ -937,14 +937,14 @@
         <span class=" pull-right">
             <a href="/{{handle}}" >go to<b> mainpage</b> </a> &nbsp;&nbsp;<br/>
 
-          {% if currentsection == 'teams' %}
-            {% if 'get_a_p' in user_authorizations %}     
+          {% if data.section == '_teams' %}
+            {% if 'get_a_p' in data.user_authorizations %}     
             <a href="/{{handle}}/_people" >go to <b> People</b> </a> &nbsp;&nbsp;
             {% endif %}
           {%endif%}
 
-          {% if currentsection == 'people' %}
-            {% if 'get_a_m' in user_authorizations %}     
+          {% if data.section == '_people' %}
+            {% if 'get_a_m' in data.user_authorizations %}     
             <a href="/{{handle}}/_teams" > go to <b>Teams</b> </a> &nbsp;&nbsp;
             {% endif %}
           {%endif%}

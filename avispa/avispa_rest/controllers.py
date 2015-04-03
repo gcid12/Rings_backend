@@ -10,7 +10,7 @@ from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE
-from env_config import IMAGE_STORE
+from env_config import IMAGE_STORE, IMAGE_CDN_ROOT
 from MainModel import MainModel
 
 
@@ -97,6 +97,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     o = urlparse.urlparse(request.url)
     data['host_url'] = urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
     data['api_url'] = urlparse.urlunparse((o.scheme, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
+
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
 
     t = time.time()
     data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
@@ -231,6 +233,8 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     o = urlparse.urlparse(request.url)
     data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
 
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
+
     t = time.time()
     data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 
@@ -290,6 +294,8 @@ def home_dispatcher(handle):
         data['handle'] = handle
         #data['rings'] = rings
         data['collections'] = collectionsd
+
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
 
         
         # Daily Activity Graph steps
@@ -542,6 +548,9 @@ def people_dispatcher(depth,handle,person=None):
     MAM = MainModel()
     data = {}
 
+    data['section'] = '_people'
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
+
     if 'q' in request.args:
         if request.args.get("q"):
             method = 'search'
@@ -615,6 +624,10 @@ def teams_dispatcher(depth,handle,team=None):
     ATR = AvispaTeamsRestFunc()
     MAM = MainModel()
     data = {}
+
+
+    data['section'] = '_teams'
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
 
     if 'q' in request.args:
         if request.args.get("q"):
