@@ -20,10 +20,8 @@
           <!-- TABS WILL SHOW -->
         {% if data.collection %} 
             {% if not data.raw %} 
-
-                      {#{ ui.collection_big(data.handle, data.collection,6,1,'1 day ago','/'+data.handle+'/_collections/'+data.collection) }#}
-
-                      {{ ui.collection_big(data.handle, data.collection, data.ring ,6,1,'1 day ago', data.handle_profilepic) }}
+                      {#{ ui.collection_big(data.handle, data.collection, data.ring ,6,1,'1 day ago', data.handle_profilepic) }#}
+                      {{ ui.collection_big(data ,6,1,'1 day ago') }}
 
             {%endif%}
          {%endif%}

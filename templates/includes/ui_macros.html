@@ -55,19 +55,22 @@
 {% endmacro %}
 
 
-{% macro collection_big(handle, collection, ring , percent, role, update,handle_profilepic,user_authorizations,data) %}
+
+{#% macro collection_big(handle, collection, ring , percent, role, update,handle_profilepic,user_authorizations) %#}
+{% macro collection_big(data, percent, role, update) %}
+
 <div class="row">
 
   <div class="col-sm-12 alpha omega" style="background-color:#757575;">
    
       <div class="pull-right text-lgray " style="padding-left:50px;">
         <span class="pr-20 fs-0-8">
-          <a href="" class="text-lgray">{{ handle }}</a>
+          <a href="" class="text-lgray">{{ data.handle }}</a>
             <i class="fa fa-arrow-right"></i>
-          <a href="" class="fc-c">{{ collection }}</a>
-          {%if ring=='None' %}
+          <a href="" class="fc-c">{{ data.collection }}</a>
+          {%if data.ring=='None' %}
             <i class="fa fa-arrow-right"></i>        
-          <a href="" class="fc-c">˚{{ ring }}</a>
+          <a href="" class="fc-c">˚{{ data.ring }}</a>
           {%endif%}
         </span> 
       </div>
@@ -84,7 +87,7 @@
             <div class="bord-right bb-11 pr-20">
               <img class="block-center" src="/static/images/case-44.png" style="width:85px;" alt="MyRing"> 
               
-              <span class="label bl bl-gray"><img class="block-center" src="/static/images/case-49.png" style="width:0px;" alt="MyRing">  <i class="fa fa-user"></i> {{ handle|lower() }} | Collection</span> 
+              <span class="label bl bl-gray"><img class="block-center" src="/static/images/case-49.png" style="width:0px;" alt="MyRing">  <i class="fa fa-user"></i> {{ data.handle|lower() }} | Collection</span> 
               
             </div>
           </div>
@@ -98,13 +101,13 @@
                 <div class="label label-info hidden-xs"> Owner: <strong>you</strong> </div>
                 <div class="spa10"></div>
                 <span class="dropdown">
-                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                  <a class="dropdown-toggle nounder" id="menu_{{data.collection}}" data-toggle="dropdown" aria-expanded="false">
                     <span class="caret"></span><span class="hidden-xs">Actions</span>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{collection}}">
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}/_collections/{{ collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}/_collections/{{ data.collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
                   </ul>
                 </span>
             </div>
@@ -112,30 +115,30 @@
 
 
             <div class="fs-1-7 text-s1">
-              <a class="nounder" href="/{{handle}}">
+              <a class="nounder" href="/{{data.handle}}">
 
 
-                  <img class="user-bar bord-all bg-1 desaturate" src="{% if handle_profilepic %}{{data.image_cdn_root}}/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg{% else %} /static/images/ph_user2.gif{% endif %}" style="width:28px;">
+                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph_user2.gif{% endif %}" style="width:28px;">
                 
-                <span class="op-0-5">{{ handle|lower() }}</span>   
+                <span class="op-0-5">{{ data.handle|lower() }}</span>   
               </a> 
               <span class="op-0-5">/</span>
               
-              <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-              <span class="fw-c text-gray">{{ collection|upper() }}</span>
+              <a class="nounder" href="/{{data.handle}}/_collections/{{data.collection}}">
+              <span class="fw-c text-gray">{{ data.collection|upper() }}</span>
              </a>
             </div> 
-            <!-- <div class="label bl bl-grayx"><i class="fa fa-user"></i> {{handle|upper }} | Data Collection</div>  -->
+            <!-- <div class="label bl bl-grayx"><i class="fa fa-user"></i> {{data.handle|upper }} | Data Collection</div>  -->
 
             <div class="spa5">
               <span class="label bl bl-gray visible-xs" style="width:120px;">
-              <!-- <img src="{{data.image_cdn_root}}/_images/{{handle}}/t75/{{ handle_profilepic}}_t75.jpg" style=" width:20px;">  -->
-              <i class="fa fa-user"></i> {{ handle|lower() }} | RingCollection</span> 
+              <!-- <img src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg" style=" width:20px;">  -->
+              <i class="fa fa-user"></i> {{ data.handle|lower() }} | RingCollection</span> 
             </div>
 
 
             <div class="">
-            <p class="text-lgray fs-1"><strong>5,346</strong> Data resources | <strong>{{percent}}%</strong> completed </p>
+            <p class="text-lgray fs-1"><strong>5,346</strong> Data resources | <strong>{{data.percent}}%</strong> completed </p>
             </div>
 
             
