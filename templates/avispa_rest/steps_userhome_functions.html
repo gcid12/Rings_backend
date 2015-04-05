@@ -1,0 +1,65 @@
+     <script type="text/javascript">
+      function startIntro(){
+        var intro = introJs();
+          intro.setOptions({
+            steps: [
+              {
+                element: '#step1',
+                intro: "<table><tr><td><h4 class='fs-9'>1 </h4></td><td><h3 class='lh-1'>This is your <br/><strong>User Graph</strong></h3></td></tr><tr><td colspan='2'><p>All your activity goes here</p></td></tr></table>"
+              },
+              {
+                element: '#step2',
+                intro: "<table><tr><td><h4 class='fs-9'>2 </h4></td><td><h3 class='lh-1'>Create your <br/><strong>first Ring</strong></h3></td></tr><tr><td colspan='2'><p>Ring is where you put all your data</p></td></tr></table>",
+                position: 'right'
+              },
+              {
+                element: '#step3',
+                intro: "<table><tr><td><h4 class='fs-9'>3 </h4></td><td><h3 class='lh-1'>Create Rings<br/><strong>Collections</strong></h3></td></tr><tr><td colspan='2'><p>A Ring Collection contains a group of related Rings.</p></td></tr></table>",
+                position: 'left'
+              },
+              {
+                element: '#step4',
+                intro: "<table><tr><td><h4 class='fs-9'>4 </h4></td><td><h3 class='lh-1'>Join or create an<br/><strong>Organization</strong></h3></td></tr><tr><td colspan='2'><p>An Organization is how various users contribute in  MyRing.</p></td></tr></table>",
+                position: 'top'
+              }
+            ]
+          });
+
+          intro.start();
+      }
+
+      function t002(){
+        var intro = introJs();
+          intro.setOptions({
+            steps: [
+              {
+                element: '#step1',
+                intro: "<h3 class='lh-1'>This is the user graph</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",position: 'bottom'
+              },
+              {
+                element: '#usergraph',
+                intro: "<h3 class='lh-1'>This graph measures your activity in MyRing</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                position: 'bottom'
+              },
+              {
+                element: '#t002_2',
+                intro: "<h3 class='lh-1'>Each strip represents a day of activity</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                position: 'right'
+              },
+              {
+                element: '#chisme',
+                intro: "<h3 class='lh-1'>Your hard numbers</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                position: 'left'
+              },
+              {
+                element: '#t002_4',
+                intro: "<h3 class='lh-1'>Help</h3><p>This button activates this modal. In case you have further questions please visit our <a href='/'>knowledge base</a> or contact us at myring.io",
+                position: 'left'
+              }
+              
+            ]
+          });
+
+          intro.start();
+      }
+    </script>  

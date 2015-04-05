@@ -4,7 +4,6 @@
 
 
 {% block headscripts %}
-  {% include 'avispa_rest/wa_jqueryui_style.html'  %}
   {% include 'avispa_rest/wa_richtable_style.html'  %}
 
   {% for field in data.fieldsschema %}
@@ -16,8 +15,6 @@
 
 {% block footscripts %}
 
-  {% include 'avispa_rest/wa_jqueryui_lib.html'  %}
-
   {% for field in data.fieldsschema %}
     {% set widgetlib = 'avispa_rest/w_input_'+field.FieldWidget+'_lib.html' %}   
     {% include widgetlib ignore missing  %}                                
@@ -26,7 +23,6 @@
 {% endblock %}
 
 {% block footfunctions %}
-  {% include 'avispa_rest/wa_jqueryui_functions.html'  %} 
   {% include 'avispa_rest/wa_richtable_functions.html'  %}
 
   {% for field in data.fieldsschema %}

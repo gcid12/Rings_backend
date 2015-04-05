@@ -189,11 +189,6 @@
 <!--span class="scro"><a href='#top'>&nbsp;Top</a></span-->
 
 
-<footer>
-{% include 'includes/footscripts.html' %}
-</footer> 
-
-
 <!-- SIDEBAR CLOSE-->
             
 <!--     <div class="visible-xs bg-a">
@@ -236,44 +231,11 @@
 
 
 
-<!-- THIS WAS THE PREVIOUS SCRIPTS, I SUSPECT THERES A LOT OF TRASH , NOT ERASING IN CASE, BUT FIND NEW SCRIPTS LOCATION AT footscripts.html -->
-
-<!--[if lt IE 9]>
-    <script src="/static/js/html5shiv.js"></script>
-    <script src="/static/js/respond.min.js"></script>
-<![endif]-->
-
-<!-- <script type="text/javascript" src="/static/js/jquery.js"></script>
-<script type="text/javascript" src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/static/js/modernizr.custom.js"></script>
-<script type="text/javascript" src="/static/js/jquery.mousewheel-3.0.6.pack.js"></script>
-<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="/static/js/jquery.easing.js"></script>
-
-<script type="text/javascript" src="/static/assets/hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
-<script type="text/javascript" src="/static/assets/page-scroller/jquery.ui.totop.min.js"></script>
-<script type="text/javascript" src="/static/assets/mixitup/jquery.mixitup.js"></script>
-<script type="text/javascript" src="/static/assets/mixitup/jquery.mixitup.init.js"></script>
-<script type="text/javascript" src="/static/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
-<script type="text/javascript" src="/static/assets/easy-pie-chart/jquery.easypiechart.js"></script>
-
-<script type="text/javascript" src="/static/assets/datepicker/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="/static/assets/switch/js/bootstrap-switch.js"></script>
-<script type="text/javascript" src="/static/assets/switch/js/initswitch.js"></script>
-<script type="text/javascript" src="/static/assets/switch/js/highlight.js"></script>
-<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?autoload=true&amp;skin=sunburst&amp;lang=css" defer="defer"></script>
-<script type="text/javascript" src="/static/assets/tree/tree.js"></script>
-<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-
-
-<script type="text/javascript" src="/static/js/jquery.wp.custom.js"></script>
-<script src="/static/assets/fraction/jquery.fractionslider.min.js"></script>
-<script src="/static/assets/fraction/jquery.fractionslider.init.js"></script>
-<script src="/static/assets/fraction/jquery.fractionslider.init.js"></script> -->
-
-
 
 {% block scripts %}
+    
+    {% include 'includes/footscripts.html' %}
+
 {% endblock %}
 
 {% block footscripts %}
