@@ -2,6 +2,110 @@
 
 {% block title %} {% endblock %}
 
+{% block footfunctions %}
+
+    {% set f = 0 %}     
+    {% for field in data.fieldsschema %}
+       {% set f = f+1 %}
+
+       <script type="text/javascript">
+          var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
+          var allbb= "bb-1 bb-2 bb-3 bb-4 bb-5 bb-6 bb-7 ";
+
+          $(document).ready(function(){
+
+              $(".tagged{{ f }}").removeClass("bt-7").addClass("bt-{{ field.FieldLayer }}");
+                           
+              $("#tag1-{{ f }}").click(function(){
+                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
+                $(".treset{{ f }}").removeClass(allbt);
+                $(this).addClass("bt-1");
+                $("#tagvalue_{{ f }}").attr("value","1");
+              }); 
+              $("#tag2-{{ f }}").click(function(){
+                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
+                $(".treset{{ f }}").removeClass(allbt);
+                $(this).addClass("bt-2");
+                $("#tagvalue_{{ f }}").attr("value","2");
+              }); 
+              $("#tag3-{{ f }}").click(function(){
+                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
+                $(".treset{{ f }}").removeClass(allbt);
+                $(this).addClass("bt-3");
+                $("#tagvalue_{{ f }}").attr("value","3");
+              }); 
+              $("#tag4-{{ f }}").click(function(){
+                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
+                $(".treset{{ f }}").removeClass(allbt);
+                $(this).addClass("bt-4");
+                $("#tagvalue_{{ f }}").attr("value","4");
+              }); 
+              $("#tag5-{{ f }}").click(function(){
+                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
+                $(".treset{{ f }}").removeClass(allbt);
+                $(this).addClass("bt-5");
+                $("#tagvalue_{{ f }}").attr("value","5");
+              }); 
+              $("#tag6-{{ f }}").click(function(){
+                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
+                $(".treset{{ f }}").removeClass(allbt);
+                $(this).addClass("bt-6");
+                $("#tagvalue_{{ f }}").attr("value","6");
+              }); 
+              $("#tag7-{{ f }}").click(function(){
+                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
+                $(".treset{{ f }}").removeClass(allbt);
+                $(this).addClass("bt-7");
+                $("#tagvalue_{{ f }}").attr("value","7");
+              });                
+          });
+
+      </script>
+
+    {%endfor%}
+
+
+    <script>
+        //PORTLET
+        $(function() {
+          $(".portlet-content").hide();
+          $( "#columnfields" ).sortable({
+          // connectWith: ".columnfields",
+          handle: ".handler",
+          cancel: ".portlet-toggle",
+          placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
+          opacity:0.7,
+          cursor: "move",
+          axis: 'y',
+          stop: function(event,ui){
+            var pOrder = $(this).sortable('toArray').toString();
+            $(".exit").prepend( pOrder);
+          }
+
+
+          });
+          $( ".portlet" )
+
+            .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+            .find( ".portlet-header" )
+            .addClass( "ui-widget-header ui-corner-all" );
+
+          $(".tog")
+            .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
+          $( ".portlet-toggle" ).click(function() {
+            var icon = $( this );
+            icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+            icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+          });
+
+          $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
+
+
+        });
+    </script>
+
+{% endblock %}
+
 {% block crumbs %}
 <li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
 <li class="active">Modify Schema</li>
@@ -255,65 +359,7 @@
                   </div> <!-- C. PORTLET CONTENT -->
                 </div> <!-- B. CLOSE PORTLET -->
 
-                <script type="text/javascript">
-                    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
-                    var allbb= "bb-1 bb-2 bb-3 bb-4 bb-5 bb-6 bb-7 ";
-
-       
-
-
-                      $(document).ready(function(){
-
-                        $(".tagged{{ f }}").removeClass("bt-7").addClass("bt-{{ field.FieldLayer }}");
-                        
-
-                        
-                        $("#tag1-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-1");
-                          $("#tagvalue_{{ f }}").attr("value","1");
-                        }); 
-                        $("#tag2-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-2");
-                          $("#tagvalue_{{ f }}").attr("value","2");
-                        }); 
-                        $("#tag3-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-3");
-                          $("#tagvalue_{{ f }}").attr("value","3");
-                        }); 
-                        $("#tag4-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-4");
-                          $("#tagvalue_{{ f }}").attr("value","4");
-                        }); 
-                        $("#tag5-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-5");
-                          $("#tagvalue_{{ f }}").attr("value","5");
-                        }); 
-                        $("#tag6-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-6");
-                          $("#tagvalue_{{ f }}").attr("value","6");
-                        }); 
-                        $("#tag7-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-7");
-                          $("#tagvalue_{{ f }}").attr("value","7");
-                        }); 
-
-                       
-                      });
-                </script>
+                
                   <!-- N FIELD END -->
 
               {% endfor %}
@@ -347,51 +393,6 @@
 </div>
 <br/><br/><br/>
 </form> 
-
-
-
-        <script>
-
-//PORTLET
-$(function() {
-  $(".portlet-content").hide();
-  $( "#columnfields" ).sortable({
-  // connectWith: ".columnfields",
-  handle: ".handler",
-  cancel: ".portlet-toggle",
-  placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
-  opacity:0.7,
-  cursor: "move",
-  axis: 'y',
-  stop: function(event,ui){
-    var pOrder = $(this).sortable('toArray').toString();
-    $(".exit").prepend( pOrder);
-  }
-
-
-  });
-  $( ".portlet" )
-
-    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-    .find( ".portlet-header" )
-    .addClass( "ui-widget-header ui-corner-all" );
-
-  $(".tog")
-    .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
-  $( ".portlet-toggle" ).click(function() {
-    var icon = $( this );
-    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
-    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-  });
-
-  $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
-
-
-});
-
-
-</script>
-
 
 
 
