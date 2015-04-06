@@ -8,6 +8,54 @@
 
 {% endblock %}
 
+{% block footfunctions %}
+
+<script>
+
+//PORTLET
+$(function() {
+  $(".portlet-content").hide();
+  $( "#columnfields" ).sortable({
+  // connectWith: ".columnfields",
+  handle: ".handler",
+  cancel: ".portlet-toggle",
+  placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
+  opacity:0.7,
+  cursor: "move",
+  axis: 'y',
+  stop: function(event,ui){
+    var pOrder = $(this).sortable('toArray').toString();
+    $(".exit").prepend( pOrder);
+  }
+
+
+  });
+  $( ".portlet" )
+
+    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+    .find( ".portlet-header" )
+    .addClass( "ui-widget-header ui-corner-all" );
+
+  $(".tog")
+    .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
+  $( ".portlet-toggle" ).click(function() {
+    var icon = $( this );
+    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+  });
+
+  $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
+
+
+});
+
+
+</script>
+
+
+
+{%endblock%}
+
 {% block tabcontent %}
 
 
@@ -158,54 +206,6 @@
   
 </div>
 <div class="spa50"></div>
-
-
-
-
-
-<script>
-
-//PORTLET
-$(function() {
-  $(".portlet-content").hide();
-  $( "#columnfields" ).sortable({
-  // connectWith: ".columnfields",
-  handle: ".handler",
-  cancel: ".portlet-toggle",
-  placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
-  opacity:0.7,
-  cursor: "move",
-  axis: 'y',
-  stop: function(event,ui){
-    var pOrder = $(this).sortable('toArray').toString();
-    $(".exit").prepend( pOrder);
-  }
-
-
-  });
-  $( ".portlet" )
-
-    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-    .find( ".portlet-header" )
-    .addClass( "ui-widget-header ui-corner-all" );
-
-  $(".tog")
-    .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
-  $( ".portlet-toggle" ).click(function() {
-    var icon = $( this );
-    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
-    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-  });
-
-  $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
-
-
-});
-
-
-</script>
-
-
 
 
 
