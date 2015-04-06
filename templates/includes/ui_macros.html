@@ -560,60 +560,7 @@
                   </div> <!-- C. PORTLET CONTENT -->
                 </div> <!-- B. CLOSE PORTLET -->
 
-                <script type="text/javascript">
-                    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
-                    var allbb= "bc-1 bc-2 bc-3 bc-4 bc-5 bc-6 bc-7 ";
 
-                      $(document).ready(function(){
-
-                        
-                        $("#tag1-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-1");
-                          $("#tagvalue_{{ f }}").attr("value","1");
-                        }); 
-                        $("#tag2-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-2");
-                          $("#tagvalue_{{ f }}").attr("value","2");
-                        }); 
-                        $("#tag3-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-3");
-                          $("#tagvalue_{{ f }}").attr("value","3");
-                        }); 
-                        $("#tag4-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-4");
-                          $("#tagvalue_{{ f }}").attr("value","4");
-                        }); 
-                        $("#tag5-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-5");
-                          $("#tagvalue_{{ f }}").attr("value","5");
-                        }); 
-                        $("#tag6-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-6");
-                          $("#tagvalue_{{ f }}").attr("value","6");
-                        }); 
-                        $("#tag7-{{ f }}").click(function(){
-                          $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
-                          $(".treset{{ f }}").removeClass(allbt);
-                          $(this).addClass("bt-7");
-                          $("#tagvalue_{{ f }}").attr("value","7");
-                        }); 
-
-                        
-                       
-                      });
-                </script>
                   <!-- N FIELD END -->
 
 {% endmacro%}
