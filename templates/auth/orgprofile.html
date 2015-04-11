@@ -99,7 +99,7 @@
 
 
 
-{% block scripts %}
+{% block footscripts %}
 <script type="text/javascript" src="/static/js/dropzone.js"></script>
 {% endblock %}
 
@@ -116,7 +116,7 @@
 
 {% block footfunctions %}
 
-  <script>
+  <script type="text/javascript">
   Dropzone.autoDiscover = false;
   var myDropzone1 = new Dropzone("#dropzone1", { 
         url: "/_tools/upload_via_aud?handle={{ data.handle }}",
@@ -134,9 +134,9 @@
       {% if image %}
         {% if image!='1' %}
           console.log("{{image}}");
-          var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"  };
+          var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"  };
           myDropzone1.options.addedfile.call(myDropzone1, fieldvalue);
-          myDropzone1.options.thumbnail.call(myDropzone1, fieldvalue, "{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"); 
+          myDropzone1.options.thumbnail.call(myDropzone1, fieldvalue, "{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"); 
 
         {% endif %}
       {% endif %}
@@ -247,7 +247,7 @@
 
 {% block footafterfunctions %}
 
-  <script>
+  <script type="text/javascript">
       $(document).ready(function() {
       
       //imgurl='http://dev3.plantrobot.com/bc31a46cb1c7f929626cff125d3bebe5'; 
