@@ -308,7 +308,6 @@ def home_dispatcher(handle):
             for c in ringcounts:
                 data['total_items'] += ringcounts[c]
 
-
         #2. Rerieve all the rings of all organizations where this user has something to do
         #3. For each of the rings found:
         
