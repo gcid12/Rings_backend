@@ -983,10 +983,16 @@ class AvispaModel:
 
             if urlparts.scheme == '' or urlparts.netloc == '':
                 # You are getting ids not uris. Try to make it up with the suggested source indicated in the schema
-                urlparts = urlparse.urlparse(field['FieldSource']) 
-                p = urlparts.path +'/'+str(int(external_uri))
-                p_url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, p , '', '', ''))
-                urlparts = urlparse.urlparse(p_url)
+                urlparts = urlparse.urlparse(field['FieldSource'])
+                try: 
+                    p = urlparts.path +'/'+str(int(external_uri))
+                    p_url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, p , '', '', ''))
+                    urlparts = urlparse.urlparse(p_url)
+                except(ValueError):
+                    # The id is a string. Maybe the field was converted from textbox to reference later on.
+                    break
+
+
 
 
 
