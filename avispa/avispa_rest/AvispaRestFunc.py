@@ -244,6 +244,15 @@ class AvispaRestFunc:
 
         
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+
+        if not ringparameters:
+            flash(str(ring)+" does not exist or it has been deleted",'UI')
+            redirect = '/'+handle+'/_home'
+            d = {'redirect': redirect, 'status':404}
+            return d
+            
+
+
         d['ringcount']  = ringparameters['count']
         d['ringorigin'] = ringparameters['ringorigin']
 
@@ -504,6 +513,13 @@ class AvispaRestFunc:
 
         
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+
+        if not ringparameters:
+            flash(str(ring)+" does not exist or it has been deleted",'UI')
+            redirect = '/'+handle+'/_home'
+            d = {'redirect': redirect, 'status':404}
+            return d
+
         d['ringcount']  = ringparameters['count']
         d['ringorigin'] = ringparameters['ringorigin']
 
@@ -564,6 +580,13 @@ class AvispaRestFunc:
              'numfields':numfields }
         
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+
+        if not ringparameters:
+            flash(str(ring)+" does not exist or it has been deleted",'UI')
+            redirect = '/'+handle+'/_home'
+            d = {'redirect': redirect, 'status':404}
+            return d
+
         d['ringcount']  = ringparameters['count']
         d['ringorigin'] = ringparameters['ringorigin']
 
@@ -635,6 +658,13 @@ class AvispaRestFunc:
         d = {}
         
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+
+        if not ringparameters:
+            flash(str(ring)+" does not exist or it has been deleted",'UI')
+            redirect = '/'+handle+'/_home'
+            d = {'redirect': redirect, 'status':404}
+            return d
+
         d['ringcount']  = ringparameters['count']
         d['ringorigin'] = ringparameters['ringorigin']
 
@@ -814,6 +844,13 @@ class AvispaRestFunc:
 
 
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+
+        if not ringparameters:
+            flash(str(ring)+" does not exist or it has been deleted",'UI')
+            redirect = '/'+handle+'/_home'
+            d = {'redirect': redirect, 'status':404}
+            return d
+
         d['ringcount']  = ringparameters['count']
         d['ringorigin'] = ringparameters['ringorigin'] 
 

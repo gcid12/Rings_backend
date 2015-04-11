@@ -815,6 +815,11 @@ class AvispaModel:
         print('user rings:',user_doc['rings'])
         for user_ring in user_doc['rings']:
             if user_ring['ringname']==ringname:
+              
+                if 'deleted' in user_ring:
+                    if user_ring:
+                        return False
+
                 parameters = {}
                 parameters['count'] = user_ring['count']
                 if 'origin' in user_ring:
