@@ -4,8 +4,6 @@
 
 
 {% block headscripts %}
-  {% include 'avispa_rest/wa_jqueryui_style.html'  %}
-  {% include 'avispa_rest/wa_richtable_style.html'  %}
 
   {% for field in data.fieldsschema %}
     {% set widgetstyle = 'avispa_rest/w_input_'+field.FieldWidget+'_style.html' %}   
@@ -20,8 +18,6 @@
 {% endblock %}
 
 {% block footfunctions %}
-  {% include 'avispa_rest/wa_jqueryui_functions.html'  %} 
-  {% include 'avispa_rest/wa_richtable_functions.html'  %}
 
 {% endblock %}
 
