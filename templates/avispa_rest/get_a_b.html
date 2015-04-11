@@ -22,9 +22,6 @@
     </table>
 
 
-    
-
-
   {% if 'post_a' in data.user_authorizations %}
     {% if not data.itemlist %}
 
@@ -57,7 +54,7 @@
               <li role="presentation" class="active pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
               {% endif %}
               <li role="presentation" class="{% if data.imagesui==False %}active {% endif %}pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-              <!-- <li role="presentation" class="pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li> -->
+              <!--li role="presentation" class="pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li-->
             </ul> 
           </div>
       </div>
@@ -98,8 +95,10 @@
   <div role="tabpanel">
     <div class="tab-content">
 
-    {% if data.itemlist %}
+  {% if data.itemlist %}
 
+
+    {% if False %}
       <!-- AS LIST -->
       <div role="tabpanel" class="tab-pane fade" id="list" style="">
 
@@ -114,12 +113,12 @@
                   <th class="text-s1 fs-0-8 ">
                     <span class="label lable-xs label-leia">
                      
-                     {%if data.FieldLabel[value] == '' %} 123
-                         {{ value}}
-                     {%else%} 456
+                     {%if data.FieldLabel[value] == '' %}
+                         {{ value }}
+                     {%else%}
                          {%if data.FieldLabel[value] == None %} 
                            {{ value }}
-                         {%else%} 789
+                         {%else%}
                            {{data.FieldLabel[value]}}
                          {%endif%}
                      {%endif%}
@@ -223,10 +222,11 @@
         {% endif %} 
       </div> <!-- close tab -->
 
+    {%endif%}
       
 
       <!-- AS A LIST close -->
-{% endif %}
+  
 
       <!-- AS MEGA LIST -->
       <div role="tabpanel" class="tab-pane fade {% if data.imagesui==False %}in active{% endif %}" id="biglist">
@@ -285,44 +285,57 @@
                         </div>
                          
                   </div>
+                  
+
+
+
                   <div class="col-sm-10 ">
-                     
-                      {% for k,v in item.items() %}
-                        {% if not k =='_public' %} 
-                        {% if not k =='_id' %}
-                        {% if not k =='_fieldcount' %}
-                        {% if not k =='_fullcount' %}
-                        {% if v %} 
+                      {% for value in data.FieldLabel %}        
+                        {% if not data.widget[value] == 'images' %}  
+                        {#% if item[value] %#}
+                       
                       <div class="row hidden-xs">
                         <div class="col-sm-3 text-right alpha omega">
-                           <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</p>
+                           <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{%if data.FieldLabel[value] == '' %}
+                         {{ value }}
+                     {%else%}
+                         {%if data.FieldLabel[value] == None %} 
+                           {{ value }}
+                         {%else%}
+                           {{data.FieldLabel[value]}}
+                         {%endif%}
+                     {%endif%}:</p>
                         </div>
                         <div class="col-sm-9 alpha">
                         
                           <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ v|truncate(70, true) }}</p>
+                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ item[value]|truncate(70, true) }}</p>
                           </a>
                         </div>
                       </div>
                       <div class="row visible-xs">
 
                         <div class="col-xs-12 alpha omega">
-                           <p class="fs-0-9 fc-g lh-1-2" style="margin-bottom:5px; padding:10px 0 0 0;">{% if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{% else %}{{ k }}{% endif %}:</p>
+                           <p class="fs-0-9 fc-g lh-1-2" style="margin-bottom:5px; padding:10px 0 0 0;">{%if data.FieldLabel[value] == '' %}
+                         {{ value }}
+                     {%else%}
+                         {%if data.FieldLabel[value] == None %} 
+                           {{ value }}
+                         {%else%}
+                           {{data.FieldLabel[value]}}
+                         {%endif%}
+                     {%endif%}:</p>
                         </div>
                         <div class="col-xs-12 alpha omega">
                         
                           <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ v|truncate(110, true) }}</p>
+                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ item[value]|truncate(110, true) }}</p>
                           </a>
                         </div>
                       </div>
-
-                        {% endif %}
-                        {% endif %}
-                        {% endif %}
-                        {% endif %}
-                        {% endif %}
-                      {% endfor %}
+                        {#%endif%#}
+                        {%endif%}
+                      {%endfor%}
                   </div>   
               </div> 
                
@@ -431,6 +444,9 @@
           </div>
   <!-- AS MOSAIC close -->  
   {% endif %}  
+
+{% endif %} 
+
 
 
               

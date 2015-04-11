@@ -278,7 +278,7 @@ class AvispaRestFunc:
 
                     if layers[fieldname]<=layer:
                     #if True:
-                        #Only include those fields above the PREVIEWLAYER
+                        #Only include those fields below the PREVIEWLAYER
                         print("Including in the preview:"+fieldname+'. Layer:'+str(layers[fieldname]))
                         previewItem[fieldname] = item[fieldname] 
 

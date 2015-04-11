@@ -155,45 +155,12 @@ def register():
 
     return render_template("/auth/register.html", data=data)
 
-@auth_flask_login.route("/_orgregister", methods=["GET","POST"])
+@auth_flask_login.route("/_orgregister", methods=["GET"])
 @login_required
-def orgregister():
+def orgregister_get():
 
     #registerForm = forms.SignupForm(request.form)
     #current_app.logger.info(request.form)
-
-    if request.method == 'POST':
-
-        username = request.form.get('username')
-        email = request.form.get('email')
-
-        # Organizations use no passwords
-        password_hash = ''
-
-        # prepare User
-        user = User(username,email,password_hash,current_user.id,True)
-        print user
-
-        #try:
-        if True:
-            user.set_user()
-
-            mpp = {'status':'OK'}
-            flash({'f':'track','v':'_orgregister','p':mpp},'MP')
-            #flash({'track':'_orgregister OK'},'MP')
-
-            return redirect('/'+username+'/_home')
-
-        #except:
-        else:
-            print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
-            flash("unable to register with that email address",'UI')
-
-            mpp = {'status':'KO','msg':'Unable to register with that email address'}
-            flash({'f':'track','v':'_orgregister','p':mpp},'MP')
-            #flash({'track':'_orgregister KO, Unable to register with that email address'},'MP')
-            
-            current_app.logger.error("Error on registration ")
         
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
@@ -217,6 +184,68 @@ def orgregister():
 
 
     return render_template("/auth/orgregister.html", data=data)
+
+
+@auth_flask_login.route("/_orgregister", methods=["POST"])
+@login_required
+def orgregister_post():
+
+    username = request.form.get('username')
+    email = request.form.get('email')
+
+    # Organizations use no passwords
+    password_hash = ''
+
+    # prepare User
+    user = User(username,email,password_hash,current_user.id,True)
+    print user
+
+    try:
+    #if True:
+        user.set_user()
+
+        mpp = {'status':'OK'}
+        flash({'f':'track','v':'_orgregister','p':mpp},'MP')
+        
+
+        return redirect('/'+username+'/_home')
+
+    except:
+    #else:
+        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+        flash("unable to register with that email address",'UI')
+
+        mpp = {'status':'KO','msg':'Unable to register with that email address'}
+        flash({'f':'track','v':'_orgregister','p':mpp},'MP')
+        
+        
+        current_app.logger.error("Error on registration ")
+
+    
+        data = {}
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+        data['method'] = '_orgregister'
+
+        MAM = MainModel()
+
+        #This is to be used by the user bar
+        cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if cu_user_doc:
+
+            #data['cu_actualname'] = cu_user_doc['name']
+            data['cu_profilepic'] = cu_user_doc['profilepic']
+            #data['cu_location'] = cu_user_doc['location']
+            #data['cu_handle'] = current_user.id
+
+            data['handle_actualname'] = cu_user_doc['name']
+            data['handle_profilepic'] = cu_user_doc['profilepic']
+            data['handle_location'] = cu_user_doc['location']
+
+
+
+        return render_template("/auth/orgregister.html", data=data)
+
+
 
 @auth_flask_login.route("/_forgot", methods=["GET", "POST"])
 def forgot():
