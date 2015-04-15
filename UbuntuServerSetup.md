@@ -1,8 +1,8 @@
 #Ubuntu Virtual Server Setup for MyRing
 
-Create an instance with the following operating system:
+Create an instance with any of the following operating system:
 ```
-Ubuntu14.04-64 Minimal for VSI
+Ubuntu14.04-64 Minimal for VSI  , Ubuntu14.10-64
 ```
 
 This instance should be already connected to the internet. The Hosting provider should give you the Public IP address at least a set of credentials to access. Most probably it will be 'root'. 
@@ -52,6 +52,10 @@ Install uWSGI
 
 ```
 # apt-get install uwsgi-plugin-python
+```
+
+```
+# apt-get install python-pip
 ```
 
 ```
