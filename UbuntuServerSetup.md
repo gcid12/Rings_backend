@@ -173,7 +173,7 @@ Create the directories where the application is going to live
 ```
 $ mkdir /var/www
 $ mkdir /var/www/myring
-$ mkdir /var/www/imagestore
+$ mkdir /var/www/_images
 ```
 
 
@@ -181,7 +181,7 @@ $ mkdir /var/www/imagestore
 Change the ownership to the group that will have access to it
 ```
 chown -R :deployteam /var/www/myring 
-chown -R :deployteam /var/www/myring/imagestore
+chown -R :deployteam /var/www/myring/_images
 ```
 
 We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
@@ -267,16 +267,11 @@ And enter the following address in your browser:
 ```
 http://<public_ip_address>:8080
 ```
-You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
+You should see a "Flask Installation successful" message.  
 
 
 ####Initializing MyRing Flask App Databases.
 
-Go to 
-```
-http://<public_ip_address>:8080/_utils/index.html
-```
-And click on "Everyone is admin. Fix this" on the lower right corner. Assign a Username and Password. These are . the credentials your application will use to access the database (COUCHDB_USER and COUCHDB_PASS) .
 
 Rename env_config.py.template to env_config.py .
 
