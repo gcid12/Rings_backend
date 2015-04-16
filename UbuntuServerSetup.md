@@ -117,14 +117,40 @@ bind_address = 0.0.0.0
 
 Save that file and run
 ```
-$ couchdb -b
-$ couchdb -s
+$ couchdb
 ```
 
 It should greet you with this message:
 ```
 Apache CouchDB is running as process xxxx, time to relax.
 ```
+
+If it shows you this error:
+```
+Failure to start Mochiweb: eaddrinuse
+```
+
+CouchDB might be already running. Do:
+```
+$ netstat -tlpn
+```
+Find the process that is using the port 5984
+```
+tcp        0      0 127.0.0.1:5984          0.0.0.0:*               LISTEN      <####>/beam 
+```
+And kill it
+```
+$ kill <####>
+```
+
+This will have CouchDB aquire the new configuration. Check it is running using your browser
+```
+http://<public-ip-address>:5984
+```
+It should show you a Json message like this:
+ ```
+ {"couchdb":"Welcome","uuid":"e9efe39bfe10462ab812509e6f27c91e","version":"1.6.0","vendor":{"name":"Ubuntu","version":"14.10"}}
+ ```
 
 There are two more things we need to do with CouchDB. First run in your browser:
 ```
