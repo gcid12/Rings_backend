@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container-fluid " style="padding:0 0 300px 0;">
+
+  <div class="row">
+    <form action="" method="POST" role="form" id="register">
+      <div class="col-sm-offset-1 col-sm-6 spa20">   
+        <div class="box box-clear" style="padding:20px 50px 20px 50px;">
+
+          <h1 class="fs-4 fw-b" style="">Start sharing <br/>your biz facts</h1>
+
+          <hr/>
+
+          <span class="fw-a fs-2">complete the signup</span>
+          
+          
+               
+          <div class="spa10 hidden-xs"></div>
+          <h4>Company Administrator <span class="fc-g fs-0-7">(your name)</span></h4>
+          
+          
+          <div class="input-group input-group-md text-center">     
+            <span class="input-group-addon fw-c" id="sizing-addon1"><i class="fa fa-user"></i></span>
+            <input id="username" name="username" type="text" required="required" class="form-control" placeholder="name" aria-describedby="sizing-addon1">
+            <!-- <input type="text" id="username" name="username" required="required" class="form-control" placeholder="This will be your unique id"> -->
+          </div>
+          <div class="spa5"></div>   
+          <div class="input-group input-group-md text-center">
+            <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-envelope-o"></i></span>
+            <input type="email" id="email" name="email" required="required" class="form-control" placeholder="email" aria-describedby="sizing-addon1">
+            <!-- <input type="email" id="email" name="email" required="required" class="form-control" placeholder="Email"> -->
+          </div>
+          <div class="spa5"></div>
+          <div class="input-group input-group-md text-center">
+            <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-key"></i></span>
+            <!-- <input type="password" name="password" required="required" class="form-control" placeholder="password" aria-describedby="sizing-addon1" title=""> -->
+            <input type="password" name="password" id="password" class="form-control" required="required" title="" placeholder="password">
+            <!-- CONFIRMATION -->
+            <input type="password" name="confirm" id="confirm" class="form-control" required="required" title="" placeholder="repeat password" >
+          </div>
+
+          <hr/>       
+          <h4>Company Name <span class="fc-g fs-0-7"></span></h4>
+
+          <div class="input-group input-group-md text-center">     
+            <span class="input-group-addon fw-c" id="sizing-addon1"><i class="fa fa-user"></i></span>
+            <input id="username" name="username" type="text" required="required" class="form-control" placeholder="username" aria-describedby="sizing-addon1">
+            <!-- <input type="text" id="username" name="username" required="required" class="form-control" placeholder="This will be your unique id"> -->
+          </div>
+
+          <div class="spa20">
+          
+
+            <button type="submit" class="btn btn-success btn-lg fs-1-2">Next</button>
+            <p class="fs-0-8 text-gray spa20">
+              - Creating an account means you're okay with our <a href="_sandbox/terms">Terms of Service</a>
+              <br/>
+              - Are you already a user?, <a href="_login">please Log-In.</a>
+            
+            </p>
+
+          </div>
+          <hr/>
+
+          
+        </div>
+      </div>
+      <div class="col-sm-4">     
+        <div class="pad-x-20">
+
+          <div class="spa50 hidden-xs"></div>
+          <img class="img-responsive center-block" src="/static/images/mbf/d_experts.png" style="max-width:300px;"/>
+
+        </div>
+      </div> 
+    </form> 
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
