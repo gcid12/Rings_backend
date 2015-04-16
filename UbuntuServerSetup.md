@@ -117,14 +117,40 @@ bind_address = 0.0.0.0
 
 Save that file and run
 ```
-$ couchdb -b
-$ couchdb -s
+$ couchdb
 ```
 
 It should greet you with this message:
 ```
 Apache CouchDB is running as process xxxx, time to relax.
 ```
+
+If it shows you this error:
+```
+Failure to start Mochiweb: eaddrinuse
+```
+
+CouchDB might be already running. Do:
+```
+$ netstat -tlpn
+```
+Find the process that is using the port 5984
+```
+tcp        0      0 127.0.0.1:5984          0.0.0.0:*               LISTEN      <####>/beam 
+```
+And kill it
+```
+$ kill <####>
+```
+
+This will have CouchDB aquire the new configuration. Check it is running using your browser
+```
+http://<public-ip-address>:5984
+```
+It should show you a Json message like this:
+ ```
+ {"couchdb":"Welcome","uuid":"e9efe39bfe10462ab812509e6f27c91e","version":"1.6.0","vendor":{"name":"Ubuntu","version":"14.10"}}
+ ```
 
 There are two more things we need to do with CouchDB. First run in your browser:
 ```
@@ -147,7 +173,7 @@ Create the directories where the application is going to live
 ```
 $ mkdir /var/www
 $ mkdir /var/www/myring
-$ mkdir /var/www/imagestore
+$ mkdir /var/www/_images
 ```
 
 
@@ -155,7 +181,7 @@ $ mkdir /var/www/imagestore
 Change the ownership to the group that will have access to it
 ```
 chown -R :deployteam /var/www/myring 
-chown -R :deployteam /var/www/myring/imagestore
+chown -R :deployteam /var/www/myring/_images
 ```
 
 We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
@@ -241,16 +267,11 @@ And enter the following address in your browser:
 ```
 http://<public_ip_address>:8080
 ```
-You should see a "Flask Installation successful" message. CTR+C in the terminal otherwise it will keep running. 
+You should see a "Flask Installation successful" message.  
 
 
 ####Initializing MyRing Flask App Databases.
 
-Go to 
-```
-http://<public_ip_address>:8080/_utils/index.html
-```
-And click on "Everyone is admin. Fix this" on the lower right corner. Assign a Username and Password. These are . the credentials your application will use to access the database (COUCHDB_USER and COUCHDB_PASS) .
 
 Rename env_config.py.template to env_config.py .
 
