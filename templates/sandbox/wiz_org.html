@@ -1,0 +1,594 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+          	<div class="box box-clear" style="padding:20px 50px 20px 50px;">
+
+            	<!-- Accordion -->
+            	<h2 class="headline" id="accordions"><span>Le Bateaux Facts</span></h2>
+            	<h4 class="text-lgray">Please complete the following fields: </h4>
+
+
+            	<br/>
+	            <div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+						  <a data-toggle="collapse" data-parent="#accordion" href="#collapse01" class="fs-1-5">
+						    1. Company Profile 
+						    <img src="/static/images/ico_flag.png" style="margin-left:25px; width:25px; float:right;" alt="MyRing">
+						  </a>
+						</div>
+						<div id="collapse01" class="panel-collapse collapse in">
+							<div class="panel-body">
+							
+								<div class="row">
+									<div class="col-sm-4">
+
+										<img src="/static/images/mbf/w_ico_flag.png" style="margin-left:25px; width:200px; float:right;" alt="MyRing">
+
+									</div>
+									<div class="col-sm-offset-1 col-sm-6">
+										<div class="form-group spa5">
+											<label class="col-sm-4 control-label text-right">Name</label>
+											<div class="col-sm-8">
+											  <input type="text" class="form-control"  placeholder="Full company Name">
+											</div>
+										</div>
+										<br/>
+										<div class="form-group spa5">
+											<label  class="col-sm-4 control-label text-right">Industry</label>
+											<div class="col-sm-8">
+											  <input type="text" class="form-control"  placeholder="Industry">
+											</div>
+										</div>
+										<br/>
+										<div class="form-group spa5">
+											<label class="col-sm-4 control-label text-right">Website</label>
+											<div class="col-sm-8">
+											  <input type="text" class="form-control"  placeholder="website">
+											</div>
+										</div>
+										<br/>
+										<div class="form-group spa5">
+											<label class="col-sm-4 control-label text-right">Twitter</label>
+											<div class="col-sm-8">
+											  <input type="text" class="form-control"  placeholder="Twitter">
+											</div>
+										</div>
+										
+										
+									</div>
+								</div>
+								<div class="row spa10">
+									<div class="col-sm-11">
+										<div class="form-group spa5">
+											<label class="col-sm-4 control-label text-right">Describe Le Bateaux in one line</label>
+											<div class="col-sm-8">
+											  <div style="float:right;">
+												  <i class="fa fa-smile-o fa-1x"></i>
+												  <i class="fa fa-comment-o fa-1x"></i>
+											  </div>
+											  <input type="text" class="form-control"  placeholder="(150 characters)">
+											</div>
+										</div>
+										<div class="form-group">
+											<label  class="col-sm-4 control-label text-right">Describe Le Bateaux?<br/></label>
+											<div class="col-sm-8">
+											  <div style="float:right;">
+												  <i class="fa fa-smile-o fa-1x"></i>
+												  <i class="fa fa-comment-o fa-1x"></i>
+											  </div>
+
+											  <textarea class="form-control" rows="2" placeholder="(300 characters)"></textarea>
+											</div>
+
+										</div>
+
+										<!-- <span class="label label-default">Want to answer more questions about La Superior? (we would love to know more!) click here</span> -->
+
+										<div class="form-group">
+											<label  class="col-sm-4 control-label text-right">What is the story behind it?<br/></label>
+											<div class="col-sm-8">
+											  <div style="float:right;">
+												  <i class="fa fa-smile-o fa-1x"></i>
+												  <i class="fa fa-comment-o fa-1x"></i>
+											  </div>
+
+											  <textarea class="form-control" rows="2" placeholder="(400 characters)"></textarea>
+											</div>
+
+										</div>
+
+
+										
+
+            							
+
+									</div>
+								</div>
+
+							<hr/>
+							<div class="text-right">
+								<a data-toggle="collapse" data-parent="#accordion"  href="#collapse02" class="btn btn-info">
+							    NEXT
+							  	</a>
+						  	</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+						  <a data-toggle="collapse" data-parent="#accordion" href="#collapse02" class="collapsed fs-1-5">
+						    2. Locations
+						    <img src="/static/images/ico_loca.png" style="margin-left:25px; width:25px; float:right;">
+						  </a>
+						</div>
+						<div id="collapse02" class="panel-collapse collapse">
+							<div class="panel-body">
+
+								<div class="col-sm-4">
+									<img src="/static/images/mbf/w_ico_loca.png" style="margin-left:25px; width:200px; float:right;" alt="MyRing">
+								</div>
+								<div class="col-sm-offset-1 col-sm-7">
+
+								<!-- COLLAPSIBLE: LOCATIONS -->
+									<div class="panel-group" id="locations">
+										<div class="panel panel-default bg-white">
+											<div class="panel-heading p-5">
+											  <a data-toggle="collapse" data-parent="#locations" href="#location01" aria-expanded="true">
+											    Location 1
+											    <img src="/static/images/ico_loca.png" style="margin-left:25px; width:15px; float:right;" alt="MyRing">
+											  </a>
+											</div>
+											<div id="location01" class="panel-collapse collapse in" role="tabpanel">
+												
+													
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Name</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="Location Name">
+													</div>
+												</div>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Address</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="Address">
+													</div>
+												</div>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">City</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="City">
+													</div>
+												</div>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">ZipCode</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="ZipCode">
+													</div>
+												</div>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Country</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="Country">
+													</div>
+												</div>
+
+												<div class="form-group">
+													
+													<div class="col-sm-offset-2 col-sm-10">
+													
+													<br/>
+													  Location Description:
+													  <div style="float:right;">
+														  <i class="fa fa-smile-o fa-1x"></i>
+														  <i class="fa fa-comment-o fa-1x"></i>
+													  </div>
+
+													  <textarea class="form-control" rows="2" placeholder="(300 characters)"></textarea>
+													</div>
+													<br/><br/><br/><br/>
+												</div>
+												<br/><br/><br/>
+											</div>
+										</div>
+										<!-- end -->
+										<div class="panel panel-default ">
+											<div class="panel-heading p-5" role="tab">
+											  <a class="collapsed" data-toggle="collapse" data-parent="#locations" aria-expanded="false" href="#location02">
+											    Location 2
+											    <img src="/static/images/ico_loca.png" style="margin-left:25px; width:15px; float:right;" alt="MyRing">
+											  </a>
+											</div>
+											<div id="location02" class="panel-collapse collapse" role="tabpanel">
+												<div class="panel-body">
+													location dos
+												</div>
+											</div>
+										</div>
+										<!-- end -->
+										<div class="text-right">
+										<a href="/"><i class="fa fa-plus"></i> Add New Location</a>
+										</div>
+									</div>
+								<!-- CLOSE COLLAPSIBLE -->
+							
+									<hr/>
+									<div class="text-right">
+										<div class="btn-group text-right" role="group" aria-label="...">
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse01" class="btn btn-default">
+										    prev
+										  	</a>
+
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse03" class="btn btn-info">
+										    Next
+										  	</a>
+									  	</div>
+								  	</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default"> <!-- open -->
+						<div class="panel-heading">
+						  <a data-toggle="collapse" data-parent="#accordion" href="#collapse03" class="collapsed fs-1-5">
+						    3. Product
+						    <img src="/static/images/ico_prod.png" style="margin-left:25px; width:25px; float:right;">
+						  </a>
+						</div>
+						<div id="collapse03" class="panel-collapse collapse">
+							<div class="panel-body">
+							
+								<div class="col-sm-4">
+									<img src="/static/images/mbf/w_ico_prod.png" style="margin-left:25px; width:200px; float:right;" alt="MyRing">
+								</div>
+								<div class="col-sm-offset-1 col-sm-7">
+
+								<!-- COLLAPSIBLE: LOCATIONS -->
+									<div class="panel-group" id="product">
+										<div class="panel panel-default bg-white">
+											<div class="panel-heading p-5">
+											  <a data-toggle="collapse" data-parent="#product" href="#p01" aria-expanded="true">
+											    Product 1
+											    <img src="/static/images/ico_prod.png" style="margin-left:25px; width:15px; float:right;" alt="MyRing">
+											  </a>
+											</div>
+											<div id="p01" class="panel-collapse collapse in" role="tabpanel">
+												
+													
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Name:</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="ProductName">
+													</div>
+												</div>
+												<br/>
+											
+
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Description:</label>
+													<div class="col-sm-8">
+													  <textarea class="form-control" rows="3" placeholder="(300 characters)"></textarea>
+													</div>
+												</div>
+												<br/><br/>
+												<div class="form-group spa20">
+													<label class="col-sm-4 control-label text-right">Photo:</label>
+													<div class="col-sm-8">
+													  <a class="btn btn-default btn-sm" href="">Upload</a> (Browse your files)
+													</div>
+													<br/><br/>
+												</div>
+												
+
+												
+											</div>
+										</div>
+										<!-- end -->
+										<div class="panel panel-default ">
+											<div class="panel-heading p-5" role="tab">
+											  <a class="collapsed" data-toggle="collapse" data-parent="#product" aria-expanded="false" href="#p02">
+											    Product 2
+											    <img src="/static/images/ico_prod.png" style="margin-left:25px; width:15px; float:right;" alt="MyRing">
+											  </a>
+											</div>
+											<div id="p02" class="panel-collapse collapse" role="tabpanel">
+												<div class="panel-body">
+													location dos
+												</div>
+											</div>
+										</div>
+										<!-- end -->
+										<div class="text-right">
+										<a href="/"><i class="fa fa-plus"></i> Add More Products</a>
+										</div>
+									</div>
+								<!-- CLOSE COLLAPSIBLE -->
+							
+									<hr/>
+									<div class="text-right">
+										<div class="btn-group text-right" role="group" aria-label="...">
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse02" class="btn btn-default">
+										    prev
+										  	</a>
+
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse04" class="btn btn-info">
+										    Next
+										  	</a>
+									  	</div>
+								  	</div>
+								
+								</div>
+
+
+							
+
+							</div>
+						</div>
+					</div> <!-- close -->
+
+					<div class="panel panel-default"> <!-- open -->
+						<div class="panel-heading">
+						  <a data-toggle="collapse" data-parent="#accordion" href="#collapse04" class="collapsed fs-1-5">
+						    4. team
+						    <i class="fa fa-users text-black" style="float:right;"></i>
+						    
+						  </a>
+						</div>
+						<div id="collapse04" class="panel-collapse collapse">
+							<div class="panel-body">
+							
+								<div class="col-sm-4">
+									<img src="/static/images/mbf/w_ico_team.png" style="margin-left:25px; width:200px; float:right;" alt="MyRing">
+								</div>
+								<div class="col-sm-offset-1 col-sm-7">
+
+
+								<!-- COLLAPSIBLE: LOCATIONS -->
+									<div class="panel-group" id="members">
+										<div class="panel panel-default bg-white">
+											<div class="panel-heading p-5">
+											  <a data-toggle="collapse" data-parent="#members" href="#m01" aria-expanded="true">
+											    Team Member 1 (You)
+											    <i class="fa fa-user text-black" style="float:right;"></i>
+											  </a>
+											</div>
+											<div id="m01" class="panel-collapse collapse in" role="tabpanel">
+												
+													
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Handle:</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="Cortez66" id="disableInput" disabled>
+													</div>
+												</div>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">First:</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="First Name" value="Johnathan Juarez">
+													</div>
+												</div>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Las:</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="Last Name" value="">
+													</div>
+												</div>
+
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Title:</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="ProductName">
+													</div>
+												</div>
+
+
+												<br/>
+											
+
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Description:</label>
+													<div class="col-sm-8">
+													  <textarea class="form-control" rows="3" placeholder="(300 characters)"></textarea>
+													</div>
+												</div>
+												<br/><br/>
+												<div class="form-group spa20">
+													<label class="col-sm-4 control-label text-right">Photo:</label>
+													<div class="col-sm-8">
+													  <a class="btn btn-default btn-sm" href="">Upload</a> (Browse your files)
+													</div>
+													
+												</div>
+												
+												<br/><br/>
+												
+											</div>
+										</div>
+										<!-- end -->
+										<div class="panel panel-default ">
+											<div class="panel-heading p-5" role="tab">
+											  <a class="collapsed" data-toggle="collapse" data-parent="#members" aria-expanded="false" href="#m02">
+											    Team Member 2
+											    <i class="fa fa-user text-black" style="float:right;"></i>
+											  </a>
+											</div>
+											<div id="m02" class="panel-collapse collapse" role="tabpanel">
+												<div class="panel-body">
+													location dos
+												</div>
+											</div>
+										</div>
+										<!-- end -->
+										<div class="text-right">
+										<a href="/"><i class="fa fa-plus"></i> Add More Team members</a>
+										</div>
+									</div>
+								<!-- CLOSE COLLAPSIBLE -->
+
+							
+									<hr/>
+									<div class="text-right">
+										<div class="btn-group text-right" role="group" aria-label="...">
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse03" class="btn btn-default">
+										    prev
+										  	</a>
+
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse05" class="btn btn-info">
+										    Next
+										  	</a>
+									  	</div>
+								  	</div>
+								
+								</div>
+
+
+							</div>
+						</div>
+					</div> <!-- close -->
+
+
+					<div class="panel panel-default"> <!-- open -->
+						<div class="panel-heading">
+
+						  <a data-toggle="collapse" data-parent="#accordion" href="#collapse05" class="collapsed fs-1-5">
+						    5. promotions
+						    <img src="/static/images/ico_promo.png" style="margin-left:25px; width:25px; float:right;">
+						  </a>
+						</div>
+						<div id="collapse05" class="panel-collapse collapse">
+							<div class="panel-body">
+							<div class="col-sm-4">
+									<img src="/static/images/mbf/w_ico_promo.png" style="margin-left:25px; width:200px; float:right;" alt="MyRing">
+								</div>
+								<div class="col-sm-offset-1 col-sm-7">
+
+
+								<!-- COLLAPSIBLE: LOCATIONS -->
+									<div class="panel-group" id="current">
+										<div class="panel panel-default bg-white">
+											<div class="panel-heading p-5">
+											  <a data-toggle="collapse" data-parent="#current" href="#c01" aria-expanded="true">
+											    Promotion 1
+											    <i class="fa fa-user text-black" style="float:right;"></i>
+											  </a>
+											</div>
+											<div id="c01" class="panel-collapse collapse in" role="tabpanel">
+
+											
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Title:</label>
+													<div class="col-sm-8">
+													  <input type="text" class="form-control input-sm"  placeholder="Promotion title">
+													</div>
+												</div>
+
+												
+												<br/>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Window:</label>
+													<div class="col-sm-4">
+													  <input type="text" class="form-control input-sm"  placeholder="From">
+													</div>
+													<div class="col-sm-4">
+													  <input type="text" class="form-control input-sm"  placeholder="To">
+													</div>
+												</div>
+
+
+												<br/>
+											
+
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Description:</label>
+													<div class="col-sm-8">
+													  <textarea class="form-control" rows="3" placeholder="(500 characters)"></textarea>
+													</div>
+												</div>
+												<div class="form-group spa5">
+													<label class="col-sm-4 control-label text-right">Restrictions:</label>
+													<div class="col-sm-8">
+													  <textarea class="form-control" rows="1" placeholder="(300 characters)"></textarea>
+													</div>
+													<br/><br/><br/>									
+												</div>
+
+												<br/><br/><br/>
+												
+												
+
+												
+											</div>
+										</div>
+										<!-- end -->
+										<div class="panel panel-default ">
+											<div class="panel-heading p-5" role="tab">
+											  <a class="collapsed" data-toggle="collapse" data-parent="#current" aria-expanded="false" href="#c02">
+											    Promotion 2
+											    <i class="fa fa-user text-black" style="float:right;"></i>
+											  </a>
+											</div>
+											<div id="c02" class="panel-collapse collapse" role="tabpanel">
+												<div class="panel-body">
+													Current Promotion
+												</div>
+											</div>
+										</div>
+										<!-- end -->
+										<div class="text-right">
+										<a href="/"><i class="fa fa-plus"></i> Add More Promotions</a>
+										</div>
+									</div>
+								<!-- CLOSE COLLAPSIBLE -->
+
+							
+									<hr/>
+									<div class="text-right">
+										<div class="btn-group text-right" role="group" aria-label="...">
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse04" class="btn btn-default">
+										    prev
+										  	</a>
+
+											<a data-toggle="collapse" data-parent="#accordion"  href="#collapse03" class="btn btn-success">
+										    Done!
+										  	</a>
+									  	</div>
+								  	</div>
+								
+								</div>
+
+
+						
+
+
+							</div>
+						</div>
+					</div> <!-- close -->
+
+
+
+	            </div>
+
+
+        </div> <!-- / .col-md-9 -->
+    </div>
+</div> <!-- / .container -->
+
+
+
+{% endblock %}
+
+
+
+
+

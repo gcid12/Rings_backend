@@ -147,15 +147,26 @@
       {% else %}
 
        
-          <div class="pull-left spa15"> 
+          <div class="pull-left spa5"> 
 
-            <a href="/" class="clearlink spa20"><img src="/static/images/{% if data.mask =='mbf' %}mbf/mbflogowhite.png{% else %}myring04.png{% endif %}" style=" width:100px;" alt="{% if home =='mbf' %}mbf{% else %} myring {% endif %}"></a>
+            
+            {#% if data.mask =='mbf' %#}
+            {% if True %}
+            <a href="http://www.mybusinessfacts.com" class="clearlink">
+              <img src="/static/images/mbf/mbflogowhite.png" style=" width:250px;" alt="My Business Facts">
+            </a>
+            {% else %}
+            <a href="/" class="clearlink spa20">
+              <img src="/static/images/myring04.png" style=" width:100px;" alt="My Ring">
+            </a>
+            {% endif %}
+            
           </div>
           
           
             <div class="pull-right spa15"> 
               <a href="{% if data.mask =='mbf' %}/_sandbox/mbf_login{% else %}/_login{% endif %}" class="btn btn-default btn-sm">LOG IN</a> 
-              <a href="{% if data.mask =='mbf' %}/_sandbox/mbf_signup{% else %}/_register{%endif%}" class="btn btn-success btn-sm">SIGN UP</a>
+              <a href="{% if data.mask =='mbf' %}/_sandbox/mbf_signup{% else %}/_register{%endif%}" class="btn btn-info btn-sm">SIGN UP</a>
             </div>
          
        
