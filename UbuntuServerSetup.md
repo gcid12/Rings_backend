@@ -180,8 +180,7 @@ $ mkdir /var/www/_images
 
 Change the ownership to the group that will have access to it
 ```
-chown -R :deployteam /var/www/myring 
-chown -R :deployteam /var/www/myring/_images
+chown -R :www-data /var/www/myring 
 ```
 
 We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
@@ -276,22 +275,30 @@ You should see a "Flask Installation successful" message.
 Rename env_config.py.template to env_config.py .
 
 ```
-mv env_config.py.template env_config.py
+cp env_config.py.template env_config.py
 ```
 
 Assign the values for this machine
 ```
-IMAGE_STORE = '/var/www/myring/imagestore'
-COUCHDB_USER = u'couchdbadminuser'
-COUCHDB_PASS = u'passwordforcouchdbadminuser'
-FROMEMAIL = u'systememails@domain.com'
-FROMPASS = u'passwordforthatemail'
+IMAGE_STORE = '/var/www/_images'
+IMAGE_CDN_ROOT = ''
+STATIC_CDN_ROOT = ''
+
+COUCHDB_USER = u''
+COUCHDB_PASS = u''
+COUCHDB_SERVER = ""
+
+SMTPSERVER = u''
+SMTPPORT = 587
+FROMEMAIL = u''
+FROMPASS = u''
+
 PREVIEW_LAYER = 2
 ```
 
 Assign the PythonPath running this command. This will be in the initialization script but we are manually testing flask right now
 ```
-export PYTHONPATH=${PYTHONPATH}:/var/www/myring/
+$ export PYTHONPATH=${PYTHONPATH}:/var/www/myring/
 ```
 
 
@@ -322,6 +329,13 @@ Symlink myring_nginx.conf to nginx's configuration directory and restart nginx
 # ln -s /var/www/myring/myring_nginx.conf /etc/nginx/conf.d/
 ```
 IMPORTANT: Check that there is no other file in /etc/nginx/conf.d . That would cause a "502 Bad Gateway" error
+
+If the Nginx config file uses SSL certificates you need to place them in their place. Usually it is in /etc/ssl . Assuming that those certificates already exist in another server you just need to copy them here:
+
+```
+scp root@<origin-ip-address>:/etc/ssl/nameofcertificate.key /etc/ssl
+scp root@<origin-ip-address>:/etc/ssl/public.crt /etc/ssl
+```
 
 Now restart the server 
 ```
@@ -386,6 +400,22 @@ The Terminal will stay idle. That is ok. It means it is serving pages.
 That is ok but if you close that terminal window the process will stop. 
 We will use uWSGI Emperor to run uWSGI as a background service.
 
+
+
+
+Now try to reach the server using the browser. Use https:// as otherwise it will redirect you to other server
+```
+https://<this-machine-ip-address>
+```
+Please note it will warn you about unsecure certificates. What happens is that the SSL certificate expects the domain it was issued for. Just say yes and add the exception.
+
+By now you should be able to see the web application in the browser.
+
+Troubleshooting: 
+1. If the browser can't find the website it is an Nginx issue. Check the Nginx log
+2. It the browser shows a 501 error it is a uWSGI issue. Check the uWSGI log
+
+
 ##### uWSGI Emperor
 
 uWSGI Emperor is responsible for reading config files and spawning uWSGI processes to execute them.
@@ -421,7 +451,7 @@ Also, the last line states that the user that will be used to execute the daemon
 For simplicity's sake, let's set him as the owner of the application and log folders
 ```
  chown -R www-data:www-data /var/www/myring/
- chown -R www-data:www-data /var/www/imagestore/
+ chown -R www-data:www-data /var/www/_images/
  chown -R www-data:www-data /var/log/uwsgi/
 ```
 
@@ -444,11 +474,7 @@ couchdb -k
 deactivate
 source /var/www/myring/venv/bin/activate
 stop uwsgi
-export MYRING_CSRF_SESSION_KEY=''
-export MYRING_SECRET_KEY=''
-export MYRING_COUCH_DB_USER=''
-export MYRING_COUCH_DB_PASS=''
-export MYRING_IMAGE_FOLDER='/var/imagestore'
+export PYTHONPATH=${PYTHONPATH}:/var/www/myring/
 /etc/init.d/nginx start
 couchdb -b
 start uwsgi
