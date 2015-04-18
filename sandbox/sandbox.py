@@ -311,6 +311,42 @@ def launchpad():
 
 
 
+# MBF
+
+
+@sandbox.route("/mbf_login", methods=["GET", "POST"])
+#@login_required
+def mbf_login():
+
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_login.html", data=data) 
+
+
+@sandbox.route("/mbf_signup", methods=["GET", "POST"])
+#@login_required
+def mbf_signup():
+
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_signup.html", data=data) 
+
+
+@sandbox.route("/wiz_org", methods=["GET", "POST"])
+#@login_required
+def wiz_org():
+
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/wiz_org.html", data=data) 
+
+
+
+
+
 
 
 
