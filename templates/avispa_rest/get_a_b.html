@@ -309,7 +309,7 @@
                         <div class="col-sm-9 alpha">
                         
                           <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{{ item[value]|truncate(70, true) }}</p>
+                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if not item[value]%}{{ item[value]|truncate(70, true) }}{%endif%}</p>
                           </a>
                         </div>
                       </div>
