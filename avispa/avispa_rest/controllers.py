@@ -14,8 +14,6 @@ from env_config import IMAGE_STORE, IMAGE_CDN_ROOT
 from MainModel import MainModel
 
 
-
-
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 
