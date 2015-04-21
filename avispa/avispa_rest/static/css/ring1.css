@@ -157,6 +157,7 @@ filter: grayscale(100%);
 .p-7{padding:7px !important;}
 .p-10{padding:10px !important;}
 .p-15{padding:15px !important;}
+.p-30{padding:15px !important;}
 .p-50{padding:50px !important;}
 
 .p-x-4{padding:0 4px;}
@@ -188,6 +189,8 @@ filter: grayscale(100%);
 .mb-20{margin-bottom:20px !important;}
 .mb-30{margin-bottom:30px !important;}
 .mt-10{margin-top:10px !important;}
+.mr-15{margin-right:15px !important;}
+.mr-20{margin-right:20px !important;}
 .mr-50{margin-right:50px !important;}
 .mr-70{margin-right:70px !important;}
 .ml-15{margin-left:15px !important;}
@@ -272,6 +275,15 @@ filter: grayscale(100%);
   background: -o-linear-gradient(60deg, #307cff, #30caff);
   background: -moz-linear-gradient(60deg, #307cff, #30caff);
   background:linear-gradient(60deg, #307cff, #30caff);
+}
+
+  .bg-connect{  
+  background: url(/static/images/mbf/handphone.jpg), -webkit-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/static/images/mbf/handphone.jpg), -o-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/static/images/mbf/handphone.jpg), -moz-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/static/images/mbf/handphone.jpg), linear-gradient(60deg, #2891cc, #184f89);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 
@@ -390,6 +402,11 @@ filter: grayscale(100%);
 .bg-e{background-color: #f2f0ed; }
 .bg-f{background-color: rgba(0, 0, 0, 0.05); }
 .bg-g{background-color: #f8f7f6;}
+.bg-h{background-color: #ff9100;} /*//orange*/
+.bg-i{background-color: #34352d;} /*codeback*/
+.bg-j{background-color: #8fcb1e;} /*green*/
+
+
 
 
 
@@ -489,6 +506,8 @@ border-style:solid;
 border-width:1px;
 margin:2px 3px 2px 0;
 }
+
+.icobtn{margin-right:15px !important; width:16px;}
 
 
 /*STYLED FORM*/
@@ -712,10 +731,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffb76b', end
 .btn-crumb{height:44px;}
 
 
-.btn-vader{margin: 0px 0; background-color:#666; color:#CCC;}
+.btn-vader{margin: 0px 0; background-color:#666; color:#CCC; border-color: #444;}
 .btn-vader:hover {
 margin-top: 0px;
 background-color:#999;
+color:#FFF;
+}
+
+.btn-lime{
+background-color: #8fcb1e;
+border-color: #75a017;
+color:#FFF;
+}
+.btn-lime:hover {
+margin-top: 0px;
+background-color:#75a017;
 color:#FFF;
 }
 
@@ -784,6 +814,12 @@ font-size:0.7em;
 .bl-gray{border-color: gray; color:gray;}
 .bl-blue{border-color:#00acdd; color:#00acdd;}
 .bl-white{border-color:#FFF; color:#CCC;}
+
+
+/*IMAGE OPACITY*/
+.io_25{ opacity: 0.25; filter: alpha(opacity=25);}
+.io_50{ opacity: 0.50; filter: alpha(opacity=50);}
+.io_75{ opacity: 0.75; filter: alpha(opacity=75);}
 
 
 
@@ -1477,5 +1513,95 @@ color:#33ccff;
   }
 
 
+
+
+/*---------------Pricing Tables-------------------*/
+.pricing-container {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.pricing-table {
+  background: #FFFFFF;
+  margin-bottom: 50px;
+  margin-top: 0px;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+.pricing-table.active {
+  box-shadow: 0px 0px 12px rgba(41,46,50,0.6); 
+  position: absolute;
+  margin: auto;
+  z-index: 200;
+}
+
+.pricing-table:hover {
+  margin-top: -10px;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
+.pricing-table li {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.headline {
+  background: #1e2633;
+  color: #FFFFFF;
+  padding: 10px;
+}
+
+.price {
+    background: none repeat scroll 0 0 #2e3b4e;
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: bold;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+
+.pricing-table:hover li.price  {
+  background: #39485e;
+  -webkit-transition: all 0.85s ease-in-out;
+  -moz-transition: all 0.85s ease-in-out;
+  -o-transition: all 0.85s ease-in-out;
+  transition: all 0.85s ease-in-out;
+}
+
+.price small {
+  font-weight: 300;
+  color: #a1abb5;
+}
+
+.info {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: 300;
+  font-size: 13px;
+  color: #919da8;
+}
+
+.features {
+  color: #1E2633;
+  font-weight: bold;
+  padding-top: 12px;
+  padding-bottom: 15px;
+  border-bottom: 1px dotted #E8EAEA;
+}
+
+.features.first {
+  border-top: 1px dotted #E8EAEA;
+}
+
+.features.last {
+  padding-top: 17px;
+  padding-bottom: 20px;
+}
 
 

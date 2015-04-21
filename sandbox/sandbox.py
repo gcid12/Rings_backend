@@ -334,6 +334,67 @@ def mbf_signup():
     return render_template("/sandbox/mbf_signup.html", data=data) 
 
 
+
+@sandbox.route("/mbf_home", methods=["GET", "POST"])
+#@login_required
+def mbf_home():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_home.html", data=data) 
+
+
+@sandbox.route("/mbf_categories", methods=["GET", "POST"])
+#@login_required
+def mbf_categories():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_categories.html", data=data) 
+
+
+@sandbox.route("/mbf_developers", methods=["GET", "POST"])
+#@login_required
+def mbf_developers():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_developers.html", data=data) 
+
+@sandbox.route("/mbf_experts", methods=["GET", "POST"])
+#@login_required
+def mbf_experts():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_experts.html", data=data) 
+
+
+
+@sandbox.route("/mbf_how", methods=["GET", "POST"])
+#@login_required
+def mbf_how():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_how.html", data=data) 
+
+
+
+@sandbox.route("/mbf_pricing", methods=["GET", "POST"])
+#@login_required
+def mbf_pricing():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_pricing.html", data=data) 
+
+
+
+
+
+
+
 @sandbox.route("/wiz_org", methods=["GET", "POST"])
 #@login_required
 def wiz_org():

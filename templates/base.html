@@ -125,6 +125,10 @@
         
       </ul>
 
+      {% else %}
+
+      
+
       {%endif%}
      
         {%if current_user.is_authenticated()%}
@@ -182,6 +186,37 @@
 </header>
 {%endif%}
 
+{% if data.mask =='mbf' %}
+<section class="bg-black">
+
+  <div class="container-fluid ">
+
+    <div class="row">
+      <div class="col-sm-12 alpha omega">   
+
+        <div class="spa10 pull-right" style="padding-right:20px;">
+          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_home">Business</a> 
+          <span class="pad-x-10">|</span>
+          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_categories">Categories</a> 
+          <span class="pad-x-10">|</span>
+          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_how">FAQ</a> 
+          <span class="pad-x-10">|</span>
+          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_pricing">Pricing</a> 
+          <span class="pad-x-10">|</span>
+          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_experts">Experts</a> 
+          <span class="pad-x-10">|</span>
+          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_developers">Developers</a> 
+        </div>
+        
+
+      </div> <!-- close 9 -->
+    </div>
+  </div>
+</section> 
+{% endif %}
+
+
+
 <section class="">
 
 
@@ -189,7 +224,7 @@
 
     
     <div class="row">
-      <div class="col-sm-12 alpha omega">     
+      <div class="col-sm-12 alpha omega">    
         {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
         {#{data.is_org}#}
           {% block content %}
@@ -197,7 +232,9 @@
       </div> <!-- close 9 -->
     </div>
   </div>
-</section>       
+</section>   
+
+      
 <!--span class="scro"><a href='#top'>&nbsp;Top</a></span-->
 
 
