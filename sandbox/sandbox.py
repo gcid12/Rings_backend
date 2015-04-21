@@ -371,6 +371,27 @@ def mbf_experts():
 
 
 
+@sandbox.route("/mbf_how", methods=["GET", "POST"])
+#@login_required
+def mbf_how():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_how.html", data=data) 
+
+
+
+@sandbox.route("/mbf_pricing", methods=["GET", "POST"])
+#@login_required
+def mbf_how():
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/mbf_pricing.html", data=data) 
+
+
+
+
 
 
 

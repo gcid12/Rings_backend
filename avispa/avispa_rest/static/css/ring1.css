@@ -189,6 +189,8 @@ filter: grayscale(100%);
 .mb-20{margin-bottom:20px !important;}
 .mb-30{margin-bottom:30px !important;}
 .mt-10{margin-top:10px !important;}
+.mr-15{margin-right:15px !important;}
+.mr-20{margin-right:20px !important;}
 .mr-50{margin-right:50px !important;}
 .mr-70{margin-right:70px !important;}
 .ml-15{margin-left:15px !important;}
@@ -273,6 +275,15 @@ filter: grayscale(100%);
   background: -o-linear-gradient(60deg, #307cff, #30caff);
   background: -moz-linear-gradient(60deg, #307cff, #30caff);
   background:linear-gradient(60deg, #307cff, #30caff);
+}
+
+  .bg-connect{  
+  background: url(/static/images/mbf/handphone.jpg), -webkit-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/static/images/mbf/handphone.jpg), -o-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/static/images/mbf/handphone.jpg), -moz-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/static/images/mbf/handphone.jpg), linear-gradient(60deg, #2891cc, #184f89);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 
@@ -391,6 +402,8 @@ filter: grayscale(100%);
 .bg-e{background-color: #f2f0ed; }
 .bg-f{background-color: rgba(0, 0, 0, 0.05); }
 .bg-g{background-color: #f8f7f6;}
+.bg-h{background-color: #ff9100;} /*//orange*/
+.bg-i{background-color: #34352d;} /*codeback*/
 
 
 
@@ -490,6 +503,8 @@ border-style:solid;
 border-width:1px;
 margin:2px 3px 2px 0;
 }
+
+.icobtn{margin-right:15px !important; width:16px;}
 
 
 /*STYLED FORM*/
@@ -785,6 +800,12 @@ font-size:0.7em;
 .bl-gray{border-color: gray; color:gray;}
 .bl-blue{border-color:#00acdd; color:#00acdd;}
 .bl-white{border-color:#FFF; color:#CCC;}
+
+
+/*IMAGE OPACITY*/
+.io_25{ opacity: 0.25; filter: alpha(opacity=25);}
+.io_50{ opacity: 0.50; filter: alpha(opacity=50);}
+.io_75{ opacity: 0.75; filter: alpha(opacity=75);}
 
 
 
