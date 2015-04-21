@@ -383,7 +383,7 @@ def mbf_how():
 
 @sandbox.route("/mbf_pricing", methods=["GET", "POST"])
 #@login_required
-def mbf_how():
+def mbf_pricing():
     data = {}
     data['mask']= "mbf"
 
