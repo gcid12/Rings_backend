@@ -77,54 +77,57 @@ def login():
     return render_template("/auth/login.html", data=data)
 
 
-@auth_flask_login.route("/_register", methods=["GET","POST"])
-def register():
+@auth_flask_login.route("/_register", methods=["GET"])
+def register_get():
+    
+    data = {}
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
+    data['method'] = '_register'
 
-    #registerForm = forms.SignupForm(request.form)
-    #current_app.logger.info(request.form)
+    return render_template("/auth/register.html", data=data)
 
-    if request.method == 'POST':
 
-        username = request.form.get('username')
-        email = request.form.get('email')
+@auth_flask_login.route("/_register", methods=["POST"])
+def register_post():
 
-        # generate password hash
-        password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
+    api = 'web'
+    if 'api' in request.args:
+        if request.args.get('api').lower() == 'json':
+            api = 'json'
 
-        # prepare User
-        user = User(username,email,password_hash)
-        print user
+    username = request.form.get('username')
+    email = request.form.get('email')
 
-        try:
-        #if True:
-            if user.set_user():
+    # generate password hash
+    password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
 
-                #return redirect('/_login')
-                print('Now log in the user')
+    # prepare User
+    user = User(username,email,password_hash)
+    print user
+
+    try:
+    #if True:
+        if user.set_user():
+            print('Now log in the user')
+
+            #Go through regular login process
+            userObj = User(email=email)
+            userview = userObj.get_user()
+            print(userObj)
+
+            if api == 'web':
 
                 mpp = {'status':'OK'}
                 flash({'f':'track','v':'_register','p':mpp},'MP')
-                #flash({'track':'_register OK'},'MP')
-
-                
                 flash({'f':'alias','v':username},'MP')
-                #flash({'alias':'username'},'MP')
 
-
-                #Go through regular login process
-                userObj = User(email=email)
-                userview = userObj.get_user()
-                print(userObj)
                 if login_user(userObj, remember="no"):
                         flash("Logged in. Welcome to MyRing!",'UI')
 
                         mpp = {'status':'OK','msg':'Automatic'}
                         flash({'f':'track','v':'_login','p':mpp},'MP')
                         #flash({'track':'_login OK, Automatic'},'MP')
-                        
-
-                        return redirect('/'+userview.id+'/_home')
-      
+                        return redirect('/'+userview.id+'/_home')      
                 else:
                     flash("Please enter your credentials ",'UI')
 
@@ -132,28 +135,63 @@ def register():
                     flash({'f':'track','v':'_login','p':mpp},'MP') 
                     #flash({'track':'_login KO, Automatic'},'MP')
 
-                    return redirect('/_login','UI')
-            else:
-                
+                    return redirect('/_login')
+
+            elif api == 'json':     
+
+                out = {} 
+                out['Success'] = True
+                out['Message'] = 'The user has been created'
+                data = {}
+                data['api_out'] = json.dumps(out)
+                return render_template("/auth/register_rs_json.html", data=data)
+
+
+        else:
+
+            if api == 'web': 
+
+                mpp = {'status':'KO','msg':'User could not be created'}
+                flash({'f':'track','v':'_register','p':mpp},'MP')
+                flash({'f':'alias','v':username},'MP')          
                 return redirect('/_register')
 
+            elif api == 'json':
 
-        except(KeyError):
-        #else:
-            print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+                out = {} 
+                out['Sucess'] = False
+                out['Message'] = 'The user could not be created'
+                data = {}
+                data['api_out'] = json.dumps(out)
+
+                return render_template("/auth/register_rs_json.html", data=data)
+
+            
+
+
+    #except(KeyError):
+    except:
+
+        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]            
+        if api == 'web': 
+
             flash("unable to register with that email address",'UI')
-
             mpp = {'status':'KO','msg':'Unable to register with that email address'}
             flash({'f':'track','v':'_register','p':mpp},'MP')
-            #flash({'track':'_register KO, Unable to register with that email address'},'MP')
-
             current_app.logger.error("Error on registration ")
-        
-    data = {}
-    data['image_cdn_root'] = IMAGE_CDN_ROOT
-    data['method'] = '_register'
+            return redirect('/_register')
 
-    return render_template("/auth/register.html", data=data)
+        elif api == 'json':
+
+            print('flag9')
+            out = {} 
+            out['Sucess'] = False
+            out['Message'] = 'Unable to register with that email address'
+            data = {}
+            data['api_out'] = json.dumps(out)
+            return render_template("/auth/register_rs_json.html", data=data)
+    
+
 
 @auth_flask_login.route("/_orgregister", methods=["GET"])
 @login_required
