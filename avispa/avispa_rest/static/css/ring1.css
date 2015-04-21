@@ -287,6 +287,21 @@ filter: grayscale(100%);
 }
 
 
+/*  .bg-pedro{  
+  background: url(/static/images/mbf/pedro02.gif), -webkit-linear-gradient(60deg, #8fcb1e, #8fcb1e);
+  background: url(/static/images/mbf/pedro02.gif), -o-linear-gradient(60deg, #8fcb1e, #8fcb1e);
+  background: url(/static/images/mbf/pedro02.gif), -moz-linear-gradient(60deg, #8fcb1e, #8fcb1e);
+  background: url(/static/images/mbf/pedro02.gif), linear-gradient(60deg, #8fcb1e, #8fcb1e);
+    
+    background-position: 0px 0px; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+}*/
+
+
+
+
 
 .bg-ai{  
   background: url(/static/images/back03.jpg) no-repeat center center fixed; 
