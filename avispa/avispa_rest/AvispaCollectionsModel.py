@@ -34,6 +34,7 @@ class AvispaCollectionsModel:
 
             collections = user_doc['collections']  
             rings = user_doc['rings']
+            
 
             # 1. Here we need to call the DB again but now to get which 
             
@@ -41,7 +42,9 @@ class AvispaCollectionsModel:
             ringorigins = {}
             ringcounts = {}
 
+
             for ring in rings:   
+
                 if not 'deleted' in ring:
                     ringname = str(ring['ringname'])
                     ringversion = str(ring['version'])
@@ -52,30 +55,34 @@ class AvispaCollectionsModel:
                     else:
                         ringorigin = str(handle)
 
-                    ringorigins[ringname+'_'+ringversionh] = ringorigin
- 
+                    ringorigins[ringname+'_'+ringversionh] = ringorigin 
                     ringcounts[ringname+'_'+ringversionh] = ring['count']
-
                     validring[ringname+'_'+ringversionh] = True
-
 
         
             print('BEFORE COLLECTIONS',collections)
             
+            count_c = 0
             for coll in collections:
                 coll['valid'] = True
+                count_r = 0
                 for ring in coll['rings']:
                     
                     if ring['ringname']+'_'+ring['version'] not in validring:
                         #InValid Collection, at least one of its rings is marked as deleted             
                         #coll['valid'] = False
                         print('EXCLUDING RING:',ring['ringname']+'_'+ring['version'])
-                        ring['invalid'] = True
+                        #ring['invalid'] = True
+                        del collections[count_c]['rings'][count_r]
 
                         #break
                     else:
                         ring['count'] = ringcounts[ring['ringname']+'_'+ring['version']]
                         ring['ringorigin'] = ringorigins[ring['ringname']+'_'+ring['version']]
+
+                    count_r += 1
+
+                count_c += 1
 
             print('AFTER COLLECTIONS',collections)
                     
