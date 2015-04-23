@@ -412,7 +412,8 @@ filter: grayscale(100%);
 .bg-yellow{background-color: #FFE045;}
 .bg-a{background-color: #d40044; }
 .bg-b{background-color: #298fff; }
-.bg-c{background-color: #ffd033; }
+.bg-c{background-color: #ffe045; }
+.bg-c2{background-color: #ffd033; }
 .bg-d{background-color: #33ccff; }
 .bg-e{background-color: #f2f0ed; }
 .bg-f{background-color: rgba(0, 0, 0, 0.05); }

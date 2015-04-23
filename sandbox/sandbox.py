@@ -24,9 +24,7 @@ def landing():
     flash("User not active")
 
     data = {}
-    #t = time.time()
-    #data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-    data['section_name']= ""
+    data['mask']= "mbf"
     
     return render_template("/sandbox/landing.html", data=data)
 

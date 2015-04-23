@@ -156,11 +156,11 @@
             
             {% if data.mask =='mbf' %}
             
-            <a href="http://www.mybusinessfacts.com" class="clearlink">
+            <a href="/_sandbox/landing" class="clearlink">
               <img src="/static/images/mbf/mbflogowhite.png" style=" width:250px;" alt="My Business Facts">
             </a>
             {% else %}
-            <a href="/" class="clearlink spa20">
+            <a href="/_sandbox/landing" class="clearlink spa20">
               <img src="/static/images/myring04.png" style=" width:100px;" alt="My Ring">
             </a>
             {% endif %}
@@ -169,7 +169,7 @@
           
           
             <div class="pull-right spa15"> 
-              <a href="{% if data.mask =='mbf' %}/_sandbox/mbf_login{% else %}/_login{% endif %}" class="btn btn-default btn-sm">LOG IN</a> 
+              <a href="{% if data.mask =='mbf' %}/_login{% else %}/_login{% endif %}" class="btn btn-default btn-sm">LOG IN</a> 
               <a href="{% if data.mask =='mbf' %}/_sandbox/mbf_signup{% else %}/_register{%endif%}" class="btn btn-info btn-sm">SIGN UP</a>
             </div>
          
@@ -199,10 +199,11 @@
           <span class="pad-x-10">|</span>
           <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_categories">Profile</a> 
           <span class="pad-x-10">|</span>
-          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_pricing">Pricing</a> 
-          <span class="pad-x-10">|</span>
           <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_how">FAQ</a> 
           <span class="pad-x-10">|</span>
+          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_pricing">Pricing</a> 
+          <span class="pad-x-10">|</span>
+          
 
 
           <a class="clearlink hidden-xs fs-1 fc-a " href="/_sandbox/mbf_experts">Experts</a> 
