@@ -1,4 +1,5 @@
 # AvispaCollectionsRestFunc.py
+import json
 from flask import redirect, flash
 from AvispaModel import AvispaModel
 from AvispaCollectionsModel import AvispaCollectionsModel
@@ -52,17 +53,40 @@ class AvispaCollectionsRestFunc:
         if result:
             print('Awesome , you just created a new Collection')
             #msg = 'Item put with id: '+idx
-            flash("Your new Collection has been created",'UI')
-            redirect = '/'+handle
-            d = {'redirect': redirect, 'status':200}
+
+            if api:
+                out = {} 
+                out['Success'] = True
+                out['Message'] = 'The collection has been created'
+                d = {}
+                d['api_out'] = json.dumps(out)
+                d['template'] = '/base_json.html'
+                
+            else:
+                flash("Your new Collection has been created",'UI')
+                redirect = '/'+handle
+                d = {'redirect': redirect, 'status':200}
 
         else:
-            d = {'message': 'There was an error creating the Collection' , 'template':'avispa_rest/index.html'}
-        
+
+            if api:
+                out = {} 
+                out['Sucess'] = False
+                out['Message'] = 'There was an error creating the Collection'
+                data = {}
+                data['api_out'] = json.dumps(out)
+                d['template'] = '/base_json.html'
+                
+
+            else:
+                flash("There was an error creating the Collection",'UI')
+
         return d
 
 
     def post_rq_a_x(self,request,handle,collection,idx,api=False,*args):
+
+        #Generates de form to create the collection
 
         ringlist = self.AVM.user_get_rings(handle)
 

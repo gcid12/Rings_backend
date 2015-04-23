@@ -160,9 +160,7 @@ def patch_dispatcher(patchnumber):
 
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
-
     ACF = AvispaCollectionsRestFunc()
-
 
     if 'q' in request.args:
         if request.args.get("q"):
@@ -183,61 +181,69 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     data = {}
 
     m = method+depth
-    data['method'] = m
     
 
+    data['method'] = m
 
-    MAM = MainModel()
-    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,collection=collection)
-    if not authorization_result['authorized']:
-        return render_template('avispa_rest/error_401.html', data=data),401
-    data['user_authorizations'] = authorization_result['user_authorizations']
+    if not api:
+        MAM = MainModel()
+        authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,collection=collection)
+
+        if not authorization_result['authorized']:
+            return render_template('avispa_rest/error_401.html', data=data),401
+
+        data['user_authorizations'] = authorization_result['user_authorizations']
+
+        MAM = MainModel()
+        cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+
+        if cu_user_doc:
+            #data['cu_actualname'] = cu_user_doc['name']
+            data['cu_profilepic'] = cu_user_doc['profilepic']
+            #data['cu_location'] = cu_user_doc['location']
+
+        #Thisi is the data from the handle we are visiting
+        if current_user.id == handle:
+            data['handle_actualname'] = cu_user_doc['name']
+            data['handle_profilepic'] = cu_user_doc['profilepic']
+            data['handle_location'] = cu_user_doc['location']
+            data['is_org'] = False
+
+        else:
+            handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+            if handle_user_doc:
+                data['handle_actualname'] = handle_user_doc['name']
+                data['handle_profilepic'] = handle_user_doc['profilepic']
+                data['handle_location'] = handle_user_doc['location']
+
+                if 'is_org' in handle_user_doc:
+                    if handle_user_doc['is_org']:
+                        data['is_org'] = True
+                    else:
+                        data['is_org'] = False
+
+
+
+        data['handle']=handle
+        data['collection']=collection
+        data['idx']=idx
+        data['current_user']=current_user
+
+        o = urlparse.urlparse(request.url)
+        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+
+        t = time.time()
+        data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+
+        print("host_url")
+        print(data['host_url'])
+
+
 
     data.update(getattr(ACF, m.lower())(request,handle,collection,idx,api=api))
 
-    MAM = MainModel()
-    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    if cu_user_doc:
-        #data['cu_actualname'] = cu_user_doc['name']
-        data['cu_profilepic'] = cu_user_doc['profilepic']
-        #data['cu_location'] = cu_user_doc['location']
-
-    #Thisi is the data from the handle we are visiting
-    if current_user.id == handle:
-        data['handle_actualname'] = cu_user_doc['name']
-        data['handle_profilepic'] = cu_user_doc['profilepic']
-        data['handle_location'] = cu_user_doc['location']
-        data['is_org'] = False
-
-    else:
-        handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
-        if handle_user_doc:
-            data['handle_actualname'] = handle_user_doc['name']
-            data['handle_profilepic'] = handle_user_doc['profilepic']
-            data['handle_location'] = handle_user_doc['location']
-
-            if 'is_org' in handle_user_doc:
-                if handle_user_doc['is_org']:
-                    data['is_org'] = True
-                else:
-                    data['is_org'] = False
-
-
-    data['handle']=handle
-    data['collection']=collection
-    data['idx']=idx
-    data['current_user']=current_user
-
-    o = urlparse.urlparse(request.url)
-    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-
-    data['image_cdn_root'] = IMAGE_CDN_ROOT
-
-    t = time.time()
-    data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-
-    print("host_url")
-    print(data['host_url'])
 
 
     if 'error_status' in data.keys():
@@ -246,18 +252,12 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         status = 200
 
     if 'redirect' in data:
-        print('flag0')
-        print(data)
         return data             
-    elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-        print('flag1')
-        print(data)      
+    elif api:     
         return render_template(data['template'], data=data), status     
     else:
-        print('flag2')
-        #print(data) 
         return render_template(data['template'], data=data)
-        #return 'ok'
+
 
 
 def home_dispatcher(handle):
@@ -919,35 +919,25 @@ def roles_a_x_y(handle,collection):
         return result
 
 
-@avispa_rest.route('/_api/<handle>', methods=['GET'])
-def api_route_a(handle):
+#API
+@avispa_rest.route('/_api/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def api_collections_route_a_x(handle):
 
-    result = route_dispatcher('_a',handle,api=True)
+    if request.args.get('token') != 'qwerty1234':
+        out = {} 
+        out['Sucess'] = False
+        out['Message'] = 'Wrong Token'
+        data = {}
+        data['api_out'] = json.dumps(out)
+        return render_template("/auth/register_rs_json.html", data=data)
+
+    result = collection_dispatcher('_a_x',handle,api=True)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
     else:
         return result
 
-@avispa_rest.route('/_api/<handle>/<ring>', methods=['GET'])
-def api_route_a_b(handle,ring):
-
-    result = route_dispatcher('_a_b',handle,ring,api=True)
- 
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
-
-@avispa_rest.route('/_api/<handle>/<ring>/<idx>', methods=['GET'])
-def api_route_a_b_c(handle,ring,idx):
-
-    result = route_dispatcher('_a_b_c',handle,ring,idx,api=True)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])
-    else:
-        return result
 
 @avispa_rest.route('/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
@@ -1015,6 +1005,41 @@ def collections_route_a_x_y_b(handle,collection,ring):
 def collections_route_a_x_y_b_c(handle,collection,ring,idx):
 
     result = route_dispatcher('_a_b_c',handle,ring,idx,collection=collection)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])
+    else:
+        return result
+
+
+
+#API
+@avispa_rest.route('/_api/<handle>', methods=['GET','POST'])
+def api_route_a(handle):
+
+    result = route_dispatcher('_a',handle,api=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+#API
+@avispa_rest.route('/_api/<handle>/<ring>', methods=['GET','POST'])
+def api_route_a_b(handle,ring):
+
+    result = route_dispatcher('_a_b',handle,ring,api=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+#API
+@avispa_rest.route('/_api/<handle>/<ring>/<idx>', methods=['GET','POST'])
+def api_route_a_b_c(handle,ring,idx):
+
+    result = route_dispatcher('_a_b_c',handle,ring,idx,api=True)
 
     if 'redirect' in result:
         return redirect(result['redirect'])

@@ -89,7 +89,7 @@ def api_register_post():
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
-        return render_template("/auth/register_rs_json.html", data=data)
+        return render_template("/base_json.html", data=data)
 
 
     username = request.form.get('username')
@@ -119,7 +119,7 @@ def api_register_post():
             out['Message'] = 'The user has been created'
             data = {}
             data['api_out'] = json.dumps(out)
-            return render_template("/auth/register_rs_json.html", data=data)
+            return render_template("/base_json.html", data=data)
 
         else:
 
@@ -129,7 +129,7 @@ def api_register_post():
             data = {}
             data['api_out'] = json.dumps(out)
 
-            return render_template("/auth/register_rs_json.html", data=data)
+            return render_template("/base_json.html", data=data)
 
     #except(KeyError):
     except:
@@ -140,7 +140,7 @@ def api_register_post():
         out['Message'] = 'The user could not be created'
         data = {}
         data['api_out'] = json.dumps(out)
-        return render_template("/auth/register_rs_json.html", data=data)
+        return render_template("/base_json.html", data=data)
 
 #WEB
 @auth_flask_login.route("/_register", methods=["GET"])
@@ -259,7 +259,7 @@ def api_orgregister_post():
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
-        return render_template("/auth/register_rs_json.html", data=data)
+        return render_template("/base_json.html", data=data)
 
 
     owner = request.form.get('owner')
@@ -279,7 +279,7 @@ def api_orgregister_post():
             out['Message'] = 'The organization has been created'
             data = {}
             data['api_out'] = json.dumps(out)
-            return render_template("/auth/register_rs_json.html", data=data)
+            return render_template("/base_json.html", data=data)
 
         else:
 
@@ -288,7 +288,7 @@ def api_orgregister_post():
             out['Message'] = 'The organization could not be created'
             data = {}
             data['api_out'] = json.dumps(out)
-            return render_template("/auth/register_rs_json.html", data=data)
+            return render_template("/base_json.html", data=data)
 
     except:
     
@@ -299,7 +299,7 @@ def api_orgregister_post():
         out['Message'] = 'The organization could not be created'
         data = {}
         data['api_out'] = json.dumps(out)
-        return render_template("/auth/register_rs_json.html", data=data)
+        return render_template("/base_json.html", data=data)
         
 #WEB
 @auth_flask_login.route("/_orgregister", methods=["POST"])

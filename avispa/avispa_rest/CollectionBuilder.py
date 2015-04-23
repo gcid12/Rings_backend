@@ -6,26 +6,16 @@ class CollectionBuilder:
 
     def __init__(self):
 
-        
-
-
         self.collectionprotocols = {}
-
         self.collectionprotocols['collectionprotocol'] = ['CollectioNname','CollectionDescription','CollectionVersion']
         self.collectionprotocols['mandatory'] = ['CollectionName']
         self.collectionprotocols['defaults'] = {'CollectionVersion':'0.1.0'}
-
         self.ACM = AvispaCollectionsModel()
-
-
-    
+   
     def post_a_x(self,request,handle):
-
-                
+               
         if request.form.get('CollectionName'):
-
             collectiond = {}
-
             collectiond['name'] = request.form.get('CollectionName').lower() # I dont like this here
             collectiond['description'] = request.form.get('CollectionDescription').lower()
             collectiond['handle'] = handle.lower()

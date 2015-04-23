@@ -10,7 +10,7 @@ from flask.ext.login import (current_user, login_required, login_user, logout_us
 class AvispaRestFunc:
 
     def __init__(self):
-        self.AVM = AvispaModel() 
+        self.AVM = AvispaModel()
 
     # /a
 
