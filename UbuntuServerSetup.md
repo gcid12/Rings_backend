@@ -99,6 +99,13 @@ Install the Apache2-utils package:
 apt-get install apache2-utils
 ```
 
+If you are running Ubuntu from a Virtual Server, run the following:
+```
+$ sudo dpkg-divert --local --rename --add /sbin/initctl
+$ ln -s /bin/true /sbin/initctl
+```
+Original Reference: https://www.nesono.com/node/368
+
 ### Verifying installations
 
 Check that the web-server has been installed correctly. Just type the public ip address in your browser. You should be greeted by Nginx with a meesage like this:
@@ -442,8 +449,8 @@ env LOGTO=/var/log/uwsgi/emperor.log
 env MYRING_CSRF_SESSION_KEY='<unique-key>'
 
 exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
-
 ```
+
 
 This script will look for the config files in /etc/uwsgi/vassals folder. Create it and symlink it
 ```
@@ -516,12 +523,25 @@ http error logs
 tail /var/log/nginx/error.log
 ```
 
+Nginx status
+```
+systemctl status nginx.service
+```
+
 #####Emperor
 
 To see if the uWSGI process was spawned correctly
 ```
 tail /var/log/uwsgi/emperor.log
 ```
+
+If the emperor seems to be not working when you call start uwsgi run this:
+```
+/var/www/app/venv/bin/uwsgi --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto /var/log/uwsgi/emperor.log
+
+```
+Now try to access via browser. If you see the page the problem is not emperor o uWSGI but the 'start' command
+
 
 #####uWSGI
 To see the all the dynamic content activity including the python print() and python error traces
