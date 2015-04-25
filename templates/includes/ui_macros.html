@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12">
 
-            <img class="block-center" src="/static/images/case-44.png" style="width:45px;" alt="MyRing">
+            <img class="block-center" src="/static/images/icons/case-44.png" style="width:45px;" alt="MyRing">
             <br/>
  
         {% if 'get_a' in user_authorizations %}
@@ -85,9 +85,9 @@
         <div class="row spa20">
           <div class="col-sm-2 hidden-xs">
             <div class="bord-right bb-11 pr-20">
-              <img class="block-center" src="/static/images/case-44.png" style="width:85px;" alt="MyRing"> 
+              <img class="block-center" src="/static/images/icons/case-44.png" style="width:85px;" alt="MyRing"> 
               
-              <span class="label bl bl-gray"><img class="block-center" src="/static/images/case-49.png" style="width:0px;" alt="MyRing">  <i class="fa fa-user"></i> {{ data.handle|lower() }} | Collection</span> 
+              <span class="label bl bl-gray"><img class="block-center" src="/static/images/icons/case-49.png" style="width:0px;" alt="MyRing">  <i class="fa fa-user"></i> {{ data.handle|lower() }} | Collection</span> 
               
             </div>
           </div>
@@ -118,7 +118,7 @@
               <a class="nounder" href="/{{data.handle}}">
 
 
-                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph_user2.gif{% endif %}" style="width:28px;">
+                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
                 
                 <span class="op-0-5">{{ data.handle|lower() }}</span>   
               </a> 
@@ -162,7 +162,7 @@
             
             <td>{{ icon_sma(count, color) }}</td>
             <td>
-              <img src="/static/images/ico_schema.png" style="width:15px; opacity:0.5;">
+              <img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;">
 
               <!-- <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
               {% if 'get_a_b' in user_authorizations %}
@@ -220,7 +220,7 @@
               {% if 'get_a' in user_authorizations %}
               <div>
                 <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">
-                <img src="/static/images/ico_linked.png" style="width:25px; opacity:0.5;">
+                <img src="/static/images/icons/ico_linked.png" style="width:25px; opacity:0.5;">
                  {{ring}}
                 </a>
               
@@ -253,7 +253,7 @@
               {% if 'put_a_b' in user_authorizations %}
               
               <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/json.png"></a>
+              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
               {% endif %}
 
             </div> 
@@ -679,201 +679,6 @@
 
 
 
-{% macro collab_collapse(order,colname, avatar, graph, color, assets, percent, last,role, active) %}
-
-  
-
-<div class="panel panel-default">
-  <a data-toggle="collapse" data-parent="#accordion" href="#{{ order }}" aria-expanded="true" aria-controls="{{ order }}">
-    <div class="panel-heading" role="tab" id="headingOne">
-      <h4 class="panel-title">
-      
-        <span class="badge text-s2"> {{ order }}</span>
-         
-        <span class="pl-20 fs-0-8"> {{ colname }} </span> 
-        
-        </a>
-      </h4>
-    </div>
-  </a>  
-  <div id="{{ order }}" class="panel-collapse collapse {{ active }}" role="tabpanel" aria-labelledby="headingOne">
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-sm-2">
-          <img class=" user-med" src="/static/images/{{ avatar }}">
-
-
-          {{ label(role) }}
-          
-
-          
-          <div class="spa5"></div>
-
-          <div class="btn-group" role="group" aria-label="123">
-            <a class="btn btn-default btn-xs"><i class="fa fa-plus fa-1x"></i></a>
-            <a class="btn btn-default btn-xs"><i class="fa fa-comment fa-1x"></i></a>
-          </div>
-
-        </div>
-        <div class="col-sm-10">
-          <img class="img-responsive center-block" src="/static/images/{{ graph }}" >
-          <div class="pull-left fs-0-8 text-gray"><strong>{{ assets }}</strong>  Data Resources | {{ percent }}%</div>
-          <div class="pull-right fs-0-8 text-gray"><a href="/campaigns"><strong>4 </strong>Active Campaigns &nbsp; <i class="fa fa-flag fa-1x"></i></a> </div>
-        <div class="spa10 visible-xs"></div>
-          <hr/>
-          <div class="pull-right fs-0-8 text-lgray">{{ last }}</div> 
-        </div>
-      </div>
-      
-    </div>
-  </div>
-</div>
-{% endmacro %}
-
-
-{% macro label(code) %}
-          {% if code==1 %}
-            <div class="label label-discrete" style="margin-top:-50px;">Owner</div>
-          {% elif code==2 %}
-            <div class="label label-discrete" style="margin-top:-50px;">Admin</div>
-          {% elif code==3 %}
-            <div class="label label-discrete" style="margin-top:-50px;">Collab</div>  
-          {% else %}
-            <div class="label label-discrete" style="margin-top:-50px;">Observer</div>
-          {% endif %}
-{% endmacro %}   
-
-{% macro friend(name, avatar) %}
-
-<div>
-  <img class=" user-med pull-left" src="/static/images/{{ avatar }}" width="40px">  
-  <div class="btn-group pull-right" role="group" aria-label="123">
-            <a class="btn btn-default btn-xs"><i class="fa fa-line-chart fa-1x"></i></a>
-            <a class="btn btn-default btn-xs"><i class="fa fa-plus fa-1x"></i></a>
-  </div>
-  <p> {{ name }}</p>
-  
-
-  <hr/>
-</div>    
-{% endmacro %}    
-
-
-{% macro mosaic_item(name) %}
-<div class="pull-left" style="background-color:#F7F7F7; margin:2px; padding:2px;">
-                      <!-- IMAGE PLACEHOLDER -->
-    <table>
-      <tr>
-        <td align="center">
-          <a href="" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
-                    
-            >
-          <!-- Image placeholder -->
-            <img style="width:90px; margin:1px;" src="/static/images/image01.jpg"  class="img-thumbnail">
-
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td align="center">
-          <span class="fs-0-6 text-gray">
-            {{ name }}
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td align="center">
-            <div class="btn-group" role="group" aria-label="...">
-              <a href="" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-              <a href="" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
-              <a href="" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
-            </div>
-                   
-            <br/>
-                    <!-- <span class="label label-info">PUBLIC</span> -->     
-        </td>
-      </tr>
-    </table>
-</div>
-
-{% endmacro %}  
-
-{% macro list_item() %}
-
-<tr>
-                  <td>
-                      
-                    <table> 
-                      <tr>
-                        <td>
-                          <img style="width:70px;" src="/static/images/image01.jpg" class="img-thumbnail" >
-                        </td>
-                      </tr> 
-                      <tr>
-                        <td align="center">
-                          <div class="btn-group" role="group" aria-label="...">
-                            <a href="" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                            <a href="" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
-                            <a href="" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
-                          </div>
-                        </td>
-                      </tr>   
-                    </table>
-                         
-                  </td>
-                  <td>
-                      <table>
-
-                          <tr>
-                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">name:</p></td>
-                            <td>
-                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">BALLY'S LAS VEGAS</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">address:</p></td>
-                            <td>
-                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">3645 Las Vegas Blvd S, Las Vegas</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">state:</p></td>
-                            <td>
-                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">NV</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">country:</p></td>
-                            <td>
-                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">US</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">stars:</p></td>
-                            <td>
-                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">3.5</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">description:</p></td>
-                            <td>
-                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">Bally’s Las Vegas is one of the strip’s most exciting resorts, offering guests a “classic Las Vegas” experience. The 44-acre property is located on the center of the wor...</p>
-                            </td>
-                          </tr>
-                            
-                        
-                      </table>
-                  </td> 
-                  <td width="30%">
-                    
-                    
-                  </td>  
-                  
-
-              </tr>
-
-{% endmacro%}
-
 {% macro org_header(data,handle) %}
 
         <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
@@ -1000,6 +805,214 @@
   </tr>
 <!--   update -->
 {% endmacro %}
+
+
+
+
+<!-- EXPERIMENTAL::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+
+
+
+
+{% macro collab_collapse(order,colname, avatar, graph, color, assets, percent, last,role, active) %}
+
+  
+
+<div class="panel panel-default">
+  <a data-toggle="collapse" data-parent="#accordion" href="#{{ order }}" aria-expanded="true" aria-controls="{{ order }}">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+      
+        <span class="badge text-s2"> {{ order }}</span>
+         
+        <span class="pl-20 fs-0-8"> {{ colname }} </span> 
+        
+        </a>
+      </h4>
+    </div>
+  </a>  
+  <div id="{{ order }}" class="panel-collapse collapse {{ active }}" role="tabpanel" aria-labelledby="headingOne">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-2">
+          <img class=" user-med" src="/static/images/ph/users/{{ avatar }}">
+
+
+          {{ label(role) }}
+          
+
+          
+          <div class="spa5"></div>
+
+          <div class="btn-group" role="group" aria-label="123">
+            <a class="btn btn-default btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+            <a class="btn btn-default btn-xs"><i class="fa fa-comment fa-1x"></i></a>
+          </div>
+
+        </div>
+        <div class="col-sm-10">
+          <img class="img-responsive center-block" src="/static/images/graphics{{ graph }}" >
+          <div class="pull-left fs-0-8 text-gray"><strong>{{ assets }}</strong>  Data Resources | {{ percent }}%</div>
+          <div class="pull-right fs-0-8 text-gray"><a href="/campaigns"><strong>4 </strong>Active Campaigns &nbsp; <i class="fa fa-flag fa-1x"></i></a> </div>
+        <div class="spa10 visible-xs"></div>
+          <hr/>
+          <div class="pull-right fs-0-8 text-lgray">{{ last }}</div> 
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+
+{% macro label(code) %}
+          {% if code==1 %}
+            <div class="label label-discrete" style="margin-top:-50px;">Owner</div>
+          {% elif code==2 %}
+            <div class="label label-discrete" style="margin-top:-50px;">Admin</div>
+          {% elif code==3 %}
+            <div class="label label-discrete" style="margin-top:-50px;">Collab</div>  
+          {% else %}
+            <div class="label label-discrete" style="margin-top:-50px;">Observer</div>
+          {% endif %}
+{% endmacro %}   
+
+{% macro friend(name, avatar) %}
+
+<div>
+  <img class=" user-med pull-left" src="/static/images/{{ avatar }}" width="40px">  
+  <div class="btn-group pull-right" role="group" aria-label="123">
+            <a class="btn btn-default btn-xs"><i class="fa fa-line-chart fa-1x"></i></a>
+            <a class="btn btn-default btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+  </div>
+  <p> {{ name }}</p>
+  
+
+  <hr/>
+</div>    
+{% endmacro %}    
+
+
+{% macro mosaic_item(name) %}
+<div class="pull-left" style="background-color:#F7F7F7; margin:2px; padding:2px;">
+                      <!-- IMAGE PLACEHOLDER -->
+    <table>
+      <tr>
+        <td align="center">
+          <a href="" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
+                    
+            >
+          <!-- Image placeholder -->
+            <img style="width:90px; margin:1px;" src="/static/images/image01.jpg"  class="img-thumbnail">
+
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <span class="fs-0-6 text-gray">
+            {{ name }}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+            <div class="btn-group" role="group" aria-label="...">
+              <a href="" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+              <a href="" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+              <a href="" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+            </div>
+                   
+            <br/>
+                    <span class="label label-info">PUBLIC</span>     
+        </td>
+      </tr>
+    </table>
+</div>
+
+{% endmacro %}  
+
+{% macro list_item() %}
+
+<tr>
+                  <td>
+                      
+                    <table> 
+                      <tr>
+                        <td>
+                          <img style="width:70px;" src="/static/images/image01.jpg" class="img-thumbnail" >
+                        </td>
+                      </tr> 
+                      <tr>
+                        <td align="center">
+                          <div class="btn-group" role="group" aria-label="...">
+                            <a href="" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                            <a href="" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                            <a href="" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                          </div>
+                        </td>
+                      </tr>   
+                    </table>
+                         
+                  </td>
+                  <td>
+                      <table>
+
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">name:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">BALLY'S LAS VEGAS</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">address:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">3645 Las Vegas Blvd S, Las Vegas</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">state:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">NV</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">country:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">US</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">stars:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">3.5</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td  align="right" valign="top"><p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">description:</p></td>
+                            <td>
+                                <p class="fs-0-7 lh-0-1 text-gray" style="margin-bottom:5px;">Bally’s Las Vegas is one of the strip’s most exciting resorts, offering guests a “classic Las Vegas” experience. The 44-acre property is located on the center of the wor...</p>
+                            </td>
+                          </tr>
+                            
+                        
+                      </table>
+                  </td> 
+                  <td width="30%">
+                    
+                    
+                  </td>  
+                  
+
+              </tr>
+
+{% endmacro%}
+
 
 
 

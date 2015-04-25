@@ -73,7 +73,7 @@
           </a>
         </li>
         <li class="active hidden-xs">
-          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s2 pr-20 pl-5 text-black"> {{ current_user.id }}</span></a>
+          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s2 pr-20 pl-5 text-black"> {{ current_user.id }}</span></a>
           
         </li>
 
@@ -135,14 +135,14 @@
        <ul class="nav navbar-nav navbar-left visible-xs">
 
           <li class="active">
-            <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/myring04.png" style=" margin:10px 30px 10px 20px; width:100px; float:right;" alt="MyRing"></a>
+            <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/logos/myring04.png" style=" margin:10px 30px 10px 20px; width:100px; float:right;" alt="MyRing"></a>
           </li>
         </ul>
 
       <ul class="nav navbar-nav navbar-left hidden-xs">
         
         <li>
-        <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing"></a>
+        <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing"></a>
         </li>
         
 
@@ -157,11 +157,11 @@
             {% if data.mask =='mbf' %}
             
             <a href="/_sandbox/landing" class="clearlink">
-              <img src="/static/images/mbf/mbflogowhite.png" style=" width:250px;" alt="My Business Facts">
+              <img src="/static/images/logos/mbf/mbflogowhite.png" style=" width:250px;" alt="My Business Facts">
             </a>
             {% else %}
             <a href="/_sandbox/landing" class="clearlink spa20">
-              <img src="/static/images/myring04.png" style=" width:100px;" alt="My Ring">
+              <img src="/static/images/logos/myring04.png" style=" width:100px;" alt="My Ring">
             </a>
             {% endif %}
             
@@ -252,7 +252,7 @@
       <nav id="menu">
         <ul>
              <li class="active">
-              <a class="clearlink" href="/{{current_user.id}}"><img src="/static/images/myring04.png" style="width:120px;" alt="MyRing"></a>
+              <a class="clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="width:120px;" alt="MyRing"></a>
 
             </li>
             <li>
