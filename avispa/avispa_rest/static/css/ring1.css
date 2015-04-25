@@ -11,21 +11,26 @@
 
 /*body{background-color:#f5f5f5;}*/
 body{background-color:#f6f6f6; 
-font-family: sans-serif; font-weight: 300; text-transform: none;
+font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: none;
 }
 /*TEXT */
 
-h1{ font-family: sans-serif; font-weight: 300; text-transform: none;}
-h2{ font-family: sans-serif; font-weight: 300; text-transform: none;}
-h3{ font-family: sans-serif; font-weight: 300; line-height:0.7em; text-transform: none;}
-h4{ font-family: sans-serif; font-weight: 300; text-transform: none;}
-h5{ font-family: sans-serif; font-weight: 300; text-transform: none;}
+h1{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: none;}
+h2{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: none;}
+h3{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; line-height:0.7em; text-transform: none;}
+h4{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: none;}
+h5{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: none;}
 
-p{ font-family: sans-serif; font-weight: 300;}
+p{ font-family: Helvetica,Arial,sans-serif; font-weight: 300;}
 
 .fw-a{font-weight:300;} /*light*/
 .fw-b{font-weight:400;} /*medium*/
 .fw-c{font-weight:700;} /*heavy*/
+
+
+.text-s1{ font-family: sans-serif; font-weight: 300;}
+.text-s2{ font-family: sans-serif; font-weight: 300;}
+
 
 
 /* GLOBAL */
@@ -64,8 +69,7 @@ filter: grayscale(100%);
 
 /*COPIED FROM ring-home.css*/
 
-.text-s1{ font-family: sans-serif; font-weight: 300;}
-.text-s2{ font-family: sans-serif; font-weight: 300;}
+
 
 .lw-1em{line-height:1em;}
 .lw-1-5em{line-height:1.5em;}

@@ -122,11 +122,14 @@
                 </div>
 
             </div>
+
+            <!-- SECOND COLUMN :::::::::::::::::::::::::::::::::::::::::-->
+
             <div class="col-sm-9">
 
             {% if 'post_a_x' in data.user_authorizations %}
                 
-                <div class="box box-clear p-15">
+                <div class="box box-clear p-15 hidden-xs">
                     {#{data.dac_totals}#}
                     {#{data.dac_totals_date}#}
                     {#{data.ring_counts}#}
@@ -163,9 +166,12 @@
                             <div id="usergraph" class="ugp-container">
                             </div>
 
+
+                            {% if data.dac_totals|sum >=1 %}
                             <div class="lead fs-1 text-lgray hidden-xs" id="chisme" style="float:right;">
                                 <a data-toggle="modal" data-target="#intro-graph" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4"><i class="fa fa-question-circle"></i></a>
                             </div>
+                            {%endif%}
 
 
                             <!-- <div style="position:absolute; left:10px;">
@@ -246,7 +252,7 @@
                                   {%if organization['handle']|trim == collection.handle|trim %} 
 
                                   <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}">    
-                                     <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1" style="width:34px; height:34px;" >123
+                                     <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1" style="width:34px; height:34px;" >
                                   </a>
                                   {%endif%}
                               {% endfor %}
