@@ -1,4 +1,4 @@
-#Ubuntu Virtual Server Setup for MyRing
+#Ubuntu Virtual Server Setup for Avispa
 
 Create an instance with any of the following operating system:
 ```
@@ -99,6 +99,13 @@ Install the Apache2-utils package:
 apt-get install apache2-utils
 ```
 
+If you are running Ubuntu from a Virtual Server, run the following:
+```
+$ sudo dpkg-divert --local --rename --add /sbin/initctl
+$ ln -s /bin/true /sbin/initctl
+```
+Original Reference: https://www.nesono.com/node/368
+
 ### Verifying installations
 
 Check that the web-server has been installed correctly. Just type the public ip address in your browser. You should be greeted by Nginx with a meesage like this:
@@ -166,13 +173,13 @@ You'll see in the lower-right corner a message like : 'Welcome to Admin Party, f
 
 
 
-### Cloning MyRing Source Code
+### Cloning Avispa Source Code
 
 
 Create the directories where the application is going to live
 ```
 $ mkdir /var/www
-$ mkdir /var/www/myring
+$ mkdir /var/www/avispa
 $ mkdir /var/www/_images
 ```
 
@@ -180,7 +187,7 @@ $ mkdir /var/www/_images
 
 Change the ownership to the group that will have access to it
 ```
-chown -R :www-data /var/www/myring 
+chown -R :www-data /var/www/avispa
 ```
 
 We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
@@ -233,13 +240,13 @@ Please notice that this procedure will change greatly in the following subversio
 
 If everything was setup correctly you should be able to clone the Repository without a problem
 ```
-$ git clone git@github.com:MyRing/avispa.git /var/www/myring
+$ git clone git@github.com:MyRing/avispa.git /var/www/avispa
 ```
 
 
 Create and activate a virtual environment, and install Flask into it:
 ```
-$ cd /var/www/myring
+$ cd /var/www/avispa
 $ virtualenv --no-site-packages --distribute venv && source venv/bin/activate && pip install -r requirements.txt
 ```
 
@@ -269,7 +276,7 @@ http://<public_ip_address>:8080
 You should see a "Flask Installation successful" message.  
 
 
-####Initializing MyRing Flask App Databases.
+####Initializing Avispa's Flask App Databases.
 
 
 Rename env_config.py.template to env_config.py .
@@ -298,13 +305,13 @@ PREVIEW_LAYER = 2
 
 Assign the PythonPath running this command. This will be in the initialization script but we are manually testing flask right now
 ```
-$ export PYTHONPATH=${PYTHONPATH}:/var/www/myring/
+$ export PYTHONPATH=${PYTHONPATH}:/var/www/avispa/
 ```
 
 
 As a test to see if all the dependencies for Flask are ready, run
 ```
-python /var/www/myring/run.py
+python /var/www/avispa/run.py
 ```
 
 It will show you the login screen. Run this to install the initial DBs
@@ -319,14 +326,19 @@ Stop the Flask server with CTRL+C
 
 #### Configuring Nginx
 
+Create the symbolic link that will point the config files to this project 
+```
+ln -s /var/www/avispa app
+```
+
 Remove Nginx's default site configuration
 ```
 # rm /etc/nginx/sites-enabled/default
 ```
 
-Symlink myring_nginx.conf to nginx's configuration directory and restart nginx
+Symlink nginx.conf to nginx's configuration directory and restart nginx
 ```
-# ln -s /var/www/myring/myring_nginx.conf /etc/nginx/conf.d/
+# ln -s /var/www/app/nginx.conf /etc/nginx/conf.d/
 ```
 IMPORTANT: Check that there is no other file in /etc/nginx/conf.d . That would cause a "502 Bad Gateway" error
 
@@ -347,19 +359,19 @@ And go to the following address in your browser
 http://<public_ip_address>
 ```
 
-It should return a 502 Bad Gateway error. Not bad, this means Nginx is already using myring_nginx.conf
-The problem is that myring_uwsgi.sock doesn't exist yet. Create this file if it doesn't exist.
+It should return a 502 Bad Gateway error. Not bad, this means Nginx is already using nginx.conf
+The problem is that uwsgi.sock doesn't exist yet. Create this file if it doesn't exist.
 ```
-vim /var/www/myring/myring_uwsgi.ini
+vim /var/www/app/uwsgi.ini
 ```
 
 Write the following in the file:
 ```
-# myring_uwsgi.ini
+# uwsgi.ini
 
 [uwsgi]
 #application's base folder
-base = /var/www/myring
+base = /var/www/app
 
 #python module to import
 app = run
@@ -369,7 +381,7 @@ home = %(base)/venv
 pythonpath = %(base)
 
 #socket file's location
-socket = /var/www/myring/%n.sock
+socket = /var/www/app/%n.sock
 
 #permissions for the socket file
 chmod-socket    = 644
@@ -394,7 +406,7 @@ chown -R :deployteam /var/log/uwsgi
 
 Execute uWSGI and pass it the newly created configuration file
 ```
-uwsgi --ini /var/www/myring/myring_uwsgi.ini --chown-socket=www-data:www-data
+uwsgi --ini /var/www/app/uwsgi.ini --chown-socket=www-data:www-data
 ```
 The Terminal will stay idle. That is ok. It means it is serving pages.
 That is ok but if you close that terminal window the process will stop. 
@@ -432,39 +444,39 @@ start on runlevel [2345]
 stop on runlevel [06]
 respawn
 
-env UWSGI=/var/www/myring/venv/bin/uwsgi
+env UWSGI=/var/www/app/venv/bin/uwsgi
 env LOGTO=/var/log/uwsgi/emperor.log
 env MYRING_CSRF_SESSION_KEY='<unique-key>'
 
 exec $UWSGI --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto $LOGTO
-
 ```
+
 
 This script will look for the config files in /etc/uwsgi/vassals folder. Create it and symlink it
 ```
  mkdir /etc/uwsgi
  mkdir /etc/uwsgi/vassals
- ln -s /var/www/myring/myring_uwsgi.ini /etc/uwsgi/vassals
+ ln -s /var/www/app/uwsgi.ini /etc/uwsgi/vassals
 ```
 
 Also, the last line states that the user that will be used to execute the daemon is 'www-data'.
 For simplicity's sake, let's set him as the owner of the application and log folders
 ```
- chown -R www-data:www-data /var/www/myring/
+ chown -R www-data:www-data /var/www/app/
  chown -R www-data:www-data /var/www/_images/
  chown -R www-data:www-data /var/log/uwsgi/
 ```
 
-Since both, nginx and uWSGI, are now being run by the same user, we can make a security improvement to our uWSGI configuration. Open up the uwsgi config file (/var/www/myring/myring_uwsgi.ini) and change the value of chmod-socket from 666 to 644:
+Since both, nginx and uWSGI, are now being run by the same user, we can make a security improvement to our uWSGI configuration. Open up the uwsgi config file (/var/www/app/uwsgi.ini) and change the value of chmod-socket from 666 to 644:
 ```
 ...
 #permissions for the socket file
 chmod-socket = 644
 ```
 
-Create the MyRing start/reset file
+Create the start/reset file
 ```
-vim /var/www/myringstart.sh
+vim /var/www/avispa/start.sh
 ```
 
 Paste the following in the file
@@ -472,9 +484,9 @@ Paste the following in the file
 /etc/init.d/nginx stop
 couchdb -k
 deactivate
-source /var/www/myring/venv/bin/activate
+source /var/www/avispa/venv/bin/activate
 stop uwsgi
-export PYTHONPATH=${PYTHONPATH}:/var/www/myring/
+export PYTHONPATH=${PYTHONPATH}:/var/www/avispa/
 /etc/init.d/nginx start
 couchdb -b
 start uwsgi
@@ -482,7 +494,7 @@ start uwsgi
 
 Now we can start the uWSGI job
 ```
-# source /var/www/myringstart.sh
+# source /var/www/avispa/start.sh
 ```
 
 One more thing. Since it is not good to have access to the database via a public address. Open /etc/couchdb/local.ini file and comment out the line 'bind_address' : 
@@ -511,6 +523,11 @@ http error logs
 tail /var/log/nginx/error.log
 ```
 
+Nginx status
+```
+systemctl status nginx.service
+```
+
 #####Emperor
 
 To see if the uWSGI process was spawned correctly
@@ -518,30 +535,38 @@ To see if the uWSGI process was spawned correctly
 tail /var/log/uwsgi/emperor.log
 ```
 
+If the emperor seems to be not working when you call start uwsgi run this:
+```
+/var/www/app/venv/bin/uwsgi --master --emperor /etc/uwsgi/vassals --die-on-term --uid www-data --gid www-data --logto /var/log/uwsgi/emperor.log
+
+```
+Now try to access via browser. If you see the page the problem is not emperor o uWSGI but the 'start' command
+
+
 #####uWSGI
 To see the all the dynamic content activity including the python print() and python error traces
 ```
-tail /var/log/uwsgi/myring_uwsgi.log
+tail /var/log/uwsgi/uwsgi.log
 ```
 
 
 
 #### Static Files
 
-Add the following rule to serve the Static files from myring
+Add the following rule to serve the Static files from avispa
 ```
 location /static {
-    root /var/www/myring/;
+    root /var/www/app/;
 }
 ```
-As a result, all static files located at /var/www/myring/static will be served by Nginx.
+As a result, all static files located at /var/www/app/static will be served by Nginx.
 
 #### Sometimes you need to turn on and off a service:
 
 Virtual Environment
 ```
 $ deactivate
-$ source /var/www/myring/venv/bin/activate
+$ source /var/www/app/venv/bin/activate
 ```
 
 Couchdb
@@ -564,7 +589,7 @@ $ start uwsgi
 #### Hard Restarting the Machine
 In case you need to restart the server you'll have to restart the virtual environment and all the services. Run the following commands:
 ```
-$ source /var/www/myring/venv/bin/activate
+$ source /var/www/app/venv/bin/activate
 $ couchdb -b
 $ /etc/init.d/nginx start
 $ start uwsgi 

@@ -39,9 +39,9 @@
                         <div class="col-xs-4 col-sm-12">
                             
                             {% if data.handle_profilepic %}
-                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{%else%}/static/images/ph_user.gif{%endif%}" class="profile-1"> 
+                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="profile-1"> 
                             {%else%}
-                            <img src="/static/images/ph_user.gif" class="profile-1">
+                            <img src="/static/images/ph/ph_user.gif" class="profile-1">
                             <br/> 
                                 {% if  'put_a'  in data.user_authorizations %}
                                     <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
@@ -100,7 +100,7 @@
                                 
                                 <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
 
-                                    <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1 mt-10">
+                                    <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1 mt-10">
 
                                 </a>
         
@@ -122,11 +122,14 @@
                 </div>
 
             </div>
+
+            <!-- SECOND COLUMN :::::::::::::::::::::::::::::::::::::::::-->
+
             <div class="col-sm-9">
 
             {% if 'post_a_x' in data.user_authorizations %}
                 
-                <div class="box box-clear p-15">
+                <div class="box box-clear p-15 hidden-xs">
                     {#{data.dac_totals}#}
                     {#{data.dac_totals_date}#}
                     {#{data.ring_counts}#}
@@ -163,9 +166,12 @@
                             <div id="usergraph" class="ugp-container">
                             </div>
 
+
+                            {% if data.dac_totals|sum >=1 %}
                             <div class="lead fs-1 text-lgray hidden-xs" id="chisme" style="float:right;">
                                 <a data-toggle="modal" data-target="#intro-graph" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4"><i class="fa fa-question-circle"></i></a>
                             </div>
+                            {%endif%}
 
 
                             <!-- <div style="position:absolute; left:10px;">
@@ -246,7 +252,7 @@
                                   {%if organization['handle']|trim == collection.handle|trim %} 
 
                                   <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}">    
-                                     <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph_org2.gif{%endif%}" class="pic-org-1" style="width:34px; height:34px;" >
+                                     <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1" style="width:34px; height:34px;" >
                                   </a>
                                   {%endif%}
                               {% endfor %}
@@ -346,7 +352,7 @@
                              
                               <div class="box box-help">
 
-                              <img src="/static/images/box2.png" class="img-responsive block-center pull-left" style="width:100px;"> 
+                              <img src="/static/images/icons/box2.png" class="img-responsive block-center pull-left" style="width:100px;"> 
 
 
                                 <p class="fs-1-3"><i class="fa fa-arrow-up"></i>You have no Collections. Create one here:
