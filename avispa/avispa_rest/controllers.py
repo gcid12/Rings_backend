@@ -45,64 +45,70 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data['method'] = m
     
 
-    MAM = MainModel()
-    authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
-    if not authorization_result['authorized']:
-        return render_template('avispa_rest/error_401.html', data=data),401
+    if not api:
 
-    data['user_authorizations'] = authorization_result['user_authorizations']
+        MAM = MainModel()
+        authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
+        if not authorization_result['authorized']:
+            return render_template('avispa_rest/error_401.html', data=data),401
 
+        data['user_authorizations'] = authorization_result['user_authorizations']
+
+         
+        #data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
      
+
+        cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        data['cu_actualname'] = cu_user_doc['name']
+        data['cu_profilepic'] = cu_user_doc['profilepic']
+        data['cu_location'] = cu_user_doc['location']
+
+
+        if current_user.id == handle:
+            data['handle_actualname'] = cu_user_doc['name']
+            data['handle_profilepic'] = cu_user_doc['profilepic']
+            data['handle_location'] = cu_user_doc['location']
+            data['is_org'] = False
+
+        else:
+            handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+            if handle_user_doc:
+                data['handle_actualname'] = handle_user_doc['name']
+                data['handle_profilepic'] = handle_user_doc['profilepic']
+                data['handle_location'] = handle_user_doc['location']
+                if 'is_org' in handle_user_doc:
+                    if handle_user_doc['is_org']:
+                        data['is_org'] = True
+                    else:
+                        data['is_org'] = False
+
+        if collection:       
+            data['collection'] = collection
+
+        if request.args.get("raw"):
+            data['raw'] = True 
+
+
+        data['handle']=handle
+        data['ring']=ring
+        data['idx']=idx
+        data['current_user']=current_user
+
+        o = urlparse.urlparse(request.url)
+        data['host_url'] = urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['api_url'] = urlparse.urlunparse((o.scheme, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
+
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+
+        t = time.time()
+        data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
+
+        print("host_url")
+        print(data['host_url'])
+
+
+
     data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
- 
-
-    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
-    data['cu_actualname'] = cu_user_doc['name']
-    data['cu_profilepic'] = cu_user_doc['profilepic']
-    data['cu_location'] = cu_user_doc['location']
-
-
-    if current_user.id == handle:
-        data['handle_actualname'] = cu_user_doc['name']
-        data['handle_profilepic'] = cu_user_doc['profilepic']
-        data['handle_location'] = cu_user_doc['location']
-        data['is_org'] = False
-
-    else:
-        handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
-        if handle_user_doc:
-            data['handle_actualname'] = handle_user_doc['name']
-            data['handle_profilepic'] = handle_user_doc['profilepic']
-            data['handle_location'] = handle_user_doc['location']
-            if 'is_org' in handle_user_doc:
-                if handle_user_doc['is_org']:
-                    data['is_org'] = True
-                else:
-                    data['is_org'] = False
-
-    if collection:       
-        data['collection'] = collection
-
-    if request.args.get("raw"):
-        data['raw'] = True 
-
-
-    data['handle']=handle
-    data['ring']=ring
-    data['idx']=idx
-    data['current_user']=current_user
-
-    o = urlparse.urlparse(request.url)
-    data['host_url'] = urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-    data['api_url'] = urlparse.urlunparse((o.scheme, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
-
-    data['image_cdn_root'] = IMAGE_CDN_ROOT
-
-    t = time.time()
-    data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-
-    print("host_url")
-    print(data['host_url'])
 
 
     if 'error_status' in data.keys():
@@ -113,7 +119,10 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     if 'redirect' in data:
         print('flag0')
         print(data)
-        return data             
+        return data  
+    elif api:  
+        print(data)      
+        return render_template(data['template'], data=data), status            
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
         print('flag1')
         print(data)      
@@ -130,9 +139,11 @@ def tool_dispatcher(tool):
 
     data = getattr(MRT, tool.lower())(request)
     print('Tool executed:',data)
-
-    data['handle']=current_user.id
+    
+    if  hasattr(current_user,'id'):
+        data['handle']=current_user.id
     data['current_user']=current_user
+
     o = urlparse.urlparse(request.url)
     data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
 
@@ -950,6 +961,54 @@ def collections_route_a_x(handle):
     else:
         return result
 
+#API
+@avispa_rest.route('/_api/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def api_collections_route_a_x_y(handle,collection):
+
+    if request.args.get('token') != 'qwerty1234':
+        out = {} 
+        out['Sucess'] = False
+        out['Message'] = 'Wrong Token'
+        data = {}
+        data['api_out'] = json.dumps(out)
+        return render_template("/auth/register_rs_json.html", data=data)
+
+    if ('rq' not in request.args) and ('method' not in request.args): 
+        print('FLAGx1')
+        result = route_dispatcher('_a',handle,collection=collection)       
+    elif request.method == 'POST':
+        if 'method' in request.args:
+            if request.args.get('method').lower()=='put':
+                print('FLAGx2')
+                result = collection_dispatcher('_a_x_y',handle,collection) 
+            elif request.args.get('method').lower()=='post':
+                print('FLAGx3')
+                result = route_dispatcher('_a',handle,collection=collection)
+        else:
+            print('FLAGx4')
+            result = route_dispatcher('_a',handle,collection=collection)
+
+    elif 'rq' in request.args:
+        if request.args.get('rq').lower() == 'put':
+            print('FLAGx5')
+            result = collection_dispatcher('_a_x_y',handle,collection)
+        if request.args.get('rq').lower() == 'post':
+            print('FLAGx6')
+            result = route_dispatcher('_a',handle,collection=collection)
+
+
+    else:
+        print('FLAGx7')
+        #Every collection specific GET
+        result = collection_dispatcher('_a_x_y',handle,collection)
+ 
+    if 'redirect' in result:
+        #pass
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+
 @avispa_rest.route('/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def collections_route_a_x_y(handle,collection):
@@ -1091,13 +1150,5 @@ def route_a_b_c(handle,ring,idx):
         return result
 
     
-
-
-
-
-
-
-
-
 
 
