@@ -77,6 +77,7 @@ class AvispaRestFunc:
        
         RB = RingBuilder()
         result = RB.JSONRingGenerator(request,handle)
+        out = {} 
             
         if result:
             print('Awesome , you just created a new Ring Schema',result)
@@ -90,32 +91,59 @@ class AvispaRestFunc:
                 try:
                     if self.ACM.add_ring_to_collection(handle, collection,result):
                         flash(" The ring has been added to the collection.",'UI')
-                        redirect = '/'+handle+'/_collections/'+collection
+                        if not api:
+                            redirect = '/'+handle+'/_collections/'+collection
+                        else:
+                            out['Sucess'] = True
+                            out['Message'] = 'The ring has been added to the collection'
+                            status = 200
+                            
+
                 except:
-                    redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
-
-
-                
+                    if not api:
+                        redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
+                    else:
+                        out['Sucess'] = False
+                        out['Message'] = 'The ring could not be added to the collection'
+                        status = 500
+             
             else: 
-                redirect = '/'+handle
+                if not api:
+                    redirect = '/'+handle
+                else:
+                    out['Sucess'] = True
+                    out['Message'] = 'The ring has been added'
+                    status = 200
             
-
         else:
-            param_list = []
-            for p in request.form:
-                q =  p+'='+request.form.get(p)
-                param_list.append(q)
 
-            lpl = str(len(param_list))
-            recovery_string = '&'.join(param_list)
+            if not api:
 
-            if collection:
-                redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                flash(" There has been an issue, please check your parameters and try again. ",'UI')
+                param_list = []
+                for p in request.form:
+                    q =  p+'='+request.form.get(p)
+                    param_list.append(q)
+
+                lpl = str(len(param_list))
+                recovery_string = '&'.join(param_list)
+
+                if collection:
+                    redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                else:
+                    redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
+
             else:
-                redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                out['Sucess'] = False
+                out['Message'] = 'There has been an issue, please check your parameters and try again'
+                status = 400
+
             
-        
-        d = {'redirect': redirect, 'status':200}
+        if not api:
+            d = {'redirect': redirect, 'status':200}
+        else:
+            d = {'template':'/base_json.html','api_out':json.dumps(out) ,'status':status}
+
         return d
 
     def post_rq_a(self,request,handle,ring,idx,api=False,collection=None,*args):

@@ -1,5 +1,5 @@
 # Import flask dependencies
-import urlparse, time, datetime, collections
+import urlparse, time, datetime, collections, json
 from flask import Blueprint, render_template, request, redirect
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
@@ -19,11 +19,8 @@ avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 
 
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
-
     
     ARF = AvispaRestFunc()
-
-
 
     if 'q' in request.args:
         if request.args.get("q"):
@@ -82,8 +79,12 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                     else:
                         data['is_org'] = False
 
+        
+        print('Collection:',collection)
         if collection:       
             data['collection'] = collection
+
+        
 
         if request.args.get("raw"):
             data['raw'] = True 
@@ -110,9 +111,13 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
 
+    data['collection'] = collection
+
 
     if 'error_status' in data.keys():
         status = int(data['error_status'])
+    elif 'status' in data.keys():
+        status = int(data['status'])
     else:
         status = 200
 
@@ -940,7 +945,7 @@ def api_collections_route_a_x(handle):
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
-        return render_template("/auth/register_rs_json.html", data=data)
+        return render_template("/base_json.html", data=data)
 
     result = collection_dispatcher('_a_x',handle,api=True)
  
@@ -971,40 +976,40 @@ def api_collections_route_a_x_y(handle,collection):
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
-        return render_template("/auth/register_rs_json.html", data=data)
+        return render_template("/base_json.html", data=data)
 
     if ('rq' not in request.args) and ('method' not in request.args): 
         print('FLAGx1')
-        result = route_dispatcher('_a',handle,collection=collection)       
+        result = route_dispatcher('_a',handle,api=True,collection=collection)       
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
                 print('FLAGx2')
-                result = collection_dispatcher('_a_x_y',handle,collection) 
+                result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection) 
             elif request.args.get('method').lower()=='post':
                 print('FLAGx3')
-                result = route_dispatcher('_a',handle,collection=collection)
+                result = route_dispatcher('_a',handle,api=True,collection=collection)
         else:
             print('FLAGx4')
-            result = route_dispatcher('_a',handle,collection=collection)
+            result = route_dispatcher('_a',handle,api=True,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
             print('FLAGx5')
-            result = collection_dispatcher('_a_x_y',handle,collection)
+            result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection)
         if request.args.get('rq').lower() == 'post':
             print('FLAGx6')
-            result = route_dispatcher('_a',handle,collection=collection)
+            result = route_dispatcher('_a',handle,api=True,collection=collection)
 
 
     else:
         print('FLAGx7')
         #Every collection specific GET
-        result = collection_dispatcher('_a_x_y',handle,collection)
+        result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection)
  
     if 'redirect' in result:
         #pass
-        return redirect(result['redirect'])        
+        return redirect(result['redirect'])    
     else:
         return result
 
