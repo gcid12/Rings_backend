@@ -114,9 +114,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data['collection'] = collection
 
 
-    if 'error_status' in data.keys():
-        status = int(data['error_status'])
-    elif 'status' in data.keys():
+    if 'status' in data.keys():
         status = int(data['status'])
     else:
         status = 200
@@ -262,8 +260,8 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
 
 
-    if 'error_status' in data.keys():
-        status = int(data['error_status'])
+    if 'status' in data.keys():
+        status = int(data['status'])
     else:
         status = 200
 
@@ -541,8 +539,8 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 
     
 
-    if 'error_status' in data.keys():
-        status = int(data['error_status'])
+    if 'status' in data.keys():
+        status = int(data['status'])
     else:
         status = 200
 

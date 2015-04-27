@@ -758,7 +758,7 @@ class AvispaRestFunc:
                 d['template'] = 'avispa_rest/get_a_b_c.html'
 
         else: 
-            d['error_status'] = '500'                      
+            d['status'] = '500'                      
             flash('This item does not exist','ER')
             print('This item does not exist')
 
