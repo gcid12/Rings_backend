@@ -40,6 +40,9 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     m = method+depth
     data['method'] = m
+
+    if api:
+        current_user.id = 'token:'+str(request.args.get('token')) #Please change this to the actual username that is using this token
     
 
     if not api:
@@ -1051,6 +1054,25 @@ def collections_route_a_x_y(handle,collection):
     else:
         return result
 
+
+@avispa_rest.route('/_api/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
+def api_collections_route_a_x_y_b(handle,collection,ring):
+
+    if request.args.get('token') != 'qwerty1234':
+        out = {} 
+        out['Sucess'] = False
+        out['Message'] = 'Wrong Token'
+        data = {}
+        data['api_out'] = json.dumps(out)
+        return render_template("/base_json.html", data=data)
+
+    result = route_dispatcher('_a_b',handle,ring,api=True,collection=collection)
+
+    if 'redirect' in result:
+        return redirect(result['redirect'])
+    else:
+        return result
+
 @avispa_rest.route('/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def collections_route_a_x_y_b(handle,collection,ring):
@@ -1061,6 +1083,7 @@ def collections_route_a_x_y_b(handle,collection,ring):
         return redirect(result['redirect'])
     else:
         return result
+
 
 @avispa_rest.route('/<handle>/_collections/<collection>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
