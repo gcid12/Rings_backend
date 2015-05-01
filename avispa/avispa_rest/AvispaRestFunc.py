@@ -94,7 +94,7 @@ class AvispaRestFunc:
                         if not api:
                             redirect = '/'+handle+'/_collections/'+collection
                         else:
-                            out['Sucess'] = True
+                            out['Success'] = True
                             out['Message'] = 'The ring has been added to the collection'
                             status = 200
                             
@@ -103,7 +103,7 @@ class AvispaRestFunc:
                     if not api:
                         redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
                     else:
-                        out['Sucess'] = False
+                        out['Success'] = False
                         out['Message'] = 'The ring could not be added to the collection'
                         status = 500
              
@@ -111,7 +111,7 @@ class AvispaRestFunc:
                 if not api:
                     redirect = '/'+handle
                 else:
-                    out['Sucess'] = True
+                    out['Success'] = True
                     out['Message'] = 'The ring has been added'
                     status = 200
             
@@ -134,7 +134,7 @@ class AvispaRestFunc:
                     redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
 
             else:
-                out['Sucess'] = False
+                out['Success'] = False
                 out['Message'] = 'There has been an issue, please check your parameters and try again'
                 status = 400
 
@@ -477,7 +477,7 @@ class AvispaRestFunc:
                 print('Item saved with id: '+idx)
                 flash("The new item has been created",'UI')
             else:
-                out['Sucess'] = True
+                out['Success'] = True
                 out['Message'] = 'Item saved'
                 out['item'] = str(handle+'/'+ring+'/'+idx)
                 status = 200
@@ -489,7 +489,7 @@ class AvispaRestFunc:
                 print('Item saved with id: '+idx)           
                 flash("There was an error creating the item",'ER')
             else:
-                out['Sucess'] = False
+                out['Success'] = False
                 out['Message'] = 'Item could not be saved'
                 status = 400
 

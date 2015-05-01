@@ -14,11 +14,15 @@ class CollectionBuilder:
    
     def post_a_x(self,request,handle):
                
-        if request.form.get('CollectionName'):
+        if 'CollectionName' in request.form:
             collectiond = {}
             collectiond['name'] = request.form.get('CollectionName').lower() # I dont like this here
-            collectiond['description'] = request.form.get('CollectionDescription').lower()
             collectiond['handle'] = handle.lower()
+
+            if 'CollectionDescription' in request.form:
+                collectiond['description'] = request.form.get('CollectionDescription').lower()
+            else:
+                collectiond['description'] = ''     
             if request.form.get('CollectionVersion'):
                 collectiond['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
             else:

@@ -85,7 +85,7 @@ def api_register_post():
     if request.args.get('token') != 'qwerty1234':
 
         out = {} 
-        out['Sucess'] = False
+        out['Success'] = False
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
@@ -124,7 +124,7 @@ def api_register_post():
         else:
 
             out = {} 
-            out['Sucess'] = False
+            out['Success'] = False
             out['Message'] = 'Unable to register user with that email address'
             data = {}
             data['api_out'] = json.dumps(out)
@@ -136,7 +136,7 @@ def api_register_post():
 
         print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]            
         out = {} 
-        out['Sucess'] = False
+        out['Success'] = False
         out['Message'] = 'The user could not be created'
         data = {}
         data['api_out'] = json.dumps(out)
@@ -169,8 +169,8 @@ def register_post():
     try:
     #if True:
         if user.set_user():
-            print('Now log in the user')
 
+            print('User created, now log in the user')
             #Go through regular login process
             userObj = User(email=email)
             userview = userObj.get_user()
@@ -255,7 +255,7 @@ def api_orgregister_post():
 
     if request.args.get('token') != 'qwerty1234':
         out = {} 
-        out['Sucess'] = False
+        out['Success'] = False
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
