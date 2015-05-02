@@ -266,11 +266,11 @@ class MyRingTool:
             print(response)
             d = {'data_string':json_string, 'imgid': response['imgid'], 'imgsizes': response['imgsizes'] ,'imgbase': response['imgsizes'] , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
             
-        elif 'error_status' in response.keys():
-            d = {'error_status':response['error_status'],'template':'avispa_rest/tools/uploadresponsejson.html'}
+        elif 'status' in response.keys():
+            d = {'status':response['status'],'template':'avispa_rest/tools/uploadresponsejson.html'}
 
         else:
-            d = {'error_status':'500','template':'avispa_rest/tools/uploadresponsejson.html'}
+            d = {'status':'500','template':'avispa_rest/tools/uploadresponsejson.html'}
 
 
         return d

@@ -1,8 +1,42 @@
-import sys, os, time, datetime, smtplib, urlparse, random
+import sys, os, time, datetime, smtplib, urlparse, random, requests, json
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+from auth.User import User
 
-sandbox = Blueprint('sandbox', __name__, template_folder='templates',url_prefix='/_sandbox')
+sandbox = Blueprint('sandbox', __name__, template_folder='templates',url_prefix='/_widget')
+
+def login_user_by_email(email,username):
+
+    
+    userObj = User(email=email)
+    userview = userObj.get_user()
+    print(userObj)
+
+    mpp = {'status':'OK'}
+    flash({'f':'track','v':'_register','p':mpp},'MP')
+    flash({'f':'alias','v':username},'MP')
+
+    if login_user(userObj, remember="no"):
+        flash("Logged in. Welcome to MyRing!",'UI')
+
+        mpp = {'status':'OK','msg':'Automatic'}
+        flash({'f':'track','v':'_login','p':mpp},'MP')
+        #flash({'track':'_login OK, Automatic'},'MP')
+        #return redirect('/'+userview.id+'/_home') 
+        return True 
+
+    else:
+        flash("Please enter your credentials ",'UI')
+
+        mpp = {'status':'KO','msg':'Automatic'}
+        flash({'f':'track','v':'_login','p':mpp},'MP') 
+        #flash({'track':'_login KO, Automatic'},'MP')
+
+        #return redirect('/_login')
+        return False
+
+
+
 
 @sandbox.route("/s1", methods=["GET", "POST"])
 def s1():
@@ -322,14 +356,145 @@ def mbf_login():
     return render_template("/sandbox/mbf_login.html", data=data) 
 
 
-@sandbox.route("/mbf_signup", methods=["GET", "POST"])
+@sandbox.route("/mbf_signup", methods=["GET"])
 #@login_required
 def mbf_signup():
 
     data = {}
-    data['mask']= "mbf"
+    #data['mask']= "mbf"
 
     return render_template("/sandbox/mbf_signup.html", data=data) 
+
+
+
+@sandbox.route("/mbf_signup", methods=["POST"])
+#@login_required
+def mbf_signup_post():
+
+    #Coming via POST: username,email,password,confirm,orgusername    
+
+    complete = 0
+
+    if 'username' in request.form:
+        username = request.form.get('username')
+        complete += 1
+
+    if 'email' in request.form:
+        email = request.form.get('email')
+        complete += 1
+
+    if 'password' in request.form:
+        password = request.form.get('password')
+        complete += 1
+
+    if 'confirm' in request.form:
+        confirm = request.form.get('confirm')
+        complete += 1
+
+    if 'orgusername' in request.form:
+        orgusername = request.form.get('orgusername')
+        complete += 1
+
+    if complete == 5:
+
+        try:
+            # _api/_register . Create the user
+            print('r1')
+            api_url = 'http://0.0.0.0:8080/_api/_register?token=qwerty1234'
+            payload = {'username':username, 'email':email, 'password':password, 'confirm':confirm}
+            r1 = requests.post(api_url,data=payload)
+            print(r1.text)
+            q1 = json.loads(r1.text)
+            print(q1)
+
+            login_result = login_user_by_email(email,username)
+
+
+            if q1['Success']:
+                print('r2')
+                flash(q1['Message'],'UI')
+                # _api/_orgregister . Create the organization
+                api_url = 'http://0.0.0.0:8080/_api/_orgregister?token=qwerty1234'
+                payload = {'username':orgusername, 'email':email, 'owner':username}
+                r2 = requests.post(api_url,data=payload)
+                print(r2.text)
+                q2 = json.loads(r2.text)
+
+                if q2['Success']:
+                    print('r3')
+                    flash(q2['Message'],'UI')
+                    # _api/USER/_collections . Create the collection
+                    api_url = 'http://0.0.0.0:8080/_api/'+orgusername+'/_collections?token=qwerty1234'
+                    colname = 'business_facts'
+                    payload = {'CollectionName':colname}
+                    r3 = requests.post(api_url,data=payload)
+                    print(r3.text)
+                    q3 = json.loads(r3.text)
+
+                    if q3['Success']:
+                        print('r4')
+                        flash(q3['Message'],'UI')
+                        # Create the ring in the collection
+                        api_url = 'http://0.0.0.0:8080/_api/'+orgusername+'/_collections/'+colname+'?token=qwerty1234'
+                        ringurl = 'http://0.0.0.0:8080/_api/blalab/arboles'
+                        payload = {'ringurl':ringurl}
+                        r4 = requests.post(api_url,data=payload)
+                        print(r4.text)
+                        q4 = json.loads(r4.text)
+
+                        if q4['Success']:
+                            print('r5')
+                            flash(q4['Message'],'UI')
+                        else: 
+                            # The rings could not be added
+                            flash(q4['Message'],'ER')
+
+                            #THIS SHOULD LOGIN THE USER, GO TO THE ORG ANYWAY. THE NEXT STEP WILL CHECK AND REPAIR IF NEEDED
+                            return redirect('/_sandbox/mbf_signup')
+                    else:
+                        # The collection could not be created
+                        flash(q3['Message'],'ER')
+
+                        #THIS SHOULD LOGIN THE USER, GO TO THE ORG ANYWAY. THE NEXT STEP WILL CHECK AND REPAIR IF NEEDED
+                        return redirect('/_sandbox/mbf_signup')
+                else:
+                    # The org could not be created
+                    flash(q2['Message'],'ER')
+
+                    #THIS SHOULD LOGIN THE USER AND SHOW PARTIAL mbf_signup => ORGUSERNAME PART ONLY
+                    return redirect('/_sandbox/mbf_signup?orgusername='+orgusername)
+            else:
+                # The user could not be created
+                flash(q1['Message'],'ER')
+
+                return redirect('/_sandbox/mbf_signup?username='+username+'&email='+email+'&orgusername='+orgusername)
+
+        except:
+            print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            print('There was an API exception. 500')
+            flash('There was an API exception. 500','ER')
+            data = {}
+            return render_template("/sandbox/mbf_signup.html", data=data) 
+        #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
+        
+        #print('Raw JSON schema:')
+        #print(r.text)
+        #schema = json.loads(r.text)
+    
+    else:
+
+        flash('You need to send all the parameters =)')
+        return render_template("/sandbox/mbf_signup.html", data=data) 
+
+    data = {}
+    #data['mask']= "mbf"
+
+    if login_result and q2['Success']:
+        return redirect('/'+orgusername)
+    elif q2['Success']: 
+        return redirect('/_login?org='+orgusername)
+    else:
+        return redirect('/_login')
 
 
 
@@ -401,6 +566,8 @@ def wiz_org():
     data['mask']= "mbf"
 
     return render_template("/sandbox/wiz_org.html", data=data) 
+
+
 
 
 

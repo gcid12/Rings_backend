@@ -30,11 +30,11 @@ class AvispaUpload:
         response={}
 
         if not self._request_complete(request):
-            response['error_status']=self.rs_status
+            response['status']=self.rs_status
             return response
 
         if not self._request_allowed(request):
-            response['error_status']=self.rs_status
+            response['status']=self.rs_status
             return response
 
         if self._upload_file(request):
@@ -42,7 +42,7 @@ class AvispaUpload:
             response['imgid']=self.imgid
             response['imgsizes']=self.image_sizes
         else:
-            response['error_status']=self.rs_status
+            response['status']=self.rs_status
 
         return response
             

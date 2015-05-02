@@ -77,6 +77,7 @@ class AvispaRestFunc:
        
         RB = RingBuilder()
         result = RB.JSONRingGenerator(request,handle)
+        out = {} 
             
         if result:
             print('Awesome , you just created a new Ring Schema',result)
@@ -90,32 +91,59 @@ class AvispaRestFunc:
                 try:
                     if self.ACM.add_ring_to_collection(handle, collection,result):
                         flash(" The ring has been added to the collection.",'UI')
-                        redirect = '/'+handle+'/_collections/'+collection
+                        if not api:
+                            redirect = '/'+handle+'/_collections/'+collection
+                        else:
+                            out['Success'] = True
+                            out['Message'] = 'The ring has been added to the collection'
+                            status = 200
+                            
+
                 except:
-                    redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
-
-
-                
+                    if not api:
+                        redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
+                    else:
+                        out['Success'] = False
+                        out['Message'] = 'The ring could not be added to the collection'
+                        status = 500
+             
             else: 
-                redirect = '/'+handle
+                if not api:
+                    redirect = '/'+handle
+                else:
+                    out['Success'] = True
+                    out['Message'] = 'The ring has been added'
+                    status = 200
             
-
         else:
-            param_list = []
-            for p in request.form:
-                q =  p+'='+request.form.get(p)
-                param_list.append(q)
 
-            lpl = str(len(param_list))
-            recovery_string = '&'.join(param_list)
+            if not api:
 
-            if collection:
-                redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                flash(" There has been an issue, please check your parameters and try again. ",'UI')
+                param_list = []
+                for p in request.form:
+                    q =  p+'='+request.form.get(p)
+                    param_list.append(q)
+
+                lpl = str(len(param_list))
+                recovery_string = '&'.join(param_list)
+
+                if collection:
+                    redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                else:
+                    redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
+
             else:
-                redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                out['Success'] = False
+                out['Message'] = 'There has been an issue, please check your parameters and try again'
+                status = 400
+
             
-        
-        d = {'redirect': redirect, 'status':200}
+        if not api:
+            d = {'redirect': redirect, 'status':200}
+        else:
+            d = {'template':'/base_json.html','api_out':json.dumps(out) ,'status':status}
+
         return d
 
     def post_rq_a(self,request,handle,ring,idx,api=False,collection=None,*args):
@@ -440,36 +468,58 @@ class AvispaRestFunc:
         '''
 
         idx = self.AVM.post_a_b(request,handle,ring)
+        out = {}
 
         if idx:
-            print('Awesome , you just saved the item to the DB')
-            print('Item saved with id: '+idx)
 
-        if collection:
-            if request.form.get('saveandnew'):
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring+'?rq=post'
+            if not api:
+                print('Awesome , you just saved the item to the DB')
+                print('Item saved with id: '+idx)
+                flash("The new item has been created",'UI')
             else:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                out['Success'] = True
+                out['Message'] = 'Item saved'
+                out['item'] = str(handle+'/'+ring+'/'+idx)
+                status = 200
+
         else:
-            if request.form.get('saveandnew'):
-                redirect = '/'+handle+'/'+ring+'?rq=post'
+
+            if not api:
+                print('There was an error creating the item')
+                print('Item saved with id: '+idx)           
+                flash("There was an error creating the item",'ER')
             else:
-                redirect = '/'+handle+'/'+ring
+                out['Success'] = False
+                out['Message'] = 'Item could not be saved'
+                status = 400
 
-        #print('Now redirect to:')
-        print(redirect)
-        flash("The new item has been created",'UI')
 
-        if 'raw' in request.args:          
-            #o = urlparse.urlparse(request.url)
-            #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-            m = {}
-            m['uri'] = handle+'/'+ring+'/'+idx
-            m['ui_action'] = 'post'
-            message = json.dumps(m)
-            d = {'message':message,'template':'avispa_rest/post_a_b_raw.html'}
-        else:      
-            d = {'redirect': redirect, 'status':201}
+        if not api:
+
+            if collection:
+                if request.form.get('saveandnew'):
+                    redirect = '/'+handle+'/_collections/'+collection+'/'+ring+'?rq=post'
+                else:
+                    redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+            else:
+                if request.form.get('saveandnew'):
+                    redirect = '/'+handle+'/'+ring+'?rq=post'
+                else:
+                    redirect = '/'+handle+'/'+ring
+
+            if 'raw' in request.args:          
+                #o = urlparse.urlparse(request.url)
+                #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+                m = {}
+                m['uri'] = handle+'/'+ring+'/'+idx
+                m['ui_action'] = 'post'
+                message = json.dumps(m)
+                d = {'message':message,'template':'avispa_rest/post_a_b_raw.html'}
+            else:      
+                d = {'redirect': redirect, 'status':201}
+
+        else:
+            d = {'template':'/base_json.html','api_out':json.dumps(out) ,'status':status}
 
         return d
 
@@ -702,7 +752,7 @@ class AvispaRestFunc:
             print(item)
 
             if api:
-                #out = {}
+                
                 out = collections.OrderedDict()
 
                 out['source'] = "/"+str(handle)+"/"+str(ring)
@@ -730,7 +780,7 @@ class AvispaRestFunc:
                 d['template'] = 'avispa_rest/get_a_b_c.html'
 
         else: 
-            d['error_status'] = '500'                      
+            d['status'] = '500'                      
             flash('This item does not exist','ER')
             print('This item does not exist')
 
