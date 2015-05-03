@@ -1017,3 +1017,598 @@
 
 
 
+
+
+
+<!-- ::::::BUSINESS FACTS REPORT:::::::::::::::::: --> 
+<!-- ::::::BUSINESS FACTS REPORT:::::::::::::::::: --> 
+<!-- ::::::BUSINESS FACTS REPORT:::::::::::::::::: --> 
+
+
+
+<!-- GENERATES THE HEADER WITH COMPANY INFO -->
+ {% macro BizHead(data) %}
+  <div class="row">
+      <div class="col-sm-offset-1 col-sm-7">
+        <h4 class="fc-g"><span class="label label-vader">Business Facts</span></h4>
+          
+        <h1 class="fc-b fw-c fs-3" id="sec0"> {{ data.Name }}</h1>
+        
+        <p class="fc-b fs-1-2"> 
+        {% if data.Address %}
+            {{ data.Address }}, 
+        {% endif %}
+        {{ data.City }} {{ data.State }} {{ data.Zip }}
+         </p>
+         
+        {% if data.Website %}<span><strong>Web:</strong> {{ data.Website }}</span>{% endif %}
+        {% if data.Phone %}<span><strong>Phone:</strong> {{ data.Phone }}</span>{% endif %}
+        {% if data.Mail %}<span><strong>Mail:</strong> {{ data.Mail }}</span>{% endif %}
+
+        {% if data.SM1 %}<span> | <i class="fa fa-twitter"></i> {{ data.SM1 }}</span> {% endif %}
+        {% if data.SM2 %}<span> | <i class="fa fa-instagram"></i> {{ data.SM2 }}</span>{% endif %}
+        {% if data.SM3 %}<span> | <i class="fa fa-youtube"></i> {{ data.SM3 }}</span>{% endif %}
+        {% if data.SM4 %}<span> | <i class="fa fa-google-plus"></i> {{ data.SM4 }}</span>{% endif %}
+        
+      </div>
+  </div><!-- close row -->
+{% endmacro %}
+
+
+
+<!-- ::::::::::::::::FACT CARDS:::::::::::::::::: --> 
+<!-- ::::::::::::::::FACT CARDS:::::::::::::::::: --> 
+<!-- ::::::::::::::::FACT CARDS:::::::::::::::::: --> 
+<!-- ::::::::::::::::FACT CARDS:::::::::::::::::: --> 
+
+
+
+{% macro FactCard(thisData) %}
+
+  {% for x in thisData %}      
+    
+    <div class="row">
+      <div class="col-sm-12">
+
+
+        {% if x.fc_Title %}
+         {{ fm_Title(x.fc_Title,'') }}
+        {% endif %}
+
+        {% if x.fc_SubTitle %}
+          {{ fm_SubTitle(x.fc_SubTitle,'') }}
+        {% endif %}
+        
+        {% if x.fc_Specs %}
+          {{ fm_Specs(x.fc_Specs, '') }}           
+        {% endif %}
+
+        {% if x.fc_Descriptions %}
+          {{ fm_LangVersions(x.fc_Descriptions, '') }}
+        {% endif %}
+        
+        {% if x.fc_Photos %}
+            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '' ) }}
+            <br/>
+         {% endif %}
+         
+        {% if x.fc_Tags %}
+          {{ fm_Tags(x.fc_Tags, '') }}
+          <hr/>
+        {% endif %}
+        
+        {% if x.fc_Links %}
+          {{ fm_Links(x.fc_Links, '') }}  
+          <hr/>         
+        {% endif %}
+        
+        {% if x.fc_Schedule %}
+          {{ fm_Schedule(x.fc_Schedule, 'Schedule') }}
+        {% endif %}
+
+        {% if x.fc_List %}
+          {{ fm_List(x.fc_List, '') }}
+        {% endif %}
+          
+        {% if x.fc_SmallNotes %}
+          {{ fm_SmallNotes(x.fc_SmallNotes, '') }}           
+        {% endif %}
+          
+
+
+
+      </div>
+    </div> <!-- close row -->
+    {% endfor %}
+
+{% endmacro %}
+
+
+{% macro FactCard_Services(thisData) %}
+
+  {% set count = 1 %}
+
+  {% for x in thisData %}      
+  <section id="service{{ count }}">  
+    <div class="row box box-widget bw-9 bord-left bc-8" style="padding:10px 20px 20px 20px" >
+          
+     <div class="col-sm-12">
+          
+      </div>
+      <div class="col-sm-12">
+          <div class="label label-vader" style="margin-left:-55px;"><i class="fa fa-arrow-right"></i> {{x.fc_Category}} </div>
+
+          {% if x.fc_Title %}
+         {{ fm_Title(x.fc_Title,'') }}
+        {% endif %}
+
+        {% if x.fc_SubTitle %}
+          {{ fm_SubTitle(x.fc_SubTitle,'') }}
+        {% endif %}
+
+      </div>
+          
+      <div class="col-sm-7">
+        
+        {% if x.fc_Specs %}
+          {{ fm_Specs(x.fc_Specs, '') }}           
+        {% endif %}
+
+        {% if x.fc_Descriptions %}
+          {{ fm_LangVersions(x.fc_Descriptions, '') }}
+        {% endif %}
+
+        <div class="row">
+          <div class="col-sm-12">
+            <hr/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            {% if x.fc_Schedule %}
+              {{ fm_Schedule(x.fc_Schedule, 'Schedule') }}
+            {% endif %}
+          </div>
+          <div class="col-sm-6">
+          
+              {% if x.fc_SmallNotes %}
+                {{ fm_SmallNotes(x.fc_SmallNotes, '') }}           
+              {% endif %}
+          </div>
+        </div>
+ 
+      </div>
+      <div class="col-sm-5">
+        {% if x.fc_Photos %}
+            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '' ) }}
+         {% endif %}
+      </div>
+
+      <div class="col-sm-12">
+          <div class="spa20"></div>
+      </div>
+    </div> <!-- close row -->
+  </section>
+
+      {% set count = count + 1 %}
+    {% endfor %}
+
+{% endmacro %}
+
+
+
+
+{% macro FactCard_Rooms(thisData) %}
+
+  {% set count = 1 %}
+
+  {% for x in thisData %}      
+  <section id="room{{ count }}"> 
+
+    <div class="row box box-widget bw-9 bord-left bc-8" style="padding:10px 20px 20px 20px" >
+          
+      <div class="col-sm-12">
+          <div class="spa10"></div>
+      </div>
+      <div class="col-sm-12">
+          <div class="label label-vader" style="margin-left:-55px;"><i class="fa fa-arrow-right"></i> {{x.fc_Category}} </div>
+
+          {% if x.fc_Title %}
+         {{ fm_Title(x.fc_Title,'') }}
+        {% endif %}
+
+      </div>
+          
+      <div class="col-sm-7">
+        
+        {% if x.fc_Specs %}
+          {{ fm_Specs(x.fc_Specs, '') }}           
+        {% endif %}
+
+        {% if x.fc_Descriptions %}
+          {{ fm_LangVersions(x.fc_Descriptions, '') }}
+        {% endif %}
+
+        <div class="row">
+          <div class="col-sm-12">
+            <hr/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            {% if x.fc_Tags %}
+              {{ fm_Tags(x.fc_Tags, '') }}
+            {% endif %}
+          </div>
+
+        </div>
+ 
+      </div>
+      <div class="col-sm-5">
+        {% if x.fc_Photos %}
+            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '' ) }}
+         {% endif %}
+      </div>
+
+      <div class="col-sm-12">
+          <div class="spa20"></div>
+      </div>
+    </div> <!-- close row -->
+
+    </section>
+
+      {% set count = count + 1 %}
+    {% endfor %}
+
+{% endmacro %}
+
+
+
+
+
+<!-- ::::::::::::::::FACT MODULES:::::::::::::::::: --> 
+<!-- ::::::::::::::::FACT MODULES:::::::::::::::::: --> 
+<!-- ::::::::::::::::FACT MODULES:::::::::::::::::: --> 
+
+
+
+{% macro fm_Title(text,icon) %}
+
+  <h3 class="fw-c lh-1">{{text}}</h3>
+{% endmacro %}
+
+{% macro fm_SubTitle(text,icon) %}
+  <!-- <span class="pull-right"><i class="fa fa-question-circle fc-l"></i></span> -->
+  <h4 class="fw-c fc-l fs-1-2">{{text}}</h4>
+  <br/>
+{% endmacro %}
+
+{% macro fm_LangVersions(langData, name) %}
+  <div class="row">
+
+    <div class=" col-sm-12">
+      
+      {% if name %}<p>{{name}}</p>{% endif %}
+      <div role="tabpanel" id="{{ tabid }}">
+        <!-- Nav tabs -->
+
+        <!-- SE ARMAN LOS TABS CON LAS INICIALES -->
+
+        <ul class="nav nav-tabs" role="tablist">
+
+
+          {% set n1 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
+          {% set n2 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
+          {% set n3 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
+
+          {% set setid = n1 * n2 * n3  %}
+
+
+          {% set count = 1 %}
+
+          {% for key in langData|sort %}
+            
+          <li role="presentation" class="{% if count==1 %} active {% endif %} {% set count = count + 1 %} ">
+            <a href="#{{ setid }}_{{count}}" role="tab" data-toggle="tab">
+              <span class="label label-success "> {{key}} </span>
+            </a>
+          </li>
+
+          {% endfor %}
+          
+        </ul>
+
+        <!-- SE ARMAN LOS CONTENIDOS -->
+        <div class="tab-content fs-0-9">
+          
+          {% set count2 = 1 %}
+          {% for key in langData|sort %}
+            
+            <div role="tabpanel" class="tab-pane spa10 pl-30 {% if count2==1 %} active {% endif %} {% set count2 = count2 + 1 %}" id="{{ setid }}_{{count2}}">
+                {{langData[key]}}
+            </div>
+          {%endfor%} 
+  
+        </div>
+
+      </div> <!-- close tab panel --> 
+    </div>
+
+  </div>
+{% endmacro %}
+
+
+{% macro fm_Specs(specsData, name)%}
+    {% if name %}<p>{{name}}</p>{% endif %}
+
+    {% for key in specsData|sort %}
+      {% for y in key[1] %}
+        
+          <span class="fw-c"> {{ specsData[key][0]}}: </span>
+          <span class=""> {{ specsData[key][1]}} | </span>
+        
+      {% endfor %}
+    {%endfor%} 
+    <hr/>            
+{% endmacro %}
+
+{% macro fm_Photos(photoData, owner, name)%}
+  <div class="row">
+
+    <div class="col-sm-12">
+      {% if name %}<p>{{name}}</p>{% endif %}
+      {% for y in photoData %}
+                    {{  PhotoMosaic(owner, y ,100,'left') }}
+      {% endfor %} 
+      
+    </div>
+    <div class="col-sm-12">
+
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro fm_Tags(tagsData, name) %}
+
+  {% if name %}<p>{{name}}</p>{% endif %}
+  <table class="table table-condensed table-striped">
+    {% for y in tagsData %} 
+      <tr>
+        <td align="right">
+          <div class="fw-c fs-0-8">{{ y.name }}</div>
+        </td>
+        <td>
+            {% for item in y.list %}
+            {{ label_ammenity(1, item) }} 
+            {% endfor %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endmacro %}
+
+{% macro fm_Links(linksData, name)%}
+
+    {% if name %}<p>{{name}}</p>{% endif %}
+
+    {% for key in linksData|sort %}
+      {% for y in key[1] %}
+        
+        | <a href="{{ linksData[key][1]}}">
+          {{ linksData[key][0]}}
+        </a>
+
+      {% endfor %}
+    {%endfor%} 
+            
+{% endmacro %}
+
+{% macro fm_Schedule(scheduleData, name) %}
+  <div class="row">
+    <div class="col-sm-12">
+      {% if name %}<p>{{name}}</p>{% endif %}
+    </div>
+    <div class=" col-sm-offset-1 col-sm-11">
+      <table>
+        {% for key in scheduleData|sort %}
+        <tr>  
+
+          {% for hours in key[1] %}
+            <td>
+              <span class="label label-info "> {{ scheduleData[key][0]}} </span>
+            </td>
+            <td>
+                 &nbsp; {{ scheduleData[key][1]}} |  {{ scheduleData[key][2]}}
+            </td>
+          {% endfor %}
+
+        </tr>
+        {%endfor%} 
+      </table> 
+      <hr/>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro fm_List(ListData, name) %}
+  <div class="col-sm-12">
+      {% if name %}<p>{{name}}</p>{% endif %}
+      {% for key in ListData %}
+        {% for z in key[1] %}
+          
+            <span class="fw-c"> {{ ListData[key][0]}}: </span>
+            <span class=""> {{ ListData[key][1]}} </span>
+            <br/>
+          
+        {% endfor %}
+      {%endfor%}   
+      <hr/>       
+              
+  </div>
+{% endmacro %}
+
+{% macro fm_SmallNotes(smallData, name) %}
+  <div class="col-sm-12">
+
+      {% if name %}<p>{{name}}</p>{% endif %}
+
+      {% for key in smallData %}
+        {% for z in key[1] %}
+          <div class="fs-0-7">
+            <span class="fw-c"> {{ smallData[key][0]}}: </span>
+            <span class=""> {{ smallData[key][1]}} </span>
+            <br/>
+          </div>
+          
+        {% endfor %}
+      {%endfor%}   
+      <hr/>       
+              
+  </div>
+{% endmacro %}
+
+
+<!-- ::::::::::::::::FACT MODULE HELPERS:::::::::::::::::: --> 
+
+
+<!-- Generates the PhotoMosaic -->
+{% macro PhotoMosaic(owner,item,size,float) %}
+
+
+        <div style="width:{{size}}px; float:{{float}}; padding:0 2px;">
+          <a href="https://avispa.myring.io/_images/{{ owner }}/o/{{item}}_o.jpg" class="text-left" data-gallery>
+               <img src="https://avispa.myring.io/_images/{{ owner }}/t150/{{item}}_t150.jpg" class="img-responsive">
+
+          </a>
+          <div style="margin-top:-25px; margin-bottom:10px;">
+            {{ labelres(1, 'ok-res') }}
+          </div>
+          
+        </div>
+
+{% endmacro %}
+
+
+
+{% macro lorem() %}
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam varius risus sed purus egestas dictum. Integer enim lectus, elementum faucibus odio nec, scelerisque scelerisque sapien. Duis facilisis odio arcu, sed euismod dui accumsan in. Pellentesque a leo in massa rhoncus pretium. Suspendisse a dictum sem, nec malesuada enim. Mauris non nisl quis nulla laoreet lobortis quis nec justo. Mauris dictum mauris erat. Pellentesque vel hendrerit urna. Aliquam sollicitudin non ex quis accumsan. Suspendisse tincidunt quam urna, ut scelerisque lorem malesuada sed. 
+</p>
+{% endmacro %}
+
+{% macro flag01(text) %}
+  <span style="background-color:yellow;">{{ text }}</span>
+{% endmacro %}
+
+
+
+{% macro labelres(q, text) %}
+  <spa class="label_report
+    {% if q==1 %} label-success
+    {% elif q==2 %} label-warning
+    {% elif q==3 %} label-danger
+    {% else %} label-default
+    {% endif %}
+    ">{{ text }}</spa>
+{% endmacro %}
+
+
+{% macro label_ammenity(q, id) %}
+
+  <spa class="label_report
+    {% if q==1 %} label-success
+    {% elif q==2 %} label-warning
+    {% elif q==3 %} label-danger
+    {% else %} label-default
+    {% endif %}
+    ">
+  
+    {% if id=='a_001' %}  Business Center
+    {% elif id=='a_002' %} Meeting Rooms
+    {% elif id=='a_003' %} Convention Space
+
+    {% elif id=='b_001' %} Hair Salon
+    {% elif id=='b_002' %} Nails Salon
+    {% elif id=='b_003' %} Barber Shop
+
+    {% elif id=='c_001' %} 24 hrs Concierge  
+    {% elif id=='c_002' %} Elevators 
+    {% elif id=='c_003' %} Luggage Storage 
+    {% elif id=='c_004' %} Multilingual Staff 
+    {% elif id=='c_005' %} Laundry 
+    {% elif id=='c_006' %} Dry Cleaning 
+
+    {% elif id=='d_001' %} Menu Restaurant 
+    {% elif id=='d_002' %} Bar/Lounge 
+    {% elif id=='d_003' %} Wine Bar 
+    {% elif id=='d_004' %} Buffet 
+    {% elif id=='d_005' %} Gluten Free Options
+    {% elif id=='d_006' %} Vegan Options
+    {% elif id=='d_007' %} Raw Vegan Options 
+    {% elif id=='d_008' %} Snacl Bar / Deli 
+
+    {% elif id=='e_001' %} Weddings 
+    {% elif id=='e_002' %} Social Events  
+    {% elif id=='e_003' %} Event Planning 
+
+    {% elif id=='f_001' %} Cardio 
+    {% elif id=='f_002' %} Weights 
+    {% elif id=='f_003' %} Classes 
+    {% elif id=='f_004' %} Spinning 
+    {% elif id=='f_005' %} Personal Trainer 
+
+    {% elif id=='g_001' %} Kids Club 
+    {% elif id=='g_002' %} Kids Activities
+    {% elif id=='g_003' %} In Room Childcare
+    {% elif id=='g_004' %} Cribs
+
+    {% elif id=='h_001' %} Golf Course
+    {% elif id=='h_002' %} Casino
+    {% elif id=='h_003' %} Pool
+    {% elif id=='h_004' %} Live Show
+
+    {% elif id=='i_001' %} In House Doctor
+    {% elif id=='i_002' %} In House Nurse
+    {% elif id=='i_003' %} Ambulance accesible
+    {% elif id=='i_004' %} Fibrillator
+    {% elif id=='i_005' %} First Aid Kit
+    {% elif id=='i_006' %} X Ray
+
+    {% elif id=='j_001' %} Pets Allowed
+    {% elif id=='j_002' %} Pet Menu
+    {% elif id=='j_003' %} Dog Walker
+    {% elif id=='j_004' %} Dog Care
+
+    {% elif id=='k_001' %} Temperature controlled
+    {% elif id=='k_002' %} Towels
+    {% elif id=='k_003' %} Bar Service
+    {% elif id=='k_004' %} Family Friendly
+    {% elif id=='k_005' %} Adult Only
+
+    {% elif id=='l_001' %} Gift Shop
+    {% elif id=='l_002' %} Pharmacy
+    {% elif id=='l_003' %} Newstand
+    {% elif id=='l_004' %} Books
+    {% elif id=='l_005' %} Sport
+    {% elif id=='l_006' %} Tobacco
+
+    {% elif id=='m_001' %} Interior smoking Area
+    {% elif id=='m_002' %} Exterior smoking Area
+    {% elif id=='m_003' %} Smoking Rooms Available
+
+    {% elif id=='n_001' %} Airport - Hotel
+    {% elif id=='n_002' %} Hotel - Airport
+    {% elif id=='n_003' %} Car Rental
+    {% elif id=='n_004' %} Parking
+    {% elif id=='n_005' %} Valet Parking
+
+
+    {% endif %}
+
+  </spa>
+  
+
+{% endmacro %}
+
+
+

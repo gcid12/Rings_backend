@@ -571,6 +571,471 @@ def wiz_org():
 
 
 
+# REPORTS    
+
+@sandbox.route("/facts/parkcentral", methods=["GET", "POST"])
+#@login_required
+def facts_001():
+
+    data = {}
+    data['mask']= "mbf"
+
+    # HOTEL INFO
+    
+    data['Name']= "Park Central NY" 
+    data['Address']= "870 Seventh Avenue at 56th Street"
+    data['City']= "NewYork"
+    data['State']= "NY"
+    data['Zip']= "10018"
+    data['Industry']= "10018"
+
+
+    data['OneLine'] = [{
+                #This USES THE FACTCARD MACRO
+                #Title of the card
+                'fc_SubTitle':'One Line Description',
+                'fc_Descriptions': {
+                    'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 
+                    'sp': 'espanol del product 1', 
+                    'fr': 'frances del product 1'
+                    }
+                }]# CLOSE
+
+    data['Description'] = [{
+            #This USES THE FACTCARD MACRO
+            #Title of the card
+            'fc_SubTitle':'One Line Description',
+            'fc_Descriptions': {
+                'en': 'ingles del product 1', 
+                'sp': 'espanol del product 1', 
+                'fr': 'frances del product 1'
+                }
+            }]# CLOSE
+
+    #CONTACT
+    data['Website']= "x14"
+    data['Mail']= "x12"
+    data['Phone']= "x13"
+    data['Fax']= "x15"
+    data['Newsletter']= "x18"
+
+    #DETAILS
+    data['Founded']= "x18"
+    data['Closed']= "x18"
+    data['ResAge']= "x09"
+    data['Founded']= "x10"
+    data['payments']="x12"
+
+
+    #SOCIALMEDIA
+        # twitter
+    data['SM1']= "x19"
+        # facebook
+    data['SM2']= "x20"
+        # youtube
+    data['SM3']= "x21"
+        # instagram
+    data['SM4']= "x22"
+        #Other Links
+    data['LINK1']= "x23"
+    data['LINK2']= "x23"
+    data['LINK3']= "x23"
+    data['LINK4']= "x23"
+
+
+    #HISTORY
+    data['Facts']= "x14"
+    data['Awards']= "x14"
+    data['FAQ']= "x14"
+    data['FactualID']= "x14"
+    data['history'] = [{
+                    #This USES THE FACTCARD MACRO
+                    #Title of the card
+                    'fc_SubTitle':'History',
+                    # Fields used:  History, History2, History3
+                    'fc_Descriptions': {
+                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    # HISTORY PHOTOS
+                    'fc_Owner':'teamamerica',
+                    # PHOTOS
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    
+
+                    }]# CLOSE
+    data['OurStaff'] = [{
+                    'fc_Title':'Our Staff',
+                    'fc_Descriptions': {
+                        'en': 'ingles del product 1', 
+                        'sp': 'espanol del product 1', 
+                        'fr': 'frances del product 1'
+                        }
+                    }]# CLOSE
+
+    data['curious'] = [{
+                    'fc_SubTitle':'Curious Facts',
+                    'fc_Specs': {
+                            'd1': ['fact 1','Carpintero'], 
+                            'd2': ['fact 2','Soldado'],  
+                            'd3': ['fact 3','Musico'], 
+                        },
+                    }]# CLOSE
+
+    data['contact'] = [{
+                    'fc_SubTitle':'Contact',
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        }
+
+                    }]# CLOSE
+
+    data['Services'] = [{
+                    'fc_Title':'Bateaux New York',
+                    'fc_SubTitle':'The best way to see the city , unique Brunch',
+                    'fc_Category':'Cruise Waterfront',
+                    'fc_Specs': {
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Casual'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+
+                    'fc_Schedule': {
+                            'd1': ['Monday','14:00','21:00'], 
+                            'd2': ['Tuesday','10:00','21:00'],  
+                            'd3': ['Wednesday','10:00','21:00'], 
+                            'd4': ['Thursday','10:00','21:00'], 
+                            'd5': ['Friday','10:00','21:00'], 
+                            'd6': ['Saturday','11:00','19:00'], 
+                            'd7': ['Sunday','11:00','19:00'], 
+                            },  
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        },
+                        'fc_SmallNotes': {
+                            'd1': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.'], 
+                            'd2': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas']
+                        },
+
+                    },
+                    # SECOND ITEM
+                    {
+                    'fc_Title':'La Pecorina',
+                    'fc_SubTitle':'The best Brger in Town and unique familiar mood',
+                    'fc_Specs': {
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Casual'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+
+                    'fc_Schedule': {
+                            'd1': ['Monday','14:00','21:00'], 
+                            'd2': ['Tuesday','10:00','21:00'],  
+                            'd3': ['Wednesday','10:00','21:00'], 
+                            'd4': ['Thursday','10:00','21:00'], 
+                            'd5': ['Friday','10:00','21:00'], 
+                            'd6': ['Saturday','11:00','19:00'], 
+                            'd7': ['Sunday','11:00','19:00'], 
+                            },  
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        },
+                        'fc_SmallNotes': {
+                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
+                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
+                        },
+
+                    }] # CLOSE
+
+    data['photos'] = [{
+                    
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+
+                    }]# CLOSE
+                    
+    data['staff'] = [{
+                    'fc_SubTitle':'Our Staff',
+                    'fc_Descriptions': {
+                        'en': 'ingles del product 1', 
+                        'sp': 'espanol del product 1', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+
+                    }]# CLOSE
+
+    # HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////
+    # HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////
+
+    # DETAILS ONLY HOTEL
+    data['Checkin']= "x06" 
+    data['Checkout']= "x07"
+    data['NumberRooms']= "x08"
+    data['Parking']= "x08"
+    data['Accesibility']="x12"
+    data['Rank']= "x06"
+    data['LastRenovation']= "x06"
+
+    data['Rooms'] = [{
+                    'fc_Title':'Single Room Presidential',
+                    'fc_Category':'Room',
+                    'fc_Specs': {
+                            'd1': ['Category','SGL Room'], 
+                            'd2': ['Avg Size','300 sq ft.'],  
+                            'd3': ['Smoking','No'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+                        'fc_SmallNotes': {
+                            'd1': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.'], 
+                            'd2': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas']
+                        },
+                        'fc_Tags':[{'name': 'Room Ammenities', 
+                                'list': ['a_001','a_002','a_003']
+                                }
+                            ],
+                    },
+
+                    ]# CLOSE
+
+    # HOTEL AMMENITIES
+    data['Includes'] = [{   
+                    'fc_SubTitle':'Ammenities',
+
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                },
+                                {'name': 'Concierge', 
+                                'list': ['c_001','c_002','c_003','c_004','c_005','c_006']
+                                },
+                                {'name': 'Food', 
+                                'list': ['d_001','d_002','d_003','d_004','d_005','d_006','d_007','d_008']
+                                },
+                                {'name': 'Events', 
+                                'list': ['e_001','e_002','e_003']
+                                },
+                                {'name': 'Fitness', 
+                                'list': ['f_001','f_002','f_003','f_004','f_005']
+                                },
+                                {'name': 'Kids', 
+                                'list': ['g_001','g_002','g_003','g_004']
+                                },
+                                {'name': 'Leisure', 
+                                'list': ['h_001','h_002','h_003','h_004']
+                                },
+                                {'name': 'Medical', 
+                                'list': ['i_001','i_002','i_003','i_004','i_005']
+                                },
+                                {'name': 'pets', 
+                                'list': ['j_001','j_002','j_003','j_004']
+                                },
+                                {'name': 'Pool', 
+                                'list': ['k_001','k_002','k_003','k_004','k_005']
+                                },
+                                {'name': 'Shopping', 
+                                'list': ['l_001','l_002','l_003','l_004','l_005']
+                                },
+                                {'name': 'Smoking', 
+                                'list': ['m_001','m_002','m_003']
+                                },
+                                {'name': 'Transportation', 
+                                'list': ['n_001','n_002','n_003','n_004','n_005']
+                                },
+                            ],
+                            }]
+
+
+    return render_template("/sandbox/factcard.html", data=data)  
+
+
+
+@sandbox.route("/facts/example", methods=["GET", "POST"])
+#@login_required
+
+def facts_00():
+    data = {}
+    data['mask']= "mbf"
+
+
+    
+    data['Example'] = [{
+                    'fc_Title':'Bateaux New York',
+                    'fc_SubTitle':'The best way to see the city , unique Brunch',
+                    'fc_Category':'Cruise Waterfront',
+                    'fc_Specs': {
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Casual'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+
+                    'fc_Schedule': {
+                            'd1': ['Monday','14:00','21:00'], 
+                            'd2': ['Tuesday','10:00','21:00'],  
+                            'd3': ['Wednesday','10:00','21:00'], 
+                            'd4': ['Thursday','10:00','21:00'], 
+                            'd5': ['Friday','10:00','21:00'], 
+                            'd6': ['Saturday','11:00','19:00'], 
+                            'd7': ['Sunday','11:00','19:00'], 
+                            },  
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        },
+                        'fc_SmallNotes': {
+                            'd1': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.'], 
+                            'd2': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas']
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                },
+                                {'name': 'Concierge', 
+                                'list': ['c_001','c_002','c_003','c_004','c_005','c_006']
+                                },
+                                {'name': 'Food', 
+                                'list': ['d_001','d_002','d_003','d_004','d_005','d_006','d_007','d_008']
+                                },
+                                {'name': 'Events', 
+                                'list': ['e_001','e_002','e_003']
+                                },
+                                {'name': 'Fitness', 
+                                'list': ['f_001','f_002','f_003','f_004','f_005']
+                                },
+                                {'name': 'Kids', 
+                                'list': ['g_001','g_002','g_003','g_004']
+                                },
+                                {'name': 'Leisure', 
+                                'list': ['h_001','h_002','h_003','h_004']
+                                },
+                                {'name': 'Medical', 
+                                'list': ['i_001','i_002','i_003','i_004','i_005']
+                                },
+                                {'name': 'pets', 
+                                'list': ['j_001','j_002','j_003','j_004']
+                                },
+                                {'name': 'Pool', 
+                                'list': ['k_001','k_002','k_003','k_004','k_005']
+                                },
+                                {'name': 'Shopping', 
+                                'list': ['l_001','l_002','l_003','l_004','l_005']
+                                },
+                                {'name': 'Smoking', 
+                                'list': ['m_001','m_002','m_003']
+                                },
+                                {'name': 'Transportation', 
+                                'list': ['n_001','n_002','n_003','n_004','n_005']
+                                },
+                            ],
+                        'fc_SmallNotes': {
+                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
+                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
+                        }
+
+                  
+
+
+
+                    }]# CLOSE
+
+ 
+    return render_template("/sandbox/factcard.html", data=data)
 
 
 

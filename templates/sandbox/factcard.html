@@ -1,0 +1,257 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ data.title }}
+{% endblock %}
+
+{% block content %}
+
+
+
+<body data-spy="scroll" data-target="#affix-nav" data-offset="180">
+<div class="container-fluid bg-07">
+
+<div class="spa30"></div>
+
+<target id="start"></target>
+ {{ ui.BizHead(data) }}
+
+  <div class="row">
+
+    <section id="content" class="col-sm-offset-1 col-sm-8 ">
+    
+      <article id="information">
+     
+        <!-- DESCRIPTION -->
+        
+      {% if data.OneLine %}
+        <section id="info1">
+          <div class="row box box-widget">
+            <div class="col-sm-6 box-columns">
+             {{ ui.FactCard(data.OneLine) }}
+            </div>
+            <div class="col-sm-6">
+             {{ ui.FactCard(data.Description) }}
+            </div>
+
+          </div>
+        </section>
+      {% endif %}
+
+
+        {% if data.photos %}
+          <section id="info2">
+            <div class="row box box-widget p-10">
+              <div class="col-sm-12">
+              {{ ui.FactCard(data.photos) }}
+              </div>
+            </div>
+          </section>
+        {% endif %}
+
+        {% if data.Includes %}
+          <section id="info3">
+            <div class="row box box-widget p-10">
+              <div class="col-sm-12">
+              {{ ui.FactCard(data.Includes) }}
+              </div>
+            </div>
+          </section>
+        {% endif %}
+
+
+      </article>
+     
+      {% if data.Rooms %}
+      <!-- ROOMS /////////////////////////////////////////////// -->
+      <article id="rooms">
+
+        <div class="row box box-widget p-10 bg-08">
+          <div class="col-sm-12">
+            <h3 class="fc-g">{{ data.name }} <span class="fc-b">Rooms</span> </h3>
+          </div>
+        </div>
+
+
+        
+        {{ ui.FactCard_Rooms(data.Rooms) }}
+        
+          
+
+
+      </article>
+      {% endif %}
+
+
+      {% if data.Services %}
+      <!-- SERVICES /////////////////////////////////////////////// -->
+      <article id="product">
+        <div class="row box box-widget p-10 bg-08">
+          <div class="col-sm-12">
+            <h3 class="fc-g">{{ data.name }} <span class="fc-b">Services</span> </h3>
+          </div>
+        </div>
+        
+        {{ ui.FactCard_Services(data.Services) }}
+        
+      </article>
+      {% endif %}
+
+      <!-- ABOUT /////////////////////////////////////////////// -->
+      <article id="about">
+
+        <div class="row box box-widget p-10 bg-08">
+          <div class="col-sm-12">
+            <h3 class="fc-b"> About <span class="fc-g">{{ data.name }}</span> </h3>
+          </div>
+        </div>
+
+        <section id="story1">
+
+          <div class="row box box-widget p-10">
+            <div class="col-sm-6 box-columns" id="story1">
+              {{ ui.FactCard(data.history) }}
+            </div>
+            <div class="col-sm-6" id="story2">
+              {{ ui.FactCard(data.staff) }}
+            </div>
+          </div>
+
+        </section>
+
+        <section id="story2">
+
+          <div class="row box box-widget p-10">
+            <div class="col-sm-3 box-columns" id="story3">
+              {{ ui.FactCard(data.contact) }}
+            </div>
+            <div class="col-sm-9 box-columns" id="story4">
+              {{ ui.FactCard(data.curious) }}
+            </div>
+            
+          </div>
+          
+        </section>
+
+
+        {% if data.Example %}
+        <section >
+
+          <div class="row box box-widget p-10">
+            <div class="col-sm-6 box-columns" id="story3">
+            
+              {{ ui.FactCard(data.Example) }}
+            </div>
+            
+          </div>
+          
+        </section>
+        {% endif %}
+
+
+
+
+
+      </article>
+
+      <div class="spa100"></div>
+
+    </section> <!-- col-7 -->
+
+    <nav id="affix-nav" class="sidebar col-sm-3 hidden-xs ">
+      
+        <ul class="nav sidenav bord-left" data-spy="affix" data-offset-top="330">
+            
+            <li class="active"><a href="#start">Facts</a>
+              <ul class="nav">
+                <li><a href="#info1">Description</a>
+
+                </li>
+
+                <li><a href="#info2">Photos</a></li>
+                <li><a href="#info3">Ammenities</a></li>
+              </ul>
+            </li>
+            <li><a href="#rooms">Rooms</a>
+              <ul class="nav">   
+
+                {% set count = 1 %}
+
+                {% for x in data.Rooms %}  
+                <li><a href="#room{{count}}">{{x.fc_Title}}</a></li>
+                  {% set count = count + 1 %}
+                {% endfor %}
+
+        <!--                 <li><a href="#room1">Single</a></li>
+                <li><a href="#room2">Double</a></li>
+                <li><a href="#room3">Triple</a></li>
+                <li><a href="#room4">Quad</a></li>    -->     
+              </ul>
+            </li>
+            <li><a href="#product">Services</a>
+              <ul class="nav">   
+
+                {% set count = 1 %}
+
+              {% for x in data.Services %}  
+                <li><a href="#service{{count}}">{{x.fc_Title}}</a></li>
+                {% set count = count + 1 %}
+              {% endfor %}
+
+              <!--                 <li><a href="#room1">Single</a></li>
+                <li><a href="#room2">Double</a></li>
+                <li><a href="#room3">Triple</a></li>
+                <li><a href="#room4">Quad</a></li>    -->     
+              </ul>
+            </li>
+
+            <li><a href="#about">About</a>
+              <ul class="nav">   
+                <li><a href="#story1">History</a></li>
+                <li><a href="#story2">Curious Facts</a></li>
+                  
+              </ul>
+            </li>
+
+            <!-- <li><a href="#services">Services</a>
+            <ul class="nav">   
+            <li><a href="#service1">Beauty & SPA</a></li>
+            <li><a href="#service2">Food</a></li>
+            <li><a href="#service3">Fitness</a></li>
+            <li><a href="#service4">Kids</a></li> 
+            <li><a href="#service5">Leisure</a></li> 
+            <li><a href="#service6">Pets</a></li> 
+            <li><a href="#service7">Transportation</a></li>        
+            </ul>
+            </li> -->
+
+            <!-- </li>
+            <li><a href="#promos">Promotions</a>
+            <ul class="nav">   
+            <li><a href="#promo1">Permanent</a></li>
+            <li><a href="#promo2">Seasonal</a></li>
+            <li><a href="#promo3">Limited</a></li>   
+            </ul>
+            </li> -->
+        </ul>
+      
+    </nav>
+  </div><!-- end of row -->
+
+  <footer>
+  </footer>
+
+</div><!-- end of container -->
+ 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0-rc2/js/bootstrap.min.js"></script>
+</body>
+
+
+
+{% endblock %}
+
+
