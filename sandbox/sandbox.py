@@ -571,11 +571,11 @@ def wiz_org():
 
 
 
-# REPORTS    
+# REPORTS   
 
-@sandbox.route("/facts/parkcentral", methods=["GET", "POST"])
+@sandbox.route("/facts/travelservice", methods=["GET", "POST"])
 #@login_required
-def facts_001():
+def travelservice():
 
     data = {}
     data['mask']= "mbf"
@@ -918,6 +918,252 @@ def facts_001():
                             }]
 
 
+    return render_template("/sandbox/factcard.html", data=data)   
+
+@sandbox.route("/facts/parkcentral", methods=["GET", "POST"])
+#@login_required
+def facts_001():
+
+    data = {}
+    data['mask']= "mbf"
+
+    # HOTEL INFO
+    
+    data['Name']= "Park Central NY" 
+    data['Address']= "870 Seventh Avenue at 56th Street"
+    data['City']= "NewYork"
+    data['State']= "NY"
+    data['Zip']= "10018"
+    data['Industry']= "10018"
+
+
+    data['OneLine'] = [{
+                #This USES THE FACTCARD MACRO
+                #Title of the card
+                'fc_SubTitle':'Full Description',
+                'fc_DescriptionsSize':'1',
+                'fc_Descriptions': {
+                    'en': 'Midtown convenience. Classic hospitality. Complete comfort. A celebrated past. It all comes together at the Park Central New York Hotel. located squarely amidst New York`s most popular sights and hotels in Midtown Manhattan. Our mix of exciting amenities pay homage to our glamorous past, while presenting a modern spin on the hotel`s electrifying environment. Guests will delight in escaping the hectic city life to bask in the stylish Park Central New York.', 
+                    'sp': 'Conveniencia Midtown . Hospitalidad Classic. Total comodidad . Un pasado celebre . Todo confluye en el Hotel Parque Central de Nueva York. situado de lleno en medio de nuevas Yorks atracciones turisticas mas populares y hoteles en el centro de Manhattan . Nuestra mezcla de comodidades sorprendentes rendir homenaje a nuestro pasado glamoroso , al tiempo que presenta un giro moderno en el medio ambiente electrizante del hotel. Los huespedes se deleitaran con escapar del bullicio de la ciudad para tomar el sol en el elegante Parque Central de Nueva York.', 
+                    
+                    }
+                }]# CLOSE
+
+    data['Description'] = [{
+            #This USES THE FACTCARD MACRO
+            #Title of the card
+            'fc_SubTitle':'One Line Description',
+            'fc_DescriptionsSize':'2',
+            'fc_Descriptions': {
+                'en': 'The midtown new york city hotel Central to new york`s best', 
+                'sp': 'El hotel mejor situado en Midtown Manhattan, cerca de lo mejor de NewYork', 
+                
+                }
+            }]# CLOSE
+
+    #CONTACT
+    data['Website']= "x14"
+    data['Mail']= "x12"
+    data['Phone']= "x13"
+    data['Fax']= "x15"
+    data['Newsletter']= "x18"
+
+    #DETAILS
+    data['Founded']= "x18"
+    data['Closed']= "x18"
+    data['ResAge']= "x09"
+    data['Founded']= "x10"
+    data['payments']="x12"
+
+
+    #SOCIALMEDIA
+        # twitter
+    data['SM1']= "x19"
+        # facebook
+    data['SM2']= "x20"
+        # youtube
+    data['SM3']= "x21"
+        # instagram
+    data['SM4']= "x22"
+        #Other Links
+    data['LINK1']= "x23"
+    data['LINK2']= "x23"
+    data['LINK3']= "x23"
+    data['LINK4']= "x23"
+
+
+    #HISTORY
+    data['Facts']= "x14"
+    data['Awards']= "x14"
+    data['FAQ']= "x14"
+    data['FactualID']= "x14"
+    data['history'] = [{
+                    #This USES THE FACTCARD MACRO
+                    #Title of the card
+                    'fc_SubTitle':'History',
+                    # Fields used:  History, History2, History3
+                    'fc_Descriptions': {
+                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    # HISTORY PHOTOS
+                    'fc_Owner':'teamamerica',
+                    # PHOTOS
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    
+
+                    }]# CLOSE
+    data['OurStaff'] = [{
+                    'fc_Title':'Our Staff',
+                    'fc_Descriptions': {
+                        'en': 'ingles del product 1', 
+                        'sp': 'espanol del product 1', 
+                        'fr': 'frances del product 1'
+                        }
+                    }]# CLOSE
+
+    data['curious'] = [{
+                    'fc_SubTitle':'Curious Facts',
+                    'fc_Specs': {
+                            'd1': ['fact 1','Carpintero'], 
+                            'd2': ['fact 2','Soldado'],  
+                            'd3': ['fact 3','Musico'], 
+                        },
+                    }]# CLOSE
+
+    data['contact'] = [{
+                    'fc_SubTitle':'Contact',
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        }
+
+                    }]# CLOSE
+
+    data['photos'] = [{
+                    
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+
+                    }]# CLOSE
+                    
+    data['staff'] = [{
+                    'fc_SubTitle':'Our Staff',
+                    'fc_Descriptions': {
+                        'en': 'ingles del product 1', 
+                        'sp': 'espanol del product 1', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+
+                    }]# CLOSE
+
+    # HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////
+    # HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////HOTEL////
+
+    # DETAILS ONLY HOTEL
+    data['Checkin']= "x06" 
+    data['Checkout']= "x07"
+    data['NumberRooms']= "x08"
+    data['Parking']= "x08"
+    data['Accesibility']="x12"
+    data['Rank']= "x06"
+    data['LastRenovation']= "x06"
+
+    data['Rooms'] = [{
+                    'fc_Title':'Single Room Presidential',
+                    'fc_Category':'Room',
+                    'fc_Specs': {
+                            'd1': ['Category','SGL Room'], 
+                            'd2': ['Avg Size','300 sq ft.'],  
+                            'd3': ['Smoking','No'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+                        'fc_SmallNotes': {
+                            'd1': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.'], 
+                            'd2': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas']
+                        },
+                        'fc_Tags':[{'name': 'Room Ammenities', 
+                                'list': ['a_001','a_002','a_003']
+                                }
+                            ],
+                    },
+
+                    ]# CLOSE
+
+    # HOTEL AMMENITIES
+    data['Includes'] = [{   
+                    'fc_SubTitle':'Ammenities',
+
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                },
+                                {'name': 'Concierge', 
+                                'list': ['c_001','c_002','c_003','c_004','c_005','c_006']
+                                },
+                                {'name': 'Food', 
+                                'list': ['d_001','d_002','d_003','d_004','d_005','d_006','d_007','d_008']
+                                },
+                                {'name': 'Events', 
+                                'list': ['e_001','e_002','e_003']
+                                },
+                                {'name': 'Fitness', 
+                                'list': ['f_001','f_002','f_003','f_004','f_005']
+                                },
+                                {'name': 'Kids', 
+                                'list': ['g_001','g_002','g_003','g_004']
+                                },
+                                {'name': 'Leisure', 
+                                'list': ['h_001','h_002','h_003','h_004']
+                                },
+                                {'name': 'Medical', 
+                                'list': ['i_001','i_002','i_003','i_004','i_005']
+                                },
+                                {'name': 'pets', 
+                                'list': ['j_001','j_002','j_003','j_004']
+                                },
+                                {'name': 'Pool', 
+                                'list': ['k_001','k_002','k_003','k_004','k_005']
+                                },
+                                {'name': 'Shopping', 
+                                'list': ['l_001','l_002','l_003','l_004','l_005']
+                                },
+                                {'name': 'Smoking', 
+                                'list': ['m_001','m_002','m_003']
+                                },
+                                {'name': 'Transportation', 
+                                'list': ['n_001','n_002','n_003','n_004','n_005']
+                                },
+                            ],
+                            }]
+
+
     return render_template("/sandbox/factcard.html", data=data)  
 
 
@@ -932,6 +1178,323 @@ def facts_002():
     # HOTEL INFO
     
     data['Name']= "Entertainment Cruises NY" 
+    data['Address']= "Pier 62, Chelsea Piers Suite 200"
+    data['City']= "NewYork"
+    data['State']= "NY"
+    data['Zip']= "10011"
+    data['Industry']= ""
+
+
+    data['Description'] = [{
+            #This USES THE FACTCARD MACRO
+            #Title of the card
+            'fc_SubTitle':'Full Description',
+            'fc_DescriptionsSize':'1',
+            'fc_Descriptions': {
+                'en': 'Get up close to the Statue of Liberty and travel under the iconic Brooklyn Bridge. Come out for a cruise on beautiful New York Harbor from your choice of our dock at Chelsea Piers or Lincoln Harbor Marina in Weehawken, New Jersey.', 
+                'sp': 'espanol del product 1', 
+                'fr': 'frances del product 1'
+                }
+            }]# CLOSE
+            
+    data['OneLine'] = [{
+                #This USES THE FACTCARD MACRO
+                #Title of the card
+                'fc_SubTitle':'One Line Description',
+                'fc_DescriptionsSize':'2',
+                'fc_Descriptions': {
+                    'en': 'Entertainment Cruises, dining cruises, yacht charters and sightseeing tours.', 
+                    'sp': 'espanol del product 1', 
+                    'fr': 'frances del product 1'
+                    }
+                }]# CLOSE
+
+
+
+    #CONTACT
+    data['Website']= "http://www.bateauxnewyork.com/new-york-metro"
+    data['Mail']= "x12"
+    data['Phone']= "866-817-3463"
+    data['Fax']= ""
+    data['Newsletter']= ""
+    data['Blog']= "http://www.entertainmentcruises.com/blog/"
+
+    #DETAILS
+    data['Founded']= "x18"
+    data['Closed']= "x18"
+    data['ResAge']= "x09"
+    data['Founded']= "x10"
+    data['payments']="x12"
+
+
+    #SOCIALMEDIA  
+        # twitter
+    data['SM1']= "entertaincruise"
+        # facebook
+    data['SM2']= "https://www.facebook.com/BateauxNewYork"
+        # instagram
+    data['SM3']= "ecnewyork"
+        # youtube
+    data['SM4']= "ecnewyork"
+        #Other Links
+    data['LINK1']= "x23"
+    data['LINK2']= "x23"
+    data['LINK3']= "x23"
+    data['LINK4']= "x23"
+
+
+    #HISTORY
+    data['Facts']= "x14"
+    data['Awards']= "x14"
+    data['FAQ']= "x14"
+    data['FactualID']= "x14"
+    data['history'] = [{
+                    #This USES THE FACTCARD MACRO
+                    #Title of the card
+                    'fc_SubTitle':'History',
+                    # Fields used:  History, History2, History3
+                    'fc_Descriptions': {
+                        'en': 'Entertainment Cruises roots date back to 1978 when the Spirit of Norfolk was christened and began cruising the historic Elizabeth River. Today, we have 30 boats across nine locations and host more than 1.5 million guests each year. Our shipmates feel privileged to share in our guests special celebrations - and help make their experiences with us memorable. ', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    # HISTORY PHOTOS
+                    'fc_Owner':'teamamerica',
+                    # PHOTOS
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    
+
+                    }]# CLOSE
+    data['OurStaff'] = [{
+                    'fc_Title':'Our Staff',
+                    'fc_Descriptions': {
+                        'en': 'ingles del product 1', 
+                        'sp': 'espanol del product 1', 
+                        'fr': 'frances del product 1'
+                        }
+                    }]# CLOSE
+
+    data['curious'] = [{
+                    'fc_SubTitle':'Curious Facts',
+                    'fc_Specs': {
+                            'd1': ['1978','Spirit Cruises is founded in Norfolk, Virginia'], 
+                            'd2': ['1978-1988','Spirit launches in Boston, Chicago, New York, Philadelphia and Washington DC'],  
+                            'd3': ['1991','Odyssey launches at Navy Pier in Chicago'], 
+                            'd4': ['1993-1995','Odyssey expands to Boston and Washington DC'], 
+                            'd5': ['1996','Seadog, a speedboat excursion and architectural tour, is introduced at Chicago`s Navy Pier'], 
+                            'd6': ['1998','Mystic Blue begins cruising in Chicago'], 
+                            'd7': ['2006','Entertainment Cruises purchases Baltimore`s Harbor Cruises'], 
+                            'd8': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
+                            'd9': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
+                            'd10': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
+                        },
+                    }]# CLOSE
+
+    data['contact'] = [{
+                    'fc_SubTitle':'Contact',
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        }
+
+                    }]# CLOSE
+
+    data['Services'] = [{
+                    'fc_Title':'Bateaux New York',
+                    'fc_SubTitle':'Upscale. Exceptional.',
+                    'fc_Category':'Cruise Waterfront',
+                    'fc_Specs': {
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Casual'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Get ready for the ultimate dining experience. Cruising year-round from Chelsea Piers, European-inspired Bateaux New York offers champagne brunch, lunch, dinner and full moon cruises, plus dozens of holiday cruises.', 
+                        'sp': 'Preparate para la mas emocionante experiencia mientras comes una cena de lujo. Operamos todo el ano desde el puerto de Chelsea. Inspirado en el estilo europeo, ofrecemos champagne, brunch, lunch, comidas y cruceros de luna llena, ademas de muchas experiencias en distintas fiestas y aniversarios. ',
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+
+                    'fc_Schedule': {
+                            'd1': ['Monday','14:00','21:00'], 
+                            'd2': ['Tuesday','10:00','21:00'],  
+                            'd3': ['Wednesday','10:00','21:00'], 
+                            'd4': ['Thursday','10:00','21:00'], 
+                            'd5': ['Friday','10:00','21:00'], 
+                            'd6': ['Saturday','11:00','19:00'], 
+                            'd7': ['Sunday','11:00','19:00'], 
+                            },  
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        },
+                        'fc_SmallNotes': {
+                            'd1': ['Notes','Boarding is 30 minutes prior departure from Chelsea Pier, Pier 61 West 23rd Street and 12th Avenue. Dinner Sailing times: 7:00 to 10:00 pm. Brunch and Lunch Sailing Time: 12:00 to 2:00 pm. Schedule may change and boarding and departure time will be advised at time of confirmation of service.'], 
+                            'd2': ['Dress Code','We request no jeans, shorts, tank tops, halter-tops, gym shoes or flip flops are worn on any cruise, Dinner: Jackets are recommended for men and cocktail attire for women.  Lunch: We recommend dressy casual attire, such as nice slacks and collared shirts. ']
+                        },
+
+                    },
+                    # SECOND ITEM
+                    {
+                    'fc_Title':'Spirit Cruises',
+                    'fc_SubTitle':'Fresh, Fun',
+                    'fc_Specs': {
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Casual'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Get ready for the time of your life aboard one of our two recently renovated ships departing from both New York and New Jersey. Sample a variety of dishes. Dance. And head topside to feel the wind in your hair. Join us aboard Spirit of New York and Spirit of New Jersey for a fun mix of dining, dancing, entertainment and skyline views. Cruising the Hudson River year-round, Spirit has a variety of lunch, dinner, moonlight and holiday cruises like Mother`s Day, plus dozens of themed cruises, to choose from.', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['5260765449','4204319897','7568051980','7930459506','6776873592','3067507519','3706970137','1390223211'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+
+                    'fc_Schedule': {
+                            'd1': ['Monday','14:00','21:00'], 
+                            'd2': ['Tuesday','10:00','21:00'],  
+                            'd3': ['Wednesday','10:00','21:00'], 
+                            'd4': ['Thursday','10:00','21:00'], 
+                            'd5': ['Friday','10:00','21:00'], 
+                            'd6': ['Saturday','11:00','19:00'], 
+                            'd7': ['Sunday','11:00','19:00'], 
+                            },  
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        },
+                        'fc_SmallNotes': {
+                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
+                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
+                        }
+
+
+
+                    },
+                    # THIRD ITEM
+                    {
+                    'fc_Title':'Elite Private Yatch',
+                    'fc_SubTitle':'Customizable. Private.',
+                    'fc_Specs': {
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Formal'], 
+                        },
+                    'fc_Descriptions': {
+                        'en': 'Host an exclusive event on New York Harbor on one of two private yachts. Atlantica or Manhattan Elite. Customize your charter with a variety of menu, decor, entertainment and route options. It`s your very own NYC private yacht. With sensational skyline views and completely customizable options, the Atlantica and Manhattan Elite offer two great ways to host an amazing and unique event aboard your own private yacht.', 
+                        'sp': '', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['3621946540','4304442038','3964600599','9535813029','6822424476','2787176776','2731636522','1098120043','3419158938','5631973583'],
+                    'fc_Links': {
+                            'd1': ['Website','http://www.myring.io'], 
+                            'd2': ['NewYork TImes','http://www.myring.io'],  
+                            'd3': ['TimeOut','http://www.myring.io'], 
+                        },
+                    'fc_Tags':[{'name': 'Business', 
+                                'list': ['a_001','a_002','a_003']
+                                },
+                                {'name': 'Beauty', 
+                                'list': ['b_001','b_002','b_003']
+                                }
+                                
+                            ],
+
+                    'fc_Schedule': {
+                            'd1': ['Monday','14:00','21:00'], 
+                            'd2': ['Tuesday','10:00','21:00'],  
+                            'd3': ['Wednesday','10:00','21:00'], 
+                            'd4': ['Thursday','10:00','21:00'], 
+                            'd5': ['Friday','10:00','21:00'], 
+                            'd6': ['Saturday','11:00','19:00'], 
+                            'd7': ['Sunday','11:00','19:00'], 
+                            },  
+                    'fc_List': {
+                            'd1': ['Phone','444'], 
+                            'd2': ['Fax','555'],  
+                            'd3': ['Toll-free','333'], 
+                            'd4': ['Sales','333'], 
+                        },
+                        'fc_SmallNotes': {
+                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
+                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
+                        }
+
+
+
+                    }
+
+
+
+                    ] 
+
+                    
+    data['staff'] = [{
+                    'fc_SubTitle':'Our Staff',
+                    'fc_Descriptions': {
+                        'en': 'There`s nothing our team loves more than helping people create unforgettable memories. Each year we serve over 1.5 million guests in 8 markets, so we do a whole lot of celebrating.Our passions range from finding the hottest new recipes, to helping guests select the perfect entertainment to enhance their event theme. We love stress-free weddings, corporate events that exceed expectations and events that are unique to the cities where we cruise.', 
+                        'sp': 'espanol del product 1', 
+                        'fr': 'frances del product 1'
+                        },
+                    'fc_Owner':'teamamerica',
+                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+
+                    }]
+
+
+
+
+
+    return render_template("/sandbox/factcard.html", data=data) 
+
+
+
+
+@sandbox.route("/facts/123", methods=["GET", "POST"])
+#@login_required
+def facts_003():
+
+    data = {}
+    data['mask']= "mbf"
+
+    # HOTEL INFO
+    
+    data['Name']= "" 
     data['Address']= "Pier 62, Chelsea Piers Suite 200"
     data['City']= "NewYork"
     data['State']= "NY"
@@ -1230,7 +1793,10 @@ def facts_002():
 
 
 
-    return render_template("/sandbox/factcard.html", data=data)  
+    return render_template("/sandbox/factcard.html", data=data) 
+
+
+
 
 
 

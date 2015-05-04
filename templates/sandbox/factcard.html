@@ -7,12 +7,12 @@
 
 {% block content %}
 
-
+<link href="{{ url_for('static',filename='css/ring1_rich.css') }}" rel="stylesheet" type="text/css" media="screen">
 
 <body data-spy="scroll" data-target="#affix-nav" data-offset="180">
 <div class="container-fluid bg-07">
 
-<div class="spa30"></div>
+<div class="spa10"></div>
 
 <target id="start"></target>
  {{ ui.BizHead(data) }}
@@ -69,7 +69,7 @@
 
         <div class="row box box-widget p-10 bg-08">
           <div class="col-sm-12">
-            <h3 class="fc-g">{{ data.name }} <span class="fc-b">Rooms</span> </h3>
+            <h3 class="fc-g">{{ data.Name }} <span class="fc-b">Rooms</span> </h3>
           </div>
         </div>
 
@@ -89,7 +89,7 @@
       <article id="product">
         <div class="row box box-widget p-10 bg-08">
           <div class="col-sm-12">
-            <h3 class="fc-g">{{ data.name }} <span class="fc-b">Services</span> </h3>
+            <h3 class="fc-g"><span class="fc-b">Services</span> </h3>
           </div>
         </div>
         
@@ -103,7 +103,7 @@
 
         <div class="row box box-widget p-10 bg-08">
           <div class="col-sm-12">
-            <h3 class="fc-b"> About <span class="fc-g">{{ data.name }}</span> </h3>
+            <h3 class="fc-b"> About <span class="fc-g">{{ data.Name }}</span> </h3>
           </div>
         </div>
 
@@ -119,6 +119,7 @@
           </div>
 
         </section>
+      
 
         <section id="story2">
 

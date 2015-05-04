@@ -1084,7 +1084,7 @@
         {% endif %}
 
         {% if x.fc_Descriptions %}
-          {{ fm_LangVersions(x.fc_Descriptions, '') }}
+          {{ fm_LangVersions(x.fc_Descriptions, '', x.fc_DescriptionsSize) }}
         {% endif %}
         
         {% if x.fc_Photos %}
@@ -1226,7 +1226,7 @@
         {% endif %}
 
         {% if x.fc_Descriptions %}
-          {{ fm_LangVersions(x.fc_Descriptions, '') }}
+          {{ fm_LangVersions(x.fc_Descriptions,'') }}
         {% endif %}
 
         <div class="row">
@@ -1272,7 +1272,7 @@
 
 
 
-{% macro fm_Title(text,icon) %}
+{% macro fm_Title(text,icon,size) %}
 
   <h3 class="fw-c lh-1">{{text}}</h3>
 {% endmacro %}
@@ -1283,7 +1283,7 @@
   <br/>
 {% endmacro %}
 
-{% macro fm_LangVersions(langData, name) %}
+{% macro fm_LangVersions(langData, name, fsize) %}
   <div class="row">
 
     <div class=" col-sm-12">
@@ -1325,7 +1325,11 @@
           {% for key in langData|sort %}
             
             <div role="tabpanel" class="tab-pane spa10 pl-30 {% if count2==1 %} active {% endif %} {% set count2 = count2 + 1 %}" id="{{ setid }}_{{count2}}">
-                {{langData[key]}}
+                <span class=" {% if fsize =='2' %} fs-2 {% endif %}">  
+                  {{langData[key]}}
+                </span>
+                
+
             </div>
           {%endfor%} 
   
