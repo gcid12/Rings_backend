@@ -1504,8 +1504,8 @@ def facts_004():
             'fc_DescriptionsSize':'1',
             'fc_Descriptions': {
                             'd1': ['en',1 ,'For over fourteen years, we have been providing the absolute best and safest way of bringing visitors and residents alike far off the beaten path to see, feel, and experience the real New York. You will find that on our tours, you will surely see the sights the typical tourist seldom sees!. Whether you want to maximize the amount of New York that you experience, want to learn a whole lot about what is behind our city, or just want to have an utter blast, come tour with us.'], 
-                            'd2': ['sp',4,'hola'],  
-                            'd3': ['fr',4,'salut'], 
+                            'd2': ['sp',4,'(not defined)'],  
+                            'd3': ['fr',4,'(not defined)'], 
                         }
 
             }]# CLOSE
@@ -1518,17 +1518,17 @@ def facts_004():
                 'fc_DescriptionsSize':'2',
                 'fc_Descriptions': {
                             'd1': ['en',1 ,'Welcome to New York`s premier bicycle touring company'], 
-                            'd2': ['sp',4,'hola'],  
-                            'd3': ['fr',4,'salut'], 
+                            'd2': ['sp',4,'(not defined)'],  
+                            'd3': ['fr',4,'(not defined)'], 
                         }
                 }]# CLOSE
     #CONTACT
     data['S_Website']= 1
     data['Website']= "www.bikethebigapple.com"
     data['Mail']= "explore@bikethebigapple.com "
-    data['S_Mail']= 4
+    data['S_Mail']= 1
     data['Phone']= "1-347-878-9809"
-    data['S_Phone']= 4
+    data['S_Phone']= 1
     data['Fax']= ""
     data['S_Fax']= 4
     data['Newsletter']= ""
@@ -1583,8 +1583,8 @@ def facts_004():
                     # Fields used:  History, History2, History3
                     'fc_Descriptions': {
                         'd1': ['en',1 ,'For well over a decade, we have been proud to be the largest, most successful company to offer fully-escorted bicycle tours throughout the five boroughs of the Big Apple. We take you beyond the usual tourist spots that bus and walking tours usually miss. And travelling by bike, you will come to appreciate, is the perfect way to truly experience the diverse neighborhoods of the city. On a bike tour, you will feel as though you are really part of the neighborhood. Walking tours & bus tours are certainly a nice way to see the city but bikes offer the best of both worlds (and more!). When compared to a day as pedestrian in New York, our leisurely paced rides are effortless and cover much more ground. And, you are able to interact with your surroundings much more than when on a bus. We feel certain you will leave with stories and photos that even the `natives` do not know about. '], 
-                        'd2': ['sp',4,'hola'],  
-                        'd3': ['fr',4,'salut'], 
+                        'd2': ['sp',4,'(not defined)'],  
+                        'd3': ['fr',4,'(not defined)'], 
                         },
                     # HISTORY PHOTOS
                     'fc_Owner':'teamamerica',
@@ -1596,9 +1596,10 @@ def facts_004():
     data['staff'] = [{
                     'fc_SubTitle':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'We are not a bike rental shop that also does bike tours or a walking/bus tour company that also does bike tours. Bike tours are all that we do. It is our focus, so we do it right. ', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1,'We are not a bike rental shop that also does bike tours or a walking/bus tour company that also does bike tours. Bike tours are all that we do. It is our focus, so we do it right. '],
+                        'd2': ['sp',4,'(not specified)'],
+                        'd3': ['fr',4,'(not specified)'], 
+                        
                         }
                     }]# CLOSE
 
@@ -1631,148 +1632,169 @@ def facts_004():
                 # START ITEM A
                 {
                     'fc_Title':'Tour A - The Ethnic Apple Tour.',
+                    'S_fc_Title':1,
                     'fc_SubTitle':'Our ethnic mosaic tour',
+                    'S_fc_SubTitle':1,
                     'fc_Category':'Bike Tour',
+                    'S_fc_Category':1,
                     'fc_Specs': {
                             'd1': ['Category','Bike Tour'], 
                             'd2': ['Duration','7hrs'], 
                             'd3': ['MinAge','10'],  
                             'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
+                            'd5': ['MinPax','4'], 
                             'd6': ['Season','All'], 
                         },
-                        'fc_Descriptions': {
-                            'd1': ['en',1 ,'Great urban vistas that are typically not seen. Ethnic neighborhoods that are part of the unique mosaic of the city. This great bike tour combines them both!. Our tour begins with a ride over the imposing Queensboro Bridge high over the East River. Don`t be confused by this bridge`s identity. Immortalized in popular music under its nickname, the bridge has recently been officially renamed after one of the city`s most charismatic, zaniest mayors ever. Once we`ve entered Queens, we`ll head to Gantry State Park. At this historic location we can see restored `gantries` and learn about their critical role in the city`s commerce in the first part of the 20th century. The view across the East River, directly opposite the United Nations and what was the world`s tallest apartment building, provides an unforgettable photo opportunity.'], 
-                            'd2': ['sp',4,'hola'],  
-                            'd3': ['fr',4,'salut'], 
-                            },
+                    'S_fc_Specs':1,
+                    'fc_Descriptions': {
+                        'd1': ['en',1 ,'Great urban vistas that are typically not seen. Ethnic neighborhoods that are part of the unique mosaic of the city. This great bike tour combines them both!. Our tour begins with a ride over the imposing Queensboro Bridge high over the East River. Don`t be confused by this bridge`s identity. Immortalized in popular music under its nickname, the bridge has recently been officially renamed after one of the city`s most charismatic, zaniest mayors ever. Once we`ve entered Queens, we`ll head to Gantry State Park. At this historic location we can see restored `gantries` and learn about their critical role in the city`s commerce in the first part of the 20th century. The view across the East River, directly opposite the United Nations and what was the world`s tallest apartment building, provides an unforgettable photo opportunity.'], 
+                        'd2': ['sp',4,'(not specified)'],  
+                        'd3': ['fr',4,'(not specified)'], 
+                        },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_Photos': ['4261055295','7452298333','7230214040'],
                     'fc_Tags':[{'name': 'Includes', 
-                                'list': ['bike','helmet','insurance']
-                                }
-                                
+                                'list': ['bike','helmet','insurance'],
+                                'status': 4
+                                }, 
                             ],
-
                     'fc_Schedule': {
                             
-                            'd5': ['Friday','10:100','17:00'], 
+                            'd1': ['Friday','10:100','17:00',1], 
+                            'd2': ['On request','(min5 pax)','',4],
                             
                             },  
-                        'fc_SmallNotes': {
+                    'fc_SmallNotes': {
                             'd1': ['Notes','This tour leaves every Friday, year-round, weather permitting, at 10:00 am from the Upper East Side of Manhattan (near the 68th street on the #6 subway) (precise address will be given after booking is made). It is approximately 15 miles and will last about 7 hours. (It is also available, by special request, any weekday)']
                         },
+                        'S_fc_SmallNotes':1
 
                 },
                 # CLOSE ITEM
                 # START ITEM B
                 {
                     'fc_Title':'Tour B - The Delights of Brooklyn.',
+                    'S_fc_Title':1,
                     'fc_SubTitle':'Brews, Views, Chocolate, and much more!',
+                    'S_fc_SubTitle':1,
                     'fc_Category':'Bike Tour',
+                    'S_fc_Category':1,
                     'fc_Specs': {
                             'd1': ['Category','Bike Tour'], 
                             'd2': ['Duration','7hrs'], 
-                            'd3': ['MinAge','10'], 
+                            'd3': ['MinAge','10'],  
                             'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
+                            'd5': ['MinPax','4'], 
                             'd6': ['Season','All'], 
                         },
-                        'fc_Descriptions': {
-                            'd1': ['en',1 ,'This special tour starts with a ride through the historic Lower East Side. Once the most densely populated neighborhood in the world(!), it is now a very `in` section with a thriving nightlife, as well as an authentic Soviet era, larger than life, statue of Lenin. Leaving Manhattan, we dive into the delights offered by the borough of Brooklyn as we pedal over the new Williamsburg Bridge bike path. We enter the `hip,` artistic neighborhood of Williamsburg and head to one of the Big Apple`s truly underground micro-brewery. Here you can sample its artisinal beers and ale, or stout on tap. '], 
-                            'd2': ['sp',4,'hola'],  
-                            'd3': ['fr',4,'salut'], 
-                            },
+                    'S_fc_Specs':1,
+                    'fc_Descriptions': {
+                        'd1': ['en',1 ,'This special tour starts with a ride through the historic Lower East Side. Once the most densely populated neighborhood in the world(!), it is now a very `in` section with a thriving nightlife, as well as an authentic Soviet era, larger than life, statue of Lenin. Leaving Manhattan, we dive into the delights offered by the borough of Brooklyn as we pedal over the new Williamsburg Bridge bike path. We enter the `hip,` artistic neighborhood of Williamsburg and head to one of the Big Apple`s truly underground micro-brewery. Here you can sample its artisinal beers and ale, or stout on tap.'], 
+                        'd2': ['sp',4,'(not specified)'],  
+                        'd3': ['fr',4,'(not specified)'], 
+                        },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_Photos': ['7893794577','3152079455','5947166861'],
                     'fc_Tags':[{'name': 'Includes', 
-                                'list': ['bike','helmet','insurance']
-                                }
-                                
+                                'list': ['bike','helmet','insurance'],
+                                'status': 4
+                                }, 
                             ],
-
                     'fc_Schedule': {
                             
-                            'd5': ['Saturday','10:15','17:00'], 
+                            'd1': ['Saturday','10:15','17:00',1],
+                            'd2': ['On request','(min5 pax)','',4],
                             
                             },  
-                        'fc_SmallNotes': {
+                    'fc_SmallNotes': {
                             'd1': ['Notes','This tour leaves every Saturday, year-round, weather permitting, at 10:15 am, a few blocks from Union Square, of Manhattan (precise address will be given after booking is made). It is approximately 15 miles and will last about 7 hours. (It is also available, by special request, any weekday)']
                         },
+                        'S_fc_SmallNotes':1
+
                 },
                 # CLOSE ITEM
                 # START ITEM C
                 {
                     'fc_Title':'Tour C - The Sensational Park and Soul Tour.',
+                    'S_fc_Title':1,
                     'fc_SubTitle':'Bike the green Apple',
+                    'S_fc_SubTitle':1,
                     'fc_Category':'Bike Tour',
+                    'S_fc_Category':1,
                     'fc_Specs': {
                             'd1': ['Category','Bike Tour'], 
                             'd2': ['Duration','7hrs'], 
-                            'd3': ['MinAge','10'], 
+                            'd3': ['MinAge','10'],  
                             'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
+                            'd5': ['MinPax','4'], 
                             'd6': ['Season','All'], 
                         },
-                        'fc_Descriptions': {
-                            'd1': ['en',1 ,'On this bike tour of Central Park and Harlem, we start on the East Side of Manhattan, the city`s wealthiest neighborhood with extravagant brownstones and mansions. Next door is Central Park, which never fails to amaze with its sheer natural beauty (all man-made). As we pedal through the park we`ll visit Strawberry Fields, the only `beach` on Manhattan Island, the North Woods loch, an authentic 3500 year old obelisk, an $18 million lawn, as well as one of the largest stands of still surviving magnificent elms in the western world. Highlights in Harlem include a live Sunday gospel service, as well as a dramatic poetry reading by the home of the `Black` Carl Sandberg. We`ll see Clinton`s new office and a former grand synagogue that is now a major Black church! We`ll even hear `Sachmo` playing a composition by `the Duke` beneath an unusual statue to this great composer. Enjoy a `Bike and Bite` soul food lunch in Harlem. '], 
-                            'd2': ['sp',4,'hola'],  
-                            'd3': ['fr',4,'salut'], 
-                            },
+                    'S_fc_Specs':1,
+                    'fc_Descriptions': {
+                        'd1': ['en',1 ,'On this bike tour of Central Park and Harlem, we start on the East Side of Manhattan, the city`s wealthiest neighborhood with extravagant brownstones and mansions. Next door is Central Park, which never fails to amaze with its sheer natural beauty (all man-made). As we pedal through the park we`ll visit Strawberry Fields, the only `beach` on Manhattan Island, the North Woods loch, an authentic 3500 year old obelisk, an $18 million lawn, as well as one of the largest stands of still surviving magnificent elms in the western world. Highlights in Harlem include a live Sunday gospel service, as well as a dramatic poetry reading by the home of the `Black` Carl Sandberg. We`ll see Clinton`s new office and a former grand synagogue that is now a major Black church! We`ll even hear `Sachmo` playing a composition by `the Duke` beneath an unusual statue to this great composer. Enjoy a `Bike and Bite` soul food lunch in Harlem. '], 
+                        'd2': ['sp',4,'(not specified)'],  
+                        'd3': ['fr',4,'(not specified)'], 
+                        },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_Photos': ['7078181063','8885682710'],
                     'fc_Tags':[{'name': 'Includes', 
-                                'list': ['Tour guide','bike','helmet','insurance']
-                                }
-                                
+                                'list': ['bike','helmet','insurance'],
+                                'status': 4
+                                }, 
                             ],
-
                     'fc_Schedule': {
                             
-                            'd5': ['Saturday','10:15','17:00'], 
+                            'd1': ['Saturday','10:15','17:00',1],
+                            'd2': ['On request','(min5 pax)','',4],
                             
                             },  
-                        'fc_SmallNotes': {
+                    'fc_SmallNotes': {
                             'd1': ['Notes','This tour leaves every Sunday, year-round, weather permitting, at 10:00 am from the Upper East Side of Manhattan (near the 68th street on the #6 subway) (precise address will be given after booking is made). It is approximately 12 miles and lasts about 5 hours. (It is also available, by special request, any weekday)']
                         },
+                        'S_fc_SmallNotes':1
+
                 },
                 # CLOSE ITEM
                 # START ITEM D
                 {
                     'fc_Title':'Tour D - Secret Streets',
+                    'S_fc_Title':1,
                     'fc_SubTitle':'From High Finance to Hidden Chinatown',
+                    'S_fc_SubTitle':1,
                     'fc_Category':'Bike Tour',
+                    'S_fc_Category':1,
                     'fc_Specs': {
                             'd1': ['Category','Bike Tour'], 
                             'd2': ['Duration','7hrs'], 
-                            'd3': ['MinAge','10'], 
+                            'd3': ['MinAge','10'],  
                             'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
+                            'd5': ['MinPax','4'], 
                             'd6': ['Season','All'], 
-                            'd7': ['Price','$95'], 
                         },
-                        'fc_Descriptions': {
-                            'd1': ['en',1 ,'Get ready for a true New York bike tour that has you smack in the middle of New York City`s action. First, we head past Union Square, the place of every protest, from basic to bizarre. Next, we`re in Greenwich Village at the Stonewall Inn, symbol of the Gay Liberation movement. From `the Village,` we ride along the Hudson River Greenway to Wall Street, where we are caught up in the frantic pace of high finance. Bankers rub shoulders with bike messengers, and brokers down their lunch as fast as the fluctuation of the stock market. Then to Ground Zero, to experience that tragic day and the agonizing months that followed. In typical New York fashion, the city has bounced back. The new Number 7 World Trade Center, with its amazing streaming video, captures this sense of optimism.'], 
-                            'd2': ['sp',4,'hola'],  
-                            'd3': ['fr',4,'salut'], 
-                            },
+                    'S_fc_Specs':1,
+                    'fc_Descriptions': {
+                        'd1': ['en',1 ,'Get ready for a true New York bike tour that has you smack in the middle of New York City`s action. First, we head past Union Square, the place of every protest, from basic to bizarre. Next, we`re in Greenwich Village at the Stonewall Inn, symbol of the Gay Liberation movement. From `the Village,` we ride along the Hudson River Greenway to Wall Street, where we are caught up in the frantic pace of high finance. Bankers rub shoulders with bike messengers, and brokers down their lunch as fast as the fluctuation of the stock market. Then to Ground Zero, to experience that tragic day and the agonizing months that followed. In typical New York fashion, the city has bounced back. The new Number 7 World Trade Center, with its amazing streaming video, captures this sense of optimism.'], 
+                        'd2': ['sp',4,'(not specified)'],  
+                        'd3': ['fr',4,'(not specified)'], 
+                        },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_Photos': ['2602344552','5054080943'],
                     'fc_Tags':[{'name': 'Includes', 
-                                'list': ['Tour guide','bike','helmet','insurance']
-                                }
-                                
+                                'list': ['bike','helmet','insurance'],
+                                'status': 4
+                                }, 
                             ],
-
                     'fc_Schedule': {
                             
-                            'd1': ['Tuesday','10:15','17:00'],
-                            'd2': ['On request','(min5 pax)',''], 
+                            'd1': ['Tuesday','10:15','17:00',1],
+                            'd2': ['On request','(min5 pax)','',4], 
                             
                             },  
-                        'fc_SmallNotes': {
+                    'fc_SmallNotes': {
                             'd1': ['Notes','This tour leaves every Tuesday, year-round, weather permitting, at 10:15 am, a few blocks from Union Square in Manhattan (precise address will be given after booking is made). It is approximately 14 miles and will last about 7 hours.']
                         },
+                        'S_fc_SmallNotes':1
+
                 },
                 # CLOSE ITEM
 
