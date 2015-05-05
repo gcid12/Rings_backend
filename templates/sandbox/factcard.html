@@ -29,15 +29,19 @@
         <section id="info1">
           <div class="row box box-widget">
             <div class="col-sm-6 box-columns">
-             {{ ui.FactCard(data.OneLine) }}
-            </div>
-            <div class="col-sm-6">
              {{ ui.FactCard(data.Description) }}
             </div>
-
+            <div class="col-sm-6">
+             {{ ui.FactCard(data.OneLine) }}
+            </div>
+            
           </div>
         </section>
       {% endif %}
+
+     
+
+
 
 
         {% if data.photos %}
@@ -124,10 +128,10 @@
         <section id="story2">
 
           <div class="row box box-widget p-10">
-            <div class="col-sm-3 box-columns" id="story3">
+            <div class="col-sm-5 box-columns" id="story3">
               {{ ui.FactCard(data.contact) }}
             </div>
-            <div class="col-sm-9 box-columns" id="story4">
+            <div class="col-sm-7 box-columns" id="story4">
               {{ ui.FactCard(data.curious) }}
             </div>
             

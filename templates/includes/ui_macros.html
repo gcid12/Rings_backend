@@ -1029,29 +1029,86 @@
 <!-- GENERATES THE HEADER WITH COMPANY INFO -->
  {% macro BizHead(data) %}
   <div class="row">
-      <div class="col-sm-offset-1 col-sm-7">
+      <div class="col-sm-offset-1 col-sm-12">
         <h4 class="fc-g"><span class="label label-vader">Business Facts</span></h4>
           
-        <h1 class="fc-b fw-c fs-3" id="sec0"> {{ data.Name }}</h1>
+        <h1 class="fc-b fw-c fs-3 {{ status_text(data.S_Name) }} " id="sec0">{{ data.Name }}</h1>
         
         <p class="fc-b fs-1-2"> 
-        {% if data.Address %}
-            {{ data.Address }}, 
-        {% endif %}
-        {{ data.City }} {{ data.State }} {{ data.Zip }}
-         </p>
-         
-        {% if data.Website %}<span><strong>Web:</strong> {{ data.Website }}</span>{% endif %}
-        {% if data.Phone %}<span><strong>Phone:</strong> {{ data.Phone }}</span>{% endif %}
-        {% if data.Mail %}<span><strong>Mail:</strong> {{ data.Mail }}</span>{% endif %}
+          {% if data.Address %}
+          <span class="{{ status_text(data.S_Address) }}">{{ data.Address }},</span>
+          {% endif %}
 
-        {% if data.SM1 %}<span> | <i class="fa fa-twitter"></i> {{ data.SM1 }}</span> {% endif %}
-        {% if data.SM2 %}<span> | <i class="fa fa-instagram"></i> {{ data.SM2 }}</span>{% endif %}
-        {% if data.SM3 %}<span> | <i class="fa fa-youtube"></i> {{ data.SM3 }}</span>{% endif %}
-        {% if data.SM4 %}<span> | <i class="fa fa-google-plus"></i> {{ data.SM4 }}</span>{% endif %}
+          {% if data.City %}
+          <span class="{{ status_text(data.S_City) }}">{{ data.City }},</span>
+          {% endif %}
+
+          {% if data.State %}
+          <span class="{{ status_text(data.S_State) }}">{{ data.State }},</span>
+          {% endif %}
+
+          {% if data.Zip %}
+          <span class="{{ status_text(data.S_Zip) }}">{{ data.Zip }},</span>
+          {% endif %}
+
+        </p>
+         
+        {% if data.Website %}
+          <span class="{{ status_text(data.S_Website) }}"><strong><i class="fa fa-globe pad-x-4"></i></strong> {{ data.Website }}</span>
+        {% endif %}
+
+        {% if data.Phone %}
+          |<span class="{{ status_text(data.S_Phone) }}" ><strong><i class="fa fa-phone pad-x-4"></i></strong> {{ data.Phone }}</span>
+        {% endif %}
+
+        {% if data.Mail %}
+          |<span class="{{ status_text(data.S_Mail) }}"><strong><i class="fa fa-envelope pad-x-4"></i></strong> {{ data.Mail }}</span>
+        {% endif %}
+
+        {% if data.SM1 %} 
+        | <a class="{{ status_text(data.S_SM1) }}" href="{{ data.SM1 }}"> <i class="fa fa-twitter pad-x-4"></i> </a> 
+        {% endif %}
+
+        {% if data.SM2 %} 
+        | <a class="{{ status_text(data.S_SM2) }}" href="{{ data.SM2 }}"> <i class="fa fa-facebook pad-x-4"></i> </a>
+        {% endif %}
+
+        {% if data.SM3 %} 
+        | <a class="{{ status_text(data.S_SM3) }}" href="{{ data.SM3 }}"> <i class="fa fa-youtube pad-x-4"></i></a>
+        {% endif %}
+
+        {% if data.SM4 %} 
+        | <a class="{{ status_text(data.S_SM4) }}" href="{{ data.SM4 }}"> <i class="fa fa-instagram pad-x-4"></i></a>
+        {% endif %}
         
       </div>
   </div><!-- close row -->
+{% endmacro %}
+
+{% macro status_text(code) %}
+
+    {% if code==1 %} tst-1 
+    {% elif code==2 %} tst-2
+    {% elif code==3 %} tst-3
+    {% elif code==4 %} tst-4
+    {% elif code==5 %} tst-5
+    {% elif code==6 %} tst-6
+    {% else %} {% endif %}
+    
+      
+{% endmacro %}
+
+{% macro status_label(code) %}
+
+    {% if code==1 %} lst-1 
+    {% elif code==2 %} lst-2
+    {% elif code==3 %} lst-3
+    {% elif code==4 %} lst-4
+    {% elif code==5 %} lst-5
+    {% elif code==6 %} lst-6
+    {% else %} {% endif %}
+    }
+      
 {% endmacro %}
 
 
@@ -1063,13 +1120,15 @@
 
 
 
+<!-- ///////// FC  GENERIC //////////////////////// --> 
+
+
 {% macro FactCard(thisData) %}
 
   {% for x in thisData %}      
     
     <div class="row">
       <div class="col-sm-12">
-
 
         {% if x.fc_Title %}
          {{ fm_Title(x.fc_Title,'') }}
@@ -1086,6 +1145,7 @@
         {% if x.fc_Descriptions %}
           {{ fm_LangVersions(x.fc_Descriptions, '', x.fc_DescriptionsSize) }}
         {% endif %}
+
         
         {% if x.fc_Photos %}
             {{ fm_Photos(x.fc_Photos, x.fc_Owner, '' ) }}
@@ -1122,6 +1182,9 @@
     {% endfor %}
 
 {% endmacro %}
+
+
+<!-- ///////// FC  SERVICE //////////////////////// --> 
 
 
 {% macro FactCard_Services(thisData) %}
@@ -1168,7 +1231,15 @@
             {% if x.fc_Schedule %}
               {{ fm_Schedule(x.fc_Schedule, 'Schedule') }}
             {% endif %}
+            <hr/>
+            {% if x.fc_Tags %}
+              {{ fm_Tags(x.fc_Tags, '') }}
+            {% endif %}
+
           </div>
+          
+            
+          
           <div class="col-sm-6">
           
               {% if x.fc_SmallNotes %}
@@ -1196,6 +1267,7 @@
 {% endmacro %}
 
 
+<!-- ///////// FC  ROOMS //////////////////////// --> 
 
 
 {% macro FactCard_Rooms(thisData) %}
@@ -1283,19 +1355,17 @@
   <br/>
 {% endmacro %}
 
-{% macro fm_LangVersions(langData, name, fsize) %}
-  <div class="row">
 
+<!-- langData behaves like fm.list -->
+{% macro fm_LangVersions(langData, name, fsize) %}
+
+  <div class="row">
     <div class=" col-sm-12">
-      
       {% if name %}<p>{{name}}</p>{% endif %}
       <div role="tabpanel" id="{{ tabid }}">
         <!-- Nav tabs -->
-
         <!-- SE ARMAN LOS TABS CON LAS INICIALES -->
-
         <ul class="nav nav-tabs" role="tablist">
-
 
           {% set n1 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
           {% set n2 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
@@ -1303,42 +1373,46 @@
 
           {% set setid = n1 * n2 * n3  %}
 
-
-          {% set count = 1 %}
-
+          {% set cuenta = 1 %}
           {% for key in langData|sort %}
-            
-          <li role="presentation" class="{% if count==1 %} active {% endif %} {% set count = count + 1 %} ">
-            <a href="#{{ setid }}_{{count}}" role="tab" data-toggle="tab">
-              <span class="label label-success "> {{key}} </span>
-            </a>
-          </li>
+            {% for z in key[1] %}
+              
+                <li role="presentation" class="{% if cuenta==1 %} active {% endif %}">
+                  <a href="#{{ setid }}_{{cuenta}}" role="tab" data-toggle="tab">
+                    <span class="label {{ status_label(langData[key][1]) }} "> 
+                    {{ langData[key][0]}} </span>
+                  </a>
+                </li>
 
-          {% endfor %}
-          
+              
+            {% endfor %}
+            {% set cuenta = cuenta + 1 %}
+          {%endfor%}  
+
+
         </ul>
 
         <!-- SE ARMAN LOS CONTENIDOS -->
         <div class="tab-content fs-0-9">
           
-          {% set count2 = 1 %}
+          {% set cuenta = 1 %}
           {% for key in langData|sort %}
             
-            <div role="tabpanel" class="tab-pane spa10 pl-30 {% if count2==1 %} active {% endif %} {% set count2 = count2 + 1 %}" id="{{ setid }}_{{count2}}">
-                <span class=" {% if fsize =='2' %} fs-2 {% endif %}">  
-                  {{langData[key]}}
+            <div role="tabpanel" class="tab-pane spa10 pl-30 {% if cuenta==1 %} active {% endif %} " id="{{ setid }}_{{cuenta}}">
+                <span class="text-gray {% if fsize =='2' %} fs-2 {% endif %}">  
+                  {{ langData[key][2]}}
                 </span>
                 
-
             </div>
+            {% set cuenta = cuenta + 1 %}
           {%endfor%} 
   
         </div>
-
       </div> <!-- close tab panel --> 
     </div>
-
   </div>
+
+
 {% endmacro %}
 
 
@@ -1348,8 +1422,8 @@
     {% for key in specsData|sort %}
       {% for y in key[1] %}
         
-          <span class="fw-c"> {{ specsData[key][0]}}: </span>
-          <span class=""> {{ specsData[key][1]}} | </span>
+          | <span class="fw-c"> {{ specsData[key][0]}}: </span>
+          <span class=""> {{ specsData[key][1]}}  </span>
         
       {% endfor %}
     {%endfor%} 
@@ -1383,6 +1457,25 @@
         </td>
         <td>
             {% for item in y.list %}
+            {{ labelres(4, item) }} 
+            {% endfor %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endmacro %}
+
+{% macro fm_ammenities(tagsData, name) %}
+
+  {% if name %}<p>{{name}}</p>{% endif %}
+  <table class="table table-condensed table-striped">
+    {% for y in tagsData %} 
+      <tr>
+        <td align="right">
+          <div class="fw-c fs-0-8">{{ y.name }}</div>
+        </td>
+        <td>
+            {% for item in y.list %}
             {{ label_ammenity(1, item) }} 
             {% endfor %}
         </td>
@@ -1390,6 +1483,8 @@
     {% endfor %}
   </table>
 {% endmacro %}
+
+
 
 {% macro fm_Links(linksData, name)%}
 
@@ -1429,7 +1524,7 @@
         </tr>
         {%endfor%} 
       </table> 
-      <hr/>
+     
     </div>
   </div>
 {% endmacro %}
@@ -1512,7 +1607,7 @@
     {% elif q==2 %} label-warning
     {% elif q==3 %} label-danger
     {% else %} label-default
-    {% endif %}
+    {% endif %} inline-block
     ">{{ text }}</spa>
 {% endmacro %}
 
@@ -1524,88 +1619,90 @@
     {% elif q==2 %} label-warning
     {% elif q==3 %} label-danger
     {% else %} label-default
-    {% endif %}
+    {% endif %} inline-block
     ">
   
-    {% if id=='a_001' %}  Business Center
-    {% elif id=='a_002' %} Meeting Rooms
-    {% elif id=='a_003' %} Convention Space
+    {% if id=='a_001' %}Business Center
+    {% elif id=='a_002' %}Meeting Rooms
+    {% elif id=='a_003' %}Convention Space
 
-    {% elif id=='b_001' %} Hair Salon
-    {% elif id=='b_002' %} Nails Salon
-    {% elif id=='b_003' %} Barber Shop
+    {% elif id=='b_001' %}Hair Salon
+    {% elif id=='b_002' %}Nails Salon
+    {% elif id=='b_003' %}Barber Shop
 
-    {% elif id=='c_001' %} 24 hrs Concierge  
-    {% elif id=='c_002' %} Elevators 
-    {% elif id=='c_003' %} Luggage Storage 
-    {% elif id=='c_004' %} Multilingual Staff 
-    {% elif id=='c_005' %} Laundry 
-    {% elif id=='c_006' %} Dry Cleaning 
+    {% elif id=='c_001' %}24 hrs Concierge  
+    {% elif id=='c_002' %}Elevators 
+    {% elif id=='c_003' %}Luggage Storage 
+    {% elif id=='c_004' %}Multilingual Staff 
+    {% elif id=='c_005' %}Laundry 
+    {% elif id=='c_006' %}Dry Cleaning 
 
-    {% elif id=='d_001' %} Menu Restaurant 
-    {% elif id=='d_002' %} Bar/Lounge 
-    {% elif id=='d_003' %} Wine Bar 
-    {% elif id=='d_004' %} Buffet 
-    {% elif id=='d_005' %} Gluten Free Options
-    {% elif id=='d_006' %} Vegan Options
-    {% elif id=='d_007' %} Raw Vegan Options 
-    {% elif id=='d_008' %} Snacl Bar / Deli 
+    {% elif id=='d_001' %}Menu Restaurant 
+    {% elif id=='d_002' %}Bar/Lounge 
+    {% elif id=='d_003' %}Wine Bar 
+    {% elif id=='d_004' %}Buffet 
+    {% elif id=='d_005' %}Gluten Free Options
+    {% elif id=='d_006' %}Vegan Options
+    {% elif id=='d_007' %}Raw Vegan Options 
+    {% elif id=='d_008' %}Snacl Bar / Deli 
 
-    {% elif id=='e_001' %} Weddings 
-    {% elif id=='e_002' %} Social Events  
-    {% elif id=='e_003' %} Event Planning 
+    {% elif id=='e_001' %}Weddings 
+    {% elif id=='e_002' %}Social Events  
+    {% elif id=='e_003' %}Event Planning 
 
-    {% elif id=='f_001' %} Cardio 
-    {% elif id=='f_002' %} Weights 
-    {% elif id=='f_003' %} Classes 
-    {% elif id=='f_004' %} Spinning 
-    {% elif id=='f_005' %} Personal Trainer 
+    {% elif id=='f_001' %}Cardio 
+    {% elif id=='f_002' %}Weights 
+    {% elif id=='f_003' %}Classes 
+    {% elif id=='f_004' %}Spinning 
+    {% elif id=='f_005' %}Personal Trainer 
 
-    {% elif id=='g_001' %} Kids Club 
-    {% elif id=='g_002' %} Kids Activities
-    {% elif id=='g_003' %} In Room Childcare
-    {% elif id=='g_004' %} Cribs
+    {% elif id=='g_001' %}Kids Club 
+    {% elif id=='g_002' %}Kids Activities
+    {% elif id=='g_003' %}In Room Childcare
+    {% elif id=='g_004' %}Cribs
 
-    {% elif id=='h_001' %} Golf Course
-    {% elif id=='h_002' %} Casino
-    {% elif id=='h_003' %} Pool
-    {% elif id=='h_004' %} Live Show
+    {% elif id=='h_001' %}Golf Course
+    {% elif id=='h_002' %}Casino
+    {% elif id=='h_003' %}Pool
+    {% elif id=='h_004' %}Live Show
 
-    {% elif id=='i_001' %} In House Doctor
-    {% elif id=='i_002' %} In House Nurse
-    {% elif id=='i_003' %} Ambulance accesible
-    {% elif id=='i_004' %} Fibrillator
-    {% elif id=='i_005' %} First Aid Kit
-    {% elif id=='i_006' %} X Ray
+    {% elif id=='i_001' %}In House Doctor
+    {% elif id=='i_002' %}In House Nurse
+    {% elif id=='i_003' %}Ambulance accesible
+    {% elif id=='i_004' %}Fibrillator
+    {% elif id=='i_005' %}First Aid Kit
+    {% elif id=='i_006' %}X Ray
 
-    {% elif id=='j_001' %} Pets Allowed
-    {% elif id=='j_002' %} Pet Menu
-    {% elif id=='j_003' %} Dog Walker
-    {% elif id=='j_004' %} Dog Care
+    {% elif id=='j_001' %}Pets Allowed
+    {% elif id=='j_002' %}Pet Menu
+    {% elif id=='j_003' %}Dog Walker
+    {% elif id=='j_004' %}Dog Care
 
-    {% elif id=='k_001' %} Temperature controlled
-    {% elif id=='k_002' %} Towels
-    {% elif id=='k_003' %} Bar Service
-    {% elif id=='k_004' %} Family Friendly
-    {% elif id=='k_005' %} Adult Only
+    {% elif id=='k_001' %}Temperature controlled
+    {% elif id=='k_002' %}Towels
+    {% elif id=='k_003' %}Bar Service
+    {% elif id=='k_004' %}Family Friendly
+    {% elif id=='k_005' %}Adult Only
 
-    {% elif id=='l_001' %} Gift Shop
-    {% elif id=='l_002' %} Pharmacy
-    {% elif id=='l_003' %} Newstand
-    {% elif id=='l_004' %} Books
-    {% elif id=='l_005' %} Sport
-    {% elif id=='l_006' %} Tobacco
+    {% elif id=='l_001' %}Gift Shop
+    {% elif id=='l_002' %}Pharmacy
+    {% elif id=='l_003' %}Newstand
+    {% elif id=='l_004' %}Books
+    {% elif id=='l_005' %}Sport
+    {% elif id=='l_006' %}Tobacco
 
-    {% elif id=='m_001' %} Interior smoking Area
-    {% elif id=='m_002' %} Exterior smoking Area
-    {% elif id=='m_003' %} Smoking Rooms Available
+    {% elif id=='m_001' %}Interior smoking Area
+    {% elif id=='m_002' %}Exterior smoking Area
+    {% elif id=='m_003' %}Smoking Rooms Available
 
-    {% elif id=='n_001' %} Airport - Hotel
-    {% elif id=='n_002' %} Hotel - Airport
-    {% elif id=='n_003' %} Car Rental
-    {% elif id=='n_004' %} Parking
-    {% elif id=='n_005' %} Valet Parking
+    {% elif id=='n_001' %}Airport - Hotel
+    {% elif id=='n_002' %}Hotel - Airport
+    {% elif id=='n_003' %}Car Rental
+    {% elif id=='n_004' %}Parking
+    {% elif id=='n_005' %}Valet Parking
 
+    {% else %}
+      {{ id }}
 
     {% endif %}
 
