@@ -1,4 +1,4 @@
-## Image Servers setup instructions
+## Seaweed Image Servers using Dockers setup instructions
 
 
 Create a droplet. In the Applications section select "Docker". 
