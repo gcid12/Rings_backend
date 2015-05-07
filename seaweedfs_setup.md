@@ -54,7 +54,7 @@ Then in your browser go to: `http://<master-instance-ip-address>:9333` . You sho
 Start the SeaweedFS Volume server
 
 ```
-docker run -d -p <this-instance-ip-address>:8080:8080 -v /www/images <weed-image-id> volume -dir="/www/images" -max=5  -mserver="<master-instance-ip-address>:9333" -ip <volume-instance-ip-address> -port=8080 &
+docker run -d -p <this-instance-ip-address>:80:80 -v /www/images <weed-image-id> volume -dir="/www/images" -max=5  -mserver="<master-instance-ip-address>:9333" -ip <volume-instance-ip-address> -port=80 &
 ```
 
 In your browser go to : `http://<volume-instance-ip-address>:80`  . You'll see the SeaweedFS Volume status page. Also you should see the new rom in the "Topology" list in the Master status page
