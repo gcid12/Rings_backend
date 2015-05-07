@@ -59,7 +59,35 @@ docker run -d -p <this-instance-ip-address>:8080:8080 -v /www/images <weed-image
 
 In your browser go to : `http://<volume-instance-ip-address>:80`  . You'll see the SeaweedFS Volume status page. Also you should see the new rom in the "Topology" list in the Master status page
 
+Note this: It is possible to run both the Master and the Volume server in the same instance but this defeats the whole idea of scalability. In production there should be one instance dedicated to the Master and N Volume instances.
 
+#### Backup
+
+SeaweedFS stores the images in volumes. It is possible to see the volume but it is not possible to see individual images. This is completely normal the same way you don't go to the *myd MySQL files trying to subtract some data directly. 
+
+The backup script needs to go where the Docker Volumes (not the same as SeaweedFS volumes) is and back up the whole Folder that contains the volumes. 
+
+
+#### Testing
+
+Request an id to write a file
+```
+$ curl -X POST http://<master-instance-ip-address>:9333/dir/assign
+{"count":1,"fid":"3,01637037d6","url":"<volume-instance-ip>:8080","publicUrl":"<volume-instance-ip>:8080"}
+```
+
+Send the file
+```
+$ curl -X PUT -F file=@/path/to/photo/myphoto.jpg http://<volume-instance-ip>/3,01637037d6
+{"size": 43234}
+```
+
+Now try to reach the file using your browser
+```
+http://<volume-instance-ip>/3,01637037d6
+```
+
+If the image is there you are ready!
 
 
 
