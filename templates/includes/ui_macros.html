@@ -1730,4 +1730,27 @@
 {% endmacro %}
 
 
+{% macro flagmarker(field) %}
+
+{# In order for this macro to work you need to include 'avispa_rest/wa_flagmarker_functions.html' in the 'footafterfunctions' block #}
+
+
+
+                        
+                          <input type="hidden"  id="status_{{ field.FieldOrder }}" name="status_{{ field.FieldName }}" value=""/> 
+                          <div class="dropdown">
+                            <a data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
+                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-1"><i class="fa fa-caret-left fa-2x"></i></span>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_1" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-1 "></i>Live</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_2" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-2"></i>Work in Progress</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_3" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-3"></i>Correct this</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_4" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-4"></i>Urgent</span></li>
+                            </ul>
+                          </div>
+                        
+
+{% endmacro %}
 

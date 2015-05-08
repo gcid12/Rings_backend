@@ -88,10 +88,11 @@
                           {% include widget  %}    
                           
                         </td>
-                        <td>
-                          <i class="fa fa-flag fc-{{field.FieldLayer}}"></i>
+                        <td bgcolor="">
+                        {{ ui.flagmarker(field) }}
                         </td>
                         <td>
+                          <i class="fa fa-flag fc-{{field.FieldLayer}}"></i>
                         </td>
                       </tr>
                      {% endfor %}
@@ -129,6 +130,8 @@
     {% set widgetafter = 'avispa_rest/w_input_'+field.FieldWidget+'_afterfunctions.html' %}   
     {% include widgetafter ignore missing  %}                                
   {% endfor %}
+
+  {% include 'avispa_rest/wa_flagmarker_functions.html' %}
 
 {% endblock %}
 

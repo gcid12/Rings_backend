@@ -1,0 +1,8 @@
+<script>
+    $( ".fieldflag" ).click(function() {       
+        var flag = $(this).attr('flag');
+        var f = flag.split('_')
+        $('#status_'+f[0]).val(f[1]);  
+        $('#flagmarker_'+f[0]).removeClass().addClass('fc-'+f[1]);    
+    });
+</script>
