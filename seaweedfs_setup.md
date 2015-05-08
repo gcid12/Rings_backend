@@ -40,13 +40,13 @@ Now you are ready to start the SeaweedFS MASTER and VOLUME instances
 
 First start the MASTER
 ```
-docker run -d -p <this-instance-ip-address>:9333:9333  -v /www/master <weed-image-id>  master -mdir="/www/master" -ip <this-instance-ip-address>
+docker run -d -p <master-instance-ip-address>:9333:9333  -v /www/master <weed-image-id>  master -mdir="/www/master" -ip <master-instance-ip-address>
 ```
 
 Check that it is running : `$ docker ps` . You should see something like this:
 ```
 CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS              PORTS                                   NAMES
-<this-container-id>        <this-image-id>:latest   "weed master"       5 seconds ago       Up 5 seconds        8080/tcp, <this-instance-ip-address>:9333->9333/tcp   stupefied_mcclintock
+<this-container-id>        <this-image-id>:latest   "weed master"       5 seconds ago       Up 5 seconds        8080/tcp, <master-instance-ip-address>:9333->9333/tcp   stupefied_mcclintock
 ```
 
 Then in your browser go to: `http://<master-instance-ip-address>:9333` . You should see SeaweedFS Master status page.
@@ -54,7 +54,7 @@ Then in your browser go to: `http://<master-instance-ip-address>:9333` . You sho
 Start the SeaweedFS Volume server
 
 ```
-docker run -d -p <this-instance-ip-address>:80:80 -v /www/images <weed-image-id> volume -dir="/www/images" -max=5  -mserver="<master-instance-ip-address>:9333" -ip <volume-instance-ip-address> -port=80 &
+docker run -d -p <volume-instance-ip-address>:80:80 -v /www/images <weed-image-id> volume -dir="/www/images" -max=5  -mserver="<master-instance-ip-address>:9333" -ip <volume-instance-ip-address> -port=80 &
 ```
 
 In your browser go to : `http://<volume-instance-ip-address>:80`  . You'll see the SeaweedFS Volume status page. Also you should see the new rom in the "Topology" list in the Master status page
@@ -88,6 +88,27 @@ http://<volume-instance-ip>/3,01637037d6
 ```
 
 If the image is there you are ready!
+
+Seaweed FS Syllogisms:
+
++ When the VOLUME server is down, MASTER keeps assigning fids pointing to it when requested via <master-instance-ip>/dir/assign
++ If you try to PUT something in a VOLUME that is down, it will show you a "Connection refused" error
++ When the VOLUME server is down, MASTER does notice that Volume is down and it won't display it in its topology
++ When VOLUME server is started again, MASTER automatically recognizes it
++ When a VOLUME server is started again, it starts serving images/files normally and immediatelly
++ When the MASTER server is down, http://<MASTER-VOLUME-IP-ADDRESS>/dir/assign will show a "Connection refused" error
++ When the MASTER server is down, VOLUME servers will serve their files normally
++ When the MASTER server is down, You can PUT a file in a VOLUME and ID assigned by the MASTER server without a problem
++ When a MASTER server is started again, it might take a couple of seconds for it to recognize the VOLUMES but it will eventually do it (automatically).
+
+Pending
++ When a MASTER is Killed and replaced by another one... It is possible to mount existing volumes on it?
++ When all Volumes in one VOLUME server are moved to another VOLUME server ... The master recognizes them?
++ When all Volumes in one VOLUME server are moved to another VOLUME server ... The new VOLUME host serves them?
++ When a the files of a volume are deleted , the MASTER notices it?
++ When a the files of a volume are deleted , the VOLUME notices it?
+
+
 
 
 
