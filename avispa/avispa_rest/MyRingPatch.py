@@ -883,4 +883,4 @@ class MyRingPatch:
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
 
-
+    
