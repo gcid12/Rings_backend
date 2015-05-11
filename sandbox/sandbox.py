@@ -943,10 +943,10 @@ def facts_001():
                 'fc_SubTitle':'Full Description',
                 'fc_DescriptionsSize':'1',
                 'fc_Descriptions': {
-                    'en': 'Midtown convenience. Classic hospitality. Complete comfort. A celebrated past. It all comes together at the Park Central New York Hotel. located squarely amidst New York`s most popular sights and hotels in Midtown Manhattan. Our mix of exciting amenities pay homage to our glamorous past, while presenting a modern spin on the hotel`s electrifying environment. Guests will delight in escaping the hectic city life to bask in the stylish Park Central New York.', 
-                    'sp': 'Conveniencia Midtown . Hospitalidad Classic. Total comodidad . Un pasado celebre . Todo confluye en el Hotel Parque Central de Nueva York. situado de lleno en medio de nuevas Yorks atracciones turisticas mas populares y hoteles en el centro de Manhattan . Nuestra mezcla de comodidades sorprendentes rendir homenaje a nuestro pasado glamoroso , al tiempo que presenta un giro moderno en el medio ambiente electrizante del hotel. Los huespedes se deleitaran con escapar del bullicio de la ciudad para tomar el sol en el elegante Parque Central de Nueva York.', 
-                    
-                    }
+                      'd1': ['en',1 ,'Midtown convenience. Classic hospitality. Complete comfort. A celebrated past. It all comes together at the Park Central New York Hotel. located squarely amidst New York`s most popular sights and hotels in Midtown Manhattan. Our mix of exciting amenities pay homage to our glamorous past, while presenting a modern spin on the hotel`s electrifying environment. Guests will delight in escaping the hectic city life to bask in the stylish Park Central New York.'], 
+                      'd2': ['sp',1,'Conveniencia Midtown . Hospitalidad Classic. Total comodidad . Un pasado celebre . Todo confluye en el Hotel Parque Central de Nueva York. situado de lleno en medio de nuevas Yorks atracciones turisticas mas populares y hoteles en el centro de Manhattan . Nuestra mezcla de comodidades sorprendentes rendir homenaje a nuestro pasado glamoroso , al tiempo que presenta un giro moderno en el medio ambiente electrizante del hotel. Los huespedes se deleitaran con escapar del bullicio de la ciudad para tomar el sol en el elegante Parque Central de Nueva York.'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                  }
                 }]# CLOSE
 
     data['Description'] = [{
@@ -955,10 +955,11 @@ def facts_001():
             'fc_SubTitle':'One Line Description',
             'fc_DescriptionsSize':'2',
             'fc_Descriptions': {
-                'en': 'The midtown new york city hotel Central to new york`s best', 
-                'sp': 'El hotel mejor situado en Midtown Manhattan, cerca de lo mejor de NewYork', 
-                
+                    'd1': ['en',1 ,'The midtown new york city hotel Central to new york`s best'], 
+                    'd2': ['sp',1,'El hotel mejor situado en Midtown Manhattan, cerca de lo mejor de NewYork'],  
+                    'd3': ['fr',4,'(not defined)'], 
                 }
+
             }]# CLOSE
 
     #CONTACT
@@ -1003,10 +1004,10 @@ def facts_001():
                     'fc_SubTitle':'History',
                     # Fields used:  History, History2, History3
                     'fc_Descriptions': {
-                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
-                        },
+                      'd1': ['en',1 ,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                    },
                     # HISTORY PHOTOS
                     'fc_Owner':'teamamerica',
                     # PHOTOS
@@ -1017,10 +1018,10 @@ def facts_001():
     data['OurStaff'] = [{
                     'fc_Title':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'ingles del product 1', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
-                        }
+                      'd1': ['en',4 ,'(not defined)'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                      }
                     }]# CLOSE
 
     data['curious'] = [{
@@ -1047,16 +1048,22 @@ def facts_001():
                     
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037'], 
+                            'p2': [2,'3498992745'],  
+                            'p3': [3,'3836044439'], 
+                            'p4': [4,'6896928037'], 
+                        }
 
                     }]# CLOSE
                     
     data['staff'] = [{
                     'fc_SubTitle':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'ingles del product 1', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
-                        },
+                      'd1': ['en',4 ,'(not defined)'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                      },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
 
@@ -1083,10 +1090,10 @@ def facts_001():
                             'd3': ['Smoking','No'], 
                         },
                     'fc_Descriptions': {
-                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
-                        },
+                      'd1': ['en',4 ,'(not defined)'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                      },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
                     'fc_Links': {
@@ -1653,6 +1660,11 @@ def facts_004():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['4261055295','7452298333','7230214040'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','hi res'], 
+                            'p2': [2,'3498992745','ok res'],  
+                            'p4': [4,'6896928037','low res'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
@@ -1695,6 +1707,11 @@ def facts_004():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['7893794577','3152079455','5947166861'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','hi res'], 
+                            'p2': [2,'3498992745','ok res'],  
+                            'p4': [4,'6896928037','low res'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
@@ -1737,6 +1754,11 @@ def facts_004():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['7078181063','8885682710'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','hi res'], 
+                            'p2': [2,'3498992745','ok res'],  
+                            'p4': [4,'6896928037','low res'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
@@ -1779,6 +1801,11 @@ def facts_004():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['2602344552','5054080943'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','hi res'], 
+                            'p2': [2,'3498992745','ok res'],  
+                            'p4': [4,'6896928037','low res'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
