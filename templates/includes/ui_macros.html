@@ -1730,14 +1730,11 @@
 {% endmacro %}
 
 
-{% macro flagmarker(field) %}
+{% macro flagmarker(field,item) %}
 
 {# In order for this macro to work you need to include 'avispa_rest/wa_flagmarker_functions.html' in the 'footafterfunctions' block #}
-
-
-
                         
-                          <input type="hidden"  id="status_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="1"/> 
+                          <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="{% if field.FieldName+'_flag' in item %}{{item[field.FieldName+'_flag']}}{%else%}1{%endif%}"/> 
                           <div class="dropdown">
                             <a data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
                               <span id="flagmarker_{{ field.FieldOrder }}" class="fc-1"><i class="fa fa-caret-left fa-2x"></i></span>

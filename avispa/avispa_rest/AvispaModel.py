@@ -188,8 +188,10 @@ class AvispaModel:
                                   x[key+'_rich']=doc.rich[0][key]; 
                                }
                             }
-                            for (var key in doc.flags[0]) { 
-                               x[key+'_flag']=doc.flags[0][key]; 
+                            if(doc.flags){
+                               for (var key in doc.flags[0]) { 
+                                  x[key+'_flag']=doc.flags[0][key]; 
+                               }
                             }
                             emit(doc._id, x)
                          }
@@ -1279,7 +1281,6 @@ class AvispaModel:
         result = db.iterview('ring/items',1,**options)
 
         print('result:',result)
-
         
         for row in result:      
             item = collections.OrderedDict()
@@ -1289,6 +1290,8 @@ class AvispaModel:
 
                 for fieldname in OrderedFields:
                     item[fieldname] = row['value'][fieldname]
+                    if fieldname+'_flag' in row['value']:
+                        item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
                     #item.update(row['value'])
 
                 print("item:")

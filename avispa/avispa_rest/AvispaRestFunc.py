@@ -850,6 +850,8 @@ class AvispaRestFunc:
         Repopulates form to be sent for a put
         '''
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
+
+        print('ITEM',item)
        
         #if item['Images']:
          #   images=item['Images'].split(',')

@@ -101,7 +101,9 @@
 	                  {% if data.raw %}
 	                  <h3>{{data.ring}}</h3>
 	                  {%endif%}
-	                                                   
+
+                    {{data.item}}
+
 
                     <table class="table table-condensed" style="width:100%;">
                     {% for field in data.fieldsschema %}
@@ -112,7 +114,8 @@
                           {% include widget  %}    
                         </td>
                         <td bgcolor="">
-                        {{ ui.flagmarker(field) }}
+
+                        {{ ui.flagmarker(field,data.item) }}
                         </td>
                         <td>
                         </td>
