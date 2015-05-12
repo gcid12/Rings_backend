@@ -100,9 +100,15 @@ Seaweed FS Syllogisms:
 + When the MASTER server is down, VOLUME servers will serve their files normally
 + When the MASTER server is down, You can PUT a file in a VOLUME and ID assigned by the MASTER server without a problem
 + When a MASTER server is started again, it might take a couple of seconds for it to recognize the VOLUMES but it will eventually do it (automatically).
++ When a MASTER is Killed it can be replaced by another one as long as it comes from the same IP address and port
+( In the case of a Docker, this means that if you kill the docker that holds the Master and issue the same command you used to create the original one, the Volumes will not notice it is different. )
+Please notice that this action has only being tested with one Master and one Volume
+
+
+
 
 Pending
-+ When a MASTER is Killed and replaced by another one... It is possible to mount existing volumes on it?
+- When a MASTER is Killed and replaced by another one... It is possible to mount existing volumes on it?
 + When all Volumes in one VOLUME server are moved to another VOLUME server ... The master recognizes them?
 + When all Volumes in one VOLUME server are moved to another VOLUME server ... The new VOLUME host serves them?
 + When a the files of a volume are deleted , the MASTER notices it?
