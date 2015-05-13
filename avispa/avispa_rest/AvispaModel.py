@@ -188,6 +188,11 @@ class AvispaModel:
                                   x[key+'_rich']=doc.rich[0][key]; 
                                }
                             }
+                            if(doc.flags){
+                               for (var key in doc.flags[0]) { 
+                                  x[key+'_flag']=doc.flags[0][key]; 
+                               }
+                            }
                             emit(doc._id, x)
                          }
                       }
@@ -590,6 +595,7 @@ class AvispaModel:
         args_rich = {}
         args_history = {}
         args_meta = {}
+        args_flags = {}
 
         fields = schema['fields']
         for field in fields:
@@ -611,14 +617,19 @@ class AvispaModel:
             d2['action']=TextField()
             d2['doc']=DictField()
             args_history[field['FieldName']] = ListField(DictField(Mapping.build(**d2)))
-            
+
+            args_flags[field['FieldName']] = TextField()
+
             args_meta[field['FieldName']] = DictField()
+
+
             
 
 
         print('args_i',args_i)
         print('args_rich',args_rich)
         print('args_history',args_history)
+        print('args_flags',args_flags)
         print('args_meta',args_meta)
 
  
@@ -639,6 +650,9 @@ class AvispaModel:
                                                 ))),
                             'history': ListField(DictField(Mapping.build(
                                                     **args_history
+                                                ))),
+                            'flags': ListField(DictField(Mapping.build(
+                                                    **args_flags
                                                 ))),
                             'meta': ListField(DictField(Mapping.build(
                                                     **args_meta
@@ -1160,6 +1174,7 @@ class AvispaModel:
         item_values = {}
         rich_values = {}
         history_values = {}
+        flag_values = {}
         fields = schema['fields']
 
         print("post_a_b raw arguments sent:")
@@ -1214,6 +1229,9 @@ class AvispaModel:
                 #history_values[field['FieldName']] = history_list
 
 
+            #Subtract the Flag
+            flag_values[field['FieldName']] = request.form.get('flag_'+field['FieldName'])
+
 
 
         RingClass = self.ring_create_class(schema)
@@ -1225,6 +1243,7 @@ class AvispaModel:
         #item.rich.append(**rich_values)
         item.rich.append(**rich_values)
         item.history.append(**history_values)
+        item.flags.append(**flag_values)
         
         
         if item.store(db):
@@ -1262,7 +1281,6 @@ class AvispaModel:
         result = db.iterview('ring/items',1,**options)
 
         print('result:',result)
-
         
         for row in result:      
             item = collections.OrderedDict()
@@ -1272,6 +1290,8 @@ class AvispaModel:
 
                 for fieldname in OrderedFields:
                     item[fieldname] = row['value'][fieldname]
+                    if fieldname+'_flag' in row['value']:
+                        item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
                     #item.update(row['value'])
 
                 print("item:")
@@ -1303,6 +1323,8 @@ class AvispaModel:
         for field in fields:
             #item_values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
             
+            #VALUES
+
             old = unicode(item.items[0][field['FieldName']])
             new = unicode(request.form.get(field['FieldName']))
 
@@ -1328,6 +1350,34 @@ class AvispaModel:
                 item.history[0][field['FieldName']].append(history_item_dict)
 
                 item.items[0][field['FieldName']] = new
+
+            
+            #FLAGS
+
+            #Lets check if there is a flag object in the document
+            if field['FieldName'] not in item.flags[0]:
+                item.flags[0][field['FieldName']] = ''
+
+
+            old_flag = unicode(item.flags[0][field['FieldName']])
+            new_flag = unicode(request.form.get('flag_'+field['FieldName'])) 
+
+            if old_flag == new_flag:
+                print('Flag for: '+field['FieldName']+' did not change') 
+
+            else:
+                needs_store = True
+
+                history_item_dict = {}
+                history_item_dict['date'] = str(datetime.now())
+                history_item_dict['author'] = current_user.id
+                history_item_dict['before'] = str(old_flag) +' '+ str(type(old_flag)) 
+                history_item_dict['after'] = str(new_flag) + ' '+ str(type(new_flag))
+                history_item_dict['action'] = 'Update flag'
+
+                item.history[0][field['FieldName']].append(history_item_dict)
+
+                item.flags[0][field['FieldName']] = new_flag
 
 
                 

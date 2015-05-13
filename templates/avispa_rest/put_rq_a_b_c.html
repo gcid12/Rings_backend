@@ -39,6 +39,8 @@
     {% include widgetafter ignore missing  %}                                
   {% endfor %}
 
+  {% include 'avispa_rest/wa_flagmarker_functions.html' %}
+
 {% endblock %}
 
 
@@ -99,7 +101,9 @@
 	                  {% if data.raw %}
 	                  <h3>{{data.ring}}</h3>
 	                  {%endif%}
-	                                                   
+
+                    
+
 
                     <table class="table table-condensed" style="width:100%;">
                     {% for field in data.fieldsschema %}
@@ -110,42 +114,14 @@
                           {% include widget  %}    
                         </td>
                         <td bgcolor="">
-                        
 
-                          <div class="dropdown">
-                            <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
-                              <i class="fa fa-caret-left fa-2x fc-{{field.FieldLayer}}"></i>
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-4 "></i>Live</a></li>
-                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-2"></i>Work in Progress</a></li>
-                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-3"></i>Correct this</a></li>
-                              <li role="presentation"><a role="menuitem" class="clearlink fs-0-8" tabindex="-1" href="/{{data.handle}}/_profile"><i class="fa fa-caret-left fa-2x pad-x-8 fc-1"></i>Urgent</a></li>
-                            </ul>
-                          </div>
-
-
-
-                          <!-- <span class="dropdown">
-                              <a class="dropdown-toggle" id="flag_{{field.idx}}" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-caret-left fa-2x fc-{{field.FieldLayer}}"></i>
-                              </a>
-                              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="flag_{{field.idx}}">
-                                
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Ready to Go</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
-                              </ul>
-                          </span> -->
-
+                        {{ ui.flagmarker(field,data.item) }}
                         </td>
                         <td>
                         </td>
                       </tr>
                      {% endfor %}
-                  </table>
+                    </table>
 
 	                  
 	                  <div class="form-group">
@@ -174,6 +150,7 @@
 
 
 {% endblock %}
+
 
 {% block modals %}
 

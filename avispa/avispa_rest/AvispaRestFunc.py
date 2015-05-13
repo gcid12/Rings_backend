@@ -847,9 +847,11 @@ class AvispaRestFunc:
 
     def put_rq_a_b_c(self,request,handle,ring,idx,api=False,collection=None,*args):
         '''
-        Prepares form to be sent for a put
+        Repopulates form to be sent for a put
         '''
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
+
+        print('ITEM',item)
        
         #if item['Images']:
          #   images=item['Images'].split(',')
