@@ -19,6 +19,14 @@
               var allbb= "bc-1 bc-2 bc-3 bc-4 bc-5 bc-6 bc-7 ";
 
                 $(document).ready(function(){
+
+                  $(".treset{{ f }}").click(function(){
+                    var layer = $(this).attr('layer');
+                    $("#tagged{{ f }}").removeClass(allbt).addClass("bt-"+layer);
+                    $(".treset{{ f }}").removeClass(allbt);
+                    $(this).removeClass(allbt).addClass("bt-"+layer);                   
+                    $("#tagvalue_{{ f}}").attr("value",layer);
+                  }); 
                   
                   $("#tag1-{{ f }}").click(function(){
                     $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
@@ -210,10 +218,10 @@ $(function() {
               {% set numfields = request.args.get('n')|int %}
 
               <div id="columnfields"> <!-- A. START DRAG AREA -->
-              {% for f in range( 1, numfields+1) %}
+              {% for FieldOrder in range( 1, numfields+1) %}
 
 
-                {{ ui.portlet(f) }}
+                {{ ui.portlet(FieldOrder,7,True,FieldName,'text',FieldCardinality,'',FieldSemantic,FieldLabel) }}
 
 
               {% endfor %}

@@ -4,60 +4,25 @@
 
 {% block footfunctions %}
 
-    {% set f = 0 %}     
+        
     {% for field in data.fieldsschema %}
-       {% set f = f+1 %}
-
+       
        <script type="text/javascript">
           var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
           var allbb= "bb-1 bb-2 bb-3 bb-4 bb-5 bb-6 bb-7 ";
 
           $(document).ready(function(){
 
-              $(".tagged{{ f }}").removeClass("bt-7").addClass("bt-{{ field.FieldLayer }}");
-                           
-              $("#tag1-{{ f }}").click(function(){
-                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
-                $(".treset{{ f }}").removeClass(allbt);
-                $(this).addClass("bt-1");
-                $("#tagvalue_{{ f }}").attr("value","1");
+              $(".treset{{ field.FieldOrder }}").click(function(){
+                var layer = $(this).attr('layer');
+                $("#tagged{{ field.FieldOrder }}").removeClass(allbt).addClass("bt-"+layer);
+                $(".treset{{ field.FieldOrder }}").removeClass(allbt);
+                $(this).removeClass(allbt).addClass("bt-"+layer);
+                
+                $("#tagvalue_{{ field.FieldOrder }}").attr("value",layer);
               }); 
-              $("#tag2-{{ f }}").click(function(){
-                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
-                $(".treset{{ f }}").removeClass(allbt);
-                $(this).addClass("bt-2");
-                $("#tagvalue_{{ f }}").attr("value","2");
-              }); 
-              $("#tag3-{{ f }}").click(function(){
-                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
-                $(".treset{{ f }}").removeClass(allbt);
-                $(this).addClass("bt-3");
-                $("#tagvalue_{{ f }}").attr("value","3");
-              }); 
-              $("#tag4-{{ f }}").click(function(){
-                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
-                $(".treset{{ f }}").removeClass(allbt);
-                $(this).addClass("bt-4");
-                $("#tagvalue_{{ f }}").attr("value","4");
-              }); 
-              $("#tag5-{{ f }}").click(function(){
-                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
-                $(".treset{{ f }}").removeClass(allbt);
-                $(this).addClass("bt-5");
-                $("#tagvalue_{{ f }}").attr("value","5");
-              }); 
-              $("#tag6-{{ f }}").click(function(){
-                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
-                $(".treset{{ f }}").removeClass(allbt);
-                $(this).addClass("bt-6");
-                $("#tagvalue_{{ f }}").attr("value","6");
-              }); 
-              $("#tag7-{{ f }}").click(function(){
-                $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
-                $(".treset{{ f }}").removeClass(allbt);
-                $(this).addClass("bt-7");
-                $("#tagvalue_{{ f }}").attr("value","7");
-              });                
+
+              
           });
 
       </script>
@@ -210,154 +175,12 @@
           </div>
           <div class="col-sm-10">
 
-            {% set f = 0 %}
+            
               <div id="columnfields"> <!-- A. START DRAG AREA -->
                 {% for field in data.fieldsschema %}
 
-                    {% set f = f+1 %}
 
-
-                            <!-- N FIELD END -->         
-
-                <div id="portlet_{{ f }}" class="portlet"> <!-- B. -->
-
-
-                <!-- TAGS -->
-                  <input id="tagvalue_{{ f }}" name="FieldLayer_{{ f }}" value="{{ field.FieldLayer }}" type="hidden">
-                  <!-- <input name="FieldLayer_{{ f }}" value="{{ field.FieldLayer }}" class="form-control" type="text"> -->
-                 
-                  
-                  <div class="tagged{{ f }} portlet-header bt-7">
-                  
-                    <table>
-                      <tr>
-                        <td><span class="handler m-10" ><i class="fa fa-bars fa-1x text-white"></i></span></td>
-                        <td>
-                          <span class="label label-danger m-10">{{ f }}</span>
-                          
-                        </td>
-                        <td style="width:40%;">
-                          <input id="FieldName_{{ f }}disabled" name="FieldName_{{ f }}disabled" class="form-control" type="text" value="{{ field.FieldName }}" disabled>
-                          <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control" type="hidden" value="{{ field.FieldName }}">
-                        </td>
-                        <td>
-                          <select name="FieldWidget_{{ f }}" class="form-control input-sm" style="background-color:#666; color:white;">
-                            <option value="">SELECT ONE</option>
-                            <option value="checkbox" {% if field.FieldWidget == "checkbox" %}selected{% endif %}>checkbox</option>
-                            <option value="date" {% if field.FieldWidget == "date" %}selected{% endif %}>date</option>
-                            <option value="file" {% if field.FieldWidget == "file" %}selected{% endif %}>file</option>
-                            <option value="images" {% if field.FieldWidget == "images" %}selected{% endif %}>images</option>
-                            <option value="items" {% if field.FieldWidget == "items" %}selected{% endif %}>items</option>
-                            <option value="location" {% if field.FieldWidget == "location" %}selected{% endif %}>location</option>
-                            <option value="password" {% if field.FieldWidget == "password" %}selected{% endif %}>password</option>
-                            <option value="radio" {% if field.FieldWidget == "radio" %}selected{% endif %}>radio</option>
-                            <option value="select" {% if field.FieldWidget == "select" %}selected{% endif %}>select</option>
-                            <option value="text" {% if field.FieldWidget == "text" %}selected{% endif %}>text</option>
-                            <option value="textarea" {% if field.FieldWidget == "textarea" %}selected{% endif %}>textarea</option>
-                            <option value="url" {% if field.FieldWidget == "url" %}selected{% endif %}>url</option>
-                            <option value="url_flickr" {% if field.FieldWidget == "url_flickr" %}selected{% endif %}>url_flickr</option>
-                            <option value="url_video" {% if field.FieldWidget == "url_video" %}selected{% endif %}>url_video</option>
-                          </select>
-                        </td>
-                        <td style="background-color:red; " >
-                          
-                            
-                        </td>
-                        <td><span class="tog"></span></td>
-                      </tr>
-                    </table>
-                  </div> <!-- C1 -->
-                  <div class="portlet-content"> <!-- C2. DETAILS -->
-
-                      <div class="row">
-                        <div class="col-sm-7">
-                          
-                            <span class="label bg-gray margin-x-7">
-                              <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox" {% if field.FieldRequired %}checked{% endif %}>
-                              required
-                            </span>
-
-                            <span class="label bg-gray margin-x-7">
-                              <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox" {% if field.FieldMultilingual %}checked{% endif %}>
-                              multilingual
-                            </span>
-
-                            <span class="label bg-gray margin-x-7">
-                              <select name="FieldCardinality_{{ f }}">
-                                <option value="Single" {% if field.FieldCardinality == "Single" %} selected {% endif %} >Single</option>
-                                <option value="Multiple" {% if field.FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
-                              </select>
-                              cardinal
-                            </span>
-
-                            
-
-                            <hr/>
-                            
-                            <div class="input-group input-group-sm">
-                                  <span class="input-group-addon" id="sizing-addon1">Field Hint</span>
-                                  
-                                  <textarea name="FieldHint_{{ f }}" class="form-control">{{ field.FieldHint }}</textarea>
-                            </div>
-
-                            <div class="input-group input-group-sm">
-                                  <span class="input-group-addon" id="sizing-addon1">Source</span>
-                                  <textarea name="FieldSource_{{ f }}" class="form-control">{{ field.FieldSource }}</textarea>
-                            </div>
-                              
-                              
-                              <input type="hidden" name="FieldDefault_{{ f }}">
-                             
-                        </div>
-                        <div class="col-sm-5">
-
-                        
-
-                        <!-- FieldLayer as tags-->
-                        <table>
-                            <tr>
-                              <td><div id="tag1-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-1"></div></td>
-                              <td><div id="tag2-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-2"></div></td>
-                              <td><div id="tag3-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-3"></div></td>
-                              <td><div id="tag4-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-4"></div></td>
-                              <td><div id="tag5-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-5"></div></td>
-                              <td><div id="tag6-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-6"></div></td>
-                              <td><div id="tag7-{{ f }}" class="treset{{ f }} r-tag bt-7 bc-7"></div></td>
-                            </tr>
-                          </table>
-
-                          <hr/>
-
-
-                          <div class="input-group input-group-sm">
-                            <span class="input-group-addon" id="sizing-addon1">Context</span>
-                            
-                            <textarea name="FieldSemantic_{{ f }}" class="form-control" rows="4" style="height:100%; width:100%;">{{ field.FieldSemantic }}</textarea>
-
-                          </div>
-                          <div class="input-group input-group-sm">
-                              <span class="input-group-addon" id="sizing-addon1">label</span>
-                              <input type="text" name="FieldLabel_{{ f }}" class="form-control" value="{{ field.FieldLabel }}" placeholder="label">
-                              
-                          </div> 
-                          
-
-                        </div>
-                        
-
-                      </div><!-- CLOSE ROW 1 -->
-
-                           
-                            <input type="hidden" name="FieldType_{{ f }}">
-                            <input type="hidden" name="FieldOrder_{{ f }}" value="{{ f }}">
-
-                            <div class="input-group input-group-sm">
-                              
-                              
-                            </div>
-                    <!-- SUBMIT -->
-                  </div> <!-- C. PORTLET CONTENT -->
-                </div> <!-- B. CLOSE PORTLET -->
+                    {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSemantic,field.FieldLabel) }}
 
                 
                   <!-- N FIELD END -->

@@ -412,45 +412,51 @@
 
 
 
-{% macro portlet(f) %}
+{% macro portlet(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSemantic,FieldLabel) %}
 
 <!-- N FIELD END -->         
 
-                <div id="portlet_{{ f }}" class="portlet"> <!-- B. -->
+                <div id="portlet_{{ FieldOrder }}" class="portlet"> <!-- B. -->
 
 
                   <!-- TAGS -->
-                  <input id="tagvalue_{{ f }}" type="hidden" name="FieldLayer_{{ f }}" value="">
+                  <input id="tagvalue_{{ FieldOrder }}" type="hidden" name="FieldLayer_{{ FieldOrder }}" value="{{ FieldLayer }}">
 
-                  <div class="tagged{{ f }} portlet-header bt-7">
+                  <div id="tagged{{ FieldOrder }}" class="portlet-header bt-{{ FieldLayer }}">
                   <!-- <div id="tagged{{ f }}" class="bt-7">G</div> -->
                     <table>
                       <tr>
                         <td><span class="handler m-10" ><i class="fa fa-bars fa-1x text-white"></i></span></td>
                         <td>
-                          <span class="label label-danger m-10">{{ f }}</span>
+                          <span class="label label-danger m-10">{{ FieldOrder }}</span>
                           
                         </td>
                         <td style="width:40%;">
-                          <input id="FieldName_{{ f }}" name="FieldName_{{ f }}" class="form-control input-sm" type="text" placeholder="name">
+                          {% if new == True %}
+                            <input id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control input-sm" type="text" placeholder="Field name">
+                          {%else%}
+                            <input id="FieldName_{{ FieldOrder }}disabled" name="FieldName_{{ FieldOrder }}disabled" class="form-control" type="text" value="{{ FieldName }}" disabled>
+                            <input id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" type="hidden" value="{{ FieldName }}">
+                          {% endif %}
                         </td>
                         <td>
-                          <select name="FieldWidget_{{ f }}" class="form-control input-sm" style="background-color:#666; color:white;">
-                                <option value="">SELECT ONE</option>
-                                <option>checkbox</option>
-                                <option>date</option>
-                                <option>file</option>
-                                <option>images</option>
-                                <option>items</option>
-                                <option>location</option>
-                                <option>password</option>
-                                <option>radio</option>
-                                <option>select</option>
-                                <option selected="">text</option>
-                                <option>textarea</option>
-                                <option>url</option>
-                                <option>url_flickr</option>
-                                <option>url_video</option>
+                       
+                          <select name="FieldWidget_{{ FieldOrder }}" class="form-control input-sm" style="background-color:#666; color:white;">
+                              <option value="">SELECT ONE</option>
+                              <option value="checkbox" {% if FieldWidget == "checkbox" %}selected=""{% endif %}>checkbox</option>
+                              <option value="date" {% if FieldWidget == "date" %}selected=""{% endif %}>date</option>
+                              <option value="file" {% if FieldWidget == "file" %}selected=""{% endif %}>file</option>
+                              <option value="images" {% if FieldWidget == "images" %}selected=""{% endif %}>images</option>
+                              <option value="items" {% if FieldWidget == "items" %}selected=""{% endif %}>items</option>
+                              <option value="location" {% if FieldWidget == "location" %}selected=""{% endif %}>location</option>
+                              <option value="password" {% if FieldWidget == "password" %}selected=""{% endif %}>password</option>
+                              <option value="radio" {% if FieldWidget == "radio" %}selected=""{% endif %}>radio</option>
+                              <option value="select" {% if FieldWidget == "select" %}selected=""{% endif %}>select</option>
+                              <option value="text" {% if FieldWidget == "text" %}selected=""{% endif %}>text</option>
+                              <option value="textarea" {% if FieldWidget == "textarea" %}selected=""{% endif %}>textarea</option>
+                              <option value="url" {% if FieldWidget == "url" %}selected=""{% endif %}>url</option>
+                              <option value="url_flickr" {% if FieldWidget == "url_flickr" %}selected=""{% endif %}>url_flickr</option>
+                              <option value="url_video" {% if FieldWidget == "url_video" %}selected=""{% endif %}>url_video</option>
                           </select>
                         </td>
                         <td style="background-color:red; " >
@@ -471,18 +477,21 @@
                         <div class="col-sm-7">
                           
                             <span class="label bg-gray margin-x-7">
-                              <input name="FieldRequired_{{ f }}" value="TRUE" type="checkbox">
+                              <input name="FieldRequired_{{ FieldOrder }}" value="TRUE" type="checkbox">
                               required
                             </span>
 
                             <span class="label bg-gray margin-x-7">
-                              <input name="FieldMultilingual_{{ f }}" value="TRUE" type="checkbox">
+                              <input name="FieldMultilingual_{{ FieldOrder }}" value="TRUE" type="checkbox">
                               multilingual
                             </span>
 
                             <span class="label bg-gray margin-x-7">
-                              <input name="FieldCardinality_{{ f }}" value="TRUE" type="checkbox">
-                              cardinal
+                              <select name="FieldCardinality_{{ FieldOrder }}">
+                                <option value="Single" {% if FieldCardinality == "Single" %} selected {% endif %} >Single</option>
+                                <option value="Multiple" {% if FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
+                              </select>
+                              Cardinality
                             </span>
 
                             
@@ -491,32 +500,32 @@
                             
                             <div class="input-group input-group-sm">
                                   <span class="input-group-addon" id="sizing-addon1">Field Hint</span>
-                                  <input type="text" name="FieldHint_{{ f }}" class="form-control" placeholder="What people see before typing "/>
+                                  <textarea name="FieldHint_{{ FieldOrder }}" class="form-control" placeholder="What people see before typing ">{{ FieldHint }}</textarea>
                             </div>
 
                             <div class="input-group input-group-sm">
                                   <span class="input-group-addon" id="sizing-addon1">Source</span>
-                                  <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="URI of "/>
+                                  <textarea name="FieldSource_{{ FieldOrder }}" class="form-control" placeholder="URI of ">{{ FieldSource }}</textarea>
                             </div>
                               
                               <!-- <div class="input-group input-group-sm">
                                 <span class="input-group-addon" id="sizing-addon1">Default</span>
                                 <input type="text" name="FieldDefault_{{ f }}" class="form-control" placeholder="in case you want to leave this"/>
                               </div> -->
-                              <input type="hidden" name="FieldDefault_{{ f }}">
+                              <input type="hidden" name="FieldDefault_{{ FieldOrder }}">
                              
                         </div>
                         <div class="col-sm-5">
 
                           <table>
                             <tr>
-                              <td><div id="tag1-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-1"></div></td>
-                              <td><div id="tag2-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-2"></div></td>
-                              <td><div id="tag3-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-3"></div></td>
-                              <td><div id="tag4-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-4"></div></td>
-                              <td><div id="tag5-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-5"></div></td>
-                              <td><div id="tag6-{{ f }}" class="treset{{ f }} r-tag bt-0 bc-6"></div></td>
-                              <td><div id="tag7-{{ f }}" class="treset{{ f }} r-tag bt-7 bc-7"></div></td>
+                              <td><div layer="1" class="treset{{ FieldOrder }} r-tag bt-0 bc-1"></div></td>
+                              <td><div layer="2" class="treset{{ FieldOrder }} r-tag bt-0 bc-2"></div></td>
+                              <td><div layer="3" class="treset{{ FieldOrder }} r-tag bt-0 bc-3"></div></td>
+                              <td><div layer="4" class="treset{{ FieldOrder }} r-tag bt-0 bc-4"></div></td>
+                              <td><div layer="5" class="treset{{ FieldOrder }} r-tag bt-0 bc-5"></div></td>
+                              <td><div layer="6" class="treset{{ FieldOrder }} r-tag bt-0 bc-6"></div></td>
+                              <td><div layer="7" class="treset{{ FieldOrder }} r-tag bt-7 bc-7"></div></td>
                             </tr>
                           </table>
 
@@ -525,11 +534,11 @@
 
                           <div class="input-group input-group-sm">
                             <span class="input-group-addon" id="sizing-addon1">Context</span>
-                            <textarea name="FieldSemantic_{{ f }}" class="form-control" placeholder="please provide context of what this field is. You can post a link to wikipedia or other website" rows="4" style="height:100%; width:100%;"></textarea>
+                            <textarea name="FieldSemantic_{{ FieldOrder }}" class="form-control" placeholder="URI" rows="4" style="height:100%; width:100%;">{{FieldSemantic}}</textarea>
                           </div>
                           <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">label</span>
-                              <input type="text" name="FieldLabel_{{ f }}" class="form-control" placeholder="label"/>
+                              <input type="text" name="FieldLabel_{{ FieldOrder }}" class="form-control" value="{{ FieldLabel }}" placeholder="label"/>
                             </div> 
                           
 
@@ -540,21 +549,11 @@
 
                             <!-- NEW ORDER -->
 
-                            
-
-                            <!-- TYPE -->
-                            <!-- <select name="FieldType_{{ f }}">
-                                      <option value="">SELECT ONE</option>
-                                      <option>INT</option>
-                                      <option selected="">TEXT</option>
-                                      <option>VARCHAR(120)</option>
-                            </select> -->
-                            <input type="hidden" name="FieldType_{{ f }}">
+                            <input type="hidden" name="FieldType_{{ FieldOrder }}">
+                            <input type="hidden" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}">
 
                             <div class="input-group input-group-sm">
-                              <!-- <span class="input-group-addon" id="sizing-addon1">Order</span>
-                              <input type="text" name="FieldOrder_{{ f }}" value="" class="form-control" placeholder="Order"/> -->
-                              <input type="hidden" name="FieldOrder_{{ f }}" value="{{ f }}">
+                              
                             </div>
                     <!-- SUBMIT -->
                   </div> <!-- C. PORTLET CONTENT -->
