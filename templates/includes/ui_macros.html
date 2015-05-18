@@ -1141,18 +1141,20 @@
           {{ fm_Specs(x.fc_Specs, '') }}           
         {% endif %}
 
+        
         {% if x.fc_Descriptions %}
           {{ fm_LangVersions(x.fc_Descriptions, '', x.fc_DescriptionsSize) }}
         {% endif %}
 
-        
-        {% if x.fc_Photos %}
-            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '' ) }}
-            <br/>
-         {% endif %}
+
+        {% if x.fc_SmartPhotos %}
+            {{ fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
+         
+        {% endif %}
+            
          
         {% if x.fc_Tags %}
-          {{ fm_Tags(x.fc_Tags, '') }}
+          {{ fm_ammenities(x.fc_Tags, name, '') }}
           <hr/>
         {% endif %}
         
@@ -1243,7 +1245,6 @@
 
           </div>
           
-            
           
           <div class="col-sm-6">
             {% if x.fc_SmallNotes %}
@@ -1256,8 +1257,14 @@
  
       </div>
       <div class="col-sm-5">
-        {% if x.fc_Photos %}
-            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '' ) }}
+        {% if x.fc_SmartPhotos %}
+            {{ fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
+        {% else %}
+          <spa class="label lst-4">No photos</spa>
+        {% endif %}
+
+         {% if x.fc_Photos %}
+            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '','100','left' ) }}
          {% endif %}
       </div>
 
@@ -1323,8 +1330,8 @@
  
       </div>
       <div class="col-sm-5">
-        {% if x.fc_Photos %}
-            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '' ) }}
+         {% if x.fc_Photos %}
+            {{ fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
          {% endif %}
       </div>
 
@@ -1436,13 +1443,78 @@
     <hr/>            
 {% endmacro %}
 
-{% macro fm_Photos(photoData, owner, name)%}
+
+
+{% macro fm_List(ListData) %}
+  <div class="col-sm-12">
+      
+      {% for key in ListData %}
+        {% for z in key[1] %}
+          
+
+            <span class="fw-c"> {{ ListData[key][0]}}: </span>
+            <span class=""> {{ ListData[key][1]}} </span>
+            <br/>
+          
+        {% endfor %}
+      {%endfor%}   
+      <hr/>       
+              
+  </div>
+{% endmacro %}
+
+{% macro fm_SmartPhotos(photoData, owner, name,size,float)%}
   <div class="row">
 
     <div class="col-sm-12">
       {% if name %}<p>{{name}}</p>{% endif %}
-      {% for y in photoData %}
-                    {{  PhotoMosaic(owner, y ,100,'left') }}
+
+      {% for key in photoData %}
+        {% for z in key[1] %}
+          
+            <div style="width:{{size}}px; float:{{float}}; padding:0 2px;">
+              <a href="https://avispa.myring.io/_images/{{ owner }}/o/{{ photoData[key][1]}}_o.jpg" class="text-left" target="_blank">
+                <img src="https://avispa.myring.io/_images/{{ owner }}/t150/{{ photoData[key][1]}}_t150.jpg" class="img-responsive">
+              </a>
+              {% if mask =='mbf' %} 
+                <div style="margin-top:-25px; margin-bottom:10px;">
+                  {{ labelPhoto(photoData[key][0], photoData[key][2]) }}
+                </div>
+              {% endif %}
+            </div>
+          
+        {% endfor %}
+      {%endfor%} 
+
+
+      
+      
+    </div>
+    <div class="col-sm-12">
+
+    </div>
+  </div>
+{% endmacro %}
+
+
+{% macro fm_Photos(photoData, owner, name,size,float)%}
+  <div class="row">
+
+    <div class="col-sm-12">
+      {% if name %}<p>{{name}}</p>{% endif %}
+
+      {% for item in photoData %}
+
+          <div style="width:{{size}}px; float:{{float}}; padding:0 2px;">
+            <a href="https://avispa.myring.io/_images/{{ owner }}/o/{{item}}_o.jpg" class="text-left" target="_blank">
+              <img src="https://avispa.myring.io/_images/{{ owner }}/t150/{{item}}_t150.jpg" class="img-responsive">
+            </a>
+            <div style="margin-top:-25px; margin-bottom:10px;">
+              {{ labelRes(1, 'ok-res') }}
+            </div>
+            
+          </div>
+                    
       {% endfor %} 
       
     </div>
@@ -1463,7 +1535,7 @@
         </td>
         <td>
             {% for item in y.list %}
-            {{ labelres(4, item , y.status) }} 
+            {{ labelRes(4, item , y.status) }} 
             {% endfor %}
         </td>
       </tr>
@@ -1482,7 +1554,7 @@
         </td>
         <td>
             {% for item in y.list %}
-            {{ label_ammenity(1, item, y.color) }} 
+            {{ labelAmmenity(1, item, y.color) }} 
             {% endfor %}
         </td>
       </tr>
@@ -1587,9 +1659,9 @@
                <img src="https://avispa.myring.io/_images/{{ owner }}/t150/{{item}}_t150.jpg" class="img-responsive">
 
           </a>
-          <!-- <div style="margin-top:-25px; margin-bottom:10px;">
-            {{ labelres(1, 'ok-res') }}
-          </div> -->
+          <div style="margin-top:-25px; margin-bottom:10px;">
+            {{ labelRes(1, 'ok-res') }}
+          </div>
           
         </div>
 
@@ -1609,8 +1681,7 @@
 
 
 
-{% macro labelres(q, text, s) %}
-  
+{% macro labelRes(q, text, s) %}
   <span class="label label_report
     {% if q==1 %} label-success
     {% elif q==2 %} label-warning
@@ -1621,11 +1692,30 @@
     {{ status_label(s) }}
     inline-block
     " >{{ text }}</span>
+{% endmacro %}
+
+
+{% macro labelPhoto(q, text) %}
+
+{% if q==1 %}
+  <spa class="label lst-1">hi res</spa>
+{% elif q==2 %}
+  <spa class="label lst-2">ok res</spa>
+{% elif q==3 %}
+  <spa class="label lst-3">review</spa>
+{% elif q==4 %}
+  <spa class="label lst-4">low res</spa>
+{% elif q==5 %}
+  <spa class="label lst-5">outdated</spa>
+{% elif q==6 %}
+  <spa class="label lst-6">No Photos</spa>
+{% endif %}
 
 {% endmacro %}
 
 
-{% macro label_ammenity(q, id, status) %}
+
+{% macro labelAmmenity(q, id, status) %}
 
   <span class="label_report
     {% if q==1 %} label-success

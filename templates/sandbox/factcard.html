@@ -11,8 +11,20 @@
 
 <body data-spy="scroll" data-target="#affix-nav" data-offset="180">
 <div class="container-fluid bg-07">
+<div class="row">
+  <div class="col-sm-offset-1 col-sm-10">
+    {% if mask =='mbf' %} 
+    Color Key: <span class="fw-c tst-1">green =</span> Confirmed |
+    <span class="fw-c tst-4">red =</span> Not Confirmed
+    {% endif %}
+
+    
+  </div>
+  
+</div>
 
 <div class="spa10"></div>
+
 
 <target id="start"></target>
  {{ ui.BizHead(data) }}
@@ -39,11 +51,6 @@
         </section>
       {% endif %}
 
-     
-
-
-
-
         {% if data.photos %}
           <section id="info2">
             <div class="row box box-widget p-10">
@@ -53,6 +60,7 @@
             </div>
           </section>
         {% endif %}
+
 
         {% if data.Includes %}
           <section id="info3">
@@ -77,13 +85,8 @@
           </div>
         </div>
 
-
-        
         {{ ui.FactCard_Rooms(data.Rooms) }}
         
-          
-
-
       </article>
       {% endif %}
 

@@ -943,10 +943,10 @@ def facts_001():
                 'fc_SubTitle':'Full Description',
                 'fc_DescriptionsSize':'1',
                 'fc_Descriptions': {
-                    'en': 'Midtown convenience. Classic hospitality. Complete comfort. A celebrated past. It all comes together at the Park Central New York Hotel. located squarely amidst New York`s most popular sights and hotels in Midtown Manhattan. Our mix of exciting amenities pay homage to our glamorous past, while presenting a modern spin on the hotel`s electrifying environment. Guests will delight in escaping the hectic city life to bask in the stylish Park Central New York.', 
-                    'sp': 'Conveniencia Midtown . Hospitalidad Classic. Total comodidad . Un pasado celebre . Todo confluye en el Hotel Parque Central de Nueva York. situado de lleno en medio de nuevas Yorks atracciones turisticas mas populares y hoteles en el centro de Manhattan . Nuestra mezcla de comodidades sorprendentes rendir homenaje a nuestro pasado glamoroso , al tiempo que presenta un giro moderno en el medio ambiente electrizante del hotel. Los huespedes se deleitaran con escapar del bullicio de la ciudad para tomar el sol en el elegante Parque Central de Nueva York.', 
-                    
-                    }
+                      'd1': ['en',1 ,'Midtown convenience. Classic hospitality. Complete comfort. A celebrated past. It all comes together at the Park Central New York Hotel. located squarely amidst New York`s most popular sights and hotels in Midtown Manhattan. Our mix of exciting amenities pay homage to our glamorous past, while presenting a modern spin on the hotel`s electrifying environment. Guests will delight in escaping the hectic city life to bask in the stylish Park Central New York.'], 
+                      'd2': ['sp',1,'Conveniencia Midtown . Hospitalidad Classic. Total comodidad . Un pasado celebre . Todo confluye en el Hotel Parque Central de Nueva York. situado de lleno en medio de nuevas Yorks atracciones turisticas mas populares y hoteles en el centro de Manhattan . Nuestra mezcla de comodidades sorprendentes rendir homenaje a nuestro pasado glamoroso , al tiempo que presenta un giro moderno en el medio ambiente electrizante del hotel. Los huespedes se deleitaran con escapar del bullicio de la ciudad para tomar el sol en el elegante Parque Central de Nueva York.'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                  }
                 }]# CLOSE
 
     data['Description'] = [{
@@ -955,10 +955,11 @@ def facts_001():
             'fc_SubTitle':'One Line Description',
             'fc_DescriptionsSize':'2',
             'fc_Descriptions': {
-                'en': 'The midtown new york city hotel Central to new york`s best', 
-                'sp': 'El hotel mejor situado en Midtown Manhattan, cerca de lo mejor de NewYork', 
-                
+                    'd1': ['en',1 ,'The midtown new york city hotel Central to new york`s best'], 
+                    'd2': ['sp',1,'El hotel mejor situado en Midtown Manhattan, cerca de lo mejor de NewYork'],  
+                    'd3': ['fr',4,'(not defined)'], 
                 }
+
             }]# CLOSE
 
     #CONTACT
@@ -1003,10 +1004,10 @@ def facts_001():
                     'fc_SubTitle':'History',
                     # Fields used:  History, History2, History3
                     'fc_Descriptions': {
-                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
-                        },
+                      'd1': ['en',1 ,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                    },
                     # HISTORY PHOTOS
                     'fc_Owner':'teamamerica',
                     # PHOTOS
@@ -1017,10 +1018,10 @@ def facts_001():
     data['OurStaff'] = [{
                     'fc_Title':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'ingles del product 1', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
-                        }
+                      'd1': ['en',4 ,'(not defined)'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                      }
                     }]# CLOSE
 
     data['curious'] = [{
@@ -1047,18 +1048,31 @@ def facts_001():
                     
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        }
 
                     }]# CLOSE
                     
     data['staff'] = [{
                     'fc_SubTitle':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'ingles del product 1', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
-                        },
+                      'd1': ['en',4 ,'(not defined)'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                      },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        }
+
 
                     }]# CLOSE
 
@@ -1083,12 +1097,18 @@ def facts_001():
                             'd3': ['Smoking','No'], 
                         },
                     'fc_Descriptions': {
-                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
-                        },
+                      'd1': ['en',4 ,'(not defined)'], 
+                      'd2': ['sp',4,'(not defined)'],  
+                      'd3': ['fr',4,'(not defined)'], 
+                      },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
@@ -1253,6 +1273,12 @@ def facts_002():
                     'fc_Owner':'teamamerica',
                     # PHOTOS
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        }
                     
 
                     }]# CLOSE
@@ -1308,6 +1334,12 @@ def facts_002():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
@@ -1359,6 +1391,12 @@ def facts_002():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['5260765449','4204319897','7568051980','7930459506','6776873592','3067507519','3706970137','1390223211'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
@@ -1412,6 +1450,12 @@ def facts_002():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['3621946540','4304442038','3964600599','9535813029','6822424476','2787176776','2731636522','1098120043','3419158938','5631973583'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
@@ -1464,6 +1508,12 @@ def facts_002():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        }
 
                     }]
 
@@ -1504,8 +1554,8 @@ def facts_004():
             'fc_DescriptionsSize':'1',
             'fc_Descriptions': {
                             'd1': ['en',1 ,'For over fourteen years, we have been providing the absolute best and safest way of bringing visitors and residents alike far off the beaten path to see, feel, and experience the real New York. You will find that on our tours, you will surely see the sights the typical tourist seldom sees!. Whether you want to maximize the amount of New York that you experience, want to learn a whole lot about what is behind our city, or just want to have an utter blast, come tour with us.'], 
-                            'd2': ['sp',4,'(not defined)'],  
-                            'd3': ['fr',4,'(not defined)'], 
+                            'd2': ['sp',4,'(not spanish translation)'],  
+                            'd3': ['it',4,'(not italian translation)'],
                         }
 
             }]# CLOSE
@@ -1518,8 +1568,8 @@ def facts_004():
                 'fc_DescriptionsSize':'2',
                 'fc_Descriptions': {
                             'd1': ['en',1 ,'Welcome to New York`s premier bicycle touring company'], 
-                            'd2': ['sp',4,'(not defined)'],  
-                            'd3': ['fr',4,'(not defined)'], 
+                            'd2': ['sp',4,'(not spanish translation)'],  
+                            'd3': ['it',4,'(not italian translation)'], 
                         }
                 }]# CLOSE
     #CONTACT
@@ -1549,7 +1599,7 @@ def facts_004():
     data['S_payments']=1
     #SOCIALMEDIA  
         # twitter
-    data['SM1']= "bikethebigapple"
+    data['SM1']= "http://twitter.com/bikethebigapple"
     data['S_SM1']= 1
         # facebook
     data['SM2']= "http://www.facebook.com/pages/Bike-the-Big-Apple/373495324184"
@@ -1583,23 +1633,27 @@ def facts_004():
                     # Fields used:  History, History2, History3
                     'fc_Descriptions': {
                         'd1': ['en',1 ,'For well over a decade, we have been proud to be the largest, most successful company to offer fully-escorted bicycle tours throughout the five boroughs of the Big Apple. We take you beyond the usual tourist spots that bus and walking tours usually miss. And travelling by bike, you will come to appreciate, is the perfect way to truly experience the diverse neighborhoods of the city. On a bike tour, you will feel as though you are really part of the neighborhood. Walking tours & bus tours are certainly a nice way to see the city but bikes offer the best of both worlds (and more!). When compared to a day as pedestrian in New York, our leisurely paced rides are effortless and cover much more ground. And, you are able to interact with your surroundings much more than when on a bus. We feel certain you will leave with stories and photos that even the `natives` do not know about. '], 
-                        'd2': ['sp',4,'(not defined)'],  
-                        'd3': ['fr',4,'(not defined)'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     # HISTORY PHOTOS
                     'fc_Owner':'teamamerica',
                     # PHOTOS
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            
+                        }
                     
-
                     }]# CLOSE
     data['staff'] = [{
                     'fc_SubTitle':'Our Staff',
                     'fc_Descriptions': {
                         'd1': ['en',1,'We are not a bike rental shop that also does bike tours or a walking/bus tour company that also does bike tours. Bike tours are all that we do. It is our focus, so we do it right. '],
-                        'd2': ['sp',4,'(not specified)'],
-                        'd3': ['fr',4,'(not specified)'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         
+                        },
+                    'fc_SmartPhotos': {
+                            
                         }
                     }]# CLOSE
 
@@ -1648,11 +1702,16 @@ def facts_004():
                     'S_fc_Specs':1,
                     'fc_Descriptions': {
                         'd1': ['en',1 ,'Great urban vistas that are typically not seen. Ethnic neighborhoods that are part of the unique mosaic of the city. This great bike tour combines them both!. Our tour begins with a ride over the imposing Queensboro Bridge high over the East River. Don`t be confused by this bridge`s identity. Immortalized in popular music under its nickname, the bridge has recently been officially renamed after one of the city`s most charismatic, zaniest mayors ever. Once we`ve entered Queens, we`ll head to Gantry State Park. At this historic location we can see restored `gantries` and learn about their critical role in the city`s commerce in the first part of the 20th century. The view across the East River, directly opposite the United Nations and what was the world`s tallest apartment building, provides an unforgettable photo opportunity.'], 
-                        'd2': ['sp',4,'(not specified)'],  
-                        'd3': ['fr',4,'(not specified)'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['4261055295','7452298333','7230214040'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'4261055295','ok'], 
+                            'p2': [2,'7452298333','ok'],  
+                            'p3': [3,'7230214040','ok'], 
+                            
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
@@ -1668,7 +1727,6 @@ def facts_004():
                             'd1': ['Notes','This tour leaves every Friday, year-round, weather permitting, at 10:00 am from the Upper East Side of Manhattan (near the 68th street on the #6 subway) (precise address will be given after booking is made). It is approximately 15 miles and will last about 7 hours. (It is also available, by special request, any weekday)']
                         },
                         'S_fc_SmallNotes':1
-
                 },
                 # CLOSE ITEM
                 # START ITEM B
@@ -1690,11 +1748,15 @@ def facts_004():
                     'S_fc_Specs':1,
                     'fc_Descriptions': {
                         'd1': ['en',1 ,'This special tour starts with a ride through the historic Lower East Side. Once the most densely populated neighborhood in the world(!), it is now a very `in` section with a thriving nightlife, as well as an authentic Soviet era, larger than life, statue of Lenin. Leaving Manhattan, we dive into the delights offered by the borough of Brooklyn as we pedal over the new Williamsburg Bridge bike path. We enter the `hip,` artistic neighborhood of Williamsburg and head to one of the Big Apple`s truly underground micro-brewery. Here you can sample its artisinal beers and ale, or stout on tap.'], 
-                        'd2': ['sp',4,'(not specified)'],  
-                        'd3': ['fr',4,'(not specified)'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['7893794577','3152079455','5947166861'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'7893794577','hi res'], 
+                            'p2': [2,'3152079455','ok res'],  
+                            'p4': [4,'5947166861','low res'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
@@ -1732,11 +1794,14 @@ def facts_004():
                     'S_fc_Specs':1,
                     'fc_Descriptions': {
                         'd1': ['en',1 ,'On this bike tour of Central Park and Harlem, we start on the East Side of Manhattan, the city`s wealthiest neighborhood with extravagant brownstones and mansions. Next door is Central Park, which never fails to amaze with its sheer natural beauty (all man-made). As we pedal through the park we`ll visit Strawberry Fields, the only `beach` on Manhattan Island, the North Woods loch, an authentic 3500 year old obelisk, an $18 million lawn, as well as one of the largest stands of still surviving magnificent elms in the western world. Highlights in Harlem include a live Sunday gospel service, as well as a dramatic poetry reading by the home of the `Black` Carl Sandberg. We`ll see Clinton`s new office and a former grand synagogue that is now a major Black church! We`ll even hear `Sachmo` playing a composition by `the Duke` beneath an unusual statue to this great composer. Enjoy a `Bike and Bite` soul food lunch in Harlem. '], 
-                        'd2': ['sp',4,'(not specified)'],  
-                        'd3': ['fr',4,'(not specified)'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['7078181063','8885682710'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'7078181063','hi res'], 
+                            'p2': [2,'8885682710','ok res'],   
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
@@ -1774,12 +1839,15 @@ def facts_004():
                     'S_fc_Specs':1,
                     'fc_Descriptions': {
                         'd1': ['en',1 ,'Get ready for a true New York bike tour that has you smack in the middle of New York City`s action. First, we head past Union Square, the place of every protest, from basic to bizarre. Next, we`re in Greenwich Village at the Stonewall Inn, symbol of the Gay Liberation movement. From `the Village,` we ride along the Hudson River Greenway to Wall Street, where we are caught up in the frantic pace of high finance. Bankers rub shoulders with bike messengers, and brokers down their lunch as fast as the fluctuation of the stock market. Then to Ground Zero, to experience that tragic day and the agonizing months that followed. In typical New York fashion, the city has bounced back. The new Number 7 World Trade Center, with its amazing streaming video, captures this sense of optimism.'], 
-                        'd2': ['sp',4,'(not specified)'],  
-                        'd3': ['fr',4,'(not specified)'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['2602344552','5054080943'],
-                    'fc_Tags':[{'name': 'Includes', 
+                    'fc_SmartPhotos': {
+                            'p1': [1,'2602344552'], 
+                            'p2': [2,'5054080943'],  
+                        },
+                    'fc_Tags':[{'name': 'Includes',
                                 'list': ['bike','helmet','insurance'],
                                 'status': 4
                                 }, 
@@ -1892,6 +1960,12 @@ def facts_005():
                     'fc_Owner':'teamamerica',
                     # PHOTOS
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        }
                     
 
                     }]# CLOSE
@@ -1950,6 +2024,11 @@ def facts_005():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_SmartPhotos': {
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance']
                                 }
@@ -1987,6 +2066,12 @@ def facts_005():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['bike','helmet','insurance']
                                 }
@@ -2023,6 +2108,12 @@ def facts_005():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['Tour guide','bike','helmet','insurance']
                                 }
@@ -2060,6 +2151,12 @@ def facts_005():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Tags':[{'name': 'Includes', 
                                 'list': ['Tour guide','bike','helmet','insurance']
                                 }
@@ -2180,7 +2277,12 @@ def facts_003():
                     'fc_Owner':'teamamerica',
                     # PHOTOS
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
-                    
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        }
 
                     }]# CLOSE
     data['OurStaff'] = [{
@@ -2235,6 +2337,12 @@ def facts_003():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
@@ -2286,6 +2394,12 @@ def facts_003():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
@@ -2339,6 +2453,12 @@ def facts_003():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
@@ -2391,6 +2511,12 @@ def facts_003():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        }
 
                     }]
 
@@ -2432,6 +2558,12 @@ def facts_00():
                         },
                     'fc_Owner':'teamamerica',
                     'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                        },
                     'fc_Links': {
                             'd1': ['Website','http://www.myring.io'], 
                             'd2': ['NewYork TImes','http://www.myring.io'],  
