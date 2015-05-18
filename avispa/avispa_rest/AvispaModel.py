@@ -1355,9 +1355,13 @@ class AvispaModel:
             #FLAGS
 
             #Lets check if there is a flag object in the document
+            if type(item.flags) is list:
+                item.flags = []
+                item.flags[0] = {}
+
+
             if field['FieldName'] not in item.flags[0]:
                 item.flags[0][field['FieldName']] = ''
-
 
             old_flag = unicode(item.flags[0][field['FieldName']])
             new_flag = unicode(request.form.get('flag_'+field['FieldName'])) 
