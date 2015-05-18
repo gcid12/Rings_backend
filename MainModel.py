@@ -257,6 +257,7 @@ class MainModel:
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
         #print('iterview result for '+dbview+' with key '+key+':',result)
+        #options: key, startkey, endkey
         
         if batch == 1:
             for r in result:     
@@ -269,6 +270,24 @@ class MainModel:
 
 
         return False
+
+    def select_multiple_users_doc_view(self,dbview,batch,user_database=None):
+
+        #BUG I tried factorizing this with select_user_doc_view but it is showing users as organizations. 
+        # By just changing key for startkey
+
+        if not user_database : 
+            user_database = self.user_database
+
+        if not batch : 
+            batch = 500
+
+        db = self.select_db(self.user_database)
+        options = {}
+        
+        result = db.iterview(dbview,batch,**options)
+
+        return result
 
     def select_ring_doc_view(self,ringdb,dbview,key,batch=None):
 

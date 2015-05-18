@@ -1357,7 +1357,7 @@ class AvispaModel:
             #Lets check if there is a flag object in the document
             if type(item.flags) is list:
                 item.flags = []
-                item.flags[0] = {}
+                item.flags.append({})
 
 
             if field['FieldName'] not in item.flags[0]:
@@ -1411,11 +1411,12 @@ class AvispaModel:
                 for old_r in old_rich:
                     old_rich_dictionary[old_r['_source']] = old_r
                 #2. Check if we got a 404
-                for new_rich_value in r_rich_values[field['FieldName']]:
-                    if 'error' in new_rich_value:
-                        #3. Check if we can at least have old version (better than nothing)
-                        if new_rich_value['_source'] in old_rich_dictionary: 
-                            new_rich_value = old_rich_dictionary[new_rich_value['_source']]
+                if field['FieldName'] in r_rich_values:
+                    for new_rich_value in r_rich_values[field['FieldName']]:
+                        if 'error' in new_rich_value:
+                            #3. Check if we can at least have old version (better than nothing)
+                            if new_rich_value['_source'] in old_rich_dictionary: 
+                                new_rich_value = old_rich_dictionary[new_rich_value['_source']]
 
                 if r_rich_values:
                     #item.rich[0][field['FieldName']]            
