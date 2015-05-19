@@ -44,7 +44,8 @@ class RingBuilder:
 
             pinput = collections.OrderedDict()
 
-            ringname = request.form.get('RingName').lower() # I dont like this here
+            ringname = request.form.get('RingName').lower().replace(' ','') # I dont like this here
+
             handle = handle.lower()
             if request.form.get('RingVersion'):
                 ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
