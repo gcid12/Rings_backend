@@ -398,14 +398,15 @@ def mbf_signup_post():
     if complete == 5:
 
         #cafile = 'cacert.pem' # http://curl.haxx.se/ca/cacert.pem
-        cafile = '/etc/ssl/public.crt'
+        
+        cert=('/etc/ssl/public.crt', '/etc/ssl/avispa.myring.io.key')
 
         try:
             # _api/_register . Create the user
             print('r1')
             api_url = 'https://avispa.myring.io/_api/_register?token=qwerty1234'
             payload = {'username':username, 'email':email, 'password':password, 'confirm':confirm}
-            r1 = requests.post(api_url,data=payload,verify=cafile)
+            r1 = requests.post(api_url,data=payload,cert=cert)
             print(r1.text)
             q1 = json.loads(r1.text)
             print(q1)
@@ -419,7 +420,7 @@ def mbf_signup_post():
                 # _api/_orgregister . Create the organization
                 api_url = 'https://avispa.myring.io/_api/_orgregister?token=qwerty1234'
                 payload = {'username':orgusername, 'email':email, 'owner':username}
-                r2 = requests.post(api_url,data=payload,verify=cafile)
+                r2 = requests.post(api_url,data=payload,cert=cert)
                 print(r2.text)
                 q2 = json.loads(r2.text)
 
@@ -430,7 +431,7 @@ def mbf_signup_post():
                     api_url = 'https://avispa.myring.io/_api/'+orgusername+'/_collections?token=qwerty1234'
                     colname = 'business_facts'
                     payload = {'CollectionName':colname}
-                    r3 = requests.post(api_url,data=payload,verify=cafile)
+                    r3 = requests.post(api_url,data=payload,cert=cert)
                     print(r3.text)
                     q3 = json.loads(r3.text)
 
@@ -450,7 +451,7 @@ def mbf_signup_post():
                         success = True
                         for r in ringlist: 
                             payload = {'ringurl':r}
-                            r4 = requests.post(api_url,data=payload,verify=cafile)
+                            r4 = requests.post(api_url,data=payload,cert=cert)
                             print(r4.text)
                             q4 = json.loads(r4.text)
                             if 'Success' not in q4:
