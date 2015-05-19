@@ -400,7 +400,7 @@ def mbf_signup_post():
         try:
             # _api/_register . Create the user
             print('r1')
-            api_url = 'http://0.0.0.0:8080/_api/_register?token=qwerty1234'
+            api_url = 'https://avispa.myring.io/_api/_register?token=qwerty1234'
             payload = {'username':username, 'email':email, 'password':password, 'confirm':confirm}
             r1 = requests.post(api_url,data=payload)
             print(r1.text)
@@ -414,7 +414,7 @@ def mbf_signup_post():
                 print('r2')
                 flash(q1['Message'],'UI')
                 # _api/_orgregister . Create the organization
-                api_url = 'http://0.0.0.0:8080/_api/_orgregister?token=qwerty1234'
+                api_url = 'https://avispa.myring.io/_api/_orgregister?token=qwerty1234'
                 payload = {'username':orgusername, 'email':email, 'owner':username}
                 r2 = requests.post(api_url,data=payload)
                 print(r2.text)
@@ -424,7 +424,7 @@ def mbf_signup_post():
                     print('r3')
                     flash(q2['Message'],'UI')
                     # _api/USER/_collections . Create the collection
-                    api_url = 'http://0.0.0.0:8080/_api/'+orgusername+'/_collections?token=qwerty1234'
+                    api_url = 'https://avispa.myring.io/_api/'+orgusername+'/_collections?token=qwerty1234'
                     colname = 'business_facts'
                     payload = {'CollectionName':colname}
                     r3 = requests.post(api_url,data=payload)
@@ -435,8 +435,8 @@ def mbf_signup_post():
                         print('r4')
                         flash(q3['Message'],'UI')
                         # Create the ring in the collection
-                        api_url = 'http://0.0.0.0:8080/_api/'+orgusername+'/_collections/'+colname+'?token=qwerty1234'
-                        ringurl = 'http://0.0.0.0:8080/_api/blalab/arboles'
+                        api_url = 'https://avispa.myring.io/_api/'+orgusername+'/_collections/'+colname+'?token=qwerty1234'
+                        ringurl = 'https://avispa.myring.io/_api/blalab/arboles'
                         payload = {'ringurl':ringurl}
                         r4 = requests.post(api_url,data=payload)
                         print(r4.text)
