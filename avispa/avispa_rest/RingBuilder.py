@@ -145,7 +145,7 @@ class RingBuilder:
                 print(schema) 
                 #Generate pinput from schema
                 
-                if ringversion:
+                if schema['rings'][0]['RingVersion']:
                     ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
 
                 requestparameters = {}
