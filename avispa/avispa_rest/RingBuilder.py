@@ -144,8 +144,9 @@ class RingBuilder:
                 schema = self.AVM.ring_get_schema_from_view(origin_handle,ringdbname)
                 print(schema) 
                 #Generate pinput from schema
-
-                ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
+                
+                if ringversion:
+                    ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
 
                 requestparameters = {}
 
