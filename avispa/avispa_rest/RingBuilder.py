@@ -147,6 +147,8 @@ class RingBuilder:
                 
                 if schema['rings'][0]['RingVersion']:
                     ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
+                else:
+                    ringversion = None
 
                 requestparameters = {}
 
