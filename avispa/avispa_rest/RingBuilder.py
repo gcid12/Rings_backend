@@ -148,7 +148,7 @@ class RingBuilder:
                 if schema['rings'][0]['RingVersion']:
                     ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
                 else:
-                    ringversion = None
+                    ringversion = ''
 
                 requestparameters = {}
 
@@ -252,7 +252,7 @@ class RingBuilder:
 
             try: 
                 self.AVM.ring_set_db(handle,ringname,ringversion)
-                print('New Ring database created:'+handle+'_'+ringname+'_'+ringversion)
+                print('New Ring database created:'+handle+'_'+ringname)
             except(PreconditionFailed):
                 print('The Ring '+ ringname +' database already exists')
                 flash('The Ring '+ ringname+'_'+ringversion +' already exists','ER')

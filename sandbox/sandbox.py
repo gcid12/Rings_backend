@@ -365,6 +365,57 @@ def mbf_signup():
 
     return render_template("/sandbox/mbf_signup.html", data=data) 
 
+@sandbox.route("/rq_test", methods=["GET"])
+def requests_test_get():
+
+    data = {}
+
+    return render_template("/sandbox/rq_test_form.html", data=data) 
+
+
+@sandbox.route("/rq_test", methods=["POST"])
+def requests_test_post():
+
+    complete = 0
+
+    if 'username' in request.form:
+        username = request.form.get('username')
+        complete += 1
+
+    if 'email' in request.form:
+        email = request.form.get('email')
+        complete += 1
+
+    if 'password' in request.form:
+        password = request.form.get('password')
+        complete += 1
+
+    if 'confirm' in request.form:
+        confirm = request.form.get('confirm')
+        complete += 1
+
+    if 'orgusername' in request.form:
+        orgusername = request.form.get('orgusername')
+        complete += 1
+    
+    
+    #api_url = 'https://avispa.myring.io/_register'
+    api_url = 'https://avispa.myring.io/_api/_register?token=qwerty1234'
+    payload = {'username':username, 'email':email, 'password':password, 'confirm':confirm}
+
+    #api_url = 'http://0.0.0.0:8080/_api/_orgregister?token=qwerty1234'
+    #payload = {'username':orgusername, 'email':email, 'owner':username}
+    #r2 = requests.get(api_url)
+    r1 = requests.post(api_url,data=payload,verify=False)
+    print(r1.text)
+    #q2 = json.loads(r2.text)
+
+    data = {}
+    data['ok'] = True
+    #data['q2'] = q2
+
+    return render_template("/sandbox/rq_test.html", data=data) 
+
 
 
 @sandbox.route("/mbf_signup", methods=["POST"])
@@ -401,12 +452,14 @@ def mbf_signup_post():
         
         cert=('/etc/ssl/public.crt', '/etc/ssl/avispa.myring.io.key')
 
-        try:
+        #try:
+        if(True):
             # _api/_register . Create the user
             print('r1')
             api_url = 'https://avispa.myring.io/_api/_register?token=qwerty1234'
             payload = {'username':username, 'email':email, 'password':password, 'confirm':confirm}
-            r1 = requests.post(api_url,data=payload,cert=cert)
+            #r1 = requests.post(api_url,data=payload,cert=cert)
+            r1 = requests.post(api_url,data=payload,verify=False)
             print(r1.text)
             q1 = json.loads(r1.text)
             print(q1)
@@ -419,8 +472,11 @@ def mbf_signup_post():
                 flash(q1['Message'],'UI')
                 # _api/_orgregister . Create the organization
                 api_url = 'https://avispa.myring.io/_api/_orgregister?token=qwerty1234'
+                #api_url = 'http://0.0.0.0:8080/_api/_orgregister?token=qwerty1234'
                 payload = {'username':orgusername, 'email':email, 'owner':username}
-                r2 = requests.post(api_url,data=payload,cert=cert)
+                #r2 = requests.post(api_url,data=payload,cert=cert)
+                r2 = requests.post(api_url,data=payload,verify=False)
+                
                 print(r2.text)
                 q2 = json.loads(r2.text)
 
@@ -431,7 +487,8 @@ def mbf_signup_post():
                     api_url = 'https://avispa.myring.io/_api/'+orgusername+'/_collections?token=qwerty1234'
                     colname = 'business_facts'
                     payload = {'CollectionName':colname}
-                    r3 = requests.post(api_url,data=payload,cert=cert)
+                    #r3 = requests.post(api_url,data=payload,cert=cert)
+                    r3 = requests.post(api_url,data=payload,verify=False)
                     print(r3.text)
                     q3 = json.loads(r3.text)
 
@@ -451,7 +508,8 @@ def mbf_signup_post():
                         success = True
                         for r in ringlist: 
                             payload = {'ringurl':r}
-                            r4 = requests.post(api_url,data=payload,cert=cert)
+                            #r4 = requests.post(api_url,data=payload,cert=cert)
+                            r4 = requests.post(api_url,data=payload,verify=False)
                             print(r4.text)
                             q4 = json.loads(r4.text)
                             if 'Success' not in q4:
@@ -466,31 +524,32 @@ def mbf_signup_post():
                             flash(q4['Message'],'ER')
 
                             #THIS SHOULD LOGIN THE USER, GO TO THE ORG ANYWAY. THE NEXT STEP WILL CHECK AND REPAIR IF NEEDED
-                            return redirect('/_sandbox/mbf_signup')
+                            return redirect('/_widget/mbf_signup')
                     else:
                         # The collection could not be created
                         flash(q3['Message'],'ER')
 
                         #THIS SHOULD LOGIN THE USER, GO TO THE ORG ANYWAY. THE NEXT STEP WILL CHECK AND REPAIR IF NEEDED
-                        return redirect('/_sandbox/mbf_signup')
+                        return redirect('/_widget/mbf_signup')
                 else:
                     # The org could not be created
                     flash(q2['Message'],'ER')
 
                     #THIS SHOULD LOGIN THE USER AND SHOW PARTIAL mbf_signup => ORGUSERNAME PART ONLY
-                    return redirect('/_sandbox/mbf_signup?orgusername='+orgusername)
+                    return redirect('/_widget/mbf_signup?orgusername='+orgusername)
             else:
                 # The user could not be created
                 flash(q1['Message'],'ER')
 
-                return redirect('/_sandbox/mbf_signup?username='+username+'&email='+email+'&orgusername='+orgusername)
+                return redirect('/_widget/mbf_signup?username='+username+'&email='+email+'&orgusername='+orgusername)
 
-        except:
+        #except:
+        else:
             print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
             print('There was an API exception. 500')
             flash('There was an API exception. 500','ER')
             data = {}
-            return render_template("/sandbox/mbf_signup.html", data=data) 
+            return render_template("/widget/mbf_signup.html", data=data) 
         #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
         
         #print('Raw JSON schema:')
