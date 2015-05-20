@@ -9,7 +9,7 @@ def login_user_by_email(email,username):
 
     
     userObj = User(email=email)
-    userview = userObj.get_user()
+    user = userObj.get_user()
     print(userObj)
 
     mpp = {'status':'OK'}
@@ -17,12 +17,15 @@ def login_user_by_email(email,username):
     flash({'f':'alias','v':username},'MP')
 
     if login_user(userObj, remember="no"):
+
+        #print('CURRENT USER',current_user.id)
+        print('user.id',user.id)
         flash("Logged in. Welcome to MyRing!",'UI')
 
         mpp = {'status':'OK','msg':'Automatic'}
         flash({'f':'track','v':'_login','p':mpp},'MP')
         #flash({'track':'_login OK, Automatic'},'MP')
-        #return redirect('/'+userview.id+'/_home') 
+        #return redirect('/'+user.id+'/_home') 
         return True 
 
     else:
@@ -465,6 +468,7 @@ def mbf_signup_post():
             print(q1)
 
             login_result = login_user_by_email(email,username)
+            print('login_result',login_result)
 
 
             if q1['Success']:

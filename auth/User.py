@@ -97,10 +97,12 @@ class User(UserMixin):
     def get_user(self):
 
         try:
-            #print('flag1')
+            print('get_user_flag1')
             if self.email:
+                print('self.email',self.email)
                 dbUser =self.ATM.userdb_get_user_by_email(self.email)
             elif self.username:
+                print('self.username',self.username)
                 dbUser =self.ATM.userdb_get_user_by_handle(self.username)
 
             
@@ -118,6 +120,7 @@ class User(UserMixin):
                 self.id = dbUser['value']['_id']
                 return self
             else:
+                print('User not found')
                 return None
         except(KeyError):
             print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]

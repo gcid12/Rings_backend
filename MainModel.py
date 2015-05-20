@@ -602,7 +602,8 @@ class MainModel:
 
 
     def user_belongs_org_team(self,username,org,team=None,ring=None):
-        print('Will chech if '+username+' belongs to a team ')
+   
+        print('Will check if '+username+' belongs to a team ')
         rolelist = []
         result = self.select_user_doc_view('orgs/peopleteams',org)
         if result:
