@@ -1424,8 +1424,6 @@
       </div> <!-- close tab panel --> 
     </div>
   </div>
-
-
 {% endmacro %}
 
 
@@ -1467,6 +1465,9 @@
   <div class="row">
 
     <div class="col-sm-12">
+
+
+
       {% if name %}<p>{{name}}</p>{% endif %}
 
       {% for key in photoData %}
@@ -1476,10 +1477,12 @@
               <a href="https://avispa.myring.io/_images/{{ owner }}/o/{{ photoData[key][1]}}_o.jpg" class="text-left" target="_blank">
                 <img src="https://avispa.myring.io/_images/{{ owner }}/t150/{{ photoData[key][1]}}_t150.jpg" class="img-responsive">
               </a>
-              {% if mask =='mbf' %} 
+              {% if mode =='showstatus' %}
+              
                 <div style="margin-top:-25px; margin-bottom:10px;">
                   {{ labelPhoto(photoData[key][0], photoData[key][2]) }}
                 </div>
+              
               {% endif %}
             </div>
           
@@ -1576,8 +1579,7 @@
         </a>
 
       {% endfor %}
-    {%endfor%} 
-            
+    {%endfor%}         
 {% endmacro %}
 
 {% macro fm_Schedule(scheduleData, name) %}
@@ -1668,15 +1670,14 @@
 {% endmacro %}
 
 
-
 {% macro lorem() %}
-<p>
+  <p>
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam varius risus sed purus egestas dictum. Integer enim lectus, elementum faucibus odio nec, scelerisque scelerisque sapien. Duis facilisis odio arcu, sed euismod dui accumsan in. Pellentesque a leo in massa rhoncus pretium. Suspendisse a dictum sem, nec malesuada enim. Mauris non nisl quis nulla laoreet lobortis quis nec justo. Mauris dictum mauris erat. Pellentesque vel hendrerit urna. Aliquam sollicitudin non ex quis accumsan. Suspendisse tincidunt quam urna, ut scelerisque lorem malesuada sed. 
-</p>
+  </p>
 {% endmacro %}
 
 {% macro flag01(text) %}
-  <span style="background-color:yellow;">{{ text }}</span>
+   <span style="background-color:yellow;">{{ text }}</span>
 {% endmacro %}
 
 
@@ -1697,19 +1698,19 @@
 
 {% macro labelPhoto(q, text) %}
 
-{% if q==1 %}
-  <spa class="label lst-1">hi res</spa>
-{% elif q==2 %}
-  <spa class="label lst-2">ok res</spa>
-{% elif q==3 %}
-  <spa class="label lst-3">review</spa>
-{% elif q==4 %}
-  <spa class="label lst-4">low res</spa>
-{% elif q==5 %}
-  <spa class="label lst-5">outdated</spa>
-{% elif q==6 %}
-  <spa class="label lst-6">No Photos</spa>
-{% endif %}
+  {% if q==1 %}
+    <spa class="label lst-1">hi res</spa>
+  {% elif q==2 %}
+    <spa class="label lst-2">ok res</spa>
+  {% elif q==3 %}
+    <spa class="label lst-3">review</spa>
+  {% elif q==4 %}
+    <spa class="label lst-4">low res</spa>
+  {% elif q==5 %}
+    <spa class="label lst-5">outdated</spa>
+  {% elif q==6 %}
+    <spa class="label lst-6">No Photos</spa>
+  {% endif %}
 
 {% endmacro %}
 
@@ -1815,7 +1816,6 @@
 
   </span>
   
-
 {% endmacro %}
 
 
