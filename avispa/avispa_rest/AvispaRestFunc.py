@@ -676,6 +676,7 @@ class AvispaRestFunc:
             
 
         d = {'redirect': redirect, 'status':200}
+        d = {'message': 'Using delete_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
         return d
 
     def delete_rq_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
