@@ -1265,34 +1265,42 @@ def facts_001():
 
     return render_template("/sandbox/factcard.html", data=data)  
 
-
-
-@sandbox.route("/facts/ecruises", methods=["GET", "POST"])
+@sandbox.route('/facts/ecruises/<showme>')
 #@login_required
-def facts_002():
+def facts_002(showme):
 
     data = {}
     data['mask']= "mbf"
+    data['mode']= showme
+    data['slug']= "ecruises"
 
     # HOTEL INFO
     
-    data['Name']= "Entertainment Cruises NY" 
+    data['Name']= "Entertainment Cruises NY"
+    data['S_Name']= 1 
     data['Address']= "Pier 62, Chelsea Piers Suite 200"
-    data['City']= "NewYork"
+    data['S_Address']= 1
+    data['City']= "New York"
+    data['S_City']= 1
     data['State']= "NY"
+    data['S_State']= 1
     data['Zip']= "10011"
+    data['S_Zip']= 1
     data['Industry']= ""
+    data['S_Industry']= 4
     data['Description'] = [{
             #This USES THE FACTCARD MACRO
             #Title of the card
             'fc_SubTitle':'Full Description',
             'fc_DescriptionsSize':'1',
             'fc_Descriptions': {
-                'en': 'Get up close to the Statue of Liberty and travel under the iconic Brooklyn Bridge. Come out for a cruise on beautiful New York Harbor from your choice of our dock at Chelsea Piers or Lincoln Harbor Marina in Weehawken, New Jersey.', 
-                'sp': 'espanol del product 1', 
-                'fr': 'frances del product 1'
-                }
+                            'd1': ['en',1 ,'Get up close to the Statue of Liberty and travel under the iconic Brooklyn Bridge. Come out for a cruise on beautiful New York Harbor from your choice of our dock at Chelsea Piers or Lincoln Harbor Marina in Weehawken, New Jersey.'], 
+                            'd2': ['sp',4,'(Not spanish translation.)'],  
+                            'd3': ['it',4,'(Not italian translation.)'],
+                        }
+
             }]# CLOSE
+
 
     data['OneLine'] = [{
                 #This USES THE FACTCARD MACRO
@@ -1300,317 +1308,269 @@ def facts_002():
                 'fc_SubTitle':'One Line Description',
                 'fc_DescriptionsSize':'2',
                 'fc_Descriptions': {
-                    'en': 'Entertainment Cruises, dining cruises, yacht charters and sightseeing tours.', 
-                    'sp': 'espanol del product 1', 
-                    'fr': 'frances del product 1'
-                    }
+                            'd1': ['en',1 ,'Entertainment Cruises, dining cruises, yacht charters and sightseeing tours.'], 
+                            'd2': ['sp',4,'(not spanish translation)'],  
+                            'd3': ['it',4,'(not italian translation)'], 
+                        }
                 }]# CLOSE
     #CONTACT
+    data['S_Website']= 1
     data['Website']= "http://www.bateauxnewyork.com/new-york-metro"
-    data['Mail']= "x12"
+    data['Mail']= "explore@bikethebigapple.com "
+    data['S_Mail']= 1
     data['Phone']= "866-817-3463"
+    data['S_Phone']= 1
     data['Fax']= ""
+    data['S_Fax']= 4
     data['Newsletter']= ""
-    data['Blog']= "http://www.entertainmentcruises.com/blog/"
+    data['S_Newsletter']= 5
+    data['Blog']= "ttp://www.entertainmentcruises.com/blog/"
+    data['S_Blog']= 1
 
     #DETAILS
     data['Founded']= "x18"
+    data['S_Founded']= 1
     data['Closed']= "x18"
+    data['SClosed']= 1
     data['ResAge']= "x09"
+    data['S_ResAge']= 1
     data['Founded']= "x10"
+    data['S_Founded']= 1
     data['payments']="x12"
+    data['S_payments']=1
     #SOCIALMEDIA  
         # twitter
-    data['SM1']= "entertaincruise"
+    data['SM1']= "http://twitter.com/entertaincruise"
+    data['S_SM1']= 1
         # facebook
     data['SM2']= "https://www.facebook.com/BateauxNewYork"
+    data['S_SM2']= 1
         # instagram
     data['SM3']= "ecnewyork"
+    data['S_SM3']= 4
         # youtube
     data['SM4']= "ecnewyork"
+    data['S_SM4']= 4
         #Other Links
-    data['LINK1']= "x23"
-    data['LINK2']= "x23"
-    data['LINK3']= "x23"
-    data['LINK4']= "x23"
+    data['LINK1']= ""
+    data['S_LINK1']= 1
+    data['LINK2']= ""
+    data['S_LINK2']= 1
+    data['LINK3']= ""
+    data['S_LINK3']= 1
+    data['LINK4']= ""
+    data['S_LINK4']= 1
     #HISTORY
-    data['Facts']= "x14"
-    data['Awards']= "x14"
-    data['FAQ']= "x14"
-    data['FactualID']= "x14"
+    data['Facts']= ""
+    data['S_Facts']= 1
+    data['Awards']= ""
+    data['S_Awards']= 1
+    data['FAQ']= ""
+    data['FactualID']= ""
     data['history'] = [{
                     #This USES THE FACTCARD MACRO
                     #Title of the card
                     'fc_SubTitle':'History',
                     # Fields used:  History, History2, History3
                     'fc_Descriptions': {
-                        'en': 'Entertainment Cruises roots date back to 1978 when the Spirit of Norfolk was christened and began cruising the historic Elizabeth River. Today, we have 30 boats across nine locations and host more than 1.5 million guests each year. Our shipmates feel privileged to share in our guests special celebrations - and help make their experiences with us memorable. ', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'Entertainment Cruises roots date back to 1978 when the Spirit of Norfolk was christened and began cruising the historic Elizabeth River. Today, we have 30 boats across nine locations and host more than 1.5 million guests each year. Our shipmates feel privileged to share in our guests special celebrations - and help make their experiences with us memorable.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     # HISTORY PHOTOS
                     'fc_Owner':'teamamerica',
                     # PHOTOS
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
                     'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            
                         }
                     
-
                     }]# CLOSE
-    data['OurStaff'] = [{
-                    'fc_Title':'Our Staff',
+    data['staff'] = [{
+                    'fc_SubTitle':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'ingles del product 1', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1,' No Description'],
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
+                        
+                        },
+                    'fc_SmartPhotos': {
+                            
                         }
                     }]# CLOSE
 
     data['curious'] = [{
-                    'fc_SubTitle':'Curious Facts',
+                    'fc_SubTitle':'Facts',
                     'fc_Specs': {
-                            'd1': ['1978','Spirit Cruises is founded in Norfolk, Virginia'], 
-                            'd2': ['1978-1988','Spirit launches in Boston, Chicago, New York, Philadelphia and Washington DC'],  
-                            'd3': ['1991','Odyssey launches at Navy Pier in Chicago'], 
-                            'd4': ['1993-1995','Odyssey expands to Boston and Washington DC'], 
-                            'd5': ['1996','Seadog, a speedboat excursion and architectural tour, is introduced at Chicago`s Navy Pier'], 
-                            'd6': ['1998','Mystic Blue begins cruising in Chicago'], 
-                            'd7': ['2006','Entertainment Cruises purchases Baltimore`s Harbor Cruises'], 
-                            'd8': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
-                            'd9': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
-                            'd10': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
+                            'd1': ['Fact1','We have presence in 8 cities'], 
+                            'd2': ['Fact2','Miles navigated each year'],  
+                            'd3': ['Fact3','Our most popular cruise is Bateaux'], 
                         },
                     }]# CLOSE
 
     data['contact'] = [{
                     'fc_SubTitle':'Contact',
                     'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
+                            'd1': ['Website','http://www.entertainmentcruises.com/our-cities/new-york'], 
+                            'd2': ['Mail','explore@bikethebigapple.com'],  
+                            'd3': ['Phone','866-433-9283'], 
                         }
 
                     }]# CLOSE
 
-    data['Services'] = [{
+    data['Services'] = [
+
+                # START ITEM A
+                {
                     'fc_Title':'Bateaux New York',
+                    'S_fc_Title':1,
                     'fc_SubTitle':'Upscale. Exceptional.',
+                    'S_fc_SubTitle':1,
                     'fc_Category':'Cruise Waterfront',
+                    'S_fc_Category':1,
                     'fc_Specs': {
                             'd1': ['Category','Dinning Cruise'], 
                             'd2': ['Minimum Booking Age','18'],  
                             'd3': ['Attire','Casual'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'Get ready for the ultimate dining experience. Cruising year-round from Chelsea Piers, European-inspired Bateaux New York offers champagne brunch, lunch, dinner and full moon cruises, plus dozens of holiday cruises.', 
-                        'sp': 'Preparate para la mas emocionante experiencia mientras comes una cena de lujo. Operamos todo el ano desde el puerto de Chelsea. Inspirado en el estilo europeo, ofrecemos champagne, brunch, lunch, comidas y cruceros de luna llena, ademas de muchas experiencias en distintas fiestas y aniversarios. ',
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'Get ready for the ultimate dining experience. Cruising year-round from Chelsea Piers, European-inspired Bateaux New York offers champagne brunch, lunch, dinner and full moon cruises, plus dozens of holiday cruises.'], 
+                        'd2': ['sp',4,'Preparate para la mas emocionante experiencia mientras comes una cena de lujo. Operamos todo el ano desde el puerto de Chelsea. Inspirado en el estilo europeo, ofrecemos champagne, brunch, lunch, comidas y cruceros de luna llena, ademas de muchas experiencias en distintas fiestas y aniversarios.'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            'p4': [4,'6896928037','ok'],
+                            
                         },
-                    'fc_Links': {
-                            'd1': ['Website','http://www.myring.io'], 
-                            'd2': ['NewYork TImes','http://www.myring.io'],  
-                            'd3': ['TimeOut','http://www.myring.io'], 
-                        },
-                    'fc_Tags':[{'name': 'Business', 
-                                'list': ['a_001','a_002','a_003']
-                                },
-                                {'name': 'Beauty', 
-                                'list': ['b_001','b_002','b_003']
-                                }
-                                
-                            ],
-
+                    
                     'fc_Schedule': {
-                            'd1': ['Monday','14:00','21:00'], 
-                            'd2': ['Tuesday','10:00','21:00'],  
-                            'd3': ['Wednesday','10:00','21:00'], 
-                            'd4': ['Thursday','10:00','21:00'], 
-                            'd5': ['Friday','10:00','21:00'], 
-                            'd6': ['Saturday','11:00','19:00'], 
-                            'd7': ['Sunday','11:00','19:00'], 
+                            'd1': ['Monday','14:00','21:00',1], 
+                            'd2': ['Tuesday','10:00','21:00',1],  
+                            'd3': ['Wednesday','10:00','21:00',1], 
+                            'd4': ['Thursday','10:00','21:00',1], 
+                            'd5': ['Friday','10:00','21:00',1], 
+                            'd6': ['Saturday','11:00','19:00',1], 
+                            'd7': ['Sunday','11:00','19:00',1], 
                             },  
-                    'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
-                        },
-                        'fc_SmallNotes': {
+                    'fc_SmallNotes': {
                             'd1': ['Notes','Boarding is 30 minutes prior departure from Chelsea Pier, Pier 61 West 23rd Street and 12th Avenue. Dinner Sailing times: 7:00 to 10:00 pm. Brunch and Lunch Sailing Time: 12:00 to 2:00 pm. Schedule may change and boarding and departure time will be advised at time of confirmation of service.'], 
                             'd2': ['Dress Code','We request no jeans, shorts, tank tops, halter-tops, gym shoes or flip flops are worn on any cruise, Dinner: Jackets are recommended for men and cocktail attire for women.  Lunch: We recommend dressy casual attire, such as nice slacks and collared shirts. ']
                         },
-
-                    },
-                    # SECOND ITEM
-                    {
+                        'S_fc_SmallNotes':1
+                },
+                # CLOSE ITEM
+                # START ITEM B
+                {
                     'fc_Title':'Spirit Cruises',
+                    'S_fc_Title':1,
                     'fc_SubTitle':'Fresh, Fun',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Cruise',
+                    'S_fc_Category':1,
                     'fc_Specs': {
                             'd1': ['Category','Dinning Cruise'], 
                             'd2': ['Minimum Booking Age','18'],  
                             'd3': ['Attire','Casual'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'Get ready for the time of your life aboard one of our two recently renovated ships departing from both New York and New Jersey. Sample a variety of dishes. Dance. And head topside to feel the wind in your hair. Join us aboard Spirit of New York and Spirit of New Jersey for a fun mix of dining, dancing, entertainment and skyline views. Cruising the Hudson River year-round, Spirit has a variety of lunch, dinner, moonlight and holiday cruises like Mother`s Day, plus dozens of themed cruises, to choose from.', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'Get ready for the time of your life aboard one of our two recently renovated ships departing from both New York and New Jersey. Sample a variety of dishes. Dance. And head topside to feel the wind in your hair. Join us aboard Spirit of New York and Spirit of New Jersey for a fun mix of dining, dancing, entertainment and skyline views. Cruising the Hudson River year-round, Spirit has a variety of lunch, dinner, moonlight and holiday cruises like Mother`s Day, plus dozens of themed cruises, to choose from.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5260765449','4204319897','7568051980','7930459506','6776873592','3067507519','3706970137','1390223211'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
                             'p4': [4,'6896928037','ok'], 
                         },
-                    'fc_Links': {
-                            'd1': ['Website','http://www.myring.io'], 
-                            'd2': ['NewYork TImes','http://www.myring.io'],  
-                            'd3': ['TimeOut','http://www.myring.io'], 
-                        },
-                    'fc_Tags':[{'name': 'Business', 
-                                'list': ['a_001','a_002','a_003']
-                                },
-                                {'name': 'Beauty', 
-                                'list': ['b_001','b_002','b_003']
-                                }
-                                
+                    'fc_Tags':[{
+                                }, 
                             ],
-
                     'fc_Schedule': {
-                            'd1': ['Monday','14:00','21:00'], 
-                            'd2': ['Tuesday','10:00','21:00'],  
-                            'd3': ['Wednesday','10:00','21:00'], 
-                            'd4': ['Thursday','10:00','21:00'], 
-                            'd5': ['Friday','10:00','21:00'], 
-                            'd6': ['Saturday','11:00','19:00'], 
-                            'd7': ['Sunday','11:00','19:00'], 
-                            },  
-                    'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
+                            'd1': ['Monday','14:00','21:00',1], 
+                            'd2': ['Tuesday','10:00','21:00',1],  
+                            'd3': ['Wednesday','10:00','21:00',1], 
+                            'd4': ['Thursday','10:00','21:00',1], 
+                            'd5': ['Friday','10:00','21:00',1], 
+                            'd6': ['Saturday','11:00','19:00',1], 
+                            'd7': ['Sunday','11:00','19:00',1], 
+                            },
+                    'fc_SmallNotes': {
+                            'd1': ['','']
                         },
-                        'fc_SmallNotes': {
-                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
-                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
-                        }
+                        'S_fc_SmallNotes':1
 
-
-
-                    },
-                    # THIRD ITEM
-                    {
+                },
+                # CLOSE ITEM
+                # START ITEM C
+                {
                     'fc_Title':'Elite Private Yatch',
+                    'S_fc_Title':1,
                     'fc_SubTitle':'Customizable. Private.',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Cruise',
+                    'S_fc_Category':1,
                     'fc_Specs': {
                             'd1': ['Category','Dinning Cruise'], 
                             'd2': ['Minimum Booking Age','18'],  
                             'd3': ['Attire','Formal'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'Host an exclusive event on New York Harbor on one of two private yachts. Atlantica or Manhattan Elite. Customize your charter with a variety of menu, decor, entertainment and route options. It`s your very own NYC private yacht. With sensational skyline views and completely customizable options, the Atlantica and Manhattan Elite offer two great ways to host an amazing and unique event aboard your own private yacht.', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'Host an exclusive event on New York Harbor on one of two private yachts. Atlantica or Manhattan Elite. Customize your charter with a variety of menu, decor, entertainment and route options. It`s your very own NYC private yacht. With sensational skyline views and completely customizable options, the Atlantica and Manhattan Elite offer two great ways to host an amazing and unique event aboard your own private yacht.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['3621946540','4304442038','3964600599','9535813029','6822424476','2787176776','2731636522','1098120043','3419158938','5631973583'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
                             'p4': [4,'6896928037','ok'], 
                         },
-                    'fc_Links': {
-                            'd1': ['Website','http://www.myring.io'], 
-                            'd2': ['NewYork TImes','http://www.myring.io'],  
-                            'd3': ['TimeOut','http://www.myring.io'], 
-                        },
-                    'fc_Tags':[{'name': 'Business', 
-                                'list': ['a_001','a_002','a_003']
-                                },
-                                {'name': 'Beauty', 
-                                'list': ['b_001','b_002','b_003']
-                                }
-                                
+                    'fc_Tags':[{
+                                }, 
                             ],
-
                     'fc_Schedule': {
-                            'd1': ['Monday','14:00','21:00'], 
-                            'd2': ['Tuesday','10:00','21:00'],  
-                            'd3': ['Wednesday','10:00','21:00'], 
-                            'd4': ['Thursday','10:00','21:00'], 
-                            'd5': ['Friday','10:00','21:00'], 
-                            'd6': ['Saturday','11:00','19:00'], 
-                            'd7': ['Sunday','11:00','19:00'], 
-                            },  
-                    'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
+                            'd1': ['Monday','14:00','21:00',1], 
+                            'd2': ['Tuesday','10:00','21:00',1],  
+                            'd3': ['Wednesday','10:00','21:00',1], 
+                            'd4': ['Thursday','10:00','21:00',1], 
+                            'd5': ['Friday','10:00','21:00',1], 
+                            'd6': ['Saturday','11:00','19:00',1], 
+                            'd7': ['Sunday','11:00','19:00',1], 
+                            }, 
+                    'fc_SmallNotes': {
+                            'd1': ['','']
                         },
-                        'fc_SmallNotes': {
-                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
-                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
-                        }
+                        'S_fc_SmallNotes':1
 
+                },
+                # CLOSE ITEM
+                
 
-
-                    }
-
+                
+            
 
 
                     ] 
 
-                    
-    data['staff'] = [{
-                    'fc_SubTitle':'Our Staff',
-                    'fc_Descriptions': {
-                        'en': 'There`s nothing our team loves more than helping people create unforgettable memories. Each year we serve over 1.5 million guests in 8 markets, so we do a whole lot of celebrating.Our passions range from finding the hottest new recipes, to helping guests select the perfect entertainment to enhance their event theme. We love stress-free weddings, corporate events that exceed expectations and events that are unique to the cities where we cruise.', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
-                        },
-                    'fc_Owner':'teamamerica',
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
-                    'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
-                        }
-
-                    }]
-
-
-
-
-
     return render_template("/sandbox/factcard.html", data=data) 
 
-
-
-@sandbox.route("/facts/bike", methods=["GET", "POST"])
+@sandbox.route('/facts/bikethebigapple/<showme>')
 #@login_required
-def facts_004():
+def facts_004(showme):
 
     data = {}
     data['mask']= "mbf"
-    data['mode']= "edit"
+    data['mode']= showme
+    data['slug']= "bikethebigapple"
 
     # HOTEL INFO
     
@@ -1633,8 +1593,8 @@ def facts_004():
             'fc_DescriptionsSize':'1',
             'fc_Descriptions': {
                             'd1': ['en',1 ,'For over fourteen years, we have been providing the absolute best and safest way of bringing visitors and residents alike far off the beaten path to see, feel, and experience the real New York. You will find that on our tours, you will surely see the sights the typical tourist seldom sees!. Whether you want to maximize the amount of New York that you experience, want to learn a whole lot about what is behind our city, or just want to have an utter blast, come tour with us.'], 
-                            'd2': ['sp',4,'(not spanish translation)'],  
-                            'd3': ['it',4,'(not italian translation)'],
+                            'd2': ['sp',4,'(Not spanish translation.)'],  
+                            'd3': ['it',4,'(Not italian translation.)'],
                         }
 
             }]# CLOSE
@@ -1953,33 +1913,42 @@ def facts_004():
 
     return render_template("/sandbox/factcard.html", data=data) 
 
-
-@sandbox.route("/facts/mezcal", methods=["GET", "POST"])
+@sandbox.route('/facts/moma/<showme>')
 #@login_required
-def facts_005():
+def facts_005(showme):
 
     data = {}
     data['mask']= "mbf"
+    data['mode']= showme
+    data['slug']= "moma"
 
     # HOTEL INFO
     
-    data['Name']= "Bike the Big Apple" 
-    data['Address']= ""
-    data['City']= ""
-    data['State']= ""
-    data['Zip']= ""
+    data['Name']= "Museum of Modern Art"
+    data['S_Name']= 1 
+    data['Address']= "11 West 53 Street"
+    data['S_Address']= 1
+    data['City']= "New York"
+    data['S_City']= 1
+    data['State']= "NY"
+    data['S_State']= 1
+    data['Zip']= "10019"
+    data['S_Zip']= 1
     data['Industry']= ""
+    data['S_Industry']= 4
     data['Description'] = [{
             #This USES THE FACTCARD MACRO
             #Title of the card
             'fc_SubTitle':'Full Description',
             'fc_DescriptionsSize':'1',
             'fc_Descriptions': {
-                'en': 'Mezcals are spirits distilled from the agave plant. Tequila is a mezcal, but tequila producers remove the agave solids before they distill. Tequila distillers put just the fermented juice into their stills, but artisan mezcal distillers include the fermented agave solids, meaning that well-made artisan mezcals from Oaxaca are richer and more complex than tequila. Alipus is distilled from local plantings of the agave espadin, the genetic ancestor of the blue agave Weber of tequila. Distillation takes place at small family distilleries in remote pueblos in Oaxaca state.', 
-                'sp': 'espanol del product 1', 
-                'fr': 'frances del product 1'
-                }
+                            'd1': ['en',1 ,'The Museum of Modern Art (MoMA) is a place that fuels creativity, ignites minds, and provides inspiration. Its exhibitions and collection of modern and contemporary art are dedicated to helping you understand and enjoy the art of our time.'], 
+                            'd2': ['sp',4,'(Not spanish translation.)'],  
+                            'd3': ['it',4,'(Not italian translation.)'],
+                        }
+
             }]# CLOSE
+
 
     data['OneLine'] = [{
                 #This USES THE FACTCARD MACRO
@@ -1987,96 +1956,110 @@ def facts_005():
                 'fc_SubTitle':'One Line Description',
                 'fc_DescriptionsSize':'2',
                 'fc_Descriptions': {
-                    'en': 'Welcome to New York`s premier bicycle touring company', 
-                    'sp': 'espanol del product 1', 
-                    'fr': 'frances del product 1'
-                    }
+                            'd1': ['en',1 ,'Art exhibitions & Film'], 
+                            'd2': ['sp',4,'(not spanish translation)'],  
+                            'd3': ['it',4,'(not italian translation)'], 
+                        }
                 }]# CLOSE
     #CONTACT
-    data['Website']= "www.bikethebigapple.com"
-    data['Mail']= "explore@bikethebigapple.com "
-    data['Phone']= "1-347-878-9809"
+    data['S_Website']= 1
+    data['Website']= "http://www.moma.org/"
+    data['Mail']= ""
+    data['S_Mail']= 1
+    data['Phone']= "(212) 708-9400"
+    data['S_Phone']= 1
     data['Fax']= ""
+    data['S_Fax']= 4
     data['Newsletter']= ""
-    data['Blog']= ""
+    data['S_Newsletter']= 5
+    data['Blog']= "http://www.moma.org/explore/inside_out"
+    data['S_Blog']= 1
 
     #DETAILS
-    data['Founded']= "x18"
+    data['Founded']= "1929"
+    data['S_Founded']= 1
     data['Closed']= "x18"
+    data['SClosed']= 1
     data['ResAge']= "x09"
+    data['S_ResAge']= 1
     data['Founded']= "x10"
+    data['S_Founded']= 1
     data['payments']="x12"
+    data['S_payments']=1
     #SOCIALMEDIA  
         # twitter
-    data['SM1']= "bikethebigapple"
+    data['SM1']= "http://twitter.com/MuseumModernArt"
+    data['S_SM1']= 1
         # facebook
-    data['SM2']= "http://www.facebook.com/pages/Bike-the-Big-Apple/373495324184"
+    data['SM2']= "http://www.facebook.com/MuseumofModernArt"
+    data['S_SM2']= 1
         # instagram
-    data['SM3']= ""
+    data['SM3']= "https://instagram.com/themuseumofmodernart/"
+    data['S_SM3']= 1
         # youtube
-    data['SM4']= ""
+    data['SM4']= "http://www.youtube.com/user/MoMAvideos"
+    data['S_SM4']= 1
         #Other Links
-    data['LINK1']= "x23"
-    data['LINK2']= "x23"
-    data['LINK3']= "x23"
-    data['LINK4']= "x23"
+    data['LINK1']= ""
+    data['S_LINK1']= 1
+    data['LINK2']= ""
+    data['S_LINK2']= 1
+    data['LINK3']= ""
+    data['S_LINK3']= 1
+    data['LINK4']= ""
+    data['S_LINK4']= 1
     #HISTORY
-    data['Facts']= "x14"
-    data['Awards']= "x14"
-    data['FAQ']= "x14"
-    data['FactualID']= "x14"
+    data['Facts']= ""
+    data['S_Facts']= 1
+    data['Awards']= ""
+    data['S_Awards']= 1
+    data['FAQ']= ""
+    data['FactualID']= ""
     data['history'] = [{
                     #This USES THE FACTCARD MACRO
                     #Title of the card
                     'fc_SubTitle':'History',
                     # Fields used:  History, History2, History3
                     'fc_Descriptions': {
-                        'en': '', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'In the late 1920s, three progressive and influential patrons of the arts, Miss Lillie P. Bliss, Mrs. Cornelius J. Sullivan, and Mrs. John D. Rockefeller, Jr., perceived a need to challenge the conservative policies of traditional museums and to establish an institution devoted exclusively to modern art. They, along with additional original trustees A. Conger Goodyear, Paul Sachs, Frank Crowninshield, and Josephine Boardman Crane, created The Museum of Modern Art in 1929. Its founding director, Alfred H. Barr, Jr., intended the Museum to be dedicated to helping people understand and enjoy the visual arts of our time, and that it might provide New York with "the greatest museum of modern art in the world.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     # HISTORY PHOTOS
                     'fc_Owner':'teamamerica',
                     # PHOTOS
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
                     'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            
                         }
                     
-
                     }]# CLOSE
     data['staff'] = [{
                     'fc_SubTitle':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'We are not a bike rental shop that also does bike tours or a walking/bus tour company that also does bike tours. Bike tours are all that we do. It is our focus, so we do it right. ', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1,' No Description'],
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
+                        
+                        },
+                    'fc_SmartPhotos': {
+                            
                         }
                     }]# CLOSE
 
     data['curious'] = [{
                     'fc_SubTitle':'Facts',
                     'fc_Specs': {
-                            'd1': ['Fact1','Each day, more than 250,000 cyclists ride in New York City, more than at any time in the last 25 years'], 
-                            'd2': ['Fact2','A 2003 a report by Jacobsen showed that: The more bicyclists there are on the streets, the safer they are.'],  
-                            'd3': ['Fact3','Bike riders are subject to the same laws as drivers in New York'], 
-                            'd4': ['Fact4','Bike Friendly Business campaign exists to cultivate relationships with local businesses to encourage safe and lawful bicycling behavior'], 
-                            'd5': ['Fact5','Eighty percent of the total cost of the 250 miles of bike lanes installed since 2006 was paid for by the federal government'], 
-                            'd6': ['Fact6','Bike lanes can boost business. Streets that prioritize walking and biking, incorporated with amenities such as pedestrian plazas, have proven to boost local retail sales by 10-25 percent in cities around the world'], 
-                            'd7': ['Fact7','Any person riding a bike can receive a ticket for not observing local transit laws.'], 
-                            'd8': ['Fact8','there was a 13 percent increase in daily commuter bicycling between 2009 and 2010 alone']
+                            'd1': ['Fact1','MoMA welcome millions of visitors every year'], 
+                            'd2': ['Fact2','A still larger public is served by the Museum`s national and international programs of circulating exhibitions, loan programs, circulating film and video library, publications, Library and Archives holdings, websites, educational activities, special events, and retail sales.'],  
+                            'd3': ['Fact3','Our most popular cruise is Bateaux'], 
                         },
                     }]# CLOSE
 
     data['contact'] = [{
                     'fc_SubTitle':'Contact',
                     'fc_List': {
-                            'd1': ['Website','www.bikethebigapple.com'], 
-                            'd2': ['Mail','explore@bikethebigapple.com'],  
-                            'd3': ['Phone','1-347-878-9809'], 
+                            'd1': ['Website','http://www.moma.org/'], 
+                            'd2': ['Phone','(212) 708-9400'], 
                         }
 
                     }]# CLOSE
@@ -2085,529 +2068,466 @@ def facts_005():
 
                 # START ITEM A
                 {
-                    'fc_Title':'Tour A - The Ethnic Apple Tour.',
-                    'fc_SubTitle':'Our ethnic mosaic tour',
-                    'fc_Category':'Bike Tour',
+                    'fc_Title':'One-Way Ticket:',
+                    'S_fc_Title':1,
+                    'fc_SubTitle':'Jacob Lawrence`s Migration Series and Other Works',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Art Exhbition',
+                    'S_fc_Category':1,
                     'fc_Specs': {
-                            'd1': ['Category','Bike Tour'], 
-                            'd2': ['Duration','7hrs'], 
-                            'd3': ['MinAge','10'],  
-                            'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
-                            'd6': ['Season','All'], 
+                            'd1': ['Category','Painting, Photography, Documents'], 
+                            'd2': ['Kids','yes'],  
+                            'd3': ['Camera','No'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'Great urban vistas that are typically not seen. Ethnic neighborhoods that are part of the unique mosaic of the city. This great bike tour combines them both!. Our tour begins with a ride over the imposing Queensboro Bridge high over the East River. Don`t be confused by this bridge`s identity. Immortalized in popular music under its nickname, the bridge has recently been officially renamed after one of the city`s most charismatic, zaniest mayors ever. Once we`ve entered Queens, we`ll head to Gantry State Park. At this historic location we can see restored `gantries` and learn about their critical role in the city`s commerce in the first part of the 20th century. The view across the East River, directly opposite the United Nations and what was the world`s tallest apartment building, provides an unforgettable photo opportunity.', 
-                        'sp': '',
-                        'fr': ''
+                        'd1': ['en',1 ,'In 1941, Jacob Lawrence, then just 23 years old, completed a series of 60 small tempera paintings with text captions about the Great Migration, the multi-decade mass movement of African Americans from the rural South to the urban North that started around 1915. Within months of its making, the series entered the collections of The Museum of Modern Art and the Phillips Memorial Gallery (today The Phillips Collection), with each institution acquiring half of the panels. Lawrence`s work is now an icon in both collections, a landmark in the history of modern art, and a key example of the way that history painting was radically reimagined in the modern era. One-Way Ticket: Jacob Lawrence`s Migration Series and Other Visions of the Great Movement North reunites all 60 panels for the first time at MoMA in 20 years.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
                     'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            'p4': [4,'6896928037','ok'],
+                            
                         },
-                    'fc_Tags':[{'name': 'Includes', 
-                                'list': ['bike','helmet','insurance']
-                                }
-                                
-                            ],
-
+                    
                     'fc_Schedule': {
-                            
-                            'd5': ['Friday','10:100','17:00'], 
-                            
+                            'd1': ['Exhbition','April 3','September 7, 2015',1],  
                             },  
-                        'fc_SmallNotes': {
-                            'd1': ['Notes','This tour leaves every Friday, year-round, weather permitting, at 10:00 am from the Upper East Side of Manhattan (near the 68th street on the #6 subway) (precise address will be given after booking is made). It is approximately 15 miles and will last about 7 hours. (It is also available, by special request, any weekday)']
+                    'fc_SmallNotes': {
+                            'd2': ['Additional Information','The exhibition is accompanied by a book, Jacob Lawrence: The Migration Series, copublished with The Phillips Collection, Washington D.C. With the opening of the exhibition, MoMA has created a rich multimedia website that explores each of Lawrence`s Migration panels, accompanied by a range of visual, auditory, literary, and documentary materials. The exhibition is also accompanied by a film series in MoMA`s theaters in June.']
                         },
-
+                        'S_fc_SmallNotes':1
                 },
                 # CLOSE ITEM
                 # START ITEM B
                 {
-                    'fc_Title':'Tour B - The Delights of Brooklyn.',
-                    'fc_SubTitle':'Brews, Views, Chocolate, and much more!',
-                    'fc_Category':'Bike Tour',
+                    'fc_Title':'Spirit Cruises',
+                    'S_fc_Title':1,
+                    'fc_SubTitle':'Fresh, Fun',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Cruise',
+                    'S_fc_Category':1,
                     'fc_Specs': {
-                            'd1': ['Category','Bike Tour'], 
-                            'd2': ['Duration','7hrs'], 
-                            'd3': ['MinAge','10'], 
-                            'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
-                            'd6': ['Season','All'], 
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Casual'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'This special tour starts with a ride through the historic Lower East Side. Once the most densely populated neighborhood in the world(!), it is now a very `in` section with a thriving nightlife, as well as an authentic Soviet era, larger than life, statue of Lenin. Leaving Manhattan, we dive into the delights offered by the borough of Brooklyn as we pedal over the new Williamsburg Bridge bike path. We enter the `hip,` artistic neighborhood of Williamsburg and head to one of the Big Apple`s truly underground micro-brewery. Here you can sample its artisinal beers and ale, or stout on tap. ', 
-                        'sp': '',
-                        'fr': ''
+                        'd1': ['en',1 ,'Get ready for the time of your life aboard one of our two recently renovated ships departing from both New York and New Jersey. Sample a variety of dishes. Dance. And head topside to feel the wind in your hair. Join us aboard Spirit of New York and Spirit of New Jersey for a fun mix of dining, dancing, entertainment and skyline views. Cruising the Hudson River year-round, Spirit has a variety of lunch, dinner, moonlight and holiday cruises like Mother`s Day, plus dozens of themed cruises, to choose from.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
                             'p4': [4,'6896928037','ok'], 
                         },
-                    'fc_Tags':[{'name': 'Includes', 
-                                'list': ['bike','helmet','insurance']
-                                }
-                                
+                    'fc_Tags':[{
+                                }, 
                             ],
-
                     'fc_Schedule': {
-                            
-                            'd5': ['Saturday','10:15','17:00'], 
-                            
-                            },  
-                        'fc_SmallNotes': {
-                            'd1': ['Notes','This tour leaves every Saturday, year-round, weather permitting, at 10:15 am, a few blocks from Union Square, of Manhattan (precise address will be given after booking is made). It is approximately 15 miles and will last about 7 hours. (It is also available, by special request, any weekday)']
+                            'd1': ['Monday','14:00','21:00',1], 
+                            'd2': ['Tuesday','10:00','21:00',1],  
+                            'd3': ['Wednesday','10:00','21:00',1], 
+                            'd4': ['Thursday','10:00','21:00',1], 
+                            'd5': ['Friday','10:00','21:00',1], 
+                            'd6': ['Saturday','11:00','19:00',1], 
+                            'd7': ['Sunday','11:00','19:00',1], 
+                            },
+                    'fc_SmallNotes': {
+                            'd1': ['','']
                         },
+                        'S_fc_SmallNotes':1
+
                 },
                 # CLOSE ITEM
                 # START ITEM C
                 {
-                    'fc_Title':'Tour C - The Sensational Park and Soul Tour.',
-                    'fc_SubTitle':'Bike the green Apple',
-                    'fc_Category':'Bike Tour',
+                    'fc_Title':'Elite Private Yatch',
+                    'S_fc_Title':1,
+                    'fc_SubTitle':'Customizable. Private.',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Cruise',
+                    'S_fc_Category':1,
                     'fc_Specs': {
-                            'd1': ['Category','Bike Tour'], 
-                            'd2': ['Duration','7hrs'], 
-                            'd3': ['MinAge','10'], 
-                            'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
-                            'd6': ['Season','All'], 
+                            'd1': ['Category','Dinning Cruise'], 
+                            'd2': ['Minimum Booking Age','18'],  
+                            'd3': ['Attire','Formal'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'On this bike tour of Central Park and Harlem, we start on the East Side of Manhattan, the city`s wealthiest neighborhood with extravagant brownstones and mansions. Next door is Central Park, which never fails to amaze with its sheer natural beauty (all man-made). As we pedal through the park we`ll visit Strawberry Fields, the only `beach` on Manhattan Island, the North Woods loch, an authentic 3500 year old obelisk, an $18 million lawn, as well as one of the largest stands of still surviving magnificent elms in the western world. Highlights in Harlem include a live Sunday gospel service, as well as a dramatic poetry reading by the home of the `Black` Carl Sandberg. We`ll see Clinton`s new office and a former grand synagogue that is now a major Black church! We`ll even hear `Sachmo` playing a composition by `the Duke` beneath an unusual statue to this great composer. Enjoy a `Bike and Bite` soul food lunch in Harlem. ', 
-                        'sp': '',
-                        'fr': ''
+                        'd1': ['en',1 ,'Host an exclusive event on New York Harbor on one of two private yachts. Atlantica or Manhattan Elite. Customize your charter with a variety of menu, decor, entertainment and route options. It`s your very own NYC private yacht. With sensational skyline views and completely customizable options, the Atlantica and Manhattan Elite offer two great ways to host an amazing and unique event aboard your own private yacht.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
                             'p4': [4,'6896928037','ok'], 
                         },
-                    'fc_Tags':[{'name': 'Includes', 
-                                'list': ['Tour guide','bike','helmet','insurance']
-                                }
-                                
+                    'fc_Tags':[{
+                                }, 
                             ],
-
                     'fc_Schedule': {
-                            
-                            'd5': ['Saturday','10:15','17:00'], 
-                            
-                            },  
-                        'fc_SmallNotes': {
-                            'd1': ['Notes','This tour leaves every Sunday, year-round, weather permitting, at 10:00 am from the Upper East Side of Manhattan (near the 68th street on the #6 subway) (precise address will be given after booking is made). It is approximately 12 miles and lasts about 5 hours. (It is also available, by special request, any weekday)']
+                            'd1': ['Monday','14:00','21:00',1], 
+                            'd2': ['Tuesday','10:00','21:00',1],  
+                            'd3': ['Wednesday','10:00','21:00',1], 
+                            'd4': ['Thursday','10:00','21:00',1], 
+                            'd5': ['Friday','10:00','21:00',1], 
+                            'd6': ['Saturday','11:00','19:00',1], 
+                            'd7': ['Sunday','11:00','19:00',1], 
+                            }, 
+                    'fc_SmallNotes': {
+                            'd1': ['','']
                         },
+                        'S_fc_SmallNotes':1
+
                 },
                 # CLOSE ITEM
-                # START ITEM D
-                {
-                    'fc_Title':'Tour D - Secret Streets',
-                    'fc_SubTitle':'From High Finance to Hidden Chinatown',
-                    'fc_Category':'Bike Tour',
-                    'fc_Specs': {
-                            'd1': ['Category','Bike Tour'], 
-                            'd2': ['Duration','7hrs'], 
-                            'd3': ['MinAge','10'], 
-                            'd4': ['Attire','Casual/ Sport'],
-                            'd5': ['MinPax','2'], 
-                            'd6': ['Season','All'], 
-                            'd7': ['Price','$95'], 
-                        },
-                    'fc_Descriptions': {
-                        'en': 'Get ready for a true New York bike tour that has you smack in the middle of New York City`s action. First, we head past Union Square, the place of every protest, from basic to bizarre. Next, we`re in Greenwich Village at the Stonewall Inn, symbol of the Gay Liberation movement. From `the Village,` we ride along the Hudson River Greenway to Wall Street, where we are caught up in the frantic pace of high finance. Bankers rub shoulders with bike messengers, and brokers down their lunch as fast as the fluctuation of the stock market. Then to Ground Zero, to experience that tragic day and the agonizing months that followed. In typical New York fashion, the city has bounced back. The new Number 7 World Trade Center, with its amazing streaming video, captures this sense of optimism. ', 
-                        'sp': '',
-                        'fr': ''
-                        },
-                    'fc_Owner':'teamamerica',
-                    'fc_Photos': ['5678084712','6436108326','5238394461','6435936964','4551328098','2994274171'],
-                    'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
-                        },
-                    'fc_Tags':[{'name': 'Includes', 
-                                'list': ['Tour guide','bike','helmet','insurance']
-                                }
-                                
-                            ],
-
-                    'fc_Schedule': {
-                            
-                            'd1': ['Tuesday','10:15','17:00'],
-                            'd2': ['On request','(min5 pax)',''], 
-                            
-                            },  
-                        'fc_SmallNotes': {
-                            'd1': ['Notes','This tour leaves every Tuesday, year-round, weather permitting, at 10:15 am, a few blocks from Union Square in Manhattan (precise address will be given after booking is made). It is approximately 14 miles and will last about 7 hours.']
-                        },
-                },
-                # CLOSE ITEM
-
-                
-            
+                       
 
 
                     ] 
 
-    return render_template("/sandbox/factcard.html", data=data)     
+    return render_template("/sandbox/factcard.html", data=data) 
 
-
-
-
-
-@sandbox.route("/facts/123", methods=["GET", "POST"])
+@sandbox.route('/facts/madmuseum/<showme>')
 #@login_required
-def facts_003():
+def facts_006(showme):
 
     data = {}
     data['mask']= "mbf"
+    data['mode']= showme
+    data['slug']= "madmuseum"
 
     # HOTEL INFO
     
-    data['Name']= "" 
-    data['Address']= "Pier 62, Chelsea Piers Suite 200"
-    data['City']= "NewYork"
+    data['Name']= "Museum of arts and design"
+    data['S_Name']= 1 
+    data['Address']= "2 columbus Circle"
+    data['S_Address']= 1
+    data['City']= "New York"
+    data['S_City']= 1
     data['State']= "NY"
-    data['Zip']= "10011"
+    data['S_State']= 1
+    data['Zip']= "10019"
+    data['S_Zip']= 1
     data['Industry']= ""
+    data['S_Industry']= 4
+    data['Description'] = [{
+            #This USES THE FACTCARD MACRO
+            #Title of the card
+            'fc_SubTitle':'Full Description',
+            'fc_DescriptionsSize':'1',
+            'fc_Descriptions': {
+                            'd1': ['en',1 ,'The mission of the Museum of Arts and Design (MAD) is to collect, display, and interpret objects that document contemporary and historic innovation in craft, art, and design. In its exhibitions and educational programs, the Museum celebrates the creative process through which materials are crafted into works that enhance contemporary life.'], 
+                            'd2': ['sp',4,'(Not spanish translation.)'],  
+                            'd3': ['it',4,'(Not italian translation.)'],
+                        }
+
+            }]# CLOSE
 
 
     data['OneLine'] = [{
                 #This USES THE FACTCARD MACRO
                 #Title of the card
                 'fc_SubTitle':'One Line Description',
+                'fc_DescriptionsSize':'2',
                 'fc_Descriptions': {
-                    'en': 'Entertainment Cruises, dining cruises, yacht charters and sightseeing tours.', 
-                    'sp': 'espanol del product 1', 
-                    'fr': 'frances del product 1'
-                    }
+                            'd1': ['en',1 ,'Design, Art exhibitions & Film'], 
+                            'd2': ['sp',4,'(not spanish translation)'],  
+                            'd3': ['it',4,'(not italian translation)'], 
+                        }
                 }]# CLOSE
-
-    data['Description'] = [{
-            #This USES THE FACTCARD MACRO
-            #Title of the card
-            'fc_SubTitle':'Full Description',
-            'fc_Descriptions': {
-                'en': 'Get up close to the Statue of Liberty and travel under the iconic Brooklyn Bridge. Come out for a cruise on beautiful New York Harbor from your choice of our dock at Chelsea Piers or Lincoln Harbor Marina in Weehawken, New Jersey.', 
-                'sp': 'espanol del product 1', 
-                'fr': 'frances del product 1'
-                }
-            }]# CLOSE
-
     #CONTACT
-    data['Website']= "http://www.bateauxnewyork.com/new-york-metro"
-    data['Mail']= "x12"
-    data['Phone']= "866-817-3463"
+    data['S_Website']= 1
+    data['Website']= "http://www.madmuseum.org/"
+    data['Mail']= "info@madmuseum.org "
+    data['S_Mail']= 1
+    data['Phone']= "212-299-7777"
+    data['S_Phone']= 1
     data['Fax']= ""
+    data['S_Fax']= 4
     data['Newsletter']= ""
-    data['Blog']= "http://www.entertainmentcruises.com/blog/"
+    data['S_Newsletter']= 5
+    data['Blog']= ""
+    data['S_Blog']= 1
 
     #DETAILS
-    data['Founded']= "x18"
+    data['Founded']= "1956"
+    data['S_Founded']= 1
     data['Closed']= "x18"
+    data['SClosed']= 1
     data['ResAge']= "x09"
+    data['S_ResAge']= 1
     data['Founded']= "x10"
+    data['S_Founded']= 1
     data['payments']="x12"
-
-
+    data['S_payments']=1
     #SOCIALMEDIA  
         # twitter
-    data['SM1']= "entertaincruise"
+    data['SM1']= "http://www.twitter.com/madmuseum"
+    data['S_SM1']= 1
         # facebook
-    data['SM2']= "https://www.facebook.com/BateauxNewYork"
+    data['SM2']= "http://www.facebook.com/madmuseum"
+    data['S_SM2']= 1
         # instagram
-    data['SM3']= "ecnewyork"
+    data['SM3']= "http://instagram.com/madmuseum"
+    data['S_SM3']= 1
         # youtube
-    data['SM4']= "ecnewyork"
+    data['SM4']= ""
+    data['S_SM4']= 1
         #Other Links
-    data['LINK1']= "x23"
-    data['LINK2']= "x23"
-    data['LINK3']= "x23"
-    data['LINK4']= "x23"
-
-
+    data['LINK1']= ""
+    data['S_LINK1']= 1
+    data['LINK2']= ""
+    data['S_LINK2']= 1
+    data['LINK3']= ""
+    data['S_LINK3']= 1
+    data['LINK4']= ""
+    data['S_LINK4']= 1
     #HISTORY
-    data['Facts']= "x14"
-    data['Awards']= "x14"
-    data['FAQ']= "x14"
-    data['FactualID']= "x14"
+    data['Facts']= ""
+    data['S_Facts']= 1
+    data['Awards']= ""
+    data['S_Awards']= 1
+    data['FAQ']= ""
+    data['FactualID']= ""
     data['history'] = [{
                     #This USES THE FACTCARD MACRO
                     #Title of the card
                     'fc_SubTitle':'History',
                     # Fields used:  History, History2, History3
                     'fc_Descriptions': {
-                        'en': 'Entertainment Cruises roots date back to 1978 when the Spirit of Norfolk was christened and began cruising the historic Elizabeth River. Today, we have 30 boats across nine locations and host more than 1.5 million guests each year. Our shipmates feel privileged to share in our guests special celebrations - and help make their experiences with us memorable. ', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'The Museum first opened its doors in 1956 as the Museum of Contemporary Crafts, with an original mission of recognizing the craftsmanship of contemporary American artists. Nurtured by the vision of philanthropist and craft patron Aileen Osborn Webb, the Museum mounted exhibitions that focused on the materials and techniques associated with craft disciplines.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'], 
                         },
                     # HISTORY PHOTOS
                     'fc_Owner':'teamamerica',
                     # PHOTOS
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
                     'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            
                         }
-
+                    
                     }]# CLOSE
-    data['OurStaff'] = [{
-                    'fc_Title':'Our Staff',
+    data['staff'] = [{
+                    'fc_SubTitle':'Our Staff',
                     'fc_Descriptions': {
-                        'en': 'ingles del product 1', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1,' No Description'],
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
+                        
+                        },
+                    'fc_SmartPhotos': {
+                            
                         }
                     }]# CLOSE
 
     data['curious'] = [{
-                    'fc_SubTitle':'Curious Facts',
+                    'fc_SubTitle':'Facts',
                     'fc_Specs': {
-                            'd1': ['1978','Spirit Cruises is founded in Norfolk, Virginia'], 
-                            'd2': ['1978-1988','Spirit launches in Boston, Chicago, New York, Philadelphia and Washington DC'],  
-                            'd3': ['1991','Odyssey launches at Navy Pier in Chicago'], 
-                            'd4': ['1993-1995','Odyssey expands to Boston and Washington DC'], 
-                            'd5': ['1996','Seadog, a speedboat excursion and architectural tour, is introduced at Chicago`s Navy Pier'], 
-                            'd6': ['1998','Mystic Blue begins cruising in Chicago'], 
-                            'd7': ['2006','Entertainment Cruises purchases Baltimore`s Harbor Cruises'], 
-                            'd8': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
-                            'd9': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
-                            'd10': ['2006','ICV purchases Odyssey, Seadog and Spirit Cruises forming Entertainment Cruises'], 
+                            'd1': ['Fact1','Museum of arts and design was founded by philanthropist and visionary Aileen Osborn Webb'], 
+                            'd2': ['Fact2',''],  
+                            'd3': ['Fact3',''], 
                         },
                     }]# CLOSE
 
     data['contact'] = [{
                     'fc_SubTitle':'Contact',
                     'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
+                            'd1': ['Website','http://www.madmuseum.org'], 
+                            'd2': ['Email','info@madmuseum.org'], 
+                            'd3': ['Phone','212-299-7777'], 
+                        }
+
+                    }]# CLOSE
+    data['photos'] = [{
+                    
+                    'fc_Owner':'teamamerica',
+                    'fc_SmartPhotos': {
+                            'p1': [1,'6896928037','ok'], 
+                            'p2': [2,'3498992745','ok'],  
+                            'p3': [3,'3836044439','ok'], 
+                            'p4': [4,'6896928037','ok'], 
+                            'p5': [4,'6896928037','ok'], 
+                            'p6': [4,'6896928037','ok'], 
                         }
 
                     }]# CLOSE
 
-    data['Services'] = [{
-                    'fc_Title':'Bateaux New York',
-                    'fc_SubTitle':'Upscale. Exceptional.',
-                    'fc_Category':'Cruise Waterfront',
+    data['ServiceName'] ='Current exhibitions'
+    data['Services'] = [
+
+                # START ITEM A
+                {
+                    'fc_Title':'Ralph Pucci:',
+                    'S_fc_Title':1,
+                    'fc_SubTitle':'The Art of the Mannequin',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Art Exhbition',
+                    'S_fc_Category':1,
                     'fc_Specs': {
-                            'd1': ['Category','Dinning Cruise'], 
-                            'd2': ['Minimum Booking Age','18'],  
-                            'd3': ['Attire','Casual'], 
+                            'd1': ['Category','Design, Fashion'], 
+                            'd2': ['Kids','yes'],  
+                            'd3': ['Camera','ok'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'Get ready for the ultimate dining experience. Cruising year-round from Chelsea Piers, European-inspired Bateaux New York offers champagne brunch, lunch, dinner and full moon cruises, plus dozens of holiday cruises.', 
-                        'sp': 'Preparate para la mas emocionante experiencia mientras comes una cena de lujo. Operamos todo el ano desde el puerto de Chelsea. Inspirado en el estilo europeo, ofrecemos champagne, brunch, lunch, comidas y cruceros de luna llena, ademas de muchas experiencias en distintas fiestas y aniversarios. ',
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'Ralph Pucci: The Art of the Mannequin will be the first museum exhibition to explore the work of renowned New York-based designer Ralph Pucci, who is widely regarded for his innovative approach to the familiar form of the mannequin. Having collaborated with luminaries such as Diane von Furstenberg, Patrick Naggar, Andree Putman, Kenny Scharf, Anna Sui, Isabel and Ruben Toledo and Christy Turlington, Pucci`s mannequins not only expand the parameters of this ubiquitous sculptural form, but reflect major cultural trends of the past three decades.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            'p4': [4,'6896928037','ok'],
+                            
                         },
-                    'fc_Links': {
-                            'd1': ['Website','http://www.myring.io'], 
-                            'd2': ['NewYork TImes','http://www.myring.io'],  
-                            'd3': ['TimeOut','http://www.myring.io'], 
-                        },
-                    'fc_Tags':[{'name': 'Business', 
-                                'list': ['a_001','a_002','a_003']
-                                },
-                                {'name': 'Beauty', 
-                                'list': ['b_001','b_002','b_003']
-                                }
-                                
-                            ],
-
+                    
                     'fc_Schedule': {
-                            'd1': ['Monday','14:00','21:00'], 
-                            'd2': ['Tuesday','10:00','21:00'],  
-                            'd3': ['Wednesday','10:00','21:00'], 
-                            'd4': ['Thursday','10:00','21:00'], 
-                            'd5': ['Friday','10:00','21:00'], 
-                            'd6': ['Saturday','11:00','19:00'], 
-                            'd7': ['Sunday','11:00','19:00'], 
+                            'd1': ['','APR 3','SEP 7, 2015',1],  
                             },  
-                    'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
+                    'fc_SmallNotes': {
+                            'd2': ['Organized by','MAD`s Chief Curator Lowery Stokes Sims and Barbara Paris Gifford, Curatorial Assistant and project manager, the exhibition will be accompanied by a publication that includes a foreword by Margaret Russell, editor in chief of Architectural Digest, an essay by art historian Emily M. Orr on the history of mannequins and an interview with Pucci by Jake Yuzna, Director of Public Programs at MAD.']
                         },
-                        'fc_SmallNotes': {
-                            'd1': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.'], 
-                            'd2': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas']
-                        },
-
-                    },
-                    # SECOND ITEM
-                    {
-                    'fc_Title':'Spirit Cruises',
-                    'fc_SubTitle':'Fresh, Fun',
+                        'S_fc_SmallNotes':1
+                },
+                # CLOSE ITEM
+                # START ITEM 
+                {
+                    'fc_Title':'Richard Estes:',
+                    'S_fc_Title':1,
+                    'fc_SubTitle':'Painting New York City',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Art Exhbition',
+                    'S_fc_Category':1,
                     'fc_Specs': {
-                            'd1': ['Category','Dinning Cruise'], 
-                            'd2': ['Minimum Booking Age','18'],  
-                            'd3': ['Attire','Casual'], 
+                            'd1': ['Category','Painting'], 
+                            'd2': ['Kids','ok'],  
+                            'd3': ['Camera','ok'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'Spanning from the mid-1960s to the present, Richard Estes: Painting New York City presents works by this quintessential New York artist and enduring leader of the Photorealist movement. Providing an unprecedented insight into the artist`s creative process, the exhibition reveals a full range of Estes paintings and works on paper, including his photographs, silkscreens and woodcuts and their various proofs, states, and art-making tools.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            'p4': [4,'6896928037','ok'],
+                            
                         },
-                    'fc_Links': {
-                            'd1': ['Website','http://www.myring.io'], 
-                            'd2': ['NewYork TImes','http://www.myring.io'],  
-                            'd3': ['TimeOut','http://www.myring.io'], 
-                        },
-                    'fc_Tags':[{'name': 'Business', 
-                                'list': ['a_001','a_002','a_003']
-                                },
-                                {'name': 'Beauty', 
-                                'list': ['b_001','b_002','b_003']
-                                }
-                                
-                            ],
-
+                    
                     'fc_Schedule': {
-                            'd1': ['Monday','14:00','21:00'], 
-                            'd2': ['Tuesday','10:00','21:00'],  
-                            'd3': ['Wednesday','10:00','21:00'], 
-                            'd4': ['Thursday','10:00','21:00'], 
-                            'd5': ['Friday','10:00','21:00'], 
-                            'd6': ['Saturday','11:00','19:00'], 
-                            'd7': ['Sunday','11:00','19:00'], 
+                            'd1': ['','MAR 10','SEP 20, 2015',1],  
                             },  
-                    'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
+                    'fc_SmallNotes': {
+                            'd2': ['Organized by','MAD`s Marcia Docter Curator Ronald T. Labaco and Samantha De Tillio, Curatorial Assistant and Project Manager.  The exhibition will be accompanied by a fully-illustrated, full color catalogue.']
                         },
-                        'fc_SmallNotes': {
-                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
-                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
-                        }
-
-
-
-                    },
-                    # THIRD ITEM
-                    {
-                    'fc_Title':'Elite Private Yatch',
-                    'fc_SubTitle':'Fresh, Fun',
+                        'S_fc_SmallNotes':1
+                },
+                # CLOSE ITEM
+                # START ITEM 
+                {
+                    'fc_Title':'Pathmakers:',
+                    'S_fc_Title':1,
+                    'fc_SubTitle':'Women in Art, Craft and Design, Midcentury and Today',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Art Exhbition',
+                    'S_fc_Category':1,
                     'fc_Specs': {
-                            'd1': ['Category','Dinning Cruise'], 
-                            'd2': ['Minimum Booking Age','18'],  
-                            'd3': ['Attire','Casual'], 
+                            'd1': ['Category','Crafts, Design'], 
+                            'd2': ['Kids','ok'],  
+                            'd3': ['Camera','ok'], 
                         },
+                    'S_fc_Specs':1,
                     'fc_Descriptions': {
-                        'en': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi viverra tortor sit amet justo volutpat, et varius libero lobortis. Nullam mattis turpis quis nunc efficitur suscipit. Sed eu vestibulum nisl, quis finibus leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus. Nam nibh quam, convallis a neque at, commodo cursus tortor. Morbi mollis purus sem, vel dapibus augue ornare malesuada. Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas', 
-                        'sp': '', 
-                        'fr': 'frances del product 1'
+                        'd1': ['en',1 ,'In the 1950s and 60s, an era when painting, sculpture, and architecture were dominated by men, women had considerable impact in alternative materials such as textiles, ceramics, and metals. Largely unexamined in major art historical surveys, either due to their gender or choice of materials, these pioneering women achieved success and international recognition, establishing a model of professional identity for future generations of women.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
+                        },
+                    'fc_Owner':'gcid',
+                    'fc_SmartPhotos': {
+                            'p1': [1,'3002987120','ok'], 
+                            'p2': [2,'1136695178','ok'],  
+                            'p3': [3,'1750768890','ok'], 
+                            'p4': [4,'6889765353','ok'],
+                            'p5': [4,'3698624088','ok'],
+                            'p6': [4,'4452106848','ok'],
+                            'p7': [4,'7592696236','ok'],
+                            'p8': [4,'7592696236','ok'],
+                            'p9': [4,'2104491229','ok'],
+                            
+                        },
+                    
+                    'fc_Schedule': {
+                            'd1': ['','MAR 10','SEP 20, 2015',1],  
+                            },  
+                    'fc_SmallNotes': {
+                            'd2': ['Organized by','guest curator Patterson Sims, along with Sophia Merkin, Curatorial Assistant and Project Manager.']
+                        },
+                        'S_fc_SmallNotes':1
+                },
+                # CLOSE ITEM
+                # START ITEM 
+                {
+                    'fc_Title':'Wendell Castle',
+                    'S_fc_Title':1,
+                    'fc_SubTitle':'Remastered',
+                    'S_fc_SubTitle':1,
+                    'fc_Category':'Art Exhbition',
+                    'S_fc_Category':1,
+                    'fc_Specs': {
+                            'd1': ['Category','Crafts, Design'], 
+                            'd2': ['Kids','ok'],  
+                            'd3': ['Camera','ok'], 
+                        },
+                    'S_fc_Specs':1,
+                    'fc_Descriptions': {
+                        'd1': ['en',1 ,'Wendell Castle Remastered will be the first museum exhibition to examine the digitally crafted works of Wendell Castle, acclaimed figure of the American art furniture movement. A master furniture maker, designer, sculptor, and educator, Castle is now in the sixth decade of a prolific career that began in 1958 one that parallels the emergence and growth of the American studio craft movement. In this solo exhibition, Castle casts a critical eye toward the first decade of his own artistic production by creating a new body of work that revisits his groundbreaking achievements of the 1960s through a contemporary lens. This self reflective meditation examines a crucial period during which Castle`s sculptural practices came to define his pivotal role as a leader in the field, and set the foundation for his longevity.'], 
+                        'd2': ['sp',4,'(not spanish translation)'],  
+                        'd3': ['it',4,'(not italian translation)'],
                         },
                     'fc_Owner':'teamamerica',
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
                     'fc_SmartPhotos': {
                             'p1': [1,'6896928037','ok'], 
                             'p2': [2,'3498992745','ok'],  
                             'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
+                            'p4': [4,'6896928037','ok'],
+                            
                         },
-                    'fc_Links': {
-                            'd1': ['Website','http://www.myring.io'], 
-                            'd2': ['NewYork TImes','http://www.myring.io'],  
-                            'd3': ['TimeOut','http://www.myring.io'], 
-                        },
-                    'fc_Tags':[{'name': 'Business', 
-                                'list': ['a_001','a_002','a_003']
-                                },
-                                {'name': 'Beauty', 
-                                'list': ['b_001','b_002','b_003']
-                                }
-                                
-                            ],
-
+                    
                     'fc_Schedule': {
-                            'd1': ['Monday','14:00','21:00'], 
-                            'd2': ['Tuesday','10:00','21:00'],  
-                            'd3': ['Wednesday','10:00','21:00'], 
-                            'd4': ['Thursday','10:00','21:00'], 
-                            'd5': ['Friday','10:00','21:00'], 
-                            'd6': ['Saturday','11:00','19:00'], 
-                            'd7': ['Sunday','11:00','19:00'], 
+                            'd1': ['','OCT 20','FEB 28, 2016',1],  
                             },  
-                    'fc_List': {
-                            'd1': ['Phone','444'], 
-                            'd2': ['Fax','555'],  
-                            'd3': ['Toll-free','333'], 
-                            'd4': ['Sales','333'], 
+                    'fc_SmallNotes': {
+                            'd2': ['Organized by','guest curator Patterson Sims, along with Sophia Merkin, Curatorial Assistant and Project Manager.']
                         },
-                        'fc_SmallNotes': {
-                            'd1': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas'], 
-                            'd2': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.']
-                        }
+                        'S_fc_SmallNotes':1
+                },
+                # CLOSE ITEM
 
-
-
-                    }
-
+                       
 
 
                     ] 
 
-                    
-    data['staff'] = [{
-                    'fc_SubTitle':'Our Staff',
-                    'fc_Descriptions': {
-                        'en': 'There`s nothing our team loves more than helping people create unforgettable memories. Each year we serve over 1.5 million guests in 8 markets, so we do a whole lot of celebrating.Our passions range from finding the hottest new recipes, to helping guests select the perfect entertainment to enhance their event theme. We love stress-free weddings, corporate events that exceed expectations and events that are unique to the cities where we cruise.', 
-                        'sp': 'espanol del product 1', 
-                        'fr': 'frances del product 1'
-                        },
-                    'fc_Owner':'teamamerica',
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439'],
-                    'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
-                        }
-
-                    }]
-
-
-
-
-
     return render_template("/sandbox/factcard.html", data=data) 
-
-
-
-
 
 
 
