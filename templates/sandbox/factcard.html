@@ -7,24 +7,60 @@
 
 {% block content %}
 
+{% if data.mode =='status' %}
+    <!-- SEMAFORO STYLE-->
+         <style type="text/css">
+          .tst-1{color:green;} /*approved*/
+          .tst-2{color:blue;} /*In revision*/
+          .tst-3{color:orange;} /*Work in Progress*/
+          .tst-4{color:red;} /*empty*/
+          .tst-5{color:pink;} /*returned*/ 
+          .tst-6{color:gray;} /*not specified*/ 
+
+          .lst-1{background-color:green; color:#FFF;} /*approved*/
+          .lst-2{background-color:#5FC1E8; color:#FFF;} /*In revision*/
+          .lst-3{background-color:orange; color:#FFF;} /*Work in Progress*/
+          .lst-4{background-color:red; color:#FFF;} /*empty*/
+          .lst-5{background-color:pink; color:#FFF;} /*returned */ 
+          .lst-6{background-color:gray; color:#FFF;} /*not specified*/ 
+        </style>
+{% endif %}
+
+
+
 <link href="{{ url_for('static',filename='css/ring1_rich.css') }}" rel="stylesheet" type="text/css" media="screen">
 
 <body data-spy="scroll" data-target="#affix-nav" data-offset="180">
 <div class="container-fluid bg-07">
-<div class="row">
-  <div class="col-sm-offset-1 col-sm-10">
-    {% if mask =='mbf' %} 
-    Color Key: <span class="fw-c tst-1">green =</span> Confirmed |
-    <span class="fw-c tst-4">red =</span> Not Confirmed
-    {% endif %}
-
-    
-  </div>
-  
-</div>
 
 <div class="spa10"></div>
 
+<div class="row">
+
+  {% if data.mode =='status' %}
+  <div class="col-sm-offset-1 col-sm-7">
+     
+    Color Key: <span class="fw-c tst-1">green =</span> Confirmed |
+    <span class="fw-c tst-4">red =</span> Not Confirmed
+    
+  </div>
+  <div class="col-sm-offset-1 col-sm-3">
+    <a href="/_widget/facts/{{ data.slug}}/view">
+      <i class="fa fa-toggle-on"></i>
+      Switch to regular view
+    </a>
+  </div>
+  {% else %}
+    <div class="col-sm-offset-9 col-sm-3">
+      <a href="/_widget/facts/{{ data.slug}}/status">
+        <i class="fa fa-toggle-off"></i>
+        Switch to status view
+      </a>
+    </div>
+
+  {% endif %}
+  
+</div>
 
 <target id="start"></target>
  {{ ui.BizHead(data) }}
@@ -96,7 +132,16 @@
       <article id="product">
         <div class="row box box-widget p-10 bg-08">
           <div class="col-sm-12">
-            <h3 class="fc-g"><span class="fc-b">Services</span> </h3>
+            <h3 class="fc-g"><span class="fc-b">
+            {% if data.ServiceName %}
+
+              {{ data.ServiceName }}
+
+            {% else %}
+              Services
+            {% endif %}
+
+            </span> </h3>
           </div>
         </div>
         
@@ -181,6 +226,8 @@
                 <li><a href="#info3">Ammenities</a></li>
               </ul>
             </li>
+
+          {% if data.Rooms %}
             <li><a href="#rooms">Rooms</a>
               <ul class="nav">   
 
@@ -191,13 +238,24 @@
                   {% set count = count + 1 %}
                 {% endfor %}
 
-        <!--                 <li><a href="#room1">Single</a></li>
+                <!-- <li><a href="#room1">Single</a></li>
                 <li><a href="#room2">Double</a></li>
                 <li><a href="#room3">Triple</a></li>
                 <li><a href="#room4">Quad</a></li>    -->     
               </ul>
             </li>
-            <li><a href="#product">Services</a>
+          {% endif %}
+            <li>
+              <a href="#product">
+
+                    {% if data.ServiceName %}
+                      {{ data.ServiceName }}
+                    {% else %}
+                      Services
+                    {% endif %}
+
+
+              </a>
               <ul class="nav">   
 
                 {% set count = 1 %}
