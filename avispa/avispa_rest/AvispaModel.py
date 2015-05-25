@@ -58,8 +58,7 @@ class AvispaModel:
 
         try:
                    
-            db = self.MAM.select_db(user_database)
-            
+            db = self.MAM.select_db(user_database)            
             user_doc = self.MAM.select_user(user_database,handle)
             
             rings = user_doc['rings']
@@ -368,16 +367,50 @@ class AvispaModel:
     #AVISPAMODEL
     def user_delete_ring(self,handle,ringname,user_database=None):
 
-        db = self.couch[self.user_database]
-        doc =  MyRingUser.load(db, handle)
-        rings = doc['rings']
-        for ring in rings:
-            if ring['ringname']==ringname:
-                print()
-                ring['deleted']=True
-                #It is just a tombstone!!
-                
+        if not user_database : 
+            user_database = self.user_database
 
+        db = self.couch[user_database]
+        doc =  MyRingUser.load(db, handle)
+        
+
+        #Clean all the references to this ring in the user document
+        # This is NOT a tombstone. The database and its data will be deleted. 
+        # TO DO : Backup the data in a secondary database
+        print('Looking for ring '+ringname+' in the ringlist for this user')
+        i = 0
+        for ring in doc['rings']:
+            
+            if ring['ringname']==ringname:
+                print('Found it!... Deleting it')
+                print("doc['rings']["+str(i)+"]")
+                del doc['rings'][i]
+                #print()
+                #ring['deleted']=True           
+                # This is NOT a tombstone. The database and its data will be deleted. 
+                # TO DO : Backup the data in a secondary database
+                try:
+                    print('Try to Delete DB')
+                    db = self.MAM.delete_db(handle+'_'+ringname)
+                    print('DB Deleted')
+                except:
+                    print('DB already does not exist. Deleting all its references')    
+            i = i+1
+
+        j = 0
+        for collection in doc['collections']:
+            print('Looking in collection '+collection['collectionname']+' for this ring')
+            k = 0
+            for ring in collection['rings']:
+                if ring['ringname']==ringname:
+                    print('Found it! ... Deleting it'+ str(j)+'-')
+                    print("doc['collections']["+str(j)+"]['rings']["+str(k)+"]")
+                    del doc['collections'][j]['rings'][k]
+
+                k = k+1
+
+            j = j+1
+                
         if doc.store(db):
             return True
 
