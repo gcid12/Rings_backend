@@ -1270,6 +1270,20 @@ def facts_001():
 def facts_002(showme):
 
     data = {}
+
+    # Item with all the company's information
+    data['item1'] = "https://avispa.myring.io/_api/open3/company/6286418040"
+
+    # Item 
+    data['item2'] = "https://avispa.myring.io/_api/open3/product/9554456807"
+
+    # Item 
+    data['item3'] = "https://avispa.myring.io/_api/open3/product/5774727795"
+
+    # Item 
+    data['item4'] = "https://avispa.myring.io/_api/open3/product/6755265161"
+
+    
     data['mask']= "mbf"
     data['mode']= showme
     data['slug']= "ecruises"

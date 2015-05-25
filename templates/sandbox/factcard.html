@@ -5,6 +5,10 @@
   {{ data.title }}
 {% endblock %}
 
+{% block headscripts %}
+  
+{% endblock %}
+
 {% block content %}
 
 {% if data.mode =='status' %}
@@ -26,11 +30,13 @@
         </style>
 {% endif %}
 
-
-
-<link href="{{ url_for('static',filename='css/ring1_rich.css') }}" rel="stylesheet" type="text/css" media="screen">
-
 <body data-spy="scroll" data-target="#affix-nav" data-offset="180">
+<head>
+    <link href="{{ url_for('static',filename='css/ring1_rich.css') }}" rel="stylesheet" type="text/css" media="screen">
+</head>
+
+
+
 <div class="container-fluid bg-07">
 
 <div class="spa10"></div>
@@ -63,13 +69,13 @@
 </div>
 
 <target id="start"></target>
- {{ ui.BizHead(data) }}
+ {{ fui.BizHead(data) }}
 
   <div class="row">
 
     <section id="content" class="col-sm-offset-1 col-sm-8 ">
     
-      <article id="information">
+      <article id="information"> 
      
         <!-- DESCRIPTION -->
         
@@ -309,14 +315,50 @@
   </footer>
 
 </div><!-- end of container -->
- 
+
+<div class="container1"></div>
+
+</body>
+
+{% endblock %}
+
+{% block footscripts %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0-rc2/js/bootstrap.min.js"></script>
-</body>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0-rc2/js/bootstrap.min.js"></script>  
+{% endblock %}
+
+{% block footfunctions %}
+
+<script type="text/javascript">
+$(window).load(function(){
+
+  url = "https://avispa.myring.io/_api/open3/company/6286418040"
+  
+  var jqxhr = $.get( url, function( data ) {
+    //alert( "success:" + data );
+    //var old = $( ".data-Name" ).html();
+    //alert( "old_value:"+ old)
+    var obj = jQuery.parseJSON(data);
+
+    $( ".data-Name" ).html(obj.items[0].f01);
+    $( ".container1" ).html(obj);
+  })
+  .done(function(data) {
+    //alert( "done:" + data );
+  })
+  .fail(function(data) {
+    //alert( "fail:" + data );
+  })
 
 
+  jqxhr.always(function(data) {
+    //alert( "always:" + data  );
+  });
+
+});
+</script>
 
 {% endblock %}
 

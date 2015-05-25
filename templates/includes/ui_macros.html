@@ -1019,97 +1019,6 @@
 
 
 
-<!-- ::::::BUSINESS FACTS REPORT:::::::::::::::::: --> 
-<!-- ::::::BUSINESS FACTS REPORT:::::::::::::::::: --> 
-<!-- ::::::BUSINESS FACTS REPORT:::::::::::::::::: --> 
-
-
-
-<!-- GENERATES THE HEADER WITH COMPANY INFO -->
- {% macro BizHead(data) %}
-  <div class="row">
-      <div class="col-sm-offset-1 col-sm-12">
-        <h4 class="fc-g"><span class="label label-vader">Business Facts</span></h4>
-          
-        <h1 class="fc-b fw-c fs-3 {{ status_text(data.S_Name) }} " id="sec0">{{ data.Name }}</h1>
-        
-        <p class="fc-b fs-1-2"> 
-          {% if data.Address %}
-          <span class="{{ status_text(data.S_Address) }}">{{ data.Address }},</span>
-          {% else %}
-          {% endif %}
-
-          {% if data.City %}
-          <span class="{{ status_text(data.S_City) }}">{{ data.City }},</span>
-          {% endif %}
-
-          {% if data.State %}
-          <span class="{{ status_text(data.S_State) }}">{{ data.State }},</span>
-          {% endif %}
-
-          {% if data.Zip %}
-          <span class="{{ status_text(data.S_Zip) }}">{{ data.Zip }},</span>
-          {% endif %}
-
-        </p>
-        {% if data.Website %}
-          <span class="{{ status_text(data.S_Website) }}"><strong><i class="fa fa-globe pad-x-4"></i></strong> {{ data.Website }}</span>
-        {% endif %}
-
-        {% if data.Phone %}
-          |<span class="{{ status_text(data.S_Phone) }}" ><strong><i class="fa fa-phone pad-x-4"></i></strong> {{ data.Phone }}</span>
-        {% endif %}
-
-        {% if data.Mail %}
-          |<span class="{{ status_text(data.S_Mail) }}"><strong><i class="fa fa-envelope pad-x-4"></i></strong> {{ data.Mail }}</span>
-        {% endif %}
-
-        {% if data.SM1 %} 
-        | <a class="{{ status_text(data.S_SM1) }}" href="{{ data.SM1 }}"> <i class="fa fa-twitter pad-x-4"></i> </a> 
-        {% endif %}
-
-        {% if data.SM2 %} 
-        | <a class="{{ status_text(data.S_SM2) }}" href="{{ data.SM2 }}"> <i class="fa fa-facebook pad-x-4"></i> </a>
-        {% endif %}
-
-        {% if data.SM3 %} 
-        | <a class="{{ status_text(data.S_SM3) }}" href="{{ data.SM3 }}"> <i class="fa fa-youtube pad-x-4"></i></a>
-        {% endif %}
-
-        {% if data.SM4 %} 
-        | <a class="{{ status_text(data.S_SM4) }}" href="{{ data.SM4 }}"> <i class="fa fa-instagram pad-x-4"></i></a>
-        {% endif %}
-        
-      </div>
-  </div><!-- close row -->
-{% endmacro %}
-
-{% macro status_text(code) %}
-
-    {% if code==1 %} tst-1 
-    {% elif code==2 %} tst-2
-    {% elif code==3 %} tst-3
-    {% elif code==4 %} tst-4
-    {% elif code==5 %} tst-5
-    {% elif code==6 %} tst-6
-    {% else %} {% endif %}
-    
-      
-{% endmacro %}
-
-{% macro status_label(code) %}
-
-    {% if code==1 %} lst-1 
-    {% elif code==2 %} lst-2
-    {% elif code==3 %} lst-3
-    {% elif code==4 %} lst-4
-    {% elif code==5 %} lst-5
-    {% elif code==6 %} lst-6
-    {% else %} {% endif %}
-    }
-      
-{% endmacro %}
-
 
 
 <!-- ::::::::::::::::FACT CARDS:::::::::::::::::: --> 
@@ -1354,6 +1263,32 @@
 <!-- ::::::::::::::::FACT MODULES:::::::::::::::::: --> 
 <!-- ::::::::::::::::FACT MODULES:::::::::::::::::: --> 
 <!-- ::::::::::::::::FACT MODULES:::::::::::::::::: --> 
+
+{% macro status_text(code) %}
+
+    {% if code==1 %} tst-1 
+    {% elif code==2 %} tst-2
+    {% elif code==3 %} tst-3
+    {% elif code==4 %} tst-4
+    {% elif code==5 %} tst-5
+    {% elif code==6 %} tst-6
+    {% else %} {% endif %}
+    
+      
+{% endmacro %}
+
+{% macro status_label(code) %}
+
+    {% if code==1 %} lst-1 
+    {% elif code==2 %} lst-2
+    {% elif code==3 %} lst-3
+    {% elif code==4 %} lst-4
+    {% elif code==5 %} lst-5
+    {% elif code==6 %} lst-6
+    {% else %} {% endif %}
+    }
+      
+{% endmacro %}
 
 
 
