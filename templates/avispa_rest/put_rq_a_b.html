@@ -178,11 +178,8 @@
             
               <div id="columnfields"> <!-- A. START DRAG AREA -->
                 {% for field in data.fieldsschema %}
-
-
-                    {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSemantic,field.FieldLabel) }}
-
                 
+                    {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSemantic,field.FieldLabel) }}
                   <!-- N FIELD END -->
 
               {% endfor %}
@@ -216,6 +213,26 @@
 </div>
 <br/><br/><br/>
 </form> 
+
+
+<hr/>
+
+<h4>Schema</h4>
+
+<div class="row">
+  <div class="col-sm-offset-2 col-sm-5">
+    
+    <table class="table table-condensed fs-0-8">
+    {% for field in data.fieldsschema %}
+        {{ ui.showSchema(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSemantic,field.FieldLabel) }}
+    {% endfor %}
+    </table>
+
+  </div>
+  
+</div>
+
+
 
 
 

@@ -51,10 +51,10 @@
             
             <ul class="nav nav-pills text-right" role="tablist">
               {% if data.imagesui==True %}
-              <li role="presentation" class="active pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
+              <li role="presentation" class="pull-right"><a href="#mosaic" aria-controls="mosaic" role="tab" data-toggle="tab" title="view as mosaic"><i class="fa fa-th"></i></a></li>
               {% endif %}
-              <li role="presentation" class="{% if data.imagesui!=True %}active {% endif %}pull-right"><a href="#onelist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
-              <!-- <li role="presentation" class="active pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li> -->
+              <li role="presentation" class="active pull-right"><a href="#biglist" aria-controls="megalist" role="tab" data-toggle="tab" title="view as list" ><i class="fa fa-th-list"></i></a></li>
+              <li role="presentation" class="pull-right"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" title="view as list"><i class="fa fa-list"></i></a></li>
             </ul> 
           </div>
       </div>
@@ -228,13 +228,12 @@
 
 
       <!-- AS A BIG LIST -->
-      <div role="tabpanel" class="tab-pane fade {% if data.imagesui==False %}in active{% endif %}" id="biglist">
-      
-          
+      <div role="tabpanel" class="tab-pane fade in active" id="biglist">
          
           <div> 
            
               {% for item in data.itemlist %}
+
                 <div class="row bord-left bord-bottom bw-1 p-10 ml-15 bc-15">
                   <div class="col-sm-12"><br/><br/></div>
                   <div class="col-sm-2" >
@@ -267,6 +266,7 @@
                               
                             </div>
                             <div class="col-sm-12 col-xs-5 omega" >
+
                                 <div class="btn-group" role="group" aria-label="...">
                                 {% if 'get_a_b_c' in data.user_authorizations %}
                                   <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
@@ -289,53 +289,55 @@
 
 
                   <div class="col-sm-10 ">
-                      {% for value in data.FieldLabel %}        
-                        {% if not data.widget[value] == 'images' %}  
-                        {#% if item[value] %#}
-                       
-                      <div class="row hidden-xs">
-                        <div class="col-sm-3 text-right alpha omega">
-                           <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{%if data.FieldLabel[value] == '' %}
-                         {{ value }}
-                     {%else%}
-                         {%if data.FieldLabel[value] == None %} 
-                           {{ value }}
-                         {%else%}
-                           {{data.FieldLabel[value]}}
-                         {%endif%}
-                     {%endif%}:</p>
-                        </div>
-                        <div class="col-sm-9 alpha">
-                        
-                          <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(70, true) }#}{{item[value]}}{%endif%}</p>
+                    {% for value in data.FieldLabel %}        
+                      {% if not data.widget[value] == 'images' %}  
+                      {% if item[value] %}
+                      
+                        <div class="row hidden-xs">
+                          <div class="col-sm-3 text-right alpha omega">
+                            <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{%if data.FieldLabel[value] == '' %}
+                                  {{ value }}
+                                     {%else%}
+                                         {%if data.FieldLabel[value] == None %} 
+                                           {{ value }}
+                                         {%else%}
+                                           {{data.FieldLabel[value]}}
+                                         {%endif%}
+                                     {%endif%}:
+                            </p>
+                          </div>
+                          <div class="col-sm-9 alpha">
+                          
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
+                              <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(70, true) }#}{{item[value]}}{%endif%}</p>
 
-                          </a>
+                            </a>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row visible-xs">
 
-                        <div class="col-xs-12 alpha omega">
-                           <p class="fs-0-9 fc-g lh-1-2" style="margin-bottom:5px; padding:10px 0 0 0;">{%if data.FieldLabel[value] == '' %}
-                         {{ value }}
-                     {%else%}
-                         {%if data.FieldLabel[value] == None %} 
-                           {{ value }}
-                         {%else%}
-                           {{data.FieldLabel[value]}}
-                         {%endif%}
-                     {%endif%}:</p>
+                        <div class="row visible-xs bg-b">
+                          <div class="col-xs-12 alpha omega">
+                             <p class="fs-0-9 fc-g lh-1-2" style="margin-bottom:5px; padding:10px 0 0 0;">{%if data.FieldLabel[value] == '' %}
+                                  {{ value }}
+                                   {%else%}
+                                       {%if data.FieldLabel[value] == None %} 
+                                         {{ value }}
+                                       {%else%}
+                                         {{data.FieldLabel[value]}}
+                                       {%endif%}
+                                   {%endif%}:
+                              </p>
+                          </div>
+                          <div class="col-xs-12 alpha omega">
+                          
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
+                              <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(110, true) }#}{{item[value]}}{%endif%}</p>
+                            </a>
+                          </div>
                         </div>
-                        <div class="col-xs-12 alpha omega">
-                        
-                          <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(110, true) }#}{{item[value]}}{%endif%}</p>
-                          </a>
-                        </div>
-                      </div>
-                        {#%endif%#}
-                        {%endif%}
-                      {%endfor%}
+                      {%endif%}
+                      {%endif%}
+                    {%endfor%}
                   </div>   
               </div> 
                
@@ -349,135 +351,10 @@
       <!-- AS A BIGLIST close -->
 
 
-
-      <!-- AS ONELINE LIST -->
-      <div role="tabpanel" class="tab-pane fade {% if data.imagesui!=True %}in active{% endif %}" id="onelist">
-       
-          <div> 
-           
-              {% for item in data.itemlist %}
-                <div class="row bord-left bord-bottom bw-1 p-10 ml-15 bc-15">
-                  <div class="col-sm-12"><br/><br/></div>
-                  <div class="col-sm-2" >
-                        <div class="row">
-                            
-                            <div class="col-sm-12 col-xs-7 text-left alpha" >
-                              {% if data.imagesui==True %}
-                                  {% for k,v in item.items() %}
-                                    {% if data.widget[k] == 'images' %} 
-
-                                      {% if v[0] %}                      
-                                        <img style="width:100px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
-                                        {% else %}
-                                        <img style="width:50px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
-
-                                      {% endif %}
-
-
-                                      {#% for image in v %}       
-                                        {% if image %}                      
-                                          <img style="width:100px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" class="img-thumbnail" >
-                                        {% else %}
-                                        <img style="width:50px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
-
-                                        {% endif %}
-                                      {% endfor %#}                    
-                                    {% endif %}
-                                  {% endfor %}
-                                {% endif %}
-                              
-                            </div>
-                            <div class="col-sm-12 col-xs-5 omega" >
-                                <div class="btn-group" role="group" aria-label="...">
-                                {% if 'get_a_b_c' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                                {% endif %}
-                                 
-                                {% if 'put_a_b_c' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
-                                {% endif %}
-
-                                {% if 'delete_a_b_c' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
-                                {%endif%}
-                                </div>
-                            </div>
-                        </div>
-                         
-                  </div>
-                  
-
-
-
-                  <div class="col-sm-10 ">
-                      {% for value in data.FieldLabel %}        
-                        {% if not data.widget[value] == 'images' %}  
-                        {#% if item[value] %#}
-                       
-                      
-                          <span class="fc-g">|</span>
-                           <span class="fs-0-7 fc-g fw-c" style=""> {%if data.FieldLabel[value] == '' %}
-                                 {{ value }}
-                             {%else%}
-                                 {%if data.FieldLabel[value] == None %} 
-                                   {{ value }}
-                                 {%else%}
-                                   {{data.FieldLabel[value]}}
-                                 {%endif%}
-                             {%endif%}:
-                          </span>
-                        
-                        
-                          {%if item[value] %}
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                              <span class="fs-0-7" style="">
-                                  {#{ item[value]|truncate(70, true) }#} {{item[value]}} 
-                              </span>
-                            </a>
-                          {% else %} <span class="fs-0-7 fc-g">NA</span> 
-                          {%endif%}
-                        
-
-                      
-                      <div class="row visible-xs">
-
-                        <div class="col-xs-12 alpha omega">
-                           <p class="fs-0-9 fc-g lh-1-2" style="">{%if data.FieldLabel[value] == '' %}
-                         {{ value }}
-                     {%else%}
-                         {%if data.FieldLabel[value] == None %} 
-                           {{ value }}
-                         {%else%}
-                           {{data.FieldLabel[value]}}
-                         {%endif%}
-                     {%endif%}:</p>
-                        </div>
-                        <div class="col-xs-12 alpha omega">
-                        
-                          <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(110, true) }#}{{item[value]}}{%endif%}</p>
-                          </a>
-                        </div>
-                      </div>
-                        {#%endif%#}
-                        {%endif%}
-                      {%endfor%}
-                  </div>   
-              </div> 
-               
-
-              
-                {% endfor %}
-              <!-- END ITEM N -->
-          
-          </div>
-      </div>
-      <!-- ONELIST close -->
-
 {% if data.imagesui==True %}
 
   <!-- AS MOSAIC -->
-          <div role="tabpanel" class="tab-pane fade in active" id="mosaic">
+          <div role="tabpanel" class="tab-pane fade " id="mosaic">
 
             
             
