@@ -420,6 +420,7 @@
 
 
                   <!-- TAGS -->
+
                   <input id="tagvalue_{{ FieldOrder }}" type="hidden" name="FieldLayer_{{ FieldOrder }}" value="{{ FieldLayer }}">
 
                   <div id="tagged{{ FieldOrder }}" class="portlet-header bt-{{ FieldLayer }}">
@@ -459,8 +460,10 @@
                               <option value="url_video" {% if FieldWidget == "url_video" %}selected=""{% endif %}>url_video</option>
                           </select>
                         </td>
-                        <td style="background-color:red; " >
+                        <td>
                           
+                            <span class="fs-0-8">({{ FieldLabel }})</span>
+
                             <!-- <div class="input-group input-group-sm m-10">
                               <span class="input-group-addon" id="sizing-addon1">*Source</span>
                               <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="source"/>
@@ -487,7 +490,7 @@
                             </span>
 
                             <span class="label bg-gray margin-x-7">
-                              <select name="FieldCardinality_{{ FieldOrder }}">
+                              <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
                                 <option value="Single" {% if FieldCardinality == "Single" %} selected {% endif %} >Single</option>
                                 <option value="Multiple" {% if FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
                               </select>
@@ -561,6 +564,38 @@
 
 
                   <!-- N FIELD END -->
+
+{% endmacro%}
+
+
+{% macro showSchema(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSemantic,FieldLabel) %}
+
+        
+      <tr class="bt-{{ FieldLayer }}">
+          
+          <td>
+            <span class="label label-danger">{{ FieldOrder }}</span>
+          </td>
+          <td>
+            <span class="label label-default">{{ FieldName }}</span>
+          </td>
+
+          <td>
+              <strong> {{ FieldLabel }}</strong>
+          </td>
+          <td>
+            {{ FieldWidget }}
+          </td>
+          
+          <td>
+            {{ FieldCardinality }}
+          </td>
+          <td>
+            {{ FieldSource }}
+          </td>
+         
+
+      </tr>                
 
 {% endmacro%}
 
@@ -1122,6 +1157,13 @@
             {{ fm_SubTitle(x.fc_SubTitle,'','',status_text(x.S_fc_Title)) }}
           </span>
         {% endif %}
+        
+        {% if x.fc_OneLine %}
+          <span>
+            {{ fm_SubTitle(x.fc_OneLine,'','',status_text(x.S_fc_OneLine)) }}
+          </span>
+        {% endif %}
+
 
       </div>
           
