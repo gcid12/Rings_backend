@@ -334,7 +334,8 @@
 <script type="text/javascript">
 $(window).load(function(){
 
-  url = "https://avispa.myring.io/_api/open3/company/6286418040"
+  //url = "https://avispa.myring.io/_api/open3/company/6286418040"
+  url = "https://avispa.myring.io/_api/ecruises/company/3713092370"
   
   var jqxhr = $.get( url, function( data ) {
     //alert( "success:" + data );
@@ -342,8 +343,24 @@ $(window).load(function(){
     //alert( "old_value:"+ old)
     var obj = jQuery.parseJSON(data);
 
-    $( ".data-Name" ).html(obj.items[0].f01);
-    $( ".container1" ).html(obj);
+    $( "#data-Name" ).html(obj.items[0].f01).parent().addClass('tst-'+obj.items[0].f01_flag);
+
+    $( "#data-Address" ).html(obj.items[0].f02).addClass('tst-'+obj.items[0].f02_flag);
+    $( "#data-State" ).html(obj.items[0].f03).addClass('tst-'+obj.items[0].f03_flag);
+    $( "#data-City" ).html(obj.items[0].f04).addClass('tst-'+obj.items[0].f04_flag);
+    $( "#data-Zip" ).html(obj.items[0].f05).addClass('tst-'+obj.items[0].f05_flag);
+
+    $( "#data-Website" ).html(obj.items[0].f09).parent().addClass('tst-'+obj.items[0].f09_flag);
+    $( "#data-Phone" ).html(obj.items[0].f11).parent().addClass('tst-'+obj.items[0].f11_flag);
+    $( "#data-Mail" ).html(obj.items[0].f10).parent().addClass('tst-'+obj.items[0].f10_flag);
+
+    $( "#sm1" ).attr('href',obj.items[0].f14).addClass('tst-'+obj.items[0].f14_flag);
+    $( "#sm2" ).attr('href',obj.items[0].f15).addClass('tst-'+obj.items[0].f15_flag);
+    $( "#sm3" ).attr('href',obj.items[0].f16).addClass('tst-'+obj.items[0].f16_flag);
+    $( "#sm4" ).attr('href',obj.items[0].f17).addClass('tst-'+obj.items[0].f17_flag);
+
+    
+    
   })
   .done(function(data) {
     //alert( "done:" + data );
