@@ -69,7 +69,7 @@
 </div>
 
 <target id="start"></target>
- {{ fui.BizHead(data) }}
+ {{ fui.BizHead() }}
 
   <div class="row">
 
@@ -83,10 +83,17 @@
         <section id="info1">
           <div class="row box box-widget">
             <div class="col-sm-6 box-columns">
-             {{ ui.FactCard(data.Description) }}
+              <div class="row">
+                <div class="col-sm-12">   
+                  {{ fui.fm_SubTitle('Full Description') }}
+
+
+                  {{ fui.fm_LangVersions('', '', '') }}
+                </div>
+              </div> 
             </div>
             <div class="col-sm-6">
-             {{ ui.FactCard(data.OneLine) }}
+             {{ fui.FactCard(data.OneLine) }}
             </div>
             
           </div>
@@ -97,7 +104,7 @@
           <section id="info2">
             <div class="row box box-widget p-10">
               <div class="col-sm-12">
-              {{ ui.FactCard(data.photos) }}
+              {{ fui.FactCard(data.photos) }}
               </div>
             </div>
           </section>
@@ -108,7 +115,7 @@
           <section id="info3">
             <div class="row box box-widget p-10">
               <div class="col-sm-12">
-              {{ ui.FactCard(data.Includes) }}
+              {{ fui.FactCard(data.Includes) }}
               </div>
             </div>
           </section>
@@ -127,7 +134,7 @@
           </div>
         </div>
 
-        {{ ui.FactCard_Rooms(data.Rooms) }}
+        {{ fui.FactCard_Rooms(data.Rooms) }}
         
       </article>
       {% endif %}
@@ -151,7 +158,7 @@
           </div>
         </div>
         
-        {{ ui.FactCard_Services(data.Services) }}
+        {{ fui.FactCard_Services(data.Services) }}
         
       </article>
       {% endif %}
@@ -169,10 +176,10 @@
 
           <div class="row box box-widget p-10">
             <div class="col-sm-6 box-columns" id="story1">
-              {{ ui.FactCard(data.history) }}
+              {{ fui.FactCard(data.history) }}
             </div>
             <div class="col-sm-6" id="story2">
-              {{ ui.FactCard(data.staff) }}
+              {{ fui.FactCard(data.staff) }}
             </div>
           </div>
 
@@ -183,10 +190,10 @@
 
           <div class="row box box-widget p-10">
             <div class="col-sm-5 box-columns" id="story3">
-              {{ ui.FactCard(data.contact) }}
+              {{ fui.FactCard(data.contact) }}
             </div>
             <div class="col-sm-7 box-columns" id="story4">
-              {{ ui.FactCard(data.curious) }}
+              {{ fui.FactCard(data.curious) }}
             </div>
             
           </div>
@@ -200,7 +207,7 @@
           <div class="row box box-widget p-10">
             <div class="col-sm-6 box-columns" id="story3">
             
-              {{ ui.FactCard(data.Example) }}
+              {{ fui.FactCard(data.Example) }}
             </div>
             
           </div>
