@@ -251,6 +251,8 @@ class AvispaRestFunc:
         else:
             layer = PREVIEW_LAYER
 
+        #print('LAYER:',layer)
+
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         #print(schema['fields'])
        
@@ -261,11 +263,12 @@ class AvispaRestFunc:
         widgets = {}
         sources = {}
         for schemafield in schema['fields']:
-            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])
-            labels[schemafield['FieldName']]=schemafield['FieldLabel']
+            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
             widgets[schemafield['FieldName']]=schemafield['FieldWidget']
             sources[schemafield['FieldName']]=schemafield['FieldSource']
 
+            if int(schemafield['FieldLayer']) <= int(layer):
+                labels[schemafield['FieldName']]=schemafield['FieldLabel']
 
 
         print('widgets:',widgets)
@@ -304,7 +307,10 @@ class AvispaRestFunc:
             previewItem['_fieldcount'] = 0
             previewItem['_fullcount'] = 0
 
+            #print('LAYERS',layers)
+
             for fieldname in item:
+                #print ('FIELDNAME',fieldname)
                 
                 if fieldname in layers:
                     previewItem['_fieldcount'] += 1
@@ -313,10 +319,12 @@ class AvispaRestFunc:
                     if item[fieldname] != '':
                         previewItem['_fullcount'] += 1
 
-                    if layers[fieldname]<=layer:
+                    if int(layers[fieldname])<=int(layer):
+
+                        #print('int('+str(layers[fieldname])+')<=int('+str(layer)+'))')
                     #if True:
                         #Only include those fields below the PREVIEWLAYER
-                        print("Including in the preview:"+fieldname+'. Layer:'+str(layers[fieldname]))
+                        #print("Including in the preview:"+fieldname+'. Layer:'+str(layers[fieldname]))
                         previewItem[fieldname] = item[fieldname] 
 
                         if fieldname+'_rich' in item and (sources[fieldname] is not None):
