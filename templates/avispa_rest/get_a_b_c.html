@@ -73,32 +73,26 @@
                         
                         <table class="table table-condensed table-striped">   
                            
-                                {% for k,v in data.item.items() %}
+                        {% for k,v in data.item.items() %}
+                          {% if k in data.labels %}
+                          {% if data.widget[k] != 'images' %}
                           <tr> 
                             <!-- <td>
                                   {% if k =='_public' %} 
                                           <div><b>&nbsp;PUBLIC</b></div>
 
                                   {% endif %}
-                            </td> -->
-
-                                   {% if not k =='_public' %} 
-                                   {% if not k =='_id' %} 
-                                   {% if data.widget[k] != 'images' %}
+                            </td> -->     
                             <td>  
-                                  <p class="fs-0-8 fw-a fc-g">{{ k }}:</p>
+                                <p class="fs-0-8 fw-a fc-g">{{data.labels[k]}}:</p>
                             </td>
                             <td>
-                                  <p class="fs-0-8 fw-b">{{ v }}</p>
-                            </td> 
-                                    {% endif %}
-                                    {% endif %}
-                                    {% endif %}
-
+                                <p class="fs-0-8 fw-b">{{ v }}</p>
+                            </td>        
                           </tr>
-                                {% endfor %}
-                          
-                               
+                          {% endif %}
+                          {% endif %}
+                        {% endfor %}           
                             
                         </table>         
                         
@@ -108,9 +102,10 @@
                 <div class="col-sm-7 col-md-8 col-lg-9">
 
                   {% for k,v in data.item.items() %}
+                     {% if k in data.labels %}
                      {% if data.widget[k] =='images' %}
                          
-                         <p class="fs-0-8 fw-a fc-g">{{k}}:</p>
+                         <p class="fs-0-8 fw-a fc-g">{{data.labels[k]}}:</p>
                          <div id="links">
                         {% for image in v %}
                           {% if image %}
@@ -127,6 +122,7 @@
 
                         </div>         
 
+                      {% endif %}
                       {% endif %}
                   {% endfor %}
 

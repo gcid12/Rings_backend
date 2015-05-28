@@ -739,8 +739,16 @@ class AvispaRestFunc:
         d['widget'] = {}
         d['imagesui'] = False
 
+
+
+        labels = {}
+
         for field in schema['fields']:
-            
+
+            if field['FieldLabel'] is not '':
+                labels[field['FieldName']]=field['FieldLabel']
+            else:
+                labels[field['FieldName']]=field['FieldName']
 
             d['widget'][field['FieldName']] = field['FieldWidget']
             
@@ -767,9 +775,8 @@ class AvispaRestFunc:
                 out['source'] = "/"+str(handle)+"/"+str(ring)
                 
                 if 'schema' in request.args:
-                    schema= self.AVM.ring_get_schema_from_view(handle,ring)
-                    print('schema::')
-                    print(schema)
+                    #schema= self.AVM.ring_get_schema_from_view(handle,ring)
+                    #print('schema:',schema)
                     out['rings'] = schema['rings']
                     out['fields'] = schema['fields']
                 
@@ -786,6 +793,7 @@ class AvispaRestFunc:
 
             else:
                 d['item'] = item
+                d['labels'] = labels 
                 d['template'] = 'avispa_rest/get_a_b_c.html'
 
         else: 
