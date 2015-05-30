@@ -6,31 +6,32 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12">
 
-            <img class="block-center" src="/static/images/icons/case-44.png" style="width:45px;" alt="MyRing">
-            <br/>
  
         {% if 'get_a' in user_authorizations %}
             
-            <a class="nounder fs-1-3" href="/{{handle}}/_collections/{{collection}}">
+            <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
               <!-- <span style="opacity: 0.3;">  
                 {{ handle|lower() }}  / 
               </span>  --> 
-                <span class="fw-c text-gray">
-                    {{ collection|upper() }} 
+                <span class="fs-1-2">
+                    {{ collection|capitalize }} 
                 </span>
                 {% if 'get_a_x' in user_authorizations %}
             
-                    <span class="dropdown">
-                        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
                     
-                            <span class="caret text-black"></span>
+                    <div class="dropdown pull-right">
+                        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                        
+                            <i class="fa fa-cog fc-g"></i>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=put"><i class="fa fa-wrench"></i> Settings </a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=put"> <i class="fa fa-link"></i> Add Ring</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=post&n=10"><i class="fa fa-plus"></i> Create Ring</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=put"><i class="fa fa-cog"></i> Settings </a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=post&n=10"><i class="fa fa-plus"></i> New Ring</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=put"> <i class="fa fa-link"></i> Link Ring</a></li>
+                            
                         </ul>
-                    </span>
+                    </div>
+
             
                 {% endif %}
             </a>
@@ -179,7 +180,7 @@
                 
                   <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
                   {% if 'post_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i>ADD item</a>
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="fc-i" data-toggle="tooltip" title="Add item"><i class="fa fa-plus-circle fa-2x"></i></a>
                   {% endif %}
                   <!-- {% if 'put_a' in user_authorizations %}
                   <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
@@ -192,6 +193,47 @@
           
                    
 {% endmacro %}
+
+
+{% macro panel_collections_old(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
+          
+          
+          <tr class="bord-bottom bc-8 bw-2">
+            
+            <td>{{ icon_sma(count, color) }}</td>
+            <td>
+              <img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;">
+
+              <!-- <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
+              {% if 'get_a_b' in user_authorizations %}
+              
+              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
+              &nbsp; <span style="font-weight:700;">{{ring}}</span>
+              {%endif%} 
+              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
+            </td>
+            <td>
+              <div class="pull-right">
+                
+                <div class="btn-group" >
+                
+                  <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
+                  {% if 'post_a' in user_authorizations %}
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button"><i class="fa fa-plus fa-2x"></i></a>
+                  {% endif %}
+                  <!-- {% if 'put_a' in user_authorizations %}
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+                  {% endif %} -->
+                </div>
+                
+              </div>
+            </td>
+          </tr>
+          
+                   
+{% endmacro %}
+
+
 
 {% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
 

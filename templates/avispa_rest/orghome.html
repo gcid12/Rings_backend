@@ -12,188 +12,103 @@
 
 
 <section>
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <br/>
+    <div class="spa10"></div>
+    <div class="container">
+        <div class="row gcard">
+            <div class="col-sm-2 spa20">
 
-        <!-- PHOTO  -->
+                <!-- PHOTO  -->
+                <div class="p-x-16">
+                {% if data.handle_profilepic %}
+                    <img class="img-responsive center-block user-big" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="float:left; margin-right:10px;" alt="">
+                {% else %}
 
-        {% if data.handle_profilepic %}
-          <img class="img-responsive center-block user-big" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="width:100px; float:left; margin-right:10px;" alt="">
-        
-        {% else %}
-          <table style="float:left;">
-            <tr>
-              <td>
-                <img class="img-responsive center-block user-big" src="/static/images/ph/ph_org2.gif" style="float:left; margin-right:10px;" alt="">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {% if 'get_a_p' in data.user_authorizations %}
-                <a href="/{{data.handle}}/_orgprofile" class="pull-left"> <i class="fa fa-pencil"></i> Add Logo</a>
-                {%endif%}
-              </td>
-            </tr>
-          </table>
+                    <a href="/{{data.handle}}/_orgprofile" class="pull-left fs-0-8">
+                        <img class="img-responsive center-block user-big" src="/static/images/ph/ph_org2.gif">
+                    </a>
 
-        {% endif %}
+                {% endif %}
+                </div>
+            </div>
+            <div class="col-sm-10 spa20">
 
-        <!-- NAME -->
+                <!-- NAME -->
 
-        {% if data.handle_actualname %} 
-         <div class="text-lead fw-300">
-            <span class="text-s1 text-gray fs-2">{{data.handle_actualname}}</span>
-              {% if 'put_a' in data.user_authorizations %}
-                <a href="/{{data.handle}}/_orgprofile"> 
-                  <span class="pl-20"> <i class="fa fa-pencil"></i> </span>
-                </a> 
+                {% if data.handle_actualname %} 
+                <div class="text-lead fw-300">
+                    <span class="text-s1 fc-b fs-1-7"><strong>{{data.handle_actualname}}</strong></span>
+                    {% if 'put_a' in data.user_authorizations %}
+                        <a href="/{{data.handle}}/_orgprofile"> 
+                            <span class="pl-20"> <i class="fa fa-pencil"></i> </span>
+                        </a> 
+                    {%endif%}
+                    <br/>
+                    <span class="text-s2 text-lgray fs-1-7">{{data.handle}}</span>
+                </div>
 
-              {%endif%}
-            
-              <br/>
-            <span class="text-s2 text-lgray fs-1-7">{{data.handle}}</span>
-         </div>
-
-        {% else %}
-          <div class="text-lead fw-300">
-            {% if 'get_a_p' in data.user_authorizations %}
-            <span class="text-s1 text-lgray fs-2">Organization full name</span>
+                {% else %}
+                <div class="text-lead fw-300">
+                    {% if 'get_a_p' in data.user_authorizations %}
+                    <span class="text-s1 text-lgray fs-2">Organization full name</span>
                  
-                <a href="/{{data.handle}}/_orgprofile"> 
-                  <span class="pl-20"> <i class="fa fa-pencil"></i> Edit Name</span>
-                </a> 
+                    <a href="/{{data.handle}}/_orgprofile"> 
+                      <span class="pl-20"> <i class="fa fa-pencil"></i> Edit Name</span>
+                    </a> 
               
-            
-              <br/>
-            <span class="text-s2 text-gray fs-1-7">{{data.handle}}</span>
-            {%else%}
-              <a href="/{{data.handle}}/_orgprofile">
-                <span class="text-s1 text-lgray fs-2">{{data.handle}}</span>
-              </a>
-            {%endif%}
-         </div>
-
-
-         
-         
-         
-        {% endif %}
-
-        
-             
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        
-      </div>
-      <div class="col-xs-12">
-        <div class="spa20">
-
-          {% for person in data.people %}
-
-               
-                  
-                  <a href="/{{person.handle}}/_home" class="clearlink" data-toggle="tooltip" title="{{person.handle}}">
-                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/_images/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}_t75.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
-                      
-                  </a>
-                  
-
-                 
-                    <!-- <span class="text-lead fw-300 pull-left">
-                        <a href="/{{person.handle}}/_home">{{ person.handle_actualname }}</a>
-                        <span class="text-gray"></span>
-                        <br/>
-                        <span class="text-lgray fs-0-6">{{person.handle}}</span>
-                    </span> -->
-  
-          {% endfor %}
-
-          {% if 'get_a_p' in data.user_authorizations %}
-          <a href="/{{data.handle}}/_people" type="button" class=""><i class="fa fa-plus-circle"></i> add people</a> <br/>
-          {%endif%}
-
-          <!-- <span class="dropdown pull-right">
-            <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-              Actions
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_people"><i class="fa fa-wrench"></i> Manage </a></li>
-              <li role="presentation" class="disabled"><a role="/{{data.handle}}/_people" tabindex="-1" href="#"> <i class="fa fa-arrow-right"></i> Add / Invite People</a></li>
-              
-            </ul>
-          </span> -->
-
-
-
-
+                    <br/>
+                    <span class="text-s2 text-gray fs-1-7">{{data.handle}}</span>
+                    {%else%}
+                      <a href="/{{data.handle}}/_orgprofile">
+                        <span class="text-s1 text-lgray  fs-2">{{data.handle}}</span>
+                      </a>
+                    {%endif%}
+                </div>
+                {% endif %}  
+            </div>
         </div>
-      </div>
-      
-    </div>
-  </div>  
+    </div>  
 </section>
-
 
 
 <section>
     <div class="container">
-        <div class="row">
-            <div class="col-sm-9 omega">
-          <!-- BOX CONTENT -->
+        <div class="row spa15">
+            <div class="col-sm-8 alpha omega">
+                <!-- BOX CONTENT -->
 
+                <div class="gcard">
+                
 
+                    <!-- START TITLE OF COLLECTIONS -->
+                    <div class="gcard-title">
 
-                <!-- START TITLE OF COLLECTIONS -->
-                    <div class="box box-title pt-10 mb-10 bord-left  bw-9">
+                        Collections
+                        
                         <div class="btn-group pull-right" role="group">
-                        
-                        
-                        {% if 'post_a_x' in data.user_authorizations %}
-                            <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs pull-right" data-toggle="tooltip" title="Create new collection" data-placement="top"><i class="fa fa-plus"></i></a>
-                        {%endif%}
-
-                          <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-wrench"></i>
-                              <span class="caret"></span>
-                            </button>
-                            
-                          </div>
                         </div>
-           
-                            <p class="fs-0-9 fw-a text-gray">   
-                            Collections ( {{ data.collections.collectionlist|length }} )
-                            </p>
                         
                     </div>
                     <!-- END TITLE OF COLLECTIONS -->
 
 
                     {% for collection in data.collections.collectionlist %}  
-                      {% if collection.valid %}
+                        {% if collection.valid %}
 
-                        <div class="box bord-left bg-f bw-9 " >
-                            <span class="label bl bl-gray "><i class="fa fa-users"></i> {{data.handle|upper }} | RingCollection
-                            </span> 
-                        </div>
-                        <div class="box box-clear bord-left  bw-5 bc-15" style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:110px;">
+                            <div class="gcard-subtitle" >
+                            
+                            {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+
+                            
+                           <!--  <h4>{{ collection.collectionname }}</h4> -->
+                            </div>
+                            <div class="gcard-body" style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:110px;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
-                                <div class="col-xs-12 col-sm-4">
-                                    <div class="" style=" margin-bottom:-20px;">
-       
-                                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                    </div>
-                                </div>
+                                
                                 <!-- END COLLECTION TITLE -->
 
                                 <!-- START RING LIST -->
-                                <div class="col-xs-12 col-sm-8">
+                                <div class="col-sm-offset-1 col-sm-11">
                                     <table width="100%" border="0">
                                         <tr bgcolor="">
                                           <td colspan="3" style="padding:0 2px 0px 2px;">
@@ -211,18 +126,18 @@
                                 </div>
                                 <!-- FINISH RING LIST -->
                             </div>
-                        </div>             
+                            </div>             
 
-                    {% endif %}
-                  {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                   <!-- END COLLECTION LOOP -->
 
 
-                  {% if 'post_a_x' in data.user_authorizations %}
+                    {% if 'post_a_x' in data.user_authorizations %}
                        
-                       {% if data.collections.collectionlist|length ==0  %}
+                        {% if data.collections.collectionlist|length ==0  %}
 
-                          <div class="row">
+                            <div class="row">
                             <div class="col-xs-12 text-center">
                              
                               <div class="box box-help">
@@ -237,94 +152,154 @@
                               </div> 
                             </div>
                            </div>
-                       {% else %}
+                        {% else %}
                             <!-- NEW COLLECTION -->
-                            <div class="box box-title mb-10 bord-left bw-9">
+                            <!-- <div class="box box-title mb-10 bord-left bw-9">
                                 {% if 'post_a_x' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-md ">
+                                  <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs ">
                                     <i class="fa fa-plus"></i>
                                 New collection</a>
                                 {%endif%}
-                            </div>
+                            </div> -->
                             <!-- NEW COLLECTION END-->
-                       {% endif %}
-                  {%endif%}
-
-
-                       
-
-
-    
-        </div><!-- close  --> 
+                        {% endif %}
+                    {%endif%}
+                </div> <!-- close gcard -->
+            </div><!-- close  --> 
 
 
 
-        {% if 'get_a_m' in data.user_authorizations %}
-        <div class="col-sm-3">
+            {% if 'get_a_m' in data.user_authorizations %}
+            <div class="col-sm-4 omega">
           
-            
+                <div class="gcard">
+
+
+                    <div class="gcard-title" style="padding-bottom:0px;">
+
+                         <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="p-10 nostroke">Collaborators</a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="p-10 p-x-32 nostroke">Teams</a></li>
+                      </ul>   
+                    </div>
               
-            <a href="/{{data.handle}}/_teams" type="button" class="pull-right"><i class="fa fa-pencil"></i> edit teams</a> 
-              <h4>Teams  </h4>  
-          
+
+                <!-- Tab panes -->
+                    <div class="tab-content p-30">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+
+                        {% if 'get_a_p' in data.user_authorizations %}
+                        <a href="/{{data.handle}}/_people" type="button" class="pull-right discretelink"><span class="fs-0-9 fc-g"></span> <i class="fa fa-plus-circle"></i></a> <br/>
+                        {%endif%}
+                        <table class="table">
+   
+                            {% for person in data.people %}
+                            <tr class="bord-bottom bc-8 bw-2">
+                                <td width="20%">
+                                    <a href="/{{person.handle}}/_home" class="clearlink" data-toggle="tooltip" title="{{person.handle}}">
+
+                                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/_images/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}_t75.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
+                                    </a>
+                                </td>
+                                <td>
+                                    
+
+                                    <span class="fs-0-9 fw-300 pull-left">
+                                        {% if person.handle_actualname %}
+
+                                            <a href="/{{person.handle}}/_home" class="fw-c nounder fc-m">{{ person.handle_actualname }}</a>
+                                            <br/>
+                                            <span class="text-lgray fs-1">{{person.handle}}</span>
+                                        {% else %}
+                                            <a href="/{{person.handle}}/_home" class="fw-c nounder fc-m">
+                                            {{ person.handle }}</a>
+                                            <br/>
+                                            <span class="text-lgray fs-1">{{person.handle}}</span>
+
+                                        {% endif %}
+
+
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+
+
+
+
+                        </div>
+
+                        <!-- TEAMS -->
+                        <div role="tabpanel" class="tab-pane" id="profile">
+
+                            <a href="/{{data.handle}}/_teams" type="button" class="pull-right discretelink"><span class="fs-0-9 fc-g"></span> <i class="fa fa-cog fa-1x"></i></a> 
+
+
+
+                                <div class="panel-groupX" id="accordion" role="tablist" aria-multiselectable="true">
+
+                                {% set openthis= 1 %}
+
+                                {% for team in data.teams %}
+                                    {% if team.teamname in data.teammembership %}
+
+
+                                    <div class="">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class=" text-lgray darklink">
+                                            <div class="panel-heading" role="tab" id="headingOne">
+                                  
+                                                <h4 class="panel-title">
+                                                    {{team.teamname}}
+                                                </h4>
+
+                                                <span class="caret"></span>
+                                            </div>
+                                        </a>
+                            
+                                        <div id="{{team.teamname}}" class="panel-collapse collapse {% if openthis==1 %} in {% set openthis= 2 %} {% endif %} " role="tabpanel">
+                                            <div class="p-15 bord-bottom bc-8 bw-2">
+                                                {%for member in team.members%}
+
+                                                <a href="/{{member.handle}}" data-toggle="tooltip" title="{{member.handle}}">
+                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/_images/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}_t75.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
+                                                </a>
+
+                                                {%endfor%}
+
+                                                {%if 'post_a_m' in data.user_authorizations %}
+                                                    
+                                                    
+                                                        <a href="/{{data.handle}}/_teams/{{team.teamname}}" class="float-right fc-g clearlink"><div class=""><i class="fa fa-plus"></i> </div></a>
+                                                    
+
+                                                {%endif%}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {%endif%}
+                                {% endfor %}                        
+                            </div> 
+
+
+
+
+                        </div>
+                        
+                    </div>
+
+
+
+                     
+                
          
 
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-              {% for team in data.teams %}
-                {% if team.teamname in data.teammembership %}
+                   
+                </div>
                   
 
-                  <div class="panel panel-default">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class=" text-lgray darklink">
-                      <div class="panel-heading" role="tab" id="headingOne">
-                      
-                        <h4 class="panel-title">
-                          {{team.teamname}}
-                        </h4>
-
-                        <span class="caret"></span>
-                      </div>
-                    </a>
-                    
-                    <div id="{{team.teamname}}" class="panel-collapse collapse inXX" role="tabpanel">
-                      <div class="p-15">
-                      {%for member in team.members%}
-
-                        
-                        <a href="/{{member.handle}}" data-toggle="tooltip" title="{{member.handle}}">
-                          <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/_images/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}_t75.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
-                        </a>
-
-                      {%endfor%}
-
-
-                       
-                        {%if 'post_a_m' in data.user_authorizations %}
-                        <hr/>
-                        <div class="" style="height:25px;">
-                            <a href="/{{data.handle}}/_teams/{{team.teamname}}" class="hidden-xs"><div class=" blueprint fs-0-9"><i class="fa fa-plus"></i> add team member</div></a>
-                        </div>
-                        {%endif%}
-                        
-
-
-                      </div>
-                    </div>
-                  </div>
-
-                {%endif%}
-              {% endfor %}
-
-              
-              
-            
-                                     
-            </div> 
-          {%if 'post_a_m' in data.user_authorizations %}
-            <a href="/{{data.handle}}/_teams"><i class="fa fa-plus-circle"></i> New Team</a> 
-          {%endif%}
-
-        </div><!-- close 2 --> 
+            </div><!-- close second column --> 
         {%endif%}
 
 
