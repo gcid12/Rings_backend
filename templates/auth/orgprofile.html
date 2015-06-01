@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 
+
+
+
 {% block headscripts %}
 <link href="/static/css/dropzone.css" rel="stylesheet" type="text/css" media="screen">
 
@@ -17,6 +20,7 @@
 {% endblock %}
 
 {% block title %} Avispa {% endblock %}
+{% block findme %} auth/orgprofile {% endblock %}
 
 {% block crumbs %}
 
@@ -48,7 +52,7 @@
 
                <div class="rn-box-space">
                   
-                      <div class="rn-b1">Organization Profile</div>
+                      <div class="rn-b1">Organization Profile: </div>
                   
               </div> 
           
@@ -85,6 +89,7 @@
                 </div>
 
          
+                <button href="/{{ data.user }}/_home" class="btn btn-default">Cancel</button>
                 <button type="submit" class="btn btn-primary">Update profile</button>
               </form>
             </div><!-- //close box -->

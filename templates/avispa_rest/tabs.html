@@ -8,9 +8,15 @@
 <!-- CONTENT HERE -->
 
 
-<div class="container-fluid" >
+<div class="container" >
 
-<section>
+<div class="row">
+      <div class="col-sm-12 spa5" >
+      </div>
+</div>
+
+  <div class="gcard">
+    
       <!-- BOX CONTENT --> 
 
           <!-- TABS WILL SHOW -->
@@ -23,29 +29,25 @@
          {%endif%}
 
     <div class="row">
-        
       {% if data.collection %}
       {% if not data.raw %} 
             
           <div class="col-sm-12">
-            <div class="bb-8" style="margin:0 3%;">
-            
-                
+            <div class="gcard-body">
                     {% endif %}
                       {%endif%}
                         {% block tabcontent %}
                         {% endblock %}
                       {% if data.collection %} 
                       {% if not data.raw %} 
-                    
             </div>    
           </div>
       {%endif%}
-      {%endif%}
-        
+      {%endif%} 
     </div> 
+  </div>
 
-</section>
+
 
 </div>
 
@@ -89,10 +91,6 @@
 
 
 
-
-
-
-<div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;"><span class=" label bird">&nbsp;{% block findme %} {% endblock %}</span></div>
     
   
 {% endblock %}
