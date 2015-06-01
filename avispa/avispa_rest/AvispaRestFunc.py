@@ -329,6 +329,8 @@ class AvispaRestFunc:
 
                         if fieldname+'_rich' in item and (sources[fieldname] is not None):
 
+
+
                             previewItem[fieldname+'_rich'] = item[fieldname+'_rich']
 
                             # Retrieve all the fl from the fieldsources for this specific field
@@ -341,10 +343,18 @@ class AvispaRestFunc:
                                 o = urlparse.urlparse(source.strip())
                                 #source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
                                 
+                                print('o.scheme:',o.scheme)
                                 print('o.netloc:',o.netloc)
                                 print('o.path:',o.path)
 
+                                if not o.scheme:
+                                    continue
+
+
                                 path_parts = o.path.split('/')
+
+                                #if len(path_parts>1):
+
                                 if path_parts[1] == '_api':
                                     del path_parts[1]
                                     path = '/'.join(path_parts)

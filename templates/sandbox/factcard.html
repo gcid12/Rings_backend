@@ -73,13 +73,19 @@
 
   <div class="row">
 
+    
+
     <section id="content" class="col-sm-offset-1 col-sm-8 ">
+
+     STARTARTICLE1
     
       <article id="information"> 
+
+      START BIZCARD
      
         <!-- DESCRIPTION -->
         
-      {% if data.OneLine %}
+      
         <section id="info1">
           <div class="row box box-widget">
             <div class="col-sm-6 box-columns">
@@ -88,17 +94,21 @@
                   {{ fui.fm_SubTitle('Full Description') }}
 
 
-                  {{ fui.fm_LangVersions('', '', '') }}
+                  {{ fui.fm_LangVersions(0) }} ID0
                 </div>
               </div> 
             </div>
             <div class="col-sm-6">
-             {{ fui.FactCard(data.OneLine) }}
+             START ID0A{{ fui.FactCard(data.OneLine) }} END ID0A
             </div>
             
           </div>
         </section>
-      {% endif %}
+      
+
+      END BIZCARD
+
+      STARTID0AA
 
         {% if data.photos %}
           <section id="info2">
@@ -110,7 +120,9 @@
           </section>
         {% endif %}
 
+      ENDID0AA
 
+      STARTID0AB
         {% if data.Includes %}
           <section id="info3">
             <div class="row box box-widget p-10">
@@ -121,8 +133,16 @@
           </section>
         {% endif %}
 
+      ENDID0AB
+
 
       </article>
+
+      ENDARTICLE1
+
+
+
+      STARTARTICLE2
      
       {% if data.Rooms %}
       <!-- ROOMS /////////////////////////////////////////////// -->
@@ -139,54 +159,160 @@
       </article>
       {% endif %}
 
+      ENDARTICLE2
 
-      {% if data.Services %}
+      STARTARTICLE3
+      
       <!-- SERVICES /////////////////////////////////////////////// -->
       <article id="product">
         <div class="row box box-widget p-10 bg-08">
           <div class="col-sm-12">
-            <h3 class="fc-g"><span class="fc-b">
-            {% if data.ServiceName %}
-
-              {{ data.ServiceName }}
-
-            {% else %}
-              Services
-            {% endif %}
-
-            </span> </h3>
+            {{ fui.TitleCard('Services')}}
           </div>
         </div>
-        
-        {{ fui.FactCard_Services(data.Services) }}
-        
+          
+        {% set count = 1 %}
+        {% for x in data.Services %} 
+           START FactCard_Services 
+
+        <section id="service{{ count }}">  
+          <div class="row box box-widget bw-9 bord-left bc-8" style="padding:10px 20px 20px 20px" >         
+           <div class="col-sm-12"></div>
+            <div class="col-sm-12">
+                <div class="label label-vader" style="margin-left:-55px;"><i class="fa fa-arrow-right"></i> {{x.fc_Category}} </div>
+
+              
+                <span>
+
+                  <h3 class="fw-c lh-1 {{fui.status_text(x.S_fc_Title)}}">{{x.fc_Title}}</h3>
+                </span>
+              
+
+              {% macro fm_SubTitle(text,icon,size,color) %}
+              <!-- <span class="pull-right"><i class="fa fa-question-circle fc-l"></i></span> -->
+              <h4 class="fw-c fc-l fs-1-2 {{color}}">{{text}}</h4>
+              <br/>
+              {% endmacro %}
+
+                <span>
+
+                  <h4 class="fw-c fc-l fs-1-2 {{fui.status_text(x.S_fc_Title)}}">{{x.fc_SubTitle}}</h4>
+                  <br/>
+
+                </span>
+              
+              
+              
+                <span>
+                  {{ fui.fm_SubTitle(x.fc_OneLine,'','',fui.status_text(x.S_fc_OneLine)) }}
+                </span>
+              
+
+
+            </div>
+                
+            <div class="col-sm-7">
+              
+              
+                  <span class="{{ fui.status_text(x.S_fc_Specs) }}" >
+                  {{ fui.fm_Specs(x.fc_Specs, '') }} 
+                  </span>          
+              
+
+              
+                {{ fui.fm_LangVersions('2') }} ID2
+              
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <hr/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  
+                    {{ fui.fm_Schedule(x.fc_Schedule, 'Schedule') }}
+                  
+                  <hr/>
+                  
+                    {{ fui.fm_Tags(x.fc_Tags, '') }}
+                  
+
+                </div>
+                
+                
+                <div class="col-sm-6">
+                  
+                    <span class="{{ fui.status_text(x.S_fc_SmallNotes) }}" >
+                    {{ fui.fm_SmallNotes(x.fc_SmallNotes, '') }}    
+                    </span>       
+                  
+                </div>
+              </div>
+       
+            </div>
+            <div class="col-sm-5">
+              
+                  {{ fui.fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
+              
+
+               
+                  {{ fui.fm_Photos(x.fc_Photos, x.fc_Owner, '','100','left' ) }}
+               
+            </div>
+
+            <div class="col-sm-12">
+                <div class="spa20"></div>
+            </div>
+          </div> <!-- close row -->
+        </section> 
+           {% set count = count + 1 %}
+           END FactCard_Services
+        {% endfor %}
       </article>
-      {% endif %}
+      
+      ENDARTICLE3
+
+      STARTARTICLE4
 
       <!-- ABOUT /////////////////////////////////////////////// -->
       <article id="about">
-
         <div class="row box box-widget p-10 bg-08">
           <div class="col-sm-12">
-            <h3 class="fc-b"> About <span class="fc-g">{{ data.Name }}</span> </h3>
+            {{ fui.TitleCard('About','Entertainment Cruises NY')}}
           </div>
         </div>
+        
+
+        STARTABOUT1
 
         <section id="story1">
 
           <div class="row box box-widget p-10">
+            
             <div class="col-sm-6 box-columns" id="story1">
+              XXA
               {{ fui.FactCard(data.history) }}
-            </div>
+              XXAEND
+            </div>  
             <div class="col-sm-6" id="story2">
+             XXB
               {{ fui.FactCard(data.staff) }}
+             XXBEND
             </div>
+            
           </div>
 
         </section>
+
+        ENDABOUT1
+
+        STARTABOUT2
       
 
         <section id="story2">
+
+
 
           <div class="row box box-widget p-10">
             <div class="col-sm-5 box-columns" id="story3">
@@ -199,6 +325,8 @@
           </div>
           
         </section>
+
+        ENDABOUT2
 
 
         {% if data.Example %}
@@ -215,11 +343,9 @@
         </section>
         {% endif %}
 
-
-
-
-
       </article>
+
+      ENDARTICLE4
 
       <div class="spa100"></div>
 
