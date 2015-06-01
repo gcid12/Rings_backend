@@ -1,30 +1,28 @@
 <div class="form-group">
-<label for='{{ field.FieldName }}'>{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label><br/>
-     <!--span>FieldCardinality:{{ field.FieldCardinality }}</span-->
-     
-     
-     {#% if not data.item[field.FieldName] %#}
-     {% if True %}
+    <label for='{{ field.FieldName }}' class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+    <div class="col-sm-9">
+        {#% if not data.item[field.FieldName] %#}
+        {% if True %}
 
-         <input type="hidden" name="{{ field.FieldName }}" class="form-control" id="input_select_{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
+            <input type="hidden" name="{{ field.FieldName }}" class="form-control" id="input_select_{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
 
-         <!--select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}-->
+            <!--select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}-->
 
-         <select id="chosen_{{ field.FieldOrder }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}>
+            <select id="chosen_{{ field.FieldOrder }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}>
                              
             {% if field.FieldCardinality != 'Multiple' %}
-                <option value="">SELECT ONE </option> 
+                <option value="">SELECT ONER </option> 
             {% endif %}
 
-         </select>
-    {% else %}
-    
-    
-        <input name="{{ field.FieldName }}" class="form-control" id="text{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
-    
-    {% endif %}
+            </select>
+        {% else %}
 
+            <input name="{{ field.FieldName }}" class="form-control" id="text{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
+    
+        {% endif %}
+
+
+    </div>
 </div>
-
 
                                     
