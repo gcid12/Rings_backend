@@ -30,162 +30,126 @@
 {% block tabcontent %}
 
 
-<!-- START NEW CONTENT --> 
-  <div class="rn-curtain">
-          
-            {% if not data.raw %}
+    <!-- START NEW CONTENT --> 
+    <div class="rn-curtain bg-a">
+              
+        {% if not data.raw %}
             <table class="table table-condensed"> 
-            
-              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection,data.user_authorizations,data.idx) }} 
-            
+                {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection,data.user_authorizations,data.idx) }} 
             </table>
-            {% endif %}
-          {% if data.item %} 
-
-          <div class="alert  alert-info alert-dismissible alert-top" role="alert">
-                        <span class="fs-1-2"><i class="fa fa-eye pad-x-10"></i><strong>viewing</strong> {{data.ring}} / {{ data.idx }}</span>
-           </div>
-  </div>
-
-            <!--div class="rn-box-title-slim">
-              Showing item: {{ data.idx}}
-            </div-->
+        {% endif %}
+        {% if data.item %} 
+            <div class="alert  alert-info alert-dismissible alert-top" role="alert">
+                <span class="fs-1-2"><i class="fa fa-eye pad-x-10"></i><strong>viewing</strong> {{data.ring}} / {{ data.idx }}</span>
+            </div>
         
-                  <div class="{% if data.imagesui==True %}col-sm-5 col-md-4 col-lg-3 {% else %} col-sm-offset-1 col-sm-10{%endif%}">
+         {% endif %}   
+        
+    </div>
 
-                    {% if not data.raw %}
-                    <div class="form-group">
-                      <label for="inputPassword3" class="control-label"></label>
-                      <div class="">
-                          {% if 'put_a_b_c' in data.user_authorizations %}
-                          <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-success btn-xs">Edit</a>
-                          {%endif%}
-                          {% if 'delete_a_b_c' in data.user_authorizations %}
-                          <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default btn-xs">DELETE THIS
-                          </a>
-                          {%endif%}
-                          
-                      </div>
-                    </div>
-                    {%endif%}
+    <!--div class="rn-box-title-slim">
+      Showing item: {{ data.idx}}
+    </div-->
             
-                      <form class="form-horizontal" role="form">
-                        
-                        <table class="table table-condensed table-striped">   
+    <div class="{% if data.imagesui==True %}col-sm-5 col-md-4 col-lg-3 {% else %} col-sm-offset-1 col-sm-10{%endif%}">
+
+        {% if not data.raw %}
+            <div class="form-group">
+                <label for="inputPassword3" class="control-label"></label>
+                <div class="">
+                    {% if 'put_a_b_c' in data.user_authorizations %}
+                        <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i>Edit</a>
+                    {%endif%}
+                    {% if 'delete_a_b_c' in data.user_authorizations %}
+                        <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default btn-xs pull-right">DELETE THIS
+                        </a>
+                    {%endif%}
+                </div>
+            </div>
+        {%endif%}
+                
+        <form class="form-horizontal" role="form">        
+            <table class="table table-condensed table-striped">   
                            
-                        {% for k,v in data.item.items() %}
-                          {% if k in data.labels %}
-                          {% if data.widget[k] != 'images' %}
-                          <tr> 
-                            <!-- <td>
+                {% for k,v in data.item.items() %}
+                    {% if k in data.labels %}
+                        {% if data.widget[k] != 'images' %}
+                            <tr> 
+                                <!-- <td>
                                   {% if k =='_public' %} 
                                           <div><b>&nbsp;PUBLIC</b></div>
 
                                   {% endif %}
-                            </td> -->     
-                            <td>  
-                                <p class="fs-0-8 fw-a fc-g">{{data.labels[k]}}:</p>
-                            </td>
-                            <td>
-                                <p class="fs-0-8 fw-b">{{ v }}</p>
-                            </td>        
-                          </tr>
-                          {% endif %}
-                          {% endif %}
-                        {% endfor %}           
+                                </td> -->     
+                                <td>  
+                                    <p class="fs-0-8 fw-a fc-g">{{data.labels[k]}}:</p>
+                                </td>
+                                <td>
+                                    <p class="fs-0-8 fw-b">{{ v }}</p>
+                                </td>        
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}           
                             
-                        </table>         
-                        
-                      </form>  
-                </div>
+            </table>                    
+        </form>  
+    </div>
 
-                <div class="col-sm-7 col-md-8 col-lg-9">
+    <div class="col-sm-7 col-md-8 col-lg-9">
 
-                  {% for k,v in data.item.items() %}
-                     {% if k in data.labels %}
-                     {% if data.widget[k] =='images' %}
-                         
-                         <p class="fs-0-8 fw-a fc-g">{{data.labels[k]}}:</p>
-                         <div id="links">
+        {% for k,v in data.item.items() %}
+            {% if k in data.labels %}
+                {% if data.widget[k] =='images' %}
+                             
+                    <p class="fs-0-8 fw-a fc-g">{{data.labels[k]}}:</p>
+                    <div id="links">
                         {% for image in v %}
-                          {% if image %}
-                            
+                            {% if image %}
+                                
+                                <a href="{{data.host_url}}/_images/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
+                                    <img src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" alt="Banana">
+                                </a>
 
-                            <a href="{{data.host_url}}/_images/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
-                              <img src="{{data.host_url}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" alt="Banana">
-                            </a>
-
-                          {% endif %}
-
+                            {% endif %}
                         {% endfor %} 
-                          
+                            
+                    </div>         
 
-                        </div>         
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+                    <!--p>{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg</p-->
 
-                      {% endif %}
-                      {% endif %}
-                  {% endfor %}
+                    <!-- Button trigger modal -->
 
+                    <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+    </div>
 
-                
-                <!--p>{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg</p-->
+    <!-- MODALS -->
 
-                <!-- Button trigger modal -->
+    {% for k,v in data.item.items() %}
+        {% if data.widget[k] =='images' %}
 
-                <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+            {% for image in v %}
+                {% if image %}
 
+                    <div class="modal fade" id="{{image}}" tabindex="-1" role="dialog" aria-labelledby="{{image}}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content" style="padding:1px; margin:1px; background-color:black;">
+                                <div class="modal-body " style="padding:1px; margin:1px;">
+                                    <button type="button" class="btn btn-default btn-xs pull-right" data-dismiss="modal"><i class="fa fa-times"></i></button><br/>
+                                    <img src="{{data.host_url}}/_images/{{data.handle}}/r1024/{{image}}_r1024.jpg" class="img-thumbnail" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %} 
 
-                </div>
+        {% endif %}
+    {% endfor %}
 
-
-              </div>   
-              <div class="spa20"></div>       
-            </div><!-- //close box content -->  
-            {% endif %}        
-
-            <div class="spa20"></div>
-          </div><!-- close 12 -->   
-
-
-<!-- MODALS -->
-
-
-
-
-
-
-{% for k,v in data.item.items() %}
- {% if data.widget[k] =='images' %}
-
-     
-    {% for image in v %}
-      {% if image %}
-
-
-        <div class="modal fade" id="{{image}}" tabindex="-1" role="dialog" aria-labelledby="{{image}}" aria-hidden="true">
-
-          <div class="modal-dialog">
-
-            <div class="modal-content" style="padding:1px; margin:1px; background-color:black;">
-
-              <div class="modal-body " style="padding:1px; margin:1px;">
-                <button type="button" class="btn btn-default btn-xs pull-right" data-dismiss="modal"><i class="fa fa-times"></i></button><br/>
-                <img src="{{data.host_url}}/_images/{{data.handle}}/r1024/{{image}}_r1024.jpg" class="img-thumbnail" >
-              </div>
-             
-            </div>
-          </div>
-        </div>
-
-      {% endif %}
-
-    {% endfor %} 
-               
-
-  {% endif %}
-{% endfor %}
-
- 
 
 {% endblock %}
 
