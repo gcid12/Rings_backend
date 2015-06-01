@@ -1,107 +1,112 @@
+
 <div class="form-group">
-	<label for="{{ field.FieldName }}">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-	<input id="input_location_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="form-control" type="text" placeholder="Type in an address" {% if field.FieldRequired %}required{% endif %} value='{{ data.item[field.FieldName] }}' />
-	<input id="input_location_{{ field.FieldOrder }}_rich" name="{{ field.FieldName }}_rich" type="hidden" value='{{ field.Rich }}' />
-	<div id="map_canvas{{ field.FieldOrder }}" style="width:100; height:200px; margin:0px;"></div>
-	<div id="map_canvas_details_{{ field.FieldOrder }}">
-		<span id="input_location_rich_{{ field.FieldOrder }}" class="richtable">
-		<span id="showrichtable_{{ field.FieldOrder }}" style="float:right; font-size:x-small;">show/hide meta data</span> 
-			<table>
-				<tr><td>Language</td><td><b>@EN</b></td></tr>
-				<tr><td>Latitude</td><td><span data-geo="lat"></span></td></tr>
-				<tr><td>Longitude</td><td><span data-geo="lng"></span></td></tr>
-				<!--tr><td>Location</td><td><span data-geo="location"></span></td></tr-->
-				<tr><td>Location Type</td><td><span data-geo="location_type"></span></td></tr>
-				<tr><td>Address</td><td><span data-geo="formatted_address"></span></td></tr>
-				<!--tr><td>Bounds</td><td><span data-geo="bounds"></span></td></tr-->
-				<tr><td>Viewport</td><td><span data-geo="viewport"></span></td></tr>
-				<tr><td>Route</td><td><span data-geo="route"></span></td></tr>
-				<tr><td>Street Number</td><td><span data-geo="street_number"></span></td></tr>
-				<tr><td>Postal Code</td><td><span data-geo="postal_code"></span></td></tr>
-				<tr><td>Locality</td><td><span data-geo="locality"></span></td></tr>
-				<tr><td>Sub Locality</td><td><span data-geo="sublocality"></span></td></tr>
-				<tr><td>Country</td><td><span data-geo="country"></span></td></tr>
-				<tr><td>Country Code</td><td><span data-geo="country_short"></span></td></tr>
-				<tr><td>State</td><td><span data-geo="administrative_area_level_1"></span></td></tr>
-				<!--tr><td>ID</td><td><span data-geo="id"></span></td></tr-->
-				<!--tr><td>URL</td><td><span data-geo="url"></span></td></tr-->
-				<!--tr><td>Website</td><td><span data-geo="website"></span></td></tr-->
-			</table>
-  		</span>
-		{#
-		RQ 
-		http://maps.googleapis.com/maps/api/js/GeocodeService.Search?4s19.333591100000003%2C-99.14602347462159&6m6&1m2&1d19.32953748326958&2d-99.16537009487308&2m2&1d19.337636527456034&2d-99.12176810512699&7sUS&9sen-US&callback=_xdc_._q9isaj&token=20643
-		
-		RS
-		_xdc_._q9isaj && _xdc_._q9isaj( {
-   "results" : [
-      {
-         "address_components" : [
-            {
-               "long_name" : "3281",
-               "short_name" : "3281",
-               "types" : [ "street_number" ]
-            },
-            {
-               "long_name" : "Avenida División del Norte",
-               "short_name" : "Av División del Nte",
-               "types" : [ "route" ]
-            },
-            {
-               "long_name" : "La Candelaria",
-               "short_name" : "La Candelaria",
-               "types" : [ "neighborhood", "political" ]
-            },
-            {
-               "long_name" : "Coyoacán",
-               "short_name" : "Coyoacán",
-               "types" : [ "sublocality", "political" ]
-            },
-            {
-               "long_name" : "Mexico City",
-               "short_name" : "Mexico City",
-               "types" : [ "locality", "political" ]
-            },
-            {
-               "long_name" : "Federal District",
-               "short_name" : "D.F.",
-               "types" : [ "administrative_area_level_1", "political" ]
-            },
-            {
-               "long_name" : "Mexico",
-               "short_name" : "MX",
-               "types" : [ "country", "political" ]
-            },
-            {
-               "long_name" : "04380",
-               "short_name" : "04380",
-               "types" : [ "postal_code" ]
+	<label for="{{ field.FieldName }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+
+   <div class="col-sm-10">
+
+        <input id="input_location_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="form-control" type="text" placeholder="Type in an address" {% if field.FieldRequired %}required{% endif %} value='{{ data.item[field.FieldName] }}' />
+        <input id="input_location_{{ field.FieldOrder }}_rich" name="{{ field.FieldName }}_rich" type="hidden" value='{{ field.Rich }}' />
+        <div id="map_canvas{{ field.FieldOrder }}" style="width:100; height:200px; margin:0px;"></div>
+        <div id="map_canvas_details_{{ field.FieldOrder }}">
+            <span id="input_location_rich_{{ field.FieldOrder }}" class="richtable">
+            <span id="showrichtable_{{ field.FieldOrder }}" style="float:right; font-size:x-small;">show/hide meta data</span> 
+    			<table>
+    				<tr><td>Language</td><td><b>@EN</b></td></tr>
+    				<tr><td>Latitude</td><td><span data-geo="lat"></span></td></tr>
+    				<tr><td>Longitude</td><td><span data-geo="lng"></span></td></tr>
+    				<!--tr><td>Location</td><td><span data-geo="location"></span></td></tr-->
+    				<tr><td>Location Type</td><td><span data-geo="location_type"></span></td></tr>
+    				<tr><td>Address</td><td><span data-geo="formatted_address"></span></td></tr>
+    				<!--tr><td>Bounds</td><td><span data-geo="bounds"></span></td></tr-->
+    				<tr><td>Viewport</td><td><span data-geo="viewport"></span></td></tr>
+    				<tr><td>Route</td><td><span data-geo="route"></span></td></tr>
+    				<tr><td>Street Number</td><td><span data-geo="street_number"></span></td></tr>
+    				<tr><td>Postal Code</td><td><span data-geo="postal_code"></span></td></tr>
+    				<tr><td>Locality</td><td><span data-geo="locality"></span></td></tr>
+    				<tr><td>Sub Locality</td><td><span data-geo="sublocality"></span></td></tr>
+    				<tr><td>Country</td><td><span data-geo="country"></span></td></tr>
+    				<tr><td>Country Code</td><td><span data-geo="country_short"></span></td></tr>
+    				<tr><td>State</td><td><span data-geo="administrative_area_level_1"></span></td></tr>
+    				<!--tr><td>ID</td><td><span data-geo="id"></span></td></tr-->
+    				<!--tr><td>URL</td><td><span data-geo="url"></span></td></tr-->
+    				<!--tr><td>Website</td><td><span data-geo="website"></span></td></tr-->
+    			</table>
+  		    </span>
+            		{#
+            		RQ 
+            		http://maps.googleapis.com/maps/api/js/GeocodeService.Search?4s19.333591100000003%2C-99.14602347462159&6m6&1m2&1d19.32953748326958&2d-99.16537009487308&2m2&1d19.337636527456034&2d-99.12176810512699&7sUS&9sen-US&callback=_xdc_._q9isaj&token=20643
+            		
+            		RS
+            		_xdc_._q9isaj && _xdc_._q9isaj( {
+               "results" : [
+                  {
+                     "address_components" : [
+                        {
+                           "long_name" : "3281",
+                           "short_name" : "3281",
+                           "types" : [ "street_number" ]
+                        },
+                        {
+                           "long_name" : "Avenida División del Norte",
+                           "short_name" : "Av División del Nte",
+                           "types" : [ "route" ]
+                        },
+                        {
+                           "long_name" : "La Candelaria",
+                           "short_name" : "La Candelaria",
+                           "types" : [ "neighborhood", "political" ]
+                        },
+                        {
+                           "long_name" : "Coyoacán",
+                           "short_name" : "Coyoacán",
+                           "types" : [ "sublocality", "political" ]
+                        },
+                        {
+                           "long_name" : "Mexico City",
+                           "short_name" : "Mexico City",
+                           "types" : [ "locality", "political" ]
+                        },
+                        {
+                           "long_name" : "Federal District",
+                           "short_name" : "D.F.",
+                           "types" : [ "administrative_area_level_1", "political" ]
+                        },
+                        {
+                           "long_name" : "Mexico",
+                           "short_name" : "MX",
+                           "types" : [ "country", "political" ]
+                        },
+                        {
+                           "long_name" : "04380",
+                           "short_name" : "04380",
+                           "types" : [ "postal_code" ]
+                        }
+                     ],
+                     "formatted_address" : "Avenida División del Norte 3281, La Candelaria, Coyoacán, 04380 Mexico City, Federal District, Mexico",
+                     "geometry" : {
+                        "location" : {
+                           "lat" : 19.3317505,
+                           "lng" : -99.14524179999999
+                        },
+                        "location_type" : "ROOFTOP",
+                        "viewport" : {
+                           "northeast" : {
+                              "lat" : 19.3330994802915,
+                              "lng" : -99.1438928197085
+                           },
+                           "southwest" : {
+                              "lat" : 19.3304015197085,
+                              "lng" : -99.1465907802915
+                           }
+                        }
+                     },
+                     "types" : [ "street_address" ]
+                  }
+               ],
+               "status" : "OK"
             }
-         ],
-         "formatted_address" : "Avenida División del Norte 3281, La Candelaria, Coyoacán, 04380 Mexico City, Federal District, Mexico",
-         "geometry" : {
-            "location" : {
-               "lat" : 19.3317505,
-               "lng" : -99.14524179999999
-            },
-            "location_type" : "ROOFTOP",
-            "viewport" : {
-               "northeast" : {
-                  "lat" : 19.3330994802915,
-                  "lng" : -99.1438928197085
-               },
-               "southwest" : {
-                  "lat" : 19.3304015197085,
-                  "lng" : -99.1465907802915
-               }
-            }
-         },
-         "types" : [ "street_address" ]
-      }
-   ],
-   "status" : "OK"
-}
- )
-		#}
-	</div>
+             )
+            		#}
+    	</div>
+    </div>
 </div>
