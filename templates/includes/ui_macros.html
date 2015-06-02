@@ -197,7 +197,7 @@
     <td class=""> 
       <div class="row">
         <div class=" col-sm-2 hidden-xs ">
-          {{ icon_med(count,color) }} 
+          {{ icon_stack(count,color) }} 
         </div> 
         <div class=" col-xs-2 visible-xs">
               {{ icon_sma(count,color) }}
@@ -215,6 +215,7 @@
               {%endif%}/ -->
               {% if 'get_a' in user_authorizations %}
               <div>
+                <div class="spa5 hidden-xs"></div>
                 <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">
                 
                  {{ring}}
@@ -693,15 +694,15 @@
 
 
 {% macro icon_stack(number,color,last) %}
-  <svg height="80" width="90" style="margin:-10px -5px -5px -5px;">
+  <svg height="70" width="90">
     <!-- <line x1="3" y1="0" x2="3" y2="40" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
     <line x1="3" y1="40" x2="32" y2="55" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" /> -->
-    <circle cx="57" cy="55" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
-    <circle cx="60" cy="50" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
-    <text x="59" y="57" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
+    <circle cx="57" cy="45" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
+    <circle cx="60" cy="40" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
+    <text x="59" y="47" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
 
-    <line x1="0" y1="0" x2="0" y2="52" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
-    <line x1="0" y1="52" x2="35" y2="52" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
+    <line x1="0" y1="0" x2="0" y2="42" stroke-dasharray="2,2" style="stroke:rgb(224,224,224);stroke-width:2" />
+    <line x1="0" y1="42" x2="35" y2="42" stroke-dasharray="2,2" style="stroke:rgb(224,224,224);stroke-width:2" />
 
 
   </svg>
