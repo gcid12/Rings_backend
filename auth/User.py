@@ -10,7 +10,7 @@ from flask import flash
 
 
 class User(UserMixin):
-    def __init__(self, username=None, email=None, passhash=None, owner=None, isOrg=False, active=True, id=None, org_on_login=False):
+    def __init__(self, username=None, email=None, passhash=None, owner=None, isOrg=False, active=True, id=None, onlogin=False):
         self.username = username
         self.email = email
         self.passhash = passhash
@@ -18,7 +18,7 @@ class User(UserMixin):
         self.active = active
         self.isAdmin = False
         self.id = None
-        self.org_on_login = org_on_login
+        self.onlogin = onlogin
 
         if owner:
             self.owner = owner
@@ -39,7 +39,7 @@ class User(UserMixin):
         user['email'] = self.email.lower()  
         user['owner'] = self.owner 
         user['passhash'] = self.passhash
-        user['org_on_login'] = self.org_on_login
+        user['onlogin'] = self.onlogin
         
 
         print(user)

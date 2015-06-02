@@ -93,7 +93,7 @@ class MainModel:
             billingemail = userd['email'],
             isorg = False, 
             passhash= userd['passhash'],
-            org_on_login= userd['org_on_login'])
+            onlogin= userd['onlogin'])
 
         auser._id = userd['username']
         storeresult = auser.store(self.db)
