@@ -221,7 +221,9 @@ $(function() {
               {% for FieldOrder in range( 1, numfields+1) %}
 
 
-                {{ ui.portlet(FieldOrder,7,True,FieldName,'text',FieldCardinality,'',FieldSemantic,FieldLabel) }}
+                {{ ui.portlet(FieldOrder,3,True,FieldName,'text',FieldCardinality,'','',FieldSemantic,FieldLabel) }}
+                
+
 
 
               {% endfor %}

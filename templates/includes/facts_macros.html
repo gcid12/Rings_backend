@@ -6,6 +6,9 @@
 
 <!-- GENERATES THE HEADER WITH COMPANY INFO -->
  {% macro BizHead() %}
+
+ START BizHead
+
   <div class="row">
       <div class="col-sm-offset-1 col-sm-12">
         <h4 class="fc-g"><span class="label label-vader">Business Facts</span></h4>
@@ -31,6 +34,8 @@
         
       </div>
   </div><!-- close row -->
+
+   END BizHead
 {% endmacro %}
 
 <!-- ///////// FC  GENERIC //////////////////////// --> 
@@ -49,7 +54,7 @@
         
         {{ fm_SubTitle(x.fc_SubTitle,'') }}
         {{ fm_Specs(x.fc_Specs, '') }}           
-        {{ fm_LangVersions(x.fc_Descriptions, '', x.fc_DescriptionsSize) }}
+        {{ fm_LangVersions('1') }} ID1
         {{ fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
         {{ fm_ammenities(x.fc_Tags, name, '') }}
         <hr/>
@@ -66,26 +71,94 @@
 {% endmacro %}
 
 
+<!-- ///////// FC  ROOMS //////////////////////// --> 
 
+{% macro FactCard_Rooms(thisData) %}
 
-{% macro fm_Title(text,icon,size,color) %}
+  {% set count = 1 %}
 
-  <h3 class="fw-c lh-1 {{color}}">{{text}}</h3>
+  {% for x in thisData %}    
+
+START FactCard_Rooms
+  <section id="room{{ count }}"> 
+
+    <div class="row box box-widget bw-9 bord-left bc-8" style="padding:10px 20px 20px 20px" >
+          
+      <div class="col-sm-12">
+          <div class="spa10"></div>
+      </div>
+      <div class="col-sm-12">
+          <div class="label label-vader" style="margin-left:-55px;"><i class="fa fa-arrow-right"></i> {{x.fc_Category}} </div>
+
+          {% if x.fc_Title %}
+         {{ fm_Title(x.fc_Title,'') }}
+        {% endif %}
+
+      </div>
+          
+      <div class="col-sm-7">
+        
+        {% if x.fc_Specs %}
+          {{ fm_Specs(x.fc_Specs, '') }}           
+        {% endif %}
+
+        {% if x.fc_Descriptions %}
+          {{ fm_LangVersions('3') }} ID3
+        {% endif %}
+
+        <div class="row">
+          <div class="col-sm-12">
+            <hr/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            {% if x.fc_Tags %}
+              {{ fm_Tags(x.fc_Tags, '') }}
+            {% endif %}
+          </div>
+
+        </div>
+ 
+      </div>
+      <div class="col-sm-5">
+         {% if x.fc_Photos %}
+            {{ fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
+         {% endif %}
+      </div>
+
+      <div class="col-sm-12">
+          <div class="spa20"></div>
+      </div>
+    </div> <!-- close row -->
+
+    </section>
+
+      {% set count = count + 1 %}
+
+END FactCard_Rooms
+    {% endfor %}
+
 {% endmacro %}
 
-{% macro fm_SubTitle(text,icon,size,color) %}
-  <!-- <span class="pull-right"><i class="fa fa-question-circle fc-l"></i></span> -->
-  <h4 class="fw-c fc-l fs-1-2 {{color}}">{{text}}</h4>
-  <br/>
+
+{% macro TitleCard(title,subtitle) %}
+
+    <h3 class="fc-b"> {{title}} <span class="fc-g"> {{ subtitle }} </span> </h3>
+
 {% endmacro %}
+
+
+
+
 
 
 <!-- langData behaves like fm.list -->
-{% macro fm_LangVersions(langData, name, fsize) %}
+{% macro fm_LangVersions(id) %}
 
   <div class="row">
     <div class=" col-sm-12">
-      <div role="tabpanel" id="{{ tabid }}">
+      <div role="tabpanel">
         <!-- Nav tabs -->
         <!-- SE ARMAN LOS TABS CON LAS INICIALES -->
         <ul class="nav nav-tabs" role="tablist">
@@ -93,13 +166,13 @@
 
               
                 <li role="presentation" class="active ">
-                  <a href="#eng1" role="tab" data-toggle="tab">
+                  <a href="#eng" role="tab" data-toggle="tab">
                     <span class="fc-b label {{ status_label(1) }} "> 
                     eng </span>
                   </a>
                 </li>
                 <li role="presentation" class="">
-                  <a href="#esp1" role="tab" data-toggle="tab">
+                  <a href="#esp" role="tab" data-toggle="tab">
                     <span class="fc-b label {{ status_label(4) }} "> 
                     esp </span>
                   </a>
@@ -113,16 +186,16 @@
         <div class="tab-content fs-0-9">
           
 
-            <div role="tabpanel" class="tab-pane spa10 pl-30 active" id="eng1">
+            <div role="tabpanel" class="tab-pane spa10 pl-30 active" id="eng">
                 <span class="text-gray {% if fsize =='2' %} fs-2 {% endif %} {{ status_text(1) }}">  
-                  yyyyy eng
+                  yyyyy The tour
                 </span>
                 
             </div>
 
-            <div role="tabpanel" class="tab-pane spa10 pl-30" id="esp1">
+            <div role="tabpanel" class="tab-pane spa10 pl-30" id="esp">
                 <span class="text-gray {% if fsize =='2' %} fs-2 {% endif %} {{ status_text(4) }}">  
-                  yyyyy esp
+                  yyyyy El tour
                 </span>
                 
             </div>
@@ -134,62 +207,6 @@
   </div>
 {% endmacro %}
 
-
-<!-- langData behaves like fm.list -->
-{% macro fm_LangVersions_x(langData, name, fsize) %}
-
-  <div class="row">
-    <div class=" col-sm-12">
-      <div role="tabpanel" id="{{ tabid }}">
-        <!-- Nav tabs -->
-        <!-- SE ARMAN LOS TABS CON LAS INICIALES -->
-        <ul class="nav nav-tabs" role="tablist">
-
-          {% set n1 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
-          {% set n2 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
-          {% set n3 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]|random %}
-
-          {% set setid = n1 * n2 * n3  %}
-
-          {% set cuenta = 1 %}
-          {% for key in langData|sort %}
-            {% for z in key[1] %}
-              
-                <li role="presentation" class="{% if cuenta==1 %} active {% endif %}">
-                  <a href="#{{ setid }}_{{cuenta}}" role="tab" data-toggle="tab">
-                    <span class="fc-b label {{ status_label(langData[key][1]) }} "> 
-                    {{ langData[key][0]|upper }} </span>
-                  </a>
-                </li>
-
-              
-            {% endfor %}
-            {% set cuenta = cuenta + 1 %}
-          {%endfor%}  
-
-
-        </ul>
-
-        <!-- SE ARMAN LOS CONTENIDOS -->
-        <div class="tab-content fs-0-9">
-          
-          {% set cuenta = 1 %}
-          {% for key in langData|sort %}
-            
-            <div role="tabpanel" class="tab-pane spa10 pl-30 {% if cuenta==1 %} active {% endif %} " id="{{ setid }}_{{cuenta}}">
-                <span class="text-gray {% if fsize =='2' %} fs-2 {% endif %} {{ status_text(langData[key][1]) }}">  
-                  {{ langData[key][2]}}
-                </span>
-                
-            </div>
-            {% set cuenta = cuenta + 1 %}
-          {%endfor%} 
-  
-        </div>
-      </div> <!-- close tab panel --> 
-    </div>
-  </div>
-{% endmacro %}
 
 
 {% macro fm_Specs(specsData, name)%}
@@ -425,172 +442,6 @@
 
 <!-- ///////// FC  SERVICE //////////////////////// --> 
 
-
-{% macro FactCard_Services(thisData) %}
-
-  {% set count = 1 %}
-
-  {% for x in thisData %}      
-  <section id="service{{ count }}">  
-    <div class="row box box-widget bw-9 bord-left bc-8" style="padding:10px 20px 20px 20px" >
-          
-     <div class="col-sm-12">
-          
-      </div>
-      <div class="col-sm-12">
-          <div class="label label-vader" style="margin-left:-55px;"><i class="fa fa-arrow-right"></i> {{x.fc_Category}} </div>
-
-        {% if x.fc_Title %}
-          <span>
-            {{ fm_Title(x.fc_Title,'','', status_text(x.S_fc_Title)) }} 
-          </span>
-        {% endif %}
-
-        {% if x.fc_SubTitle %}
-          <span>
-            {{ fm_SubTitle(x.fc_SubTitle,'','',status_text(x.S_fc_Title)) }}
-          </span>
-        {% endif %}
-        
-        {% if x.fc_OneLine %}
-          <span>
-            {{ fm_SubTitle(x.fc_OneLine,'','',status_text(x.S_fc_OneLine)) }}
-          </span>
-        {% endif %}
-
-
-      </div>
-          
-      <div class="col-sm-7">
-        
-        {% if x.fc_Specs %}
-            <span class="{{ status_text(x.S_fc_Specs) }}" >
-            {{ fm_Specs(x.fc_Specs, '') }} 
-            </span>          
-        {% endif %}
-
-        {% if x.fc_Descriptions %}
-          {{ fm_LangVersions(x.fc_Descriptions, '') }}
-        {% endif %}
-
-        <div class="row">
-          <div class="col-sm-12">
-            <hr/>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            {% if x.fc_Schedule %}
-              {{ fm_Schedule(x.fc_Schedule, 'Schedule') }}
-            {% endif %}
-            <hr/>
-            {% if x.fc_Tags %}
-              {{ fm_Tags(x.fc_Tags, '') }}
-            {% endif %}
-
-          </div>
-          
-          
-          <div class="col-sm-6">
-            {% if x.fc_SmallNotes %}
-              <span class="{{ status_text(x.S_fc_SmallNotes) }}" >
-              {{ fm_SmallNotes(x.fc_SmallNotes, '') }}    
-              </span>       
-            {% endif %}
-          </div>
-        </div>
- 
-      </div>
-      <div class="col-sm-5">
-        {% if x.fc_SmartPhotos %}
-            {{ fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
-        {% else %}
-          <spa class="label lst-4">No photos</spa>
-        {% endif %}
-
-         {% if x.fc_Photos %}
-            {{ fm_Photos(x.fc_Photos, x.fc_Owner, '','100','left' ) }}
-         {% endif %}
-      </div>
-
-      <div class="col-sm-12">
-          <div class="spa20"></div>
-      </div>
-    </div> <!-- close row -->
-  </section>
-
-      {% set count = count + 1 %}
-    {% endfor %}
-
-{% endmacro %}
-
-
-<!-- ///////// FC  ROOMS //////////////////////// --> 
-
-
-{% macro FactCard_Rooms(thisData) %}
-
-  {% set count = 1 %}
-
-  {% for x in thisData %}      
-  <section id="room{{ count }}"> 
-
-    <div class="row box box-widget bw-9 bord-left bc-8" style="padding:10px 20px 20px 20px" >
-          
-      <div class="col-sm-12">
-          <div class="spa10"></div>
-      </div>
-      <div class="col-sm-12">
-          <div class="label label-vader" style="margin-left:-55px;"><i class="fa fa-arrow-right"></i> {{x.fc_Category}} </div>
-
-          {% if x.fc_Title %}
-         {{ fm_Title(x.fc_Title,'') }}
-        {% endif %}
-
-      </div>
-          
-      <div class="col-sm-7">
-        
-        {% if x.fc_Specs %}
-          {{ fm_Specs(x.fc_Specs, '') }}           
-        {% endif %}
-
-        {% if x.fc_Descriptions %}
-          {{ fm_LangVersions(x.fc_Descriptions,'') }}
-        {% endif %}
-
-        <div class="row">
-          <div class="col-sm-12">
-            <hr/>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            {% if x.fc_Tags %}
-              {{ fm_Tags(x.fc_Tags, '') }}
-            {% endif %}
-          </div>
-
-        </div>
- 
-      </div>
-      <div class="col-sm-5">
-         {% if x.fc_Photos %}
-            {{ fm_SmartPhotos(x.fc_SmartPhotos, x.fc_Owner, '','100','left' ) }}
-         {% endif %}
-      </div>
-
-      <div class="col-sm-12">
-          <div class="spa20"></div>
-      </div>
-    </div> <!-- close row -->
-
-    </section>
-
-      {% set count = count + 1 %}
-    {% endfor %}
-
-{% endmacro %}
 
 {% macro status_text(code) %}
 
