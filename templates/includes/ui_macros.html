@@ -87,16 +87,12 @@
                 
                 <span class="fc-a">{{ data.handle|lower() }}</span>   
                 <span class="fc-a">/</span>
-                <span class="fc-b fw-a">{{ data.collection }}</span>
+                
+             </a>
+             <a href="/{{data.handle}}/_collections/{{ data.collection }}">
+               <span class="fc-b fw-a">{{ data.collection }}</span>
              </a>
             </div> 
-
-            <div class="">
-              <span class="label bl bl-gray visible-xs" style="width:120px;">
-              <!-- <img src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg" style=" width:20px;">  -->
-              <i class="fa fa-user"></i> {{ data.handle|lower() }} | RingCollection</span> 
-            </div>
-
 
             <!-- <div class="">
             <p class="text-lgray fs-1"><strong>5,346</strong> Data resources | <strong>{{data.percent}}%</strong> completed </p>
@@ -219,8 +215,9 @@
               {%endif%}/ -->
               {% if 'get_a' in user_authorizations %}
               <div>
+                <div class="spa5 hidden-xs"></div>
                 <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">
-                <img src="/static/images/icons/ico_linked.png" style="width:25px; opacity:0.5;">
+                
                  {{ring}}
                 </a>
               
@@ -229,7 +226,7 @@
                   {{ring}}
 
                 {%endif%}
-                {%if idx %}<span>/{{idx}}</span>{%endif%}
+                <!-- {%if idx %}<span>/{{idx}}</span>{%endif%} -->
 
               </div>
               <p class="text-lgray fs-0-6 pl-20">{{ description }}</p>
@@ -240,7 +237,8 @@
           
 
         </div> 
-        <div class="col-xs-1 col-sm-3">
+        <div class="col-xs-2 col-sm-3">
+
           <div class="pull-right">
             
 
@@ -696,15 +694,15 @@
 
 
 {% macro icon_stack(number,color,last) %}
-  <svg height="80" width="90" style="margin:-10px -5px -5px -5px;">
+  <svg height="70" width="90">
     <!-- <line x1="3" y1="0" x2="3" y2="40" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" />
     <line x1="3" y1="40" x2="32" y2="55" stroke-dasharray="2,2" style="stroke:rgb(180,180,180);stroke-width:1" /> -->
-    <circle cx="57" cy="55" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
-    <circle cx="60" cy="50" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
-    <text x="59" y="57" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
+    <circle cx="57" cy="45" r="25" stroke="#f0f0f0" stroke-width="3" fill="none" />
+    <circle cx="60" cy="40" r="25" stroke="{{ color }}" stroke-width="2" fill="none" />
+    <text x="59" y="47" fill="gray" class="fs-1-5 text-s2" text-anchor="middle">{{ number }}</text>
 
-    <line x1="0" y1="0" x2="0" y2="52" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
-    <line x1="0" y1="52" x2="35" y2="52" stroke-dasharray="2,2" style="stroke:rgb(116,171,186);stroke-width:2" />
+    <line x1="0" y1="0" x2="0" y2="42" stroke-dasharray="2,2" style="stroke:rgb(224,224,224);stroke-width:2" />
+    <line x1="0" y1="42" x2="35" y2="42" stroke-dasharray="2,2" style="stroke:rgb(224,224,224);stroke-width:2" />
 
 
   </svg>
