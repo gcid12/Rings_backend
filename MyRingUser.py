@@ -10,6 +10,7 @@ class MyRingUser(Document):
     billingemail = TextField()
     is_org = BooleanField()
     #people = DictField()
+    org_on_login = BooleanField()
     people = ListField(DictField(Mapping.build(
         handle = TextField(),
         addedby = TextField(),
