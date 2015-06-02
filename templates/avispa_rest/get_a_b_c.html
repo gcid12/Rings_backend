@@ -40,7 +40,7 @@
         {% endif %}
         {% if data.item %} 
             <div class="alert  alert-info alert-dismissible alert-top" role="alert">
-                <span class="fs-1-2"><i class="fa fa-eye pad-x-10"></i><strong>viewing</strong> {{data.ring}} / {{ data.idx }}</span>
+                <span class="fs-1-2"><i class="fa fa-eye pad-x-10"></i><strong>viewing</strong> {{data.ring}} <!-- / {{ data.idx }} --></span>
             </div>
         
          {% endif %}   
@@ -49,20 +49,23 @@
 
     {% if not data.raw %}
     <div class="row">
+
         <div class="col-sm-12">
             <div class="spa20">
-            {% if 'put_a_b_c' in data.user_authorizations %}
-                <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-            {%endif%}
+                <div class="pad-x-20">
+                {% if 'put_a_b_c' in data.user_authorizations %}
+                    <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+                {%endif%}
+                </div>
             </div>
         </div>
         
     </div> 
     {%endif%} 
     <div class="row">
-        <div class="{% if data.imagesui==True %}col-sm-6 col-md-4 col-lg-3 {% else %} col-sm-offset-1 col-sm-10{%endif%}">
-                    
-            <form class="form-horizontal" role="form">        
+        <div class="{% if data.imagesui==True %}col-sm-5 col-md-4 col-lg-3 {% else %} col-sm-offset-1 col-sm-10{%endif%}">
+            <div class="pad-x-20">
+                <form class="form-horizontal" role="form">        
                 <table class="table table-condensed table-striped">   
                                
                     {% for k,v in data.item.items() %}
@@ -87,10 +90,12 @@
                     {% endfor %}           
                                 
                 </table>                    
-            </form>  
+            </form> 
+            </div>    
+             
         </div>
 
-        <div class="col-sm-6 col-md-8 col-lg-9">
+        <div class=" col-sm-5 col-md-8 col-lg-9">
 
             {% for k,v in data.item.items() %}
                 {% if k in data.labels %}
@@ -123,8 +128,8 @@
 
     {% if not data.raw %}
     <div class="row">
-        <div class="col-sm-6">
-            <div class="spa20">
+        <div class=" col-sm-6">
+            <div class="pad-x-20">
             {% if 'put_a_b_c' in data.user_authorizations %}
                 <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Edit</a>
             {%endif%}
