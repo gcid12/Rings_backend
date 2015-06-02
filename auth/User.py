@@ -10,7 +10,7 @@ from flask import flash
 
 
 class User(UserMixin):
-    def __init__(self, username=None, email=None, passhash=None, owner=None, isOrg=False, active=True, id=None):
+    def __init__(self, username=None, email=None, passhash=None, owner=None, isOrg=False, active=True, id=None, onlogin=False):
         self.username = username
         self.email = email
         self.passhash = passhash
@@ -18,6 +18,7 @@ class User(UserMixin):
         self.active = active
         self.isAdmin = False
         self.id = None
+        self.onlogin = onlogin
 
         if owner:
             self.owner = owner
@@ -38,6 +39,7 @@ class User(UserMixin):
         user['email'] = self.email.lower()  
         user['owner'] = self.owner 
         user['passhash'] = self.passhash
+        user['onlogin'] = self.onlogin
         
 
         print(user)
@@ -115,6 +117,7 @@ class User(UserMixin):
                 self.url = dbUser['value']['url']
                 self.profilepic = dbUser['value']['profilepic']
                 self.location = dbUser['value']['location']
+                self.onlogin = dbUser['value']['onlogin']
                 self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
                 self.id = dbUser['value']['_id']
@@ -126,7 +129,7 @@ class User(UserMixin):
             print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]
             print "there was an error, we need to repair the user_document"
 
-            preconditions = ['name','email','url','profilepic','location']
+            preconditions = ['name','email','url','profilepic','location','onlogin']
             repaired = False
             for element_to_add in preconditions:
                 MAM = MainModel()
@@ -185,6 +188,10 @@ class User(UserMixin):
             if request.form.get('location') != dbUser['value']['location']:
                 print('location changed!')
                 changes['location'] = request.form.get('location')
+
+            if request.form.get('onlogin') != dbUser['value']['onlogin']:
+                print('onlogin changed!')
+                changes['onlogin'] = request.form.get('onlogin')
 
 
 

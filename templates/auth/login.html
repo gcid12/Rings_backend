@@ -23,12 +23,17 @@
           <div class="spa10"> </div> 
           <hr/>
 
+          {{request.args.get('r') }}
+
 
           <form action="" method="POST" role="form" id="login">
             <div class="input-group input-group-md">
 
               <span class="input-group-addon fw-c" id="sizing-addon1"><i class="fa fa-envelope"></i></span>
               <input type="email" id="email" name="email" class="form-control" placeholder="email">
+              {%if 'r' in request.args%}
+              <input type="hidden" id="r" name="r" value="{{request.args.get('r')}}" >
+              {%endif%}
             </div>
                 
             <div class="spa5"></div>
