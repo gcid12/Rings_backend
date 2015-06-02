@@ -117,7 +117,7 @@ class User(UserMixin):
                 self.url = dbUser['value']['url']
                 self.profilepic = dbUser['value']['profilepic']
                 self.location = dbUser['value']['location']
-                self.org_on_login = dbUser['value']['org_on_login']
+                self.onlogin = dbUser['value']['onlogin']
                 self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
                 self.id = dbUser['value']['_id']
@@ -129,7 +129,7 @@ class User(UserMixin):
             print "Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1]
             print "there was an error, we need to repair the user_document"
 
-            preconditions = ['name','email','url','profilepic','location']
+            preconditions = ['name','email','url','profilepic','location','onlogin']
             repaired = False
             for element_to_add in preconditions:
                 MAM = MainModel()
@@ -188,6 +188,10 @@ class User(UserMixin):
             if request.form.get('location') != dbUser['value']['location']:
                 print('location changed!')
                 changes['location'] = request.form.get('location')
+
+            if request.form.get('onlogin') != dbUser['value']['onlogin']:
+                print('onlogin changed!')
+                changes['onlogin'] = request.form.get('onlogin')
 
 
 
