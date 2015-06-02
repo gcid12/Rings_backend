@@ -45,8 +45,8 @@ def login():
 
                     flash("Logged in!",'UI')
 
-                    if 'redirect' in request.form:
-                        return redirect('/'+request.form.get('redirect')+'/_home')
+                    if 'r' in request.form:
+                        return redirect('/'+request.form.get('r'))
 
                     if user.onlogin != '':
                         return redirect(user.onlogin)
