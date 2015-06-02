@@ -11,12 +11,15 @@ $("#chosen_{{ field.FieldOrder }}").chosen({width: "100%"});
 */
 
 //The FieldSource should have a "fields" indicated
-var urlo_{{ field.FieldOrder }}="{{ field.FieldSource }}";
+
+var urlo_{{ field.FieldOrder }}="{{ field.FieldSourceRaw }}";
 
 
 
 //Select widget can't work without a source
 if(urlo_{{ field.FieldOrder }}!='undefined'){
+
+    console.log('raw:'+urlo_{{ field.FieldOrder }})
 
     var url_{{ field.FieldOrder }}=urlo_{{ field.FieldOrder }}.split("?");
 
@@ -25,10 +28,13 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
 
     //No parameters via URL?
     if(typeof url_{{ field.FieldOrder }}[1]!='undefined'){
+        console.log('parameter payload!')
         var urlpar_{{ field.FieldOrder }}=url_{{ field.FieldOrder }}[1].split("&");
         var urlval_{{ field.FieldOrder }} = new Array();
     
         for(j=0;j<urlpar_{{ field.FieldOrder }}.length;++j){
+            console.log('parameter')
+            console.log(urlpar_{{ field.FieldOrder }}[j])
             urlval_{{ field.FieldOrder }}=urlpar_{{ field.FieldOrder }}[j].split("=");
             urldata_{{ field.FieldOrder }}[urlval_{{ field.FieldOrder }}[0]]=urlval_{{ field.FieldOrder }}[1];
             urlval_{{ field.FieldOrder }}.length=0;
@@ -54,12 +60,16 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
         
         //By default we will grab the first field to display it as the option
         if( typeof urldata_{{ field.FieldOrder }}['fl']=='undefined'){
+
             var thefield_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }}.fields[0].FieldName;
+            console.log("*Field to be shown({{ field.FieldOrder }}):"+thefield_{{ field.FieldOrder }})
         }else{ //But it is better if the source is explicitly indicated by &fl=<name_of_field>
             if(urldata_{{ field.FieldOrder }}['fl']){
+
                 var urlfields_{{ field.FieldOrder }} = urldata_{{ field.FieldOrder }}['fl'].split("+");
                 //Take just the first field mentioned
                 var thefield_{{ field.FieldOrder }}=urlfields_{{ field.FieldOrder }}[0];
+                console.log("**Field to be shown({{ field.FieldOrder }}):"+thefield_{{ field.FieldOrder }})
             }
         }
         

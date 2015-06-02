@@ -557,7 +557,7 @@ class AvispaRestFunc:
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
 
-        #Make FieldSource canonical
+        #Make FieldSource canonical   #BUG!! THIS IS WHAT IS CAUSING THE Source ?fl=name not work!
         for field in schema['fields']:
             if 'FieldSource' in field:
                 if field['FieldSource']:
@@ -570,6 +570,7 @@ class AvispaRestFunc:
                         canonical_uri_list.append(canonical_uri)
                 
                     field['FieldSource'] = ','.join(canonical_uri_list)
+                    field['FieldSourceRaw'] = source
 
 
         d['message'] = 'Using post_rq_a_b for handle '+handle+', ring:'+ring 
