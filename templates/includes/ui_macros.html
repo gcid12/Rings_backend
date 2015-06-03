@@ -90,8 +90,14 @@
                 
              </a>
              <a href="/{{data.handle}}/_collections/{{ data.collection }}">
-               <span class="fc-b fw-a">{{ data.collection }}</span>
+               <span class="fc-b fw-a">{{ data.collection }}</span> /
              </a>
+             <a href="/{{data.handle}}/_collections/{{ data.collection }}">
+                {{ icon_sma('', '345') }}
+               <span class="fc-b fw-a">{{ data.ring }}</span>
+              
+             </a>
+
             </div> 
 
             <!-- <div class="">
@@ -143,12 +149,14 @@
               <!-- <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
 
               <div class="fw-c">
+                <div class="spa5"></div>
               
-              {% if 'get_a_b' in user_authorizations %}
-                <a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> {{ring}}</a>
-              {%else%}
-                {{ring}}
-              {%endif%} 
+                {% if 'get_a_b' in user_authorizations %}
+
+                  <a class="nounder" href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> {{ring}}</a>
+                {%else%}
+                  {{ring}}
+                {%endif%} 
               </div>
 
               <div>
@@ -252,7 +260,7 @@
               {{origin}}
               {%endif%}/ -->
               {% if 'get_a' in user_authorizations %}
-              <div>
+              <div class="fw-c fs-1-2">
                 <div class="spa5 hidden-xs"></div>
                 <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">
                 
@@ -267,7 +275,7 @@
                 <!-- {%if idx %}<span>/{{idx}}</span>{%endif%} -->
 
               </div>
-              <p class="text-lgray fs-0-6 pl-20">{{ description }}</p>
+              <p class="text-lgray fs-0-6">{{ description }}</p>
             </div>
             
           </div>
@@ -295,6 +303,92 @@
             </div> 
             
             <span class="label label-discrete pull-right">{{date}}</span>
+          </div>
+        </div>
+      </div>  
+    </td>
+  </tr>
+
+
+{% endmacro %}
+
+{% macro panel3(data,color) %}
+
+  <tr class="bord-bottom bc-10 bw-5">
+    <td style="width:3%" class="hidden-xs">
+    </td>
+    <td style="width:10%">
+      {% if data.item %}
+        <div class=" col-sm-1 hidden-xs ">
+            {{ icon_med('',color) }} 
+          </div> 
+          <div class=" col-xs-1 visible-xs">
+            {{ icon_sma('',color) }}
+        </div>
+
+      {% else%}
+        <div class=" col-sm-1 hidden-xs ">
+            {{ icon_stack(data.ringcount,color) }} 
+          </div> 
+          <div class=" col-xs-1 visible-xs">
+            {{ icon_sma(data.ringcount,color) }}
+        </div>
+      {% endif %}
+    </td>
+    <td> 
+      <div class="row">
+        
+
+        <div class="col-xs-8 col-sm-7">
+
+          <div class="spa10 text-left ">
+            <div class="fs-1-5">
+
+              
+             
+              <div class="spa10"></div>
+              
+              {% if data.item %}
+
+                <span class="fw-c">{{ data.item.items()[1][1] }}</span>
+                <div class="fc-g fs-0-7">{{data.ring}}</div>
+                
+              {% else %}
+
+                <span class="fw-c">{{data.ring}}</span>
+
+              {% endif %}
+                
+                
+            </div>
+            <p class="text-lgray fs-0-6">{{ data.description }}</p>
+          </div>
+            
+          
+            
+          
+
+        </div> 
+        <div class="col-xs-4 col-sm-5">
+
+          <div class="pull-right">
+            
+
+            <div class="btn-group">
+              {% if 'post_a_b' in data.user_authorizations %}
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              {% endif %}
+
+              
+              {% if 'put_a_b' in data.user_authorizations %}
+              
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              <a href="/_api/{{ data.handle }}/{{ data.ring }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
+              {% endif %}
+
+            </div> 
+            
+            <span class="label label-discrete pull-right">{{ data.date }}</span>
           </div>
         </div>
       </div>  
@@ -1111,6 +1205,7 @@
         </div>
 
 {% endmacro %}
+
 
 
 {% macro lorem() %}
