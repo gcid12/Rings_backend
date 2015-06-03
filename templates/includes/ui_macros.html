@@ -115,17 +115,51 @@
           
           <tr class="bord-bottom bc-8 bw-2">
             
-            <td>{{ icon_sma(count, color) }}</td>
+            <td style="width:15%">{{ icon_sma(count, color) }}
+            <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
+            
+              {% if 'put_a_b' in user_authorizations %}
+                <span class="dropdown">
+                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                    
+                    <i class="fa fa-caret-down fs-0-8 fc-g"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{collection}}">
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ handle }}/{{ ring }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
+                    
+                  </ul>
+                </span>
+              {% endif %}
+
+                
+
+
+
+            </td>
             <td>
-              <img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;">
+              
 
               <!-- <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
-              {% if 'get_a_b' in user_authorizations %}
+
+              <div class="fw-c">
               
-              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
-              &nbsp; <span style="font-weight:700;">{{ring}}</span>
+              {% if 'get_a_b' in user_authorizations %}
+                <a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> {{ring}}</a>
+              {%else%}
+                {{ring}}
               {%endif%} 
-              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
+              </div>
+
+              <div>
+                
+                <!-- <span class="fc-g fs-0-8"> 1 day ago </span> -->
+
+                
+                
+              </div>
+
+              
             </td>
             <td>
               <div class="pull-right">
@@ -139,9 +173,13 @@
                   <!-- {% if 'put_a' in user_authorizations %}
                   <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
                   {% endif %} -->
+
                 </div>
                 
               </div>
+            </td>
+            <td>
+              
             </td>
           </tr>
           
@@ -1231,7 +1269,7 @@
                           <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="{% if field.FieldName+'_flag' in item %}{{item[field.FieldName+'_flag']}}{%else%}1{%endif%}"/> 
                           <div class="dropdown">
                             <a data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
-                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-1"><i class="fa fa-caret-left fa-2x"></i></span>
+                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-1"><i class="fa fa-caret-left fa-2x"></i> <span id="live_{{ field.FieldOrder }}" class="fc-g fs-0-8">Not live</span></span>
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">

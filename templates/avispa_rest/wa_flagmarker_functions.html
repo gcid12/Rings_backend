@@ -3,16 +3,21 @@
         var flag = $(this).attr('flag');
         var f = flag.split('_')
         $('#flag_'+f[0]).val(f[1]);  
-        $('#flagmarker_'+f[0]).removeClass().addClass('fc-'+f[1]);    
+        $('#flagmarker_'+f[0]).removeClass().addClass('fc-'+f[1]); 
+        $('#live_'+f[0]).removeClass().addClass('label label-success').empty().append("Live on save"); 
+
     });
 </script>
 
 <script type="text/javascript">
 $(window).load(function(){
 
+
     {% for field in data.fieldsschema %}
 
         //$('#flag_'+{{field.FieldOrder}}).val({{data.item[field.FieldName+'_flag']}});
+
+        $('#flagmarker_{{field.FieldOrder}}').removeClass().addClass("fc-{%if data.item[field.FieldName+'_flag'] %}{{data.item[field.FieldName+'_flag']}}{%else%}1{%endif%}"); 
 
         $('#flagmarker_{{field.FieldOrder}}').removeClass().addClass("fc-{%if data.item[field.FieldName+'_flag'] %}{{data.item[field.FieldName+'_flag']}}{%else%}1{%endif%}"); 
 
