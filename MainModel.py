@@ -408,19 +408,23 @@ class MainModel:
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
             else:
                 
-                rolelist = self.user_belongs_org_team(current_user,handle)
+                rolelist = self.user_belongs_org_team(current_user,handle,ring='*')
+                #rolelist = self.user_belongs_org_team(current_user,handle)
+                
                 if rolelist:
                     print('rolelist1:',rolelist)
                     print('This user is a member of a team') 
 
                     for role in rolelist:
                             user_authorizations = self.sum_role_auth(user_authorizations,role)
-                           
 
+       
                     
                 else:
                     print('This user is Anonymous 1')
                     user_authorizations += self.roles['anonymous']
+
+
 
 
 
@@ -558,7 +562,7 @@ class MainModel:
 
 
         #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
-        print('user_authorizations:',user_authorizations)
+        print('Final user_authorizations:',user_authorizations)
 
         method_parts = method.split('_')
 
@@ -588,11 +592,26 @@ class MainModel:
 
     def sum_role_auth(self,user_authorizations,role):
 
-        if role in self.roles:
-            print('Adding role:'+role,self.roles[role])
-            user_authorizations += self.roles[role]
+        if type(role) is dict:
+
+            if role['role'] in self.roles:
+
+                if role['ring']:
+                    print('Adding ring role:'+role['ring']+'_'+role['role'],self.roles[role['role']])
+                    for r in self.roles[role['role']]:
+                        user_authorizations.append(role['ring']+'_'+r)
+
+            else:
+                print(role+' was not found')
+
+
         else:
-            print(role+' was not found')
+
+            if role in self.roles:
+                print('Adding role:'+role,self.roles[role])
+                user_authorizations += self.roles[role]
+            else:
+                print(role+' was not found')
 
         return user_authorizations
 
@@ -624,17 +643,40 @@ class MainModel:
 
             elif ring: #Check if this username can act on this ring
                 for teamd in result['teams']:
+
                     print('flagx1')
-                    for ringd in teamd['rings']:
-                        print('flagx2',ringd['ringname'] , ring)
-                        if ringd['ringname'] == ring: 
-                            print('flagx3')
-                            #This team acts on this ring!
-                            for member in teamd['members']:
+
+                    if teamd['teamname'] == 'owner':
+                        print('Checking is this user is in owner team',teamd['members'])
+                        for member in teamd['members']:
+                                print('flagx1a',member['handle'])
                                 if member['handle'] == username:
-                                    #This user belongs to this team that can act on this ring!
-                                    for role in teamd['roles']:
-                                        rolelist.append(role['role'])
+
+                                    rolelist.append('org_owner')
+                                    
+                                            
+
+                    else:
+                        for ringd in teamd['rings']:
+                            print('flagx2',ringd['ringname'] , ring)
+
+                            if ring == '*':
+                                for member in teamd['members']:
+                                    if member['handle'] == username:
+
+                                        #Ring specific permissions
+                                        for role in teamd['roles']:                   
+                                            rolelist.append({"ring":ringd['ringname'],"role":role['role']})
+                                            
+
+                            elif ringd['ringname'] == ring: 
+                                print('flagx3')
+                                #This team acts on this ring!
+                                for member in teamd['members']:
+                                    if member['handle'] == username:
+                                        #This user belongs to this team that can act on this ring!
+                                        for role in teamd['roles']:
+                                            rolelist.append(role['role'])
 
 
             else: #This is only used in  /_home and /_teams to prove membership in ANY team
