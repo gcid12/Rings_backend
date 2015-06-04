@@ -170,20 +170,20 @@
                   </a>
 
                     {% if extended=='1' %}
-                      <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
+                      <a href="/{{data.handle}}/_collections/{{collectionname}}/{{ ring.ringname }}" type="button" class="fc-b nounder" data-toggle="tooltip" title="See Ring">
                         <span class="fa-stack fa-lg">
                           <i class="fa fa-circle fa-stack-1x fc-d fs-1-2"></i>
                           <i class="fa fa-eye fa-stack-1x fa-inverse fs-0-6"></i>
                         </span>
                       </a>
 
-                      <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
+                      <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ ring.ringname }}?rq=put" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
                         <span class="fa-stack fa-lg">
                           <i class="fa fa-circle fa-stack-1x fc-c fs-1-2"></i>
                           <i class="fa fa-gear fa-stack-1x fa-inverse fs-0-6"></i>
                         </span>
                       </a>
-                      <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="nounder" data-toggle="tooltip" title="See API">
+                      <a href="/_api/{{ data.handle }}/{{ ring.ringname }}" type="button" class="nounder" data-toggle="tooltip" title="See API">
                         <span class="fa-stack fa-lg">
                           <i class="fa fa-circle fa-stack-1x fc-m fs-1-2"></i>
                           <i class="fa fa-code fa-stack-1x fa-inverse fs-0-6"></i>
