@@ -97,8 +97,7 @@
                             <div class="gcard-subtitle" >
                             
                             {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-
-                            
+                                
                            <!--  <h4>{{ collection.collectionname }}</h4> -->
                             </div>
                             <div class="gcard-body" style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:110px;">
@@ -111,11 +110,16 @@
                                 <div class="col-sm-offset-1 col-sm-11">
                                     <table width="100%" border="0">
                                         <tr bgcolor="">
-                                          <td colspan="3" style="padding:0 2px 0px 2px;">
+                                          <td colspan="3" style="padding:0 0px 0px 2px;">
                                             <table class="table table-bordered">
 
-                                            {% for ring in collection.rings %}    
-                                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#6078EF', ring.count , '85', '',data.user_authorizations) }}
+                                            {% for ring in collection.rings %}  
+
+                                                
+
+                                                {{ ui.panel_collections(collection.collectionname,data,ring, '#fce121','') }}
+
+
                                             {% endfor %}
   
 
@@ -177,10 +181,12 @@
 
                     <div class="gcard-title" style="padding-bottom:0px;">
 
-                         <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="p-10 nostroke">People</a></li>
-                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="p-10 p-x-32 nostroke">Teams</a></li>
-                      </ul>   
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="p-10 nostroke">People</a></li>
+                            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="p-10 p-x-32 nostroke">Teams</a></li>
+                        </ul>   
+
                     </div>
               
 

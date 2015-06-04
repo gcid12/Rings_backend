@@ -14,7 +14,8 @@
                 {{ handle|lower() }}  / 
               </span>  --> 
                 <span class="fs-1-2">
-                    {{ collection|capitalize }} 
+                    {{ collection|capitalize }}
+
                 </span>
                 {% if 'get_a_x' in user_authorizations %}
             
@@ -42,7 +43,7 @@
             
             
             <!-- <span class="fs-1-3 " style="opacity: 0.3;">  {{ handle|lower() }}  / </span>  -->
-            <span class="fs-1-3 fw-c">{{ collection|upper() }} </span>
+            <span class="fs-1-3 fw-c">{{ collection|capitalize }} </span>
             
         {%endif%}
              
@@ -90,8 +91,14 @@
                 
              </a>
              <a href="/{{data.handle}}/_collections/{{ data.collection }}">
-               <span class="fc-b fw-a">{{ data.collection }}</span>
+               <span class="fc-b fw-a">{{ data.collection }}</span> /
              </a>
+             <a href="/{{data.handle}}/_collections/{{ data.collection }}">
+                {{ icon_sma('', '345') }}
+               <span class="fc-b fw-a">{{ data.ring }}</span>
+              
+             </a>
+
             </div> 
 
             <!-- <div class="">
@@ -110,38 +117,92 @@
 
 
 
-{% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
-          
+{#% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %#} 
+
+{% macro panel_collections(collectionname,data,ring, color,extended) %} 
           
           <tr class="bord-bottom bc-8 bw-2">
             
-            <td>{{ icon_sma(count, color) }}</td>
+            <td style="width:15%">{{ icon_sma(ring.count, color) }}
+            <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
+            
+              {% if 'put_a_b' in data.user_authorizations %}
+                {% if extended!='1' %}
+                <span class="dropdown">
+                  <a class="dropdown-toggle nounder" id="menu_{{data.collection}}" data-toggle="dropdown" aria-expanded="false">
+                    
+                    <i class="fa fa-caret-down fs-0-8 fc-g"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ ring.ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ data.handle }}/{{ ring.ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
+                    
+                  </ul>
+                </span>
+                {% endif %}
+              {% endif %}
+            </td>
             <td>
-              <img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;">
 
-              <!-- <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
-              {% if ring+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
+              <!--img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
+              <div class="fw-c">
+                <div class="spa5"></div>
+
               
-              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
-              &nbsp; <span style="font-weight:700;">{{ring}}</span>
-              {%endif%} 
-              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
+                {% if ring+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
+
+                  <a class="nounder" href="/{{data.handle}}/_collections/{{collectionname}}/{{ ring.ringname }}"> {{ring.ringname}}</a>
+                {%else%}
+                  {{ring.ringname}}
+                {%endif%} 
+              </div>
             </td>
             <td>
               <div class="pull-right">
                 
                 <div class="btn-group" >
                 
-                  <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
-                  {% if ring+'_post_a_b' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button" class="fc-i" data-toggle="tooltip" title="Add item"><i class="fa fa-plus-circle fa-2x"></i></a>
+
+                  {% if ring+'_post_a_b' in user_authorizations or 'post_a_b' in user_authorizations %}
+                 
+
+                  <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
+                    <span class="fa-stack fa-lg">
+                      <i class="fa fa-circle fa-stack-1x fc-i fs-1-2"></i>
+                      <i class="fa fa-plus fa-stack-1x fa-inverse fs-0-6"></i>
+                    </span>
+                  </a>
+
+                    {% if extended=='1' %}
+                      <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-1x fc-d fs-1-2"></i>
+                          <i class="fa fa-eye fa-stack-1x fa-inverse fs-0-6"></i>
+                        </span>
+                      </a>
+
+                      <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-1x fc-c fs-1-2"></i>
+                          <i class="fa fa-gear fa-stack-1x fa-inverse fs-0-6"></i>
+                        </span>
+                      </a>
+                      <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="nounder" data-toggle="tooltip" title="See API">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-1x fc-m fs-1-2"></i>
+                          <i class="fa fa-code fa-stack-1x fa-inverse fs-0-6"></i>
+                        </span>
+                      </a>
+                    {% endif %}
+
                   {% endif %}
-                  <!-- {% if 'put_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-                  {% endif %} -->
+
                 </div>
                 
               </div>
+            </td>
+            <td>
+              
             </td>
           </tr>
           
@@ -152,13 +213,12 @@
 {% macro panel_collections_old(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
           
           
-          <tr class="bord-bottom bc-8 bw-2">
+       <!--    <tr class="bord-bottom bc-8 bw-2">
             
             <td>{{ icon_sma(count, color) }}</td>
             <td>
               <img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;">
 
-              <!-- <span class="octicon {% if handle == origin %} octicon-repo {% else %} octicon-git-branch {%endif%}"></span> -->
               {% if 'get_a_b' in user_authorizations %}
               
               &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
@@ -171,70 +231,63 @@
                 
                 <div class="btn-group" >
                 
-                  <!-- <a href="/{{ handle }}/{{ name }}" type="button" class="btn btn-info btn-xs">List</a> -->
                   {% if 'post_a' in user_authorizations %}
                   <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button"><i class="fa fa-plus fa-2x"></i></a>
                   {% endif %}
-                  <!-- {% if 'put_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-                  {% endif %} -->
+                  
                 </div>
                 
               </div>
             </td>
-          </tr>
+          </tr> -->
           
                    
 {% endmacro %}
 
 
 
-{% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %}
+{#% macro panel(ring, origin, handle, color, count,description,date,collection,user_authorizations,idx) %#}
+{% macro panel(ring, data, color) %}
 
-  <tr class="bord-bottom bc-10 bw-5">
+<!--   <tr class="bord-bottom bc-10 bw-5">
     <td width="50px" class="hidden-xs">
     </td>
     <td class=""> 
       <div class="row">
-        <div class=" col-sm-2 hidden-xs ">
-          {{ icon_stack(count,color) }} 
+        <div class="col-sm-offset-1 col-sm-2 hidden-xs ">
+          {{ icon_stack(ring.count,color) }} 
         </div> 
-        <div class=" col-xs-2 visible-xs">
-              {{ icon_sma(count,color) }}
+        <div class="col-sm-offset-1  col-xs-2 visible-xs">
+              {{ icon_sma(ring.count,color) }}
         </div>
 
-        <div class="col-xs-8 col-sm-7">
+        <div class="col-xs-6 col-sm-6">
 
           <div class="spa10 text-left ">
             <div class="fs-1-5">
 
-              <!-- {% if 'get_a' in user_authorizations %}
-              <a href="/{{ handle }}" class="nounder">{{origin}}</a>
-              {%else%}
-              {{origin}}
-              {%endif%}/ -->
+              <div class="fs-1">
+
               {% if 'get_a' in user_authorizations %}
-              <div>
+              
                 <div class="spa5 hidden-xs"></div>
-                <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}" class="nounder">
+                <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ ring.ringname }}" class="nounder">
                 
-                 {{ring}}
+                 {{ ring.ringname }}
                 </a>
               
                 {%else%}
                 
-                  {{ring}}
+                  {{ring.ringname }}
 
                 {%endif%}
-                <!-- {%if idx %}<span>/{{idx}}</span>{%endif%} -->
+                
 
               </div>
-              <p class="text-lgray fs-0-6 pl-20">{{ description }}</p>
+              <p class="text-lgray fs-0-6">{{ ring.ringdescription }}</p>
             </div>
             
           </div>
-            
-          
 
         </div> 
         <div class="col-xs-2 col-sm-3">
@@ -243,20 +296,106 @@
             
 
             <div class="btn-group">
-              {% if 'post_a_b' in user_authorizations %}
-              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              {% if 'post_a_b' in data.user_authorizations %}
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ ring.ringname }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
               {% endif %}
 
               
-              {% if 'put_a_b' in user_authorizations %}
+              {% if 'put_a_b' in data.user_authorizations %}
               
-              <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              <a href="/_api/{{ handle }}/{{ ring }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ ring.ringname }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              <a href="/_api/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
               {% endif %}
 
             </div> 
             
-            <span class="label label-discrete pull-right">{{date}}</span>
+            
+          </div>
+        </div>
+      </div>  
+    </td>
+  </tr> -->
+
+
+{% endmacro %}
+
+{% macro panel3(data,color) %}
+
+  <tr class="bord-bottom bc-10 bw-5">
+    <td style="width:3%" class="hidden-xs">
+    </td>
+    <td style="width:10%">
+      {% if data.item %}
+        <div class=" col-sm-1 hidden-xs ">
+            {{ icon_med('',color) }} 
+          </div> 
+          <div class=" col-xs-1 visible-xs">
+            {{ icon_sma('',color) }}
+        </div>
+
+      {% else%}
+        <div class=" col-sm-1 hidden-xs ">
+            {{ icon_stack(data.ringcount,color) }} 
+          </div> 
+          <div class=" col-xs-1 visible-xs">
+            {{ icon_sma(data.ringcount,color) }}
+        </div>
+      {% endif %}
+    </td>
+    <td> 
+      <div class="row">
+        
+
+        <div class="col-xs-8 col-sm-7">
+
+          <div class="spa10 text-left ">
+            <div class="fs-1-5">
+
+              
+             
+              <div class="spa10"></div>
+              
+              {% if data.item %}
+
+                <span class="fw-c">{{ data.item.items()[1][1] }}</span>
+                <div class="fc-g fs-0-7">{{data.ring}}</div>
+                
+              {% else %}
+
+                <span class="fw-c">{{data.ring}}</span>
+
+              {% endif %}
+                
+                
+            </div>
+            <p class="text-lgray fs-0-6">{{ data.description }}</p>
+          </div>
+            
+          
+            
+          
+
+        </div> 
+        <div class="col-xs-4 col-sm-5">
+
+          <div class="pull-right">
+            
+
+            <div class="btn-group">
+              {% if 'post_a_b' in data.user_authorizations %}
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
+              {% endif %}
+
+              
+              {% if 'put_a_b' in data.user_authorizations %}
+              
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
+              <a href="/_api/{{ data.handle }}/{{ data.ring }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
+              {% endif %}
+
+            </div> 
+            
+            <span class="label label-discrete pull-right">{{ data.date }}</span>
           </div>
         </div>
       </div>  
@@ -1075,6 +1214,7 @@
 {% endmacro %}
 
 
+
 {% macro lorem() %}
   <p>
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam varius risus sed purus egestas dictum. Integer enim lectus, elementum faucibus odio nec, scelerisque scelerisque sapien. Duis facilisis odio arcu, sed euismod dui accumsan in. Pellentesque a leo in massa rhoncus pretium. Suspendisse a dictum sem, nec malesuada enim. Mauris non nisl quis nulla laoreet lobortis quis nec justo. Mauris dictum mauris erat. Pellentesque vel hendrerit urna. Aliquam sollicitudin non ex quis accumsan. Suspendisse tincidunt quam urna, ut scelerisque lorem malesuada sed. 
@@ -1231,7 +1371,7 @@
                           <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="{% if field.FieldName+'_flag' in item %}{{item[field.FieldName+'_flag']}}{%else%}1{%endif%}"/> 
                           <div class="dropdown">
                             <a data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
-                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-1"><i class="fa fa-caret-left fa-2x"></i></span>
+                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-1"><i class="fa fa-caret-left fa-2x"></i> <span id="live_{{ field.FieldOrder }}" class="fc-g fs-0-8">Not live</span></span>
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">

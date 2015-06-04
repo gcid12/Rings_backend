@@ -10,23 +10,65 @@
 
 <div class="container" >
 
-<div class="row">
-      <div class="col-sm-12 spa5" >
-      </div>
-</div>
+    <div class="row">
+          <div class="col-sm-12 spa5" >
+          </div>
+    </div>
 
-  <div class="gcard">
+    <div class="gcard">
     
       <!-- BOX CONTENT --> 
 
           <!-- TABS WILL SHOW -->
         {% if data.collection %} 
             {% if not data.raw %} 
-                      {#{ ui.collection_big(data.handle, data.collection, data.ring ,6,1,'1 day ago', data.handle_profilepic) }#}
-                      {{ ui.collection_big(data ,6,1,'1 day ago') }}
+                      
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="gcard-title">
+                        <div class="pull-right text-right spa10">
+                            <span class="dropdown">
+                              <a class="dropdown-toggle nounder" id="menu_{{data.collection}}" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span><span class="hidden-xs">Actions</span>
+                              </a>
+                              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
+                                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}/_collections/{{ data.collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
+                                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
+                              </ul>
+                            </span>
+                        </div>
+
+                        <div class="fs-1-7 text-s1">
+                            {% block crumb01 %}
+                                <a class="nounder" href="/{{data.handle}}" class="nounder">
+                                    <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
+                            
+                                    <span class="fc-a fs-0-7">{{ data.handle|lower() }}</span>   
+                                </a>
+                            {% endblock %}
+                            
+                            {% block crumb02 %}
+                                
+                            {% endblock %}
+                            
+                            {% block crumb03 %}
+                                
+                            {% endblock %}
+                            
+                            {% block crumb04 %}
+                            {% endblock %}
+                            
+
+                            
+                        </div> 
+                    </div>
+                </div>
+            </div> 
 
             {%endif%}
-         {%endif%}
+        {%endif%}
 
     <div class="row">
       {% if data.collection %}

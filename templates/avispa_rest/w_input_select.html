@@ -1,12 +1,12 @@
 <div class="form-group">
     <label for='{{ field.FieldName }}' class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="fc-g fs-0-9">
             {% if field.FieldHint %}{{ field.FieldHint }}{% endif %}
             <i class="fa fa-arrow-right"></i>
         </div>
     </div>
-    <div class="col-sm-6 text-left">
+    <div class="col-sm-7 text-left">
         {#% if not data.item[field.FieldName] %#}
         {% if True %}
 
@@ -17,7 +17,7 @@
             <select id="chosen_{{ field.FieldOrder }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}>
                              
             {% if field.FieldCardinality != 'Multiple' %}
-                <option value="">SELECT ONER </option> 
+                <option value="" class="fc-0-9">SELECT ONE </option> 
             {% endif %}
 
             </select>
