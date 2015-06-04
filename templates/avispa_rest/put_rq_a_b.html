@@ -82,7 +82,9 @@
 
 <div class="rn-curtain"> 
         <table class="table table-condensed"> 
-            {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }}  
+            {#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }#}  
+
+            {{ ui.panel3(data,'#fce121') }} 
                    
         </table>
             
