@@ -143,10 +143,13 @@
               {% endif %}
             </td>
             <td>
+
+              <!--img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
               <div class="fw-c">
                 <div class="spa5"></div>
+
               
-                {% if 'get_a_b' in data.user_authorizations %}
+                {% if ring+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
 
                   <a class="nounder" href="/{{data.handle}}/_collections/{{collectionname}}/{{ ring.ringname }}"> {{ring.ringname}}</a>
                 {%else%}
@@ -159,7 +162,8 @@
                 
                 <div class="btn-group" >
                 
-                  {% if 'post_a' in data.user_authorizations %}
+
+                  {% if ring+'_post_a_b' in user_authorizations or 'post_a_b' in user_authorizations %}
                  
 
                   <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
@@ -190,10 +194,6 @@
                         </span>
                       </a>
                     {% endif %}
-
-
-                  
-
 
                   {% endif %}
 

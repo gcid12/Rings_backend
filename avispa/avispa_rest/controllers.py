@@ -286,9 +286,10 @@ def home_dispatcher(handle):
 
         method= 'GET_a_home'
         data['method'] = method
-        depth = '_a'
+        depth = '_a'  
         authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle)
-        if not authorization_result['authorized']:
+
+        if 'authorized' not in authorization_result:
             return render_template('avispa_rest/error_401.html', data=data),401
 
         data['user_authorizations'] = authorization_result['user_authorizations']
