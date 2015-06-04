@@ -3128,7 +3128,7 @@ tbody.collapse.in {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 12px;
   text-align: left;
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -3161,7 +3161,7 @@ tbody.collapse.in {
 .dropdown-menu > li > a:focus {
   text-decoration: none;
   color: #333333;
-  background-color: transparent;
+  background-color:#eaeaea;
 }
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,

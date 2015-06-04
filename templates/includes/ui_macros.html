@@ -8,49 +8,20 @@
 
  
         {% if 'get_a' in user_authorizations %}
-            
-            <a class="nounder" href="/{{handle}}/_collections/{{collection}}">
-              <!-- <span style="opacity: 0.3;">  
-                {{ handle|lower() }}  / 
-              </span>  --> 
-                <span class="fs-1-2">
-                    {{ collection|capitalize }}
 
-                </span>
                 {% if 'get_a_x' in user_authorizations %}
             
-                    
-                    <div class="dropdown pull-right">
-                        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                        <a class="dropdown-toggle"  href="/{{handle}}/_collections/{{ collection}}?rq=put">
                         
                             <i class="fa fa-cog fc-g"></i>
                         </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=put"><i class="fa fa-cog"></i> Settings </a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=post&n=10"><i class="fa fa-plus"></i> New Ring</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=put"> <i class="fa fa-link"></i> Link Ring</a></li>
-                            
-                        </ul>
-                    </div>
-
-            
+                        
                 {% endif %}
-            </a>
-           
-            
 
         {%else%}
             
-            
-            <!-- <span class="fs-1-3 " style="opacity: 0.3;">  {{ handle|lower() }}  / </span>  -->
-            <span class="fs-1-3 fw-c">{{ collection|capitalize }} </span>
-            
         {%endif%}
              
-            <!-- <div class="label bl spa5"> 
-            Ring Collection
-            </div>  -->
-            <!--p class="text-lgray fs-0-9 spa5"><strong>5,346</strong> Data resources | <strong>{{percent}}%</strong> completed </p-->
 
     </div>
 </div>
@@ -100,15 +71,6 @@
              </a>
 
             </div> 
-
-            <!-- <div class="">
-            <p class="text-lgray fs-1"><strong>5,346</strong> Data resources | <strong>{{data.percent}}%</strong> completed </p>
-            </div> -->
-
-            
-
-
-          
     
     </div>
   </div>
@@ -126,7 +88,7 @@
             <td style="width:15%">{{ icon_sma(ring.count, color) }}
             <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
             
-              {% if 'put_a_b' in data.user_authorizations %}
+              {% if data.user_authorizations %}
                 {% if extended!='1' %}
                 <span class="dropdown">
                   <a class="dropdown-toggle nounder" id="menu_{{data.collection}}" data-toggle="dropdown" aria-expanded="false">
@@ -149,7 +111,7 @@
                 <div class="spa5"></div>
 
               
-                {% if ring+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
+                {% if data.user_authorizations %}
 
                   <a class="nounder" href="/{{data.handle}}/_collections/{{collectionname}}/{{ ring.ringname }}"> {{ring.ringname}}</a>
                 {%else%}
@@ -163,7 +125,7 @@
                 <div class="btn-group" >
                 
 
-                  {% if ring+'_post_a_b' in user_authorizations or 'post_a_b' in user_authorizations %}
+                  {% if data.user_authorizations %}
                  
 
                   <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
@@ -209,40 +171,6 @@
                    
 {% endmacro %}
 
-
-{% macro panel_collections_old(handle, collection, ring, color, count, percent, active, user_authorizations) %} 
-          
-          
-       <!--    <tr class="bord-bottom bc-8 bw-2">
-            
-            <td>{{ icon_sma(count, color) }}</td>
-            <td>
-              <img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;">
-
-              {% if 'get_a_b' in user_authorizations %}
-              
-              &nbsp;<a href="/{{handle}}/_collections/{{collection}}/{{ ring }}"> <span style="font-weight:700;">{{ring}}</span></a>{%else%}
-              &nbsp; <span style="font-weight:700;">{{ring}}</span>
-              {%endif%} 
-              <span class="fc-g"><p class="fs-0-8">1 day ago</p></span>
-            </td>
-            <td>
-              <div class="pull-right">
-                
-                <div class="btn-group" >
-                
-                  {% if 'post_a' in user_authorizations %}
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ring}}?rq=post" type="button"><i class="fa fa-plus fa-2x"></i></a>
-                  {% endif %}
-                  
-                </div>
-                
-              </div>
-            </td>
-          </tr> -->
-          
-                   
-{% endmacro %}
 
 
 
@@ -508,6 +436,7 @@
   </div>
 </div>
 {% endmacro %}
+
 {% macro panel_rings(name, origin, handle, color, number, percent, active, resource, user_authorizations) %} 
           
           <tr>

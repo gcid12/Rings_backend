@@ -90,7 +90,7 @@
             {%if not data.raw%}
               {% if data.today is defined %}
                 <span class="text-s2 fs-0-8 text-gray">
-                {{ data.today }}    
+                {{ data.today }}   
                 </span>
               {%endif%}        
             {%endif%}
@@ -132,8 +132,32 @@
 
             <li><a href="/{{ data.handle }}/_home"> <i class="fa fa-home"></i> <span class="text-s1">Home</span></a></li>
 
-            <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user"></i> <span class="text-s1">My Profile</span></a>
+
+            <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user"></i> <span class="text-s1">Personal Settings</span></a>
             </li>
+            
+
+            <!-- {% if data.organizations %}
+              <li class="divider" role="presentation"></li>
+              {% for organization in data.organizations %}
+
+
+                <li role="presentation"><a href="/{{organization['handle']}}/_home"> <span >
+                    <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;">
+
+                    <strong>{{organization['handle']}}</strong> Settings</span></a>
+                </li>
+
+                                
+          
+              {% endfor %}
+              <li class="divider" role="presentation"></li>
+            {% endif %} -->
+
+
+          
+
+
             <!--li><a href="/_roles/{{ current_user.id }}"><i class="fa fa-certificate"></i> <span class="text-s1">Roles</span></a></li-->
             <li><a href="/_logout"><i class="fa fa-sign-out "></i>  log-Out</a></li>
 
