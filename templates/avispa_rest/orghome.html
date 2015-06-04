@@ -14,11 +14,11 @@
 <section>
     <div class="spa10"></div>
     <div class="container">
-        <div class="row gcard">
-            <div class="col-sm-2 spa20">
+        <div class="row">
+            <div class="col-sm-2 spa20 alpha">
 
                 <!-- PHOTO  -->
-                <div class="p-x-16">
+                <div class="">
                 {% if data.handle_profilepic %}
                     <img class="img-responsive center-block user-big" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="float:left; margin-right:10px;" alt="">
                 {% else %}
@@ -31,19 +31,21 @@
                 </div>
             </div>
             <div class="col-sm-10 spa20">
+                <div class="label label-info label-xs pull-right">Organization</div>
 
                 <!-- NAME -->
 
                 {% if data.handle_actualname %} 
-                <div class="text-lead fw-300">
-                    <span class="text-s1 fc-b fs-1-7"><strong>{{data.handle_actualname}}</strong></span>
+                <div class="">
+                    <span class="fc-b fs-2">{{data.handle_actualname}}</span>
                     {% if 'put_a' in data.user_authorizations %}
                         <a href="/{{data.handle}}/_orgprofile" data-toggle="tooltip" title="Settings" class="fc-g"> 
                             <span class="pl-20"> <i class="fa fa-gear"></i> </span>
                         </a> 
                     {%endif%}
-                    <br/>
-                    <span class="text-s2 text-lgray fs-1-7">{{data.handle}}</span>
+
+                    <div class="text-s1 fc-g  fs-1">@{{data.handle}}</div>
+                    
                 </div>
 
                 {% else %}
@@ -56,7 +58,7 @@
                     </a> 
               
                     <br/>
-                    <span class="text-s2 text-gray fs-1-7">{{data.handle}}</span>
+                    <span class="text-s2 fc-a fs-1">{{data.handle}}</span>
                     {%else%}
                       <a href="/{{data.handle}}/_orgprofile">
                         <span class="text-s1 text-lgray  fs-2">{{data.handle}}</span>
@@ -116,7 +118,7 @@
                                             {% for ring in collection.rings %}  
 
 
-                                                {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
+                                                {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'') }}
 
 
                                             {% endfor %}
