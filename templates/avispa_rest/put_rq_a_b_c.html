@@ -45,14 +45,20 @@
 
 
 
-{% block crumbs %}
+{% block crumb02 %}
+      <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
 
-
-<li><a href="/{{ data.handle }}/{{ data.ring }}" >˚{{ data.ring}}</a></li>
-<li class="active">update : {{ data.idx}}</li>
-
-
+      <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
+          <span class="fc-a fs-0-7">{{ data.collection }}</span> 
+      </a>
 {% endblock %}
+{% block crumb03 %}
+    <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
+    <a href="/{{ data.handle }}/_collections/{{ data.collection}}/{{ data.ring }}" class="nounder">
+        <span class="fc-a fs-0-7">{{ data.ring }}</span>
+    </a>
+{% endblock %}
+
 
 {% block tabcontent %}
 
@@ -65,7 +71,11 @@
       <div class="rn-curtain">
             {% if not data.raw %}
               <table class="table table-condensed"> 
-              {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }}       
+              {#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }#}   
+
+              {{ ui.panel3(data,'#fce121') }} 
+
+
               </table>
             {%endif%}
 
