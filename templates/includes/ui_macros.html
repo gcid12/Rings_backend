@@ -9,16 +9,33 @@
  
         {% if 'get_a' in user_authorizations %}
 
+          <a href="/{{handle}}/_collections/{{collection}}">{{ collection|capitalize }}</a>
+
                 {% if 'get_a_x' in user_authorizations %}
             
-                        <a class="dropdown-toggle"  href="/{{handle}}/_collections/{{ collection}}?rq=put">
+                    
+                    <div class="dropdown pull-right">
+                        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
                         
                             <i class="fa fa-cog fc-g"></i>
                         </a>
-                        
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection}}?rq=put"><i class="fa fa-cog"></i> Settings </a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=post&n=10"><i class="fa fa-plus"></i> New Ring</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{ collection }}?rq=put"> <i class="fa fa-link"></i> Link Ring</a></li>
+                            
+                        </ul>
+                    </div>
+
+            
                 {% endif %}
+            
+           
+            
 
         {%else%}
+            
+            <span class="">{{ collection|capitalize }} </span>
             
         {%endif%}
              
@@ -79,7 +96,97 @@
 
 
 
-{#% macro panel_collections(handle, collection, ring, color, count, percent, active, user_authorizations) %#} 
+{% macro panel_collections2(handle, collection, ringname, color, count, percent, active, user_authorizations,extended) %} 
+
+          
+          <tr class="bord-bottom bc-8 bw-2">
+            
+            <td style="width:15%">{{ icon_sma(count, color) }}
+            <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
+            
+              {% if user_authorizations %}
+                {% if extended!='1' %}
+                <span class="dropdown">
+                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                    
+                    <i class="fa fa-caret-down fs-0-8 fc-g"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ handle }}/{{ ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
+                    
+                  </ul>
+                </span>
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+
+              <!--img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
+              <div class="fw-c">
+                <div class="spa5"></div>
+              
+                {% if user_authorizations %}
+
+                  <a class="nounder" href="/{{handle}}/_collections/{{collection}}/{{ ringname }}"> {{ringname}}</a>
+                {%else%}
+                  {{ringname}}
+                {%endif%} 
+              </div>
+            </td>
+            <td>
+              <div class="pull-right">
+                
+                <div class="btn-group" >
+                
+
+                  {% if user_authorizations %}
+                 
+
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
+                    <span class="fa-stack fa-lg">
+                      <i class="fa fa-circle fa-stack-1x fc-i fs-1-2"></i>
+                      <i class="fa fa-plus fa-stack-1x fa-inverse fs-0-6"></i>
+                    </span>
+                  </a>
+
+                    {% if extended=='1' %}
+                      <a href="/{{handle}}/_collections/{{collection}}/{{ ringname }}" type="button" class="fc-b nounder" data-toggle="tooltip" title="See Ring">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-1x fc-d fs-1-2"></i>
+                          <i class="fa fa-eye fa-stack-1x fa-inverse fs-0-6"></i>
+                        </span>
+                      </a>
+
+                      <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-1x fc-c fs-1-2"></i>
+                          <i class="fa fa-gear fa-stack-1x fa-inverse fs-0-6"></i>
+                        </span>
+                      </a>
+                      <a href="/_api/{{ handle }}/{{ ringname }}" type="button" class="nounder" data-toggle="tooltip" title="See REST">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-1x fc-m fs-1-2"></i>
+                          <i class="fa fa-arrow-right fa-stack-1x fa-inverse fs-0-6"></i>
+                        </span>
+                      </a>
+                    {% endif %}
+
+                  {% endif %}
+
+                </div>
+                
+              </div>
+            </td>
+            <td>
+              
+            </td>
+          </tr>
+          
+                   
+{% endmacro %}
+
+
 
 {% macro panel_collections(collectionname,data,ring, color,extended) %} 
           

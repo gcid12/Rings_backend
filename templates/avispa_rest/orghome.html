@@ -38,8 +38,8 @@
                 <div class="text-lead fw-300">
                     <span class="text-s1 fc-b fs-1-7"><strong>{{data.handle_actualname}}</strong></span>
                     {% if 'put_a' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/_orgprofile"> 
-                            <span class="pl-20"> <i class="fa fa-pencil"></i> </span>
+                        <a href="/{{data.handle}}/_orgprofile" data-toggle="tooltip" title="Settings" class="fc-g"> 
+                            <span class="pl-20"> <i class="fa fa-gear"></i> </span>
                         </a> 
                     {%endif%}
                     <br/>
@@ -100,7 +100,7 @@
                                 
                            <!--  <h4>{{ collection.collectionname }}</h4> -->
                             </div>
-                            <div class="gcard-body" style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:110px;">
+                            <div class="gcard-body" style="padding:20px 20px 0 0px; margin:0 0 10px 0; min-height:110px;">
                             <div class="row">
                                 <!-- START COLLECTION TITLE -->
                                 
@@ -115,9 +115,8 @@
 
                                             {% for ring in collection.rings %}  
 
-                                                
 
-                                                {{ ui.panel_collections(collection.collectionname,data,ring, '#fce121','') }}
+                                                {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
 
 
                                             {% endfor %}
@@ -157,15 +156,7 @@
                             </div>
                            </div>
                         {% else %}
-                            <!-- NEW COLLECTION -->
-                            <!-- <div class="box box-title mb-10 bord-left bw-9">
-                                {% if 'post_a_x' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs ">
-                                    <i class="fa fa-plus"></i>
-                                New collection</a>
-                                {%endif%}
-                            </div> -->
-                            <!-- NEW COLLECTION END-->
+                            
                         {% endif %}
                     {%endif%}
                 </div> <!-- close gcard -->

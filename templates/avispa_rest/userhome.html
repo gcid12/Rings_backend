@@ -31,8 +31,8 @@
 <section>
     <div class="container-fluid">
         <div class="row m-10">
-            <div class="col-sm-3 omega">
-                <div >
+            <div class="col-sm-3 col-md-2 hidden-xs">
+                <div class="gcard">
 
 
                     <div class="row">
@@ -50,61 +50,35 @@
                             {%endif%}
                         
                         </div>
-                        <div class="col-xs-8 col-sm-12">
-                            {% if data.handle_actualname %} 
-                            <h2 class="fw-300 ">
-                                <span class="text-gray fs-1 text-s2">{{data.handle_actualname}}
-                                    <span class="dropdown">
-                                        <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                                          <span class="caret text-lgray"></span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="menu_{{collection}}">
-                                          
-                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
-                                        </ul>
-                                    </span>
-                                </span><br/><span class="text-lgray pull-left fs-0-8 fw-c">{{data.handle}}</span>
-                            </h2><br/>
-                            {% else %}
-                            <h1 class="text-lead fw-300 "><span class="text-gray pull-left fs-0-8 fw-c">{{data.handle}}</span>
-                            </h1><br/>
-                            {% endif %}
-
-                            <!-- <a class="btn btn-large btn-vader" href="javascript:void(0);" onclick="startIntro().setOption('showProgress', true);" style="text-align:center;"><i class="fa fa-play-circle fa-3x"></i> <br/>Start Tour </a> -->
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <br/>
-                        <div class="bb-11 mr-70 ml-15 spa5"></div>
-                        <div class="col-xs-12 hidden-xs">
                         
-                            <span class="fs-0-7 fw-a fc-g">Organizations</span>
 
-                        </div>
-                        <div class="col-xs-12 col-sm-12">
-                            {% for organization in data.organizations %}
+                        <div class="col-xs-8 col-sm-12">
+                            <div class="p-10">
                                 
-                                <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
+                                <hr class="hidden-xs">
 
-                                    <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1 mt-10">
+                                {% for organization in data.organizations %}
+                                    
+                                    <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{{organization['handle']}}"> 
 
-                                </a>
-        
-                            {% endfor %}
-                    
-                            
-                            {% if 'post_a' in data.user_authorizations %}
+                                        <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1 mt-10">
 
-                            
-                                <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs pad-x-10"><i class="fa fa-plus-circle fc-g"></i></a>
-                            
+                                    </a>
+            
+                                {% endfor %}
+                        
+                                
+                                {% if 'post_a' in data.user_authorizations %}
 
-                            {%endif%}
+                                
+                                    <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs pad-x-10"><i class="fa fa-plus-circle fc-g"></i></a>
+                                
 
-                      
+                                {%endif%}
+                            </div>
 
                         </div>
+
                     </div>
                 </div>
 
@@ -112,10 +86,10 @@
 
             <!-- SECOND COLUMN :::::::::::::::::::::::::::::::::::::::::-->
 
-            <div class="col-sm-9">
+            <div class="col-sm-9 col-md-10  alpha">
 
-            {% if 'post_a_x' in data.user_authorizations %}
-              {% if data.dac_totals|sum<=0 %}
+            <!-- {% if 'post_a_x' in data.user_authorizations %}
+              {% if data.dac_totals|sum!=0 %}
                 
                 <div class="gcard hidden-xs">
 
@@ -159,58 +133,93 @@
                     </div>
                 </div>
               {%endif%}
-            {%endif%}
+            {%endif%} -->
 
                 <!-- <div class="spa5"></div>
                 <div class="gcard">
                     <div class="gcard-title">
                         Your Organizations
+
+                        <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs pull-right"><i class="fa fa-plus fc-a"></i>
+                                    
+                        </a>
+
                     </div>
                     <div class="gcard-body">
                         <div class="row">
                             <div class="col-sm-offset-1 col-sm-10">
-                                <table class="table table-condensed table-striped">
+                                <table class="table table-condensed">
                                     
                                 {% for organization in data.organizations %}
-                                    <tr >
-                                        <td>
+                                    <tr>
+                                        <td width="60px">
                                         <a href="/{{organization['handle']}}/_home"> 
 
                                             <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" style="width:30px; height:30px;">
 
                                         </a>
                                         </td>
-                                        <td>
+                                        <td style="padding-top:10px;">
+                                            <p>
+
                                             <a href="/{{organization['handle']}}/_home">
                                                 {{organization['handle']}}
                                             </a> 
+                                            </p>
                                         </td>
                                     </tr>
+
         
                                 {% endfor %}
+
                                 </table>
                             </div>
                         </div>
                     </div>
                     
-                </div> -->
-                
+                </div> 
                 <div class="spa5"></div>
+                -->
+                
+                <div class="gcard p-30 " style="background-color:#818181;">
+                        <span class="dropdown pull-right">
+                                <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-gear fc-a"></i>
+                                 
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="menu_{{collection}}">
+                                  
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
+                                </ul>
+                            </span>
+
+                    
+                        {% if data.handle_actualname %} 
+                            
+
+                            
+                                <div class="fc-g fs-2">{{data.handle_actualname}} 
+                                </div>
+                                <span class="fc-a fs-1">@{{data.handle}}</span>
+                            
+                            {% else %}
+                                <span class="fc-g pull-left fs-2 fw-z">@{{data.handle}}</span>
+                                <div class="spa20"></div>
+                            
+                        {% endif %}
+
+                     
+                </div>
+
+                <div class="spa5"></div>
+
                 <div class="gcard">
                     <div class="gcard-title">
-
-                        
-
                         {% if 'post_a_x' in data.user_authorizations %}
                             <!-- <a href="/{{data.handle}}/_collections?rq=post" class="btn btn-vader btn-xs pull-right" data-toggle="tooltip" title="Create new collection" data-placement="top"><i class="fa fa-plus"></i></a> -->
-                        
-
-                        
                         {%endif%}
 
-                        <p class="">
-                          {% if 'post_a_x' in data.user_authorizations %} Your {% endif %}
-
+                        <p>
                           Collections ( {{ data.collections.collectionlist|length }} )
                         </p>
                     </div>
@@ -228,7 +237,7 @@
                                      <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1 desaturate" style="width:20px; height:20px;" >
 
                                      <span href="" class="pad-x-10 fs-0-8">
-                                     {{collection.handle}} /  {{collection.collectionname}}
+                                     {{collection.handle}} / {{collection.collectionname}}
                                     </span>
 
                                   </a>
@@ -263,19 +272,16 @@
 
                                                   {% if collection.external %} 
                                               
-                                                  {#{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#6078ef', ring.count , '85', '',data.user_authorizations) }#}
+                                                 
 
-                                                  {{ ui.panel_collections(collection.collectionname,data,ring, '#6078ef','') }}
-
+    {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
 
 
                                                   {% else %} 
 
-                                                  {#{ ui.panel_collections(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }#}
+    {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#1abce2', ring.count , '85', '',data.user_authorizations,'1') }}
 
-                                                  {{ ui.panel_collections(collection.collectionname,data,ring, '#fce121','') }}
-
-
+ 
                                                   {% endif %}
 
 

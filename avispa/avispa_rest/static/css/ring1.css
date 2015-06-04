@@ -22,6 +22,7 @@ h5{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: n
 
 p{ font-family: Helvetica,Arial,sans-serif; font-weight: 300;}
 
+
 .fw-a{font-weight:300;} /*light*/
 .fw-b{font-weight:400;} /*medium*/
 .fw-c{font-weight:700;} /*heavy*/
@@ -108,6 +109,7 @@ filter: grayscale(100%);
 
 
 
+.fs-0-5{font-size:0.5em;}
 .fs-0-6{font-size:0.6em;}
 .fs-0-7{font-size:0.7em;}
 .fs-0-8{font-size:0.8em;}
@@ -178,7 +180,8 @@ filter: grayscale(100%);
 .p-7{padding:7px !important;}
 .p-10{padding:10px !important;}
 .p-15{padding:15px !important;}
-.p-30{padding:15px !important;}
+.p-20{padding:20px !important;}
+.p-30{padding:30px !important;}
 .p-50{padding:50px !important;}
 
 .p-x-4{padding:0 4px;}
@@ -1378,20 +1381,18 @@ border-radius: 50px;  }
 
 
 .profile-1{
-    width:70%; 
-    max-width:200px; 
-    margin:20px 0 0 0;
+    width:100%; 
     border:1px solid #FFF;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px; 
+
 }
 
 
 .pic-org-1{
     width:40px; 
     height:40px; 
-    border:1px solid #FFF;
+    border:1px solid #f2f2f2;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px; 
