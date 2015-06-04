@@ -31,20 +31,20 @@
 {% block crumb02 %}
       <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
 
-      <a href="/{{data.handle}}/_collections/{{ data.collection }}">
+      <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
           <span class="fc-a fs-0-7">{{ data.collection }}</span> 
       </a>
 {% endblock %}
 {% block crumb03 %}
     <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-    <a href="/{{ data.handle }}/_collections/{{ data.collection}}/{{ data.ring }}">
+    <a href="/{{ data.handle }}/_collections/{{ data.collection}}/{{ data.ring }}" class="nounder">
         <span class="fc-a fs-0-7">{{ data.ring }}</span>
     </a>
 {% endblock %}
 
 {% block crumb04 %}
     <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-    <a href="/{{data.handle}}/_collections/{{ data.collection }}">
+    <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
         <span class="fc-a fs-0-7">{{ data.item.items()[1][1] }}</span>
     </a>
 {% endblock %}

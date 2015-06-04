@@ -97,8 +97,7 @@
                             <div class="gcard-subtitle" >
                             
                             {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-
-                            
+                                
                            <!--  <h4>{{ collection.collectionname }}</h4> -->
                             </div>
                             <div class="gcard-body" style="padding:20px 20px 0 20px; margin:0 0 10px 0; min-height:110px;">
@@ -114,8 +113,13 @@
                                           <td colspan="3" style="padding:0 0px 0px 2px;">
                                             <table class="table table-bordered">
 
-                                            {% for ring in collection.rings %}    
-                                                {{ ui.panel_collections(data.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations) }}
+                                            {% for ring in collection.rings %}  
+
+                                                
+
+                                                {{ ui.panel_collections(collection.collectionname,data,ring, '#fce121','') }}
+
+
                                             {% endfor %}
   
 

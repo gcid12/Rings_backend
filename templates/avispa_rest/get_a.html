@@ -14,27 +14,51 @@
 {% block crumb02 %}
                 <i class="fa fa-caret-right breadinter"></i> <!-- caret right -->
 
-                <a href="/{{data.handle}}/_collections/{{ data.collection }}">
+                <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
                     <span class="fc-a fs-0-7">{{ data.collection }}</span> 
                 </a>
 {% endblock %}
 
 {% block tabcontent %}
 
+
+    <div class="row">
         
+        <div class=" col-sm-12">
+            <div class="gcard-subtitle" >
+                    
+            {{ ui.collection(data.handle,data.collection,6,1,'1 day ago',data.user_authorizations) }}
+                           
+            </div>
+        </div>
+        <div class="col-sm-offset-1 col-sm-10">
+
+            
+                <table width="100%" border="0">
+                    <tr bgcolor="">
+                      <td colspan="3" style="padding:0 0px 0px 2px;">
+                        <table class="table table-bordered">
+
+                            {% for ring in data.ringlist %}
+                                 
+
+                                 {{ ui.panel_collections(data.collection, data,ring, '#fce121','1') }}
 
 
+                            {% endfor %} 
+                        </table>
+                      </td>
+                    </tr>
+                </table>
+            
 
-        <div class="rn-curtain-in">
-        <table class="table table-condensed table-striped" cellpadding="0" cellspacing="0">
-              
-            {% for ring in data.ringlist %}
-                
-                {{ ui.panel(ring.ringname, ring.ringorigin, data.handle, '#fce121', ring.count, ring.ringdescription, '', data.collection, data.user_authorizations) }}
-
-            {% endfor %}
-
-        </table> 
+        </div>
+        <div class="col-sm-3">
+            
+        </div>
+        
+    </div>
+        
 
 
 
