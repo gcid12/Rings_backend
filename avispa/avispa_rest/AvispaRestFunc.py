@@ -642,11 +642,50 @@ class AvispaRestFunc:
         numfields = len(fieldsschema)
         # print(schema) 
 
-        
-        d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/put_rq_a_b.html', 
-             'ringschema':ringschema,
-             'fieldsschema':fieldsschema,
-             'numfields':numfields }
+        #####
+        # We Need to check if all FieldOrders are unique. If not it will cause trouble
+        FOrders = {}
+        existingO = []
+        repeatedF = []
+        m = 0
+        for field in fieldsschema:
+            FOrders[field['FieldName']] = field['FieldOrder']
+            if str(field['FieldOrder']) not in existingO:
+                # it is new
+                existingO.append(field['FieldOrder'])    
+            else:
+                # it is repeated
+                print(field['FieldName']+' FieldOrder exists already!')
+                repeatedF.append(m)
+
+            m += 1
+
+        if len(repeatedF) > 0:
+            print('Reapairing the FieldOrders')
+            print('Existing Orders:',existingO)
+            print('FieldSchema before:',fieldsschema)
+            for n in repeatedF:
+                #Go through each one of the repeats and try to find a unique number for it
+                for F in range(1,100):
+                    print('testing for '+ str(F))
+                    if str(F) not in existingO:
+                        print(str(F),' is Unique!')
+                        fieldsschema[n]['FieldOrder'] = str(F)
+                        existingO.append(str(F))
+                        break
+                    else:
+                        print(str(F),' already exists!')
+
+            print('FieldSchema after:',fieldsschema)
+
+        #####
+
+        d = {}
+        d['message'] = 'Using post_rq_a for handle '+handle 
+        d['template'] = 'avispa_rest/put_rq_a_b.html'
+        d['ringschema'] = ringschema
+        d['fieldsschema'] = fieldsschema
+        d['numfields'] = numfields
         
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
 

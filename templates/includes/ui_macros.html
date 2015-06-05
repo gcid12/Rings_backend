@@ -716,7 +716,11 @@
                           <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">label</span>
                               <input type="text" name="FieldLabel_{{ FieldOrder }}" class="form-control" value="{{ FieldLabel }}" placeholder="label"/>
-                            </div> 
+                          </div> 
+                          <div class="input-group input-group-sm">
+                              <span class="input-group-addon" id="sizing-addon1">Order</span>
+                              <input type="text" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}">
+                          </div> 
                           
 
                         </div>
@@ -727,7 +731,7 @@
                             <!-- NEW ORDER -->
 
                             <input type="hidden" name="FieldType_{{ FieldOrder }}">
-                            <input type="hidden" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}">
+                            
 
                             <div class="input-group input-group-sm">
                               
