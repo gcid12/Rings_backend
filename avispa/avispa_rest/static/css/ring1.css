@@ -146,13 +146,13 @@ filter: grayscale(100%);
 
 
 /*TAGS COLORS:*/
-.fc-1{color: #caee4f;}
-.fc-2{color: #fed160;}
-.fc-3{color: #feef53;}
-.fc-4{color: #ffa0a0;}
-.fc-5{color: #a7dbfe;}
-.fc-6{color: #f0c8fe;}
-.fc-7{color: #d2d2d2;}
+.fc-0000{color: #ffa0a0;} /*Red*/
+.fc-1000{color: #fed160;} /*Orange*/
+.fc-2000{color: #feef53;} /*Yellow*/
+.fc-3000{color: #a7dbfe;} /*Blue*/
+.fc-4000{color: #caee4f;} /*Green*/
+.fc-5000{color: #f0c8fe;}
+.fc-6000{color: #d2d2d2;}
 
 
 

@@ -164,8 +164,6 @@
                 </div> <!-- close gcard -->
             </div><!-- close  --> 
 
-
-
             {% if 'get_a_m' in data.user_authorizations %}
             <div class="col-sm-4 omega">
           
@@ -186,6 +184,7 @@
                 <!-- Tab panes -->
                     <div class="tab-content p-30">
                         <div role="tabpanel" class="tab-pane active" id="home">
+
 
                         {% if 'get_a_p' in data.user_authorizations %}
                         <a href="/{{data.handle}}/_people" type="button" class="pull-right discretelink"><span class="fs-0-9 fc-g"></span> <i class="fa fa-plus-circle"></i></a> <br/>

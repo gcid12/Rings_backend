@@ -104,30 +104,31 @@
             <td style="width:15%">{{ icon_sma(count, color) }}
             <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
             
-              {% if user_authorizations %}
+            
+             
                 {% if extended!='1' %}
                 <span class="dropdown">
-                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
-                    
+                  
+                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">   
                     <i class="fa fa-caret-down fs-0-8 fc-g"></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a></li>
+                  </a> 
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu">   
+                    <li role="presentation">
+                    <a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a>
+                    </li>  
                     <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ handle }}/{{ ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
                     
                   </ul>
                 </span>
-                {% endif %}
+                
               {% endif %}
             </td>
             <td>
 
               <!--img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
               <div class="fw-c">
-                <div class="spa5"></div>
-              
-                {% if user_authorizations %}
-
+                <div class="spa5"></div>             
+                {% if ringname+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
                   <a class="nounder" href="/{{handle}}/_collections/{{collection}}/{{ ringname }}"> {{ringname}}</a>
                 {%else%}
                   {{ringname}}
@@ -140,7 +141,7 @@
                 <div class="btn-group" >
                 
 
-                  {% if user_authorizations %}
+                  {% if ringname+'_post_a_b' in user_authorizations or 'post_a_b' in user_authorizations %}
                  
 
                   <a href="/{{handle}}/_collections/{{collection}}/{{ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
@@ -1404,18 +1405,23 @@
 
 {# In order for this macro to work you need to include 'avispa_rest/wa_flagmarker_functions.html' in the 'footafterfunctions' block #}
                         
-                          <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="{% if field.FieldName+'_flag' in item %}{{item[field.FieldName+'_flag']}}{%else%}1{%endif%}"/> 
+                          <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="{% if field.FieldName+'_flag' in item %}{{item[field.FieldName+'_flag']}}{%else%}0000{%endif%}"/> 
                           <div class="dropdown">
                             <a data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
-                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-1"><i class="fa fa-caret-left fa-2x"></i> <span id="live_{{ field.FieldOrder }}" class="fc-g fs-0-8">Not live</span></span>
+                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-0000">
+                                <i class="fa fa-caret-left fa-2x"></i> 
+                                <span id="flagtext_{{ field.FieldOrder }}" class="fc-g fs-0-8">Empty</span>
+                              </span>
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_1" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-1 "></i>Live</span></li>
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_2" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-2"></i>Work in Progress</span></li>
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_3" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-3"></i>Correct this</span></li>
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_4" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-4"></i>Urgent</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_0000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-0000 "></i>Empty</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_1000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-1000"></i>Work in Progress</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_2000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-2000"></i>Needs Revision</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_3000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-3000"></i>Returned</span></li>
+                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_4000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-4000"></i>Approved</span></li>
                             </ul>
+
                           </div>
                         
 

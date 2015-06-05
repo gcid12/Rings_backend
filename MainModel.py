@@ -407,16 +407,20 @@ class MainModel:
                 print('This user is a Handle Owner') 
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
             else:
-                
-                rolelist = self.user_belongs_org_team(current_user,handle,ring='*')
-                #rolelist = self.user_belongs_org_team(current_user,handle)
-                
-                if rolelist:
-                    print('rolelist1:',rolelist)
-                    print('This user is a member of a team') 
 
-                    for role in rolelist:
-                            user_authorizations = self.sum_role_auth(user_authorizations,role)
+                if depth != '_a_b' or depth != '_a_b_c':
+                    #This is only important if you are not going to go deeper than _a
+                
+                    rolelist = self.user_belongs_org_team(current_user,handle,ring='*')
+                    #rolelist = self.user_belongs_org_team(current_user,handle)
+                 
+                    if rolelist:
+
+                        print('rolelist1:',rolelist)
+                        print('This user is a member of a team') 
+
+                        for role in rolelist:
+                                user_authorizations = self.sum_role_auth(user_authorizations,role)
 
        
                     
@@ -667,6 +671,10 @@ class MainModel:
                                         #Ring specific permissions
                                         for role in teamd['roles']:                   
                                             rolelist.append({"ring":ringd['ringname'],"role":role['role']})
+
+                                        #It will show a lot of ring specific permissions but you still need to have the team_generic
+                                        # to be able to see your team
+                                        rolelist.append('team_generic')
                                             
 
                             elif ringd['ringname'] == ring: 
