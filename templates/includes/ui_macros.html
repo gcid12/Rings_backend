@@ -1420,14 +1420,16 @@
                                 <span id="flagtext_{{ field.FieldOrder }}" class="fc-g fs-0-8">Empty</span>
                               </span>
                             </a>
-
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_0000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-0000 "></i>Empty</span></li>
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_1000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-1000"></i>Work in Progress</span></li>
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_2000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-2000"></i>Needs Revision</span></li>
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_3000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-3000"></i>Returned</span></li>
-                              <li><span class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_4000" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-4000"></i>Approved</span></li>
-                            </ul>
+                            
+                              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li><span id="flagmenu_{{ field.FieldOrder }}_0000" class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_0000" style="display:none;" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-0000 "></i>Empty</span></li>
+                                <li><span id="flagmenu_{{ field.FieldOrder }}_1000" class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_1000" style="display:none;" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-1000"></i>Work in Progress</span></li>
+                                <li><span id="flagmenu_{{ field.FieldOrder }}_2000" class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_2000" style="display:none;" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-2000"></i>Send to Revision</span></li>
+                                <li><span id="flagmenu_{{ field.FieldOrder }}_3000" class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_3000" style="display:none;" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-3000"></i>Returned</span></li>
+                                <li><span id="flagmenu_{{ field.FieldOrder }}_4000" class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_4000" style="display:none;" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-4000"></i>Approved</span></li>
+                              </ul>
+                            
+                            
 
                           </div>
                         

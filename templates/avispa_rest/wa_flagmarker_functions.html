@@ -5,9 +5,26 @@
         var statusd = {};
         statusd['0000'] = 'Empty'; //RED
         statusd['1000'] = 'Work in Progress';  //ORANGE
-        statusd['2000'] = 'Needs Revision'; // YELLOW
+        statusd['2000'] = 'Send to Revision'; // YELLOW
         statusd['3000'] = 'Returned'; // RETURNED
         statusd['4000'] = 'Approved'; // GREEN
+
+        if(status=='0000'){
+            $('#flagmenu_'+order+'_1000').css('display','none')
+            $('#flagmenu_'+order+'_2000').css('display','none')
+            $('#flagmenu_'+order+'_3000').css('display','none')
+            $('#flagmenu_'+order+'_4000').css('display','none')
+        }else if(status=='1000'){
+            $('#flagmenu_'+order+'_1000').css('display','none')
+            $('#flagmenu_'+order+'_2000').css('display','inline')
+            $('#flagmenu_'+order+'_3000').css('display','none')
+            $('#flagmenu_'+order+'_4000').css('display','none')
+        }else if(status=='2000'){
+            $('#flagmenu_'+order+'_1000').css('display','inline')
+            $('#flagmenu_'+order+'_2000').css('display','none')
+            $('#flagmenu_'+order+'_3000').css('display','none')
+            $('#flagmenu_'+order+'_4000').css('display','none')
+        }
 
         $('#flag_'+order).val(status);  
         $('#flagmarker_'+order).removeClass().addClass('fc-'+status); 
@@ -47,7 +64,9 @@ $(window).load(function(){
 
         //$('#flag_'+{{field.FieldOrder}}).val({{data.item[field.FieldName+'_flag']}});
 
-        $('#flagmarker_{{field.FieldOrder}}').removeClass().addClass("fc-{%if data.item[field.FieldName+'_flag'] %}{{data.item[field.FieldName+'_flag']}}{%else%}0000{%endif%}"); 
+        //$('#flagmarker_{{field.FieldOrder}}').removeClass().addClass("fc-{%if data.item[field.FieldName+'_flag'] %}{{data.item[field.FieldName+'_flag']}}{%else%}0000{%endif%}"); 
+
+        change_flag({{field.FieldOrder}},{%if data.item[field.FieldName+'_flag'] %}"{{data.item[field.FieldName+'_flag']}}"{%else%}"0000"{%endif%});
 
 
     {% endfor %}
