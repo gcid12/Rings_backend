@@ -120,17 +120,22 @@
     
       <!-- AS LIST -->
       <div role="tabpanel" class="tab-pane fade" id="list" style="">
-
           <div class="">   
             <table class="table table-condensed">
               
               <tr class="bord-bottom bc-8 bw-2">
-                 <th></th>
+
+              <!-- HEADERS -->
+                 
+              {% if data.imagesui==True %}
+                  <th></th>
+              {% endif %}
+
               {% for value in data.FieldLabel %}                   
                  
                  {% if not data.widget[value] == 'images' %}
                   <th class="text-s1 fs-0-8 ">
-                    <span class="label label-xs">
+                    <span class="label label-xs bg-m">
                      
                      {%if data.FieldLabel[value] == '' %}
                          {{ value }}
@@ -147,8 +152,10 @@
                  {%endif%}
                                
               {% endfor %}
-                 <th></th>
-                 <th></th>
+                 
+                 <th class="text-s1 fs-0-8 ">
+                   <span class="label label-xs bg-m">Completion</span>
+                 </th>
 
               </tr>
 
@@ -157,8 +164,11 @@
               <tr class="bord-bottom bc-8 bw-2">
                   
                   {% if data.imagesui==True %}
-                  <td style="width:100px;" class="text-right">
-                      {% for k,v in item.items() %}
+                  <td style="width:50px;" class="text-right">
+
+                      <img style="width:40px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items[0]}}_t75.jpg" class="img-thumbnail" >
+
+                      <!-- {% for k,v in item.items() %}
                         {% if data.widget[k] == 'images' %}  
 
                           {% if v[0] %}                      
@@ -176,7 +186,9 @@
                           {% endfor %#} 
 
                         {% endif %}
-                      {% endfor %}
+                      {% endfor %} -->
+
+                      
                       
                   </td>
                   {%else%}
@@ -191,7 +203,7 @@
                             {% if item[value] %}                   
                               {% if 'get_a_b_c' in data.user_authorizations %}
 
-                                <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ item[value]|truncate(20, true) }} </a>
+                                <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder"> {{ item[value]|truncate(40, true) }} </a>
 
                               {% else %}
                                 {{ item[value]|truncate(20, true) }}
@@ -202,13 +214,15 @@
                     {% endif %}                
                   {% endfor %}
 
-                  <td style="width:150px;">
-                  <!-- 1st FIELD -->{#{((item['_fullcount']/item['_fieldcount'])*100)|round(1)|int}#}
-                      {{ ui.pbar((item['_fullcount']/item['_fieldcount'])*100) }}
-                  </td>  
+                 
 
-                  <td style="width:90px;">
-                      <div class="btn-group" role="group" aria-label="...">
+                  <td style="width:150px;" class="text-right">
+                      <!-- 1st FIELD -->{#{((item['_fullcount']/item['_fieldcount'])*100)|round(1)|int}#}
+
+                      {{ ui.pbar((item['_fullcount']/item['_fieldcount'])*100) }}
+
+                      
+                      <div class="btn-group" role="group">
                       {% if 'get_a_b_c' in data.user_authorizations %}
                         <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
                       {%endif%}
@@ -254,51 +268,35 @@
               {% for item in data.itemlist %}
 
                 <div class="row bord-left bord-bottom bw-1 p-10 ml-15 bc-15">
-                  <div class="col-sm-12"><br/><br/></div>
-                  <div class="col-sm-2" >
+                  
+                  <div class="col-sm-2 hidden-xs" >
                         <div class="row">
                             
-                            <div class="col-sm-12 col-xs-7 text-left alpha" >
+                            
+                            <div class="col-sm-12 col-xs-11 text-left alpha" >
                               {% if data.imagesui==True %}
+                                      <div style=" margin-top:60px;">&nbsp;</div>
+                                      {% set margin=1 %}
                                   {% for k,v in item.items() %}
                                     {% if data.widget[k] == 'images' %} 
 
+
                                       {% if v[0] %}                      
-                                        <img style="width:100px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
-                                        {% else %}
-                                        <img style="width:150px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
+                                        <img style="width:100px; margin-top:-80px; margin-left:{{margin}}px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                                      {% else %}
+                                        <img style="width:100px; margin-top:-80px; margin-left:{{margin}}px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
+
 
                                       {% endif %}
 
 
-                                      {#% for image in v %}       
-                                        {% if image %}                      
-                                          <img style="width:100px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" class="img-thumbnail" >
-                                        {% else %}
-                                        <img style="width:150px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
-
-                                        {% endif %}
-                                      {% endfor %#}                    
+                                                       
                                     {% endif %}
+
+                                    {% set margin= margin + 10 %}
                                   {% endfor %}
                                 {% endif %}
-                              
-                            </div>
-                            <div class="col-sm-12 col-xs-5 omega" >
 
-                                <div class="btn-group" role="group" aria-label="...">
-                                {% if 'get_a_b_c' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                                {% endif %}
-                                 
-                                {% if 'put_a_b_c' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
-                                {% endif %}
-
-                                {% if 'delete_a_b_c' in data.user_authorizations %}
-                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
-                                {%endif%}
-                                </div>
                             </div>
                         </div>
                          
@@ -307,7 +305,7 @@
 
 
 
-                  <div class="col-sm-10 ">
+                  <div class="col-xs-9 col-sm-9 ">
                     {% for value in data.FieldLabel %}        
                       {% if not data.widget[value] == 'images' %}  
                       {% if item[value] %}
@@ -358,6 +356,22 @@
                       {%endif%}
                     {%endfor%}
                   </div>   
+
+                  <div class="col-xs-1 col-sm-1">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
+                                {% if 'get_a_b_c' in data.user_authorizations %}
+                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                                {% endif %}
+                                 
+                                {% if 'put_a_b_c' in data.user_authorizations %}
+                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></i></a>
+                                {% endif %}
+
+                                {% if 'delete_a_b_c' in data.user_authorizations %}
+                                  <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
+                                {%endif%}
+                              </div>
+                  </div>
               </div> 
                
 
@@ -373,99 +387,87 @@
 {% if data.imagesui==True %}
 
   <!-- AS MOSAIC -->
-          <div role="tabpanel" class="tab-pane fade " id="mosaic">
-
-            
-            
-              {% for item in data.itemlist %}
-              <div class="pull-left" style="background-color:#F7F7F7; margin:2px; padding:2px;">
-                  
+    <div role="tabpanel" class="tab-pane fade " id="mosaic">
+   
+        {% for item in data.itemlist %}
+        <div class="pull-left" style=" padding:4px;">
                       
-                      <!-- IMAGE PLACEHOLDER -->
-                  <table>
-                    <tr>
-                      <td align="center">
-                      {% if 'get_a_b_c' in data.user_authorizations %}
-                        <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="pull-right" data-toggle="popover" data-placement="bottom" 
-                                  title="
-                                  
-                                  {% for k,v in item.items() %}
-                                    
-                                      {#{ v }#}
-                                    
-                                  {% endfor %}"
-                                  data-content="
-                                    {% for k,v in item.items() %}
-                                    {% if k == 'description' %}
-                                      {{ v|truncate(100, true) }}
-                                    {% endif %}
-                                  {% endfor %}">
-                        <!-- Image placeholder -->
-                      {% for k,v in item.items() %}
-                        {% if data.widget[k] == 'images' %}       
-                          
-
-
-                            {% if v[0] %}                      
-                              <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
-                            {% else %}
-                              <img style="width:150px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
-                            {% endif %}
-                                             
-                        {% endif %}
-                      {% endfor %}
-                        </a>
-                      {%else%}
-                        {% for k,v in item.items() %}
-                          {% if data.widget[k] == 'images' %}       
+            <table>
+            <tr><!-- IMAGES -->
+                <td align="center">
+                    {% if 'get_a_b_c' in data.user_authorizations %}
+                        <div>
                             
-                              {% if v[0] %}                      
-                                <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
-                              {% else %}
-                              <img style="width:150px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
-                              {% endif %}
-                                               
-                          {% endif %}
-                        {% endfor %}
-                      {%endif%}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center">
-                        <span class="fs-0-6 text-gray">
-                          {% for k,v in item.items() %}
-                                    {% if k == 'name' %}
-                                      
-                                      {{ v|truncate(20, true,'...') }}
-                                    {% endif %}
-                          {% endfor %}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center">
-                          <div class="btn-group" role="group" aria-label="...">
-                          {% if 'get_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                          {%endif%}
-                          {% if 'put_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>
-                          {%endif%}
-                          {% if 'delete_a_b_c' in data.user_authorizations %}
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}?method=delete" type="button" class="btn btn-default btn-xs"><i class="fa fa-times"></i></a>
-                          {%endif%}
-                          </div>
-                                 
-                      </td>
-                    </tr>
-                  </table>
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="nounder"
+                                  >
+                            <!-- Image placeholder -->
+                                <div>
+                                    <!-- <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items[0]}}_t75.jpg" class="" > -->
 
-              </div><!-- CLOSE BOX -->
-              {% endfor %}
+                                    
+
+                                    
+
+
+                                    <img style="width:150px;" src="/static/images/ph/ph_img.gif" >
+
+
+
+
+                                </div>
+
+                                <div class="fs-0-8" style="margin-top:-25px; background-color:red;">
+
+                                    
+                                    <p class="sh-a fc-a">{{ item.items()[3][1]|truncate(20, true,'...') }}</p>
+                                    
+                              
+                                </div>
+
+                            
+
+
+                            
+
+                            </a>
+
+                        </div>
+                        
+                    {%else%}
+                        {% for k,v in item.items() %}
+                            {% if data.widget[k] == 'images' %}       
+                            
+                            <div style="width:150px; background-color:red; padding:10px;">
+
+                                {% if v[0] %}                      
+                                <img src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" >
+                                {% else %}
+                                <img src="/static/images/ph/ph_img.gif" >
+                                {% endif %}
+                            </div>
+                                               
+                            {% endif %}
+                        {% endfor %}
+                    {%endif%}
+
+                </td>
+            </tr>
+
+            <tr> <!-- BUTTONS -->
+                <td align="center">
+
+                    
+                                 
+                </td>
+            </tr>
+            </table>
+
+        </div><!-- CLOSE BOX -->
+        {% endfor %}
               <!-- END ITEM N -->            
-          </div>
+    </div>
   <!-- AS MOSAIC close -->  
-  {% endif %}  
+{% endif %}  
 
 {% endif %} 
 

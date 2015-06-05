@@ -32,7 +32,7 @@ p{ font-family: Helvetica,Arial,sans-serif; font-weight: 300;}
 .text-s1{ font-family: sans-serif; font-weight: 300;}
 .text-s2{ font-family: sans-serif; font-weight: 300;}
 
-
+.sh-a{text-shadow: 1px 1px 1px #000;}
 
 /* GLOBAL */!important
 iframe{ border:0; margin-top:0 ;}
@@ -452,12 +452,12 @@ filter: grayscale(100%);
 .bg-lgray{background-color: #e2e2e2;}
 /*.bg-lgray{background-color: rgba(0, 0, 0, 0.25);}*/
 .bg-yellow{background-color: #FFE045;}
-.bg-a{background-color: #d40044; }
-.bg-b{background-color: #298fff; }
-.bg-c{background-color: #ffe045; }
-.bg-c2{background-color: #ffd033; }
-.bg-d{background-color: #33ccff; }
-.bg-e{background-color: #f2f0ed; }
+.bg-a{background-color: #d40044; }  /*red*/
+.bg-b{background-color: #298fff; }  /*cyan*/
+.bg-c{background-color: #ffe045; }   /*yellow*/
+.bg-c2{background-color: #ffd033; }  /*mustard*/
+.bg-d{background-color: #33ccff; }  /*bluesky*/
+.bg-e{background-color: #f2f0ed; }  /*grayish*/
 .bg-f{background-color: rgba(0, 0, 0, 0.05); }
 .bg-g{background-color: #f8f7f6;}
 .bg-h{background-color: #ff9100;} /*//orange*/
@@ -512,7 +512,7 @@ filter: grayscale(100%);
 
 .bord-bottom{
     border-bottom-style: solid;
-    border-bottom-color:#CCC;
+    border-bottom-color:#CCC important!;
     border-bottom-width:1px;
 }
 
@@ -539,7 +539,7 @@ filter: grayscale(100%);
 .bc-12{border-color: #666;}
 .bc-13{border-color: #818181;}
 .bc-14{border-color: rgba(0, 0, 0, 0.05); }
-.bc-15{border-color: #e8e8e8;}
+.bc-15{border-color: #e8e8e8 !important;}
 
 
 .bc-org{border-color: #6078ef;} /*orgs*/
