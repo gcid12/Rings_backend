@@ -805,10 +805,13 @@
 {% endmacro %}
 
 {% macro pbar(value) %}
-<div class="progress" style="height:7px;">
-        <div class="progress-bar" role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ value }}%;">
+<div class="fs-0-6 fc-g float-right p-x-4">{{value|round|int }} %</div>
+<div class="progress " style="height:7px;">
+
+        <div class="progress-bar {% if value <=50 %}bg-a{% elif value <=90 %} bg-c2 {% elif value >=91 %} bg-j{% endif %} " role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ value }}%;">
         </div>
 </div>
+
 {% endmacro %}
 
 {% macro pbar2(value, name, color) %}
