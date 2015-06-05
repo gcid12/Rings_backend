@@ -1,7 +1,7 @@
-<script>
-    $( ".fieldflag" ).click(function() {       
-        var flag = $(this).attr('flag');
-        var f = flag.split('_')
+<script type="text/javascript">
+
+    function change_flag(order,status){
+
         var statusd = {};
         statusd['0000'] = 'Empty'; //RED
         statusd['1000'] = 'Work in Progress';  //ORANGE
@@ -9,13 +9,33 @@
         statusd['3000'] = 'Returned'; // RETURNED
         statusd['4000'] = 'Approved'; // GREEN
 
+        $('#flag_'+order).val(status);  
+        $('#flagmarker_'+order).removeClass().addClass('fc-'+status); 
+        $('#flagtext_'+order).html(statusd[status]+'*');
 
-        $('#flag_'+f[0]).val(f[1]);  
-        $('#flagmarker_'+f[0]).removeClass().addClass('fc-'+f[1]); 
-        $('#flagtext_'+f[0]).html(statusd[f[1]]+'*'); 
+    }
+
+    $( ".fieldflag" ).click(function() {       
+        var flag = $(this).attr('flag');
+        var f = flag.split('_')
+
+        change_flag(f[0],f[1]);
 
         //$('#live_'+f[0]).removeClass().addClass('label label-success').empty().append("Live on save"); 
 
+    });
+
+
+
+    $(".flag-aware").on("change paste", function() {
+        //alert('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
+        var order = $(this).attr('order');
+        //if(isEmpty($(this.val))){
+        if($(this).val()){
+            change_flag(order,'1000');           
+        } else {
+            change_flag(order,'0000');
+        }
     });
 </script>
 
