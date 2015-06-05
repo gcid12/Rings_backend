@@ -166,7 +166,7 @@
                   {% if data.imagesui==True %}
                   <td style="width:50px;" class="text-right">
 
-                      <img style="width:40px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items[0]}}_t75.jpg" class="img-thumbnail" >
+                      <img style="width:40px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items()[0][1]}}_t75.jpg" class="img-thumbnail" >
 
                       <!-- {% for k,v in item.items() %}
                         {% if data.widget[k] == 'images' %}  
@@ -399,35 +399,23 @@
                         <div>
                             
                             <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="nounder"
+
                                   >
                             <!-- Image placeholder -->
                                 <div>
-                                    <!-- <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items[0]}}_t75.jpg" class="" > -->
-
-                                    
-
-                                    
-
-
-                                    <img style="width:150px;" src="/static/images/ph/ph_img.gif" >
-
-
-
+                                    <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items()[0][1]}}_t75.jpg" class="" >
 
                                 </div>
 
-                                <div class="fs-0-8" style="margin-top:-25px; background-color:red;">
+                                <div class="fs-0-8" style="margin-top:-25px; background-color:black;">
 
                                     
-                                    <p class="sh-a fc-a">{{ item.items()[3][1]|truncate(20, true,'...') }}</p>
+                                    <p class="sh-a fc-a">
+
+
+                                    {{ item.items()[3][1]|truncate(20, true,'...') }}</p>
                                     
-                              
                                 </div>
-
-                            
-
-
-                            
 
                             </a>
 
