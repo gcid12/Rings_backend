@@ -129,6 +129,8 @@
                  
               {% if data.imagesui==True %}
                   <th></th>
+
+
               {% endif %}
 
               {% for value in data.FieldLabel %}                   
@@ -166,33 +168,33 @@
                   {% if data.imagesui==True %}
                   <td style="width:50px;" class="text-right">
 
-                      <img style="width:40px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items()[0][1]}}_t75.jpg" class="img-thumbnail" >
+                      {% set first=1 %}
+                      {% for k,v in item.items() %}
 
-                      <!-- {% for k,v in item.items() %}
+                        
                         {% if data.widget[k] == 'images' %}  
 
-                          {% if v[0] %}                      
-                              <img style="width:40px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{v[0]}}_t75.jpg" class="img-thumbnail" >
-                          {% else %}
-                              <img style="width:40px;" src="/static/images/ph/ph_img2.gif" class="img-thumbnail" >
-                          {% endif %}
 
-                          {#% for image in v %}
-                            {% if image %}                      
-                              <img style="width:40px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg" class="img-thumbnail" >
-                            {% else %}
-                              <img style="width:40px;" src="/static/images/ph/ph_img2.gif" class="img-thumbnail" >
+                            {% if first==1 %} 
+
+                                {% set first= 2 %}
+                                {% if v[0] %} 
+                                                        
+                                      <img style="width:40px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{v[0]}}_t75.jpg" class="img-thumbnail" >
+                                {% else %}
+                                    <img style="width:40px;" src="/static/images/ph/ph_img2.gif" class="img-thumbnail" >
+                                {% endif %}
+
                             {% endif %}
-                          {% endfor %#} 
+
+                         
 
                         {% endif %}
-                      {% endfor %} -->
-
-                      
+                      {% endfor %}
+   
                       
                   </td>
-                  {%else%}
-                  <td></td>
+                  
                   {% endif %}
     
 
@@ -274,21 +276,40 @@
 
                   <!-- FIRST COLUMN : THE IMAGE -->
                   <div class="col-sm-2 hidden-xs" >
-                        <div class="row">
+                        <div class="">
+                            
 
-                            <div class="col-sm-12 col-xs-11 text-left alpha" >
+                            
                               {% if data.imagesui==True %}
-                                      <div style=" margin-top:60px;">&nbsp;</div>
-                                      {% set margin=1 %}
+                                      <!-- <div style=" margin-top:60px;">&nbsp;</div> -->
+                                      
+
+                                      
+                                  {% set margin = 0 %} 
+                                  {% set margin2 = 0 %} 
+                                    
+
+                                  <div style="width:100px; height:100px; margin-top:-20px;"> &nbsp</div>
+                                      
                                   {% for k,v in item.items() %}
                                     {% if data.widget[k] == 'images' %} 
 
+                                      {% set margin2 = margin2|int + 20  %}
 
-                                      {% if v[0] %}                      
-                                        <img style="width:100px; margin-top:-80px; margin-left:{{margin}}px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                                      {% if v[0] %}         
+
+                                      
+                                        
+                                        <img style="width:100px; margin-top:-80px; margin-left:{{margin2}}px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" ></img>
+                                        
+                                      
                                       {% else %}
-                                        <img style="width:100px; margin-top:-80px; margin-left:{{margin}}px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" >
 
+                                     
+
+                                        
+                                        <img style="width:100px; margin-top:-80px; margin-left:{{margin2}}px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" ></img>
+                                        
 
                                       {% endif %}
 
@@ -296,11 +317,15 @@
                                                        
                                     {% endif %}
 
-                                    {% set margin= margin + 10 %}
-                                  {% endfor %}
-                                {% endif %}
+                                  
 
-                            </div>
+                                    
+
+                                  {% endfor %}
+
+                              {% endif %}
+
+                            
                         </div>
                          
                   </div>
@@ -308,7 +333,7 @@
 
 
                   <!-- SECOND COLUMN: FIELDS -->
-                  <div class="col-xs-9 col-sm-9 ">
+                  <div class="col-xs-9 col-sm-9">
 
 
                     {% for value in data.FieldLabel %}  
@@ -418,37 +443,45 @@
                         
                             
                             <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="nounder">
-                            <!-- Image placeholder -->
-                                <div class="text-left" style=" margin:120px 10px 10px 0px;">
+                            
+                                <div class="text-left" style="padding:0 4px;">
+
+                                  {% set mos=1 %}
                                   {% if data.imagesui==True %}
-                                          <div >&nbsp;</div>
-                                          {% set margin=1 %}
+           
+
                                       {% for k,v in item.items() %}
+
+                                          
+
+                                        
                                         {% if data.widget[k] == 'images' %} 
 
-                                          <div class="fs-0-8" style="">
+                                            {% if mos==1 %}
+                                                {% set mos=2 %}
 
-                                          {% if v[0] %}                      
-                                            <img style="width:150px; margin-top:-150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
-                                          {% else %}
-                                            <img style="width:150px; margin-top:-150px;" src="/static/images/ph/ph_user.gif" class="img-thumbnail" >
-                                          {% endif %}
- 
-                                            </div>              
+                                                
+
+                                                    {% if v[0] %}                      
+                                                      <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg">
+                                                    {% else %}
+                                                      <img style="width:150px;" src="/static/images/ph/ph_user.gif" >
+                                                    {% endif %}
+       
+                                                 
+
+                                            {% endif %}            
                                         {% endif %}
 
-                                        {% set margin= margin + 10 %}
                                       {% endfor %}
                                     {% endif %}
-                                  <div class="fs-0-8" style="margin-top:-40px; margin-bottom:160px margin-left:10px; padding:10px;">
+                                  <div class="fs-0-8" style="margin-top:-20px; margin-left:10px;">
                                     <p class="sh-a fc-a">
                                     {{ item.items()[3][1]|truncate(14, true,'...') }}</p>
                                   </div>
 
                                 </div>
-                                <!-- <div>
-                                    <img style="width:100px; margin-top:-80px; margin-left:{{margin}}px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{item.items[0]}}_t150.jpg" class="img-thumbnail" >
-                                </div> -->
+                               
                             </a>
 
                         
