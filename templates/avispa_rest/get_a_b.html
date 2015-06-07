@@ -258,9 +258,11 @@
 
       <!-- AS A LIST close -->
   
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
       <!-- AS A BIG LIST -->
+
       <div role="tabpanel" class="tab-pane fade in active" id="biglist">
          
           <div> 
@@ -269,10 +271,11 @@
 
                 <div class="row bord-left bord-bottom bw-1 p-10 ml-15 bc-15">
                   
+
+                  <!-- FIRST COLUMN : THE IMAGE -->
                   <div class="col-sm-2 hidden-xs" >
                         <div class="row">
-                            
-                            
+
                             <div class="col-sm-12 col-xs-11 text-left alpha" >
                               {% if data.imagesui==True %}
                                       <div style=" margin-top:60px;">&nbsp;</div>
@@ -304,56 +307,67 @@
                   
 
 
-
+                  <!-- SECOND COLUMN: FIELDS -->
                   <div class="col-xs-9 col-sm-9 ">
-                    {% for value in data.FieldLabel %}        
+
+
+                    {% for value in data.FieldLabel %}  
+
                       {% if not data.widget[value] == 'images' %}  
-                      {% if item[value] %}
-                      
-                        <div class="row hidden-xs">
-                          <div class="col-sm-3 text-right alpha omega">
-                            <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">{%if data.FieldLabel[value] == '' %}
-                                  {{ value }}
-                                     {%else%}
-                                         {%if data.FieldLabel[value] == None %} 
-                                           {{ value }}
-                                         {%else%}
-                                           {{data.FieldLabel[value]}}
-                                         {%endif%}
-                                     {%endif%}:
-                            </p>
-                          </div>
-                          <div class="col-sm-9 alpha">
+                          {% if item[value] %}
                           
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                              <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(70, true) }#}{{item[value]}}{%endif%}</p>
+                            <div class="row hidden-xs">
+                              <div class="col-sm-3 text-right alpha omega">
+                                <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">
+                                {%if data.FieldLabel[value] == '' %}
+                                    {{ value }}
+                                {%else%}
+                                    {%if data.FieldLabel[value] == None %} 
+                                        {{ value }}
+                                    {%else%}
+                                        {{data.FieldLabel[value]}} 
+                                    {%endif%}
 
-                            </a>
-                          </div>
-                        </div>
+                                  {%endif%}:
+                                </p>
+                              </div>
+                              <div class="col-sm-9 alpha">
+                              
+                                <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
+                                  <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">
+                                  {%if item[value] is defined %}
+                                    {#{ item[value]|truncate(70, true) }#}
+                                    {{item[value]}}
+                                  {%endif%}
+                                  </p>
 
-                        <div class="row visible-xs">
-                          <div class="col-xs-12 alpha omega">
-                             <p class="fs-0-9 fc-g lh-1-2" style="margin-bottom:5px; padding:10px 0 0 0;">{%if data.FieldLabel[value] == '' %}
-                                  {{ value }}
-                                   {%else%}
-                                       {%if data.FieldLabel[value] == None %} 
-                                         {{ value }}
+                                </a>
+                              </div>
+                            </div>
+
+                            <div class="row visible-xs">
+                              <div class="col-xs-12 alpha omega">
+                                 <p class="fs-0-9 fc-g lh-1-2" style="margin-bottom:5px; padding:10px 0 0 0;">{%if data.FieldLabel[value] == '' %}
+                                      {{ value }}
                                        {%else%}
-                                         {{data.FieldLabel[value]}}
-                                       {%endif%}
-                                   {%endif%}:
-                              </p>
-                          </div>
-                          <div class="col-xs-12 alpha omega">
-                          
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                              <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(110, true) }#}{{item[value]}}{%endif%}</p>
-                            </a>
-                          </div>
-                        </div>
+                                           {%if data.FieldLabel[value] == None %} 
+                                             {{ value }}
+                                           {%else%}
+                                             {{data.FieldLabel[value]}}
+                                           {%endif%}
+                                       {%endif%}:
+                                  </p>
+                              </div>
+                              <div class="col-xs-12 alpha omega">
+                              
+                                <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
+                                  <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">{%if item[value] is defined %}{#{ item[value]|truncate(110, true) }#}{{item[value]}}{%endif%}</p>
+                                </a>
+                              </div>
+                            </div>
+                          {%endif%}
                       {%endif%}
-                      {%endif%}
+
                     {%endfor%}
                   </div>   
 
@@ -384,42 +398,60 @@
       <!-- AS A BIGLIST close -->
 
 
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
 {% if data.imagesui==True %}
 
   <!-- AS MOSAIC -->
     <div role="tabpanel" class="tab-pane fade " id="mosaic">
    
+
         {% for item in data.itemlist %}
-        <div class="pull-left" style=" padding:4px;">
+        <div class="pull-left" style="">
                       
             <table>
             <tr><!-- IMAGES -->
                 <td align="center">
                     {% if 'get_a_b_c' in data.user_authorizations %}
-                        <div>
+                        
                             
-                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="nounder"
-
-                                  >
+                            <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" type="button" class="nounder">
                             <!-- Image placeholder -->
-                                <div>
-                                    <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{item.items()[0][1]}}_t75.jpg" class="" >
+                                <div class="text-left" style=" margin:120px 10px 10px 0px;">
+                                  {% if data.imagesui==True %}
+                                          <div >&nbsp;</div>
+                                          {% set margin=1 %}
+                                      {% for k,v in item.items() %}
+                                        {% if data.widget[k] == 'images' %} 
 
-                                </div>
+                                          <div class="fs-0-8" style="">
 
-                                <div class="fs-0-8" style="margin-top:-25px; background-color:black;">
+                                          {% if v[0] %}                      
+                                            <img style="width:150px; margin-top:-150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" >
+                                          {% else %}
+                                            <img style="width:150px; margin-top:-150px;" src="/static/images/ph/ph_user.gif" class="img-thumbnail" >
+                                          {% endif %}
+ 
+                                            </div>              
+                                        {% endif %}
 
-                                    
+                                        {% set margin= margin + 10 %}
+                                      {% endfor %}
+                                    {% endif %}
+                                  <div class="fs-0-8" style="margin-top:-40px; margin-bottom:160px margin-left:10px; padding:10px;">
                                     <p class="sh-a fc-a">
+                                    {{ item.items()[3][1]|truncate(14, true,'...') }}</p>
+                                  </div>
 
-
-                                    {{ item.items()[3][1]|truncate(20, true,'...') }}</p>
-                                    
                                 </div>
-
+                                <!-- <div>
+                                    <img style="width:100px; margin-top:-80px; margin-left:{{margin}}px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{item.items[0]}}_t150.jpg" class="img-thumbnail" >
+                                </div> -->
                             </a>
 
-                        </div>
+                        
                         
                     {%else%}
                         {% for k,v in item.items() %}
