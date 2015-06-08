@@ -179,6 +179,7 @@ filter: grayscale(100%);
 .p-0{padding:0px !important;}
 .p-5{padding:5px !important;}
 .p-7{padding:7px !important;}
+.p-8{padding:8px !important;}
 .p-10{padding:10px !important;}
 .p-15{padding:15px !important;}
 .p-20{padding:20px !important;}
@@ -465,9 +466,9 @@ filter: grayscale(100%);
 .bg-i{background-color: #34352d;} /*codeback*/
 .bg-j{background-color: #8fcb1e;} /*green*/
 .bg-k{background-color: #818181 !important;} /*gray2*/
-.bg-l{background-color: #ededed;} /*gray3*/
+.bg-l{background-color: #ededed !important;} /*gray3*/
 .bg-m{background-color: #d0d0d0 !important;} /*gray4*/
-
+.bg-n{background-color: #f7f7f7 !important;}
 
 
 
@@ -557,6 +558,30 @@ filter: grayscale(100%);
 .bw-7{border-width:7px;}
 .bw-9{border-width:9px;}
 
+
+
+/*SETTINGS*/
+
+.set_active{
+
+  border-left-style: solid;
+  border-left-color:#3cF;
+  border-left-width:9px;
+  background-color:#FFF;
+  padding:8px;
+  color:#000 !important;
+  
+}
+
+.set_active_org{
+
+  border-left-style: solid;
+  border-left-color:#ffd033;
+  border-left-width:9px;
+  background-color:#fff;
+  padding:8px;
+  color:#000;
+}
 
 /*LABEL*/
 
