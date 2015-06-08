@@ -922,6 +922,40 @@
 
 {% endmacro %}
 
+{% macro org_header2(handle,realname,pic,cdn) %}
+
+        <div class="row">
+                {% if pic %} 
+                  <div class="col-sm-1 col-xs-2">
+                    <a href="/{{handle}}"><img class="img-responsive center-block user-small" src="{% if pic %}{{cdn}}/_images/{{handle}}/t150/{{pic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="margin-right:10px;" alt=""></a>
+                  </div>
+                {% endif %}
+
+                <div class="col-sm-11 ">
+                    <span class="fc-b fs-1-2"> 
+
+                        {% if realname %} 
+                         <span class="text-lead fw-300 pull-left"><a href="/{{handle}}">
+                            <span class="fc-b fs-1-2 fw-c">{{ realname }}</span></a>
+                            <br/>
+                            <span class="fc-a pull-left fs-0-9">@ {{handle}}</span>
+                         </span>
+
+                        {% else %}
+                         <a href="/{{ handle }}/_orgprofile" class="nounder fc-b"> @{{ handle }}</a>
+                          
+                        {% endif %}
+                          
+                          
+                    </span>
+                </div>
+                
+        </div>
+
+{% endmacro %}
+
+
+
 
 {% macro whatis(title, text, icon, iconfile) %}
 

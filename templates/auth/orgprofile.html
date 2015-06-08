@@ -6,13 +6,18 @@
 
                 <div class="gcard">
                     <div class="gcard-title bg-c2">
-              
-                        <span class="fc-a fs-1-2"> <i class="fa fa-shield"></i> Organization Settings: </span>
-                        {{ data }}
+                    
+                        
+
+
+                        {{ ui.org_header2(data.handle , data.user['name'], '', '') }}
+
+
+                      
               
                     </div> 
                     <div class="gcard-subtitle ">
-                        <span class="fc-b "><strong>{{ data.user['name'] }}</strong> Profile</span>
+                        <span class="fc-b fs-1-2"> Organization Profile</span>
                     </div>
 
                     <div class="gcard-body p-20">
@@ -47,14 +52,14 @@
                                       <label class="col-sm-2 control-label fc-g fs-0-9">Website</label>
                                       <div class="col-sm-10">
                                           
-                                          <input type="text" id="url" name="url"  class="form-control" placeholder="" value="{{ data.user['url'] }}">
+                                          <input type="text" id="url" name="url"  class="form-control input-sm" placeholder="" value="{{ data.user['url'] }}">
                                        </div>
                                     </div>
 
                                     <div class="form-group">
                                       <label class="col-sm-2 control-label fc-g fs-0-9">Location</label>
                                       <div class="col-sm-10">
-                                        <input type="text" id="location" name="location"  class="form-control" placeholder="" value="{{ data.user['location'] }}">
+                                        <input type="text" id="location" name="location"  class="form-control input-sm" placeholder="" value="{{ data.user['location'] }}">
                                       </div>
                                     </div>
 
@@ -65,11 +70,18 @@
                                       </div>
                                     </div>
 
-                                    
-                                    <button href="/{{ data.handle }}/_home" class="btn btn-default">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Update profile</button>
+                                
 
-
+                                    <div class="rn-box-content text-right">
+                                        <br/>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label"></label>
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                                <button href="/{{ data.handle }}/_home" class="btn btn-default btn-sm">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
 

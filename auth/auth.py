@@ -553,7 +553,7 @@ def orgprofile_get(handle):
         data = {}
         data['user'] = user
         data['handle'] = handle
-        data['menu'] = 'org'
+        data['menu'] = ''
 
         data['method'] = '_orgprofile'
         data['image_cdn_root'] = IMAGE_CDN_ROOT

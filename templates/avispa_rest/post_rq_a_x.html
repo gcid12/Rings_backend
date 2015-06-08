@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'avispa_rest/settings_base.html' %}
 
-{% block title %} Avispa {% endblock %}
-
+{% block title %} Create New Collection {% endblock %}
+{% block findme %} post_rq_a_x {% endblock %}
 
 {% block headscripts %}
 
@@ -27,54 +27,118 @@
 
 
 
-
-{% block crumbs %}
-
-<div class="rn-hp5 pull-left"><span class="label label-m">AVISPA</span></div> 
-<a href="/{{ data.handle }}" class="rn-b1" >{{ data.handle }}</a>/<a href="/{{ data.handle }}/_collections" class="rn-b1" >_collections</a> 
-
-{% endblock %}
-
-{% block content %}
+{% block settings %}
 
 
 <!-- START NEW CONTENT --> 
 
 
-<section class="bp-20 p-50">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9">
-        {{ ui.org_header(data,data.handle) }}       
-        <div class="row">
-          <div class="col-sm-12">
 
-            <br/>
-            <div class="rn-b1">Creating a new collection</div>
-            <br/>
+
+      <div class="gcard">
+          <div class="gcard-title bg-c2">
+
+              {{ ui.org_header2(data.handle , data.handle_actualname, data.handle_profilepic, data.image_cdn_root) }}
+          </div> 
+
+
+          <div class="gcard-subtitle ">
+            <span class="fc-b fs-1-2"> Create a new collection</span>
+          </div>
 
 
             <form class="form-horizontal" role="form" action="/{{ data.handle }}/_collections" method="POST">
 
-              <div class="rn-box-content">
+              <div class="row">
               
-              <h5><b>STEP 1.</b> Name this Collection</h5>
-                Collection name: <input name="CollectionName" class="form-control" type="text"><br/>
-                Summary: <input name="CollectionDescription" class="form-control" type="text"><br/>
-                Version: <input name="CollectionVersion" class="form-control" type="text"><br/>
-
+                  <div class="col-sm-offset-1 col-sm-8">
+                    <h5 class="spa20"><b>STEP 1.</b> Name this collection</h5>
+                  </div>
               </div>
 
+           
 
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label fc-g fs-0-9">Collection Name</label>
+                    <div class="col-sm-8">
+                      <input name="CollectionName" class="form-control input-sm" type="text">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label fc-g fs-0-9">Summary</label>
+                    <div class="col-sm-8">
+                      <textarea name="CollectionDescription" class="form-control input-sm" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label fc-g fs-0-9">Version</label>
+                    <div class="col-sm-8">
+                      <input name="CollectionVersion" class="form-control input-sm" type="text">
+                    </div>
+                </div>
+
+             
+
+              <hr/>
+
+
+            
+
+
+            <div class="row">
+              <div class="col-sm-offset-1 col-sm-8">
+                <h5 class="spa20"><b>STEP 2.</b> Add Rings for this collection</h5>
+              </div>
+
+              <div class="col-sm-offset-2 col-sm-8">
+              <table class="table table-condensed table-striped">
+                              
+                          {% set n = 0 %}
+                          {% for ring in data.ringlist %}
+
+                            {% set n = n+1 %}
+
+                            <tr>
+                                  <td>
+                                    {{ ui.icon_xsma('','#fce121') }}
+                                  </td>
+
+                                  <td>
+                                      <a tabindex="0" class="nounder fs-0-9" data-toggle="popover" data-trigger="focus" title="{{ data.handle }}/{{ring.ringname}}" data-content=" {{ring.ringdescription}} [ version: {{ring.ringversionh}} ]">{{ data.handle }}/{{ring.ringname}}</a>
+
+                                  </td>
+                                  <td>
+                                      <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}_{{ring.ringversionh}}'/> <a href="/{{ data.handle }}/{{ring.ringname}}">
+                                  </td>
+                                
+                            </tr>
+
+                            {% endfor %}
+
+                            <tr>
+                                <td></td>
+                                <td>I will create/add other rings later</td>
+                                <td><input name="" type='checkbox' value='' checked/> </td>
+                            </tr>
+
+                </table>
+              
+              </div>
+            </div>
+           
 
                
               <!-- RING -->
-              <div class="rn-box-content"> 
+              <!-- <div class="rn-box-content"> 
               <h5><b>STEP 2.  (optional) </b> Select existing Rings for this Collection. </h5> 
               <br/>           
                 <div class="form-group">
                   
                   <div class="col-sm-10">
+
 
                   {% set n = 0 %}
                   {% for ring in data.ringlist %}
@@ -88,7 +152,7 @@
                   </div>
 
                 </div>
-              </div>
+              </div> -->
 
 
               
@@ -100,13 +164,13 @@
 
               <!-- SUBMIT -->
 
-              <div class="rn-box-content">
+              <div class="rn-box-content text-right">
                 <br/>
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label"></label>
                   <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    <a href="/{{ data.handle }}" type="submit" class="btn btn-default btn-sm">Cancel</a>  
                   </div>
                 </div>
               </div>
@@ -115,17 +179,15 @@
               <!-- RING END -->
 
             </form> 
-          </div> 
-        </div>
+         
 
       </div> 
-    </div>
-  </div>
-</section>
 
 
 
-{% endblock content%}
+
+
+{% endblock %}
 
 
 {% block modals %}
