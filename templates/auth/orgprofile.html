@@ -36,69 +36,157 @@
 
 <!-- START NEW CONTENT --> 
 
-
-<section class="bp-20 p-50">
-  <div class="container">
-    <div class="row">
-            
-      <div class="col-md-9">  
-
-
+<section class="p-20">
+    <div class="container-fluid">
         <div class="row">
-          <div class="col-sm-12">
+            
+            <div class="col-sm-3">
 
-        
-
-
-               <div class="rn-box-space">
-                  
-                      <div class="rn-b1">Organization Profile: </div>
-                  
-              </div> 
-          
-
-            <div class="rn-box-content">
-              <br/><br/><br/>
-              <form action="" method="POST" role="form">
-
-                <div class="form-group">
-                    <label for="profilepic" class="col-sm-2 control-label">Organization logo</label>
-                    <div class="col-sm-10">
-
-                      <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="{{ data.user['profilepic'] }}">
-
-                      <div id='dropzone1' class="dropzone" style="min-height:0px"><span class="dz-message" style="font-size:small;">Click to upload</span></div>
-
+                <div class="gcard">
+                    <div class="gcard-title">
+                        <i class="fa fa-user"></i> Personal Settings
+                    </div>
+                    <div class="gcard-body">
+                        <table class="table fs-0-9 bc-15">
+                            <tr class="bc-8 bord-bottom bw-2">
+                                <td>
+                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder">{{ current_user.name }} Profile</a>
+                                </td>
+                            </tr>
+                            <tr class="bc-8 bord-bottom bw-2 ">
+                                <td>
+                                    <span href="/" class="pad-x-10 nounder fc-g">Account Settings</span>
+                                </td>
+                            </tr>
+                            <tr class="bc-8 bord-bottom bw-2 ">
+                                <td>
+                                    <span href="/" class="pad-x-10 nounder fc-g">Billing</span>
+                                </td>
+                            </tr>
+                            <tr class="bc-8 bord-bottom bw-2">
+                                <td>
+                                    <span href="/" class="pad-x-10 nounder fc-g">Licenses</span>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                        
                     </div>
                 </div>
 
+                <div class="gcard">
+                    <div class="gcard-title">
+                        <i class="fa fa-shield"></i> Organization Settings
+                    </div>
+                    <div class="gcard-body">
+                        <table class="table fs-0-9 bc-15">
+                            <tr class="bord-left bc-3 bw-9">
+                                <td class="">
+
+                                    <i class="fa fa-angle-right"></i>
+
+                                    <span href="" class="pad-x-10 nounder fc-b">{{ data.user['name'] }} Profile</span>
+                                    
+                                </td>
+                            </tr>
+                            
+                            
+                        </table>
+                        
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-9 alpha">  
+
+                <div class="gcard">
+                    <div class="gcard-title bg-c2">
               
-                <div class="form-group">
-                  <label for="">Organization complete name</label>
-                  <input type="text" id="name" name="name"  class="form-control" placeholder="" value="{{ data.user['name'] }}" >
+                        <span class="fc-a fs-1-2"> <i class="fa fa-shield"></i> Organization Settings: </span>
+                        
+              
+                    </div> 
+                    <div class="gcard-subtitle ">
+                        <span class="fc-b "><strong>{{ data.user['name'] }}</strong> Profile</span>
+                    </div>
+
+                    <div class="gcard-body p-20">
+              
+                        <form class="form-horizontal" action="" method="POST" role="form">
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        
+                                        <div class="col-sm-10">
+
+                                          <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="{{ data.user['profilepic'] }}">
+
+                                          <div id='dropzone1' class="dropzone" style="min-height:0px; padding:10px 10px;"><span class="dz-message" ><i class="fa fa-camera fa-1x"> </i> Upload Photo</span></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 spa30">
+
+                                    <div class="form-group">
+
+                                        <label class="col-sm-2 control-label fc-g fs-0-9">Name</label>
+                                        <div class="col-sm-10">
+                                          <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="Your Name" value="{{ data.user['name'] }}" >
+                                          
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label class="col-sm-2 control-label fc-g fs-0-9">Website</label>
+                                      <div class="col-sm-10">
+                                          
+                                          <input type="text" id="url" name="url"  class="form-control" placeholder="" value="{{ data.user['url'] }}">
+                                       </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label class="col-sm-2 control-label fc-g fs-0-9">Location</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" id="location" name="location"  class="form-control" placeholder="" value="{{ data.user['location'] }}">
+                                      </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label class="col-sm-2 control-label fc-g fs-0-9">OnLogin</label>
+                                      <div class="col-sm-4">
+                                        <input type="text" id="onlogin" name="onlogin"  class="form-control input-sm" placeholder="" value="{{ data.user['onlogin'] }}">
+                                      </div>
+                                    </div>
+
+                                    
+                                    <button href="/{{ data.handle }}/_home" class="btn btn-default">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Update profile</button>
+
+
+
+                                </div>
+
+
+                                
+                            </div>
+                            
+
+                  
+                            
+
+             
+                            
+                        </form>
+                    </div><!-- //close box -->
                 </div>
 
-                <div class="form-group">
-                  <label for="">URL</label>
-                  <input type="text" id="url" name="url"  class="form-control" placeholder="" value="{{ data.user['url'] }}">
-                </div>
-
-                <div class="form-group">
-                  <label for="">Location</label>
-                  <input type="text" id="location" name="location"  class="form-control" placeholder="" value="{{ data.user['location'] }}">
-                </div>
-
-         
-                <button href="/{{ data.user }}/_home" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update profile</button>
-              </form>
-            </div><!-- //close box -->
-
-          </div><!-- close 12 -->   
-        </div> <!-- close row -->
-
+            </div>
+        </div>
     </div>
 </section>
+
 
 {% endblock %}
 

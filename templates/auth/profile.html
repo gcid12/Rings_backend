@@ -17,6 +17,8 @@
 {% endblock %}
 
 {% block title %} Avispa {% endblock %}
+{% block findme %} profile {% endblock %}
+
 
 {% block crumbs %}
 
@@ -26,8 +28,6 @@
 
 
 {% block content %}
-
-
 
 
 <!-- START NEW CONTENT --> 
@@ -40,13 +40,14 @@
             <div class="col-sm-3">
                 <div class="gcard">
                     <div class="gcard-title">
-                        Personal Settings
+                        <i class="fa fa-user"></i> Personal Settings
                     </div>
                     <div class="gcard-body">
                         <table class="table fs-0-9 bc-15">
-                            <tr class="bc-8 bord-bottom bw-2">
+                            <tr class="bord-left bc-5 bw-9">
                                 <td>
-                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder">Profile</a>
+                                  <i class="fa fa-angle-right"></i>
+                                  <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder fc-b"> {{ data.user['name'] }} Profile</a>
                                 </td>
                             </tr>
                             <tr class="bc-8 bord-bottom bw-2 ">
@@ -70,16 +71,17 @@
                     </div>
                 </div>
 
-
                 <div class="gcard">
                     <div class="gcard-title">
-                        Organization Settings
+                        <i class="fa fa-shield"></i> Organization Settings
                     </div>
                     <div class="gcard-body">
                         <table class="table fs-0-9 bc-15">
                             <tr class="bc-8 bord-bottom bw-2">
                                 <td>
-                                    <span href="" class="pad-x-10 nounder fc-g">Org 1</span>
+
+                                    <span href="" class="pad-x-10 nounder fc-b "></span>
+                                    
                                 </td>
                             </tr>
                             
@@ -93,12 +95,18 @@
             <div class="col-sm-9 alpha">  
 
                 <div class="gcard">
-                    <div class="gcard-subtitle">
+                    <div class="gcard-title bg-d">
               
-                        <span class="fc-g fs-1-2"><i class="fa fa-user"></i> Personal Settings: </span>
-                        <span class="fc-b fs-1-2">Profile</span>
+                        <span class="fc-a fs-1-2"> <i class="fa fa-user"></i> Personal Settings: </span>
+                        
               
                     </div> 
+                    <div class="gcard-subtitle ">
+                        <span class="fc-b"><strong>{{ data.user['name'] }}</strong> Profile</span>
+                    </div>
+
+
+                    
 
                     <div class="gcard-body p-20">
               

@@ -456,8 +456,8 @@ filter: grayscale(100%);
 .bg-a{background-color: #d40044; }  /*red*/
 .bg-b{background-color: #298fff; }  /*cyan*/
 .bg-c{background-color: #ffe045; }   /*yellow*/
-.bg-c2{background-color: #ffd033; }  /*mustard*/
-.bg-d{background-color: #33ccff; }  /*bluesky*/
+.bg-c2{background-color: #ffd033 !important; }  /*mustard*/
+.bg-d{background-color: #33ccff !important; }  /*bluesky*/
 .bg-e{background-color: #f2f0ed; }  /*grayish*/
 .bg-f{background-color: rgba(0, 0, 0, 0.05); }
 .bg-g{background-color: #f8f7f6;}

@@ -275,20 +275,15 @@
                   
 
                   <!-- FIRST COLUMN : THE IMAGE -->
+
+                {% if data.imagesui==True %}
+
                   <div class="col-sm-2 hidden-xs" >
                         <div class="">
-                            
-
-                            
-                              {% if data.imagesui==True %}
-                                      <!-- <div style=" margin-top:60px;">&nbsp;</div> -->
-                                      
-
-                                      
+                               
                                   {% set margin = 0 %} 
                                   {% set margin2 = 0 %} 
                                     
-
                                   <div style="width:100px; height:100px; margin-top:-20px;"> &nbsp</div>
                                       
                                   {% for k,v in item.items() %}
@@ -298,42 +293,27 @@
 
                                       {% if v[0] %}         
 
-                                      
-                                        
                                         <img style="width:100px; margin-top:-80px; margin-left:{{margin2}}px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" ></img>
                                         
-                                      
                                       {% else %}
 
-                                     
-
-                                        
                                         <img style="width:100px; margin-top:-80px; margin-left:{{margin2}}px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail" ></img>
                                         
-
                                       {% endif %}
-
-
                                                        
                                     {% endif %}
 
-                                  
-
-                                    
-
                                   {% endfor %}
-
-                              {% endif %}
-
-                            
                         </div>
                          
                   </div>
+
+                {% endif %}
                   
 
 
                   <!-- SECOND COLUMN: FIELDS -->
-                  <div class="col-xs-9 col-sm-9">
+                  <div class="{% if data.imagesui==True %} col-xs-9  col-sm-9 {% else %} col-sm-10 {% endif %}">
 
 
                     {% for value in data.FieldLabel %}  
