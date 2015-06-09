@@ -196,9 +196,10 @@ class MainModel:
         for teamd in user_doc.teams:
             
             if teamd['teamname'] == team:
+                print('flag at1')
                 
                 teamd.members.append(handle=author,addedby=author,added=datetime.now())
-                teamd.roles.append(role='read_team',addedby=author,added=datetime.now())
+                teamd.roles.append(role='team_writer',addedby=author,added=datetime.now())
                 storeresult = user_doc.store(db)
                 return True
 
