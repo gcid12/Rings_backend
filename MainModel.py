@@ -140,14 +140,20 @@ class MainModel:
         #auser.people[data['username']] = {}
         auser.people.append(handle=data['owner'],addedby=data['owner'],added=datetime.now()) 
         auser.teams.append(teamname='owner',addedby=data['owner'],added=datetime.now())
+        auser.teams.append(teamname='staff',addedby=data['owner'],added=datetime.now())
 
         for team in auser.teams:
+            print("Teamowner:",team)
+            print("team.teamname:",team.teamname)
+            print("team.members:",team.members, type(team.members))
+            print("team.added:",team.added)
             if team.teamname == 'owner':
-                print("Teamowner:",team)
-                print("team.teamname:",team.teamname)
-                print("team.members:",team.members, type(team.members))
-                print("team.added:",team.added)
                 team.members.append(handle=data['owner'],addedby=data['owner'],added=datetime.now())
+            elif team.teamname == 'staff':
+                team.members.append(handle=data['owner'],addedby=data['owner'],added=datetime.now())
+                team.roles.append(role='team_admin',addedby=data['owner'],added=datetime.now())
+
+
 
         auser._id = data['username']
         storeresult = auser.store(self.db)
@@ -640,6 +646,7 @@ class MainModel:
                             #Will add only those roles of a team the user belongs to
                             if teamd['teamname'] == 'owner':
                                 rolelist.append('org_owner')
+                            
                             else:       
                                 for role in teamd['roles']:
                                     rolelist.append(role['role'])
@@ -655,11 +662,8 @@ class MainModel:
                         for member in teamd['members']:
                                 print('flagx1a',member['handle'])
                                 if member['handle'] == username:
-
                                     rolelist.append('org_owner')
                                     
-                                            
-
                     else:
                         for ringd in teamd['rings']:
                             print('flagx2',ringd['ringname'] , ring)
