@@ -661,9 +661,17 @@ class MainModel:
                     if teamd['teamname'] == 'owner':
                         print('Checking is this user is in owner team',teamd['members'])
                         for member in teamd['members']:
-                                print('flagx1a',member['handle'])
+                                
                                 if member['handle'] == username:
                                     rolelist.append('org_owner')
+
+                    elif teamd['teamname'] == 'staff':
+                        for member in teamd['members']:
+                            
+                            if member['handle'] == username:
+                                for role in teamd['roles']:                   
+                                    rolelist.append(role['role'])
+
                                     
                     else:
                         for ringd in teamd['rings']:
