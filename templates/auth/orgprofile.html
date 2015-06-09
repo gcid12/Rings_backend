@@ -1,290 +1,102 @@
-{% extends 'base.html' %}
+{% extends 'avispa_rest/settings_base.html' %}
 
 
 
+                {% block settings %}
 
-{% block headscripts %}
-<link href="/static/css/dropzone.css" rel="stylesheet" type="text/css" media="screen">
-
-<style>
-
-  .dz-size {
-    display:none;
-  }
-  
-  .dz-message {
-    padding:0px 0px;
-  }
-
-</style>
-{% endblock %}
-
-{% block title %} Avispa {% endblock %}
-{% block findme %} auth/orgprofile {% endblock %}
-
-{% block crumbs %}
+                <div class="gcard">
+                    <div class="gcard-title bg-c2">
+                    
+                        
 
 
-{% endblock %}
+                        {{ ui.org_header2(data.handle , data.user['name'], '', '') }}
 
 
-
-{% block content %}
-
-
-
-
-<!-- START NEW CONTENT --> 
-
-
-<section class="bp-20 p-50">
-  <div class="container">
-    <div class="row">
-            
-      <div class="col-md-9">  
-
-
-        <div class="row">
-          <div class="col-sm-12">
-
-        
-
-
-               <div class="rn-box-space">
-                  
-                      <div class="rn-b1">Organization Profile: </div>
-                  
-              </div> 
-          
-
-            <div class="rn-box-content">
-              <br/><br/><br/>
-              <form action="" method="POST" role="form">
-
-                <div class="form-group">
-                    <label for="profilepic" class="col-sm-2 control-label">Organization logo</label>
-                    <div class="col-sm-10">
-
-                      <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="{{ data.user['profilepic'] }}">
-
-                      <div id='dropzone1' class="dropzone" style="min-height:0px"><span class="dz-message" style="font-size:small;">Click to upload</span></div>
-
-                    </div>
-                </div>
-
+                      
               
-                <div class="form-group">
-                  <label for="">Organization complete name</label>
-                  <input type="text" id="name" name="name"  class="form-control" placeholder="" value="{{ data.user['name'] }}" >
+                    </div> 
+                    <div class="gcard-subtitle ">
+                        <span class="fc-b fs-1-2"> Organization Profile</span>
+                    </div>
+
+                    <div class="gcard-body p-20">
+              
+                        <form class="form-horizontal" action="" method="POST" role="form">
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        
+                                        <div class="col-sm-10">
+
+                                          <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="{{ data.user['profilepic'] }}">
+
+                                          <div id='dropzone1' class="dropzone" style="min-height:0px; padding:10px 10px;"><span class="dz-message" ><i class="fa fa-camera fa-1x"> </i> Upload Photo</span></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 spa30">
+
+                                    <div class="form-group">
+
+                                        <label class="col-sm-2 control-label fc-g fs-0-9">Name</label>
+                                        <div class="col-sm-10">
+                                          <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="Your Name" value="{{ data.user['name'] }}" >
+                                          
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label class="col-sm-2 control-label fc-g fs-0-9">Website</label>
+                                      <div class="col-sm-10">
+                                          
+                                          <input type="text" id="url" name="url"  class="form-control input-sm" placeholder="" value="{{ data.user['url'] }}">
+                                       </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label class="col-sm-2 control-label fc-g fs-0-9">Location</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" id="location" name="location"  class="form-control input-sm" placeholder="" value="{{ data.user['location'] }}">
+                                      </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label class="col-sm-2 control-label fc-g fs-0-9">OnLogin</label>
+                                      <div class="col-sm-4">
+                                        <input type="text" id="onlogin" name="onlogin"  class="form-control input-sm" placeholder="" value="{{ data.user['onlogin'] }}">
+                                      </div>
+                                    </div>
+
+                                
+
+                                    <div class="rn-box-content text-right">
+                                        <br/>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label"></label>
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                                <button href="/{{ data.handle }}/_home" class="btn btn-default btn-sm">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                
+                            </div>
+                            
+
+                  
+                            
+
+             
+                            
+                        </form>
+                    </div><!-- //close box -->
                 </div>
 
-                <div class="form-group">
-                  <label for="">URL</label>
-                  <input type="text" id="url" name="url"  class="form-control" placeholder="" value="{{ data.user['url'] }}">
-                </div>
-
-                <div class="form-group">
-                  <label for="">Location</label>
-                  <input type="text" id="location" name="location"  class="form-control" placeholder="" value="{{ data.user['location'] }}">
-                </div>
-
-         
-                <button href="/{{ data.user }}/_home" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update profile</button>
-              </form>
-            </div><!-- //close box -->
-
-          </div><!-- close 12 -->   
-        </div> <!-- close row -->
-
-    </div>
-</section>
-
-{% endblock %}
-
-
-
-{% block footscripts %}
-<script type="text/javascript" src="/static/js/dropzone.js"></script>
-{% endblock %}
-
-
-
-
-{% block modals %}
-
-  {% include 'avispa_rest/helpmodal.html' %}
-
-{% endblock %}
-
-
-
-{% block footfunctions %}
-
-  <script type="text/javascript">
-  Dropzone.autoDiscover = false;
-  var myDropzone1 = new Dropzone("#dropzone1", { 
-        url: "/_tools/upload_via_aud?handle={{ data.handle }}",
-        addRemoveLinks: true,
-        maxfiles:1 
-        });
-
-  $( ".dz-size" ).css( "display", "none" );
-
-
-  {% if data.user['profilepic'] %}
-
-
-    {% for image in data.user['profilepic'].split(',') %}
-      {% if image %}
-        {% if image!='1' %}
-          console.log("{{image}}");
-          var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"  };
-          myDropzone1.options.addedfile.call(myDropzone1, fieldvalue);
-          myDropzone1.options.thumbnail.call(myDropzone1, fieldvalue, "{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"); 
-
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-
-  {% endif %}
-
-
-
-  //This function starts right after DropZone has returned a JSON file with image id and location
-  myDropzone1.on("success", function(file,success) {
-        //alert('Success::'+success);
-          console.log(success)
-
-        var obj = jQuery.parseJSON(success);
-        //alert('flag1:'+obj.imgbase+obj.imgid);
-        
-        console.log('ref x34:'+obj.imgbase+obj.imgid);
-
-          if(obj.error){
-
-              alert(obj.error);
-
-          }else{
-              console.log('will change the value')
-          var value = $( '#input_images_1' ).val();
-            console.log('val:'+value)
-          $( '#input_images_1' ).val(value+','+obj.imgid);
-              console.log('Value Changed')
-          }
-    });
-
-
-  myDropzone1.on("removedfile", function(file) {
-      console.log('File removal intent:'+file);
-      //var stringify = JSON.stringify(file.previewElement);
-      var stringify = file.previewElement;
-      console.log('JSONstringify:'+stringify);
-        if(file){
-          
-          
-          if(typeof file.xhr === 'undefined'){
-            console.log('file.imgurl:'+file.imgurl);
-            var imgurl = file.imgurl;
-                  var parts = imgurl.split('/');
-                  var filename = parts[parts.length-1];
-                  var filenameparts = filename.split('_');
-                  var resource2delete = filenameparts[0];
-          }else{
-            console.log('file.xhr.response:'+file.xhr.response);
-          //It does exist in the widget and in the server
-          var obj = jQuery.parseJSON(file.xhr.response);
-          //var resource2delete = obj.imgbase+obj.imgid;
-          var resource2delete = obj.imgid.toString();
-                  //console.log('Resource to delete:'+resource2delete)
-          }
-          
-          
-          //Delete from Form Inputs
-          var value = $( '#input_images_1' ).val();
-          console.log('prevalue:'+value);
-          var valuearray = value.split(",");
-          console.log(valuearray);
-              console.log('resource2delete:'+resource2delete);
-          var indextodelete = jQuery.inArray(resource2delete,valuearray);
-          console.log('indextodelete:'+indextodelete);
-          if (indextodelete!=-1){
-            valuearray.splice(indextodelete,1);
-            value = valuearray.join(',');
-            console.log('aftervalue:'+value);
-            $( '#input_images_1' ).val(value);   
-          }else{
-                  console.log('Could not find the id to delete in the list ')
-              }
-          
-          //Delete Resource in Server
-          //Notice the method overload. We are sending DELETE via GET
-          //This still needs to be implemented in the server side
-          $.ajax({
-          type: "GET",
-          url: "/_tools/delete_via_aud?id="+resource2delete,
-          success: function(response){
-            //alert('Response:'+response);
-          }
-        })
-        .done(function( msg ) {
-        //alert( "Done: " + msg );
-        });
-           
-          
-          
-        }
-        
-    });
-
-
-  myDropzone1.on("error", function(file,error,xhr) {
-      /* Error::Server responded with 0 code.*/
-          var obj = jQuery.parseJSON(error);
-        alert('Error:'+obj.error);
-        //alert('XHR Object::'+xhr);
-    });
-
-
-  </script>
-{% endblock %}
-
-
-{% block footafterfunctions %}
-
-  <script type="text/javascript">
-      $(document).ready(function() {
-      
-      //imgurl='http://dev3.plantrobot.com/bc31a46cb1c7f929626cff125d3bebe5'; 
-      $(".dz-preview").on("click",function(){
-          console.log('clicked');
-          //console.log('before:'+imgurl);
-          imgurl = $(this).children("div").children("img").attr("src");
-          console.log('after:'+imgurl);
-          
-          $(this).magnificPopup({
-              items: {
-                src: imgurl+'?size=s'
-              },
-              type: 'image' // this is default type
-           });
-
-      });
-      
-      
-      $('.dz-message').css('padding','0px 0px');
-      
-      
-        
-      });
-  </script>
-
-
-{% endblock %}
-
-
-
-
-
-
-  
+                {% endblock %}

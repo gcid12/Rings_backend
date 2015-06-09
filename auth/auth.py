@@ -496,6 +496,7 @@ def profile_get(handle):
         data = {}
         data['user'] = user
         data['handle'] = handle
+        data['menu'] = 's1'
 
         o = urlparse.urlparse(request.url)
         data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
@@ -552,6 +553,8 @@ def orgprofile_get(handle):
         data = {}
         data['user'] = user
         data['handle'] = handle
+        data['menu'] = ''
+
         data['method'] = '_orgprofile'
         data['image_cdn_root'] = IMAGE_CDN_ROOT
         flash({'track':'_orgprofile'},'MP')
