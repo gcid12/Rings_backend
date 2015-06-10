@@ -4,10 +4,10 @@
 
         var statusd = {};
         statusd['0000'] = 'Empty'; //RED
-        statusd['1000'] = 'Work in Progress';  //ORANGE
-        statusd['2000'] = 'Send to Revision'; // YELLOW
+        statusd['1000'] = 'WIP';  //ORANGE
+        statusd['2000'] = 'OnRevision'; // YELLOW
         statusd['3000'] = 'Returned'; // RETURNED
-        statusd['4000'] = 'Approved'; // GREEN
+        statusd['4000'] = 'Live'; // GREEN
 
         if(status=='0000'){
             $('#flagmenu_'+order+'_1000').css('display','none')
