@@ -130,8 +130,11 @@
                   </table>
 
 
-                {%if data.team.teamname!='owner' %}
-                <div class="rn-b1">Rings</div>
+               <div class="rn-b1">Rings</div>
+              {%if data.team.teamname=='owner' or data.team.teamname=='staff' %}
+                  <span>Members of this team have access to all the rings</span>
+              {%else%}
+                
 
                 {%if 'put_a_m_n' in data.user_authorizations %}
                 <div class="">
@@ -153,8 +156,9 @@
                 {% for ring in data.team.rings %}
                 
                   <div class="rn-box-white gad100">           
-                    {{ ui.panel(ring.ringname, data.handle, data.handle, '#fce121', data.rings[ring.ringname],'',ring.added,'',data.user_authorizations) }} 
-                                  
+
+                    {{ ui.panel(ring, data , '#fce121') }} 
+
                   </div>
                   <div class="btn-group" class="pull-right"> 
                       <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delring={{ ring.ringname }}" type="button" class="btn btn-warning btn-xs">
@@ -163,8 +167,7 @@
                   </div> 
 
                 {%endfor%}
-
-                {%endif%}
+              {%endif%}
 
             </div><!-- //close box -->
 

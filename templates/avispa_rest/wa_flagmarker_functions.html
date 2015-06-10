@@ -9,6 +9,7 @@
         statusd['3000'] = 'Returned'; // RETURNED
         statusd['4000'] = 'Live'; // GREEN
 
+
         if(status=='0000'){
             $('#flagmenu_'+order+'_1000').css('display','none')
             $('#flagmenu_'+order+'_2000').css('display','none')
@@ -22,8 +23,8 @@
         }else if(status=='2000'){
             $('#flagmenu_'+order+'_1000').css('display','inline')
             $('#flagmenu_'+order+'_2000').css('display','none')
-            $('#flagmenu_'+order+'_3000').css('display','none')
-            $('#flagmenu_'+order+'_4000').css('display','none')
+            $('#flagmenu_'+order+'_3000').css('display','inline')
+            $('#flagmenu_'+order+'_4000').css('display','inline')
         }
 
         $('#flag_'+order).val(status);  
