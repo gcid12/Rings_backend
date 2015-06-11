@@ -38,14 +38,20 @@ class EmailModel:
 
         print('FLAGX5')
 
-        server.sendmail(FROMEMAIL, to, msg)
-        print('FLAGX6')
-        server.quit()
-        print('FLAGX7')
+        try:
 
-        print(msg)
-        print("Sending email to: "+to)
+            server.sendmail(FROMEMAIL, to, msg)
+            print('FLAGX6')
+            server.quit()
+            print('FLAGX7')
 
-        return True
+            print(msg)
+            print("Sending email to: "+to)
+
+            return True
+
+        except:
+
+            return False
 
 

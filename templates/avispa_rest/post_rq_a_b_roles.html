@@ -32,7 +32,8 @@
                   
                       <div class="rn-b1">Invite somebody to collaborate in this ring: </div>
                       <div class="rn-box-white">   
-                         {{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , 'ringdescription') }}      
+                         {#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , 'ringdescription') }#}
+                         {{ ui.panel(data, data ,'#fce121') }}      
                       </div>
                   
               </div> 

@@ -18,11 +18,11 @@ class MainModel:
 
         self.roles = {}
         self.roles['handle_owner'] = ['get_a_home','get_a_x','post_a_x','post_a_x_y','put_a_x_y','delete_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
-        self.roles['org_owner'] = ['get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','get_a_x','post_a_x','post_a_x_y','put_a_x_y','delete_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['org_owner'] = ['get_a_home','get_a_p','post_a_p','delete_a_p_q','get_a_m','post_a_m','get_a_m_n','put_a_m_n','delete_a_m_n','put_a_m_n_settings','put_a_m_n_invite','get_a_x','post_a_x','post_a_x_y','put_a_x_y','delete_a_x_y','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
         self.roles['team_generic'] = ['get_a_home','get_a_m','get_a_x']
         self.roles['team_reader'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c']
         self.roles['team_writer'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
-        self.roles['team_admin'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c']
+        self.roles['team_admin'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c','put_a_m_n_invite']
         self.roles['anonymous'] = ['get_a_home']
 
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
@@ -349,7 +349,41 @@ class MainModel:
         #del self.db[user]
         return True
 
-    #MAINMODEL  
+    def append_to_user_field(self,handle,field,data,user_database=None):
+        #This only to be used by fields that hold lists
+
+        if not user_database : 
+            user_database = self.user_database
+
+        self.db = self.couch[self.user_database]
+        #print("update_user 3:")
+        user =  MyRingUser.load(self.db,handle)
+
+        if user:
+
+            if field not in user:
+                user[field] = []
+            else:
+                if type(user[field]) is not list:
+                    print('Cant append things to something that is not a list')
+                    return False
+
+            user[field].append(data)
+
+            if user.store(self.db):  
+                print('Data updated succesfully')             
+                return True
+            else:
+                print('Could not update user')
+                return False
+
+        else:
+
+            print('No user:'+handle)
+            return False
+
+
+    #MAINMODEL 
     def update_user(self,data,user_database=None):
 
         #print("update user data:")
@@ -376,9 +410,6 @@ class MainModel:
                     print("Old Value:"+str(user[field]))
                     print("New Value:"+str(data[field]))
                     user[field]=data[field]
-
-            for invitations in data:
-                pass
 
             if user.store(self.db):  
                 print('Data updated succesfully')             
@@ -526,7 +557,7 @@ class MainModel:
                 rolelist.append('anonymous')
 
 
-        elif depth == '_a_m' or depth == '_a_m_n' or depth == '_a_m_n_settings':
+        elif depth == '_a_m' or depth == '_a_m_n' or depth == '_a_m_n_settings' or depth == '_a_m_n_invite':
 
             if not team:
                 print('Testing authorizations for /_teams section')

@@ -1,9 +1,14 @@
 # AvispaCollectionsRestFunc.py
+import urlparse, random
 from flask import redirect, flash
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from flask.ext.login import current_user
 from AvispaTeamsModel import AvispaTeamsModel
+from flanker.addresslib import address
+from datetime import datetime
+from app import flask_bcrypt
+from EmailModel import EmailModel
 
 
 class AvispaTeamsRestFunc:
@@ -12,6 +17,7 @@ class AvispaTeamsRestFunc:
         self.AVM = AvispaModel()
         self.MAM = MainModel()
         self.ATM = AvispaTeamsModel()
+
         
         
 
@@ -310,6 +316,134 @@ class AvispaTeamsRestFunc:
 
         d['redirect'] = '/'+handle+'/_teams/'+team
 
+        return d 
+
+    def get_a_m_n_invite(self,request,handle,team,*args):
+
+        redirect = '/'+handle+'/_teams/'+team        
+
+        d = {'redirect': redirect, 'status':200}
+        return d
+
+
+    def put_rq_a_m_n_invite(self,request,handle,team,*args):
+        
+        d = {}
+
+        peopleteams = self.MAM.is_org(handle) 
+        if peopleteams:   
+            
+            d['people'] = peopleteams['people']        
+            
+            for teamd in peopleteams['teams']:
+                #get the profilepic for this person
+
+                if teamd['teamname'] == team :
+                    d['team'] = teamd
+                    break
+                   
+        d['template'] = 'avispa_rest/put_rq_a_m_n_invite.html'
+
+        return d
+
+
+
+
+    def put_a_m_n_invite(self,request,handle,team,*args):
+        d = {}
+
+        self.EMM = EmailModel()
+
+
+        collabraw = request.form.get('emails')
+
+        valid_emails, invalid_emails = address.validate_list(collabraw, as_tuple=True)
+
+        print('valid_emails:',valid_emails)
+        print('invalid_emails:',invalid_emails)
+
+        #2. If it is an email, send ring subscription url/token 
+
+        o = urlparse.urlparse(request.url)
+        host_url=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+
+        #2a PENDING
+        # Subtract team object from org document
+        peopleteams = self.MAM.is_org(handle) 
+        if peopleteams:   
+              
+            for teamd in peopleteams['teams']:
+                teamfound = False
+                
+                if teamd['teamname'] == team :
+                    # This team actually exists in this org. You can continue with the invitations
+                    teamfound = True
+                    break
+
+            if not teamfound:
+                # This team doesnt exist. No invitation can be sent
+                d['redirect'] = '/'+handle+'/_teams/'+team
+                return d
+
+            # teamd carries the team object
+        #Try to convert invalid_emails (myringIDs) into valid_emails
+
+        print("flag1")
+
+        for invite_handle in invalid_emails:
+            user_doc = self.MAM.select_user_doc_view('auth/userbyhandle',invite_handle)                   
+            if user_doc:
+                if user_doc['email'] not in valid_emails:
+                    valid_emails.append(user_doc['email'])
+
+        for email in valid_emails:
+
+            print("flag2")
+
+            email = str(email)
+            
+            # Check if the invitations object even exists. If not create
+            if not 'invitations' in teamd:
+                teamd['invitations'] = []
+
+            invite={}
+            invite['email'] = email
+            invite['count'] = 1
+            invite['token'] = flask_bcrypt.generate_password_hash(email+str(random.randint(0,9999)))  
+            invite['lasttime'] = str(datetime.now())
+            invite['author'] = current_user.id
+            
+            
+
+            user_doc = self.MAM.select_user_doc_view('auth/userbyemail',email)         
+
+            if user_doc:
+                #You are inviting an existing myRing user
+                existinguser = True
+                
+            else:
+                #You are inviting a soon to be myRing user
+                existinguser = False
+
+            print("flag3")
+
+            #host_url = "https://avispa.myring.io"
+                
+            token = invite['token'] 
+            to = email
+            subject = handle+" has invited you to collaborate in the following team : "+team
+            # https://avispa.myring.io/_register?h=cdmit&t=staff&k=11111&e=invi@tado.com
+            content = "Click here to start working with this team: "+host_url+"/_register?h="+handle+"&t="+team+"&k="+token+"&e="+email
+            print(to,subject,content)
+
+            if self.EMM.send_one_email(to,subject,content):
+                flash("Invitation email sent.",'UI') 
+                self.MAM.append_to_user_field(handle,'invitations',invite) 
+            else:
+                flash("Invitation email failed.",'UI') 
+        
+              
+        d['redirect'] = '/'+handle+'/_teams/'+team
         return d 
 
 

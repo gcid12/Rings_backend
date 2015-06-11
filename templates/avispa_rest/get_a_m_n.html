@@ -76,7 +76,7 @@
                 <div class="">
                    <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
                    <div class="pull-right">
-                      &nbsp; Add new member to this team &nbsp;
+                      &nbsp; Add a member from this organization to this team &nbsp;
                       <select name="newmember">
                           {% for member in data.people%}
                           <option value="{{member.handle}}">{{member.handle}}</option>
@@ -128,6 +128,19 @@
                   {% endfor %}
 
                   </table>
+
+                {%if 'put_a_m_n_invite' in data.user_authorizations %}
+                <div class="pull-right">
+                
+                   Or invite somebody that doesn't belong to this organization yet: <a href="/{{data.handle}}/_teams/{{data.team.teamname}}/_invite?rq=put">Click here</a>
+                      
+                </div>
+                {%endif%}
+                
+                <br/><br/>
+                <hr/>
+
+                  
 
 
                <div class="rn-b1">Rings</div>

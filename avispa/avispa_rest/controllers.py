@@ -867,9 +867,22 @@ def teams_a_m_n(handle,team):
 
 @avispa_rest.route('/<handle>/_teams/<team>/_settings', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
+@login_required
 def teams_a_m_n_settings(handle,team):
 
     result = teams_dispatcher('_a_m_n_settings',handle,team)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_teams/<team>/_invite', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+@login_required
+def teams_a_m_n_invite(handle,team):
+
+    result = teams_dispatcher('_a_m_n_invite',handle,team)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
