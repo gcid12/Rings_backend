@@ -360,6 +360,21 @@ class AuthModel:
         view.get_doc(db)
         view.sync(db)
 
+
+        view = ViewDefinition('orgs', 'invitations', 
+                '''
+                function(doc) {
+                    if(doc.is_org) {
+                        var x = {};
+                        x['invitations']=doc.invitations;
+                        emit(doc._id,x);
+                    }
+                }
+                ''')
+
+        view.get_doc(db)
+        view.sync(db)
+
         return True
 
     #AUTHMODEL

@@ -349,18 +349,18 @@ class MainModel:
         #del self.db[user]
         return True
 
-    def append_to_user_field(self,handle,field,data,user_database=None):
+    def append_to_user_field(self,handle,field,data,sublist=None,wherefield=None,wherefieldvalue=None,user_database=None):
         #This only to be used by fields that hold lists
 
         if not user_database : 
             user_database = self.user_database
 
         self.db = self.couch[self.user_database]
-        #print("update_user 3:")
         user =  MyRingUser.load(self.db,handle)
 
         if user:
 
+            #Preparing user[field]
             if field not in user:
                 user[field] = []
             else:
@@ -368,7 +368,26 @@ class MainModel:
                     print('Cant append things to something that is not a list')
                     return False
 
-            user[field].append(data)
+        
+            #Preparing user[field][x][sublist]
+            if sublist:
+                s = 0
+                for u in user[field]:
+                    if u[wherefield] == wherefieldvalue:
+                        #This is assuming that user[field][s][sublist] exists and it is a list
+                        if sublist not in u:
+                            user[field][s][sublist] = []
+                        elif type(user[field][s][sublist]) is not list:
+                            print('Cant append things to something that is not a list..')
+                            return False
+
+                        user[field][s][sublist].append(data)
+                        break
+                    s += 1
+
+            else:
+                user[field].append(data)
+
 
             if user.store(self.db):  
                 print('Data updated succesfully')             

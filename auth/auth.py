@@ -1,4 +1,5 @@
-import sys, os, time, datetime, smtplib, urlparse, random, json
+import sys, os, time, smtplib, urlparse, random, json
+from datetime import datetime
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
@@ -159,6 +160,15 @@ def register_get():
 @auth_flask_login.route("/_register", methods=["POST"])
 def register_post():
 
+    MAM = MainModel()
+
+    invite_organization = request.form.get('h') 
+    invite_team = request.form.get('t') 
+    invite_token = request.form.get('k')
+    #invite_email = request.form.get('e')  
+    
+    #if e and email are not the same that is ok.
+
     username = request.form.get('username')
     email = request.form.get('email')
 
@@ -170,8 +180,74 @@ def register_post():
     print user
 
     try:
-    #if True:
         if user.set_user():
+            user_created = True
+        else:
+            user_created = False
+
+        
+
+    except:
+        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]            
+
+        flash("unable to register with that email address",'UI')
+        mpp = {'status':'KO','msg':'Unable to register with that email address'}
+        flash({'f':'track','v':'_register','p':mpp},'MP')
+        current_app.logger.error("Error on registration ")
+        return redirect('/_register') 
+
+    if True:
+    #try:
+    
+        if user_created:
+
+            
+
+            if invite_organization and invite_team and invite_token and email:
+
+                
+
+                # Aquire org.invitations document
+                result = MAM.select_user_doc_view('orgs/invitations',invite_organization)
+                
+                # Verify if this is a valid invitation
+                for i in result['invitations']:
+                    
+                    if i['token'] == invite_token and i['email'] == email :
+                        
+                        valid_invite = True
+                        break
+                    else:
+                        valid_invite = False
+                
+                
+                if valid_invite:
+                    
+                    people = {}
+                    people['added'] = str(datetime.now())
+                    people['handle'] = username
+                    people['addedby'] = i['author']
+                    # Add the user to the organization people
+                    MAM.append_to_user_field(invite_organization,'people',people)
+                   
+                    # Add the user to the team
+                    MAM.append_to_user_field(invite_organization,'teams',people,
+                                             sublist = 'members',
+                                             wherefield = 'teamname',
+                                             wherefieldvalue = invite_team
+                                             )
+
+                    
+ 
+                # Set its onLogin hook to <invite_organization>/<invite_team>
+                u = {}
+                u['id'] = username
+                u['onlogin'] = '/'+invite_organization+'/_home'
+                MAM.update_user(u)
+
+                
+
+
 
             print('User created, now log in the user')
             #Go through regular login process
@@ -189,7 +265,10 @@ def register_post():
                     mpp = {'status':'OK','msg':'Automatic'}
                     flash({'f':'track','v':'_login','p':mpp},'MP')
                     #flash({'track':'_login OK, Automatic'},'MP')
-                    return redirect('/'+userview.id+'/_home')      
+                    if invite_organization:
+                        return redirect('/'+invite_organization+'/_home')
+                    else:
+                        return redirect('/'+userview.id+'/_home')      
             else:
                 flash("Please enter your credentials ",'UI')
 
@@ -209,16 +288,16 @@ def register_post():
             return redirect('/_register')
 
 
-    #except(KeyError):
-    except:
+    else:
+    #except:
 
-        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]            
+        flash("Please enter your credentials. [E12] ",'UI')
+        mpp = {'status':'KO','msg':'Automatic'}
+        flash({'f':'track','v':'_login','p':mpp},'MP') 
 
-        flash("unable to register with that email address",'UI')
-        mpp = {'status':'KO','msg':'Unable to register with that email address'}
-        flash({'f':'track','v':'_register','p':mpp},'MP')
-        current_app.logger.error("Error on registration ")
-        return redirect('/_register')  
+        return redirect('/_login')
+
+        
 
 
 #WEB
@@ -579,7 +658,6 @@ def orgprofile_get(handle):
 @auth_flask_login.route("/<handle>/_orgprofile", methods=["POST"])
 @login_required
 def orgprofile_post(handle):
-
     
     user = User(username=handle)
     if user.update_user_profile(request):

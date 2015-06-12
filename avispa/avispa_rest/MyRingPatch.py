@@ -930,6 +930,22 @@ class MyRingPatch:
 
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
+
+    def p20150612(self,request,*args):
+        '''
+        This patch regenerates all the user views
+        In this case it will add orgs/invitations
+        Run it once per system 
+        '''
+
+        from auth.AuthModel import AuthModel
+
+        ATM = AuthModel()
+
+        ATM.userdb_set_db_views()
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
         
     
 

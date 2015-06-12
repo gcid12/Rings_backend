@@ -15,14 +15,18 @@
     <form action="" method="POST" role="form" id="register">
       <input type="hidden" name="h" value="{{request.args.get('h')}}">
       <input type="hidden" name="t" value="{{request.args.get('t')}}">
-      <input type="hidden" name="k" value="{{request.args.get('k')}}">
-      <input type="hidden" name="e" value="{{request.args.get('e')}}">
+      <input type="hidden" name="k" value="{{request.args.get('k')}}"> 
+      <input type="hidden" name="e" value="{{request.args.get('e')}}"> 
       <div class="col-sm-offset-1 col-sm-6">   
         <div class="box box-clear text-center" style="padding:0 50px 20px 50px;">
           <div class="alert alert-success" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Error:</span>
+            {% if 'h' in request.args and 't' in request.args  %}
+            <p class="fs-1-2">You have been invited to the team <b>{{request.args.get('h')}}/{{request.args.get('t')}}</b></p>
+            {% else %}
             <p class="fs-1-2">Please complete your registration</p>
+            {% endif %}
           </div>
           <hr/>       
           <span class="fc-g">choose your personal username</span>
@@ -34,7 +38,7 @@
           <div class="spa5"></div>   
           <div class="input-group input-group-md text-center">
             <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-envelope-o"></i></span>
-            <input type="email" id="email" name="email" required="required" class="form-control" placeholder="email" aria-describedby="sizing-addon1">
+            <input type="email" id="email" name="email" required="required" class="form-control" placeholder="email" aria-describedby="sizing-addon1" {%if 'e' in request.args%}value="{{request.args.get('e')}}"{%endif%}>
             <!-- <input type="email" id="email" name="email" required="required" class="form-control" placeholder="Email"> -->
           </div>
           <div class="spa5"></div>
@@ -52,10 +56,12 @@
           <p class="fs-0-8 text-lgray pad-x-20">Creating an account means you’re okay with MyRing's <a href="_sandbox/terms">Terms of Service and Privacy Policy.</a> </p>
         </div>
       </div>
+
+      {% if 'h' not in request.args %}
       <div class="col-sm-4">     
         <div class="pad-x-20">
 
-
+  
           <div class="spa50"></div>
           <h4 class="fc-b">Optional: </h4>
           <p class="text-gray fs-0-8">
@@ -80,7 +86,8 @@
             </div>    
           </div>
         </div>
-      </div> 
+      </div>
+      {%endif%} 
     </form> 
   </div>
 </div>

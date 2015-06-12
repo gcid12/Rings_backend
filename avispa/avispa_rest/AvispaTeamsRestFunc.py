@@ -401,20 +401,17 @@ class AvispaTeamsRestFunc:
             print("flag2")
 
             email = str(email)
-            
-            # Check if the invitations object even exists. If not create
-            if not 'invitations' in teamd:
-                teamd['invitations'] = []
+              
 
             invite={}
             invite['email'] = email
             invite['count'] = 1
+            invite['team'] = team
             invite['token'] = flask_bcrypt.generate_password_hash(email+str(random.randint(0,9999)))  
             invite['lasttime'] = str(datetime.now())
             invite['author'] = current_user.id
             
             
-
             user_doc = self.MAM.select_user_doc_view('auth/userbyemail',email)         
 
             if user_doc:
