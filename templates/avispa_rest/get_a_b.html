@@ -322,32 +322,34 @@
                           {% if item[value] %}
                           
                             <div class="row hidden-xs">
-                              <div class="col-sm-3 text-right alpha omega">
-                                <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">
-                                {%if data.FieldLabel[value] == '' %}
-                                    {{ value }}
-                                {%else%}
-                                    {%if data.FieldLabel[value] == None %} 
-                                        {{ value }}
-                                    {%else%}
-                                        {{data.FieldLabel[value]}} 
-                                    {%endif%}
-
-                                  {%endif%}:
-                                </p>
-                              </div>
-                              <div class="col-sm-9 alpha">
-                              
                                 <a href="/{{data.handle}}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{data.ring}}/{{item._id}}" class="nounder">
-                                  <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">
-                                  {%if item[value] is defined %}
-                                    {#{ item[value]|truncate(70, true) }#}
-                                    {{item[value]}}
-                                  {%endif%}
-                                  </p>
+                                    
+                                        <div class="col-sm-3 text-right alpha omega">
+                                            <p class="fs-0-7 fc-g lh-1-2" style="margin-bottom:5px; padding:0 10px;">
+                                            {%if data.FieldLabel[value] == '' %}
+                                                {{ value }}
+                                            {%else%}
+                                                {%if data.FieldLabel[value] == None %} 
+                                                    {{ value }}
+                                                {%else%}
+                                                    {{data.FieldLabel[value]}} 
+                                                {%endif%}
 
+                                              {%endif%}:
+                                            </p>
+                                        </div>
+                                
+                                        <div class="col-sm-9 alpha">
+                                  
+                                            <p class="fs-0-7 lh-0-1" style="margin-bottom:5px;">
+                                              {%if item[value] is defined %}
+                                                {#{ item[value]|truncate(70, true) }#}
+                                                {{item[value]}}
+                                              {%endif%}
+                                            </p>
+                                        </div>
+                                    
                                 </a>
-                              </div>
                             </div>
 
                             <div class="row visible-xs">
@@ -445,7 +447,7 @@
                                                     {% if v[0] %}                      
                                                       <img style="width:150px;" src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{v[0]}}_t150.jpg">
                                                     {% else %}
-                                                      <img style="width:150px;" src="/static/images/ph/ph_user.gif" >
+                                                      <img style="width:150px;" src="/static/images/ph/ph_img.gif" >
                                                     {% endif %}
        
                                                  

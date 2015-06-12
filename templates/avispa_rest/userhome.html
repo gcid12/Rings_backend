@@ -71,7 +71,7 @@
                                 {% if 'post_a' in data.user_authorizations %}
 
                                 
-                                    <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs pad-x-10"><i class="fa fa-plus-circle fc-g"></i></a>
+                                    <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs pad-x-10"><i class="fa fa-plus-circle fc-d"></i></a>
                                 
 
                                 {%endif%}
@@ -183,14 +183,11 @@
                 
                 <div class=" p-30 gcard">
                         <span class="dropdown pull-right">
-                                <a class="dropdown-toggle" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">
+                                <a class="dropdown-toggle" href="/{{data.handle}}/_profile">
                                     <i class="fa fa-gear fc-g"></i>
                                  
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="menu_{{collection}}">
-                                  
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{data.handle}}/_profile">Edit my profile</a></li>
-                                </ul>
+                                
                             </span>
 
                     

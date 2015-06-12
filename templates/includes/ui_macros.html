@@ -106,7 +106,7 @@
             
             
              
-                {% if extended!='1' %}
+              {% if extended!='1' %}
                 <span class="dropdown">
                   
                   <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">   
@@ -151,13 +151,17 @@
                     </span>
                   </a>
 
-                    {% if extended=='1' %}
-                      <a href="/{{handle}}/_collections/{{collection}}/{{ ringname }}" type="button" class="fc-b nounder" data-toggle="tooltip" title="See Ring">
+                  <a href="/{{handle}}/_collections/{{collection}}/{{ ringname }}" type="button" class="fc-b nounder" data-toggle="tooltip" title="See Ring">
                         <span class="fa-stack fa-lg">
                           <i class="fa fa-circle fa-stack-1x fc-d fs-1-2"></i>
                           <i class="fa fa-eye fa-stack-1x fa-inverse fs-0-6"></i>
                         </span>
-                      </a>
+                  </a>
+
+
+
+                    {% if extended=='1' %}
+                      
 
                       <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
                         <span class="fa-stack fa-lg">
@@ -1449,11 +1453,17 @@
                           <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="{% if field.FieldName+'_flag' in item %}{{item[field.FieldName+'_flag']}}{%else%}0000{%endif%}"/> 
                           <div class="dropdown">
                             <a data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
-                              <span id="flagmarker_{{ field.FieldOrder }}" class="fc-0000">
-                                <i class="fa fa-caret-left fa-2x"></i> 
-                                <span id="flagtext_{{ field.FieldOrder }}" class="fc-g fs-0-8">Empty</span>
+                              <span class="pull-right-xs">
+                                <span id="flagmarker_{{ field.FieldOrder }}" class="fc-0000">
+
+                                      <i class="fa fa-caret-down fa-2x visible-xs"></i> 
+                                      <i class="fa fa-caret-left fa-2x hidden-xs"></i> 
+                                      <span id="flagtext_{{ field.FieldOrder }}" class="fc-g fs-0-8">Empty</span>
+
+                                </span>
                               </span>
                             </a>
+                            <br/>
                             
                               <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                 <li><span id="flagmenu_{{ field.FieldOrder }}_0000" class="clearlink fs-0-8 fieldflag" flag="{{ field.FieldOrder }}_0000" style="display:none;" ><i class="fa fa-caret-left fa-2x pad-x-8 fc-0000 "></i>Empty</span></li>
@@ -1469,4 +1479,6 @@
                         
 
 {% endmacro %}
+
+
 

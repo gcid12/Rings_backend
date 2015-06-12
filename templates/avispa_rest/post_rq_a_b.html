@@ -55,63 +55,63 @@
 
 <!-- START NEW CONTENT --> 
 
-  <div class="rn-curtain">
+    <div class="rn-curtain">
           
-            <form  role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?method=post{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
+        <form  role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?method=post{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
             
             {% if not data.raw %}
-            <table class="table table-condensed"> 
-              {#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }#}
+                <table class="table table-condensed"> 
+                    {#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }#}
 
-              {{ ui.panel3(data,'#fce121') }} 
-            </table>
+                    {{ ui.panel3(data,'#fce121') }} 
+                </table>
             {%endif%}
             {% if not data.raw %}
 
-            <div class="alert  alert-success alert-dismissible alert-top" role="alert">
-                        <span class="fs-1-2"><i class="fa fa-info-circle pad-x-10"></i> <strong>New Item</strong> |  Please complete the following fields {%if data.raw%}Raw is in the house{%endif%}</span>
-            </div>
-  </div>
+                <div class="alert  alert-success alert-dismissible alert-top" role="alert">
+                    <span class="fs-1-2"><i class="fa fa-info-circle pad-x-10"></i> <strong>New Item</strong> |  Please complete the following fields {%if data.raw%}Raw is in the house{%endif%}</span>
+                </div>
+            {%endif%}
+    </div>
 
-            <div class="box box-clear text-right">
-
+    <div class="box box-clear text-right">
+        <div class="row">
+            <div class="col-sm-12">
                 <span class="pad-x-20"> Public: <input type="checkbox" value="public" name="public"/></span>
                 
                 <button name="saveandnew" type="submit" value="saveandnew" class="btn btn-success btn-xs"><i class="fa fa-save"></i> &nbsp;<i class="fa fa-plus"></i></button> 
                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#helpmodal">
                 <i class="fa fa-question-circle"></i>
                 </button>
-                  
-              
+
+            </div>
             
+        </div>
+        
+        {% for field in data.fieldsschema %}
+            <div class="row spa10">
+                <div class="col-sm-1">&nbsp;</div>
+                <div class=" col-sm-2 col-sm-push-8 text-left alpha">
+  
+                {{ ui.flagmarker(field,data.item) }}
 
-            {%endif%}
-            <div class="box box-clear">
-              <div class="row">
-                <div class="col-sm-offset-1 col-sm-10">
-                  {% if data.raw %}
-                  <h3>{{data.ring}}</h3>
-                  {%endif%}
-                  <table class="table table-condensed" style="width:100%;">
-                    {% for field in data.fieldsschema %}
-                      <tr>
 
-                        <td>
-                          {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
-                          {% include widget  %}    
-                          
-                        </td>
-                        <td bgcolor="">
-                        {{ ui.flagmarker(field) }}
-                        </td>
-                        <td>
-                          <span class="badge bg-lgray fs-0-8">{{field.FieldLayer}}</span>
-                        </td>
-                      </tr>
-                     {% endfor %}
-                  </table>
                 </div>
-              </div>
+                <div class="col-sm-8 col-sm-pull-2 text-left omega">
+                {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
+                {% include widget  %}  
+                </div>
+
+            </div>
+        {% endfor %}
+            
+        
+            
+                
+        
+                
+           
+
 
               <div class="row">
                 <div class="col-sm-12">

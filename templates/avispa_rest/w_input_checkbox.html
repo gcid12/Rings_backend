@@ -1,13 +1,13 @@
-                                <div class="form-group">
-                                    <label for="{{ field.FieldName }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-                                    <div class="col-sm-1 text-left">
+        <div class="form-group">
+            <label for="{{ field.FieldName }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+            <div class="col-sm-1 text-left">
 
-                                      <input type="checkbox" class="form-control" id="checkbox{{ field.FieldOrder }}" placeholder="{{ field.FieldHint }}" name="{{ field.FieldName }}" {% if field.FieldRequired %}checked{% endif %}>
-                                      
-                                    </div>
-                                    <div>
-                                    	<span class="fc-g fs-0-8">
-                                    		{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}
-                                    	</span>
-                                    </div>
-                                </div>
+              <input type="checkbox" id="checkbox{{ field.FieldOrder }}" placeholder="{{ field.FieldHint }}" name="{{ field.FieldName }}" {% if field.FieldRequired %}checked{% endif %}>
+              
+            </div>
+            <div>
+            	<span class="fc-g fs-0-8">
+            		{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}
+            	</span>
+            </div>
+        </div>

@@ -154,6 +154,16 @@ filter: grayscale(100%);
 .fc-5000{color: #f0c8fe;}
 .fc-6000{color: #d2d2d2;}
 
+/*TAGS BACKGROUND COLORS:*/
+.bg-0000{background-color: #ffa0a0; padding:0px; margin:0px;} /*Red*/
+.bg-1000{background-color: #fed160;} /*Orange*/
+.bg-2000{background-color: #feef53;} /*Yellow*/
+.bg-3000{background-color: #a7dbfe;} /*Blue*/
+.bg-4000{background-color: #caee4f;} /*Green*/
+.bg-5000{background-color: #f0c8fe;}
+.bg-6000{background-color: #d2d2d2;}
+
+
 
 
 
@@ -1413,6 +1423,7 @@ border-radius: 50px;  }
     border:1px solid #FFF;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
+    border-radius: 10px; 
 
 }
 
@@ -1597,6 +1608,8 @@ header .navbar-ring{padding:0px; margin-top:50px; border:1px solid transparent; 
 
 .alpha{padding-left:10px;}
 .omega{padding-right:10px;}
+
+.pull-right-xs{float:right;}
 
 
 
