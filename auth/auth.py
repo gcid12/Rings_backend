@@ -150,6 +150,9 @@ def api_register_post():
 @auth_flask_login.route("/_register", methods=["GET"])
 def register_get():
     
+    logout_user()
+    flash("Logged out.",'UI') 
+    
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
     data['method'] = '_register'
