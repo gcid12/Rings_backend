@@ -12,10 +12,17 @@ from User import User
 
 auth_flask_login = Blueprint('auth_flask_login', __name__, template_folder='templates',url_prefix='')
 
-@auth_flask_login.route("/_login", methods=["GET", "POST"])
-def login():
+@auth_flask_login.route("/_login", methods=["GET", "POST"], defaults = {'r1':None,'r2':None,'r3':None,'r4':None})
+@auth_flask_login.route('/_login/<r1>', methods=["GET", "POST"], defaults = {'r2':None,'r3':None,'r4':None})
+@auth_flask_login.route('/_login/<r1>/<r2>', methods=["GET", "POST"], defaults = {'r3':None,'r4':None})
+@auth_flask_login.route('/_login/<r1>/<r2>/<r3>', methods=["GET", "POST"], defaults = {'r4':None})
+@auth_flask_login.route('/_login/<r1>/<r2>/<r3>/<r4>', methods=["GET", "POST"])
+def login(r1,r2,r3,r4):
 
+    if current_user.is_authenticated():    
+        return redirect('/'+current_user.id+'/_home')
     
+   
     if request.method == "POST" and "email" in request.form:
         email = request.form.get('email')
         userObj = User(email=email)
@@ -147,12 +154,29 @@ def api_register_post():
         return render_template("/base_json.html", data=data)
 
 #WEB
+@auth_flask_login.route("/_teaminvite", methods=["GET"])
+def register_teaminvite():
+
+    MAM = MainModel()   
+    logout_user()
+   
+    result = MAM.select_user_doc_view('auth/userbyemail',request.args.get('e'))
+    if result:
+        flash(request.args.get('e')+" already exists. Please log in.",'UI') 
+        return redirect('/_login/invite?h='+request.args.get('h')+
+                        '&t='+request.args.get('t')+
+                        '&k='+request.args.get('k')+
+                        '&e='+request.args.get('e'))
+    else:
+        return redirect('/_register?h='+request.args.get('h')+
+                        '&t='+request.args.get('t')+
+                        '&k='+request.args.get('k')+
+                        '&e='+request.args.get('e'))
+
+#WEB
 @auth_flask_login.route("/_register", methods=["GET"])
 def register_get():
-    
-    logout_user()
-    flash("Logged out.",'UI') 
-    
+
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
     data['method'] = '_register'
