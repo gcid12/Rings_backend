@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
-from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required,login_url)
 from env_config import FROMEMAIL, FROMPASS, IMAGE_CDN_ROOT
 from MainModel import MainModel
 from EmailModel import EmailModel
@@ -12,12 +12,8 @@ from User import User
 
 auth_flask_login = Blueprint('auth_flask_login', __name__, template_folder='templates',url_prefix='')
 
-@auth_flask_login.route("/_login", methods=["GET", "POST"], defaults = {'r1':None,'r2':None,'r3':None,'r4':None})
-@auth_flask_login.route('/_login/<r1>', methods=["GET", "POST"], defaults = {'r2':None,'r3':None,'r4':None})
-@auth_flask_login.route('/_login/<r1>/<r2>', methods=["GET", "POST"], defaults = {'r3':None,'r4':None})
-@auth_flask_login.route('/_login/<r1>/<r2>/<r3>', methods=["GET", "POST"], defaults = {'r4':None})
-@auth_flask_login.route('/_login/<r1>/<r2>/<r3>/<r4>', methods=["GET", "POST"])
-def login(r1,r2,r3,r4):
+@auth_flask_login.route("/_login", methods=["GET", "POST"])
+def login():
 
     if current_user.is_authenticated():    
         return redirect('/'+current_user.id+'/_home')
@@ -37,6 +33,10 @@ def login(r1,r2,r3,r4):
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
+
+                    #next = request.args.get('next')
+                    #if not next_is_valid(next):
+                    #    return flask.abort(400)
 
                     mpp = {'status':'OK'}
                     flash({'f':'track','v':'_login','p':mpp},'MP')
@@ -159,19 +159,26 @@ def register_teaminvite():
 
     MAM = MainModel()   
     logout_user()
-   
-    result = MAM.select_user_doc_view('auth/userbyemail',request.args.get('e'))
-    if result:
-        flash(request.args.get('e')+" already exists. Please log in.",'UI') 
-        return redirect('/_login/invite?h='+request.args.get('h')+
-                        '&t='+request.args.get('t')+
-                        '&k='+request.args.get('k')+
-                        '&e='+request.args.get('e'))
-    else:
-        return redirect('/_register?h='+request.args.get('h')+
-                        '&t='+request.args.get('t')+
-                        '&k='+request.args.get('k')+
-                        '&e='+request.args.get('e'))
+
+    if current_user.is_authenticated():  
+        return redirect('/_teaminvite2?h='+request.args.get('h')+
+                            '&t='+request.args.get('t')+
+                            '&k='+request.args.get('k')+
+                            '&e='+request.args.get('e'))
+
+    else:       
+        result = MAM.select_user_doc_view('auth/userbyemail',request.args.get('e'))
+        if result:
+            flash(request.args.get('e')+" already exists. Please log in.",'UI') 
+            return redirect(login_url('/_login','/_teaminvite2?h='+request.args.get('h')+
+                            '&t='+request.args.get('t')+
+                            '&k='+request.args.get('k')+
+                            '&e='+request.args.get('e')))
+        else:
+            return redirect('/_register?h='+request.args.get('h')+
+                            '&t='+request.args.get('t')+
+                            '&k='+request.args.get('k')+
+                            '&e='+request.args.get('e'))
 
 #WEB
 @auth_flask_login.route("/_register", methods=["GET"])
