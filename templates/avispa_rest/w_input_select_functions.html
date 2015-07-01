@@ -1,9 +1,6 @@
 <script>
 
-
 var existing_values_{{ field.FieldOrder }} = "{{data.item[field.FieldName]}}".split(',')
-
-
 $("#chosen_{{ field.FieldOrder }}").chosen({width: "100%"}); 
 
 /*
@@ -113,12 +110,31 @@ $("#chosen_{{ field.FieldOrder }}").chosen().change(function(){
 
     console.log('changed!');
 
-    var selection = $( "#chosen_{{ field.FieldOrder }}" ).val();
+    var selection = $( '#chosen_{{ field.FieldOrder }}' ).val();
 
     console.log('changed to: '+ selection);
 
     
     var value = $( '#input_select_{{ field.FieldOrder }}' ).val();
+
+    var order = $( '#input_select_{{ field.FieldOrder }}' ).attr('order');
+    console.log(selection);
+    console.log(typeof(selection));
+
+    if(selection!=null){
+        console.log('This object is NOT null!')
+    }else{
+        console.log('This object is null!')
+    }
+
+    if(selection==''){      
+        change_flag(order,'0000');           
+    } else if(selection==null){
+        change_flag(order,'0000');
+    } else {
+        change_flag(order,'1000');
+    }
+
     console.log('old value:'+value)
     //$( '#input_select_{{ field.FieldOrder }}' ).val(value+','+selection);
     $( '#input_select_{{ field.FieldOrder }}' ).val(selection);
