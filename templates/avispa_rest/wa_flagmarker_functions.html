@@ -48,7 +48,7 @@
 
 
     $(".flag-aware").on("change paste", function() {
-        //alert('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
+        console.log('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
         var order = $(this).attr('order');
         //if(isEmpty($(this.val))){
         if($(this).val()){
