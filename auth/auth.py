@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
-from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required,login_url)
 from env_config import FROMEMAIL, FROMPASS, IMAGE_CDN_ROOT
 from MainModel import MainModel
 from EmailModel import EmailModel
@@ -15,7 +15,10 @@ auth_flask_login = Blueprint('auth_flask_login', __name__, template_folder='temp
 @auth_flask_login.route("/_login", methods=["GET", "POST"])
 def login():
 
+    if current_user.is_authenticated():    
+        return redirect('/'+current_user.id+'/_home')
     
+   
     if request.method == "POST" and "email" in request.form:
         email = request.form.get('email')
         userObj = User(email=email)
@@ -30,6 +33,10 @@ def login():
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
+
+                    #next = request.args.get('next')
+                    #if not next_is_valid(next):
+                    #    return flask.abort(400)
 
                     mpp = {'status':'OK'}
                     flash({'f':'track','v':'_login','p':mpp},'MP')
@@ -147,9 +154,36 @@ def api_register_post():
         return render_template("/base_json.html", data=data)
 
 #WEB
+@auth_flask_login.route("/_teaminvite", methods=["GET"])
+def register_teaminvite():
+
+    MAM = MainModel()   
+    logout_user()
+
+    if current_user.is_authenticated():  
+        return redirect('/_teaminvite2?h='+request.args.get('h')+
+                            '&t='+request.args.get('t')+
+                            '&k='+request.args.get('k')+
+                            '&e='+request.args.get('e'))
+
+    else:       
+        result = MAM.select_user_doc_view('auth/userbyemail',request.args.get('e'))
+        if result:
+            flash(request.args.get('e')+" already exists. Please log in.",'UI') 
+            return redirect(login_url('/_login','/_teaminvite2?h='+request.args.get('h')+
+                            '&t='+request.args.get('t')+
+                            '&k='+request.args.get('k')+
+                            '&e='+request.args.get('e')))
+        else:
+            return redirect('/_register?h='+request.args.get('h')+
+                            '&t='+request.args.get('t')+
+                            '&k='+request.args.get('k')+
+                            '&e='+request.args.get('e'))
+
+#WEB
 @auth_flask_login.route("/_register", methods=["GET"])
 def register_get():
-    
+
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
     data['method'] = '_register'

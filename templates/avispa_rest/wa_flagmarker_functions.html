@@ -2,6 +2,8 @@
 
     function change_flag(order,status){
 
+        console.log(order+' '+status)
+
         var statusd = {};
         statusd['0000'] = 'Empty'; //RED
         statusd['1000'] = 'WIP';  //ORANGE
@@ -46,7 +48,7 @@
 
 
     $(".flag-aware").on("change paste", function() {
-        //alert('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
+        alert('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
         var order = $(this).attr('order');
         //if(isEmpty($(this.val))){
         if($(this).val()){
@@ -60,14 +62,28 @@
 <script type="text/javascript">
 $(window).load(function(){
 
-
+    // This is to load existing values
     {% for field in data.fieldsschema %}
 
         //$('#flag_'+{{field.FieldOrder}}).val({{data.item[field.FieldName+'_flag']}});
 
         //$('#flagmarker_{{field.FieldOrder}}').removeClass().addClass("fc-{%if data.item[field.FieldName+'_flag'] %}{{data.item[field.FieldName+'_flag']}}{%else%}0000{%endif%}"); 
+        //console.log('value:'+data.item[field.FieldName+'_flag'])
 
-        change_flag({{field.FieldOrder}},{%if data.item[field.FieldName+'_flag'] %}"{{data.item[field.FieldName+'_flag']}}"{%else%}"0000"{%endif%});
+        {%if field.FieldName+'_flag' in data.item %}
+            {%if data.item[field.FieldName+'_flag']!='1' %}
+              console.log('TRUE!');
+              {% set flag = 0%}
+            {%else%}
+              console.log('FALSE!');
+            {%endif%}
+        {%else%}
+            console.log('FALSE2');
+        {%endif%}
+
+
+
+        change_flag({{field.FieldOrder}},{%if field.FieldName+'_flag' in data.item %}"{{data.item[field.FieldName+'_flag']}}"{%else%}"0000"{%endif%});
 
 
     {% endfor %}

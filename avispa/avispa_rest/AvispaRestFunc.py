@@ -919,7 +919,18 @@ class AvispaRestFunc:
         item = self.AVM.get_a_b_c(request,handle,ring,idx)
 
         print('ITEM',item)
-       
+
+        #We need to check if flags are not corrupt or showing an invalid status. Repair if needed
+
+        for i in item:
+            print(i,item[i])
+            if i[-5:] == '_flag':
+                if item[i]<1000 or item>=10000 : #Invalid Status
+                    if len(str(item[i[:-5]])) < 1: #Empty
+                        item[i] = '0000'
+                    else:  # If has something
+                        item[i] = '1000'
+
         #if item['Images']:
          #   images=item['Images'].split(',')
           #  item['Images']=images

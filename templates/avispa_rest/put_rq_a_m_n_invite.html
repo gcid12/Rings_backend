@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %} Avispa {% endblock %}
+{% block findme %} put_rq_a_m_n_invite {% endblock %}
+
+
+{% block crumbs %}
+{% endblock %}
+
+
+
+{% block content %}
+
+<!-- START NEW CONTENT --> 
+<section class="bp-20 p-50">
+  <div class="container">
+    <div class="row">
+            
+      <div class="col-md-9">  
+
+      {{ ui.org_header(data,data.handle) }}
+
+        <div class="row">
+          <div class="col-sm-12">
+
+             <div class="">
+ 
+              <a href="/{{data.handle}}/_teams" type="button" class="btn btn-info btn-xs pull-right">
+              Your teams</a>
+              <br/><br/>
+              
+            </div> 
+
+              
+          
+
+            <div class="rn-box-content">
+
+            <span class="rn-b2">{{data.team.teamname}}</span><span class="pull-right">
+                <a href="/{{data.handle}}/_teams/{{data.team.teamname}}">back</a>
+                </span>  <br/><br/>
+                          
+
+             
+              <form action="/{{data.handle}}/_teams/{{data.team.teamname}}/_invite?method=put" method="POST" role="form">
+                Send an invitation to this team to the following email:<br/><br/>
+                <input name="emails" type="text"/><br/><br/>
+                <button type="submit" class="btn btn-primary">Send invitation</button>
+              </form>
+            </div><!-- //close box -->
+
+          </div><!-- close 12 -->   
+        </div> <!-- close row -->
+
+    </div>
+</section>
+
+{% endblock %}
+
+
+{% block modals %}
+
+  {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
