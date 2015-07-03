@@ -634,9 +634,6 @@ def mbf_pricing():
 
 
 
-
-
-
 @sandbox.route("/wiz_org", methods=["GET", "POST"])
 #@login_required
 def wiz_org():
@@ -645,6 +642,20 @@ def wiz_org():
     data['mask']= "mbf"
 
     return render_template("/sandbox/wiz_org.html", data=data) 
+
+
+
+@sandbox.route("/access", methods=["GET", "POST"])
+#@login_required
+def access():
+
+    data = {}
+    data['mask']= "mbf"
+
+    return render_template("/sandbox/access.html", data=data) 
+
+
+
 
 
 
@@ -2196,171 +2207,6 @@ def facts_006(showme):
                     ] 
 
     return render_template("/sandbox/factcard.html", data=data) 
-
-
-@sandbox.route('/facts/example/<showme>')
-#@login_required
-def facts_009(showme):
-
-    data = {}
-    data['mask']= "mbf"
-    data['mode']= showme
-    data['slug']= "example"
-
-    # HOTEL INFO
-    
-
-
-    data['Generic'] = [{
-                    #This USES THE FACTCARD MACRO
-                    #Title of the card
-                    'fc_Title':'This is Generic FactCard',
-                    'S_fc_Title':1,
-                    'fc_SubTitle':'This is Subtitle',
-                    # Fields used:  History, History2, History3
-                    'fc_Descriptions': {
-                        'd1': ['en',1 ,'This is the description in english Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '], 
-                        'd2': ['sp',4,'Verion en espanol Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '],  
-                        'd3': ['it',4,'Version en Italiano Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '], 
-                        },
-                    # HISTORY PHOTOS
-                    'fc_Owner':'teamamerica',
-                    # PHOTOS
-                    'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'],
-                            
-                        },
-                        'fc_Tags':[{'name': 'Includes',
-                                'list': ['bike','helmet','insurance'],
-                                'status': 4
-                                }, 
-                            ],
-                    'fc_Schedule': {
-                            
-                            'd1': ['Monday','14:00','21:00',1], 
-                            'd2': ['Tuesday','10:00','21:00',1],  
-                            'd3': ['Wednesday','10:00','21:00',1], 
-                            'd4': ['Thursday','10:00','21:00',1], 
-                            'd5': ['Friday','10:00','21:00',1], 
-                            'd6': ['Saturday','11:00','19:00',1], 
-                            'd7': ['Sunday','11:00','19:00',1], 
-                            
-                            },  
-                    'fc_SmallNotes': {
-                            'd1': ['Notes','This tour leaves every Tuesday, year-round, weather permitting, at 10:15 am, a few blocks from Union Square in Manhattan (precise address will be given after booking is made). It is approximately 14 miles and will last about 7 hours.']
-                        },
-                        'S_fc_SmallNotes':1
-                    
-                    }]# CLOSE
-    
-
-    data['Services'] = [
-
-                # START ITEM A
-                {
-                    'fc_Title':'This is a SERVICE FactCard',
-                    'S_fc_Title':1,
-                    'fc_OneLine':'Upscale. Exceptional.',
-                    'S_OneLine':1,
-                    'fc_Category':'Cruise Waterfront',
-                    'S_fc_Category':1,
-                    'fc_Specs': {
-                            'd1': ['Category','Dinning Cruise'], 
-                            'd2': ['Minimum Booking Age','18'],  
-                            'd3': ['Attire','Casual'], 
-                        },
-                    'S_fc_Specs':1,
-                    'fc_Descriptions': {
-                        'd1': ['en',1 ,'Get ready for the ultimate dining experience. Cruising year-round from Chelsea Piers, European-inspired Bateaux New York offers champagne brunch, lunch, dinner and full moon cruises, plus dozens of holiday cruises.'], 
-                        'd2': ['sp',4,'Preparate para la mas emocionante experiencia mientras comes una cena de lujo. Operamos todo el ano desde el puerto de Chelsea. Inspirado en el estilo europeo, ofrecemos champagne, brunch, lunch, comidas y cruceros de luna llena, ademas de muchas experiencias en distintas fiestas y aniversarios.'],  
-                        'd3': ['it',4,'(not italian translation)'],
-                        },
-                    'fc_Owner':'teamamerica',
-                    'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'],
-                            
-                        },
-                    
-                    'fc_Schedule': {
-                            'd1': ['Monday','14:00','21:00',1], 
-                            'd2': ['Tuesday','10:00','21:00',1],  
-                            'd3': ['Wednesday','10:00','21:00',1], 
-                            'd4': ['Thursday','10:00','21:00',1], 
-                            'd5': ['Friday','10:00','21:00',1], 
-                            'd6': ['Saturday','11:00','19:00',1], 
-                            'd7': ['Sunday','11:00','19:00',1], 
-                            },  
-                    'fc_SmallNotes': {
-                            'd1': ['Notes','Boarding is 30 minutes prior departure from Chelsea Pier, Pier 61 West 23rd Street and 12th Avenue. Dinner Sailing times: 7:00 to 10:00 pm. Brunch and Lunch Sailing Time: 12:00 to 2:00 pm. Schedule may change and boarding and departure time will be advised at time of confirmation of service.'], 
-                            'd2': ['Dress Code','We request no jeans, shorts, tank tops, halter-tops, gym shoes or flip flops are worn on any cruise, Dinner: Jackets are recommended for men and cocktail attire for women.  Lunch: We recommend dressy casual attire, such as nice slacks and collared shirts. ']
-                        },
-                        'S_fc_SmallNotes':1
-                },
-                ]
-                # CLOSE ITEM
-        
-    data['Rooms'] = [{
-                    'fc_Title':'This is a ROOM FactCard',
-                    'fc_Category':'Single Room',
-                    'fc_Specs': {
-                            'd1': ['Category','SGL Room'], 
-                            'd2': ['Avg Size','300 sq ft.'],  
-                            'd3': ['Smoking','No'], 
-                        },
-                    'fc_Descriptions': {
-                      'd1': ['en',4 ,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'], 
-                      'd2': ['sp',4,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'],  
-                      'd3': ['fr',4,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'], 
-                      },
-                    'fc_Owner':'teamamerica',
-                    'fc_Photos': ['6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439','6896928037','3498992745','3579873745','3836044439'],
-                    'fc_SmartPhotos': {
-                            'p1': [1,'6896928037','ok'], 
-                            'p2': [2,'3498992745','ok'],  
-                            'p3': [3,'3836044439','ok'], 
-                            'p4': [4,'6896928037','ok'], 
-                        },
-                    'fc_Links': {
-                            'd1': ['Website','http://www.myring.io'], 
-                            'd2': ['NewYork TImes','http://www.myring.io'],  
-                            'd3': ['TimeOut','http://www.myring.io'], 
-                        },
-                    'fc_Tags':[{'name': 'Business', 
-                                'list': ['a_001','a_002','a_003']
-                                },
-                                {'name': 'Beauty', 
-                                'list': ['b_001','b_002','b_003']
-                                }
-                                
-                            ],
-                        'fc_SmallNotes': {
-                            'd1': ['Notes','Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam hendrerit malesuada lacus.'], 
-                            'd2': ['Cancellation Policy','Donec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestasDonec id pulvinar enim. Praesent finibus nibh ac sapien ultrices egestas']
-                        },
-                        'fc_Tags':[{'name': 'Room Ammenities', 
-                                'list': ['a_001','a_002','a_003']
-                                }
-                            ],
-                    },
-
-                    ]# CLOSE   
-                
-
-                
-            
-
-
-                    
-
-    return render_template("/sandbox/factcard_test1.html", data=data) 
-
-
 
 
 

@@ -38,53 +38,46 @@
                                 <div class="col-sm-7 spa30">
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label fc-g fs-0-9">Name</label>
+                                        <label class="col-sm-2 control-label fc-n fs-0-9">Name</label>
                                         <div class="col-sm-10">
                                           <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="Your Name" value="{{ data.user['name'] }}" >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-g fs-0-9">Website</label>
+                                      <label class="col-sm-2 control-label fc-n fs-0-9">Website</label>
                                       <div class="col-sm-10">
                                           <input type="text" id="url" name="url"  class="form-control input-sm" placeholder="Homepage, personal blog" value="{{ data.user['url'] }}">
                                        </div>
                                     </div>
 
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-g fs-0-9">Location</label>
+                                      <label class="col-sm-2 control-label fc-n fs-0-9">Location</label>
                                       <div class="col-sm-10">
                                         <input type="text" id="location" name="location"  class="form-control input-sm" placeholder="Where do you live" value="{{ data.user['location'] }}">
                                       </div>
                                     </div>
 
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-g fs-0-9">OnLogin</label>
+                                      <label class="col-sm-2 control-label fc-n fs-0-9">OnLogin</label>
                                       <div class="col-sm-4">
                                         <input type="text" id="onlogin" name="onlogin"  class="form-control input-sm" placeholder="" value="{{ data.user['onlogin'] }}">
                                       </div>
                                     </div>
 
-                                    
-
-                                    <div class="rn-box-content text-right">
-                                        <br/>
-                                        <div class="form-group">
-                                            <label for="inputPassword3" class="col-sm-2 control-label"></label>
-                                            <div class="col-sm-10">
-                                                <button type="submit" class="btn btn-primary btn-sm">Update profile</button>
-                                                <a href="/{{ data.handle }}/_home" class="btn btn-default btn-sm">Cancel</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
+                                   
                                 </div>
-
-
                             </div>
+                             <div class="row">
+                                <div class="col-sm-offset-1 col-sm-11">
+                                    <div class="rn-box-content text-right">
+                                        <hr/>
+                                        <button type="submit" class="btn btn-primary btn-xs">Update</button>
+                                        <a href="/{{ data.handle }}/_home" class="btn btn-default btn-sm">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
                             
                         </form>
                     </div><!-- //close box -->

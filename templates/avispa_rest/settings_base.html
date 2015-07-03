@@ -42,6 +42,8 @@
             <div class="col-sm-3">
                 <div class="gcard">
                     <div class="gcard-title">
+                        
+
                         <i class="fa fa-user"></i> Personal Settings
 
                       
@@ -53,7 +55,7 @@
                             <tr>
                                 <td class="p-0">
                                   <div class="{% if data.menu =='s1' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8 {%endif%}">
-                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder {% if data.menu =='s1' %} fc-b{%endif%}"> {{ current_user.name }} Profile</a>
+                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder {% if data.menu =='s1' %} fc-b{%endif%}">  Profile</a>
                                   </div>
                                 </td>
                             </tr>
@@ -62,7 +64,7 @@
 
                                   <div class="{% if data.menu =='s2' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
                                   
-                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder "> Settings</a>
+                                    <a href="/{{ current_user.id }}/_access" class="pad-x-10 nounder "> Access</a>
                                   </div>
                                   
                                 </td>
@@ -73,7 +75,7 @@
 
                                   <div class="{% if data.menu =='s3' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
                                   
-                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder "> Billing</a>
+                                    <a href="/{{ current_user.id }}/_email" class="pad-x-10 nounder "> Email</a>
                                   </div>
                                   
                                 </td>
@@ -83,7 +85,17 @@
 
                                   <div class="{% if data.menu =='s4' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
                                   
-                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder "> Licenses</a>
+                                    <a href="/{{ current_user.id }}/_billing" class="pad-x-10 nounder "> Billing</a>
+                                  </div>
+                                  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0">
+
+                                  <div class="{% if data.menu =='s5' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
+                                  
+                                    <a href="/{{ current_user.id }}/_licenses" class="pad-x-10 nounder "> Licenses</a>
                                   </div>
                                   
                                 </td>

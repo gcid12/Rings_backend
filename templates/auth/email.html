@@ -1,0 +1,62 @@
+{% extends 'avispa_rest/settings_base.html' %}
+
+
+
+            {% block settings %}
+
+
+                <div class="gcard">
+                    <div class="gcard-title bg-d">
+              
+                        
+                        <span class="fc-b fs-1-2"> {{ data.user['name'] }}</span>
+                        <span class="fc-b fs-1-2 fw-c"> Email</span>
+              
+                    </div> 
+                   
+
+                    
+
+                    <div class="gcard-body p-20">
+              
+                        <form class="form-horizontal" action="" method="POST" role="form">
+
+                            <div class="row">
+                                <div class=" col-sm-offset-1 col-sm-9 spa10"> 
+                                   
+                                    <p class="fc-m fs-0-8">Your primary MyRing email address will be used for account-related notifications (e.g. account changes and billing receipts) as well as any web-based MyRing operations</p>
+
+                                </div>
+       
+                                <div class="col-sm-offset-1 col-sm-7 spa30">
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label fc-n fs-0-9">Current Email <i class="fa fa-envelope"></i></label>
+                                        <div class="col-sm-6">
+                                          <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="email@email.com" value="" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label fc-n fs-0-9">Keep my email private</label>
+                                        <div class="col-sm-6">
+                                          <input type="checkbox"  name="private"  class="input-sm" value="" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-offset-1 col-sm-11">
+                                    <div class="rn-box-content text-right">
+                                        <hr/>
+                                        <button type="submit" class="btn btn-primary btn-xs">Update</button>
+                                        <a href="/HANDLE/_home" class="btn btn-default btn-xs">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        </form>
+                    </div><!-- //close box -->
+                </div>
+
+            {% endblock %}

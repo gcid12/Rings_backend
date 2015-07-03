@@ -1,0 +1,66 @@
+{% extends 'avispa_rest/settings_base.html' %}
+
+
+
+            {% block settings %}
+
+
+                <div class="gcard">
+                    <div class="gcard-title bg-d">
+              
+                        
+                        <span class="fc-b fs-1-2"> {{ data.user['name'] }}</span>
+                        <span class="fc-b fs-1-2 fw-c"> Billing</span>
+              
+                    </div> 
+                   
+
+                    
+
+                    <div class="gcard-body p-20">
+              
+                        <form class="form-horizontal" action="" method="POST" role="form">
+
+                            <div class="row">
+       
+                                <div class="col-sm-offset-1 col-sm-9 spa30">
+
+                                    <div class="form-group">
+                                        <div class="col-sm-2 fc-n fs-0-9 fw-c text-right">Plan:</div>
+                                        <div class="col-sm-6 fc-m fs-0-9">
+                                          <i class="fa fa-flag"></i> Free - 0 Private Rings
+                                        </div>
+                                        <div class="col-sm-3 text-right">
+                                            <a href="" class="btn btn-default btn-sm"> <i class="fa fa-arrow-up"></i> Change Plan</a>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group">
+                                        <div class="col-sm-2 fc-n fs-0-9 fw-c text-right">Payment:</div>
+                                        <div class="col-sm-6 fc-m fs-0-9">
+                                          <i class="fa fa-credit-card"></i> No payment method on file
+                                        </div>
+                                        <div class="col-sm-3 text-right">
+                                            <a href="" class="btn btn-default btn-sm"> <i class="fa fa-plus-circle "></i> Add payment method</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-offset-1 col-sm-11">
+                                    <div class="rn-box-content text-right">
+                                        <hr/>
+                                        <button type="submit" class="btn btn-primary btn-xs">Update</button>
+                                        <a href="/HANDLE/_home" class="btn btn-default btn-xs">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            
+                        </form>
+                    </div><!-- //close box -->
+                </div>
+
+            {% endblock %}

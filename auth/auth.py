@@ -757,3 +757,159 @@ def load_user(id):
     
 
 
+
+@auth_flask_login.route("/<handle>/_access", methods=["GET"])
+@login_required
+def access_get(handle):
+
+    if handle == current_user.id:
+        user = load_user(handle)
+
+        data = {}
+        data['user'] = user
+        data['handle'] = handle
+        data['menu'] = 's2'
+
+        o = urlparse.urlparse(request.url)
+        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+        data['method'] = '_profile'
+
+        
+        #This is for the upperbar only
+        MAM = MainModel()
+        user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if user_doc:   
+            data['cu_profilepic'] = user_doc['profilepic']
+            flash({'track':'_profile'},'MP')
+
+        return render_template("/auth/access.html", data=data)
+
+    else:
+        flash('Redirected to your own profile','UI')
+        mpp = {'status':'KO','msg':'Redirecting users profile'}
+        flash({'f':'track','v':'_profile','p':mpp},'MP')
+        #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
+        return redirect('/'+current_user.id+'/_profile')
+
+
+
+@auth_flask_login.route("/<handle>/_email", methods=["GET"])
+@login_required
+def email_get(handle):
+
+    if handle == current_user.id:
+        user = load_user(handle)
+
+        data = {}
+        data['user'] = user
+        data['handle'] = handle
+        data['menu'] = 's3'
+
+        o = urlparse.urlparse(request.url)
+        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+        data['method'] = '_profile'
+
+        
+        #This is for the upperbar only
+        MAM = MainModel()
+        user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if user_doc:   
+            data['cu_profilepic'] = user_doc['profilepic']
+            flash({'track':'_profile'},'MP')
+
+        return render_template("/auth/email.html", data=data)
+
+    else:
+        flash('Redirected to your own profile','UI')
+        mpp = {'status':'KO','msg':'Redirecting users profile'}
+        flash({'f':'track','v':'_profile','p':mpp},'MP')
+        #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
+        return redirect('/'+current_user.id+'/_profile')
+
+
+
+
+@auth_flask_login.route("/<handle>/_billing", methods=["GET"])
+@login_required
+def billing_get(handle):
+
+    if handle == current_user.id:
+        user = load_user(handle)
+
+        data = {}
+        data['user'] = user
+        data['handle'] = handle
+        data['menu'] = 's4'
+
+        o = urlparse.urlparse(request.url)
+        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+        data['method'] = '_profile'
+
+        
+        #This is for the upperbar only
+        MAM = MainModel()
+        user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if user_doc:   
+            data['cu_profilepic'] = user_doc['profilepic']
+            flash({'track':'_profile'},'MP')
+
+        return render_template("/auth/billing.html", data=data)
+
+    else:
+        flash('Redirected to your own profile','UI')
+        mpp = {'status':'KO','msg':'Redirecting users profile'}
+        flash({'f':'track','v':'_profile','p':mpp},'MP')
+        #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
+        return redirect('/'+current_user.id+'/_profile')
+
+
+
+@auth_flask_login.route("/<handle>/_licenses", methods=["GET"])
+@login_required
+def licenses_get(handle):
+
+    if handle == current_user.id:
+        user = load_user(handle)
+
+        data = {}
+        data['user'] = user
+        data['handle'] = handle
+        data['menu'] = 's5'
+
+        o = urlparse.urlparse(request.url)
+        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+        data['method'] = '_profile'
+
+        
+        #This is for the upperbar only
+        MAM = MainModel()
+        user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if user_doc:   
+            data['cu_profilepic'] = user_doc['profilepic']
+            flash({'track':'_profile'},'MP')
+
+        return render_template("/auth/licenses.html", data=data)
+
+    else:
+        flash('Redirected to your own profile','UI')
+        mpp = {'status':'KO','msg':'Redirecting users profile'}
+        flash({'f':'track','v':'_profile','p':mpp},'MP')
+        #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
+        return redirect('/'+current_user.id+'/_profile')
+
+
+
+
+
+
+
+
+
+
+
+
+
