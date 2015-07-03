@@ -364,19 +364,25 @@ class AvispaRestFunc:
 
                                 source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
 
-
+                                no_field = True
                                 print('o.query:',o.query)
                                 queryparts = o.query.split('&')
-                                for querypart in queryparts:
-                                    qp = querypart.split('=')
-                                    if 'fl' in qp:
-                                        qp_parts = qp[1].split('+')
-                                        field_sources[source_id] = qp_parts
+                                if len(queryparts) > 0:
+                                    for querypart in queryparts:
+                                        qp = querypart.split('=')
+                                        if 'fl' in qp:
+                                            qp_parts = qp[1].split('+')
+                                            field_sources[source_id] = qp_parts
+                                            no_field = False
+
+                                
+                                    #No field was indicated. Assign the first one
 
                             print ('field_sources:',field_sources)
 
                             # Create _repr based on field_sources
                             for rich_item in item[fieldname+'_rich']:
+                                print('rich_item',rich_item)
                                 if '_source' in rich_item:
                                     o = urlparse.urlparse(rich_item['_source'].strip())
                                     print('xo.netloc:',o.netloc)
@@ -397,14 +403,29 @@ class AvispaRestFunc:
                                         #There is a way to translate
 
                                         #We are going to overwrite the URLs for the REPRESENTATION
-                                        previewItem[fieldname] = ''
+                                        previewItem[fieldname] = ''    
                                         for fl in field_sources[source_id]:
+                                            print(fieldname+':fl',fl)
+                                            
                                             if fl in rich_item:
                                                 previewItem[fieldname] += rich_item[fl]+' '
                                             else:
-                                                print('Not found: Fl is case sensitive')
+                                                print(fl+': Field Not found')
 
-                                        print('REPR:', previewItem[fieldname])
+                                    if no_field:
+
+                                        for fl in rich_item:
+                                            if fl[:1] != '_':
+                                                print(fieldname+':No_field field:',fl)
+                                                previewItem[fieldname] = rich_item[fl]
+                                                print('previewItem',previewItem[fieldname])
+                                                break
+
+                                        
+
+
+
+                                    print('REPR:', previewItem[fieldname])
  
                        
 
