@@ -7,26 +7,18 @@
         </div>
     </div>
     <div class="col-sm-7 text-left">
-        {#% if not data.item[field.FieldName] %#}
-        {% if True %}
 
-            <input type="hidden" name="{{ field.FieldName }}" class="form-control" id="input_select_{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
+        <input type="hidden" name="{{ field.FieldName }}" class="form-control flag-aware" order="{{ field.FieldOrder }}" id="input_select_{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
 
-            <!--select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}-->
+        <!--select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}-->
 
-            <select id="chosen_{{ field.FieldOrder }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}>
-                             
-            {% if field.FieldCardinality != 'Multiple' %}
-                <option value="" class="fc-0-9">SELECT ONE </option> 
-            {% endif %}
-
-            </select>
-        {% else %}
-
-            <input name="{{ field.FieldName }}" class="form-control" id="text{{ field.FieldOrder }}" placeholder="Enter {{ field.FieldName }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
-    
+        <select id="chosen_{{ field.FieldOrder }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}>
+                         
+        {% if field.FieldCardinality != 'Multiple' %}
+            <option value="" class="fc-0-9">SELECT ONE </option> 
         {% endif %}
 
+        </select>
 
     </div>
     

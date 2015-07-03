@@ -1,7 +1,7 @@
 <script>
 Dropzone.autoDiscover = false;
 var myDropzone{{ field.FieldOrder }} = new Dropzone("#dropzone{{ field.FieldOrder }}", { 
-      url: "/_tools/upload_via_aud?handle={{ data.handle }}",
+      url: "{{data.image_cdn_root}}/_tools/upload_via_aud?handle={{ data.handle }}",
       addRemoveLinks: true  
       });
 
@@ -16,7 +16,7 @@ $( ".dz-size" ).css( "display", "none" );
     {% if image %}
       {% if image!='1' %}
         console.log("{{image}}");
-        var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"  };
+        var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"  };
         myDropzone{{ field.FieldOrder }}.options.addedfile.call(myDropzone{{ field.FieldOrder }}, fieldvalue);
         myDropzone{{ field.FieldOrder }}.options.thumbnail.call(myDropzone{{ field.FieldOrder }}, fieldvalue, "{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"); 
 
@@ -45,9 +45,17 @@ myDropzone{{ field.FieldOrder }}.on("success", function(file,success) {
         }else{
             console.log('will change the value')
     	    var value = $( '#input_images_{{ field.FieldOrder }}' ).val();
+
     	    console.log('val:'+value)
     	    $( '#input_images_{{ field.FieldOrder }}' ).val(value+','+obj.imgid);
             console.log('Value Changed')
+            
+            //flag function
+            if(value+','+obj.imgid!=','){
+                change_flag('{{ field.FieldOrder }}','1000');           
+            } else {
+                change_flag('{{ field.FieldOrder }}','0000');
+            }
         }
   });
 
@@ -88,10 +96,20 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     		if (indextodelete!=-1){
     			valuearray.splice(indextodelete,1);
     			value = valuearray.join(',');
+                if(value==''){
+                    value=','
+                }
     			console.log('aftervalue:'+value);
     			$( '#input_images_{{ field.FieldOrder }}' ).val(value);		
     		}else{
                 console.log('Could not find the id to delete in the list ')
+            }
+
+            //flag function
+            if(value==','){
+                change_flag('{{ field.FieldOrder }}','0000');           
+            } else {
+                change_flag('{{ field.FieldOrder }}','1000');
             }
     		
     		//Delete Resource in Server
@@ -99,7 +117,7 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     		//This still needs to be implemented in the server side
     		$.ajax({
 				type: "GET",
-				url: "/_tools/delete_via_aud?id="+resource2delete,
+				url: "{{data.image_cdn_root}}/_tools/delete_via_aud?id="+resource2delete,
 				success: function(response){
 					//alert('Response:'+response);
 				}
