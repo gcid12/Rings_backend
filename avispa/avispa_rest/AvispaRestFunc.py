@@ -216,6 +216,7 @@ class AvispaRestFunc:
             self.ACM = AvispaCollectionsModel()
             collectiond = self.ACM.get_a_x_y(handle,request.args.get('collection')) #It comes with just one collection
             if collectiond:
+                #TOFIX Are we really calling the DB just to get the name of a collection that we already have?
                 collectionname = collectiond['collectionname'] 
             else:
                 redirect = '/'+handle+'/_home'
@@ -259,35 +260,17 @@ class AvispaRestFunc:
         d['ringdescription'] = schema['rings'][0]['RingDescription']
 
         layers = {}
-        labels = {}
         widgets = {}
         sources = {}
-        for schemafield in schema['fields']:
-            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
-            widgets[schemafield['FieldName']]=schemafield['FieldWidget']
-            sources[schemafield['FieldName']]=schemafield['FieldSource']
+        labels = {}
 
-            if int(schemafield['FieldLayer']) <= int(layer):
-                labels[schemafield['FieldName']]=schemafield['FieldLabel']
+        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'],layers,labels,widgets,sources)
 
 
         print('widgets:',widgets)
 
-        
-        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
 
-        if not ringparameters:
-            flash(str(ring)+" does not exist or it has been deleted",'UI')
-            redirect = '/'+handle+'/_home'
-            d = {'redirect': redirect, 'status':404}
-            return d
-            
-
-
-        d['ringcount']  = ringparameters['count']
-        d['ringorigin'] = ringparameters['ringorigin']
-
-
+        d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
 
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
@@ -328,8 +311,6 @@ class AvispaRestFunc:
                         previewItem[fieldname] = item[fieldname] 
 
                         if fieldname+'_rich' in item and (sources[fieldname] is not None):
-
-
 
                             previewItem[fieldname+'_rich'] = item[fieldname+'_rich']
 
@@ -428,7 +409,7 @@ class AvispaRestFunc:
                                     print('REPR:', previewItem[fieldname])
  
                        
-
+                        #Convert comma separated string into list. Also delete first element as it comes empty
                         if  widgets[fieldname]=='images':
                             
                             d['imagesui'] = True
@@ -460,10 +441,6 @@ class AvispaRestFunc:
         d['resultsperpage'] = resultsperpage
         d['FieldLabel'] = labels
 
-
-        
-
-
         if api:
 
             out = {}
@@ -489,6 +466,33 @@ class AvispaRestFunc:
             d['template'] = 'avispa_rest/get_a_b.html'
 
         return d
+
+    def ring_parameters(self,handle,ring):
+
+        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+
+        if not ringparameters:
+            flash(str(ring)+" does not exist or it has been deleted",'UI')
+            redirect = '/'+handle+'/_home'
+            d = {'redirect': redirect, 'status':404}
+            return d
+
+        return (ringparameters['count'],ringparameters['ringorigin'])
+    
+    def field_dictonaries_init(self,schemafields,layers,labels,widgets,sources):
+
+        for schemafield in schemafields:
+            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
+            widgets[schemafield['FieldName']]=schemafield['FieldWidget']
+            sources[schemafield['FieldName']]=schemafield['FieldSource']
+
+            if schemafield['FieldLabel'] is not '':
+                labels[schemafield['FieldName']]=schemafield['FieldLabel']
+            else:
+                labels[schemafield['FieldName']]=schemafield['FieldName']
+
+        return layers,widgets,sources,labels        
+
 
     def get_rq_a_b(self,request,handle,ring,idx=False,api=False,collection=None,*args):
         # To find something inside of this ring
@@ -798,10 +802,12 @@ class AvispaRestFunc:
         d['ringcount']  = ringparameters['count']
         d['ringorigin'] = ringparameters['ringorigin']
 
-        item = self.AVM.get_a_b_c(request,handle,ring,idx)
-        print('preitem:',item)
+        previewItem = self.AVM.get_a_b_c(request,handle,ring,idx)
+        print('preitem:',previewItem)
 
-        schema = self.AVM.ring_get_schema(handle,ring)
+        #schema = self.AVM.ring_get_schema(handle,ring)
+        schema = self.AVM.ring_get_schema_from_view(handle,ring)
+
         print('schema:',schema)
 
         d['ringdescription'] = schema['rings'][0]['RingDescription']
@@ -810,28 +816,39 @@ class AvispaRestFunc:
         d['widget'] = {}
         d['imagesui'] = False
 
-
-
+        layers = {}
         labels = {}
+        widgets = {}
+        sources = {}
+        for schemafield in schema['fields']:
 
-        for field in schema['fields']:
+            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
+            widgets[schemafield['FieldName']]=schemafield['FieldWidget']
+            sources[schemafield['FieldName']]=schemafield['FieldSource']
 
-            if field['FieldLabel'] is not '':
-                labels[field['FieldName']]=field['FieldLabel']
+            if schemafield['FieldLabel'] is not '':
+                labels[schemafield['FieldName']]=schemafield['FieldLabel']
             else:
-                labels[field['FieldName']]=field['FieldName']
+                labels[schemafield['FieldName']]=schemafield['FieldName']
 
-            d['widget'][field['FieldName']] = field['FieldWidget']
+
+
+        for schemafield in schema['fields']:
             
 
-            if 'images' in field['FieldWidget']:
-                images=item[field['FieldName']].split(',')
-                print('contents:',item[field['FieldName']])
-                print('fieldname:',field['FieldName'])
-                print('images:',images)
-                del images[0]
-                item[field['FieldName']] = images
+            fieldname = schemafield['FieldName']
+            #Convert comma separated string into list. Also delete first element as it comes empty
+            if  widgets[fieldname]=='images':                           
                 d['imagesui'] = True
+                images=previewItem[fieldname].split(',')                
+                del images[0]
+                previewItem[fieldname]=images
+            
+            d['widget'] = widgets
+            d['FieldLabel'] = labels
+
+        item = previewItem
+
 
         print('postitem:',item)
                 

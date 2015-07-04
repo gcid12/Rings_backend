@@ -885,8 +885,6 @@ class AvispaModel:
     #AVISPAMODEL
     def get_a_b(self,handle,ringname,limit=100,lastkey=None,sort=None):
 
-
-
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
         batch = 500  #This is not the number of results per page. 
@@ -964,8 +962,12 @@ class AvispaModel:
             item[u'_id'] = row['id']
 
             for fieldname in OrderedFields:
+
                 if fieldname in row['value']:
                     item[fieldname] = row['value'][fieldname]
+
+                if fieldname+'_flag' in row['value']:
+                        item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
 
                 if fieldname+'_rich' in row['value']:
                     item[fieldname+'_rich'] = row['value'][fieldname+'_rich']
@@ -1322,9 +1324,16 @@ class AvispaModel:
                 item[u'_id'] = row['id']
 
                 for fieldname in OrderedFields:
-                    item[fieldname] = row['value'][fieldname]
+
+                    if fieldname in row['value']:
+                        item[fieldname] = row['value'][fieldname]
+
                     if fieldname+'_flag' in row['value']:
                         item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
+
+                    if fieldname+'_rich' in row['value']:
+                        item[fieldname+'_rich'] = row['value'][fieldname+'_rich']
+
                     #item.update(row['value'])
 
                 print("item:")
