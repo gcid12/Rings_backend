@@ -211,20 +211,15 @@ class AvispaRestFunc:
         '''
         d = {}
 
-        collectionname = ''
+        #TOFIX Can we avid this validation somehow?
         if 'collection' in request.args:
-            self.ACM = AvispaCollectionsModel()
-            collectiond = self.ACM.get_a_x_y(handle,request.args.get('collection')) #It comes with just one collection
-            if collectiond:
-                #TOFIX Are we really calling the DB just to get the name of a collection that we already have?
-                collectionname = collectiond['collectionname'] 
+            result = self.validate_collectioname(request.args.get('collection'))
+            if result:
+                d['collection'] = result
             else:
                 redirect = '/'+handle+'/_home'
-                d = {'redirect': redirect, 'status':404}
-                return d
+                return {'redirect': redirect, 'status':404}
 
-
-        d['collection'] = collectionname
 
 
         if request.args.get('lastkey'):
@@ -259,19 +254,11 @@ class AvispaRestFunc:
        
         d['ringdescription'] = schema['rings'][0]['RingDescription']
 
-        layers = {}
-        widgets = {}
-        sources = {}
-        labels = {}
-
-        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'],layers,labels,widgets,sources)
-
+        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'])
 
         print('widgets:',widgets)
 
-
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-
 
         preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
         
@@ -479,7 +466,12 @@ class AvispaRestFunc:
 
         return (ringparameters['count'],ringparameters['ringorigin'])
     
-    def field_dictonaries_init(self,schemafields,layers,labels,widgets,sources):
+    def field_dictonaries_init(self,schemafields):
+
+        layers = {}
+        widgets = {}
+        sources = {}
+        labels = {}
 
         for schemafield in schemafields:
             layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
@@ -491,7 +483,18 @@ class AvispaRestFunc:
             else:
                 labels[schemafield['FieldName']]=schemafield['FieldName']
 
-        return layers,widgets,sources,labels        
+        return layers,widgets,sources,labels     
+
+    def validate_collectioname(self,precollectionname):
+
+        collectionname = ''
+        if 'collection' in request.args:
+            self.ACM = AvispaCollectionsModel()
+            collectiond = self.ACM.get_a_x_y(handle,precollectionname) #It comes with just one collection
+            if collectiond:     
+                return collectiond['collectionname'] 
+            else:          
+                return False   
 
 
     def get_rq_a_b(self,request,handle,ring,idx=False,api=False,collection=None,*args):
