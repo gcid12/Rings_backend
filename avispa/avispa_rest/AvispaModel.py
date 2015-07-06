@@ -885,46 +885,68 @@ class AvispaModel:
     #AVISPAMODEL
     def get_a_b(self,handle,ringname,limit=100,lastkey=None,sort=None):
 
-
-
-        db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
-        batch = 500  #This is not the number of results per page. 
-         # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
+        
+        items = []
+        i = 0
 
         schema = self.ring_get_schema_from_view(handle,ringname) 
         OrderedFields=[]
         for field in schema['fields']:
             OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
 
-
+        # sort exists if it is sent in the url as ?sort=<name-of-field>_<desc|asc>
         sort_reverse=False
         if sort:
             sort_parts = sort.split('_')
             if len(sort_parts)==2:
                 if sort_parts[1].lower()=='desc':
                     sort_reverse=True
-
                 sort= sort_parts[0]
-
         else:
             sort = OrderedFields[0]
-            
 
-        #print('schema:')
-        #print(schema)
+        result = self.select_ring_doc_view('ring/items',handle,ringname)
+        print('result:',result)
+    
+        
 
-        #print('OrderedFields:')
-        #print(OrderedFields)
+        for row in result:
+
+            i += 1
+            if lastkey and i==1:
+                #If lastkey was sent, ignore first item 
+                #as it was the last item in the last page
+                continue
+
+            item = self.populate_item(OrderedFields,row)
+
+            if item:
+                items.append(item)
+                self.sort = sort
+                items = sorted(items, key=self.sort_item_list, reverse=sort_reverse)
+
+        return items
+
+
+    def select_ring_doc_view(self,dbview,handle,ringname,limit=100,key=None,batch=None,lastkey=None):
+
+        # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname] 
+ 
+        if not batch : 
+            batch = 500
 
         options = {}
+        if key:
+            options['key']=str(key)
         if lastkey:
             limit +=1
-            options['startkey']=lastkey  #Where the last page left
+            options['startkey']=lastkey  #Where the last page left  
+        options['limit']=limit #Number of results per page  
+        result = db.iterview(dbview,batch,**options)
 
-        options['limit']=limit #Number of results per page
-        
-        
         #options['key']='4393588627'
         
         #options['startkey_docid']='4393588627'
@@ -932,64 +954,31 @@ class AvispaModel:
         #options['endkey_docid']=4
 
 
-        result = db.iterview('ring/items',batch,**options)
+        
+        # result carries all the items in that page
 
-        print ('ITEMS FROM VIEW:',result)
 
-        presorteditems = []
-        for row in result:
-            print ('row:',row)
-            presorteditems.append(row)
+        return result
 
-        #print('PRESORTEDITEMS:', presorteditems)
 
-        items = []
-        i = 0
-
-        for row in presorteditems:
-
-            i += 1
-            if lastkey and i==1:
-                #If lastkey was sent, ignore first item 
-                #as it was the last item in the last page
-                #print('length:')
-                #print(len(items))
-                continue
-                #pass
-
-            #item = {} #Make this an ordered dictionary
-            #This will output the fields as specified in the schema
-            item = collections.OrderedDict()
-
+    def populate_item(self,OrderedFields,row):
+        item = collections.OrderedDict()
+        if 'id' in row:        
             item[u'_id'] = row['id']
-
             for fieldname in OrderedFields:
                 if fieldname in row['value']:
                     item[fieldname] = row['value'][fieldname]
-
+                if fieldname+'_flag' in row['value']:
+                        item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
                 if fieldname+'_rich' in row['value']:
                     item[fieldname+'_rich'] = row['value'][fieldname+'_rich']
+            return item
+        else:
+            return False
+        
 
-            #item.update(row['value'])
 
-            #item['id']=row['id']
-            #item['values']=row['value']
-            items.append(item)
-            #print("item:")
-            #print(item)
-            
-            #sort = 'Dificultad'
-
-            
-            #self.sort=sort
-            #print('Sorting by '+sort)
-            self.sort = sort
-            items = sorted(items, key=self.SortItemList, reverse=sort_reverse)
-        #print(items)
-
-        return items
-
-    def SortItemList(self,items):
+    def sort_item_list(self,items):
         if self.sort:
             return items[self.sort]
         else:
@@ -1291,43 +1280,22 @@ class AvispaModel:
     #AVISPAMODEL
     def get_a_b_c(self,request,handle,ringname,idx):
 
-        db_ringname=str(handle)+'_'+str(ringname)
-        print('db_ringname:',db_ringname)
-        db = self.couch[db_ringname]
-        print('db:',db)
+           
 
         schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
         for field in schema['fields']:
-            #print("order:FieldName")
-            #print(field['FieldOrder'],field['FieldName'])
             OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+               
         
-        print('OrderedFields:',OrderedFields)
-        print('idx:',idx)
-
-        
-        options = {}
-        options['key']=str(idx)
-
-        #Retrieving from ring/items view
-        result = db.iterview('ring/items',1,**options)
-
+        result = self.select_ring_doc_view('ring/items',handle,ringname,key=idx)
         print('result:',result)
         
-        for row in result:      
-            item = collections.OrderedDict()
-            print('row',row)
-            if row['id']:        
-                item[u'_id'] = row['id']
+        for row in result:
 
-                for fieldname in OrderedFields:
-                    item[fieldname] = row['value'][fieldname]
-                    if fieldname+'_flag' in row['value']:
-                        item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
-                    #item.update(row['value'])
+            item = self.populate_item(OrderedFields,row)
 
-                print("item:")
+            if item:
                 return item
 
         return False

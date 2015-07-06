@@ -211,284 +211,285 @@ class AvispaRestFunc:
         '''
         d = {}
 
-        collectionname = ''
+        #Validate Collection
         if 'collection' in request.args:
-            self.ACM = AvispaCollectionsModel()
-            collectiond = self.ACM.get_a_x_y(handle,request.args.get('collection')) #It comes with just one collection
-            if collectiond:
-                collectionname = collectiond['collectionname'] 
+            #TOFIX Can we avid this collectioname validation somehow?
+            result = self.validate_collectioname(request.args.get('collection'))
+            if result:
+                d['collection'] = result
             else:
                 redirect = '/'+handle+'/_home'
-                d = {'redirect': redirect, 'status':404}
-                return d
+                return {'redirect': redirect, 'status':404}
 
-
-        d['collection'] = collectionname
-
-
-        if request.args.get('lastkey'):
+        #Query
+        if 'lastkey' in request.args:
             lastkey = request.args.get('lastkey')
         else:
             lastkey = None
 
-        if request.args.get('resultsperpage'):
+        if 'resultsperpage' in request.args:
             resultsperpage = int(request.args.get('resultsperpage'))
         else:
             resultsperpage = 2000
 
-        if request.args.get('sort'):
+        if 'sort' in request.args:
             sort = request.args.get('sort')
         else:
             sort = None
 
-        if request.args.get('noimages'):
+        if 'noimages' in request.args:
             noimages = request.args.get('noimages')
         else:
             noimages = None
 
-        if request.args.get('layer'):
+        if 'layer' in request.args:
             layer = request.args.get('layer')
         else:
             layer = PREVIEW_LAYER
 
-        #print('LAYER:',layer)
+        if 'flag' in request.args:
+            flag = request.args.get('flag')
+        else:
+            flag = None
 
+        #Subtract Schema
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
-        #print(schema['fields'])
-       
         d['ringdescription'] = schema['rings'][0]['RingDescription']
+        d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
+        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'])
 
-        layers = {}
-        labels = {}
-        widgets = {}
-        sources = {}
-        for schemafield in schema['fields']:
-            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
-            widgets[schemafield['FieldName']]=schemafield['FieldWidget']
-            sources[schemafield['FieldName']]=schemafield['FieldSource']
+        #Subtract items from DB
+        preitems = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
+        print('preitemlist:',preitems)
 
-            if int(schemafield['FieldLayer']) <= int(layer):
-                labels[schemafield['FieldName']]=schemafield['FieldLabel']
-
-
-        print('widgets:',widgets)
-
-        
-        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
-
-        if not ringparameters:
-            flash(str(ring)+" does not exist or it has been deleted",'UI')
-            redirect = '/'+handle+'/_home'
-            d = {'redirect': redirect, 'status':404}
-            return d
-            
-
-
-        d['ringcount']  = ringparameters['count']
-        d['ringorigin'] = ringparameters['ringorigin']
-
-
-
-
-        preitemlist = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
-        
-        
-        #print('preitemlist:')
-        print('preitemlist:',preitemlist)
-
+        #Prepare data
         itemlist = []
-        d['imagesui'] = False
-        for item in preitemlist:
-            #item['_level']=2
-            print('item:',item)
-            #previewItem = {}
-            previewItem = collections.OrderedDict()  
-            previewItem[u'_id'] = item[u'_id']
-            previewItem['_fieldcount'] = 0
-            previewItem['_fullcount'] = 0
-
-            #print('LAYERS',layers)
-
-            for fieldname in item:
-                #print ('FIELDNAME',fieldname)
-                
-                if fieldname in layers:
-                    previewItem['_fieldcount'] += 1
-
-                    
-                    if item[fieldname] != '':
-                        previewItem['_fullcount'] += 1
-
-                    if int(layers[fieldname])<=int(layer):
-
-                        #print('int('+str(layers[fieldname])+')<=int('+str(layer)+'))')
-                    #if True:
-                        #Only include those fields below the PREVIEWLAYER
-                        #print("Including in the preview:"+fieldname+'. Layer:'+str(layers[fieldname]))
-                        previewItem[fieldname] = item[fieldname] 
-
-                        if fieldname+'_rich' in item and (sources[fieldname] is not None):
-
-
-
-                            previewItem[fieldname+'_rich'] = item[fieldname+'_rich']
-
-                            # Retrieve all the fl from the fieldsources for this specific field
-                            field_sources = {}
-                            list_sources = sources[fieldname].split(',')
-                            for source in list_sources:
-                                print('source:',source.strip())
-                                if source == '':
-                                    continue
-                                o = urlparse.urlparse(source.strip())
-                                #source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
-                                
-                                print('o.scheme:',o.scheme)
-                                print('o.netloc:',o.netloc)
-                                print('o.path:',o.path)
-
-                                if not o.scheme:
-                                    continue
-
-
-                                path_parts = o.path.split('/')
-
-                                #if len(path_parts>1):
-
-                                if path_parts[1] == '_api':
-                                    del path_parts[1]
-                                    path = '/'.join(path_parts)
-                                else:
-                                    path = o.path   
-                                    print('corrected xo.path:',path)
-
-                                source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
-
-                                no_field = True
-                                print('o.query:',o.query)
-                                queryparts = o.query.split('&')
-                                if len(queryparts) > 0:
-                                    for querypart in queryparts:
-                                        qp = querypart.split('=')
-                                        if 'fl' in qp:
-                                            qp_parts = qp[1].split('+')
-                                            field_sources[source_id] = qp_parts
-                                            no_field = False
-
-                                
-                                    #No field was indicated. Assign the first one
-
-                            print ('field_sources:',field_sources)
-
-                            # Create _repr based on field_sources
-                            for rich_item in item[fieldname+'_rich']:
-                                print('rich_item',rich_item)
-                                if '_source' in rich_item:
-                                    o = urlparse.urlparse(rich_item['_source'].strip())
-                                    print('xo.netloc:',o.netloc)
-                                    print('xo.path:',o.path)
-
-                                    path_parts = o.path.split('/')
-                                    if path_parts[1] == '_api':
-                                        del path_parts[1]
-                                        
-                                    del path_parts[-1]
-                                    path = '/'.join(path_parts)  
-                                    
-                                    print('adjusted xo.path:',path)
-                                    
-                                    source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
-                                    print('source_id',source_id)
-                                    if source_id in field_sources:
-                                        #There is a way to translate
-
-                                        #We are going to overwrite the URLs for the REPRESENTATION
-                                        previewItem[fieldname] = ''    
-                                        for fl in field_sources[source_id]:
-                                            print(fieldname+':fl',fl)
-                                            
-                                            if fl in rich_item:
-                                                previewItem[fieldname] += rich_item[fl]+' '
-                                            else:
-                                                print(fl+': Field Not found')
-
-                                    if no_field:
-
-                                        for fl in rich_item:
-                                            if fl[:1] != '_':
-                                                print(fieldname+':No_field field:',fl)
-                                                previewItem[fieldname] = rich_item[fl]
-                                                print('previewItem',previewItem[fieldname])
-                                                break
-
-                                        
-
-
-
-                                    print('REPR:', previewItem[fieldname])
- 
-                       
-
-                        if  widgets[fieldname]=='images':
-                            
-                            d['imagesui'] = True
-                            images=previewItem[fieldname].split(',')                
-                            del images[0]
-                            previewItem[fieldname]=images
-
-            print('PREVIEW ITEM:')
-            print(previewItem)
-
-            itemlist.append(previewItem)
-
-        if noimages:
-            d['imagesui'] = False
-
-
-        #print('itemlist:')
-        #print(itemlist)
-
-        #print(len(itemlist))
-
-        if len(itemlist)>0 and len(itemlist) == resultsperpage:
-            nextlastkey=itemlist[-1]['_id']
-            d['lastkey'] = nextlastkey
-            #Still, if the last page has exactly as many items as resultsperpage, the next page will be empty. Please fix
-
-        d['widget'] = widgets
-        d['itemlist'] = itemlist
-        d['resultsperpage'] = resultsperpage
-        d['FieldLabel'] = labels
-
+        for preitem in preitems:          
+            Item = self.prepare_item(preitem,layers,widgets,sources,layer=layer,flag=flag)
+            itemlist.append(Item)
 
         
-
-
+        #Output
         if api:
-
             out = {}
-
             o = urlparse.urlparse(request.url)
             host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-
             out['source'] = host_url+"/"+str(handle)+"/"+str(ring)
-
             if 'schema' in request.args:
                 out['rings'] = schema['rings']
                 out['fields'] = schema['fields']
             
-            out['items'] = itemlist
-            
-            
+            out['items'] = itemlist                    
             d['api_out'] = json.dumps(out)
             d['template'] = 'avispa_rest/get_api_a_b.html'
-        else:
-      
 
+        else:
+
+            #Determine if there will be images
+            d['imagesui'] = False
+            if not noimages:
+                for widget in widgets:
+                    if widget == 'images':
+                        d['imagesui'] = True
+
+             #Pagination
+            if len(itemlist)>0 and len(itemlist) == resultsperpage:
+                nextlastkey=itemlist[-1]['_id']
+                d['lastkey'] = nextlastkey
+                #Still, if the last page has exactly as many items as resultsperpage, 
+                #the next page will be empty. Please fix
+
+            d['widget'] = widgets
+            d['itemlist'] = itemlist
+            d['resultsperpage'] = resultsperpage
+            d['FieldLabel'] = labels
             d['rings'] = schema['rings']
             d['template'] = 'avispa_rest/get_a_b.html'
 
         return d
+
+
+    def prepare_item(self,preitem,layers,widgets,sources,layer=None,flag=None):
+
+        Item = collections.OrderedDict()  
+        Item[u'_id'] = preitem[u'_id']
+        Item['_fieldcount'] = 0
+        Item['_fullcount'] = 0
+
+        #print('LAYERS',layers)
+
+        for fieldname in preitem:
+            #print ('FIELDNAME',fieldname)
+            
+            if fieldname in layers:
+                Item['_fieldcount'] += 1
+
+                
+                if preitem[fieldname] != '':
+                    Item['_fullcount'] += 1
+
+                if layer:
+                    if int(layers[fieldname])>int(layer):
+                        continue
+
+                Item[fieldname] = preitem[fieldname] 
+
+                if fieldname+'_rich' in preitem and (sources[fieldname] is not None):
+
+                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich']
+
+                    # Retrieve all the fl from the fieldsources for this specific field
+                    field_sources = {}
+                    list_sources = sources[fieldname].split(',')
+                    for source in list_sources:
+                        print('source:',source.strip())
+                        if source == '':
+                            continue
+                        o = urlparse.urlparse(source.strip())
+                        #source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
+                        
+                        print('o.scheme:',o.scheme)
+                        print('o.netloc:',o.netloc)
+                        print('o.path:',o.path)
+
+                        if not o.scheme:
+                            continue
+
+
+                        path_parts = o.path.split('/')
+
+                        #if len(path_parts>1):
+
+                        if path_parts[1] == '_api':
+                            del path_parts[1]
+                            path = '/'.join(path_parts)
+                        else:
+                            path = o.path   
+                            print('corrected xo.path:',path)
+
+                        source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
+
+                        no_field = True
+                        print('o.query:',o.query)
+                        queryparts = o.query.split('&')
+                        if len(queryparts) > 0:
+                            for querypart in queryparts:
+                                qp = querypart.split('=')
+                                if 'fl' in qp:
+                                    qp_parts = qp[1].split('+')
+                                    field_sources[source_id] = qp_parts
+                                    no_field = False
+
+                        
+                            #No field was indicated. Assign the first one
+
+                    print ('field_sources:',field_sources)
+
+                    # Create _repr based on field_sources
+                    for rich_item in preitem[fieldname+'_rich']:
+                        print('rich_item',rich_item)
+                        if '_source' in rich_item:
+                            o = urlparse.urlparse(rich_item['_source'].strip())
+                            print('xo.netloc:',o.netloc)
+                            print('xo.path:',o.path)
+
+                            path_parts = o.path.split('/')
+                            if path_parts[1] == '_api':
+                                del path_parts[1]
+                                
+                            del path_parts[-1]
+                            path = '/'.join(path_parts)  
+                            
+                            print('adjusted xo.path:',path)
+                            
+                            source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
+                            print('source_id',source_id)
+                            if source_id in field_sources:
+                                #There is a way to translate
+
+                                #We are going to overwrite the URLs for the REPRESENTATION
+                                Item[fieldname] = ''    
+                                for fl in field_sources[source_id]:
+                                    print(fieldname+':fl',fl)
+                                    
+                                    if fl in rich_item:
+                                        Item[fieldname] += rich_item[fl]+' '
+                                    else:
+                                        print(fl+': Field Not found')
+
+                            if no_field:
+
+                                for fl in rich_item:
+                                    if fl[:1] != '_':
+                                        print(fieldname+':No_field field:',fl)
+                                        Item[fieldname] = rich_item[fl]
+                                        print('Item',Item[fieldname])
+                                        break
+
+                                
+
+
+
+                            print('REPR:', Item[fieldname])
+
+                if fieldname+'_flag' in preitem and flag:
+                    Item[fieldname+'_flag'] = preitem[fieldname+'_flag']
+
+               
+                #Convert comma separated string into list. Also delete first element as it comes empty
+                if  widgets[fieldname]=='images':
+
+                    images=Item[fieldname].split(',')                
+                    del images[0]
+                    Item[fieldname]=images
+
+        print('PREVIEW ITEM:')
+        print(Item)
+        return Item
+
+
+
+    def ring_parameters(self,handle,ring):
+
+        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+
+        if ringparameters:
+            return (ringparameters['count'],ringparameters['ringorigin'])
+        else:
+            flash(str(ring)+" does not exist or it has been deleted",'UI')
+            return False
+
+        
+    def field_dictonaries_init(self,schemafields):
+
+        layers = {}
+        widgets = {}
+        sources = {}
+        labels = {}
+
+        for schemafield in schemafields:
+            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
+            widgets[schemafield['FieldName']]=schemafield['FieldWidget']
+            sources[schemafield['FieldName']]=schemafield['FieldSource']
+
+            if schemafield['FieldLabel'] is not '':
+                labels[schemafield['FieldName']]=schemafield['FieldLabel']
+            else:
+                labels[schemafield['FieldName']]=schemafield['FieldName']
+
+        return layers,widgets,sources,labels     
+
+    def validate_collectioname(self,precollectionname):
+
+        collectionname = ''
+        if 'collection' in request.args:
+            self.ACM = AvispaCollectionsModel()
+            collectiond = self.ACM.get_a_x_y(handle,precollectionname) #It comes with just one collection
+            if collectiond:     
+                return collectiond['collectionname'] 
+            else:          
+                return False   
+
 
     def get_rq_a_b(self,request,handle,ring,idx=False,api=False,collection=None,*args):
         # To find something inside of this ring
@@ -786,84 +787,49 @@ class AvispaRestFunc:
         ''' 
 
         d = {}
-        
-        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
 
-        if not ringparameters:
-            flash(str(ring)+" does not exist or it has been deleted",'UI')
-            redirect = '/'+handle+'/_home'
-            d = {'redirect': redirect, 'status':404}
-            return d
-
-        d['ringcount']  = ringparameters['count']
-        d['ringorigin'] = ringparameters['ringorigin']
-
-        item = self.AVM.get_a_b_c(request,handle,ring,idx)
-        print('preitem:',item)
-
-        schema = self.AVM.ring_get_schema(handle,ring)
-        print('schema:',schema)
-
+        #Subtract Schema
+        schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
+        d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
+        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'])
+        
+        #Subtract item from DB
+        preitem = self.AVM.get_a_b_c(request,handle,ring,idx)
+        print('PREITEM get_a_b_c:',preitem)
 
+        #Prepare data
+        Item = self.prepare_item(preitem,layers,widgets,sources,flag=1)
 
-        d['widget'] = {}
-        d['imagesui'] = False
+        
 
-
-
-        labels = {}
-
-        for field in schema['fields']:
-
-            if field['FieldLabel'] is not '':
-                labels[field['FieldName']]=field['FieldLabel']
-            else:
-                labels[field['FieldName']]=field['FieldName']
-
-            d['widget'][field['FieldName']] = field['FieldWidget']
-            
-
-            if 'images' in field['FieldWidget']:
-                images=item[field['FieldName']].split(',')
-                print('contents:',item[field['FieldName']])
-                print('fieldname:',field['FieldName'])
-                print('images:',images)
-                del images[0]
-                item[field['FieldName']] = images
-                d['imagesui'] = True
-
-        print('postitem:',item)
-                
-        if item:
+        #Output                
+        if Item:
             print('Awesome , you just retrieved the item from the DB')
-            print(item)
-
-            if api:
-                
+            if api:              
                 out = collections.OrderedDict()
-
-                out['source'] = "/"+str(handle)+"/"+str(ring)
-                
+                o = urlparse.urlparse(request.url)
+                host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+                out['source'] = host_url+"/"+str(handle)+"/"+str(ring)               
                 if 'schema' in request.args:
-                    #schema= self.AVM.ring_get_schema_from_view(handle,ring)
-                    #print('schema:',schema)
                     out['rings'] = schema['rings']
                     out['fields'] = schema['fields']
                 
-                #del item['_id']
-                #del item['_public'] 
                 out['items'] = [] 
-                out['items'].append(item)
-                #out['items'] = item
-
-                api_out = json.dumps(out)
-
-                d['api_out'] = api_out
+                out['items'].append(Item)
+                d['api_out'] = json.dumps(out)
                 d['template'] = 'avispa_rest/get_api_a_b_c.html'
 
             else:
-                d['item'] = item
+                #Determine if there will be images
+                d['imagesui'] = False
+                for widget in widgets:
+                    if widget == 'images':
+                        d['imagesui'] = True
+                
+                d['widget'] = widgets
+                d['FieldLabel'] = labels
+                d['item'] = Item
                 d['labels'] = labels 
                 d['template'] = 'avispa_rest/get_a_b_c.html'
 
