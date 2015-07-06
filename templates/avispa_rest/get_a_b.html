@@ -155,7 +155,7 @@
                                
               {% endfor %}
                  
-                 <th class="text-s1 fs-0-8 ">
+                 <th class="text-s1 fs-0-8 hidden-xs">
                    <span class="label label-xs bg-m">Completion</span>
                  </th>
 
@@ -218,7 +218,7 @@
 
                  
 
-                  <td style="width:150px;" class="text-right">
+                  <td style="width:150px;" class="text-right hidden-xs">
                       <!-- 1st FIELD -->{#{((item['_fullcount']/item['_fieldcount'])*100)|round(1)|int}#}
 
                       {{ ui.pbar((item['_fullcount']/item['_fieldcount'])*100) }}

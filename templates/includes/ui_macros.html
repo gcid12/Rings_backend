@@ -106,22 +106,7 @@
             
             
              
-              {% if extended!='1' %}
-                <span class="dropdown">
-                  
-                  <a class="dropdown-toggle nounder" id="menu_{{collection}}" data-toggle="dropdown" aria-expanded="false">   
-                    <i class="fa fa-caret-down fs-0-8 fc-g"></i>
-                  </a> 
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu">   
-                    <li role="presentation">
-                    <a role="menuitem" class="nounder" tabindex="-1" href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a>
-                    </li>  
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ handle }}/{{ ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
-                    
-                  </ul>
-                </span>
-                
-              {% endif %}
+              
             </td>
             <td>
 
@@ -140,6 +125,8 @@
                 
                 <div class="btn-group" >
                 
+
+                  
 
                   {% if ringname+'_post_a_b' in user_authorizations or 'post_a_b' in user_authorizations %}
                  
@@ -229,6 +216,7 @@
                 {%else%}
                   {{ring.ringname}}
                 {%endif%} 
+                  <p class="fc-g fs-0-8">{{ ring.ringdescription }}</p>
               </div>
             </td>
             <td>
@@ -390,36 +378,26 @@
 
           <div class="spa10 text-left ">
             <div class="fs-1-5">
-
-              
-             
               <div class="spa10"></div>
-              
               {% if data.item %}
-
                 <span class="fw-c">{{ data.item.items()[1][1] }}</span>
                 <div class="fc-g fs-0-7">{{data.ring}}</div>
                 
               {% else %}
-
                 <span class="fw-c">{{data.ring}}</span>
 
-              {% endif %}
-                
-                
+              {% endif %} 
             </div>
-            <p class="text-lgray fs-0-6">{{ data.description }}</p>
+            {% if data.item %} 
+            {% else%}
+              <p class="fc-m fs-0-7">{{ data.ringdescription}}</p>
+            {% endif %}
+            
           </div>
-            
-          
-            
-          
-
         </div> 
         <div class="col-xs-4 col-sm-5">
 
           <div class="pull-right">
-            
 
             <div class="btn-group">
               {% if 'post_a_b' in data.user_authorizations %}
@@ -702,8 +680,8 @@
                             
 
                             <div class="input-group input-group-sm">
-                                  <span class="input-group-addon fs-0-8" id="sizing-addon1">Source</span>
-                                  <textarea name="FieldSource_{{ FieldOrder }}" class="form-control" placeholder="URI of ">{{ FieldSource }}</textarea>
+                                  <span class="input-group-addon fs-0-8" id="sizing-addon1">Source*</span>
+                                  <textarea name="FieldSource_{{ FieldOrder }}" rows="4" class="form-control" placeholder="URI of ">{{ FieldSource }}</textarea>
                             </div>
                             <div class="input-group input-group-sm">
                               <span class="input-group-addon fs-0-8" id="sizing-addon1">Order</span>
