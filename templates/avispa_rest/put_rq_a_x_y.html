@@ -55,50 +55,13 @@
 
     <div class="gcard-body p-20">
         <div class="row">
-            <div class="col-sm-6">
-
-
-                    <div class="form-group">
-
-                        <label class="col-sm-2 control-label fc-g fs-0-9">Collection Name</label>
-                        <div class="col-sm-10">
-                          <input name="CollectionNameDisabled" class="form-control input-sm" type="text" value="{{data.collectionlist.collectionname}}" disabled><input name="CollectionName" class="form-control" type="hidden" value="{{data.collectionlist.collectionname}}">
-                          
-                        </div>
-                    </div>
-                    <div class="form-group">
-
-                        <label class="col-sm-2 control-label fc-g fs-0-9">Summary</label>
-                        <div class="col-sm-10">
-                          <textarea name="CollectionDescription" class="form-control input-sm" rows="10" placeholder="Please describe the Ring" style="height:100px;" >{{data.collectionlist.collectiondescription}}
-                            </textarea>
-                          
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label fc-g fs-0-9">Version</label>
-                        <div class="col-sm-10">
-                          <input name="CollectionVersion" class="form-control input-sm" type="text" value="{{data.collectionlist.version}}" >
-                          
-                        </div>
-                    </div>
-
-            </div>
-            <div class="col-sm-6">
-                    
-
+            
+            <div class="col-sm-7">
                 <div class="gcard">
                     <div class="gcard-subtitle text-gray">Rings in this Collection</div>
-                    
-                    
-                    
                     <div class="gcard-body" style="padding:10px 25px;">
-                        
-                    
+
                         <div class="form-group">
-
-
                           <table class="table table-condensed table-striped">
                               
                           {% set n = 0 %}
@@ -108,11 +71,11 @@
 
                             <tr>
                                   <td>
-                                    {{ ui.icon_sma('','#fce121') }}
+                                    {{ ui.icon_xsma('','#fce121') }}
                                   </td>
 
                                   <td>
-                                      <a tabindex="0" class="nounder" data-toggle="popover" data-trigger="focus" title="{{ data.handle }}/{{ring.ringname}}" data-content=" {{ring.ringdescription}} [ version: {{ring.ringversionh}} ]">{{ data.handle }}/{{ring.ringname}}</a>
+                                      <a tabindex="0" class="nounder fs-0-8" data-toggle="popover" data-trigger="focus" title="{{ data.handle }}/{{ring.ringname}}" data-content=" {{ring.ringdescription}} [ version: {{ring.ringversionh}} ]">{{ data.handle }}/{{ring.ringname}}</a>
 
                                   </td>
                                   <td>
@@ -133,8 +96,55 @@
                         </div>
                     </div>
                 </div>
+                <br/>
+                <div class="gcard p-20"> 
+                  <a href="http://127.0.0.1:8080/the_plaza/_collections/hotel?method=delete" class="input-sm btn-warning" type="text" value="{{data.collectionlist.version}}" >Delete this Collection</a>
+                  
+                
+                  <p class="fc-g fs-0-7 p-10">No Rings and Data will be deleted, only the collection.</p>
+                        
+                </div>
+
+
 
                 {% set numfields = request.args.get('n')|int %}
+            </div>
+            <div class="col-sm-5">
+
+
+                    <div class="form-group">
+
+                        
+                        <div class="col-sm-12">
+                          <span class="fs-0-9 fc-m">Collection Name</span>
+                          <input name="CollectionNameDisabled" class="form-control input-sm" type="text" value="{{data.collectionlist.collectionname}}" disabled><input name="CollectionName" class="form-control" type="hidden" value="{{data.collectionlist.collectionname}}">
+                          
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-sm-12">
+                          <span class="fs-0-9 fc-m">Summary</span>
+                          <textarea name="CollectionDescription" class="form-control input-sm" rows="10" placeholder="Please describe the Ring" style="height:100px;" >{{data.collectionlist.collectiondescription}}
+                            </textarea>
+                          
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                          <span class="fs-0-9 fc-m">Version</span>
+                          <input name="CollectionVersion" class="form-control input-sm" type="text" value="{{data.collectionlist.version}}" >
+                          
+                        </div>
+                    </div>
+
+                 
+                    
+
+
+                    
+
             </div>
         </div>
 
