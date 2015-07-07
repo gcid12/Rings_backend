@@ -98,7 +98,9 @@
                 </div>
                 <br/>
                 <div class="gcard p-20"> 
-                  <a href="http://127.0.0.1:8080/the_plaza/_collections/hotel?method=delete" class="input-sm btn-warning" type="text" value="{{data.collectionlist.version}}" >Delete this Collection</a>
+                  
+                  <a href="/{{data.handle}}/_collections/{{data.collectionlist.collectionname}}?method=delete" class="input-sm btn-vader" ><i class="fa fa-trash-o"></i></a>
+                  Delete This collection
                   
                 
                   <p class="fc-g fs-0-7 p-10">No Rings and Data will be deleted, only the collection.</p>
