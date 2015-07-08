@@ -87,6 +87,7 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     {%if current_user.is_authenticated()%}
       <ul class="nav navbar-nav navbar-right hidden-xs w-links">
+
         <li class="active hidden-xs">
           <a class="navbar-brand clearlink hidden-xs" href="/">
             {%if not data.raw%}
@@ -98,9 +99,8 @@
             {%endif%}
           </a>
         </li>
-        <li class="active hidden-xs">
+        <li class="active">
           <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s2 pr-20 pl-5 text-black"> {{ current_user.id }}</span></a>
-          
         </li>
 
         <li class="dropdown hidden-xs bg-lgray">
@@ -157,12 +157,16 @@
       {%if current_user.is_authenticated()%}
        <ul class="nav navbar-nav navbar-left visible-xs">
           <li class="active">
-            <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/logos/myring04.png" style=" margin:10px 30px 10px 20px; width:100px; float:right;" alt="MyRing"></a>
+          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink pull-right"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar pull-right"></a>
+            <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/logos/myring04.png" style=" width:100px; float:right;" alt="MyRing01"></a>
+            
           </li>
+          
+
         </ul>
         <ul class="nav navbar-nav navbar-left hidden-xs">
           <li>
-            <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing"></a>
+            <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing02"></a>
           </li>
         </ul>
 
@@ -175,7 +179,7 @@
             </a>
             {% else %}
             <a href="/_sandbox/landing" class="clearlink spa20">
-              <img src="/static/images/logos/myring04.png" style=" width:100px;" alt="My Ring">
+              <img src="/static/images/logos/myring04.png" style=" width:100px;" alt="My Ring03">
             </a>
             {% endif %}
           </div>
@@ -193,42 +197,6 @@
 </header>
 {%endif%}
 
-{% if data.mask =='mbf' %}
-<section class="bg-black">
-
-  <div class="container-fluid ">
-
-    <div class="row">
-      <div class="col-sm-12 alpha omega">   
-
-        <div class="spa10 pull-right" style="padding-right:20px;">
-          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_home">Business Facts</a> 
-          <span class="pad-x-10">|</span>
-          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_categories">Profile</a> 
-          <span class="pad-x-10">|</span>
-          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_how">FAQ</a> 
-          <span class="pad-x-10">|</span>
-          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_pricing">Pricing</a> 
-          <span class="pad-x-10">|</span>
-          
-
-
-          <a class="clearlink hidden-xs fs-1 fc-a " href="/_sandbox/mbf_experts">Experts</a> 
-          <span class="pad-x-10">|</span>
-
-
-          <a class="clearlink hidden-xs fs-1 fc-a" href="/_sandbox/mbf_developers">Developers</a>
-          
-          
-
-        </div>
-        
-
-      </div> <!-- close 9 -->
-    </div>
-  </div>
-</section> 
-{% endif %}
 
 
 
@@ -253,13 +221,13 @@
 <span class="scro"><a href='#top'>&nbsp;Top</a></span
 
 
-<!-- SIDEBAR CLOSE-->
+
             
     <div class="visible-xs bg-a">
       <nav id="menu">
         <ul>
              <li class="active">
-              <a class="clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="width:120px;" alt="MyRing"></a>
+              <a class="clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="width:120px;" alt="MyRing04"></a>
 
             </li>
             <li>
@@ -270,7 +238,7 @@
                     <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s2 pr-20 pl-5 fc-a"> {{ data.handle_actualname }}</span></a>
 
                     
-                    <span class="text-s1 fc-m fs-0-9">  @{{ current_user.id }} </span>
+                    <span class="text-s1 fc-m fs-0-9"> @{{ current_user.id }} </span>
                     <br/><br/><br/>
                   </td>
                 </tr>
@@ -278,9 +246,6 @@
               </table>
                <div class="spa60"></div>
             </li>
-
-
-            
 
             <li><a href="/{{ data.handle }}/_home"> <i class="fa fa-home"></i> <span class="text-s1">{{ data.handle }} Home</span></a></li>
             <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user"></i> <span class="text-s1">Personal Settings</span></a></li>
