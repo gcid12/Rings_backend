@@ -85,6 +85,9 @@ class AvispaUpload:
         filename = self.imgid+'_o.jpg'
         originalversionpath = self.IMAGE_FOLDER + '/o/'
 
+        print('filename',filename)
+        print('originalversionpath',originalversionpath)
+
 
         try:     
             file.save(os.path.join(originalversionpath, filename))
