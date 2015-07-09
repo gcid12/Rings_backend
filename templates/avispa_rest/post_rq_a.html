@@ -155,52 +155,54 @@ $(function() {
 
          
 <div class="row bg-g">
+<form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
     <div class="col-sm-3">
-        <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
-        <h2 class="fs-4">1</h2> 
+        <h2 class="fs-4 hidden-xs">1</h2> 
+        <div class="spa20 visible-xs"></div>
         <p class=" text-s1 text-lgray fs-1-5">Ring Name and Description</p>
-
     </div>
+
+
     <div class="col-sm-9">
-        <div class="spa40">
-               
+        <div class="spa20 hidden-xs"></div>
 
-                {%if data.collection %}
-                <input type="hidden" name="collection" value="{{data.collection}}">
-                {%endif%}
-                
-                <div class="input-group input-group-sm">
-                  <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
-                  <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring">
-                </div>
-                <!-- <div class="input-group input-group-sm">
-                  <span class="input-group-addon" id="sizing-addon1">label</span>
-                  <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label for this ring">
-                </div> -->
-                <div class="input-group input-group-sm">
-                  <span class="input-group-addon" id="sizing-addon1">Description</span>
-                  <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" ></textarea>
-                </div>
-
-                
-                  <!-- <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
-                  <div class="col-sm-10">
-                    <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="if this ring is new it must be version 1">
-                  </div>
-                  <label for="RingURI" class="col-sm-2 control-label">ring:URI</label>
-                  <div class="col-sm-10">
-                    <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="URI that will be used to refer to this specific ring">
-                  </div>
-                  <label for="inputEmail3" class="col-sm-2 control-label">ring:build</label>
-                  <div class="col-sm-10">
-                    <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="">
-                  </div> -->
-                
+        {%if data.collection %}
+        <input type="hidden" name="collection" value="{{data.collection}}">
+        {%endif%}
+        
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
+          <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring">
         </div>
+        <!-- <div class="input-group input-group-sm">
+          <span class="input-group-addon" id="sizing-addon1">label</span>
+          <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label for this ring">
+        </div> -->
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon" id="sizing-addon1">Description</span>
+          <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" ></textarea>
+        </div>
+
+        
+          <!-- <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
+          <div class="col-sm-10">
+            <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="if this ring is new it must be version 1">
+          </div>
+          <label for="RingURI" class="col-sm-2 control-label">ring:URI</label>
+          <div class="col-sm-10">
+            <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="URI that will be used to refer to this specific ring">
+          </div>
+          <label for="inputEmail3" class="col-sm-2 control-label">ring:build</label>
+          <div class="col-sm-10">
+            <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="">
+          </div> -->
+
+          <div class="spa20 hidden-xs"></div>
+
     </div>
 </div>
  
-        <div class="row bg-g">
+        <div class="row bg-g hidden-xs">
           <div class="col-sm-12">
             <hr/>
           </div>          
@@ -209,7 +211,7 @@ $(function() {
 
         <div class="row bg-g">
           <div class="col-sm-3">
-            <h2 class="fs-4 ">2</h2> <p class="text-s1 text-lgray fs-1-5">Ring fields</p>
+            <h2 class="fs-4 hidden-xs">2</h2> <p class="text-s1 text-lgray fs-1-5">Ring fields</p>
               
           </div>
           <div class="col-sm-9">
