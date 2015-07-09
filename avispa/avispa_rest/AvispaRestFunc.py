@@ -336,7 +336,7 @@ class AvispaRestFunc:
 
                 if fieldname+'_rich' in preitem and (sources[fieldname] is not None):
 
-                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich']
+                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich'][0]
 
                     # Retrieve all the fl from the fieldsources for this specific field
                     field_sources = {}
