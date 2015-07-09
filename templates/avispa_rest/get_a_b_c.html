@@ -43,9 +43,10 @@
 {% endblock %}
 
 {% block crumb04 %}
+
     <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
     <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
-        <span class="fc-a fs-0-7">{{ data.item.items()[1][1] }}</span>
+        <span class="fc-a fs-0-7">{{data.item['_id']}}</span> 
     </a>
 {% endblock %}
 
@@ -58,7 +59,6 @@
               
         {% if not data.raw %}
             <table class="table table-condensed"> 
-                {#{ ui.panel2(data,'#fce121', data.ringcount , data.ringdescription,'',data.collection,data.user_authorizations,data.idx) }#} 
 
                 {{ ui.panel3(data,'#fce121') }}
 
