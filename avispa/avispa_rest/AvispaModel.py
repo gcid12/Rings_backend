@@ -1310,6 +1310,7 @@ class AvispaModel:
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
         item = RingClass.load(db,idx)
+
         needs_store = False
         
         item_values = {}
@@ -1320,6 +1321,8 @@ class AvispaModel:
             item['public']=True
         else:
             item['public']=False
+
+
 
         for field in fields:
             #item_values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
@@ -1373,6 +1376,9 @@ class AvispaModel:
             else:
                 needs_store = True
 
+                print(field['FieldName']+'_flag changed. Old: "'+ str(old_flag) +'" ('+ str(type(old_flag)) +')'+\
+                                '  New: "'+ str(new_flag) + '" ('+ str(type(new_flag)) +')' )
+
                 history_item_dict = {}
                 history_item_dict['date'] = str(datetime.now())
                 history_item_dict['author'] = current_user.id
@@ -1384,6 +1390,8 @@ class AvispaModel:
 
                 item.flags[0][field['FieldName']] = new_flag
 
+            # END FLAGS
+
 
                 
             if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items') and len(request.form.get(field['FieldName']))!=0:
@@ -1391,26 +1399,46 @@ class AvispaModel:
                 needs_store = True
                 
                 external_uri_list = request.form.get(field['FieldName']).split(',')
-                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,current_user.id)
+                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(
+                                                                   field,
+                                                                   external_uri_list,
+                                                                   request.url,
+                                                                   current_user.id)
+                
+                print('r_item_values',r_item_values)
+                print('r_rich_values',r_rich_values)
+                print('r_history_values',r_history_values)
 
 
+                print('REAL ITEM.RICH',item.rich)
+
+
+                #Repair rich object if needed
                 if 'rich' not in item:
-                    item.rich = []
-                    rich_dict = {}
-                    item.rich.append(rich_dict)
+                    print('REPAIR FLAG 1')
+                    #item.rich = []
+                    #rich_dict = {}
+                    #item.rich.append(rich_dict)
                 elif type(item.rich) is not list:
-                    item.rich = []
-                    rich_dict = {}
-                    item.rich.append(rich_dict)
+                    print('REPAIR FLAG 2')
+                    #item.rich = []
+                    #rich_dict = {}
+                    #item.rich.append(rich_dict)
                 elif type(item.rich[0]) is not dict:
-                    rich_dict = {}
-                    item.rich.append(rich_dict)
+                    print('REPAIR FLAG 3')
+                    #rich_dict = {}
+                    #item.rich.append(rich_dict)
 
-                #1. Save what is in rich data just in case we got a 404
+              
+                #1. Save in memory what is in rich data just in case we got a 404
                 old_rich = item.rich[0][field['FieldName']]
                 old_rich_dictionary = {}
                 for old_r in old_rich:
                     old_rich_dictionary[old_r['_source']] = old_r
+
+                print('old_rich',old_rich)
+                print('old_rich_dictionary',old_rich_dictionary)
+
                 #2. Check if we got a 404
                 if field['FieldName'] in r_rich_values:
                     for new_rich_value in r_rich_values[field['FieldName']]:
@@ -1424,6 +1452,7 @@ class AvispaModel:
                     item.rich[0][field['FieldName']] = r_rich_values[field['FieldName']]
 
                 if old != new:
+                    pass
                     #Different than the rich, history just keeps adding to the list 
                     '''
                     for history_item_dict in r_history_values:

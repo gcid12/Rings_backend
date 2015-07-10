@@ -346,7 +346,7 @@ class AvispaRestFunc:
                         if source == '':
                             continue
                         o = urlparse.urlparse(source.strip())
-                        #source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
+                        # source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
                         
                         print('o.scheme:',o.scheme)
                         print('o.netloc:',o.netloc)
@@ -355,9 +355,7 @@ class AvispaRestFunc:
                         if not o.scheme:
                             continue
 
-
                         path_parts = o.path.split('/')
-
                         #if len(path_parts>1):
 
                         if path_parts[1] == '_api':
