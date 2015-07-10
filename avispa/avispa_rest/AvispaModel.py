@@ -545,6 +545,7 @@ class AvispaModel:
             for f in fieldprotocol:
 
                 #Boolean correction
+                 
                 if pinput['fields'][i][f] == 'FALSE':
                     pinput['fields'][i][f] = False
                 elif pinput['fields'][i][f] == 'TRUE':

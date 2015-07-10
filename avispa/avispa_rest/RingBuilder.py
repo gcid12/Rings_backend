@@ -448,6 +448,12 @@ class RingBuilder:
                         #print
                         fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
                         print(fieldsbuffer[i][val])
+                    else:
+                        print('gfb7')
+                        print("BLANK DEFAULTS:")
+                        print(val+'_'+str(i))
+                        fieldsbuffer[i][val] = ''
+                        print(fieldsbuffer[i][val])
 
                 
                 
@@ -462,6 +468,8 @@ class RingBuilder:
             tempdict['RingName'] = ringname
             tempdict.update(fieldsbuffer[fieldkey])
             fieldblock.append(tempdict)
+
+
 
 
         return fieldblock
