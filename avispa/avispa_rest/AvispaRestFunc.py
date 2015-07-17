@@ -914,7 +914,7 @@ class AvispaRestFunc:
         for i in item:
             print(i,item[i])
             if i[-5:] == '_flag':
-                if item[i]<1000 or item>=10000 : #Invalid Status
+                if int(item[i])<1000 or int(item[i])>=10000 : #Invalid Status
                     if len(str(item[i[:-5]])) < 1: #Empty
                         item[i] = '0000'
                     else:  # If has something

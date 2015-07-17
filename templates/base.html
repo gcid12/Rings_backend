@@ -1,310 +1,318 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>{% block title %} MyRing {% endblock %} </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'includes/headscripts.html' %}
-    {% import 'includes/ui_macros.html' as ui %}
-    {% import 'includes/facts_macros.html' as fui %}
-    {% import 'includes/graphs.html' as graphs %}
-
-    
-    <link href="{{ url_for('static',filename='assets/bootstrap/css/lumen.css') }}" rel="stylesheet" type="text/css" media="screen">
-    <link href="{{ url_for('static',filename='css/ring1.css') }}" rel="stylesheet" type="text/css" media="screen">
-   
-
+  <meta charset="utf-8"/>
+  <title>{% block title %} MyRing {% endblock %} </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  {% include 'includes/headscripts.html' %}
+  {% import 'includes/ui_macros.html' as ui %}
+  {% import 'includes/facts_macros.html' as fui %}
+  {% import 'includes/graphs.html' as graphs %}  
+  <link href="{{ url_for('static',filename='assets/bootstrap/css/lumen.css') }}" rel="stylesheet" type="text/css" media="screen"/>
+  <link href="{{ url_for('static',filename='css/ring1.css') }}" rel="stylesheet" type="text/css" media="screen"/>
+ 
   {% if data.mask =='mbf' %}    
-    <link href="{{ url_for('static',filename='css/ring1_rich.css') }}" rel="stylesheet" type="text/css" media="screen">
+  <link href="{{ url_for('static',filename='css/ring1_rich.css') }}" rel="stylesheet" type="text/css" media="screen"/>
   {% endif %}
 
   {% if data.mode =='edit' %}
-    <!-- SEMAFORO STYLE-->
-         <style type="text/css">
-          .tst-1{color:green;} /*approved*/
-          .tst-2{color:blue;} /*In revision*/
-          .tst-3{color:orange;} /*Work in Progress*/
-          .tst-4{color:red;} /*empty*/
-          .tst-5{color:pink;} /*returned*/ 
-          .tst-6{color:gray;} /*not specified*/ 
+  <!-- SEMAFORO STYLE-->
+  <style type="text/css">
+    .tst-1{color:green;} /*approved*/
+    .tst-2{color:blue;} /*In revision*/
+    .tst-3{color:orange;} /*Work in Progress*/
+    .tst-4{color:red;} /*empty*/
+    .tst-5{color:pink;} /*returned*/ 
+    .tst-6{color:gray;} /*not specified*/ 
 
-          .lst-1{background-color:green; color:#FFF;} /*approved*/
-          .lst-2{background-color:#5FC1E8; color:#FFF;} /*In revision*/
-          .lst-3{background-color:orange; color:#FFF;} /*Work in Progress*/
-          .lst-4{background-color:red; color:#FFF;} /*empty*/
-          .lst-5{background-color:pink; color:#FFF;} /*returned */ 
-          .lst-6{background-color:gray; color:#FFF;} /*not specified*/ 
-        </style>
-        {% endif %}
-    
-  {% block headscripts %}
-    
+    .lst-1{background-color:green; color:#FFF;} /*approved*/
+    .lst-2{background-color:#5FC1E8; color:#FFF;} /*In revision*/
+    .lst-3{background-color:orange; color:#FFF;} /*Work in Progress*/
+    .lst-4{background-color:red; color:#FFF;} /*empty*/
+    .lst-5{background-color:pink; color:#FFF;} /*returned */ 
+    .lst-6{background-color:gray; color:#FFF;} /*not specified*/ 
+  </style>
+  {% endif %}
+  
+  {% block headscripts %}     
   {% endblock %}
 
 </head>
-<body >
+<body>
+  <div id="page" >      
+    <div class="content">
+      <!-- SIDEBAR OPEN-->
+      {%if not data.raw%}
+        {% with messages = get_flashed_messages(category_filter=["UI"]) %}
+          {% if messages %}
+            {% for message in messages %}
+      <div class="alert  alert-info alert-dismissible alert-top" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <i class="fa fa-info-circle "></i> {{ message }} 
+      </div>  
+            {% endfor %}     
+          {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["ER"]) %}
+          {% if messages %}
+            {% for message in messages %}
+      <div class="alert  alert-info alert-dismissible alert-top" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <i class="fa fa-info-circle "></i> {{ message }} 
+      </div>  
+            {% endfor %}     
+          {% endif %}
+        {% endwith %}
+      {%endif%}
+      <a name="top"></a>
 
-    <div id="page" >
-      
-      <div class="content">
-<!-- SIDEBAR OPEN-->
-
-
-  {%if not data.raw%}
-
-    {% with messages = get_flashed_messages(category_filter=["UI"]) %}
-      {% if messages %}
-        {% for message in messages %}
-        <div class="alert  alert-info alert-dismissible alert-top" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <i class="fa fa-info-circle "></i> {{ message }} 
-        </div>  
-        {% endfor %}     
-      {% endif %}
-    {% endwith %}
-    {% with messages = get_flashed_messages(category_filter=["ER"]) %}
-      {% if messages %}
-        {% for message in messages %}
-        <div class="alert  alert-info alert-dismissible alert-top" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <i class="fa fa-info-circle "></i> {{ message }} 
-        </div>  
-        {% endfor %}     
-      {% endif %}
-    {% endwith %}
-
-  {%endif%}
-<a name="top"></a>
-{%if not data.raw%}
-
-
-
-<header>
-
-
-<nav class="navbar navbar-default color-a-bar" style="padding-top:0px;">
-  <div class="container-fluid bg-bargray">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    {%if current_user.is_authenticated()%}
-      <ul class="nav navbar-nav navbar-right hidden-xs w-links">
-
-        <li class="active hidden-xs">
-          <a class="navbar-brand clearlink hidden-xs" href="/">
-            {%if not data.raw%}
-              {% if data.today is defined %}
-                <span class="text-s2 fs-0-8 text-gray">
-                {{ data.today }}   
-                </span>
-              {%endif%}        
-            {%endif%}
-          </a>
-        </li>
-        <li class="active">
-          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s2 pr-20 pl-5 text-black"> {{ current_user.id }}</span></a>
-        </li>
-
-        <li class="dropdown hidden-xs bg-lgray">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-plus fa-2x"></i> <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            {%if data.handle != current_user.id%}
-            <li><b>&nbsp;&nbsp;{{ current_user.id }}</b></li>
-            {%endif%}
-            <!--li><a href="/{{ current_user.id }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li-->
-            <li><a href="/{{ current_user.id }}/_collections?rq=post"><i class="fa fa-plus-circle"></i> &nbsp;  New <span class="fw-c text-gray">Collection</span></a></li>
-            <li><a href="/_orgregister"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray"><i class="fa fa-universit"></i> Organization</span></a></li>
-
+      {%if not data.raw%}
+      <header>
+        <nav class="navbar navbar-default color-a-bar" style="padding-top:0px;">
+          <div class="container-fluid bg-bargray">
+            <!-- Brand and toggle get grouped for better mobile display -->
+        {%if current_user.is_authenticated()%}
+            <ul class="nav navbar-nav navbar-right hidden-xs w-links">
+              <li class="active hidden-xs">
+                <a class="navbar-brand clearlink hidden-xs" href="/">
+          {%if not data.raw%}
+            {% if data.today is defined %}
+                  <span class="text-s2 fs-0-8 text-gray">
+                    {{ data.today }}   
+                  </span>
+            {%endif%}        
+          {%endif%}
+                </a>
+              </li>
+              <li class="active">
+                <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink">
+                  <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"/>
+                    <span class="fs-1-5 text-s2 pr-20 pl-5 text-black">{{ current_user.id }}</span>
+                </a>
+              </li>
+              <li class="dropdown hidden-xs bg-lgray">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                  <i class="fa fa-plus fa-2x"></i>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+          {%if data.handle != current_user.id%}
+                  <li><b>&nbsp;&nbsp;{{ current_user.id }}</b>
+                  </li>
+          {%endif%}
+                  <!--li><a href="/{{ current_user.id }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li-->
+                  <li>
+                    <a href="/{{ current_user.id }}/_collections?rq=post">
+                      <i class="fa fa-plus-circle"></i> &nbsp;  New 
+                      <span class="fw-c text-gray">Collection</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/_orgregister">
+                      <i class="fa fa-plus-circle"></i> &nbsp; New 
+                      <span class="fw-c text-gray">
+                        <i class="fa fa-universit"></i> Organization
+                      </span>
+                    </a>
+                  </li>
             {%if data.handle != current_user.id%}
             {% if 'post_a_x' in data.user_authorizations %}
-            <hr/>
-            <li><b>&nbsp;&nbsp;{{ data.handle }}</b></li>
-
+                  <hr/>
+                  <li>
+                    <b>&nbsp;&nbsp;{{ data.handle }}</b>
+                  </li>
             <!--li><a href="/{{ data.handle }}?rq=post&n=10"><i class="fa fa-plus-circle"></i> &nbsp; New <span class="fw-c text-gray">Ring</span></a></li-->
-            <li><a href="/{{ data.handle }}/_collections?rq=post"><i class="fa fa-plus-circle"></i> &nbsp;  New  <span class="fw-c text-gray">Collection</span></a></li>
+                  <li>
+                    <a href="/{{ data.handle }}/_collections?rq=post">
+                      <i class="fa fa-plus-circle"></i> &nbsp;  New  
+                      <span class="fw-c text-gray">Collection</span>
+                    </a>
+                  </li>
             {%endif%}
-            {%endif%}
-
-          </ul>
-        </li>
-        <li class="dropdown bg-dgray">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-gear fa-2x"></i> <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="/{{ data.handle }}/_home"> <i class="fa fa-home"></i> <span class="text-s1">Home</span></a></li>
-            <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user"></i> <span class="text-s1">Personal Settings</span></a></li>
-            
-            {% if data.organizations %}
-            <li class="divider" role="presentation"></li>
-              {% for organization in data.organizations %}
-
-              <li role="presentation"><a href="/{{organization['handle']}}/_home"> <span >
-                <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;">
-                <strong>{{organization['handle']}}</strong> Settings</span></a>
+          {%endif%}
+                </ul>
               </li>
-              {% endfor %}
-              <li class="divider" role="presentation"></li>
-            {% endif %}
-            <!--li><a href="/_roles/{{ current_user.id }}"><i class="fa fa-certificate"></i> <span class="text-s1">Roles</span></a></li-->
-            <li><a href="/_logout"><i class="fa fa-sign-out "></i>  log-Out</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      {% else %}
-
-      
-
-      {%endif%}
-     
-      {%if current_user.is_authenticated()%}
-       <ul class="nav navbar-nav navbar-left visible-xs">
-          <li class="active">
-          <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink pull-right"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar pull-right"></a>
-            <a href="#menu" class="clearlink"><i class="fa fa-bars fa-2x"></i><img src="/static/images/logos/myring04.png" style=" width:100px; float:right;" alt="MyRing01"></a>
-            
-          </li>
-          
-
-        </ul>
-        <ul class="nav navbar-nav navbar-left hidden-xs">
-          <li>
-            <a class="navbar-brand clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing02"></a>
-          </li>
-        </ul>
-
-      {% else %}
-
-          <div class="pull-left spa5"> 
-            {% if data.mask =='mbf' %}
-            <a href="/_sandbox/landing" class="clearlink">
-              <img src="/static/images/logos/mbflogowhite.png" style=" width:250px;" alt="My Business Facts">
-            </a>
-            {% else %}
-            <a href="/_sandbox/landing" class="clearlink spa20">
-              <img src="/static/images/logos/myring04.png" style=" width:100px;" alt="My Ring03">
-            </a>
-            {% endif %}
-          </div>
-          
-          <div class="pull-right spa15"> 
-            <a href="{% if data.mask =='mbf' %}/_login{% else %}/_login{% endif %}" class="btn btn-default btn-sm">LOG IN</a> 
-            <a href="{% if data.mask =='mbf' %}/_sandbox/mbf_signup{% else %}/_register{%endif%}" class="btn btn-info btn-sm">SIGN UP</a>
-          </div>
-         
+              <li class="dropdown bg-dgray">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-gear fa-2x"></i> <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>
+                    <a href="/{{ data.handle }}/_home">
+                      <i class="fa fa-home"></i> 
+                      <span class="text-s1">Home</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/{{ current_user.id }}/_profile">
+                      <i class="fa fa-user"></i>
+                      <span class="text-s1">Personal Settings</span>
+                    </a>
+                  </li>        
+          {% if data.organizations %}
+                  <li class="divider" role="presentation"></li>
+            {% for organization in data.organizations %}
+                  <li role="presentation">
+                    <a href="/{{organization['handle']}}/_home">
+                      <span >
+                        <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;"/>
+                        <strong>{{organization['handle']}}</strong> Settings
+                      </span>
+                    </a>
+                  </li>
+            {% endfor %}
+                  <li class="divider" role="presentation"></li>
+          {% endif %}
+              <!--li><a href="/_roles/{{ current_user.id }}"><i class="fa fa-certificate"></i> <span class="text-s1">Roles</span></a></li-->
+                  <li>
+                    <a href="/_logout">
+                      <i class="fa fa-sign-out "></i>  log-Out
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+        {%endif%}  
+        {%if current_user.is_authenticated()%}
+            <ul class="nav navbar-nav navbar-left visible-xs">
+              <li class="active">
+                <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink pull-right">
+                  <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar pull-right"/>
+                </a>
+                <a href="#menu" class="clearlink">
+                  <i class="fa fa-bars fa-2x"></i>
+                  <img src="/static/images/logos/myring04.png" style=" width:100px; float:right;" alt="MyRing01"/>
+                </a>   
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-left hidden-xs">
+              <li>
+                <a class="navbar-brand clearlink" href="/{{current_user.id}}">
+                  <img src="/static/images/logos/myring04.png" style="margin-left:25px; width:100px;" alt="MyRing02"/>
+                </a>
+              </li>
+            </ul>
+        {% else %}
+            <div class="pull-left spa5"> 
+          {% if data.mask =='mbf' %}
+              <a href="/_sandbox/landing" class="clearlink">
+                <img src="/static/images/logos/mbflogowhite.png" style=" width:250px;" alt="My Business Facts">
+              </a>
+          {% else %}
+              <a href="/_sandbox/landing" class="clearlink spa20">
+                <img src="/static/images/logos/myring04.png" style=" width:100px;" alt="My Ring03">
+              </a>
+          {% endif %}
+            </div>         
+            <div class="pull-right spa15"> 
+              <a href="{% if data.mask =='mbf' %}/_login{% else %}/_login{% endif %}" class="btn btn-default btn-sm">LOG IN</a> 
+              <a href="{% if data.mask =='mbf' %}/_sandbox/mbf_signup{% else %}/_register{%endif%}" class="btn btn-info btn-sm">SIGN UP</a>
+            </div>    
         {%endif%}
-
-  </div><!-- /.container-fluid -->
-</nav>
-
-</header>
-{%endif%}
-
-
-
-
-<section class="">
-
-
-  <div class="container-fluid">
-
-    
-    <div class="row">
-      <div class="col-sm-12 alpha omega">    
-        {#{current_user.id}} credentials for this page:{{data.user_authorizations}#}
-        {#{data.is_org}#}
-          {% block content %}
-          {% endblock %}
-      </div> <!-- close 9 -->
-    </div>
-  </div>
-</section>   
-
-      
-<span class="scro"><a href='#top'>&nbsp;Top</a></span
-
-
-
-            
-    <div class="visible-xs bg-a">
-      <nav id="menu">
-        <ul>
-             <li class="active">
-              <a class="clearlink" href="/{{current_user.id}}"><img src="/static/images/logos/myring04.png" style="width:120px;" alt="MyRing04"></a>
-
+          </div><!-- /.container-fluid -->
+        </nav>
+      </header>
+      {%endif%}
+      <section class="">
+        <div class="container-fluid">   
+          <div class="row">
+            <div class="col-sm-12 alpha omega">    
+                {% block content %}
+                {% endblock %}
+            </div> <!-- close 9 -->
+          </div>
+        </div>
+      </section>        
+      <span class="scro"><a href='#top'>&nbsp;Top</a></span>        
+      <div class="visible-xs bg-a">
+        <nav id="menu">
+          <ul>
+            <li class="active">
+              <a class="clearlink" href="/{{current_user.id}}">
+                <img src="/static/images/logos/myring04.png" style="width:120px;" alt="MyRing04"/>
+              </a>
             </li>
             <li>
               <table>
                 <tr>
                   <td style="padding:10px 3px 10px 20px;"></td>
                   <td>
-                    <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink"><img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"><span class="fs-1-5 text-s2 pr-20 pl-5 fc-a"> {{ data.handle_actualname }}</span></a>
-
-                    
+                    <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink">
+                      <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"/>
+                      <span class="fs-1-5 text-s2 pr-20 pl-5 fc-a"> {{ data.handle_actualname }}</span>
+                    </a>
                     <span class="text-s1 fc-m fs-0-9"> @{{ current_user.id }} </span>
                     <br/><br/><br/>
                   </td>
-                </tr>
-                
+                </tr>    
               </table>
-               <div class="spa60"></div>
+              <div class="spa60"></div>
             </li>
-
-            <li><a href="/{{ data.handle }}/_home"> <i class="fa fa-home"></i> <span class="text-s1">{{ data.handle }} Home</span></a></li>
-            <li><a href="/{{ current_user.id }}/_profile"><i class="fa fa-user"></i> <span class="text-s1">Personal Settings</span></a></li>
-
-
-            
-            {% if data.organizations %}
+            <li>
+              <a href="/{{ data.handle }}/_home">
+                <i class="fa fa-home"></i>
+                  <span class="text-s1">{{ data.handle }} Home</span>
+              </a>
+            </li>
+            <li>
+              <a href="/{{ current_user.id }}/_profile">
+                <i class="fa fa-user"></i>
+                <span class="text-s1">Personal Settings</span>
+              </a>
+            </li>          
+      {% if data.organizations %}
             <li class="divider" role="presentation"></li>
-              {% for organization in data.organizations %}
-
-              <li role="presentation"><a href="/{{organization['handle']}}/_home"> <span >
-                <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;">
-                <strong>{{organization['handle']}}</strong> Settings</span></a>
-              </li>
-              {% endfor %}
-              <li class="divider" role="presentation"></li>
-            {% endif %}
-
-
-            <li><a href="#about/team"><i class="fa fa-gear pad-x-20"></i>New </a>
+        {% for organization in data.organizations %}
+            <li role="presentation">
+              <a href="/{{organization['handle']}}/_home">
+                <span>
+                  <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;"/>
+                  <strong>{{organization['handle']}}</strong> Settings
+                </span>
+              </a>
+            </li>
+        {% endfor %}
+            <li class="divider" role="presentation"></li>
+        {% endif %}
+            <li>
+              <a href="#about/team">
+                <i class="fa fa-gear pad-x-20"></i>New
+              </a>
               <ul>
                 <li><a href="/{{ current_user.id }}?rq=post">New Ring</a></li>
                 <li><a href="/{{ current_user.id }}/_collections?rq=post"> New Collection</a></li>
                 <li><a href="/_orgregister">New Organization</a></li>
               </ul>
             </li>
-
-
             <!--li><a href="/_roles/{{ current_user.id }}"><i class="fa fa-certificate"></i> <span class="text-s1">Roles</span></a></li-->
-            <li><a href="/_logout"><i class="fa fa-sign-out "></i>  log-Out</a></li>
+            <li>
+              <a href="/_logout">
+                <i class="fa fa-sign-out "></i>  log-Out
+              </a>
+            </li>     
+          </ul>
+        </nav>
+      </div>
+      <div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;">
+          <span class=" label bird">&nbsp;{% block findme %} {% endblock %}
+          </span>
+      </div>
+    </div> 
+  </div>
+    <!-- SIDEBAR CLOSE-->
+    {% block scripts %}    
+        {% include 'includes/footscripts.html' %}
+    {% endblock %}
 
+    {% block footscripts %}
+    {% endblock %}
 
+    {% block footfunctions %}
+    {% endblock %}
 
-
-            
-            
-        </ul>
-      </nav>
-    </div>
-<!-- SIDEBAR CLOSE-->
-
-
-
-{% block scripts %}
-    
-    {% include 'includes/footscripts.html' %}
-
-{% endblock %}
-
-{% block footscripts %}
-{% endblock %}
-
-{% block footfunctions %}
-{% endblock %}
-
-{% block footafterfunctions %}
-{% endblock %}
-
-<div class="fc-g fs-0-8" style="position:fixed; bottom:0; right:0;"><span class=" label bird">&nbsp;{% block findme %} {% endblock %}</span></div>
-
+    {% block footafterfunctions %}
+    {% endblock %}   
 </body>
 </html>
