@@ -260,7 +260,7 @@ class AvispaRestFunc:
 
         #Subtract items from DB
         preitems = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
-        print('preitemlist:',preitems)
+        #print('preitemlist:',preitems)
 
         #Prepare data
         itemlist = []
@@ -286,11 +286,15 @@ class AvispaRestFunc:
         else:
 
             #Determine if there will be images
+
             d['imagesui'] = False
             if not noimages:
-                for widget in widgets:
-                    if widget == 'images':
+                for w in widgets:
+                    print('if '+widgets[w]+' == images')
+                    if widgets[w] == 'images':
                         d['imagesui'] = True
+
+            
 
              #Pagination
             if len(itemlist)>0 and len(itemlist) == resultsperpage:
@@ -348,9 +352,9 @@ class AvispaRestFunc:
                         o = urlparse.urlparse(source.strip())
                         # source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
                         
-                        print('o.scheme:',o.scheme)
-                        print('o.netloc:',o.netloc)
-                        print('o.path:',o.path)
+                        #print('o.scheme:',o.scheme)
+                        #print('o.netloc:',o.netloc)
+                        #print('o.path:',o.path)
 
                         if not o.scheme:
                             continue
@@ -363,12 +367,12 @@ class AvispaRestFunc:
                             path = '/'.join(path_parts)
                         else:
                             path = o.path   
-                            print('corrected xo.path:',path)
+                            #print('corrected xo.path:',path)
 
                         source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
 
                         no_field = True
-                        print('o.query:',o.query)
+                        #print('o.query:',o.query)
                         queryparts = o.query.split('&')
                         if len(queryparts) > 0:
                             for querypart in queryparts:
@@ -381,15 +385,15 @@ class AvispaRestFunc:
                         
                             #No field was indicated. Assign the first one
 
-                    print ('field_sources:',field_sources)
+                    #print ('field_sources:',field_sources)
 
                     # Create _repr based on field_sources
                     for rich_item in preitem[fieldname+'_rich']:
-                        print('rich_item',rich_item)
+                        #print('rich_item',rich_item)
                         if '_source' in rich_item:
                             o = urlparse.urlparse(rich_item['_source'].strip())
-                            print('xo.netloc:',o.netloc)
-                            print('xo.path:',o.path)
+                            #print('xo.netloc:',o.netloc)
+                            #print('xo.path:',o.path)
 
                             path_parts = o.path.split('/')
                             if path_parts[1] == '_api':
@@ -398,10 +402,10 @@ class AvispaRestFunc:
                             del path_parts[-1]
                             path = '/'.join(path_parts)  
                             
-                            print('adjusted xo.path:',path)
+                            #print('adjusted xo.path:',path)
                             
                             source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
-                            print('source_id',source_id)
+                            #print('source_id',source_id)
                             if source_id in field_sources:
                                 #There is a way to translate
 
@@ -428,7 +432,7 @@ class AvispaRestFunc:
 
 
 
-                            print('REPR:', Item[fieldname])
+                            #print('REPR:', Item[fieldname])
 
                 if fieldname+'_flag' in preitem and flag:
                     Item[fieldname+'_flag'] = preitem[fieldname+'_flag']
@@ -441,8 +445,8 @@ class AvispaRestFunc:
                     del images[0]
                     Item[fieldname]=images
 
-        print('PREVIEW ITEM:')
-        print(Item)
+        #print('PREVIEW ITEM:')
+        #print(Item)
         return Item
 
 
