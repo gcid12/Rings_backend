@@ -147,24 +147,29 @@ filter: grayscale(100%);
 
 
 /*TAGS COLORS:*/
-.fc-0000{color: #ffa0a0;} /*Red*/
-.fc-1000{color: #fed160;} /*Orange*/
-.fc-2000{color: #feef53;} /*Yellow*/
-.fc-3000{color: #a7dbfe;} /*Blue*/
-.fc-4000{color: #caee4f;} /*Green*/
-.fc-5000{color: #f0c8fe;}
-.fc-6000{color: #d2d2d2;}
+.fc-0000{color: #CCC;} 
+.fc-1000{color: #f7901d;} 
+.fc-2000{color: #ffd200;} 
+.fc-3000{color: #cc0000;} 
+.fc-4000{color: #009933;} 
+.fc-5000{color: #ccc;}
+.fc-6000{color: #ccc;}
 
 /*TAGS BACKGROUND COLORS:*/
-.bg-0000{background-color: #ffa0a0; padding:0px; margin:0px;} /*Red*/
-.bg-1000{background-color: #fed160;} /*Orange*/
-.bg-2000{background-color: #feef53;} /*Yellow*/
-.bg-3000{background-color: #a7dbfe;} /*Blue*/
-.bg-4000{background-color: #caee4f;} /*Green*/
-.bg-5000{background-color: #f0c8fe;}
-.bg-6000{background-color: #d2d2d2;}
+.bg-0000{background-color: #CCC;} 
+.bg-1000{background-color: #f26d21;} 
+.bg-2000{background-color: #ffd200;} 
+.bg-3000{background-color: #cc0000;} 
+.bg-4000{background-color: #009933;} 
+.bg-5000{background-color: #ccc;}
+.bg-6000{background-color: #ccc;}
 
 
+   
+/*    1000 WIP (orange)
+    2000 On Revision (yellow)
+    3000 Returned (red)
+    4000 Live  (orange)*/
 
 
 
