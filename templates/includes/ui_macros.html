@@ -210,7 +210,12 @@
                 <div class="spa5"></div>
 
               
+
                 {% if data.user_authorizations %}
+                
+
+                {#% if ring.ringname+'_get_a_b' in data.user_authorizations or 'get_a_b' in data.user_authorizations %#}
+
 
                   <a class="nounder" href="/{{data.handle}}/_collections/{{collectionname}}/{{ ring.ringname }}"> {{ring.ringname}}</a>
                 {%else%}
@@ -226,6 +231,10 @@
                 
 
                   {% if data.user_authorizations %}
+
+
+                  {#% if ring.ringname+'_post_a_b' in data.user_authorizations or 'post_a_b' in data.user_authorizations %#}
+
                  
 
                   <a href="/{{data.handle}}/_collections/{{data.collection}}/{{ring.ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
