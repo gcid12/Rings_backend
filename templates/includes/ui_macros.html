@@ -388,8 +388,19 @@
           <div class="spa10 text-left ">
             <div class="fs-1-5">
               <div class="spa10"></div>
-              {% if data.item %}
-                <span class="fw-c">{{data.item.items()[1][1]}}</span>
+              {% if data.item %} 
+
+                <span class="fw-c">
+                {% for i in data.item%}  
+                  {%if i[:1] != '_' %}   
+                    {%if x%}
+                    {%else%}
+                      {{data.item[i]}}                    
+                      {%set x = True%}
+                    {%endif%}
+                  {%endif%}
+                {%endfor%}
+                </span>
 
                 <div class="fc-g fs-0-7">{{data.ring}}</div>
                 
