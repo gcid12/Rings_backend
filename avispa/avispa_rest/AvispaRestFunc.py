@@ -340,7 +340,8 @@ class AvispaRestFunc:
 
                 if fieldname+'_rich' in preitem and (sources[fieldname] is not None):
 
-                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich'][0]
+                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich']
+                    Item[fieldname] = ''
 
                     # Retrieve all the fl from the fieldsources for this specific field
                     field_sources = {}
@@ -387,8 +388,16 @@ class AvispaRestFunc:
 
                     #print ('field_sources:',field_sources)
 
+                    
+
                     # Create _repr based on field_sources
+                    ItemL = []
+                    
+
                     for rich_item in preitem[fieldname+'_rich']:
+
+                        ItemPart = ''
+
                         #print('rich_item',rich_item)
                         if '_source' in rich_item:
                             o = urlparse.urlparse(rich_item['_source'].strip())
@@ -408,29 +417,31 @@ class AvispaRestFunc:
                             #print('source_id',source_id)
                             if source_id in field_sources:
                                 #There is a way to translate
-
                                 #We are going to overwrite the URLs for the REPRESENTATION
-                                Item[fieldname] = ''    
+                                    
                                 for fl in field_sources[source_id]:
+                                    #This will happen as many times as "fl" are indicated
                                     print(fieldname+':fl',fl)
                                     
                                     if fl in rich_item:
-                                        Item[fieldname] += rich_item[fl]+' '
+                                        ItemPart += rich_item[fl]+' '
                                     else:
                                         print(fl+': Field Not found')
-
                             if no_field:
-
                                 for fl in rich_item:
+                                    #This will only happen once with the first real field
                                     if fl[:1] != '_':
-                                        print(fieldname+':No_field field:',fl)
-                                        Item[fieldname] = rich_item[fl]
+                                        print(fieldname+':Not a "_" field:',fl)
+                                        ItemPart = rich_item[fl]
                                         print('Item',Item[fieldname])
+                            
                                         break
 
                                 
+                            ItemL.append(ItemPart) 
 
-
+                
+                    Item[fieldname] = ', '.join(ItemL)
 
                             #print('REPR:', Item[fieldname])
 
