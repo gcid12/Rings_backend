@@ -336,13 +336,12 @@ class AvispaRestFunc:
                     if int(layers[fieldname])>int(layer):
                         continue
 
-                Item[fieldname] = preitem[fieldname] 
 
                 if fieldname+'_rich' in preitem and (sources[fieldname] is not None):
 
-                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich']
-                    Item[fieldname] = ''
 
+                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich']
+                    
                     # Retrieve all the fl from the fieldsources for this specific field
                     field_sources = {}
                     list_sources = sources[fieldname].split(',')
@@ -433,7 +432,7 @@ class AvispaRestFunc:
                                     if fl[:1] != '_':
                                         print(fieldname+':Not a "_" field:',fl)
                                         ItemPart = rich_item[fl]
-                                        print('Item',Item[fieldname])
+                                        #print('Item',Item[fieldname])
                             
                                         break
 
@@ -441,7 +440,11 @@ class AvispaRestFunc:
                             ItemL.append(ItemPart) 
 
                 
-                    Item[fieldname] = ', '.join(ItemL)
+                    if len(ItemL)>0:
+                        Item[fieldname] = ', '.join(ItemL)
+                    else:
+                        Item[fieldname] = preitem[fieldname] 
+                    
 
                             #print('REPR:', Item[fieldname])
 
@@ -455,6 +458,7 @@ class AvispaRestFunc:
                     images=Item[fieldname].split(',')                
                     del images[0]
                     Item[fieldname]=images
+
 
         #print('PREVIEW ITEM:')
         #print(Item)
