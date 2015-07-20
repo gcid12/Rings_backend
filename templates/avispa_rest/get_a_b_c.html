@@ -107,7 +107,7 @@
                   <div id="links">
             {% for image in v %}
               {% if image %}             
-                    <a href="{{data.host_url}}/_images/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
+                    <a href="{{data.image_cdn_root}}/_images/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
                         <img src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" alt="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg">
                     </a>
               {% endif %}
@@ -131,7 +131,7 @@
         <div id="links">
           {% for image in v %}
             {% if image %}                   
-          <a href="{{data.host_url}}/_images/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
+          <a href="{{data.image_cdn_root}}/_images/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailxx" data-gallery>
             <img src="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg" alt="{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{image}}_t150.jpg">
           </a>
             {% endif %}

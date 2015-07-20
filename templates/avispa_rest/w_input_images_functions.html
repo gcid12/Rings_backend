@@ -18,7 +18,7 @@ $( ".dz-size" ).css( "display", "none" );
         console.log("{{image}}");
         var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"  };
         myDropzone{{ field.FieldOrder }}.options.addedfile.call(myDropzone{{ field.FieldOrder }}, fieldvalue);
-        myDropzone{{ field.FieldOrder }}.options.thumbnail.call(myDropzone{{ field.FieldOrder }}, fieldvalue, "{{data.host_url}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"); 
+        myDropzone{{ field.FieldOrder }}.options.thumbnail.call(myDropzone{{ field.FieldOrder }}, fieldvalue, "{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"); 
 
       {% endif %}
     {% endif %}
