@@ -474,7 +474,7 @@ class AvispaRestFunc:
             widgets[schemafield['FieldName']]=schemafield['FieldWidget']
             sources[schemafield['FieldName']]=schemafield['FieldSource']
 
-            if schemafield['FieldLabel'] is not '':
+            if len(schemafield['FieldLabel']) is not 0:
                 labels[schemafield['FieldName']]=schemafield['FieldLabel']
             else:
                 labels[schemafield['FieldName']]=schemafield['FieldName']
@@ -831,8 +831,7 @@ class AvispaRestFunc:
                 
                 d['widget'] = widgets
                 d['FieldLabel'] = labels
-                d['item'] = Item
-                d['labels'] = labels 
+                d['item'] = Item 
                 d['template'] = 'avispa_rest/get_a_b_c.html'
 
         else: 
