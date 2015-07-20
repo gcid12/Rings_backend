@@ -7,127 +7,107 @@
 {% block content %}
 <!-- CONTENT HERE -->
 
-
 <div class="container-fluid" >
-
-    <div class="row">
-          <div class="col-sm-12 spa5" >
-          </div>
+  <div class="row">
+    <div class="col-sm-12 spa5" >
     </div>
-
-    <div class="gcard">
-    
+  </div>
+  <div class="gcard">   
       <!-- BOX CONTENT --> 
+      <!-- TABS WILL SHOW -->
+  {% if data.collection %} 
+      {% if not data.raw %} 
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="gcard-title">
+          <div class="pull-right text-right spa10">
+            <span class="dropdown">
+              <a class="dropdown-toggle nounder" id="menu_{{data.collection}}" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="hidden-xs">Actions</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
+                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}/_collections/{{ data.collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
+                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
+              </ul>
+            </span>
+          </div>
+          <div class="fs-1-7 text-s1">
+            {% block crumb01 %}
+              <a class="nounder" href="/{{data.handle}}" class="nounder">
+                <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
+                  <span class="fc-a fs-0-7">{{ data.handle|lower() }}</span>
+              </a>
+            {% endblock %}
 
-          <!-- TABS WILL SHOW -->
-        {% if data.collection %} 
-            {% if not data.raw %} 
-                      
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="gcard-title">
-                        <div class="pull-right text-right spa10">
-                            <span class="dropdown">
-                              <a class="dropdown-toggle nounder" id="menu_{{data.collection}}" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span><span class="hidden-xs">Actions</span>
-                              </a>
-                              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
-                                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}/_collections/{{ data.collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
-                                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
-                                <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
-                              </ul>
-                            </span>
-                        </div>
-
-                        <div class="fs-1-7 text-s1">
-                            {% block crumb01 %}
-                                <a class="nounder" href="/{{data.handle}}" class="nounder">
-                                    <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
-                            
-                                    <span class="fc-a fs-0-7">{{ data.handle|lower() }}</span>
-                                </a>
-                            {% endblock %}
-                            
-                            {% block crumb02 %}
-                                
-                            {% endblock %}
-                            
-                            {% block crumb03 %}
-                                
-                            {% endblock %}
-                            
-                            {% block crumb04 %}
-                            {% endblock %}
-                            
-
-                            
-                        </div> 
-                    </div>
-                </div>
-            </div> 
-
-            {%endif%}
-        {%endif%}
-
+            {% block crumb02 %}                            
+            {% endblock %}
+                    
+            {% block crumb03 %}                              
+            {% endblock %}
+            
+            {% block crumb04 %}
+            {% endblock %}
+                                               
+          </div> 
+        </div>
+      </div>
+    </div> 
+      {%endif%}
+    {%endif%}
     <div class="row">
       {% if data.collection %}
-      {% if not data.raw %} 
-            
-          <div class="col-sm-12">
-            <div class="gcard-body">
-                    {% endif %}
-                      {%endif%}
-                        {% block tabcontent %}
-                        {% endblock %}
-                      {% if data.collection %} 
-                      {% if not data.raw %} 
-            </div>    
-          </div>
+        {% if not data.raw %}         
+      <div class="col-sm-12">
+        <div class="gcard-body">
+        {% endif %}
       {%endif%}
-      {%endif%} 
+      {% block tabcontent %}
+      {% endblock %}
+      {% if data.collection %} 
+        {% if not data.raw %} 
+        </div>    
+      </div>
+    {%endif%}
+  {%endif%} 
     </div> 
   </div>
-
-
-
 </div>
-
 
 <!-- IMAGE GALLERY BODY -->
 <div id="blueimp-gallery" class="blueimp-gallery" data-use-bootstrap-modal="false">
-
     <!-- The container for the modal slides -->
-    <div class="slides"></div>
-    <!-- Controls for the borderless lightbox -->
-    <h3 class="title"></h3>
-    <a class="prev">‹</a>
-    <a class="next">›</a>
-    <a class="close">×</a>
-    <a class="play-pause"></a>
-    <ol class="indicator"></ol>
-    <!-- The modal dialog, which will be used to wrap the lightbox content -->
-    <div class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"></h4>
-                </div>
-                <div class="modal-body next"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left prev">
-                        <i class="glyphicon glyphicon-chevron-left"></i>
-                        Previous
-                    </button>
-                    <button type="button" class="btn btn-primary next">
-                        Next
-                        <i class="glyphicon glyphicon-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
+  <div class="slides"></div>
+  <!-- Controls for the borderless lightbox -->
+  <h3 class="title"></h3>
+  <a class="prev">‹</a>
+  <a class="next">›</a>
+  <a class="close">×</a>
+  <a class="play-pause"></a>
+  <ol class="indicator"></ol>
+  <!-- The modal dialog, which will be used to wrap the lightbox content -->
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"></h4>
         </div>
+        <div class="modal-body next"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left prev">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Previous
+          </button>
+          <button type="button" class="btn btn-primary next">
+            Next
+            <i class="glyphicon glyphicon-chevron-right"></i>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 

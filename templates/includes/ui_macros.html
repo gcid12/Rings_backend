@@ -429,7 +429,7 @@
               {% if 'put_a_b' in data.user_authorizations %}
               
               <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              <a href="/_api/{{ data.handle }}/{{ data.ring }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
+              <a href="/_api/{{ data.handle }}/{{ data.ring }}{%if data.idx%}/{{data.idx}}{%endif%}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
               {% endif %}
 
             </div> 
