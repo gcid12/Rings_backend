@@ -392,9 +392,8 @@
 
                 <span class="fw-c">
                 {% for i in data.item%}  
-                  {%if i[:1] != '_' %}   
-                    {%if x%}
-                    {%else%}
+                  {%if i[:1] != '_' and i[5:] != '_rich' %} 
+                    {%if not x%}
                       {{data.item[i]}}                    
                       {%set x = True%}
                     {%endif%}
@@ -429,7 +428,7 @@
               {% if 'put_a_b' in data.user_authorizations %}
               
               <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              <a href="/_api/{{ data.handle }}/{{ data.ring }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
+              <a href="/_api/{{ data.handle }}/{{ data.ring }}{%if data.idx%}/{{data.idx}}{%endif%}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
               {% endif %}
 
             </div> 

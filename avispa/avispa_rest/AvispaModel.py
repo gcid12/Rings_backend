@@ -1435,7 +1435,8 @@ class AvispaModel:
                 old_rich = item.rich[0][field['FieldName']]
                 old_rich_dictionary = {}
                 for old_r in old_rich:
-                    old_rich_dictionary[old_r['_source']] = old_r
+                    if '_source' in old_r:
+                        old_rich_dictionary[old_r['_source']] = old_r
 
                 print('old_rich',old_rich)
                 print('old_rich_dictionary',old_rich_dictionary)

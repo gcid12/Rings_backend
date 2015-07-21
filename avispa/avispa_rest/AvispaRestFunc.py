@@ -336,12 +336,12 @@ class AvispaRestFunc:
                     if int(layers[fieldname])>int(layer):
                         continue
 
-                Item[fieldname] = preitem[fieldname] 
 
                 if fieldname+'_rich' in preitem and (sources[fieldname] is not None):
 
-                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich'][0]
 
+                    Item[fieldname+'_rich'] = preitem[fieldname+'_rich']
+                    
                     # Retrieve all the fl from the fieldsources for this specific field
                     field_sources = {}
                     list_sources = sources[fieldname].split(',')
@@ -387,8 +387,16 @@ class AvispaRestFunc:
 
                     #print ('field_sources:',field_sources)
 
+                    
+
                     # Create _repr based on field_sources
+                    ItemL = []
+                    
+
                     for rich_item in preitem[fieldname+'_rich']:
+
+                        ItemPart = ''
+
                         #print('rich_item',rich_item)
                         if '_source' in rich_item:
                             o = urlparse.urlparse(rich_item['_source'].strip())
@@ -408,29 +416,35 @@ class AvispaRestFunc:
                             #print('source_id',source_id)
                             if source_id in field_sources:
                                 #There is a way to translate
-
                                 #We are going to overwrite the URLs for the REPRESENTATION
-                                Item[fieldname] = ''    
+                                    
                                 for fl in field_sources[source_id]:
+                                    #This will happen as many times as "fl" are indicated
                                     print(fieldname+':fl',fl)
                                     
                                     if fl in rich_item:
-                                        Item[fieldname] += rich_item[fl]+' '
+                                        ItemPart += rich_item[fl]+' '
                                     else:
                                         print(fl+': Field Not found')
-
                             if no_field:
-
                                 for fl in rich_item:
+                                    #This will only happen once with the first real field
                                     if fl[:1] != '_':
-                                        print(fieldname+':No_field field:',fl)
-                                        Item[fieldname] = rich_item[fl]
-                                        print('Item',Item[fieldname])
+                                        print(fieldname+':Not a "_" field:',fl)
+                                        ItemPart = rich_item[fl]
+                                        #print('Item',Item[fieldname])
+                            
                                         break
 
                                 
+                            ItemL.append(ItemPart) 
 
-
+                
+                    if len(ItemL)>0:
+                        Item[fieldname] = ', '.join(ItemL)
+                    else:
+                        Item[fieldname] = preitem[fieldname] 
+                    
 
                             #print('REPR:', Item[fieldname])
 
@@ -444,6 +458,7 @@ class AvispaRestFunc:
                     images=Item[fieldname].split(',')                
                     del images[0]
                     Item[fieldname]=images
+
 
         #print('PREVIEW ITEM:')
         #print(Item)
@@ -474,8 +489,9 @@ class AvispaRestFunc:
             widgets[schemafield['FieldName']]=schemafield['FieldWidget']
             sources[schemafield['FieldName']]=schemafield['FieldSource']
 
-            if schemafield['FieldLabel'] is not '':
-                labels[schemafield['FieldName']]=schemafield['FieldLabel']
+            if schemafield['FieldLabel']:
+                if len(schemafield['FieldLabel']) is not 0:
+                    labels[schemafield['FieldName']]=schemafield['FieldLabel']
             else:
                 labels[schemafield['FieldName']]=schemafield['FieldName']
 
@@ -831,8 +847,7 @@ class AvispaRestFunc:
                 
                 d['widget'] = widgets
                 d['FieldLabel'] = labels
-                d['item'] = Item
-                d['labels'] = labels 
+                d['item'] = Item 
                 d['template'] = 'avispa_rest/get_a_b_c.html'
 
         else: 
