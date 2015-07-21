@@ -320,9 +320,12 @@ class AvispaRestFunc:
         Item['_fieldcount'] = 0
         Item['_fullcount'] = 0
 
+
         #print('LAYERS',layers)
 
         for fieldname in preitem:
+
+            
             #print ('FIELDNAME',fieldname)
             
             if fieldname in layers:
@@ -335,6 +338,9 @@ class AvispaRestFunc:
                 if layer:
                     if int(layers[fieldname])>int(layer):
                         continue
+
+                Item[fieldname] = preitem[fieldname]
+
 
 
                 if fieldname+'_rich' in preitem and (sources[fieldname] is not None):
@@ -442,10 +448,7 @@ class AvispaRestFunc:
                 
                     if len(ItemL)>0:
                         Item[fieldname] = ', '.join(ItemL)
-                    else:
-                        Item[fieldname] = preitem[fieldname] 
-                    
-
+                     
                             #print('REPR:', Item[fieldname])
 
                 if fieldname+'_flag' in preitem and flag:
@@ -453,14 +456,17 @@ class AvispaRestFunc:
 
                
                 #Convert comma separated string into list. Also delete first element as it comes empty
+                print('IMAGE?')
                 if  widgets[fieldname]=='images':
-
+                    print('YES',widgets[fieldname])
                     images=Item[fieldname].split(',')                
                     del images[0]
                     Item[fieldname]=images
+                else:
+                    print('NO',widgets[fieldname])
 
 
-        #print('PREVIEW ITEM:')
+        print('PREVIEW ITEM:',Item)
         #print(Item)
         return Item
 
