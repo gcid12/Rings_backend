@@ -506,7 +506,7 @@ class AvispaModel:
             action = 'new'
 
 
-        # Creates or updates Shcema parameters
+        # Creates or updates Schema parameters
 
         args_r = {}
         for r in ringprotocol:
@@ -541,7 +541,8 @@ class AvispaModel:
         args_f = {}
 
 
-        for i in xrange(0,numfields):
+        for i in xrange(0,numfields):      
+
             for f in fieldprotocol:
 
                 #Boolean correction
@@ -549,14 +550,13 @@ class AvispaModel:
                 if pinput['fields'][i][f] == 'FALSE':
                     pinput['fields'][i][f] = False
                 elif pinput['fields'][i][f] == 'TRUE':
-                    pinput['fields'][i][f] = True
-                
+                    pinput['fields'][i][f] = True 
 
-                if(action == 'new'):
+                if action == 'new':
                     if pinput['fields'][i][f] or pinput['fields'][i][f]==False:  #BUG Aqui deberia leer False as 'False'!!!      
                         args_f[f] = pinput['fields'][i][f]
 
-                elif(action == 'edit'):
+                elif action == 'edit':
                     if pinput['fields'][i][f] == schema.fields[i][f]:  # Checks if old and new are the same
                         print(f+'_'+str(i+1)+' did not change')
                     else:                      
@@ -569,10 +569,16 @@ class AvispaModel:
             #print('args_f:')
             #print(args_f)
 
-            if(action == 'new'):
+            if action == 'new':
+                args_f['FieldId'] = self.random_hash_generator(36)
+
                 schema.fields.append(**args_f)
                 
-            elif(action == 'edit'):
+            elif action == 'edit' :
+
+                if 'FieldId' not in schema.fields[i]:
+                    args_f['FieldId'] = self.random_hash_generator(36)
+
                 for y in args_f:
                     schema.fields[i][y] = args_f[y]
 
@@ -584,6 +590,21 @@ class AvispaModel:
         schema.store(db)
 
         return 'ok'
+
+    #AVISPAMODEL
+    def random_hash_generator(self,bits=36):  
+        if bits % 8 != 0:
+          bits = bits - (bits % 8)
+        if bits < 8:
+          bits = 8
+
+        required_length = bits / 8 * 2
+        
+        s = hex(random.getrandbits(bits)).lstrip('0x').rstrip('L')
+        if len(s) < required_length:
+            return self.random_hash_generator(bits)
+        else:
+            return s
 
     
     #AVISPAMODEL
