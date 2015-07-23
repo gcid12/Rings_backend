@@ -391,8 +391,8 @@ class AvispaModel:
                 # TO DO : Backup the data in a secondary database
                 try:
                     print('Try to Delete DB')
-                    db = self.MAM.delete_db(handle+'_'+ringname)
-                    print('DB Deleted')
+                    if self.MAM.delete_db(handle+'_'+ringname):
+                        print('DB Deleted')
                 except:
                     print('DB already does not exist. Deleting all its references')    
             i = i+1
@@ -528,10 +528,10 @@ class AvispaModel:
                   
 
         
-        if(action == 'new'):
+        if action == 'new':
             schema.rings.append(**args_r)
         
-        elif(action == 'edit'):
+        elif action == 'edit':
             for x in args_r:
                 schema.rings[0][x] = args_r[x]
             
@@ -654,14 +654,14 @@ class AvispaModel:
 
         fields = schema['fields']
         for field in fields:
-            args_i[field['FieldName']] = TextField()
+            args_i[field['FieldId']] = TextField()
 
             #d1={'source':TextField()}
             d1 = {}
             d1['_id']=TextField()
             d1['_source']=TextField()
             print('len:',len(d1))
-            args_rich[field['FieldName']] = ListField(DictField())
+            args_rich[field['FieldId']] = ListField(DictField())
             
 
             d2 = {}
@@ -671,11 +671,11 @@ class AvispaModel:
             d2['after']=TextField()
             d2['action']=TextField()
             d2['doc']=DictField()
-            args_history[field['FieldName']] = ListField(DictField(Mapping.build(**d2)))
+            args_history[field['FieldId']] = ListField(DictField(Mapping.build(**d2)))
 
-            args_flags[field['FieldName']] = TextField()
+            args_flags[field['FieldId']] = TextField()
 
-            args_meta[field['FieldName']] = DictField()
+            args_meta[field['FieldId']] = DictField()
 
 
             
@@ -914,7 +914,7 @@ class AvispaModel:
         schema = self.ring_get_schema_from_view(handle,ringname) 
         OrderedFields=[]
         for field in schema['fields']:
-            OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+            OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
 
         # sort exists if it is sent in the url as ?sort=<name-of-field>_<desc|asc>
         sort_reverse=False
@@ -1016,15 +1016,15 @@ class AvispaModel:
         r_history_values = {}
 
 
-        if field['FieldName'] not in r_history_values:
-            r_history_values[field['FieldName']] = []
-        elif type(history_values[field['FieldName']]) is not list:
-            r_history_values[field['FieldName']] = []
+        if field['FieldId'] not in r_history_values:
+            r_history_values[field['FieldId']] = []
+        elif type(history_values[field['FieldId']]) is not list:
+            r_history_values[field['FieldId']] = []
 
 
         #########
 
-        print(field['FieldName']+' is a RICH Field ')
+        print(field['FieldName']+'('+field['FieldId']+') is a RICH Field ')
 
         #1. Convert values to list
         #external_uri_list = request.form.get(field['FieldName']).split(',')
@@ -1112,7 +1112,7 @@ class AvispaModel:
                 print('rich_rs:',rs)
                 print('rich_item:',rich_item)
                 
-                external_FieldName = rs['fields'][0]['FieldName']
+                
 
                 
             else:
@@ -1126,7 +1126,7 @@ class AvispaModel:
                 print('rich_rs:',rs)
                 rich_item = rs['items'][0]
                 print('rich_item:',rich_item)
-                external_FieldName = rs['fields'][0]['FieldName']
+                
 
             if not rich_item:
 
@@ -1135,9 +1135,6 @@ class AvispaModel:
                            'error':404
                            }
                 #It didn't find the external item
-
-                
-
             
             rich_item_dict = {}
             #Nice to include where we got the information from
@@ -1145,39 +1142,15 @@ class AvispaModel:
             # Converting the ordered_dictionary to regular dictionary
             for j in rich_item:
                 rich_item_dict[j] = rich_item[j]
-      
-            
-            #Overwriting the default Field
-            '''
-            #DEPRECATED: The value is no longer stored in the in r_item_values but in Rich
-            if urlparts.query:
-                queryparts = urlparts.query.split('&')
-                print('queryparts:',queryparts)
-                for querypart in queryparts:
-                    paramparts = querypart.split('=')
-                    print('paramparts:',paramparts)
-                    if paramparts[0]=='fl':
-                        flparts = paramparts[1].split(',')
-                        print('flparts:',flparts)   
-                        external_FieldName = flparts[0]
-            
-            #The value for the Field picked (or the first Field if default)
-            value = rich_item[external_FieldName]
-            print('value:',value)
-            print('rich_item_dict:',rich_item_dict)            
-            r_item_values[field['FieldName']] = value
-            r_rich_values[field['FieldName']] = rich_item_dict
-            '''
-            
 
             item_value.append(canonical_url)
             
-            if field['FieldName'] not in r_rich_values:
-                r_rich_values[field['FieldName']] = []
-            elif type(r_rich_values[field['FieldName']]) is not list:
-                r_rich_values[field['FieldName']] = []
+            if field['FieldId'] not in r_rich_values:
+                r_rich_values[field['FieldId']] = []
+            elif type(r_rich_values[field['FieldId']]) is not list:
+                r_rich_values[field['FieldId']] = []
 
-            r_rich_values[field['FieldName']].append(rich_item_dict)
+            r_rich_values[field['FieldId']].append(rich_item_dict)
                 #rich_values[field['FieldName']] = rich_value
 
 
@@ -1189,20 +1162,12 @@ class AvispaModel:
             history_item_dict['action'] = 'New item. RICH field'
             history_item_dict['doc'] = rich_item_dict
 
-            r_history_values[field['FieldName']].append(history_item_dict)
+            r_history_values[field['FieldId']].append(history_item_dict)
 
         #Here you joint the values
-        r_item_values[field['FieldName']] = ','.join(item_value)
-
-
-        ####
+        r_item_values[field['FieldId']] = ','.join(item_value)
         
-
-
         return (r_item_values,r_rich_values,r_history_values)
-
-    #######
-
 
 
 
@@ -1227,8 +1192,8 @@ class AvispaModel:
 
         for field in fields:
             
-            print(field['FieldName']+' content: '+str(request.form.get(field['FieldName'])))
-            print(field['FieldName']+' type: '+str(type(request.form.get(field['FieldName']))))
+            print(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
+            print(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
 
             print('FieldSource:',field['FieldSource'])
             print('FieldWidget:',field['FieldWidget'])
@@ -1237,44 +1202,67 @@ class AvispaModel:
 
             #Detect if FieldWidget is "select" . If it is you are getting an ID. 
             #You need to query the source to get the real value and the _rich values
-            if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items') and len(request.form.get(field['FieldName']))!=0:
+            if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items'):
                 
-                external_uri_list = request.form.get(field['FieldName']).split(',')
-                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,current_user.id)
-               
-                item_values.update(r_item_values)
-                rich_values.update(r_rich_values)
-                #history_values.update(r_history_values)
-                                   
+                #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
+                external_uri_list = []
+
+                if field['FieldName'] in request.form:
+                    if len(request.form.get(field['FieldName']))!=0:
+                        external_uri_list = request.form.get(field['FieldName']).split(',')                     
+                elif field['FieldId'] in request.form:
+                    if len(request.form.get(field['FieldId']))!=0:
+                        external_uri_list = request.form.get(field['FieldId']).split(',')
+                
+
+                if len(external_uri_list) > 0:
+                    r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,current_user.id)
+                    item_values.update(r_item_values)
+                    rich_values.update(r_rich_values)
+                 
             else:
 
                 #Not a rich widget. Will not have rich data
-                print(field['FieldName']+' is NOT a RICH Field ')
-                item_values[field['FieldName']] = request.form.get(field['FieldName'])
+                print(field['FieldName'] +' ('+field['FieldId']+') is NOT a RICH Field ')
+
+                #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
+                if field['FieldName'] in request.form:
+                    if len(request.form.get(field['FieldName']))!=0:
+                        item_values[field['FieldId']] = request.form.get(field['FieldName'])
+                elif field['FieldId'] in request.form:
+                    if len(request.form.get(field['FieldId']))!=0:
+                        item_values[field['FieldId']] = request.form.get(field['FieldId'])
 
                             
                 #This will record the history for the first entry in the item history
 
-            if field['FieldName'] not in history_values:
-                history_values[field['FieldName']] = []
-            elif type(history_values[field['FieldName']]) is not list:
-                history_values[field['FieldName']] = []
+            if field['FieldId'] not in history_values:
+                history_values[field['FieldId']] = []
+            elif type(history_values[field['FieldId']]) is not list:
+                history_values[field['FieldId']] = []
 
 
+            if field['FieldId'] in item_values:
 
-            history_item_dict = {}
-            history_item_dict['date'] = datetime.now()
-            history_item_dict['author'] = current_user.id
-            history_item_dict['before'] = ''
-            history_item_dict['after'] = item_values[field['FieldName']]
-            history_item_dict['action'] = 'New item'
-            
-            history_values[field['FieldName']].append(history_item_dict)
-                #history_values[field['FieldName']] = history_list
+                history_item_dict = {}
+                history_item_dict['date'] = datetime.now()
+                history_item_dict['author'] = current_user.id
+                history_item_dict['before'] = ''
+                history_item_dict['after'] = item_values[field['FieldId']]
+                history_item_dict['action'] = 'New item'
+                
+                history_values[field['FieldId']].append(history_item_dict)
+                    #history_values[field['FieldName']] = history_list
 
 
             #Subtract the Flag
-            flag_values[field['FieldName']] = request.form.get('flag_'+field['FieldName'])
+
+            if 'flag_'+field['FieldName'] in request.form:
+                if len(request.form.get('flag_'+field['FieldName']))!=0:
+                    flag_values[field['FieldId']] = request.form.get('flag_'+field['FieldName'])
+            elif 'flag_'+field['FieldId'] in request.form:
+                if len(request.form.get('flag_'+field['FieldId']))!=0:
+                    flag_values[field['FieldId']] = request.form.get('flag_'+field['FieldId'])
 
 
 
@@ -1307,7 +1295,7 @@ class AvispaModel:
         schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
         for field in schema['fields']:
-            OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+            OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
                
         
         result = self.select_ring_doc_view('ring/items',handle,ringname,key=idx)
@@ -1347,22 +1335,28 @@ class AvispaModel:
 
 
         for field in fields:
-            #item_values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
             
             #VALUES
 
-            old = unicode(item.items[0][field['FieldName']])
-            new = unicode(request.form.get(field['FieldName']))
+            old = unicode(item.items[0][field['FieldId']])
+
+
+            if field['FieldName'] in request.form:
+                if len(request.form.get(field['FieldName']))!=0:
+                    new = unicode(request.form.get(field['FieldName']))
+            elif field['FieldId'] in request.form:
+                if len(request.form.get(field['FieldId']))!=0:
+                    new = unicode(request.form.get(field['FieldId']))
 
             #old = old.strip()
             new = new.strip()
 
             if old == new:
-                print(field['FieldName']+' did not change')  
+                print(field['FieldName']+' ('+field['FieldId']+') did not change')  
 
             else:
                 needs_store = True
-                print(field['FieldName']+' changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
+                print(field['FieldName']+' ('+field['FieldId']+') changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
                                 '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
 
                                     #This will record the history for the item update 
@@ -1373,9 +1367,9 @@ class AvispaModel:
                 history_item_dict['after'] = str(new) + ' '+ str(type(new))
                 history_item_dict['action'] = 'Update item'
 
-                item.history[0][field['FieldName']].append(history_item_dict)
+                item.history[0][field['FieldId']].append(history_item_dict)
 
-                item.items[0][field['FieldName']] = new
+                item.items[0][field['FieldId']] = new
 
             
             #FLAGS
@@ -1386,19 +1380,25 @@ class AvispaModel:
                 item.flags.append({})
 
 
-            if field['FieldName'] not in item.flags[0]:
-                item.flags[0][field['FieldName']] = ''
+            if field['FieldId'] not in item.flags[0]:
+                item.flags[0][field['FieldId']] = ''
 
-            old_flag = unicode(item.flags[0][field['FieldName']])
-            new_flag = unicode(request.form.get('flag_'+field['FieldName'])) 
+            old_flag = unicode(item.flags[0][field['FieldId']])
+
+            if 'flag_'+field['FieldName'] in request.form:
+                if len(request.form.get('flag_'+field['FieldName']))!=0:
+                    new_flag = unicode(request.form.get('flag_'+field['FieldName']))
+            elif 'flag_'+field['FieldId'] in request.form:
+                if len(request.form.get('flag_'+field['FieldId']))!=0:
+                    new_flag = unicode(request.form.get('flag_'+field['FieldId']))
 
             if old_flag == new_flag:
-                print('Flag for: '+field['FieldName']+' did not change') 
+                print('Flag for: '+field['FieldName']+' ('+field['FieldId']+') did not change') 
 
             else:
                 needs_store = True
 
-                print(field['FieldName']+'_flag changed. Old: "'+ str(old_flag) +'" ('+ str(type(old_flag)) +')'+\
+                print(field['FieldName']+'_flag ('+field['FieldId']+') changed. Old: "'+ str(old_flag) +'" ('+ str(type(old_flag)) +')'+\
                                 '  New: "'+ str(new_flag) + '" ('+ str(type(new_flag)) +')' )
 
                 history_item_dict = {}
@@ -1408,31 +1408,35 @@ class AvispaModel:
                 history_item_dict['after'] = str(new_flag) + ' '+ str(type(new_flag))
                 history_item_dict['action'] = 'Update flag'
 
-                item.history[0][field['FieldName']].append(history_item_dict)
+                item.history[0][field['FieldId']].append(history_item_dict)
 
-                item.flags[0][field['FieldName']] = new_flag
+                item.flags[0][field['FieldId']] = new_flag
 
             # END FLAGS
 
 
                 
-            if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items') and len(request.form.get(field['FieldName']))!=0:
+            if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items'):
             
                 needs_store = True
-                
-                external_uri_list = request.form.get(field['FieldName']).split(',')
-                r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(
-                                                                   field,
-                                                                   external_uri_list,
-                                                                   request.url,
-                                                                   current_user.id)
-                
-                print('r_item_values',r_item_values)
-                print('r_rich_values',r_rich_values)
-                print('r_history_values',r_history_values)
+                external_uri_list = []
 
-
-                print('REAL ITEM.RICH',item.rich)
+                #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
+                if field['FieldName'] in request.form:
+                    if len(request.form.get(field['FieldName']))!=0:
+                        external_uri_list = request.form.get(field['FieldName']).split(',')                     
+                elif field['FieldId'] in request.form:
+                    if len(request.form.get(field['FieldId']))!=0:
+                        external_uri_list = request.form.get(field['FieldId']).split(',')
+                
+                if len(external_uri_list) > 0:
+                    r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(
+                                                                        field,
+                                                                        external_uri_list,
+                                                                        request.url,
+                                                                        current_user.id)
+                    item_values.update(r_item_values)
+                    rich_values.update(r_rich_values)
 
 
                 #Repair rich object if needed
@@ -1453,7 +1457,7 @@ class AvispaModel:
 
               
                 #1. Save in memory what is in rich data just in case we got a 404
-                old_rich = item.rich[0][field['FieldName']]
+                old_rich = item.rich[0][field['FieldId']]
                 old_rich_dictionary = {}
                 for old_r in old_rich:
                     if '_source' in old_r:
@@ -1463,32 +1467,32 @@ class AvispaModel:
                 print('old_rich_dictionary',old_rich_dictionary)
 
                 #2. Check if we got a 404
-                if field['FieldName'] in r_rich_values:
-                    for new_rich_value in r_rich_values[field['FieldName']]:
+                if field['FieldId'] in r_rich_values:
+                    for new_rich_value in r_rich_values[field['FieldId']]:
                         if 'error' in new_rich_value:
                             #3. Check if we can at least have old version (better than nothing)
                             if new_rich_value['_source'] in old_rich_dictionary: 
                                 new_rich_value = old_rich_dictionary[new_rich_value['_source']]
 
                 if r_rich_values:
-                    #item.rich[0][field['FieldName']]            
-                    item.rich[0][field['FieldName']] = r_rich_values[field['FieldName']]
+                                
+                    item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
 
                 if old != new:
                     pass
                     #Different than the rich, history just keeps adding to the list 
                     '''
                     for history_item_dict in r_history_values:
-                        item.history[0][field['FieldName']].append(history_item_dict[field['FieldName']])
+                        item.history[0][field['FieldId']].append(history_item_dict[field['FieldId']])
                     '''
 
 
                     #This updates data for just the field that changed
                     '''
                     if r_item_values:
-                        item.items[0][field['FieldName']] = r_item_values[field['FieldName']]
+                        item.items[0][field['FieldId']] = r_item_values[field['FieldId']]
                     else:
-                        item.items[0][field['FieldName']] = new
+                        item.items[0][field['FieldId']] = new
                     '''
  
             
@@ -1501,19 +1505,6 @@ class AvispaModel:
         return False
 
 
-
-        ''' Optional way to retrieve from DB (not view)
-
-        schema = self.ring_get_schema(handle,ringname)
-        RingClass = self.ring_create_class(schema)
-
-        item = RingClass.load(db,idx)
-        item['items'][0][u'id']=idx
-
-
-        #return item['items'][0]
-        '''
-
     def delete_a_b_c(self,request,handle,ringname,idx):
 
 
@@ -1523,29 +1514,11 @@ class AvispaModel:
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
         item = RingClass.load(db,idx)
-        
-        '''
-        item_values = {}
-        fields = schema['fields']
-        for field in fields:
-            #values[field['FieldName']] = request.form.get(field['FieldName']) #aquire all the data coming via POST
-            f = field['FieldName']
-            old = unicode(item.items[0][f])
-            new = unicode(request.form.get(f))
-
-            if old == new:
-                print(f+' did not change')             
-            else:
-                print(f+' changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
-                                '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
-                #args[f] = new
-                item.items[0][f] = new
-        '''
 
         fields = schema['fields']
         for field in fields:
         
-            old = unicode(item.items[0][field['FieldName']])
+            old = unicode(item.items[0][field['FieldId']])
 
             history_item_dict = {}
             history_item_dict['date'] = str(datetime.now())
@@ -1553,7 +1526,7 @@ class AvispaModel:
             history_item_dict['before'] = str(old) +' '+ str(type(old)) 
             history_item_dict['after'] = ''
             history_item_dict['action'] = 'Delete item'
-            item.history[0][field['FieldName']].append(history_item_dict)
+            item.history[0][field['FieldId']].append(history_item_dict)
 
         item.deleted = True
 

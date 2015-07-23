@@ -260,7 +260,7 @@ class AvispaRestFunc:
 
         #Subtract items from DB
         preitems = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
-        #print('preitemlist:',preitems)
+        print('PREITEMLIST:',preitems)
 
         #Prepare data
         itemlist = []
@@ -321,12 +321,12 @@ class AvispaRestFunc:
         Item['_fullcount'] = 0
 
 
-        #print('LAYERS',layers)
+        print('LAYERS',layers)
 
         for fieldname in preitem:
 
             
-            #print ('FIELDNAME',fieldname)
+            print ('FIELDNAME',fieldname)
             
             if fieldname in layers:
                 Item['_fieldcount'] += 1
@@ -459,9 +459,11 @@ class AvispaRestFunc:
                 print('IMAGE?')
                 if  widgets[fieldname]=='images':
                     print('YES',widgets[fieldname])
-                    images=Item[fieldname].split(',')                
-                    del images[0]
-                    Item[fieldname]=images
+                    if Item[fieldname]:
+                        images=Item[fieldname].split(',')                
+                        del images[0]
+                        Item[fieldname] = images
+                    
                 else:
                     print('NO',widgets[fieldname])
 
@@ -491,15 +493,15 @@ class AvispaRestFunc:
         labels = {}
 
         for schemafield in schemafields:
-            layers[schemafield['FieldName']]=int(schemafield['FieldLayer'])           
-            widgets[schemafield['FieldName']]=schemafield['FieldWidget']
-            sources[schemafield['FieldName']]=schemafield['FieldSource']
+            layers[schemafield['FieldId']]=int(schemafield['FieldLayer'])           
+            widgets[schemafield['FieldId']]=schemafield['FieldWidget']
+            sources[schemafield['FieldId']]=schemafield['FieldSource']
 
             if schemafield['FieldLabel']:
                 if len(schemafield['FieldLabel']) is not 0:
-                    labels[schemafield['FieldName']]=schemafield['FieldLabel']
+                    labels[schemafield['FieldId']]=schemafield['FieldLabel']
             else:
-                labels[schemafield['FieldName']]=schemafield['FieldName']
+                labels[schemafield['FieldId']]=schemafield['FieldName']
 
         return layers,widgets,sources,labels     
 
@@ -690,18 +692,18 @@ class AvispaRestFunc:
 
         #####
         # We Need to check if all FieldOrders are unique. If not it will cause trouble
-        FOrders = {}
+        
         existingO = []
         repeatedF = []
         m = 0
         for field in fieldsschema:
-            FOrders[field['FieldName']] = field['FieldOrder']
+            
             if str(field['FieldOrder']) not in existingO:
                 # it is new
                 existingO.append(field['FieldOrder'])    
             else:
                 # it is repeated
-                print(field['FieldName']+' FieldOrder exists already!')
+                print(field['FieldName']+'('+field['FieldId']+') FieldOrder exists already!')
                 repeatedF.append(m)
 
             m += 1
@@ -780,7 +782,7 @@ class AvispaRestFunc:
             
 
         d = {'redirect': redirect, 'status':200}
-        d = {'message': 'Using delete_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/index.html'}
+        
         return d
 
     def delete_rq_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
@@ -953,7 +955,7 @@ class AvispaRestFunc:
   
         labels = {}
         for schemafield in schema['fields']:
-            labels[schemafield['FieldName']]=schemafield['FieldLabel']
+            labels[schemafield['FieldId']]=schemafield['FieldLabel']
 
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
