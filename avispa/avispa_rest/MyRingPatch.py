@@ -946,6 +946,88 @@ class MyRingPatch:
 
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d
+
+
+    def p20150723(self,request,*args):
+
+        '''
+        This patch pulls every schema and creates FieldId from FieldName
+        @input (GET): None
+
+        Patches ALL schemas for ALL users at once
+        
+        http://0.0.0.0/_patch/p20150723
+
+        '''
+
+        from MyRingCouchDB import MyRingCouchDB
+        from env_config import COUCHDB_USER, COUCHDB_PASS
+        from datetime import datetime
+
+        from MyRingSchema import MyRingSchema
+
+        import urlparse
+        import requests
+
+        MCD = MyRingCouchDB()
+        self.couch=MCD.instantiate_couchdb_as_admin()    
+        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
+
+
+
+        #Select schema for this Ring
+        print('check_add_FieldId')
+
+        users = self.MAM.select_multiple_users_doc_view('auth/userbasic',1000)
+
+        for user in users:
+
+            handle = user['id']
+
+            #handle = request.args.get('handle')
+            #ringname = request.args.get('ringname')
+
+            print('handle:',handle)
+            #print('ringname:',ringname)
+
+
+            rings = self.MAM.select_user_doc_view('rings/count',handle)
+            for ringname in rings:
+                print('Trying to patch:'+ringname)
+
+                try:
+
+                    if handle and ringname:
+                                    #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
+                        db_ringname=str(handle)+'_'+str(ringname)
+                        print('db_ringname:')
+                        print(db_ringname)
+                        db = self.couch[db_ringname]
+                        
+                        schema = MyRingSchema.load(db,'schema')
+
+                        
+                        if schema:                      
+
+                            count_f=0
+                            for f in schema.fields:
+                                if 'FieldId' not in f:
+                                    schema.fields[count_f]['FieldId'] = f['FieldName']
+                                count_f += 1
+                            
+                            schema.store(db)
+                        else:
+                            print('No schema for '+ db_ringname)
+
+                except(ResourceNotFound):
+                    print('Resource not found. Going to the next one')
+
+            
+                        
+
+        d = {'rq': current_user,'template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
         
     
 
