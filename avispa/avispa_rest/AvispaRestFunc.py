@@ -959,6 +959,9 @@ class AvispaRestFunc:
                     else:  # If has something
                         item[i] = '1000'
 
+            if item[i] == None:
+                item[i] = ''
+
         #if item['Images']:
          #   images=item['Images'].split(',')
           #  item['Images']=images
