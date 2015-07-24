@@ -496,7 +496,7 @@ class AvispaRestFunc:
             return False
 
         
-    def field_dictonaries_init(self,schemafields,layer=10000):
+    def field_dictonaries_init(self,schemafields,layer=False):
 
         layers = {}
         widgets = {}
@@ -509,7 +509,7 @@ class AvispaRestFunc:
             widgets[schemafield['FieldId']]=schemafield['FieldWidget']
             sources[schemafield['FieldId']]=schemafield['FieldSource']
 
-            if int(schemafield['FieldLayer']) <= int(layer) :
+            if int(schemafield['FieldLayer']) <= int(layer) or (layer is False) :
                 
                 if schemafield['FieldLabel']:
                     if len(schemafield['FieldLabel']) is not 0:
@@ -832,7 +832,7 @@ class AvispaRestFunc:
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'],PREVIEW_LAYER)
+        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'])
         
         #Subtract item from DB
         preitem = self.AVM.get_a_b_c(request,handle,ring,idx)
