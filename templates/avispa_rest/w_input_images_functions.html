@@ -8,11 +8,11 @@ var myDropzone{{ field.FieldOrder }} = new Dropzone("#dropzone{{ field.FieldOrde
 $( ".dz-size" ).css( "display", "none" );
 
 
-{% if data.item[field.FieldName] %}
+{% if data.item[field.FieldId] %}
 
-//console.log("{{ data.item[field.FieldName] }}");
+//console.log("{{ data.item[field.FieldId] }}");
 
-  {% for image in data.item[field.FieldName].split(',') %}
+  {% for image in data.item[field.FieldId].split(',') %}
     {% if image %}
       {% if image!='1' %}
         console.log("{{image}}");

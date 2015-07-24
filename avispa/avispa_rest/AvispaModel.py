@@ -1337,10 +1337,13 @@ class AvispaModel:
         for field in fields:
             
             #VALUES
+            new = ''
+            old = ''
+
 
             old = unicode(item.items[0][field['FieldId']])
 
-
+            
             if field['FieldName'] in request.form:
                 if len(request.form.get(field['FieldName']))!=0:
                     new = unicode(request.form.get(field['FieldName']))
@@ -1501,6 +1504,8 @@ class AvispaModel:
         if needs_store:
             if item.store(db):      
                 return item._id
+        else:
+            return item._id
 
         return False
 

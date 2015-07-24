@@ -1,11 +1,11 @@
 
 <div class="form-group">
-	<label for="{{ field.FieldName }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+	<label for="{{ field.FieldId }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
 
    <div class="col-sm-10">
 
-        <input id="input_location_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="form-control flag-aware" order="{{ field.FieldOrder }}" type="text" placeholder="Type in an address" {% if field.FieldRequired %}required{% endif %} value='{{ data.item[field.FieldName] }}' />
-        <input id="input_location_{{ field.FieldOrder }}_rich" name="{{ field.FieldName }}_rich" type="hidden" value='{{ field.Rich }}' />
+        <input id="input_location_{{ field.FieldOrder }}" name="{{ field.FieldId }}" class="form-control flag-aware" order="{{ field.FieldOrder }}" type="text" placeholder="Type in an address" {% if field.FieldRequired %}required{% endif %} value='{{ data.item[field.FieldId] }}' />
+        <input id="input_location_{{ field.FieldOrder }}_rich" name="{{ field.FieldId }}_rich" type="hidden" value='{{ field.Rich }}' />
         <div id="map_canvas{{ field.FieldOrder }}" style="width:100; height:200px; margin:0px;"></div>
         <div id="map_canvas_details_{{ field.FieldOrder }}">
             <span id="input_location_rich_{{ field.FieldOrder }}" class="richtable">

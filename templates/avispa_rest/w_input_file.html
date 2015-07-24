@@ -1,8 +1,8 @@
                                 <div class="form-group">
-                                    <label for="{{ field.FieldName }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+                                    <label for="{{ field.FieldId }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
                                     <div class="col-sm-10">
 
-                                      <input type="file" class="form-control input-sm" id="file{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldName }}" >
+                                      <input type="file" class="form-control input-sm" id="file{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" >
 
                                     </div>
                                 </div>

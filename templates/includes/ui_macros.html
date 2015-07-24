@@ -482,8 +482,7 @@
     </section> 
 {% endmacro %}
 
-
-  {% macro panel2(ring, handle, color, count,description) %}
+{% macro panel2(ring, handle, color, count,description) %}
 
   <tr>
     <td> 
@@ -1464,7 +1463,7 @@
 
 {# In order for this macro to work you need to include 'avispa_rest/wa_flagmarker_functions.html' in the 'footafterfunctions' block #}
                         
-                          <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldName }}" value="{% if field.FieldName+'_flag' in item %}{{item[field.FieldName+'_flag']}}{%else%}0000{%endif%}"/> 
+                          <input type="hidden"  id="flag_{{ field.FieldOrder }}" name="flag_{{ field.FieldId }}" value="{% if field.FieldId+'_flag' in item %}{{item[field.FieldId+'_flag']}}{%else%}0000{%endif%}"/> 
                           <div class="dropdown">
                             <a data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" class="clearlink">
                               <span class="pull-right-xs">
