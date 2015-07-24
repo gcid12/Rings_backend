@@ -256,7 +256,7 @@ class AvispaRestFunc:
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'],layer=layer)
+        layers,widgets,sources,labels,names = self.field_dictonaries_init(schema['fields'],layer=layer)
 
         #Subtract items from DB
         preitems = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
@@ -265,7 +265,7 @@ class AvispaRestFunc:
         #Prepare data
         itemlist = []
         for preitem in preitems:          
-            Item = self.prepare_item(preitem,layers,widgets,sources,labels,layer=layer,flag=flag,label=api)
+            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,layer=layer,flag=flag,label=api)
             print('ITEM:',Item)
             itemlist.append(Item)
 
@@ -314,7 +314,7 @@ class AvispaRestFunc:
         return d
 
 
-    def prepare_item(self,preitem,layers,widgets,sources,labels,layer=None,flag=None,label=False):
+    def prepare_item(self,preitem,layers,widgets,sources,labels,names,layer=None,flag=None,label=False):
 
         Item = collections.OrderedDict()  
         Item[u'_id'] = preitem[u'_id']
@@ -342,7 +342,7 @@ class AvispaRestFunc:
                         continue
 
                 if label:
-                    Item[labels[fieldid]] = preitem[fieldid]
+                    Item[names[fieldid]] = preitem[fieldid]
                 else:                   
                     Item[fieldid] = preitem[fieldid]
 
@@ -351,7 +351,7 @@ class AvispaRestFunc:
 
 
                     if label:
-                        Item[labels[fieldid]+'_rich'] = preitem[fieldid+'_rich']                      
+                        Item[names[fieldid]+'_rich'] = preitem[fieldid+'_rich']                      
                     else:
                         Item[fieldid+'_rich'] = preitem[fieldid+'_rich']
                         
@@ -450,7 +450,7 @@ class AvispaRestFunc:
                     #In case Item[fieldid] needs to be replaced by its human version (not only URIs)
                     if len(ItemL)>0:
                         if label:
-                            Item[labels[fieldid]] = ', '.join(ItemL)
+                            Item[names[fieldid]] = ', '.join(ItemL)
                         else:
                             Item[fieldid] = ', '.join(ItemL)
                      
@@ -458,7 +458,7 @@ class AvispaRestFunc:
 
                 if fieldid+'_flag' in preitem and flag:
                     if label:
-                        Item[labels[fieldid]+'_flag'] = preitem[fieldid+'_flag']
+                        Item[names[fieldid]+'_flag'] = preitem[fieldid+'_flag']
                     else:
                         Item[fieldid+'_flag'] = preitem[fieldid+'_flag']
 
@@ -471,10 +471,10 @@ class AvispaRestFunc:
                         images=Item[fieldid].split(',')                
                         del images[0]
                         Item[fieldid] = images
-                    elif labels[fieldid] in Item:
-                        images=Item[labels[fieldid]].split(',')                
+                    elif names[fieldid] in Item:
+                        images=Item[names[fieldid]].split(',')                
                         del images[0]
-                        Item[labels[fieldid]] = images
+                        Item[names[fieldid]] = images
                     
                 
 
@@ -502,12 +502,14 @@ class AvispaRestFunc:
         widgets = {}
         sources = {}
         labels = {}
+        names = {}
 
         for schemafield in schemafields:
 
             layers[schemafield['FieldId']]=int(schemafield['FieldLayer'])           
             widgets[schemafield['FieldId']]=schemafield['FieldWidget']
             sources[schemafield['FieldId']]=schemafield['FieldSource']
+            names[schemafield['FieldId']]=schemafield['FieldName']
 
             if int(schemafield['FieldLayer']) <= int(layer) or (layer is False) :
                 
@@ -517,7 +519,7 @@ class AvispaRestFunc:
                 else:
                     labels[schemafield['FieldId']]=schemafield['FieldName']
 
-        return layers,widgets,sources,labels     
+        return layers,widgets,sources,labels,names     
 
     def validate_collectioname(self,precollectionname):
 
@@ -832,14 +834,14 @@ class AvispaRestFunc:
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels = self.field_dictonaries_init(schema['fields'])
+        layers,widgets,sources,labels,names = self.field_dictonaries_init(schema['fields'])
         
         #Subtract item from DB
         preitem = self.AVM.get_a_b_c(request,handle,ring,idx)
         print('PREITEM get_a_b_c:',preitem)
 
         #Prepare data
-        Item = self.prepare_item(preitem,layers,widgets,sources,labels,flag=1,label=api)
+        Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,flag=1,label=api)
 
         
 
