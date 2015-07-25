@@ -17,6 +17,7 @@ class MyRingSchema(Document):
         RingParent = TextField()
         )))
     fields = ListField(DictField(Mapping.build(
+        FieldId = TextField(),
         FieldName = TextField(),
         FieldLabel = TextField(),
         FieldSemantic = TextField(),

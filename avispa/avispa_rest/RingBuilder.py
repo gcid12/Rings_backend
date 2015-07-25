@@ -27,7 +27,7 @@ class RingBuilder:
 
         self.fieldprotocols['fieldprotocol'] = ['FieldName', 'FieldLabel', 'FieldSemantic', 'FieldType', 'FieldSource',\
                            'FieldWidget','FieldOrder', 'FieldCardinality', 'FieldMultilingual',\
-                           'FieldRequired', 'FieldDefault', 'FieldHint', 'FieldLayer', 'FieldOrder']
+                           'FieldRequired', 'FieldDefault', 'FieldHint', 'FieldLayer']
         self.fieldprotocols['mandatory'] = ['FieldName']
         self.fieldprotocols['defaults'] = {'FieldType':'TEXT','FieldWidget':'text','FieldCardinality':'single',\
                                   'FieldMultilingual':'FALSE', 'FieldRequired':'FALSE', 'FieldLayer':'2', 'FieldOrder':'1' }
@@ -70,7 +70,7 @@ class RingBuilder:
             # Generate rings block                         
             pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
-            pinput['fields'] = self._generate_field_block(requestparameters)
+            pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
 
             print(pinput)
             
@@ -181,7 +181,7 @@ class RingBuilder:
                 # Generate rings block                         
                 pinput['rings'] = self._generate_ring_block(requestparameters)
                 # Generate fields block
-                pinput['fields'] = self._generate_field_block(requestparameters)
+                pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
 
                 
 
@@ -247,7 +247,7 @@ class RingBuilder:
                     # Generate rings block                         
                 pinput['rings'] = self._generate_ring_block(requestparameters)
                 # Generate fields block
-                pinput['fields'] = self._generate_field_block(requestparameters)
+                pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
  
 
             try: 
@@ -313,7 +313,7 @@ class RingBuilder:
 
             pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
-            pinput['fields'] = self._generate_field_block(requestparameters)
+            pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
 
             print(pinput)
             
@@ -375,7 +375,7 @@ class RingBuilder:
         return ringblock
 
     
-    def _generate_field_block(self,requestparameters):
+    def _generate_field_block(self,requestparameters,fieldprotocol):
 
         fieldsbuffer = collections.OrderedDict()
 
@@ -390,7 +390,7 @@ class RingBuilder:
             
             i = i + 1
 
-            for val in self.fieldprotocols['fieldprotocol']:
+            for val in fieldprotocol:
                 
                 if i not in fieldsbuffer.keys(): 
                     # Just first for every field. Creates Dictionary that will hold it

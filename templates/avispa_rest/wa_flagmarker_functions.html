@@ -64,10 +64,10 @@ $(window).load(function(){
     console.log("data.item==={{data.item}}")
     // This is to load existing values
     {% for field in data.fieldsschema %}
-    console.log("Flag:{{field.FieldName}}_flag = {{data.item[field.FieldName+'_flag']}}");
-        {%if field.FieldName+'_flag' in data.item %}
-            {%if data.item[field.FieldName+'_flag']!='1' %}
-    console.log("Flag exists, comes from DB = {{data.item[field.FieldName+'_flag']}}");
+    console.log("Flag:{{field.FieldId}}_flag = {{data.item[field.FieldId+'_flag']}}");
+        {%if field.FieldId+'_flag' in data.item %}
+            {%if data.item[field.FieldId+'_flag']!='1' %}
+    console.log("Flag exists, comes from DB = {{data.item[field.FieldId+'_flag']}}");
               {#% set flag = 0%#}
             {%else%}
     console.log('Flag exists but it is set as 1 ');
@@ -76,7 +76,7 @@ $(window).load(function(){
     console.log('Flag doesnt even exist');
         {%endif%}
 
-    change_flag({{field.FieldOrder}},{%if field.FieldName+'_flag' in data.item %}"{{data.item[field.FieldName+'_flag']}}"{%else%}"0000"{%endif%});
+    change_flag({{field.FieldOrder}},{%if field.FieldId+'_flag' in data.item %}"{{data.item[field.FieldId+'_flag']}}"{%else%}"0000"{%endif%});
     {% endfor %}
 });
 </script>
