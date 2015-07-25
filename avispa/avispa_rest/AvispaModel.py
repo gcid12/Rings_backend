@@ -1340,8 +1340,10 @@ class AvispaModel:
             new = ''
             old = ''
 
-
-            old = unicode(item.items[0][field['FieldId']])
+            if item.items[0][field['FieldId']] == None:
+                old = item.items[0][field['FieldId']]
+            else:
+                old = unicode(item.items[0][field['FieldId']])
 
             
             if field['FieldName'] in request.form:
@@ -1353,6 +1355,9 @@ class AvispaModel:
 
             #old = old.strip()
             new = new.strip()
+
+            if new == '':
+               new = None
 
             if old == new:
                 print(field['FieldName']+' ('+field['FieldId']+') did not change')  
@@ -1371,6 +1376,7 @@ class AvispaModel:
                 history_item_dict['action'] = 'Update item'
 
                 item.history[0][field['FieldId']].append(history_item_dict)
+
 
                 item.items[0][field['FieldId']] = new
 
@@ -1481,7 +1487,7 @@ class AvispaModel:
                                 
                     item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
 
-                if old != new:
+                if old_rich != new_rich:
                     pass
                     #Different than the rich, history just keeps adding to the list 
                     '''
