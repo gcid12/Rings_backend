@@ -122,6 +122,42 @@ $(function() {
 
 </script>
 
+<script>
+  function string_to_slug(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+    
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to   = "aaaaeeeeiiiioooouuuunc------";
+    for (var i=0, l=from.length ; i<l ; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+      .replace(/\s+/g, '-') // collapse whitespace and replace by -
+      .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
+}
+</script>
+
+<script>
+  $(".fieldlabel").on("change paste", function() {
+    console.log('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
+    var order = $(this).attr('order');
+       
+    if($(this).val()){
+      var slug = string_to_slug($(this).val());
+      $('#FieldName_'+order).val(slug);
+      $('#FieldNameDis_'+order).val(slug) ;    
+    } else {
+      $('#FieldName_'+order).val('');
+      $('#FieldNameDis_'+order).val('');  
+    }
+  });
+</script>
+
 
 
 {%endblock%}

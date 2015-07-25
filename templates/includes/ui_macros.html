@@ -628,7 +628,7 @@
                             </td>
                             <td>
                               <!--  <span class="fs-0-8">({{ FieldLabel }})</span> -->
-                              <input type="text" name="FieldLabel_{{ FieldOrder }}" class="form-control input-sm fs-0-6" value="{{ FieldLabel }}" placeholder="label"/>
+                              <input type="text" name="FieldLabel_{{ FieldOrder }}" order="{{ FieldOrder }}" name="FieldLabel_{{ FieldOrder }}" class="form-control input-sm fs-0-6 fieldlabel" value="{{ FieldLabel }}" placeholder="label"/>
                               <!-- <div class="input-group input-group-sm m-10">
                               <span class="input-group-addon" id="sizing-addon1">*Source</span>
                               <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="source"/>
@@ -710,8 +710,9 @@
                           <div class="col-sm-4">
                             <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">Slug label</span>
-                            {% if new == True %} 
-                              <input type="text" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="f{{ FieldOrder }}"/>
+                            {% if new == True %}
+                              <input type="text" id="FieldNameDis_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="to be assigned" disabled/>
+                              <input type="hidden" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="to be assigned"/>
                             {% else %}
                               <input type="text" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="{{ FieldName }}"/>
                             {% endif %}    
