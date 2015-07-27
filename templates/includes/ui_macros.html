@@ -589,10 +589,10 @@
 
 {% macro portlet(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel) %}
                    
-                    <div id="portlet_{{ FieldOrder }}" class="portlet"> <!-- B. -->
+                    <div id="portlet_{{ FieldOrder }}" class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"> <!-- B. -->
                       <!-- TAGS -->
                       <input id="tagvalue_{{ FieldOrder }}" type="hidden" name="FieldLayer_{{ FieldOrder }}" value="{{ FieldLayer }}">
-                      <div id="tagged{{ FieldOrder }}" class="portlet-header bt-{{ FieldLayer }}">
+                      <div id="tagged{{ FieldOrder }}" class="portlet-header bt-{{ FieldLayer }} ui-widget-header ui-corner-all">
                         <!-- <div id="tagged{{ f }}" class="bt-7">G</div> -->
                         <table>
                           <tr>
@@ -641,7 +641,7 @@
                               <input type="text" name="FieldHint_{{ FieldOrder }}" class="form-control input-sm fs-0-6 " value="{{ FieldHint }}" placeholder="placeholder"/> 
                             </td>
                             <td>
-                              <span class="tog"></span>
+                              <span class="tog"><i class='fa fa-plus-circle portlet-toggle'></i></span>
                             </td>
                           </tr>
                         </table>
@@ -670,13 +670,13 @@
                           <div class="col-sm-4">
                             <table>
                               <tr>
-                                <td><div layer="1" class="treset{{ FieldOrder }} r-tag bt-0 bc-1"></div></td>
-                                <td><div layer="2" class="treset{{ FieldOrder }} r-tag bt-0 bc-2"></div></td>
-                                <td><div layer="3" class="treset{{ FieldOrder }} r-tag bt-0 bc-3"></div></td>
-                                <td><div layer="4" class="treset{{ FieldOrder }} r-tag bt-0 bc-4"></div></td>
-                                <td><div layer="5" class="treset{{ FieldOrder }} r-tag bt-0 bc-5"></div></td>
-                                <td><div layer="6" class="treset{{ FieldOrder }} r-tag bt-0 bc-6"></div></td>
-                                <td><div layer="7" class="treset{{ FieldOrder }} r-tag bt-7 bc-7"></div></td>
+                                <td><div layer="1" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-1"></div></td>
+                                <td><div layer="2" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-2"></div></td>
+                                <td><div layer="3" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-3"></div></td>
+                                <td><div layer="4" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-4"></div></td>
+                                <td><div layer="5" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-5"></div></td>
+                                <td><div layer="6" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-6"></div></td>
+                                <td><div layer="7" order="{{ FieldOrder }}" class="treset r-tag bt-7 bc-7"></div></td>
                               </tr>
                             </table>
                             <!-- <div class="input-group input-group-sm">
@@ -729,7 +729,137 @@
                       </div> <!-- C. PORTLET CONTENT -->
                     </div> <!-- B. CLOSE PORTLET -->
                      <!-- N FIELD END -->
-{% endmacro%}
+{% endmacro %}
+
+{% macro portlet_raw() %}
+  {%raw%}
+
+                    <div id="portlet_{{ FieldOrder }}" class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"> <!-- B. -->
+                      <!-- TAGS -->
+                      <input id="tagvalue_{{ FieldOrder }}" type="hidden" name="FieldLayer_{{ FieldOrder }}" value="{{ FieldLayer }}">
+                      <div id="tagged{{ FieldOrder }}" class="portlet-header bt-{{ FieldLayer }} ui-widget-header ui-corner-all">
+                        <!-- <div id="tagged{{ f }}" class="bt-7">G</div> -->
+                        <table>
+                          <tr>
+                            <td>
+                              <span class="handler m-10" >
+                                <i class="fa fa-bars fa-1x text-white"></i>
+                              </span>
+                            </td>
+                            <td>
+                              <span class="label label-danger m-10">{{ FieldOrder }}</span>   
+                            </td>
+                            <td>
+                  
+                            </td>
+                            <td>
+                              <select name="FieldWidget_{{ FieldOrder }}" class="form-control input-sm" style="background-color:#666; color:white;">
+                                <option value="">SELECT ONE</option>
+                                <option value="checkbox">checkbox</option>
+                                <option value="date">date</option>
+                                <option value="images">images</option>
+                                <option value="items">items</option>
+                                <option value="location">location</option>
+                                <option value="password">password</option>
+                                <option value="radio">radio</option>
+                                <option value="select">select</option>
+                                <option value="text">text</option>
+                                <option value="textarea">textarea</option>
+                                <option value="url">url</option> 
+                              </select>
+                            </td>
+                            <td>
+                              <input type="text" name="FieldLabel_{{ FieldOrder }}" order="{{ FieldOrder }}" name="FieldLabel_{{ FieldOrder }}" class="form-control input-sm fs-0-6 fieldlabel" value="{{ FieldLabel }}" placeholder="label"/>                     
+                            </td>
+                            <td>
+                              &nbsp;
+                            </td>
+                            <td class="" style="width:40%;">
+                              <input type="text" name="FieldHint_{{ FieldOrder }}" class="form-control input-sm fs-0-6 " value="{{ FieldHint }}" placeholder="placeholder"/> 
+                            </td>
+                            <td>
+                              <span class="tog"><i class='fa fa-plus-circle portlet-toggle'></i></span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <!-- C1 -->
+                      <div class="portlet-content">
+                        <!-- C2. DETAILS -->
+                        <div class="row">
+                          <div class="col-sm-8">
+                            <span class="fc-g fs-0-8 margin-x-7">    
+                              required
+                              <input name="FieldRequired_{{ FieldOrder }}" value="TRUE" type="checkbox">
+                            </span>
+                            <!-- <span class="label bg-gray margin-x-7">
+                              <input name="FieldMultilingual_{{ FieldOrder }}" value="TRUE" type="checkbox">
+                              multilingual
+                            </span> -->
+                            <span class="fc-g fs-0-8 margin-x-7">
+                              Cardinality
+                              <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
+                                <option value="Single">Single</option>
+                                <option value="Multiple">Multiple</option>
+                              </select>   
+                            </span>
+                          </div>
+                          <div class="col-sm-4">
+                            <table>
+                              <tr>
+                                <td><div layer="1" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-1"></div></td>
+                                <td><div layer="2" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-2"></div></td>
+                                <td><div layer="3" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-3"></div></td>
+                                <td><div layer="4" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-4"></div></td>
+                                <td><div layer="5" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-5"></div></td>
+                                <td><div layer="6" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-6"></div></td>
+                                <td><div layer="7" order="{{ FieldOrder }}" class="treset r-tag bt-7 bc-7"></div></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon fs-0-8" id="sizing-addon1">Source*</span>
+                              <textarea name="FieldSource_{{ FieldOrder }}" rows="4" class="form-control" placeholder="URI of ">{{ FieldSource }}</textarea>
+                            </div>     
+                          </div>
+                          <br/>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon fs-0-8" id="sizing-addon1">Order</span>
+                              <input type="text" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}" class="fc-0-9">   
+                            </div> 
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon" id="sizing-addon1">Default</span>
+                              <input type="text" name="FieldDefault_{{ FieldOrder }}" class="form-control" placeholder=""/>
+                            </div> 
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon" id="sizing-addon1">Slug label</span>
+                              <input type="text" id="FieldNameDis_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="to be assigned" disabled/>
+                              <input type="hidden" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="to be assigned"/>
+             
+                            </div> 
+                          </div>                         
+                          <br/>
+                        </div>
+                        <!-- CLOSE ROW 1 -->
+                        <!-- NEW ORDER -->
+                        <input type="hidden" name="FieldType_{{ FieldOrder }}">
+                        <div class="input-group input-group-sm">
+                        </div>
+                        <!-- SUBMIT -->
+                      </div> <!-- C. PORTLET CONTENT -->
+                    </div> <!-- B. CLOSE PORTLET -->
+                     <!-- N FIELD END -->
+  {%endraw%}
+{% endmacro %}
 
 
 {% macro showSchema(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSemantic,FieldLabel) %}
