@@ -8,159 +8,7 @@
 
 {% endblock %}
 
-{% block footfunctions %}
 
-
-    {% set numfields = request.args.get('n')|int %} 
-    {% for f in range( 1, numfields+1) %}
-
-          <script type="text/javascript">
-              var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
-              var allbb= "bc-1 bc-2 bc-3 bc-4 bc-5 bc-6 bc-7 ";
-
-                $(document).ready(function(){
-
-                  $(".treset{{ f }}").click(function(){
-                    var layer = $(this).attr('layer');
-                    $("#tagged{{ f }}").removeClass(allbt).addClass("bt-"+layer);
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).removeClass(allbt).addClass("bt-"+layer);                   
-                    $("#tagvalue_{{ f}}").attr("value",layer);
-                  }); 
-                  
-                  $("#tag1-{{ f }}").click(function(){
-                    $(".tagged{{ f }}").removeClass(allbt).addClass("bt-1");
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).addClass("bt-1");
-                    $("#tagvalue_{{ f }}").attr("value","1");
-                  }); 
-                  $("#tag2-{{ f }}").click(function(){
-                    $(".tagged{{ f }}").removeClass(allbt).addClass("bt-2");
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).addClass("bt-2");
-                    $("#tagvalue_{{ f }}").attr("value","2");
-                  }); 
-                  $("#tag3-{{ f }}").click(function(){
-                    $(".tagged{{ f }}").removeClass(allbt).addClass("bt-3");
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).addClass("bt-3");
-                    $("#tagvalue_{{ f }}").attr("value","3");
-                  }); 
-                  $("#tag4-{{ f }}").click(function(){
-                    $(".tagged{{ f }}").removeClass(allbt).addClass("bt-4");
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).addClass("bt-4");
-                    $("#tagvalue_{{ f }}").attr("value","4");
-                  }); 
-                  $("#tag5-{{ f }}").click(function(){
-                    $(".tagged{{ f }}").removeClass(allbt).addClass("bt-5");
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).addClass("bt-5");
-                    $("#tagvalue_{{ f }}").attr("value","5");
-                  }); 
-                  $("#tag6-{{ f }}").click(function(){
-                    $(".tagged{{ f }}").removeClass(allbt).addClass("bt-6");
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).addClass("bt-6");
-                    $("#tagvalue_{{ f }}").attr("value","6");
-                  }); 
-                  $("#tag7-{{ f }}").click(function(){
-                    $(".tagged{{ f }}").removeClass(allbt).addClass("bt-7");
-                    $(".treset{{ f }}").removeClass(allbt);
-                    $(this).addClass("bt-7");
-                    $("#tagvalue_{{ f }}").attr("value","7");
-                  }); 
-                   
-                });
-          </script>
-
-    {% endfor %}
-
-
-
-
-<script>
-
-//PORTLET
-$(function() {
-  $(".portlet-content").hide();
-  $( "#columnfields" ).sortable({
-  // connectWith: ".columnfields",
-  handle: ".handler",
-  cancel: ".portlet-toggle",
-  placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
-  opacity:0.7,
-  cursor: "move",
-  axis: 'y',
-  stop: function(event,ui){
-    var pOrder = $(this).sortable('toArray').toString();
-    $(".exit").prepend( pOrder);
-  }
-
-
-  });
-  $( ".portlet" )
-
-    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-    .find( ".portlet-header" )
-    .addClass( "ui-widget-header ui-corner-all" );
-
-  $(".tog")
-    .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
-  $( ".portlet-toggle" ).click(function() {
-    var icon = $( this );
-    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
-    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-  });
-
-  //$(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
-  $(".tog").prepend( "<span class='label label-warning'>W</span>");
-
-
-});
-
-
-</script>
-
-<script>
-  function string_to_slug(str) {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
-    str = str.toLowerCase();
-    
-    // remove accents, swap ñ for n, etc
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to   = "aaaaeeeeiiiioooouuuunc------";
-    for (var i=0, l=from.length ; i<l ; i++) {
-      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    }
-
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-      .replace(/\s+/g, '-') // collapse whitespace and replace by -
-      .replace(/-+/g, '-'); // collapse dashes
-
-    return str;
-}
-</script>
-
-<script>
-  $(".fieldlabel").on("change paste", function() {
-    console.log('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
-    var order = $(this).attr('order');
-       
-    if($(this).val()){
-      var slug = string_to_slug($(this).val());
-      $('#FieldName_'+order).val(slug);
-      $('#FieldNameDis_'+order).val(slug) ;    
-    } else {
-      $('#FieldName_'+order).val('');
-      $('#FieldNameDis_'+order).val('');  
-    }
-  });
-</script>
-
-
-
-{%endblock%}
 
 {% block tabcontent %}
 
@@ -257,15 +105,12 @@ $(function() {
 
               <div id="columnfields"> <!-- A. START DRAG AREA -->
               {% for FieldOrder in range( 1, numfields+1) %}
-
-
                 {{ ui.portlet(FieldOrder,3,True,FieldName,'text',FieldCardinality,'','',FieldSemantic,FieldLabel) }}
-                
-
-
-
-              {% endfor %}
+              {% endfor %}    
               </div> <!-- A. CLOSE COLUMN  -->
+              <span class="addfield">Add a new field</span>
+
+              
 
             
           </div><!-- CLOSE COLSM10 -->
@@ -321,12 +166,161 @@ $(function() {
 
 {% endblock %}
 
-
 {% block modals %}
 
   {% include 'avispa_rest/helpmodal.html' %}
 
 {% endblock %}
+
+{% block footscripts %}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/handlebars-v3.0.3.js') }}"></script>
+{% endblock%}
+
+{% block footfunctions %}
+
+<script type="text/javascript">
+    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
+    var allbb= "bc-1 bc-2 bc-3 bc-4 bc-5 bc-6 bc-7 ";
+
+    $(document).ready(function(){
+
+      $('#columnfields')
+      .on('click', 'div div div div table tbody tr td div.treset' , function () {
+        var layer = $(this).attr('layer');
+        var order = $(this).attr('order');
+        $("#tagged"+order).removeClass(allbt).addClass("bt-"+layer);
+        $(this).removeClass(allbt).addClass("bt-"+layer);                   
+        $("#tagvalue_"+order).attr("value",layer); 
+      });
+
+         
+    });
+</script>
+
+<script type="text/javascript">
+
+//PORTLET
+$(function() {
+  $(".portlet-content").hide();
+  $( "#columnfields" ).sortable({
+    // connectWith: ".columnfields",
+    handle: ".handler",
+    cancel: ".portlet-toggle",
+    placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
+    opacity:0.7,
+    cursor: "move",
+    axis: 'y',
+    stop: function(event,ui){
+      var pOrder = $(this).sortable('toArray').toString();
+      $(".exit").prepend( pOrder);
+    }
+  });
+
+  /*
+  $('.portlet-toggle').on('click', function () {
+   var icon = $( this );
+    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle(); 
+  });
+*/
+
+  $('#columnfields')
+      .on('click', 'div div table tbody tr td span i.fa-plus-circle' , function () {
+        var icon = $( this );
+        //console.log('close!'+fieldcount);
+        icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+        icon.closest( ".portlet" ).find( ".portlet-content" ).toggle(); 
+      })
+      .on('click', 'div div table tbody tr td span i.fa-minus-circle' , function () {
+        var icon = $( this );
+        //console.log('open!'+fieldcount);
+        icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+        icon.closest( ".portlet" ).find( ".portlet-content" ).toggle(); 
+      });
+
+  //$(".tog").prepend( "<span class='label label-warning'>W</span>");
+
+
+});
+
+
+</script>
+
+<script type="text/javascript">
+  function string_to_slug(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+    
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to   = "aaaaeeeeiiiioooouuuunc------";
+    for (var i=0, l=from.length ; i<l ; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+      .replace(/\s+/g, '-') // collapse whitespace and replace by -
+      .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
+}
+</script>
+
+<script type="text/javascript">
+  $('#columnfields').on('change paste','div div table tbody tr td input.fieldlabel', function() {
+    console.log('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
+    var order = $(this).attr('order');
+       
+    if($(this).val()){
+      var slug = string_to_slug($(this).val());
+      $('#FieldName_'+order).val(slug);
+      $('#FieldNameDis_'+order).val(slug) ;    
+    } else {
+      $('#FieldName_'+order).val('');
+      $('#FieldNameDis_'+order).val('');  
+    }
+  });
+</script>
+
+<script id="portlet-template" type="text/x-handlebars-template">
+{{ ui.portlet_raw() }}
+</script>
+
+<script type="text/javascript">
+   var source   = $("#portlet-template").html();
+   var template = Handlebars.compile(source);
+</script>
+
+<script type="text/javascript">
+
+  var fieldcount = "{{ request.args.get('n') }}"
+  console.log(fieldcount)
+  if(fieldcount == "None"){
+    fieldcount=1;
+    var context = {FieldOrder:fieldcount,FieldLayer:'2',new:false,FieldName:'',FieldWidget:'text',FieldCardinality:'single',FieldHint:'',FieldSource:'',FieldSemantic:'',FieldLabel:''}
+    var html  = template(context);
+    $( "#columnfields" ).add(html).appendTo( "#columnfields" );
+
+  }
+  console.log(fieldcount)
+
+  $( ".addfield" ).click(function() {
+    fieldcount = parseInt(fieldcount,10)+ 1
+    var context = {FieldOrder:fieldcount,FieldLayer:'2',new:false,FieldName:'',FieldWidget:'text',FieldCardinality:'single',FieldHint:'',FieldSource:'',FieldSemantic:'',FieldLabel:''}
+    var html  = template(context);
+    //console.log(html);
+
+  $(".portlet-content").hide();
+
+  $( "#columnfields" ).add(html).appendTo( "#columnfields" );
+      
+
+
+   });
+
+</script>
+
+{%endblock%}
 
 
 {% block findme %} post_rq_a {% endblock %}

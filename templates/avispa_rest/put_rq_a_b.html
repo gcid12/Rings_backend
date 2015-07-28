@@ -2,108 +2,6 @@
 
 {% block title %} {% endblock %}
 
-{% block footfunctions %}
-
-        
-    {% for field in data.fieldsschema %}
-       
-       <script type="text/javascript">
-          var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
-          var allbb= "bb-1 bb-2 bb-3 bb-4 bb-5 bb-6 bb-7 ";
-
-          $(document).ready(function(){
-
-              $(".treset{{ field.FieldOrder }}").click(function(){
-                var layer = $(this).attr('layer');
-                $("#tagged{{ field.FieldOrder }}").removeClass(allbt).addClass("bt-"+layer);
-                $(".treset{{ field.FieldOrder }}").removeClass(allbt);
-                $(this).removeClass(allbt).addClass("bt-"+layer);
-                
-                $("#tagvalue_{{ field.FieldOrder }}").attr("value",layer);
-              }); 
-
-              
-          });
-
-      </script>
-
-    {%endfor%}
-
-
-    <script type="text/javascript">
-        //PORTLET
-        $(function() {
-          $(".portlet-content").hide();
-          $( "#columnfields" ).sortable({
-          // connectWith: ".columnfields",
-          handle: ".handler",
-          cancel: ".portlet-toggle",
-          placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
-          opacity:0.7,
-          cursor: "move",
-          axis: 'y',
-          stop: function(event,ui){
-            var pOrder = $(this).sortable('toArray').toString();
-            $(".exit").prepend( pOrder);
-          }
-
-
-          });
-          $( ".portlet" )
-
-            .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-            .find( ".portlet-header" )
-            .addClass( "ui-widget-header ui-corner-all" );
-
-          $(".tog")
-            .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
-          $( ".portlet-toggle" ).click(function() {
-            var icon = $( this );
-            icon.toggleClass( "fa-plus-circle fa-minus-circle" );
-            icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-          });
-
-          $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
-
-
-        });
-    </script>
-
-    <script>
-      function string_to_slug(str) {
-        str = str.replace(/^\s+|\s+$/g, ''); // trim
-        str = str.toLowerCase();
-        
-        // remove accents, swap ñ for n, etc
-        var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-        var to   = "aaaaeeeeiiiioooouuuunc------";
-        for (var i=0, l=from.length ; i<l ; i++) {
-          str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-        }
-
-        str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-          .replace(/\s+/g, '-') // collapse whitespace and replace by -
-          .replace(/-+/g, '-'); // collapse dashes
-
-        return str;
-    }
-    </script>
-
-    <script>
-      $(".fieldname").on("change paste", function() {
-        console.log('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
-        if($(this).val()){
-          var slug = string_to_slug($(this).val());
-          $(this).val(slug);             
-        } else {
-          $(this).val('');          
-        }
-      });
-    </script>
-
-{% endblock %}
-
-
 {% block crumb02 %}
       <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
 
@@ -228,8 +126,9 @@
                   <!-- N FIELD END -->
 
               {% endfor %}
-              </div> <!-- A. CLOSE COLUMN  -->
 
+              </div> <!-- A. CLOSE COLUMN  -->
+              Add a new field
             
           </div><!-- CLOSE COLSM10 -->
         </div><!-- CLOSE ROW -->
@@ -277,17 +176,104 @@
   
 </div>
 
-
-
-
-
-
 {% endblock %}
 
 
 {% block modals %}
 
   {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
+
+
+{% block footfunctions %}
+
+    <script type="text/javascript">
+    var allbt= "bt-1 bt-2 bt-3 bt-4 bt-5 bt-6 bt-7";
+    var allbb= "bc-1 bc-2 bc-3 bc-4 bc-5 bc-6 bc-7 ";
+
+      $(document).ready(function(){
+        $(".treset").click(function(){
+          var layer = $(this).attr('layer');
+          var order = $(this).attr('order');
+          $("#tagged"+order).removeClass(allbt).addClass("bt-"+layer);
+          $(this).removeClass(allbt).addClass("bt-"+layer);                   
+          $("#tagvalue_"+order).attr("value",layer);
+        });    
+      });
+    </script>
+
+
+    <script type="text/javascript">
+        //PORTLET
+        $(function() {
+          $(".portlet-content").hide();
+          $( "#columnfields" ).sortable({
+          // connectWith: ".columnfields",
+          handle: ".handler",
+          cancel: ".portlet-toggle",
+          placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
+          opacity:0.7,
+          cursor: "move",
+          axis: 'y',
+          stop: function(event,ui){
+            var pOrder = $(this).sortable('toArray').toString();
+            $(".exit").prepend( pOrder);
+          }
+
+
+          });
+          //$( ".portlet" )
+
+            //.addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+            //.find( ".portlet-header" )
+            //.addClass( "ui-widget-header ui-corner-all" );
+
+          //$(".tog")
+          //  .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
+          $( ".portlet-toggle" ).click(function() {
+            var icon = $( this );
+            icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+            icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+          });
+
+          $(".tog").prepend( "<span class='label label-warning'>W " + ui.index()+ "</span>");
+
+
+        });
+    </script>
+
+    <script>
+      function string_to_slug(str) {
+        str = str.replace(/^\s+|\s+$/g, ''); // trim
+        str = str.toLowerCase();
+        
+        // remove accents, swap ñ for n, etc
+        var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+        var to   = "aaaaeeeeiiiioooouuuunc------";
+        for (var i=0, l=from.length ; i<l ; i++) {
+          str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+        }
+
+        str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+          .replace(/\s+/g, '-') // collapse whitespace and replace by -
+          .replace(/-+/g, '-'); // collapse dashes
+
+        return str;
+    }
+    </script>
+
+    <script>
+      $(".fieldname").on("change paste", function() {
+        console.log('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
+        if($(this).val()){
+          var slug = string_to_slug($(this).val());
+          $(this).val(slug);             
+        } else {
+          $(this).val('');          
+        }
+      });
+    </script>
 
 {% endblock %}
 
