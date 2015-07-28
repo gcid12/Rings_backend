@@ -1136,9 +1136,6 @@
     </td>
     <td>
 
-      <img src="/static/images/demo/{{picorg}}" class="pic-org-1" style="width:100px; height:100px;">
-        
-        <img class="user-small user-round" src="/static/images/demo/{{picuser}}" style="margin-left:-40px; margin-top:90px;" alt=""/>
 
     </td>
     <td>
@@ -1147,26 +1144,20 @@
         <h4 class="fw-c">
         {{title}}</h4>
         <hr/>
-
-        <div class="fs-0-8"><strong>Organization</strong>:
          
-
-         {{org}} | <strong>User</strong>:
-
-        
-
-         {{user}} ( {{position}} )</div>
+         
       </div>
       
     </td>
     
     <td>
-      <form action="/_login" method="POST" target="_blank">
+      <a class="btn btn-info" href="http://factcard.myring.io/#/fc/{{org}}">Go</a>
+      <!-- <form action="/_login" method="POST" target="_blank">
       <input type="hidden" name="email" value="{{mail}}" />
       <input type="hidden" name="password" value="{{pass}}"/>
       <input type="hidden" name="redirect" value ="{{redirect}}"/>
       <input class="btn btn-info" type="submit" value="Go to Demo">
-    </form>
+      </form> -->
     </td>
     
   </tr>
