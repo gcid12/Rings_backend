@@ -3,142 +3,89 @@
 {% block title %} {% endblock %}
 
 {% block crumbs %}
-
 <li class="active">New Ring</li>
-
 {% endblock %}
 
-
-
 {% block tabcontent %}
-
-
-<!-- START NEW CONTENT --> 
-
-
-
 <div class="row">
-    <div class="col-sm-8 alpha omega">
-        <div class="alert  alert-success alert-top" style="height:60px;">
-            <span class="fs-1-5"><i class="fa fa-info-circle"></i> Create a New Ring  {%if data.collection %}in <strong>'{{data.collection|upper}}'</strong>{%endif%}</span>
-            <p>Please complete the following steps.</p>
-        </div>
-
+  <div class="col-sm-8 alpha omega">
+    <div class="alert  alert-success alert-top" style="height:60px;">
+      <span class="fs-1-5">
+        <i class="fa fa-info-circle"></i> 
+        Create a New Ring  {%if data.collection %}in <strong>'{{data.collection|upper}}'</strong>{%endif%}
+      </span>
+      <p>Please complete the following steps.</p>
     </div>
-    <div class="col-sm-4 alpha omega text-right">
-        <div class="alert  bg-gray alert-top" style="height:60px;">
-            <p class="fs-1">or, use an existing Ring : 
-                <button type="button" class="btn btn-vader btn-sm" data-toggle="modal" data-target="#forkModal">
-                    <i class="fa fa-code-fork fa-2x fc-a"></i>
-                </button>
-            </p>
-        </div>
-
+  </div>
+  <div class="col-sm-4 alpha omega text-right">
+    <div class="alert  bg-gray alert-top" style="height:60px;">
+      <p class="fs-1">or, use an existing Ring : 
+        <button type="button" class="btn btn-vader btn-sm" data-toggle="modal" data-target="#forkModal">
+          <i class="fa fa-code-fork fa-2x fc-a"></i>
+        </button>
+      </p>
     </div>
-</div>
-
-         
+  </div>
+</div>         
 <div class="row bg-g">
-<form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
+  <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
     <div class="col-sm-3">
-        <h2 class="fs-4 hidden-xs">1</h2> 
-        <div class="spa20 visible-xs"></div>
-        <p class=" text-s1 text-lgray fs-1-5">Ring Name and Description</p>
+      <h2 class="fs-4 hidden-xs">1</h2> 
+      <div class="spa20 visible-xs"></div>
+      <p class=" text-s1 text-lgray fs-1-5">Ring Name and Description</p>
     </div>
-
-
     <div class="col-sm-9">
-        <div class="spa20 hidden-xs"></div>
-
-        {%if data.collection %}
-        <input type="hidden" name="collection" value="{{data.collection}}">
-        {%endif%}
-        
-        <div class="input-group input-group-sm">
-          <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
-          <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring">
-        </div>
-        <!-- <div class="input-group input-group-sm">
-          <span class="input-group-addon" id="sizing-addon1">label</span>
-          <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label for this ring">
-        </div> -->
-        <div class="input-group input-group-sm">
-          <span class="input-group-addon" id="sizing-addon1">Description</span>
-          <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" ></textarea>
-        </div>
-
-        
-          <!-- <label for="RingVersion" class="col-sm-2 control-label">ring:version</label>
-          <div class="col-sm-10">
-            <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="if this ring is new it must be version 1">
-          </div>
-          <label for="RingURI" class="col-sm-2 control-label">ring:URI</label>
-          <div class="col-sm-10">
-            <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="URI that will be used to refer to this specific ring">
-          </div>
-          <label for="inputEmail3" class="col-sm-2 control-label">ring:build</label>
-          <div class="col-sm-10">
-            <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="">
-          </div> -->
-
-          <div class="spa20 hidden-xs"></div>
-
+      <div class="spa20 hidden-xs"></div>
+      {%if data.collection %}
+      <input type="hidden" name="collection" value="{{data.collection}}"/>
+      {%endif%}  
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
+        <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring">
+      </div>
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon" id="sizing-addon1">Description</span>
+        <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" ></textarea>
+      </div>
+      <div class="spa20 hidden-xs"></div>
     </div>
+    <div class="row bg-g hidden-xs">
+      <div class="col-sm-12">
+        <hr/>
+      </div>          
+    </div>
+    <div class="row bg-g">
+      <div class="col-sm-3">
+        <h2 class="fs-4 hidden-xs">2</h2>
+        <p class="text-s1 text-lgray fs-1-5">Ring fields</p>   
+      </div>
+    <div class="col-sm-9">
+      {% set numfields = request.args.get('n')|int %}
+      <div id="columnfields"> <!-- A. START DRAG AREA -->
+      {% for FieldOrder in range( 1, numfields+1) %}
+        {{ ui.portlet(FieldOrder,3,True,FieldName,'text',FieldCardinality,'','',FieldSemantic,FieldLabel) }}
+      {% endfor %}    
+      </div> <!-- A. CLOSE COLUMN  -->
+      <span class="addfield">Add a new field</span>  
+    </div><!-- CLOSE COLSM10 -->
+    </div><!-- CLOSE ROW -->
+    <div class="row bg-g">
+      <div class="col-sm-12">
+        <hr/>
+      </div>          
+    </div>
+    <div class="row bg-g">
+      <div class="col-sm-3"> 
+        <span class="fs-4">3</span>
+        <p class="text-s1 text-lgray fs-1-5">Save</p>
+      </div>
+      <div class="col-sm-9">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>
+      </div>
+    </div>
+  </form>
 </div>
- 
-        <div class="row bg-g hidden-xs">
-          <div class="col-sm-12">
-            <hr/>
-          </div>          
-        </div>
-
-
-        <div class="row bg-g">
-          <div class="col-sm-3">
-            <h2 class="fs-4 hidden-xs">2</h2> <p class="text-s1 text-lgray fs-1-5">Ring fields</p>
-              
-          </div>
-          <div class="col-sm-9">
-            
-  
-              {% set numfields = request.args.get('n')|int %}
-
-              <div id="columnfields"> <!-- A. START DRAG AREA -->
-              {% for FieldOrder in range( 1, numfields+1) %}
-                {{ ui.portlet(FieldOrder,3,True,FieldName,'text',FieldCardinality,'','',FieldSemantic,FieldLabel) }}
-              {% endfor %}    
-              </div> <!-- A. CLOSE COLUMN  -->
-              <span class="addfield">Add a new field</span>
-
-              
-
-            
-          </div><!-- CLOSE COLSM10 -->
-        </div><!-- CLOSE ROW -->
-
-        <div class="row bg-g">
-          <div class="col-sm-12">
-            <hr/>
-          </div>          
-        </div>
-
-        <div class="row bg-g">
-          <div class="col-sm-3">
-            
-            <span class="fs-4">3</span> <p class="text-s1 text-lgray fs-1-5">Save</p>
-          </div>
-          <div class="col-sm-9">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a> 
-
-          </div>
-        </div>
-
-    </form>
-
-
-
-
 
 <!-- ForkModal -->
 <div class="modal fade" id="forkModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -148,32 +95,29 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><i class="fa fa-code-fork fa-2x"></i> Fork existing Ring</h4>
       </div>
-      <form id="post_rq_a" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST" >
-      <div class="modal-body">       
-           Load Parent Ring from this URL: <input name="ringurl" class="form-control" type="text">
-      </div>
-      <div class="modal-footer">
-        <input name="submit" value="load and save" type="submit" class="btn btn-success">       
-      </div>
+      <form id="post_rq_a" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
+        <div class="modal-body">       
+          Load Parent Ring from this URL: 
+          <input name="ringurl" class="form-control" type="text">
+        </div>
+        <div class="modal-footer">
+          <input name="submit" value="load and save" type="submit" class="btn btn-success">       
+        </div>
       </form>
     </div>
-  </div>
-  
+  </div> 
 </div>
 <div class="spa50"></div>
-
-
 
 {% endblock %}
 
 {% block modals %}
-
   {% include 'avispa_rest/helpmodal.html' %}
-
 {% endblock %}
 
 {% block footscripts %}
-    <script type="text/javascript" src="{{ url_for('static',filename='js/handlebars-v3.0.3.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/handlebars-v3.0.3.js') }}">
+    </script>
 {% endblock%}
 
 {% block footfunctions %}
@@ -189,8 +133,16 @@
         var layer = $(this).attr('layer');
         var order = $(this).attr('order');
         $("#tagged"+order).removeClass(allbt).addClass("bt-"+layer);
-        $(this).removeClass(allbt).addClass("bt-"+layer);                   
+        $(this).parents().eq(2).find('td div').removeClass(allbt);
+        $(this).addClass("bt-"+layer);
         $("#tagvalue_"+order).attr("value",layer); 
+      });
+
+      
+      $('#columnfields')
+      .on('click', 'div div div div table tbody tr td div.delset' , function () {
+        var order = $(this).attr('order');
+        $("#portlet_"+order).remove();      
       });
 
          
