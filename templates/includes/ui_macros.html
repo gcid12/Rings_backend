@@ -602,7 +602,7 @@
                               </span>
                             </td>
                             <td>
-                              <span class="label label-danger m-10">{{ FieldOrder }}</span>   
+                              <span class="label label-danger m-10 order-label-{{ FieldOrder }}">{{ FieldOrder }}</span>   
                             </td>
                             <td>
                   
@@ -695,20 +695,15 @@
                             </div>     
                           </div>
                           <br/>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <span class="input-group-addon fs-0-8" id="sizing-addon1">Order</span>
-                              <input type="text" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}" class="fc-0-9">   
-                            </div> 
-                          </div>
-                          <div class="col-sm-4">
+                          <input type="hidden" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}" class="fc-0-9 field-order-input">
+                          <div class="col-sm-6">
                             <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">Default</span>
                               <input type="text" name="FieldDefault_{{ FieldOrder }}" class="form-control" placeholder=""/>
                                 <!-- <input type="hidden" name="FieldDefault_{{ FieldOrder }}"> -->
                             </div> 
                           </div>
-                          <div class="col-sm-4">
+                          <div class="col-sm-6">
                             <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">Slug label</span>
                             {% if new == True %}
@@ -748,7 +743,7 @@
                               </span>
                             </td>
                             <td>
-                              <span class="label label-danger m-10">{{ FieldOrder }}</span>   
+                              <span class="label label-danger m-10 order-label-{{ FieldOrder }}">{{ FieldOrder }}</span>   
                             </td>
                             <td>
                   
@@ -829,19 +824,14 @@
                             </div>     
                           </div>
                           <br/>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-sm">
-                              <span class="input-group-addon fs-0-8" id="sizing-addon1">Order</span>
-                              <input type="text" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}" class="fc-0-9">   
-                            </div> 
-                          </div>
-                          <div class="col-sm-4">
+                          <input type="hidden" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}" class="fc-0-9 field-order-input">
+                          <div class="col-sm-6">
                             <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">Default</span>
                               <input type="text" name="FieldDefault_{{ FieldOrder }}" class="form-control" placeholder=""/>
                             </div> 
                           </div>
-                          <div class="col-sm-4">
+                          <div class="col-sm-6">
                             <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">Slug label</span>
                               <input type="text" id="FieldNameDis_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="to be assigned" disabled/>

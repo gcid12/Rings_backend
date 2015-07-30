@@ -153,6 +153,7 @@
 
 //PORTLET
 $(function() {
+
   $(".portlet-content").hide();
   $( "#columnfields" ).sortable({
     // connectWith: ".columnfields",
@@ -163,8 +164,17 @@ $(function() {
     cursor: "move",
     axis: 'y',
     stop: function(event,ui){
-      var pOrder = $(this).sortable('toArray').toString();
-      $(".exit").prepend( pOrder);
+      
+      var c = 1;    
+      $('.field-order-input').each(function(index, value){
+        //$(this).html(c.toString());
+        var old = $(this).val();
+        var parts = $(this).attr('name').split('_');
+        $('.order-label-'+parts[1]).html(c.toString());
+        $(this).val(c.toString());
+        c += 1;
+      });
+
     }
   });
 
@@ -191,8 +201,6 @@ $(function() {
       });
 
   //$(".tog").prepend( "<span class='label label-warning'>W</span>");
-
-
 });
 
 
@@ -246,7 +254,7 @@ $(function() {
 <script type="text/javascript">
 
   var fieldcount = "{{ request.args.get('n') }}"
-  console.log(fieldcount)
+  //console.log(fieldcount)
   if(fieldcount == "None"){
     fieldcount=1;
     var context = {FieldOrder:fieldcount,FieldLayer:'2',new:false,FieldName:'',FieldWidget:'text',FieldCardinality:'single',FieldHint:'',FieldSource:'',FieldSemantic:'',FieldLabel:''}
@@ -254,7 +262,7 @@ $(function() {
     $( "#columnfields" ).add(html).appendTo( "#columnfields" );
 
   }
-  console.log(fieldcount)
+  
 
   $( ".addfield" ).click(function() {
     fieldcount = parseInt(fieldcount,10)+ 1
@@ -262,13 +270,10 @@ $(function() {
     var html  = template(context);
     //console.log(html);
 
-  $(".portlet-content").hide();
-
-  $( "#columnfields" ).add(html).appendTo( "#columnfields" );
+    $(".portlet-content").hide();
+    $( "#columnfields" ).add(html).appendTo( "#columnfields" );
       
-
-
-   });
+  });
 
 </script>
 
