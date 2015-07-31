@@ -1,6 +1,6 @@
 # Import flask dependencies
 import urlparse, time, datetime, collections, json
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, current_app
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
@@ -83,7 +83,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                         data['is_org'] = False
 
         
-        print('Collection:',collection)
+        current_app.logger.debug('Collection:',collection)
         if collection:       
             data['collection'] = collection
 
@@ -107,8 +107,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         t = time.time()
         data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 
-        print("host_url")
-        print(data['host_url'])
+        current_app.logger.debug("host_url")
+        current_app.logger.debug(data['host_url'])
 
 
 
@@ -123,19 +123,19 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         status = 200
 
     if 'redirect' in data:
-        print('flag0')
-        print(data)
+        current_app.logger.debug('flag0')
+        current_app.logger.debug(data)
         return data  
     elif api:  
-        print(data)      
+        current_app.logger.debug(data)      
         return render_template(data['template'], data=data), status            
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-        print('flag1')
-        print(data)      
+        current_app.logger.debug('flag1')
+        current_app.logger.debug(data)      
         return render_template(data['template'], data=data), status     
     else:
-        print('flag2')
-        #print(data) 
+        current_app.logger.debug('flag2')
+        #current_app.logger.debug(data) 
         return render_template(data['template'], data=data)
         #return 'ok'
 
@@ -144,7 +144,7 @@ def tool_dispatcher(tool):
     MRT = MyRingTool()
 
     data = getattr(MRT, tool.lower())(request)
-    print('Tool executed:',data)
+    current_app.logger.debug('Tool executed:',data)
     
     if  hasattr(current_user,'id'):
         data['handle']=current_user.id
@@ -254,8 +254,8 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         t = time.time()
         data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 
-        print("host_url")
-        print(data['host_url'])
+        current_app.logger.debug("host_url")
+        current_app.logger.debug(data['host_url'])
 
 
 
@@ -337,13 +337,13 @@ def home_dispatcher(handle):
         needle = today
         for d in range(93):
             
-            #print('NEEDLE:',needle)
+            #current_app.logger.debug('NEEDLE:',needle)
             h_new[str(needle)] = 0
             h_update[str(needle)] = 0
             h_generic[str(needle)] = 0
             needle = needle - one_day
 
-        #print('h_new:',h_new)
+        #current_app.logger.debug('h_new:',h_new)
 
             
         for ringx in ringcounts:
@@ -352,7 +352,7 @@ def home_dispatcher(handle):
             for item_dac in ring_dac:
                 for n in item_dac['new']:
                     if n == str(today):
-                        print('NEW TODAY:',item_dac['new'][n])
+                        current_app.logger.debug('NEW TODAY:',item_dac['new'][n])
 
                     if n in h_generic:
                         h_generic[n] += item_dac['new'][n]
@@ -366,7 +366,7 @@ def home_dispatcher(handle):
 
                 for n in item_dac['update']:
                     if n == str(today):
-                        print('UPDATED TODAY:',item_dac['update'][n])
+                        current_app.logger.debug('UPDATED TODAY:',item_dac['update'][n])
 
                     if n in h_generic:
                         h_generic[n] += item_dac['update'][n]
@@ -730,7 +730,7 @@ def index():
 
 def imageserver(filename,depth1,depth2):
 
-    print('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
+    current_app.logger.debug('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
 
     avispa_rest.static_folder=IMAGE_STORE+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
@@ -994,31 +994,31 @@ def api_collections_route_a_x_y(handle,collection):
         return render_template("/base_json.html", data=data)
 
     if ('rq' not in request.args) and ('method' not in request.args): 
-        print('FLAGx1')
+        current_app.logger.debug('FLAGx1')
         result = route_dispatcher('_a',handle,api=True,collection=collection)       
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
-                print('FLAGx2')
+                current_app.logger.debug('FLAGx2')
                 result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection) 
             elif request.args.get('method').lower()=='post':
-                print('FLAGx3')
+                current_app.logger.debug('FLAGx3')
                 result = route_dispatcher('_a',handle,api=True,collection=collection)
         else:
-            print('FLAGx4')
+            current_app.logger.debug('FLAGx4')
             result = route_dispatcher('_a',handle,api=True,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
-            print('FLAGx5')
+            current_app.logger.debug('FLAGx5')
             result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection)
         if request.args.get('rq').lower() == 'post':
-            print('FLAGx6')
+            current_app.logger.debug('FLAGx6')
             result = route_dispatcher('_a',handle,api=True,collection=collection)
 
 
     else:
-        print('FLAGx7')
+        current_app.logger.debug('FLAGx7')
         #Every collection specific GET
         result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection)
  
@@ -1034,31 +1034,31 @@ def api_collections_route_a_x_y(handle,collection):
 def collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
-        print('FLAGx1')
+        current_app.logger.debug('FLAGx1')
         result = route_dispatcher('_a',handle,collection=collection)       
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
-                print('FLAGx2')
+                current_app.logger.debug('FLAGx2')
                 result = collection_dispatcher('_a_x_y',handle,collection) 
             elif request.args.get('method').lower()=='post':
-                print('FLAGx3')
+                current_app.logger.debug('FLAGx3')
                 result = route_dispatcher('_a',handle,collection=collection)
         else:
-            print('FLAGx4')
+            current_app.logger.debug('FLAGx4')
             result = route_dispatcher('_a',handle,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
-            print('FLAGx5')
+            current_app.logger.debug('FLAGx5')
             result = collection_dispatcher('_a_x_y',handle,collection)
         if request.args.get('rq').lower() == 'post':
-            print('FLAGx6')
+            current_app.logger.debug('FLAGx6')
             result = route_dispatcher('_a',handle,collection=collection)
 
 
     else:
-        print('FLAGx7')
+        current_app.logger.debug('FLAGx7')
         #Every collection specific GET
         result = collection_dispatcher('_a_x_y',handle,collection)
  

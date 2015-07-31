@@ -17,7 +17,7 @@ from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, Li
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
 from MyRingSchema import MyRingSchema
-from CouchViewSync import CouchViewSync
+
 
 import couchdb
 from MyRingUser import MyRingUser

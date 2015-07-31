@@ -1,5 +1,6 @@
 # AvispaCollectionsRestFunc.py
-from flask import redirect, flash
+from flask import redirect, flash , current_app
+
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from AvispaPeopleModel import AvispaPeopleModel
@@ -54,7 +55,7 @@ class AvispaPeopleRestFunc:
             result = self.APM.post_a_p(handle,person)
                 
             if result:
-                print('Awesome , you just added '+ person +' to the organization')
+                current_app.logger.debug('Awesome , you just added '+ person +' to the organization')
                 #msg = 'Item put with id: '+idx
                 flash('Awesome , you just added '+ person +' to the organization','UI')
 
@@ -74,7 +75,7 @@ class AvispaPeopleRestFunc:
         #DELETE /a/b
     def delete_a_p_q(self,request,handle,person,*args):
         #Will delete an existing person
-        print('Trying to delete the following person: '+person)
+        current_app.logger.debug('Trying to delete the following person: '+person)
 
         #Check if the user exists or not
         if self.MAM.user_exists(person):
@@ -82,7 +83,7 @@ class AvispaPeopleRestFunc:
             result = self.APM.delete_a_p_q(handle,person)
                 
             if result:
-                print('You just deleted '+ person +' from the organization')
+                current_app.logger.debug('You just deleted '+ person +' from the organization')
                 #msg = 'Item put with id: '+idx
                 flash('You just deleted '+ person +' from the organization','UI')
 

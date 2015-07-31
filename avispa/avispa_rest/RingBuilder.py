@@ -5,7 +5,7 @@ import json
 import urlparse
 import requests
 from couchdb.http import PreconditionFailed
-from flask import flash
+from flask import flash , current_app
 
 from AvispaModel import AvispaModel
 
@@ -52,8 +52,7 @@ class RingBuilder:
             else:
                 ringversion = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
 
-            print('ringversion:')
-            print(ringversion)
+            current_app.logger.debug('ringversion:',ringversion)
             
             requestparameters = {}
 
@@ -65,23 +64,23 @@ class RingBuilder:
 
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
-                print(p+':'+request.form.get(p))
+                current_app.logger.debug(p+':'+request.form.get(p))
  
             # Generate rings block                         
             pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
             pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
 
-            print(pinput)
+            current_app.logger.debug(pinput)
             
             #Check if a database with that name already exists
 
             try:
                 self.AVM.ring_set_db(handle,ringname,ringversion)
-                print('New Ring database created: '+ ringname)
+                current_app.logger.debug('New Ring database created: '+ ringname)
 
             except(PreconditionFailed):
-                print('The Ring '+ ringname +' database already exists')
+                current_app.logger.debug('The Ring '+ ringname +' database already exists')
                 flash('The Ring '+ ringname+' already exists','ER')
                 return False
 
@@ -95,10 +94,10 @@ class RingBuilder:
                                         self.fieldprotocols['fieldprotocol']):
 
                 ringd = {'handle':handle,'ringname':ringname,'version':ringversion}
-                print('Schema inserted/updated')
+                current_app.logger.debug('Schema inserted/updated')
                 return ringd
             else:
-                print('Schema could not be inserted')
+                current_app.logger.debug('Schema could not be inserted')
                 return False
 
         elif request.form.get('ringurl') :
@@ -108,14 +107,14 @@ class RingBuilder:
             
             o1 = urlparse.urlparse(request.url)
             host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
-            print(host_url)
+            current_app.logger.debug(host_url)
 
             
 
             o2 = urlparse.urlparse(request.form.get('ringurl'))
 
             pathparts = o2.path.split('/')
-            print(pathparts)
+            current_app.logger.debug(pathparts)
             if pathparts[1]!='_api':
                 corrected_path = '/_api'+o2.path
             else:
@@ -125,13 +124,13 @@ class RingBuilder:
 
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
             host_ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
-            print(host_ring_url)
+            current_app.logger.debug(host_ring_url)
 
             
             if host_url==host_ring_url:
                 #You are cloning a ring from your localhost
                 #Although the result is like doing a put_a_b with no changes as system won't allow duplicates
-                print('Cloning local ring')
+                current_app.logger.debug('Cloning local ring')
 
                 pathparts=corrected_path.split('/')
                 origin_handle = pathparts[2] #BUG! This will set origin database as handle for new ring 
@@ -142,7 +141,7 @@ class RingBuilder:
                 
                 #original schema
                 schema = self.AVM.ring_get_schema_from_view(origin_handle,ringdbname)
-                print(schema) 
+                current_app.logger.debug(schema) 
                 #Generate pinput from schema
                 
                 if schema['rings'][0]['RingVersion']:
@@ -153,10 +152,10 @@ class RingBuilder:
                 requestparameters = {}
 
 
-                print('schema rings:')
+                current_app.logger.debug('schema rings:')
 
 
-                print(schema['rings'])
+                current_app.logger.debug(schema['rings'])
 
                 
                 for k in schema['rings'][0]:
@@ -169,14 +168,13 @@ class RingBuilder:
 
                 i = 0
                 for n in schema['fields']:
-                    print('n')
-                    print(n)
+                    
+                    current_app.logger.debug(n)
                     i = i + 1
                     for k in n:   
                         requestparameters[k+'_'+str(i)] = n[k]
 
-                print('requestparameters:')
-                print(requestparameters)
+                current_app.logger.debug('requestparameters:',requestparameters)
 
                 # Generate rings block                         
                 pinput['rings'] = self._generate_ring_block(requestparameters)
@@ -187,26 +185,25 @@ class RingBuilder:
 
             else:
                 # You are cloning a ring from another server 
-                print('Cloning non local ring')
+                current_app.logger.debug('Cloning non local ring')
 
                 try:
                     r = requests.get(ring_url)
                 except(requests.exceptions.ConnectionError):
-                    print('The connection was refused')
+                    current_app.logger.debug('The connection was refused')
                     flash('The connection to the parent ring was refused. Check the URL in your browser.','ER')
                     return False
                 #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
                 
-                print('Raw JSON schema:')
-                print(r.text)
+                current_app.logger.debug('Raw JSON schema:')
+                current_app.logger.debug(r.text)
                 schema = json.loads(r.text)
                 
                 #Generate pinput from r.text
 
                 #x = '{"source": "/blalab/mecanismos_0-3-0", "items": [{"Descripcion": "Cigue\u00f1al de cuatro codos", "Referencia": "2.1 f", "Imagen": "", "Clasificacion": "Eslabon", "Subclasificacion": "Manivela", "_id": "1378154159"}], "rings": [{"RingVersion": "0.3.0", "RingDescription": "Descripcion de Mecanismos", "RingName": "Mecanismos", "RingURI": "http://ring.apiring.org/mecanismos", "RingBuild": "1"}], "fields": [{"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "textarea", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Descripcion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "images", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Imagen", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Clasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Subclasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Referencia", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}]} '
                 #schema = json.loads(x)
-                print('schema:')
-                print(schema)
+                current_app.logger.debug('schema:',schema)
 
 
                 handle = handle.lower()
@@ -218,11 +215,10 @@ class RingBuilder:
                 for k in schema['rings'][0]:
                     requestparameters[k] = schema['rings'][0][k]
 
-                print('pre_requestparameters:')
-                print(requestparameters)
+                current_app.logger.debug('pre_requestparameters:',requestparameters)
 
                 if 'RingParent' not in requestparameters:
-                    print('adding RingParent to requestparameters')
+                    current_app.logger.debug('adding RingParent to requestparameters')
                     requestparameters['RingParent'] = requestparameters['RingName']
 
                 '''
@@ -232,14 +228,13 @@ class RingBuilder:
                 
                 i = 0
                 for n in schema['fields']:
-                    print('n')
-                    print(n)
+                    
+                    current_app.logger.debug(n)
                     i = i + 1
                     for k in n:   
                         requestparameters[k+'_'+str(i)] = n[k]
 
-                print('requestparameters:')
-                print(requestparameters)
+                current_app.logger.debug('requestparameters:',requestparameters)
 
 
                
@@ -252,9 +247,9 @@ class RingBuilder:
 
             try: 
                 self.AVM.ring_set_db(handle,ringname,ringversion)
-                print('New Ring database created:'+handle+'_'+ringname)
+                current_app.logger.debug('New Ring database created:'+handle+'_'+ringname)
             except(PreconditionFailed):
-                print('The Ring '+ ringname +' database already exists')
+                current_app.logger.debug('The Ring '+ ringname +' database already exists')
                 flash('The Ring '+ ringname+'_'+ringversion +' already exists','ER')
                 return False
 
@@ -268,19 +263,19 @@ class RingBuilder:
 
                 
                 ringd = {'handle':handle,'ringname':ringname,'version':ringversion}
-                print('Schema inserted/updated')
+                current_app.logger.debug('Schema inserted/updated')
                 return ringd
             except(ValueError,KeyError):
                 #Delete db you just created
                 self.AVM.user_hard_delete_ring(handle,ringname,ringversion)
-                print('Schema could not be inserted, Delete all trace.')
+                current_app.logger.debug('Schema could not be inserted, Delete all trace.')
                 return False
                 
 
             
         else:
 
-            print('There is not enough information to create a Ring')
+            current_app.logger.debug('There is not enough information to create a Ring')
             return False
 
     def put_a_b(self,request,handle,ring):
@@ -308,14 +303,14 @@ class RingBuilder:
             
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
-                print(p+':'+request.form.get(p))
+                current_app.logger.debug(p+':'+request.form.get(p))
             
 
             pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
             pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
 
-            print(pinput)
+            current_app.logger.debug(pinput)
             
             
             if self.AVM.ring_set_schema(handle,
@@ -325,16 +320,16 @@ class RingBuilder:
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol']):
 
-                print('Schema inserted/updated')
+                current_app.logger.debug('Schema inserted/updated')
                 return True
             else:
-                print('Schema could not be inserted')
+                current_app.logger.debug('Schema could not be inserted')
                 return False
 
 
         else:
 
-            print('There is not enough information to create a Ring')
+            current_app.logger.debug('There is not enough information to create a Ring')
             return False
 
 
@@ -346,28 +341,26 @@ class RingBuilder:
         
         # Collect all the 'Ring*' fields coming via the RQ
         for k in self.ringprotocols['ringprotocol']:
-            print('generate_ring_block iteration:')
-            print(k)
+            current_app.logger.debug('generate_ring_block iteration:',k)
             if k in requestparameters:
-                print('in')
+                current_app.logger.debug('in')
             #if request.form.get(k):
                 #ringsbuffer[k] = request.form[k]
                 ringsbuffer[k] = requestparameters[k]
-                #print(k)
+                #current_app.logger.debug(k)
 
                 if requestparameters[k]=='':
 
                     if k in self.ringprotocols['mandatory']:
                         raise Exception('Field in Ring Protocol missing : '+k)
-                        #print('Field in Ring Protocol missing : '+k)
+                        #current_app.logger.debug('Field in Ring Protocol missing : '+k)
                     else:
                         if k in self.ringprotocols['defaults']:
                             ringsbuffer[k] = self.ringprotocols['defaults'][k]
                         else:
                             ringsbuffer[k] = ''
 
-        print('ringsbuffer:')
-        print(ringsbuffer)
+        current_app.logger.debug('ringsbuffer:',ringsbuffer)
 
         ringblock = []
         ringblock.append(ringsbuffer)
@@ -398,67 +391,67 @@ class RingBuilder:
 
                 #if request.form.get(val+'_'+str(i)):
                 #if requestparameters[val+'_'+str(i)]:
-                print(val+'_'+str(i))
-                print('gfb1')
-                #print('requestparameters')
-                #print(requestparameters)
+                current_app.logger.debug(val+'_'+str(i))
+                current_app.logger.debug('gfb1')
+                #current_app.logger.debug('requestparameters')
+                #current_app.logger.debug(requestparameters)
                 if val+'_'+str(i) in requestparameters:
 
-                    print('gfb2')
+                    current_app.logger.debug('gfb2')
                     
                     if requestparameters[val+'_'+str(i)] and requestparameters[val+'_'+str(i)]!='None' :
 
-                        print('gfb3')
-                        print(requestparameters[val+'_'+str(i)])
+                        current_app.logger.debug('gfb3')
+                        current_app.logger.debug(requestparameters[val+'_'+str(i)])
 
                         fieldsbuffer[i][val] = requestparameters[val+'_'+str(i)]
-                        #print(val+'_'+str(i))
+                        #current_app.logger.debug(val+'_'+str(i))
                     else:
                         #The parameter exists but it is empty
-                        print('gfb4')
-                        print(val+'_'+str(i))
-                        print('gone none')
-                        #print
+                        current_app.logger.debug('gfb4')
+                        current_app.logger.debug(val+'_'+str(i))
+                        current_app.logger.debug('gone none')
+                        #current_app.logger.debug
                         fieldsbuffer[i][val] = ''
 
                         if val in self.fieldprotocols['mandatory']:
                             raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
 
                         if val in self.fieldprotocols['defaults']:
-                            print("DEFAULTS:")
-                            print(val+'_'+str(i))
-                            print(self.fieldprotocols['defaults'][val])
-                            #print
+                            current_app.logger.debug("DEFAULTS:")
+                            current_app.logger.debug(val+'_'+str(i))
+                            current_app.logger.debug(self.fieldprotocols['defaults'][val])
+                            #current_app.logger.debug
                             fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
                             #fieldsbuffer[i][val] = True
                     
 
                 else:
                     #The checkboxes or fields could not be in the request but still need to be introduced in the database
-                    print('gfb5')
+                    current_app.logger.debug('gfb5')
                 
                     if val in self.fieldprotocols['mandatory']:
                         raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
 
                     if val in self.fieldprotocols['defaults']:
-                        print('gfb6')
-                        print("DEFAULTS 2:")
-                        print(val+'_'+str(i))
-                        print(self.fieldprotocols['defaults'][val])
-                        #print
+                        current_app.logger.debug('gfb6')
+                        current_app.logger.debug("DEFAULTS 2:")
+                        current_app.logger.debug(val+'_'+str(i))
+                        current_app.logger.debug(self.fieldprotocols['defaults'][val])
+                        #current_app.logger.debug
                         fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
-                        print(fieldsbuffer[i][val])
+                        current_app.logger.debug(fieldsbuffer[i][val])
                     else:
-                        print('gfb7')
-                        print("BLANK DEFAULTS:")
-                        print(val+'_'+str(i))
+                        current_app.logger.debug('gfb7')
+                        current_app.logger.debug("BLANK DEFAULTS:")
+                        current_app.logger.debug(val+'_'+str(i))
                         fieldsbuffer[i][val] = ''
-                        print(fieldsbuffer[i][val])
+                        current_app.logger.debug(fieldsbuffer[i][val])
 
                 
                 
-        print("fieldsbuffer:")
-        print(fieldsbuffer)
+        current_app.logger.debug("fieldsbuffer:")
+        current_app.logger.debug(fieldsbuffer)
          
         fieldblock = []
 

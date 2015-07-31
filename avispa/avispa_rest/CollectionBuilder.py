@@ -1,5 +1,5 @@
 #CollectionBuilder.py
-from flask import flash
+from flask import flash , current_app
 from AvispaCollectionsModel import AvispaCollectionsModel
 
 class CollectionBuilder:
@@ -48,10 +48,10 @@ class CollectionBuilder:
             #Here you write to the user.collection document
                      
             if self.ACM.post_a_x(handle,collectiond):
-                print('New Collection created: '+collectiond['name'])
+                current_app.logger.debug('New Collection created: '+collectiond['name'])
                 return True
             else:
-                print('The Collection '+ collectiond['name'] +' database already exists')
+                current_app.logger.debug('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 
     def put_a_x_y(self,request,handle,collection):
@@ -88,10 +88,10 @@ class CollectionBuilder:
             #Here you write to the user.collection document
                      
             if self.ACM.put_a_x_y(handle,collectiond):
-                print('Collection updated: '+collectiond['name'])
+                current_app.logger.debug('Collection updated: '+collectiond['name'])
                 return True
             else:
-                print('The Collection '+ collectiond['name'] +' database already exists')
+                current_app.logger.debug('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 
 

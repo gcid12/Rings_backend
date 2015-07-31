@@ -1,6 +1,6 @@
 # AvispaCollectionsRestFunc.py
 import urlparse, random
-from flask import redirect, flash
+from flask import redirect, flash , current_app
 from AvispaModel import AvispaModel
 from AvispaRolesModel import AvispaRolesModel
 from MainModel import MainModel
@@ -27,12 +27,12 @@ class AvispaRolesRestFunc:
         roles = {}
 
         for r in result:
-            print('Raw:',r.value)
+            current_app.logger.debug('Raw:',r.value)
             for ring in r.value:
-                print('ringrole:',ring) 
+                current_app.logger.debug('ringrole:',ring) 
                 roles[ring] = r.value[ring] 
 
-        print('Roles:',roles)
+        current_app.logger.debug('Roles:',roles)
 
         
         d = {'template':'avispa_rest/get_a_roles.html','roles':roles}
@@ -63,8 +63,8 @@ class AvispaRolesRestFunc:
 
         valid_emails, invalid_emails = address.validate_list(collabraw, as_tuple=True)
 
-        print('valid_emails:',valid_emails)
-        print('invalid_emails:',invalid_emails)
+        current_app.logger.debug('valid_emails:',valid_emails)
+        current_app.logger.debug('invalid_emails:',invalid_emails)
 
         #2. If it is an email, send ring subscription url/token 
 
@@ -101,7 +101,7 @@ class AvispaRolesRestFunc:
                 #4. If yes, translate it to an email and send ring subscription ulr/token
                 invite_email = user_doc['email']
    
-                print(invite_handle+' exists and it has the following email:',invite_email)
+                current_app.logger.debug(invite_handle+' exists and it has the following email:',invite_email)
                 if invite_email not in valid_emails:
 
                     token = flask_bcrypt.generate_password_hash(invite_email+str(random.randint(0,9999)))  
@@ -110,10 +110,10 @@ class AvispaRolesRestFunc:
                     content = "Click here to start: "+host_url+"/_roles/"+handle+"/"+ring+"?rq=put&k="+token+"&e="+to                  
                     self.EMM.send_one_email(to,subject,content)
                 else:
-                    print(invite_email+" and "+invite_handle+" point to the same user")
+                    current_app.logger.debug(invite_email+" and "+invite_handle+" point to the same user")
                 
             else:
-                print(invite_handle+' is not a MyRingID. What do you want to do with it?')
+                current_app.logger.debug(invite_handle+' is not a MyRingID. What do you want to do with it?')
                 flash('Could not find '+invite_handle+'. ','ER')
 
 

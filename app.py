@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask.ext.login import LoginManager
 from flask.ext.openid import OpenID
 from flask.ext.bcrypt import Bcrypt
-from flask_debugtoolbar import DebugToolbarExtension
+#from flask_debugtoolbar import DebugToolbarExtension
 import os
 
 # Define the WSGI application object
@@ -14,7 +14,8 @@ app = Flask(__name__)
 # Configurations
 app.config.from_object('default_config')
 
-toolbar = DebugToolbarExtension(app)
+#toolbar = DebugToolbarExtension(app)
+
 #app.config.from_object('env_config')
 #print(os.path.join(app.config['BASE_DIR'], 'tmp'))
 

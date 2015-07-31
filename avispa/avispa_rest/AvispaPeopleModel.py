@@ -3,6 +3,7 @@ import sys
 
 from datetime import datetime 
 from couchdb.http import ResourceNotFound
+from flask import flash, current_app
 
 
 import couchdb
@@ -44,7 +45,7 @@ class AvispaPeopleModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print('user_doc[people]:',user_doc['people'])
+        current_app.logger.debug('user_doc[people]:',user_doc['people'])
 
         newperson = {'handle': person,
                      'addedby': current_user.id,
@@ -68,7 +69,7 @@ class AvispaPeopleModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print('user_doc[people]:',user_doc['people'])
+        current_app.logger.debug('user_doc[people]:',user_doc['people'])
 
         counter = 0
         for p in user_doc['people']:

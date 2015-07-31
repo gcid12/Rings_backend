@@ -7,7 +7,8 @@ from couchdb.http import ResourceNotFound
 import couchdb
 from MainModel import MainModel
 from env_config import COUCHDB_SERVER,COUCHDB_USER, COUCHDB_PASS
-from flask.ext.login import current_user
+from flask.ext.login import current_user 
+from flask import flash, current_app
 
 class AvispaTeamsModel:
 
@@ -28,12 +29,12 @@ class AvispaTeamsModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print(user_doc['teams'])
+        current_app.logger.debug(user_doc['teams'])
 
 
         for teamd in user_doc['teams']:
             if teamd['teamname'] == team:
-                print('Members for team '+team,teamd['members'])
+                current_app.logger.debug('Members for team '+team,teamd['members'])
                 memberlist = []
 
                 if 'members' not in teamd:
@@ -68,12 +69,12 @@ class AvispaTeamsModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print(user_doc['teams'])
+        current_app.logger.debug(user_doc['teams'])
 
         count1 = 0
         for teamd in user_doc['teams']:
             if teamd['teamname'] == team:
-                print('Members for team '+team,teamd['members'])
+                current_app.logger.debug('Members for team '+team,teamd['members'])
                 memberlist = []
                 count2 = 0
                 for memberd in teamd['members']:
@@ -98,7 +99,7 @@ class AvispaTeamsModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print(user_doc['teams'])
+        current_app.logger.debug(user_doc['teams'])
 
 
         for teamd in user_doc['teams']:
@@ -139,7 +140,7 @@ class AvispaTeamsModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print(user_doc['teams'])
+        current_app.logger.debug(user_doc['teams'])
 
         count1 = 0
         for teamd in user_doc['teams']:

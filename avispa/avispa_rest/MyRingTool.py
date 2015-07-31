@@ -6,7 +6,7 @@ import bcrypt
 import json
 
 
-from flask import flash
+from flask import flash, current_app
 
 from MainModel import MainModel
 from AvispaModel import AvispaModel
@@ -14,7 +14,6 @@ from AvispaModel import AvispaModel
 from auth.AuthModel import AuthModel
 
 from AvispaUpload import AvispaUpload
-from CouchViewSync import CouchViewSync
 from MyRingSchema import MyRingSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 

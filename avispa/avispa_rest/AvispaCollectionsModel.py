@@ -7,6 +7,7 @@ from couchdb.http import ResourceNotFound
 import couchdb
 from MainModel import MainModel
 from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
+from flask import flash, current_app
 
 class AvispaCollectionsModel:
 
@@ -60,7 +61,7 @@ class AvispaCollectionsModel:
                     validring[ringname+'_'+ringversionh] = True
 
         
-            current_app.logger.debug('BEFORE COLLECTIONS',collections)
+            #current_app.logger.debug('BEFORE COLLECTIONS',collections)
             
             count_c = 0
             for coll in collections:
@@ -84,7 +85,7 @@ class AvispaCollectionsModel:
 
                 count_c += 1
 
-            current_app.logger.debug('AFTER COLLECTIONS',collections)
+            #current_app.logger.debug('AFTER COLLECTIONS',collections)
                     
                         
             return collections

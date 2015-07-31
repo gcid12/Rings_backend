@@ -5,7 +5,7 @@ import errno
 import random
 import werkzeug 
 from werkzeug import secure_filename
-from flask import flash
+from flask import flash, current_app
 from wand.image import Image 
 from wand.display import display
 
@@ -52,13 +52,13 @@ class AvispaUpload:
     def _request_complete(self,request):
 
         if not request.method == 'POST':
-            print('Error: You can only use upload via POST')
+            current_app.logger.error('Error: You can only use upload via POST')
             flash(u'You can only use upload via POST','ER')
             self.rs_status='405'
             return False
 
         if not request.files['file']:
-            print('Error: There are no files in the request')
+            current_app.logger.error('Error: There are no files in the request')
             flash(u'There are no files in the request','ER')
             self.rs_status='400'
             return False
@@ -69,7 +69,7 @@ class AvispaUpload:
 
         file = request.files['file']
         if not self.__allowed_file(file.filename):
-            print('Error: This file is not allowed: '+str(file.filename))
+            current_app.logger.error('Error: This file is not allowed: '+str(file.filename))
             flash(u'This file is not allowed: '+str(file.filename),'ER')
             self.rs_status='415'
             return False
@@ -85,17 +85,17 @@ class AvispaUpload:
         filename = self.imgid+'_o.jpg'
         originalversionpath = self.IMAGE_FOLDER + '/o/'
 
-        print('filename',filename)
-        print('originalversionpath',originalversionpath)
+        current_app.logger.debug('filename',filename)
+        current_app.logger.debug('originalversionpath',originalversionpath)
 
 
         try:     
             file.save(os.path.join(originalversionpath, filename))
-            print('File uploaded successfully here:' + os.path.join(self.IMAGE_FOLDER, filename))
+            current_app.logger.debug('File uploaded successfully here:' + os.path.join(self.IMAGE_FOLDER, filename))
             self.uploaded_file = os.path.join(self.IMAGE_FOLDER, filename)
             return True
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            current_app.logger.debug("Unexpected error:", sys.exc_info()[0])
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
             self.rs_status='500'
             raise
@@ -130,7 +130,7 @@ class AvispaUpload:
             multiplied['height']=img.height
             multiplied['sizename']='o'
             multiplied['unit']='pixel'
-            print(multiplied)
+            current_app.logger.debug(multiplied)
             self.image_sizes.append(multiplied)
 
         
@@ -177,7 +177,7 @@ class AvispaUpload:
 
         try:     
             img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
-            print('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            current_app.logger.debug('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
             multiplied={}
             multiplied['mime-type']='image/jpeg'
             multiplied['extension']='jpg'
@@ -185,11 +185,11 @@ class AvispaUpload:
             multiplied['height']=img.height
             multiplied['sizename']=sizename
             multiplied['unit']='pixel'
-            print(multiplied)
+            current_app.logger.debug(multiplied)
             self.image_sizes.append(multiplied)
             return True
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            current_app.logger.debug("Unexpected error:", sys.exc_info()[0])
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
             self.rs_status='500'
             raise
@@ -224,14 +224,14 @@ class AvispaUpload:
     
 
     def x_safe_create_dir(self,path): #DONT USE HERE! #Moved to AuthModel.py
-        print(path)
+        current_app.logger.debug(path)
         try:
             os.makedirs(path)
         except OSError as exception:
             if exception.errno != errno.EEXIST:
                 raise
 
-        print('flag1')
+        current_app.logger.debug('flag1')
         return True
 
 

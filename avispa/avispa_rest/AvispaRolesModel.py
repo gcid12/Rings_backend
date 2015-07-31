@@ -1,5 +1,6 @@
 # AvispaRolesModel.py
 from MainModel import MainModel
+from flask import flash, current_app
 
 class AvispaRolesModel:
 
@@ -73,7 +74,7 @@ class AvispaRolesModel:
             if 'roles' in user_doc:
                 #result['local'] = user_doc.roles
                 result['inherited'] = {}
-                print('user_doc.roles:',user_doc.roles)
+                current_app.logger.debug('user_doc.roles:',user_doc.roles)
 
                 for rolx in user_doc['roles']:
                     
@@ -119,7 +120,7 @@ class AvispaRolesModel:
             result =  roles
             
 
-        print('Roles:',result)
+        current_app.logger.debug('Roles:',result)
         return result
 
 

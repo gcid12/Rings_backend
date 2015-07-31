@@ -1,6 +1,6 @@
 # AvispaCollectionsRestFunc.py
 import urlparse, random
-from flask import redirect, flash
+from flask import redirect, flash, current_app
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from flask.ext.login import current_user
@@ -26,7 +26,7 @@ class AvispaTeamsRestFunc:
 
         d = {}
 
-        print('flag232x')
+        current_app.logger.debug('flag232x')
 
         peopleteams = self.MAM.is_org(handle) 
         if peopleteams: 
@@ -37,11 +37,11 @@ class AvispaTeamsRestFunc:
             allteams = {}         
             for teamd in peopleteams['teams']:
                 #get the profilepic for this person
-                print('teamname:'+teamd['teamname'])
+                current_app.logger.debug('teamname:'+teamd['teamname'])
 
                 for member in teamd['members']:
 
-                    print('member:'+member['handle'])
+                    current_app.logger.debug('member:'+member['handle'])
 
                     
 
@@ -50,8 +50,8 @@ class AvispaTeamsRestFunc:
                         member['thumbnail'] = person_user_doc['profilepic']
 
                     if current_user.id == member['handle']:
-                        print(member['handle']+' is member')
-                        #print('T writing'+teamd['roles'][-1]['role'])
+                        current_app.logger.debug(member['handle']+' is member')
+                        #current_app.logger.debug('T writing'+teamd['roles'][-1]['role'])
                         if teamd['teamname'] == 'owner':
                             d['teammembership'][teamd['teamname']] = 'org_owner'
                         else:
@@ -60,7 +60,7 @@ class AvispaTeamsRestFunc:
 
 
                 allteams[teamd['teamname']] = 'org_owner'
-                #print('allteams:',allteams)
+                #current_app.logger.debug('allteams:',allteams)
 
 
             if 'owner' in d['teammembership']:
@@ -105,7 +105,7 @@ class AvispaTeamsRestFunc:
                     return d 
 
             if self.MAM.add_team(handle,team,current_user.id):
-                print('Awesome , you just created team '+ team +'.')
+                current_app.logger.debug('Awesome , you just created team '+ team +'.')
                 #msg = 'Item put with id: '+idx
                 flash('Awesome , you just created team '+ team +'.','UI')
                 redirect = '/'+handle+'/_teams'
@@ -180,37 +180,37 @@ class AvispaTeamsRestFunc:
         if 'newmember' in request.form: 
             member = request.form.get('newmember')
             if self.ATM.post_a_m_n_members(handle,team,member):
-                print(member + ' has been added to the team.')
+                current_app.logger.debug(member + ' has been added to the team.')
                 flash(member + ' has been added to the team.','UI')
             else:
-                print(member + ' is already part of this team.')
+                current_app.logger.debug(member + ' is already part of this team.')
                 flash(member + ' is already part of this team.','UI')
 
         if 'delmember' in request.args: 
             member = request.args.get('delmember')
             if self.ATM.delete_a_m_n_members(handle,team,member):
-                print(member + ' has been deleted from the team.')
+                current_app.logger.debug(member + ' has been deleted from the team.')
                 flash(member + ' has been deleted from the team.','UI')
             else:
-                print('There was an issue deleting: ' + member + '.')
+                current_app.logger.debug('There was an issue deleting: ' + member + '.')
                 flash('There was an issue deleting: ' + member + '.','UI')
             
         if 'newring' in request.form:
             ring = request.form.get('newring')
             if self.ATM.post_a_m_n_rings(handle,team,ring):
-                print(ring + ' has been added to the team.')
+                current_app.logger.debug(ring + ' has been added to the team.')
                 flash(ring + ' has been added to the team.','UI')
             else:
-                print(ring + ' already  exists in this team.')
+                current_app.logger.debug(ring + ' already  exists in this team.')
                 flash(ring + ' already  exists in this team.','UI')           
 
         if 'delring' in request.args:
             ring = request.args.get('delring')
             if self.ATM.delete_a_m_n_rings(handle,team,ring):
-                print(ring + ' has been deleted from the team.')
+                current_app.logger.debug(ring + ' has been deleted from the team.')
                 flash(ring + ' has been deleted from the team.','UI')
             else:
-                print('There was an issue deleting: ' + ring + '.')
+                current_app.logger.debug('There was an issue deleting: ' + ring + '.')
                 flash('There was an issue deleting: ' + ring + '.','UI')
             
             
@@ -222,7 +222,7 @@ class AvispaTeamsRestFunc:
         #DELETE /a/b
     def delete_a_m_n(self,request,handle,team,*args):
         #Will delete an existing person
-        print('Trying to delete the following team: '+team)
+        current_app.logger.debug('Trying to delete the following team: '+team)
 
         d = {}
 
@@ -235,7 +235,7 @@ class AvispaTeamsRestFunc:
                 if teamd['teamname'] == team:
                     
                     if self.MAM.delete_team(handle,team):
-                        print('You just deleted team '+ team +'.')
+                        current_app.logger.debug('You just deleted team '+ team +'.')
                         #msg = 'Item put with id: '+idx
                         flash('You just deleted team '+ team +'.','UI')
                         redirect = '/'+handle+'/_teams'
@@ -304,14 +304,14 @@ class AvispaTeamsRestFunc:
         p = {}     
 
         if ('description' in request.form) or ('teamauth' in request.form): 
-            print('xx')
+            current_app.logger.debug('xx')
             p['description'] = request.form.get('description')
             p['teamauth'] = request.form.get('teamauth')
             if self.ATM.put_a_m_n_settings(handle,team,p):
-                print(team + ' has been updated.')
+                current_app.logger.debug(team + ' has been updated.')
                 flash(team + ' has been updated.','UI')
             else:
-                print(' There was a problem updating '+team+'.')
+                current_app.logger.debug(' There was a problem updating '+team+'.')
                 flash(' There was a problem updating '+team+'.','ER')  
 
         d['redirect'] = '/'+handle+'/_teams/'+team
@@ -359,8 +359,8 @@ class AvispaTeamsRestFunc:
 
         valid_emails, invalid_emails = address.validate_list(collabraw, as_tuple=True)
 
-        print('valid_emails:',valid_emails)
-        print('invalid_emails:',invalid_emails)
+        current_app.logger.debug('valid_emails:',valid_emails)
+        current_app.logger.debug('invalid_emails:',invalid_emails)
 
         #2. If it is an email, send ring subscription url/token 
 
@@ -388,7 +388,7 @@ class AvispaTeamsRestFunc:
             # teamd carries the team object
         #Try to convert invalid_emails (myringIDs) into valid_emails
 
-        print("flag1")
+        current_app.logger.debug("flag1")
 
         for invite_handle in invalid_emails:
             user_doc = self.MAM.select_user_doc_view('auth/userbyhandle',invite_handle)                   
@@ -398,7 +398,7 @@ class AvispaTeamsRestFunc:
 
         for email in valid_emails:
 
-            print("flag2")
+            current_app.logger.debug("flag2")
 
             email = str(email)
               
@@ -422,7 +422,7 @@ class AvispaTeamsRestFunc:
                 #You are inviting a soon to be myRing user
                 existinguser = False
 
-            print("flag3")
+            current_app.logger.debug("flag3")
 
             #host_url = "https://avispa.myring.io"
                 
@@ -431,7 +431,7 @@ class AvispaTeamsRestFunc:
             subject = handle+" has invited you to collaborate in the following team : "+team
             # https://avispa.myring.io/_register?h=cdmit&t=staff&k=11111&e=invi@tado.com
             content = "Click here to start working with this team: "+host_url+"/_register?h="+handle+"&t="+team+"&k="+token+"&e="+email
-            print(to,subject,content)
+            current_app.logger.debug(to,subject,content)
 
             if self.EMM.send_one_email(to,subject,content):
                 flash("Invitation email sent.",'UI') 
