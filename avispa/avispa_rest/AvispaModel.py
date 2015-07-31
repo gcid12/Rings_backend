@@ -12,7 +12,7 @@ import json
 
 import traceback
 import collections
-from flask import flash
+from flask import flash, current_app
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
@@ -20,7 +20,6 @@ from MyRingSchema import MyRingSchema
 from CouchViewSync import CouchViewSync
 
 import couchdb
-from flask import current_app
 from MyRingUser import MyRingUser
 from MainModel import MainModel
 from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
@@ -37,10 +36,10 @@ class AvispaModel:
         current_app.logger.debug('#couchdb_call')
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        #print('self.couch :AVM')
-        #print(self.couch)
-        #print('self.couch.resource.credentials :AVM')
-        #print(self.couch.resource.credentials)
+        #current_app.logger.debug('self.couch :AVM')
+        #current_app.logger.debug(self.couch)
+        #current_app.logger.debug('self.couch.resource.credentials :AVM')
+        #current_app.logger.debug(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
 
@@ -65,7 +64,7 @@ class AvispaModel:
             
             rings = user_doc['rings']
             
-            #print(rings)
+            #current_app.logger.debug(rings)
          
 
             for ring in rings:
@@ -81,20 +80,20 @@ class AvispaModel:
 
                     ringversionh = ringversion.replace('-','.')
                     count = ring['count']
-                    #print('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
-                    #print('flag5b:'+str(handle)+'_'+ringname)
+                    #current_app.logger.debug('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
+                    #current_app.logger.debug('flag5b:'+str(handle)+'_'+ringname)
                     #ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
                     ringnamedb=str(handle)+'_'+ringname
-                    #print('ringnamedb::'+ringnamedb) 
+                    #current_app.logger.debug('ringnamedb::'+ringnamedb) 
                     try:
                         db = self.MAM.select_db(ringnamedb)
-                        #print('Get RingDescription:')
+                        #current_app.logger.debug('Get RingDescription:')
                         try: 
                             RingDescription = db['schema']['rings'][0]['RingDescription'] 
                         except KeyError:
                             RingDescription = False 
                         
-                        #print('Get RingLabel:')
+                        #current_app.logger.debug('Get RingLabel:')
                         try:       
                             RingLabel = db['schema']['rings'][0]['RingLabel'] 
                         except KeyError:
@@ -112,11 +111,11 @@ class AvispaModel:
                         data.append(r)
                     except ResourceNotFound:
                         pass
-                        #print('skipping ring '+ ringname+'_'+ringversion + '. Schema does not exist')
-                        print('skipping ring '+ ringname + '. Schema does not exist')
+                        
+                        current_app.logger.info('skipping ring '+ ringname + '. Schema does not exist')
                         
 
-            #print('flag6')
+            #current_app.logger.debug('flag6')
 
             
 
@@ -126,8 +125,8 @@ class AvispaModel:
             #The problem has to do with pagination. It can't find it in the current page
 
             #flash("You have no rings yet, create one!")
-            print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
-            #print('Notice: No rings for this user.')
+            current_app.logger.info("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            #current_app.logger.debug('Notice: No rings for this user.')
 
         return data
 
@@ -147,7 +146,7 @@ class AvispaModel:
             return True    
 
         except:
-            print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            current_app.logger.error ("Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             raise
@@ -360,8 +359,8 @@ class AvispaModel:
 
         current_app.logger.debug('#couchdb_call')
         db = self.couch[user_database]
-        print("handle:")
-        print(handle)
+        
+        current_app.logger.info("handle:",handle)
         doc =  MyRingUser.load(db, handle)
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
         doc.store(db)
@@ -382,34 +381,34 @@ class AvispaModel:
         #Clean all the references to this ring in the user document
         # This is NOT a tombstone. The database and its data will be deleted. 
         # TO DO : Backup the data in a secondary database
-        print('Looking for ring '+ringname+' in the ringlist for this user')
+        current_app.logger.info('Looking for ring '+ringname+' in the ringlist for this user')
         i = 0
         for ring in doc['rings']:
             
             if ring['ringname']==ringname:
-                print('Found it!... Deleting it')
-                print("doc['rings']["+str(i)+"]")
+                current_app.logger.info('Found it!... Deleting it')
+                current_app.logger.info("doc['rings']["+str(i)+"]")
                 del doc['rings'][i]
-                #print()
+                #current_app.logger.debug()
                 #ring['deleted']=True           
                 # This is NOT a tombstone. The database and its data will be deleted. 
                 # TO DO : Backup the data in a secondary database
                 try:
-                    print('Try to Delete DB')
+                    current_app.logger.info('Try to Delete DB')
                     if self.MAM.delete_db(handle+'_'+ringname):
-                        print('DB Deleted')
+                        current_app.logger.info('DB Deleted')
                 except:
-                    print('DB already does not exist. Deleting all its references')    
+                    current_app.logger.info('DB already does not exist. Deleting all its references')    
             i = i+1
 
         j = 0
         for collection in doc['collections']:
-            print('Looking in collection '+collection['collectionname']+' for this ring')
+            current_app.logger.info('Looking in collection '+collection['collectionname']+' for this ring')
             k = 0
             for ring in collection['rings']:
                 if ring['ringname']==ringname:
-                    print('Found it! ... Deleting it'+ str(j)+'-')
-                    print("doc['collections']["+str(j)+"]['rings']["+str(k)+"]")
+                    current_app.logger.info('Found it! ... Deleting it'+ str(j)+'-')
+                    current_app.logger.info("doc['collections']["+str(j)+"]['rings']["+str(k)+"]")
                     del doc['collections'][j]['rings'][k]
 
                 k = k+1
@@ -430,7 +429,7 @@ class AvispaModel:
         #dbname = handle+'_'+ringname+'_'+ringversion
         dbname = handle+'_'+ringname
         if self.MAM.delete_db(dbname):
-            print('Deleted from COUCHDB')
+            current_app.logger.info('Deleted from COUCHDB')
             del1 = True
 
 
@@ -449,7 +448,7 @@ class AvispaModel:
                 #ring['deleted']=True
                 
         if user_doc.store(db):
-            print('Deleted from USERDB')
+            current_app.logger.info('Deleted from USERDB')
             del2 = True
       
 
@@ -462,7 +461,7 @@ class AvispaModel:
     def ring_get_schema(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        print(db_ringname)
+        current_app.logger.info(db_ringname)
         current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
         schema = MyRingSchema.load(db,'schema')
@@ -492,13 +491,13 @@ class AvispaModel:
 
         
         if ringversion == 'None' or ringversion == None:
-            print('ringversion none')
+            current_app.logger.info('ringversion none')
             ringversion = ''
 
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname=str(handle)+'_'+str(ringname)
-        print('db_ringname:')
-        print(db_ringname)
+        
+        current_app.logger.debug('db_ringname:'+str(db_ringname))
         current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
@@ -527,10 +526,10 @@ class AvispaModel:
             elif(action == 'edit'):
                 if r in schema.rings[0]:
                     if pinput['rings'][0][r] == schema.rings[0][r]:
-                        print(r+' did not change')
+                        current_app.logger.info(r+' did not change')
                         
                     else:
-                        print(r+' changed. Old: "'+ str(schema.rings[0][r]) +'" ('+ str(type(schema.rings[0][r])) +')'+\
+                        current_app.logger.info(r+' changed. Old: "'+ str(schema.rings[0][r]) +'" ('+ str(type(schema.rings[0][r])) +')'+\
                                 '  New: "'+ str(pinput['rings'][0][r]) + '" ('+ str(type(pinput['rings'][0][r])) +')' )
                         args_r[r] = pinput['rings'][0][r]
 
@@ -567,16 +566,16 @@ class AvispaModel:
 
                 elif action == 'edit':
                     if pinput['fields'][i][f] == schema.fields[i][f]:  # Checks if old and new are the same
-                        print(f+'_'+str(i+1)+' did not change')
+                        current_app.logger.info(f+'_'+str(i+1)+' did not change')
                     else:                      
-                        print(f+'_'+str(i+1)+' changed. Old: "'+ str(schema.fields[i][f]) +'" ('+ str(type(schema.fields[i][f])) +')'+\
+                        current_app.logger.info(f+'_'+str(i+1)+' changed. Old: "'+ str(schema.fields[i][f]) +'" ('+ str(type(schema.fields[i][f])) +')'+\
                             '  New: "'+ str(pinput['fields'][i][f]) + '" ('+ str(type(pinput['fields'][i][f])) +')' )
                         
                         args_f[f] = pinput['fields'][i][f]
 
 
-            #print('args_f:')
-            #print(args_f)
+            #current_app.logger.debug('args_f:')
+            #current_app.logger.debug(args_f)
 
             if action == 'new':
                 args_f['FieldId'] = self.random_hash_generator(36)
@@ -593,7 +592,7 @@ class AvispaModel:
 
             args_f={}
 
-        print(schema)
+        current_app.logger.debug(schema)
 
         
         schema.store(db)
@@ -669,7 +668,7 @@ class AvispaModel:
             d1 = {}
             d1['_id']=TextField()
             d1['_source']=TextField()
-            print('len:',len(d1))
+            current_app.logger.debug('len:'+str(len(d1)))
             args_rich[field['FieldId']] = ListField(DictField())
             
 
@@ -690,11 +689,11 @@ class AvispaModel:
             
 
 
-        print('args_i',args_i)
-        print('args_rich',args_rich)
-        print('args_history',args_history)
-        print('args_flags',args_flags)
-        print('args_meta',args_meta)
+        current_app.logger.debug('args_i'+str(args_i))
+        current_app.logger.debug('args_rich'+str(args_rich))
+        current_app.logger.debug('args_history'+str(args_history))
+        current_app.logger.debug('args_flags'+str(args_flags))
+        current_app.logger.debug('args_meta'+str(args_meta))
 
  
 
@@ -723,7 +722,7 @@ class AvispaModel:
                                                 )))
                                                }) 
 
-        print('RingClass:',RingClass)
+        current_app.logger.info('RingClass:'+str(RingClass))
 
         return RingClass
 
@@ -736,7 +735,7 @@ class AvispaModel:
             user_database = self.user_database
 
         user_doc = self.MAM.select_user(user_database,handle)
-        print('user rings:',user_doc['rings'])
+        current_app.logger.info('user rings:'+str(user_doc['rings']))
         for user_ring in user_doc['rings']:
             if user_ring['ringname']==ringname:
                 return user_ring['count']
@@ -757,13 +756,13 @@ class AvispaModel:
             for ring in user['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] += 1
-                    print('Item Count increased')
+                    current_app.logger.info('Item Count increased')
 
             if user.store(self.db):
                 
                 return True
             else:
-                print('Could not increase item count')
+                current_app.logger.error('Could not increase item count')
                 return False
 
         #AVISPAMODEL
@@ -777,12 +776,12 @@ class AvispaModel:
             for ring in user['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] -= 1
-                    print('Item Count decreased')
+                    current_app.logger.info('Item Count decreased')
 
             if user.store(self.db):       
                 return True
             else:
-                print('Could not decrease item count')
+                current_app.logger.error('Could not decrease item count')
                 return False
 
     def set_ring_origin(self,handle,ringname,origin):
@@ -797,13 +796,13 @@ class AvispaModel:
                 if ring['ringname'] == ringname:
 
                     ring['origin'] = origin
-                    print('Ring origin set to '+origin)
+                    current_app.logger.info('Ring origin set to '+origin)
 
             if user.store(self.db):
                 
                 return True
             else:
-                print('Could not set origin')
+                current_app.logger.error('Could not set origin')
                 return False
 
 
@@ -812,7 +811,7 @@ class AvispaModel:
     def ring_get_schema_from_view(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        print(db_ringname)
+        current_app.logger.info(db_ringname)
         current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
@@ -820,8 +819,8 @@ class AvispaModel:
         result  = db.iterview('ring/schema',1,**options)
 
         for row in result:  
-            #print('row.value.fields:')
-            #print(row.value['fields'])    
+            #current_app.logger.debug('row.value.fields:')
+            #current_app.logger.debug(row.value['fields'])    
             schema = {}
             #schema['rings']=row.value
             schema['fields']=row.value['fields']
@@ -829,8 +828,8 @@ class AvispaModel:
             #schema['rings']=row.rings
             #schema['fields']=row.fields
 
-        #print('schema:')
-        #print(schema)
+        #current_app.logger.debug('schema:')
+        #current_app.logger.debug(schema)
 
         return schema
 
@@ -894,7 +893,7 @@ class AvispaModel:
 
         user_doc = self.MAM.select_user(user_database,handle)
 
-        print('user rings:',user_doc['rings'])
+        current_app.logger.info('user rings:',user_doc['rings'])
         for user_ring in user_doc['rings']:
             if user_ring['ringname']==ringname:
               
@@ -941,7 +940,7 @@ class AvispaModel:
             sort = OrderedFields[0]
 
         result = self.select_ring_doc_view('ring/items',handle,ringname,limit=limit)
-        print('result:',result)
+        current_app.logger.debug('result:'+str(result))
     
         
 
@@ -1021,7 +1020,10 @@ class AvispaModel:
 
     def sort_item_list(self,items):
         if self.sort:
-            return items[self.sort]
+            if self.sort in items:
+                return items[self.sort]
+            else:
+                return items[1:]
         else:
             return items[1:]
 
@@ -1043,7 +1045,7 @@ class AvispaModel:
 
         #########
 
-        print(field['FieldName']+'('+field['FieldId']+') is a RICH Field ')
+        current_app.logger.info(field['FieldName']+'('+field['FieldId']+') is a RICH Field ')
 
         #1. Convert values to list
         #external_uri_list = request.form.get(field['FieldName']).split(',')
@@ -1060,7 +1062,7 @@ class AvispaModel:
 
 
             #3. In case of valid multiple cardinality you need to enter as many items in the rich list for that field.
-            print('external_uri',external_uri)
+            current_app.logger.info('external_uri '+str(external_uri))
             urlparts = urlparse.urlparse(external_uri)
 
             if urlparts.scheme == '' or urlparts.netloc == '':
@@ -1078,7 +1080,7 @@ class AvispaModel:
 
 
 
-            print('urlparts',urlparts)
+            current_app.logger.debug('urlparts '+ str(urlparts))
 
             pathparts = urlparts.path.split('/')
             if pathparts[1]!='_api':
@@ -1115,36 +1117,35 @@ class AvispaModel:
 
 
             external_host=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, '', '', '', ''))
-            print('external_host:',external_host)
+            current_app.logger.info('external_host: '+str(external_host))
 
             rqurl = urlparse.urlparse(request_url)
             local_host=urlparse.urlunparse((rqurl.scheme, rqurl.netloc, '', '', '', ''))
-            print('local_host:',local_host)
+            current_app.logger.info('local_host: '+str(local_host))
         
             if local_host==external_host:
-                print('Data source is in the same server')
+                current_app.logger.info('Data source is in the same server')
 
                 rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx)
 
                 rs = self.ring_get_schema_from_view(external_handle,external_ringname)
 
-                print('rich_rs:',rs)
-                print('rich_item:',rich_item)
+                current_app.logger.debug('rich_rs:'+str(rs))
+                current_app.logger.debug('rich_item:'+str(rich_item))
                 
                 
 
                 
             else:
-                print('Data source is in another server')
+                current_app.logger.info('Data source is in another server')
              
-                print('Retrieving source at:',url)
+                current_app.logger.info('Retrieving source at:'+str(url))
                 r = requests.get(url)
-                print('Raw JSON schema:')
-                print(r.text)
+                current_app.logger.debug('Raw JSON schema:'+str(r.text))
                 rs = json.loads(r.text)
-                print('rich_rs:',rs)
+                current_app.logger.debug('rich_rs:'+str(rs))
                 rich_item = rs['items'][0]
-                print('rich_item:',rich_item)
+                current_app.logger.debug('rich_item:'+str(rich_item))
                 
 
             if not rich_item:
@@ -1206,17 +1207,17 @@ class AvispaModel:
         flag_values = {}
         fields = schema['fields']
 
-        print("post_a_b raw arguments sent:")
-        print(request.form)
+        current_app.logger.info("post_a_b raw arguments sent:"+str(request.form))
+        
 
 
         for field in fields:
             
-            print(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
-            print(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
+            current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
+            current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
 
-            print('FieldSource:',field['FieldSource'])
-            print('FieldWidget:',field['FieldWidget'])
+            current_app.logger.debug('FieldSource:'+str(field['FieldSource']))
+            current_app.logger.debug('FieldWidget:'+str(field['FieldWidget']))
 
             
 
@@ -1243,7 +1244,7 @@ class AvispaModel:
             else:
 
                 #Not a rich widget. Will not have rich data
-                print(field['FieldName'] +' ('+field['FieldId']+') is NOT a RICH Field ')
+                current_app.logger.info(field['FieldName'] +' ('+field['FieldId']+') is NOT a RICH Field ')
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
                 if field['FieldName'] in request.form:
@@ -1291,7 +1292,7 @@ class AvispaModel:
         item._id= str(random.randrange(1000000000,9999999999))
         #item.deleted = 
         item.items.append(**item_values)
-        print("rich_values:",rich_values)
+        current_app.logger.debug("rich_values:"+str(rich_values))
         #item.rich.append(**rich_values)
         item.rich.append(**rich_values)
         item.history.append(**history_values)
@@ -1319,7 +1320,7 @@ class AvispaModel:
                
         
         result = self.select_ring_doc_view('ring/items',handle,ringname,key=idx)
-        print('result:',result)
+        current_app.logger.debug('result:'+str(result))
         
         for row in result:
 
@@ -1381,11 +1382,11 @@ class AvispaModel:
                new = None
 
             if old == new:
-                print(field['FieldName']+' ('+field['FieldId']+') did not change')  
+                current_app.logger.info(field['FieldName']+' ('+field['FieldId']+') did not change')  
 
             else:
                 needs_store = True
-                print(field['FieldName']+' ('+field['FieldId']+') changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
+                current_app.logger.info(field['FieldName']+' ('+field['FieldId']+') changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
                                 '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
 
                                     #This will record the history for the item update 
@@ -1423,12 +1424,12 @@ class AvispaModel:
                     new_flag = unicode(request.form.get('flag_'+field['FieldId']))
 
             if old_flag == new_flag:
-                print('Flag for: '+field['FieldName']+' ('+field['FieldId']+') did not change') 
+                current_app.logger.info('Flag for: '+field['FieldName']+' ('+field['FieldId']+') did not change') 
 
             else:
                 needs_store = True
 
-                print(field['FieldName']+'_flag ('+field['FieldId']+') changed. Old: "'+ str(old_flag) +'" ('+ str(type(old_flag)) +')'+\
+                current_app.logger.info(field['FieldName']+'_flag ('+field['FieldId']+') changed. Old: "'+ str(old_flag) +'" ('+ str(type(old_flag)) +')'+\
                                 '  New: "'+ str(new_flag) + '" ('+ str(type(new_flag)) +')' )
 
                 history_item_dict = {}
@@ -1471,17 +1472,17 @@ class AvispaModel:
 
                     #Repair rich object if needed
                     if 'rich' not in item:
-                        print('REPAIR FLAG 1')
+                        current_app.logger.debug('REPAIR FLAG 1')
                         #item.rich = []
                         #rich_dict = {}
                         #item.rich.append(rich_dict)
                     elif type(item.rich) is not list:
-                        print('REPAIR FLAG 2')
+                        current_app.logger.debug('REPAIR FLAG 2')
                         #item.rich = []
                         #rich_dict = {}
                         #item.rich.append(rich_dict)
                     elif type(item.rich[0]) is not dict:
-                        print('REPAIR FLAG 3')
+                        current_app.logger.debug('REPAIR FLAG 3')
                         #rich_dict = {}
                         #item.rich.append(rich_dict)
 
@@ -1493,8 +1494,8 @@ class AvispaModel:
                         if '_source' in old_r:
                             old_rich_dictionary[old_r['_source']] = old_r
 
-                    print('old_rich',old_rich)
-                    print('old_rich_dictionary',old_rich_dictionary)
+                    current_app.logger.debug('old_rich:'+str(old_rich))
+                    current_app.logger.debug('old_rich_dictionary:'+str(old_rich_dictionary))
 
                     #2. Check if we got a 404
                     if field['FieldId'] in r_rich_values:

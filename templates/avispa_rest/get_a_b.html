@@ -331,7 +331,7 @@
             {% endfor %}
           {% endif %}
                       <div class="fs-0-8" style="margin-top:-20px; margin-left:10px;">
-                        <p class="sh-a fc-a">xxx
+                        <p class="sh-a fc-a">
                           {#{ item.items()[3][1]|truncate(14, true,'...') }#}
                         </p>
                       </div>
@@ -363,7 +363,10 @@
            <!-- END ITEM N -->            
         </div>
   <!-- AS MOSAIC close -->  
-    {% endif %}  
+    {% endif %} 
+      <div>
+      Prev | Next
+      </div>
   {% endif %} 
       </div>  
     </div>

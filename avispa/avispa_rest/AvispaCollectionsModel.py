@@ -60,7 +60,7 @@ class AvispaCollectionsModel:
                     validring[ringname+'_'+ringversionh] = True
 
         
-            print('BEFORE COLLECTIONS',collections)
+            current_app.logger.debug('BEFORE COLLECTIONS',collections)
             
             count_c = 0
             for coll in collections:
@@ -71,7 +71,7 @@ class AvispaCollectionsModel:
                     if ring['ringname']+'_'+ring['version'] not in validring:
                         #InValid Collection, at least one of its rings is marked as deleted             
                         #coll['valid'] = False
-                        print('EXCLUDING RING:',ring['ringname']+'_'+ring['version'])
+                        current_app.logger.debug('EXCLUDING RING:',ring['ringname']+'_'+ring['version'])
                         #ring['invalid'] = True
                         del collections[count_c]['rings'][count_r]
 
@@ -84,14 +84,14 @@ class AvispaCollectionsModel:
 
                 count_c += 1
 
-            print('AFTER COLLECTIONS',collections)
+            current_app.logger.debug('AFTER COLLECTIONS',collections)
                     
                         
             return collections
                 
 
         except (ResourceNotFound, TypeError) as e:
-            print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            current_app.logger.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
             
 
         return False
@@ -111,7 +111,7 @@ class AvispaCollectionsModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print('user_doc[colections]:',user_doc['collections'])
+        current_app.logger.debug('user_doc[colections]:',user_doc['collections'])
 
         newcollection = {'collectionname' : str(collectiond['name']),
                          'collectiondescription' : str(collectiond['description']),
@@ -140,7 +140,7 @@ class AvispaCollectionsModel:
             user_doc = self.MAM.select_user(user_database,handle) 
 
 
-            #print('user_doc:',user_doc)
+            #current_app.logger.debug('user_doc:',user_doc)
 
             collections = user_doc['collections'] 
             rings = user_doc['rings']
@@ -177,11 +177,11 @@ class AvispaCollectionsModel:
                     return coll
                         
 
-            #print('ValidatedCollections:', collections)
+            #current_app.logger.debug('ValidatedCollections:', collections)
                 
 
         except (ResourceNotFound, TypeError) as e:
-            print "Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1]
+            current_app.logger.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
             
 
 
@@ -195,7 +195,7 @@ class AvispaCollectionsModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print('user_doc[colections]:',user_doc['collections'])
+        current_app.logger.debug('user_doc[colections]:',user_doc['collections'])
 
         newcollection = {'collectionname' : str(collectiond['name']),
                          'collectiondescription' : str(collectiond['description']),
@@ -206,24 +206,24 @@ class AvispaCollectionsModel:
         i = 0
         for coll in user_doc['collections']:
 
-            #print()
-            #print('coll',coll)
-            #print('user_doc[collections][i]',user_doc['collections'][i])
-            #print()
-            #print('coll[collectioname]:',coll['collectionname'])
-            #print('newcoll:',newcollection['collectionname'])
+            #current_app.logger.debug()
+            #current_app.logger.debug('coll',coll)
+            #current_app.logger.debug('user_doc[collections][i]',user_doc['collections'][i])
+            #current_app.logger.debug()
+            #current_app.logger.debug('coll[collectioname]:',coll['collectionname'])
+            #current_app.logger.debug('newcoll:',newcollection['collectionname'])
             if coll['collectionname'] ==  newcollection['collectionname']:
-                print ('You need to replace this', coll)
-                print ('For this:', newcollection)
+                current_app.logger.debug('You need to replace this', coll)
+                current_app.logger.debug('For this:', newcollection)
                 #This is a match. This is what we need to replace with incoming document
                 user_doc['collections'][i] = newcollection
-                #print ('coll MOD',coll)
+                #current_app.logger.debug('coll MOD',coll)
 
 
             i = i+1
 
                 #user_doc['collections'].append(newcollection)
-        print('user_doc MOD:',user_doc)
+        current_app.logger.debug('user_doc MOD:',user_doc)
         user_doc.store(db)
 
         return True  
@@ -238,7 +238,7 @@ class AvispaCollectionsModel:
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
 
-        print('user_doc[colections]:',user_doc['collections'])
+        current_app.logger.debug('user_doc[colections]:',user_doc['collections'])
         
         path = {}
         if 'name' in collectiond:
@@ -261,7 +261,7 @@ class AvispaCollectionsModel:
             i = i+1
 
                 #user_doc['collections'].append(newcollection)
-        print('user_doc PATCHED:',user_doc)
+        current_app.logger.debug('user_doc PATCHED:',user_doc)
         user_doc.store(db)
 
         return True  
@@ -280,7 +280,7 @@ class AvispaCollectionsModel:
             if coll['collectionname'] ==  collection:
                 coll['rings'].append(ringd)
 
-        print('Ring added to collection:',user_doc)
+        current_app.logger.debug('Ring added to collection:',user_doc)
         user_doc.store(db)
 
         return True
@@ -304,7 +304,7 @@ class AvispaCollectionsModel:
 
             i = i+1
 
-        print('user_doc MOD:',user_doc)
+        current_app.logger.debug('user_doc MOD:',user_doc)
         user_doc.store(db)
 
         return True  

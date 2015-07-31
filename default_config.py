@@ -3,8 +3,6 @@ import env_config
 from env_config import *
 
 
-
-
 # Define the application directory
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
