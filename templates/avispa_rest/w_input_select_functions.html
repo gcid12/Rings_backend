@@ -46,8 +46,12 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
     console.log('urldata: {{ field.FieldOrder }}');
     console.log(urldata_{{ field.FieldOrder }});
 
-    
-    $.get( url_{{ field.FieldOrder }}[0], urldata_{{ field.FieldOrder }} )
+
+
+    $.get( url_{{ field.FieldOrder }}[0], urldata_{{ field.FieldOrder }}, function(data){
+        console.log("Success:");
+        console.log(data);
+    })
     .done(function( data ) {
         var returnedData_{{ field.FieldOrder }} = JSON.parse(data);
 
@@ -59,15 +63,15 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
         //By default we will grab the first field to display it as the option
         if( typeof urldata_{{ field.FieldOrder }}['fl']=='undefined'){
 
-            var thefield_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }}.fields[0].FieldId;
-            console.log("*Field to be shown({{ field.FieldOrder }}):"+thefield_{{ field.FieldOrder }})
+            var thefield_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }}.fields[0].FieldName;
+            console.log("*Field to be shown:({{ field.FieldOrder }}):"+thefield_{{ field.FieldOrder }})
         }else{ //But it is better if the source is explicitly indicated by &fl=<name_of_field>
             if(urldata_{{ field.FieldOrder }}['fl']){
 
                 var urlfields_{{ field.FieldOrder }} = urldata_{{ field.FieldOrder }}['fl'].split("+");
                 //Take just the first field mentioned
                 var thefield_{{ field.FieldOrder }}=urlfields_{{ field.FieldOrder }}[0];
-                console.log("**Field to be shown({{ field.FieldOrder }}):"+thefield_{{ field.FieldOrder }})
+                console.log("**Field to be shown:({{ field.FieldOrder }}):"+thefield_{{ field.FieldOrder }})
             }
         }
         
