@@ -8,9 +8,9 @@ $("#chosen_{{ field.FieldOrder }}").chosen({width: "100%"});
 */
 
 //The FieldSource should have a "fields" indicated
-console.log("{{field.FieldSource}}")
+console.log("field.FieldSource:{{field.FieldSource}}")
 
-var urlo_{{ field.FieldOrder }}="{{ field.FieldSource }}";
+var urlo_{{ field.FieldOrder }}="{{ field.FieldSourceRaw }}";
 
 
 
