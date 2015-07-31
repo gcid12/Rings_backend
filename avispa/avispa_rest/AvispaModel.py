@@ -20,6 +20,7 @@ from MyRingSchema import MyRingSchema
 from CouchViewSync import CouchViewSync
 
 import couchdb
+from flask import current_app
 from MyRingUser import MyRingUser
 from MainModel import MainModel
 from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
@@ -32,7 +33,8 @@ class AvispaModel:
 
 
     def __init__(self):
- 
+  
+        current_app.logger.debug('#couchdb_call')
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         #print('self.couch :AVM')
@@ -159,7 +161,7 @@ class AvispaModel:
     #Python + CouchDB very poor and complicated as of now. 
     #I rather use JS in the meantime
 
-
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         CVS = CouchViewSync()
@@ -168,6 +170,7 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_set_db_views(self,db_ringname,specific=False):
 
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         
@@ -355,6 +358,7 @@ class AvispaModel:
         if not user_database : 
             user_database = self.user_database
 
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[user_database]
         print("handle:")
         print(handle)
@@ -370,6 +374,7 @@ class AvispaModel:
         if not user_database : 
             user_database = self.user_database
 
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[user_database]
         doc =  MyRingUser.load(db, handle)
         
@@ -429,6 +434,7 @@ class AvispaModel:
             del1 = True
 
 
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[self.user_database]
         user_doc =  MyRingUser.load(db, handle)
         rings = user_doc['rings']
@@ -457,6 +463,7 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         print(db_ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
         schema = MyRingSchema.load(db,'schema')
 
@@ -467,6 +474,7 @@ class AvispaModel:
     def ring_get_item_document(self,handle,ringname,idx):
 
         db_ringname=str(handle)+'_'+str(ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
@@ -491,6 +499,7 @@ class AvispaModel:
         db_ringname=str(handle)+'_'+str(ringname)
         print('db_ringname:')
         print(db_ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
         schema = MyRingSchema.load(db,'schema')
@@ -739,6 +748,7 @@ class AvispaModel:
     #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
 
+        current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db, handle)
 
@@ -759,6 +769,7 @@ class AvispaModel:
         #AVISPAMODEL
     def decrease_item_count(self,handle,ringname):
 
+        current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db, handle)
 
@@ -776,6 +787,7 @@ class AvispaModel:
 
     def set_ring_origin(self,handle,ringname,origin):
 
+        current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db, handle)
 
@@ -801,6 +813,7 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         print(db_ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         options = {}
@@ -955,6 +968,7 @@ class AvispaModel:
         # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
 
         db_ringname=str(handle)+'_'+str(ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname] 
  
         if not batch : 
@@ -1181,6 +1195,7 @@ class AvispaModel:
     def post_a_b(self,request,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
@@ -1320,6 +1335,7 @@ class AvispaModel:
     def put_a_b_c(self,request,handle,ringname,idx):
 
         db_ringname=str(handle)+'_'+str(ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
@@ -1508,9 +1524,6 @@ class AvispaModel:
                         else:
                             item.items[0][field['FieldId']] = new
                         '''
-     
-                
-
 
         if needs_store:
             if item.store(db):      
@@ -1525,6 +1538,7 @@ class AvispaModel:
 
 
         db_ringname=str(handle)+'_'+str(ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)

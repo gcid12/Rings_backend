@@ -1,11 +1,15 @@
-# Statement for enabling the development environment
-DEBUG = True
+import os
+import env_config
+from env_config import *
+
+
+
 
 # Define the application directory
-import os
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-IMAGE_STORE = '/var/www/imagestore/'
+
 
 
 # Application threads. A common general assumption is

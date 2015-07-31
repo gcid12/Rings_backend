@@ -1,8 +1,9 @@
 # AuthModel.py
 
 import couchdb
+from flask import current_app
 from MyRingUser import MyRingUser
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
+#from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
 
@@ -11,9 +12,9 @@ class MainModel:
 
     def __init__(self):
 
-
-        self.couch = couchdb.Server(COUCHDB_SERVER)
-        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
+        
+        self.couch = couchdb.Server(current_app.config['COUCHDB_SERVER'])
+        self.couch.resource.credentials = (current_app.config['COUCHDB_USER'],current_app.config['COUCHDB_PASS'])
         self.user_database = 'myring_users'
 
         self.roles = {}
@@ -40,11 +41,13 @@ class MainModel:
     #MAINMODEL
     def create_db(self,dbname):
         #print('Notice: Creating db ->>'+dbname)
+        current_app.logger.debug('#couchdb_call')
         return self.couch.create(dbname)     
 
     #MAINMODEL
     def select_db(self,dbname):
         #print('Notice: Selecting db ->'+dbname)
+        current_app.logger.debug('#couchdb_call self.couch['+dbname+']')
         result = self.couch[dbname] 
         #print('db selected!')
         return result
@@ -52,6 +55,7 @@ class MainModel:
     #MAINMODEL
     def delete_db(self,dbname):
         #print('Notice: Deleting db ->'+dbname)
+        current_app.logger.debug('#couchdb_call')
         del self.couch[dbname] 
         return True
 
@@ -70,6 +74,7 @@ class MainModel:
 
         
         db_ringname=str(handle)+'_'+str(ringname)
+        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
         AVM = AvispaModel()
         schema = AVM.ring_get_schema_from_view(handle,ringname) 
@@ -251,6 +256,8 @@ class MainModel:
 
 
     def select_user_doc_view(self,dbview,key,batch=None,user_database=None):
+
+
  
         if not user_database : 
             user_database = self.user_database
@@ -354,7 +361,8 @@ class MainModel:
 
         if not user_database : 
             user_database = self.user_database
-
+        
+        current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db,handle)
 
@@ -414,7 +422,7 @@ class MainModel:
             user_database = self.user_database
 
         #print("update_user 2:")
-
+        current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         #print("update_user 3:")
         user =  MyRingUser.load(self.db, data['id'])

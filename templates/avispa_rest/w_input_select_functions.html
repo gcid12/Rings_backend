@@ -61,6 +61,8 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
         window.input_select_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }};
         
         //By default we will grab the first field to display it as the option
+        console.log(urldata_{{ field.FieldOrder }}['fl']);
+        console.log(typeof urldata_{{ field.FieldOrder }}['fl']);
         if( typeof urldata_{{ field.FieldOrder }}['fl']=='undefined'){
 
             var thefield_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }}.fields[0].FieldName;
