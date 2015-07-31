@@ -988,12 +988,17 @@ class AvispaModel:
         if 'id' in row:        
             item[u'_id'] = row['id']
             for fieldname in OrderedFields:
+
                 if fieldname in row['value']:
-                    item[fieldname] = row['value'][fieldname]
-                if fieldname+'_flag' in row['value']:
-                        item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
-                if fieldname+'_rich' in row['value']:
-                    item[fieldname+'_rich'] = row['value'][fieldname+'_rich']
+                    if row['value'][fieldname]:
+                        item[fieldname] = row['value'][fieldname]
+
+                        if fieldname+'_flag' in row['value']:
+                                item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
+                        if fieldname+'_rich' in row['value']:
+                            item[fieldname+'_rich'] = row['value'][fieldname+'_rich']
+
+
             return item
         else:
             return False
