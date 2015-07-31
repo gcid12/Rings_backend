@@ -1448,63 +1448,63 @@ class AvispaModel:
                     rich_values.update(r_rich_values)
 
 
-                #Repair rich object if needed
-                if 'rich' not in item:
-                    print('REPAIR FLAG 1')
-                    #item.rich = []
-                    #rich_dict = {}
-                    #item.rich.append(rich_dict)
-                elif type(item.rich) is not list:
-                    print('REPAIR FLAG 2')
-                    #item.rich = []
-                    #rich_dict = {}
-                    #item.rich.append(rich_dict)
-                elif type(item.rich[0]) is not dict:
-                    print('REPAIR FLAG 3')
-                    #rich_dict = {}
-                    #item.rich.append(rich_dict)
+                    #Repair rich object if needed
+                    if 'rich' not in item:
+                        print('REPAIR FLAG 1')
+                        #item.rich = []
+                        #rich_dict = {}
+                        #item.rich.append(rich_dict)
+                    elif type(item.rich) is not list:
+                        print('REPAIR FLAG 2')
+                        #item.rich = []
+                        #rich_dict = {}
+                        #item.rich.append(rich_dict)
+                    elif type(item.rich[0]) is not dict:
+                        print('REPAIR FLAG 3')
+                        #rich_dict = {}
+                        #item.rich.append(rich_dict)
 
-              
-                #1. Save in memory what is in rich data just in case we got a 404
-                old_rich = item.rich[0][field['FieldId']]
-                old_rich_dictionary = {}
-                for old_r in old_rich:
-                    if '_source' in old_r:
-                        old_rich_dictionary[old_r['_source']] = old_r
+                  
+                    #1. Save in memory what is in rich data just in case we got a 404
+                    old_rich = item.rich[0][field['FieldId']]
+                    old_rich_dictionary = {}
+                    for old_r in old_rich:
+                        if '_source' in old_r:
+                            old_rich_dictionary[old_r['_source']] = old_r
 
-                print('old_rich',old_rich)
-                print('old_rich_dictionary',old_rich_dictionary)
+                    print('old_rich',old_rich)
+                    print('old_rich_dictionary',old_rich_dictionary)
 
-                #2. Check if we got a 404
-                if field['FieldId'] in r_rich_values:
-                    for new_rich_value in r_rich_values[field['FieldId']]:
-                        if 'error' in new_rich_value:
-                            #3. Check if we can at least have old version (better than nothing)
-                            if new_rich_value['_source'] in old_rich_dictionary: 
-                                new_rich_value = old_rich_dictionary[new_rich_value['_source']]
+                    #2. Check if we got a 404
+                    if field['FieldId'] in r_rich_values:
+                        for new_rich_value in r_rich_values[field['FieldId']]:
+                            if 'error' in new_rich_value:
+                                #3. Check if we can at least have old version (better than nothing)
+                                if new_rich_value['_source'] in old_rich_dictionary: 
+                                    new_rich_value = old_rich_dictionary[new_rich_value['_source']]
 
-                if r_rich_values:
-                                
-                    item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
+                    if r_rich_values:
+                                    
+                        item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
 
-                if old_rich != new_rich:
-                    pass
-                    #Different than the rich, history just keeps adding to the list 
-                    '''
-                    for history_item_dict in r_history_values:
-                        item.history[0][field['FieldId']].append(history_item_dict[field['FieldId']])
-                    '''
+                    if old_rich != new_rich:
+                        pass
+                        #Different than the rich, history just keeps adding to the list 
+                        '''
+                        for history_item_dict in r_history_values:
+                            item.history[0][field['FieldId']].append(history_item_dict[field['FieldId']])
+                        '''
 
 
-                    #This updates data for just the field that changed
-                    '''
-                    if r_item_values:
-                        item.items[0][field['FieldId']] = r_item_values[field['FieldId']]
-                    else:
-                        item.items[0][field['FieldId']] = new
-                    '''
- 
-            
+                        #This updates data for just the field that changed
+                        '''
+                        if r_item_values:
+                            item.items[0][field['FieldId']] = r_item_values[field['FieldId']]
+                        else:
+                            item.items[0][field['FieldId']] = new
+                        '''
+     
+                
 
 
         if needs_store:
