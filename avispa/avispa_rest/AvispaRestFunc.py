@@ -227,10 +227,10 @@ class AvispaRestFunc:
         else:
             lastkey = None
 
-        if 'resultsperpage' in request.args:
-            resultsperpage = int(request.args.get('resultsperpage'))
+        if 'limit' in request.args:
+            limit = int(request.args.get('limit'))
         else:
-            resultsperpage = 2000
+            limit = 25
 
         if 'sort' in request.args:
             sort = request.args.get('sort')
@@ -259,7 +259,7 @@ class AvispaRestFunc:
         layers,widgets,sources,labels,names = self.field_dictonaries_init(schema['fields'],layer=layer)
 
         #Subtract items from DB
-        preitems = self.AVM.get_a_b(handle,ring,resultsperpage,lastkey,sort)
+        preitems = self.AVM.get_a_b(handle,ring,limit,lastkey,sort)
         print('PREITEMLIST:',preitems)
 
         #Prepare data
@@ -298,15 +298,15 @@ class AvispaRestFunc:
             
 
              #Pagination
-            if len(itemlist)>0 and len(itemlist) == resultsperpage:
+            if len(itemlist)>0 and len(itemlist) == limit:
                 nextlastkey=itemlist[-1]['_id']
                 d['lastkey'] = nextlastkey
-                #Still, if the last page has exactly as many items as resultsperpage, 
+                #Still, if the last page has exactly as many items as limit, 
                 #the next page will be empty. Please fix
 
             d['widget'] = widgets
             d['itemlist'] = itemlist
-            d['resultsperpage'] = resultsperpage
+            d['limit'] = limit
             d['FieldLabel'] = labels
             d['rings'] = schema['rings']
             d['template'] = 'avispa_rest/get_a_b.html'

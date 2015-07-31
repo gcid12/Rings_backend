@@ -918,7 +918,7 @@ class AvispaModel:
   
 
     #AVISPAMODEL
-    def get_a_b(self,handle,ringname,limit=100,lastkey=None,sort=None):
+    def get_a_b(self,handle,ringname,limit=25,lastkey=None,sort=None):
 
         
         items = []
@@ -940,7 +940,7 @@ class AvispaModel:
         else:
             sort = OrderedFields[0]
 
-        result = self.select_ring_doc_view('ring/items',handle,ringname)
+        result = self.select_ring_doc_view('ring/items',handle,ringname,limit=limit)
         print('result:',result)
     
         
@@ -963,7 +963,7 @@ class AvispaModel:
         return items
 
 
-    def select_ring_doc_view(self,dbview,handle,ringname,limit=100,key=None,batch=None,lastkey=None):
+    def select_ring_doc_view(self,dbview,handle,ringname,limit=25,key=None,batch=None,lastkey=None):
 
         # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
 
