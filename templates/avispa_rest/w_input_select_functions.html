@@ -57,6 +57,7 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
 
         console.log("returnedData:")
         console.log(returnedData_{{ field.FieldOrder }})
+        
         //We put the returned JSON in a global variable for chosen to be able to use it
         window.input_select_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }};
         
@@ -81,12 +82,13 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
         var newoption;
 
         
+        
 
 
         for(i=0;i<returnedData_{{ field.FieldOrder }}.items.length; ++i){      
             //This grabs the indicated field and displays it as the option
             var id = '_id';
-            var source = returnedData_{{ field.FieldOrder }}.source;
+            var source = returnedData_{{ field.FieldOrder }}['_source'];
             var idx = returnedData_{{ field.FieldOrder }}.items[i][id];
             var repr = returnedData_{{ field.FieldOrder }}.items[i][thefield_{{ field.FieldOrder }}]
             var selected = '';
