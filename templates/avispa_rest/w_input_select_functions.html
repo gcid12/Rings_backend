@@ -8,14 +8,18 @@ $("#chosen_{{ field.FieldOrder }}").chosen({width: "100%"});
 */
 
 //The FieldSource should have a "fields" indicated
-console.log("field.FieldSource:{{field.FieldSource}}")
+console.log("Source URL:{{field.FieldSource}}")
 
 var urlo_{{ field.FieldOrder }}="{{ field.FieldSourceRaw }}";
 
-
+console.log('Typeof Source URL:'+typeof urlo_{{ field.FieldOrder }});
 
 //Select widget can't work without a source
-if(urlo_{{ field.FieldOrder }}!='undefined'){
+if(urlo_{{ field.FieldOrder }}=='undefined' || urlo_{{ field.FieldOrder }}==''){
+
+    console.log('URL not usable');
+
+}else{
 
     console.log('raw:'+urlo_{{ field.FieldOrder }})
 
@@ -26,24 +30,27 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
 
     //No parameters via URL?
     if(typeof url_{{ field.FieldOrder }}[1]!='undefined'){
-        console.log('parameter payload!')
+        console.log('There are parameters in the URL');
         var urlpar_{{ field.FieldOrder }}=url_{{ field.FieldOrder }}[1].split("&");
         var urlval_{{ field.FieldOrder }} = new Array();
     
         for(j=0;j<urlpar_{{ field.FieldOrder }}.length;++j){
-            console.log('parameter')
+            
             console.log(urlpar_{{ field.FieldOrder }}[j])
             urlval_{{ field.FieldOrder }}=urlpar_{{ field.FieldOrder }}[j].split("=");
             urldata_{{ field.FieldOrder }}[urlval_{{ field.FieldOrder }}[0]]=urlval_{{ field.FieldOrder }}[1];
             urlval_{{ field.FieldOrder }}.length=0;
         }
+    }else{
+        console.log('There are NOT parameters in the URL');
     }
+
     urldata_{{ field.FieldOrder }}['method']='get';
     urldata_{{ field.FieldOrder }}['accept']='json';
     urldata_{{ field.FieldOrder }}['schema']='1';
 
 
-    console.log('urldata: {{ field.FieldOrder }}');
+    console.log('urldata for Field: ( {{ field.FieldOrder }} )');
     console.log(urldata_{{ field.FieldOrder }});
 
 
@@ -57,7 +64,7 @@ if(urlo_{{ field.FieldOrder }}!='undefined'){
 
         console.log("returnedData:")
         console.log(returnedData_{{ field.FieldOrder }})
-        
+
         //We put the returned JSON in a global variable for chosen to be able to use it
         window.input_select_{{ field.FieldOrder }}=returnedData_{{ field.FieldOrder }};
         

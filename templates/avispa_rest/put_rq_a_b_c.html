@@ -65,25 +65,25 @@
 <!-- START NEW CONTENT --> 
             
 
-    <div class="rn-curtain">
+<div class="rn-curtain">
 
-        <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=put{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
-      
-            {% if not data.raw %}
-              	<table class="table table-condensed"> 
-              		{#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }#}   
+    <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=put{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
+  
+        {% if not data.raw %}
+          	<table class="table table-condensed"> 
+          		{#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , data.ringdescription,'',data.collection, data.user_authorizations) }#}   
 
-              	{{ ui.panel3(data,'#fce121') }} 
-              	</table>
-            {%endif%}
+          	{{ ui.panel3(data,'#fce121') }} 
+          	</table>
+        {%endif%}
 
-            {% if not data.raw %}
+        {% if not data.raw %}
 
-            	<div class="alert  alert-warning alert-dismissible alert-top" role="alert">
-                   	<span class="fs-1-2"><i class="fa fa-pencil pad-x-10"></i> <strong>Updating</strong> 1 item </span>
-            	</div>
-            {%endif%}
-    </div>
+        	<div class="alert  alert-warning alert-dismissible alert-top" role="alert">
+               	<span class="fs-1-2"><i class="fa fa-pencil pad-x-10"></i> <strong>Updating</strong> 1 item </span>
+        	</div>
+        {%endif%}
+</div>
 
 <div class="box box-clear text-right">
     	<div class="row">

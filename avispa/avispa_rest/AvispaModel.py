@@ -1347,6 +1347,7 @@ class AvispaModel:
         
         item_values = {}
         history_values = {}
+        rich_values = {}
         fields = schema['fields']
 
         if request.form.get('_public'):
@@ -1508,23 +1509,6 @@ class AvispaModel:
                     if r_rich_values:
                                     
                         item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
-
-                    if old_rich != new_rich:
-                        pass
-                        #Different than the rich, history just keeps adding to the list 
-                        '''
-                        for history_item_dict in r_history_values:
-                            item.history[0][field['FieldId']].append(history_item_dict[field['FieldId']])
-                        '''
-
-
-                        #This updates data for just the field that changed
-                        '''
-                        if r_item_values:
-                            item.items[0][field['FieldId']] = r_item_values[field['FieldId']]
-                        else:
-                            item.items[0][field['FieldId']] = new
-                        '''
 
         if needs_store:
             if item.store(db):      
