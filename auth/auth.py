@@ -112,17 +112,17 @@ def api_register_post():
 
     # prepare User
     user = User(username,email,password_hash)
-    print user
+    current_app.logger.debug(user)
 
     try:
     #if True:
         if user.set_user():
-            print('Now log in the user')
+            current_app.logger.debug('Now log in the user')
 
             #Go through regular login process
             userObj = User(email=email)
             userview = userObj.get_user()
-            print(userObj)
+            current_app.logger.debug(userObj)
     
 
             out = {} 
@@ -145,7 +145,7 @@ def api_register_post():
     #except(KeyError):
     except:
 
-        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]            
+        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])           
         out = {} 
         out['Success'] = False
         out['Message'] = 'The user could not be created'
@@ -211,7 +211,7 @@ def register_post():
 
     # prepare User
     user = User(username,email,password_hash)
-    print user
+    current_app.logger.debug(user)
 
     try:
         if user.set_user():
@@ -222,7 +222,7 @@ def register_post():
         
 
     except:
-        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]            
+        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])          
 
         flash("unable to register with that email address",'UI')
         mpp = {'status':'KO','msg':'Unable to register with that email address'}
@@ -283,11 +283,11 @@ def register_post():
 
 
 
-            print('User created, now log in the user')
+            current_app.logger.debug('User created, now log in the user')
             #Go through regular login process
             userObj = User(email=email)
             userview = userObj.get_user()
-            print(userObj)
+            current_app.logger.debug(userObj)
 
             mpp = {'status':'OK'}
             flash({'f':'track','v':'_register','p':mpp},'MP')
@@ -384,7 +384,7 @@ def api_orgregister_post():
 
     # prepare User
     user = User(username,email,'',owner,isOrg=True)
-    print user
+    current_app.logger.debug(user)
 
     try:
     
@@ -408,7 +408,7 @@ def api_orgregister_post():
 
     except:
     
-        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
 
         out = {} 
         out['Success'] = False
@@ -430,7 +430,7 @@ def orgregister_post():
 
     # prepare User
     user = User(username,email,password_hash,current_user.id,True)
-    print user
+    current_app.logger.debug(user)
 
     try:
     #if True:
@@ -444,7 +444,7 @@ def orgregister_post():
 
     except:
     #else:
-        print "Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
+        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
         flash("unable to register with that email address",'UI')
 
         mpp = {'status':'KO','msg':'Unable to register with that email address'}
@@ -463,7 +463,7 @@ def forgot():
         email = request.form.get('email')
         userObj = User(email=email)
         user = userObj.get_user()
-        print(user)
+        current_app.logger.debug(user)
 
 
         if user and user.is_active():
@@ -476,7 +476,7 @@ def forgot():
                 #save the token in the database
                 key = flask_bcrypt.generate_password_hash(request.form.get('email')+str(random.randint(0,9999)))
                 #key = 'qwerty1234'
-                print("key:"+key)
+                current_app.logger.debug("key:"+key)
                 userObj.set_password_key(key)
 
 
@@ -487,7 +487,7 @@ def forgot():
 
                 EMO = EmailModel()
                 if EMO.send_one_email(to,subject,content):
-                    print("Sending password recovery email to: "+user.email)
+                    current_app.logger.debug("Sending password recovery email to: "+user.email)
                     flash("Please check your mail's inbox for the password recovery instructions.",'UI')
 
 
@@ -495,7 +495,7 @@ def forgot():
                     flash({'f':'track','v':'_forgot','p':mpp},'MP')
                     #flash({'track':'_forgot OK, sent recovery email'},'MP')
                 else:
-                    print("Something went wrong with sending the email but no error was raised")
+                    current_app.logger.debug("Something went wrong with sending the email but no error was raised")
 
                 '''
 
@@ -526,8 +526,8 @@ def forgot():
                 
 
             except:
-                print "Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]
-                print("Error sending password revovery email")
+                current_app.logger.debug("Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
+                current_app.logger.debug("Error sending password revovery email")
                 flash("There was an error sending the password recovery instructions")
                 flash({'track':'_forgot KO, error sending recovery email'},'MP')
                 pass
@@ -545,13 +545,13 @@ def forgot():
         data['email'] = request.args.get('e')
         userObj = User()
         if userObj.is_valid_password_key(data['email'],data['key']):
-            print('Token authorized')
+            current_app.logger.debug('Token authorized')
             mpp = {'status':'OK','msg':'Token authorized'}
             flash({'f':'track','v':'_forgot','p':mpp},'MP')
             #flash({'track':'_forgot OK, Token authorized'},'MP')
             return render_template("/auth/new_password.html", data=data)
         else:
-            print('Token Rejected')
+            current_app.logger.debug('Token Rejected')
             mpp = {'status':'KO','msg':'Token not authorized'}
             flash({'f':'track','v':'_forgot','p':mpp},'MP')
             #flash({'track':'_forgot KO, Token not authorized'},'MP')
@@ -568,7 +568,7 @@ def forgot():
 
         if request.form.get('password') == request.form.get('confirm'):
             if userObj.is_valid_password_key(request.form.get('e'),request.form.get('k')):
-                print('Token authorized')
+                current_app.logger.debug('Token authorized')
                 # generate password hash
                 passhash = flask_bcrypt.generate_password_hash(request.form.get('password'))
                 userObj.set_password(passhash)
@@ -743,7 +743,7 @@ def unauthorized_callback():
 def load_user(id):
     # This is called every single time when you are logged in.
 
-    print('xload_user id is:',id)
+    #current_app.logger.debug('xload_user id is:',str(id))
     
 
     if id is None:

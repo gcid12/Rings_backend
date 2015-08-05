@@ -33,10 +33,10 @@ class AvispaModel:
 
     def __init__(self):
   
-        current_app.logger.debug('#couchdb_call')
+        #current_app.logger.debug('#couchdb_call')
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        #current_app.logger.debug('self.couch :AVM')
+        ##current_app.logger.debug('self.couch :AVM')
         #current_app.logger.debug(self.couch)
         #current_app.logger.debug('self.couch.resource.credentials :AVM')
         #current_app.logger.debug(self.couch.resource.credentials)
@@ -461,8 +461,9 @@ class AvispaModel:
     def ring_get_schema(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.info(db_ringname)
-        current_app.logger.debug('#couchdb_call')
+        
+        current_app.logger.debug('#couchdb_call:'+db_ringname+'->ring_get_schema()')
+
         db = self.couch[db_ringname]
         schema = MyRingSchema.load(db,'schema')
 
@@ -811,8 +812,9 @@ class AvispaModel:
     def ring_get_schema_from_view(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.info(db_ringname)
-        current_app.logger.debug('#couchdb_call')
+        
+        
+        current_app.logger.debug('#couchdb_call:'+db_ringname+'->ring_get_schema_from_view()')
         db = self.couch[db_ringname]
 
         options = {}
@@ -893,7 +895,7 @@ class AvispaModel:
 
         user_doc = self.MAM.select_user(user_database,handle)
 
-        current_app.logger.info('user rings:',user_doc['rings'])
+        #current_app.logger.info('user rings:',user_doc['rings'])
         for user_ring in user_doc['rings']:
             if user_ring['ringname']==ringname:
               
@@ -917,7 +919,7 @@ class AvispaModel:
   
 
     #AVISPAMODEL
-    def get_a_b(self,handle,ringname,limit=25,lastkey=None,sort=None):
+    def get_a_b(self,handle,ringname,limit=25,lastkey=None,sort=None,human=False):
 
         
         items = []
@@ -926,7 +928,13 @@ class AvispaModel:
         schema = self.ring_get_schema_from_view(handle,ringname) 
         OrderedFields=[]
         for field in schema['fields']:
-            OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
+
+            if human:
+                OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+            else:
+                OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
+
+            
 
         # sort exists if it is sent in the url as ?sort=<name-of-field>_<desc|asc>
         sort_reverse=False
@@ -940,7 +948,7 @@ class AvispaModel:
             sort = OrderedFields[0]
 
         result = self.select_ring_doc_view('ring/items',handle,ringname,limit=limit)
-        current_app.logger.debug('result:'+str(result))
+        #current_app.logger.debug('result:'+str(result))
     
         
 
@@ -967,7 +975,7 @@ class AvispaModel:
         # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
 
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.debug('#couchdb_call')
+        #current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname] 
  
         if not batch : 
@@ -1000,8 +1008,8 @@ class AvispaModel:
         item = collections.OrderedDict()
         if 'id' in row:        
             item[u'_id'] = row['id']
-            for fieldname in OrderedFields:
 
+            for fieldname in OrderedFields:
                 if fieldname in row['value']:
                     if row['value'][fieldname]:
                         item[fieldname] = row['value'][fieldname]
@@ -1080,7 +1088,7 @@ class AvispaModel:
 
 
 
-            current_app.logger.debug('urlparts '+ str(urlparts))
+            #current_app.logger.debug('urlparts '+ str(urlparts))
 
             pathparts = urlparts.path.split('/')
             if pathparts[1]!='_api':
@@ -1126,12 +1134,14 @@ class AvispaModel:
             if local_host==external_host:
                 current_app.logger.info('Data source is in the same server')
 
-                rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx)
+                result_rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx,human=True)
+                if result_rich_item:
+                    rich_item = rich_item
 
                 rs = self.ring_get_schema_from_view(external_handle,external_ringname)
 
-                current_app.logger.debug('rich_rs:'+str(rs))
-                current_app.logger.debug('rich_item:'+str(rich_item))
+                #current_app.logger.debug('rich_rs:'+str(rs))
+                #current_app.logger.debug('rich_item:'+str(rich_item))
                 
                 
 
@@ -1141,11 +1151,11 @@ class AvispaModel:
              
                 current_app.logger.info('Retrieving source at:'+str(url))
                 r = requests.get(url)
-                current_app.logger.debug('Raw JSON schema:'+str(r.text))
+                #current_app.logger.debug('Raw JSON schema:'+str(r.text))
                 rs = json.loads(r.text)
-                current_app.logger.debug('rich_rs:'+str(rs))
+                #current_app.logger.debug('rich_rs:'+str(rs))
                 rich_item = rs['items'][0]
-                current_app.logger.debug('rich_item:'+str(rich_item))
+                #current_app.logger.debug('rich_item:'+str(rich_item))
                 
 
             if not rich_item:
@@ -1213,11 +1223,11 @@ class AvispaModel:
 
         for field in fields:
             
-            current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
-            current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
+            #current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
+            #current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
 
-            current_app.logger.debug('FieldSource:'+str(field['FieldSource']))
-            current_app.logger.debug('FieldWidget:'+str(field['FieldWidget']))
+            #current_app.logger.debug('FieldSource:'+str(field['FieldSource']))
+            #current_app.logger.debug('FieldWidget:'+str(field['FieldWidget']))
 
             
 
@@ -1292,7 +1302,7 @@ class AvispaModel:
         item._id= str(random.randrange(1000000000,9999999999))
         #item.deleted = 
         item.items.append(**item_values)
-        current_app.logger.debug("rich_values:"+str(rich_values))
+        #current_app.logger.debug("rich_values:"+str(rich_values))
         #item.rich.append(**rich_values)
         item.rich.append(**rich_values)
         item.history.append(**history_values)
@@ -1309,26 +1319,33 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def get_a_b_c(self,request,handle,ringname,idx):
-
-           
+    def get_a_b_c(self,request,handle,ringname,idx,human=False):
 
         schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
         for field in schema['fields']:
-            OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
-               
+            if human:
+                OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
+            else:
+                OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
+
+
+        current_app.logger.debug('select_ring_doc_view(ring/items,'+str(handle)+','+str(ringname)+','+str(idx)+') ')            
         
         result = self.select_ring_doc_view('ring/items',handle,ringname,key=idx)
+        
         current_app.logger.debug('result:'+str(result))
         
         for row in result:
+
+            current_app.logger.debug('row:'+str(row))
 
             item = self.populate_item(OrderedFields,row)
 
             if item:
                 return item
 
+        #There is no item. It could have been deleted.
         return False
 
 
@@ -1336,7 +1353,7 @@ class AvispaModel:
     def put_a_b_c(self,request,handle,ringname,idx):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.debug('#couchdb_call')
+        #current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
@@ -1383,7 +1400,8 @@ class AvispaModel:
                new = None
 
             if old == new:
-                current_app.logger.info(field['FieldName']+' ('+field['FieldId']+') did not change')  
+              pass
+                #current_app.logger.info(field['FieldName']+' ('+field['FieldId']+') did not change')  
 
             else:
                 needs_store = True
@@ -1495,8 +1513,8 @@ class AvispaModel:
                         if '_source' in old_r:
                             old_rich_dictionary[old_r['_source']] = old_r
 
-                    current_app.logger.debug('old_rich:'+str(old_rich))
-                    current_app.logger.debug('old_rich_dictionary:'+str(old_rich_dictionary))
+                    #current_app.logger.debug('old_rich:'+str(old_rich))
+                    #current_app.logger.debug('old_rich_dictionary:'+str(old_rich_dictionary))
 
                     #2. Check if we got a 404
                     if field['FieldId'] in r_rich_values:
@@ -1523,7 +1541,7 @@ class AvispaModel:
 
 
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.debug('#couchdb_call')
+        #current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)

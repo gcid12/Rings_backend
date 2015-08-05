@@ -7,7 +7,6 @@ from MyRingUser import MyRingUser
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
 
-
 class MainModel:
 
     def __init__(self):
@@ -40,30 +39,30 @@ class MainModel:
 
     #MAINMODEL
     def create_db(self,dbname):
-        #print('Notice: Creating db ->>'+dbname)
-        current_app.logger.debug('#couchdb_call')
+        #current_app.logger.debug('Notice: Creating db ->>'+dbname)
+        current_app.logger.debug('#couchdb_call:'+dbname+'->create_db()')
         return self.couch.create(dbname)     
 
     #MAINMODEL
     def select_db(self,dbname):
-        #print('Notice: Selecting db ->'+dbname)
-        current_app.logger.debug('#couchdb_call self.couch['+dbname+']')
+        #current_app.logger.debug('Notice: Selecting db ->'+dbname)
+        current_app.logger.debug('#couchdb_call:'+dbname+'->select_db()')
         result = self.couch[dbname] 
-        #print('db selected!')
+        #current_app.logger.debug('db selected!')
         return result
          
     #MAINMODEL
     def delete_db(self,dbname):
-        #print('Notice: Deleting db ->'+dbname)
-        current_app.logger.debug('#couchdb_call')
+        #current_app.logger.debug('Notice: Deleting db ->'+dbname)
+        current_app.logger.debug('#couchdb_call:'+dbname+'->delete_db()')
         del self.couch[dbname] 
         return True
 
     #MAINMODEL
     def create_doc(self,dbname,id,doc):
-        #print('Notice: Creating doc ->'+str(doc))
-        #print('Notice: in DB ->'+dbname)
-        #print('Notice: With ID ->'+id)
+        #current_app.logger.debug('Notice: Creating doc ->'+str(doc))
+        #current_app.logger.debug('Notice: in DB ->'+dbname)
+        #current_app.logger.debug('Notice: With ID ->'+id)
         db=self.select_db(dbname)
         doc['_id']= id
         db.save(doc)
@@ -74,7 +73,7 @@ class MainModel:
 
         
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.debug('#couchdb_call')
+        current_app.logger.debug('#couchdb_call:'+db_ringname+'->select_item_doc()')
         db = self.couch[db_ringname]
         AVM = AvispaModel()
         schema = AVM.ring_get_schema_from_view(handle,ringname) 
@@ -88,11 +87,11 @@ class MainModel:
         if not dbname:
             dbname=self.user_database
         
-        #print('flag1')
+        #current_app.logger.debug('flag1')
         self.db = self.select_db(dbname)
-        #print('flag2')
+        #current_app.logger.debug('flag2')
 
-        #print('Notice: Creating User ->'+userd['username'])
+        #current_app.logger.debug('Notice: Creating User ->'+userd['username'])
         auser = MyRingUser(
             email= userd['email'],
             billingemail = userd['email'],
@@ -110,9 +109,9 @@ class MainModel:
         if not dbname:
             dbname=self.user_database
         
-        #print('flag1')
+        #current_app.logger.debug('flag1')
         self.db = self.select_db(dbname)
-        #print('flag2')
+        #current_app.logger.debug('flag2')
 
 
         people = {}
@@ -135,7 +134,7 @@ class MainModel:
         people2['added'] = datetime.now()
 
 
-        print('Notice: Creating User ->'+data['username'])
+        current_app.logger.debug('Notice: Creating User ->'+data['username'])
         auser = MyRingUser(
             email= data['username']+'@id.myring.io',
             billingemail = data['email'],  
@@ -148,10 +147,10 @@ class MainModel:
         auser.teams.append(teamname='staff',addedby=data['owner'],added=datetime.now())
 
         for team in auser.teams:
-            print("Teamowner:",team)
-            print("team.teamname:",team.teamname)
-            print("team.members:",team.members, type(team.members))
-            print("team.added:",team.added)
+            current_app.logger.debug("Teamowner:",team)
+            current_app.logger.debug("team.teamname:",team.teamname)
+            current_app.logger.debug("team.members:",team.members, type(team.members))
+            current_app.logger.debug("team.added:",team.added)
             if team.teamname == 'owner':
                 team.members.append(handle=data['owner'],addedby=data['owner'],added=datetime.now())
             elif team.teamname == 'staff':
@@ -166,22 +165,22 @@ class MainModel:
 
     def repair_user_doc(self,element,username,dbname=None):
 
-        print('Repairing user_doc for '+username+'. Adding element: '+str(element))
+        current_app.logger.debug('Repairing user_doc for '+username+'. Adding element: '+str(element))
         if not dbname:
             dbname=self.user_database
 
         db = self.select_db(dbname)
         user_doc = MyRingUser.load(db, username)
 
-        print('user_doc:',user_doc,type(user_doc))
-        print('element:',element,type(element))
+        current_app.logger.debug('user_doc:',user_doc,type(user_doc))
+        current_app.logger.debug('element:',element,type(element))
 
     
         #if not hasattr(user_doc,str(element)): 
         try:
             user_doc[element]
         except(KeyError):
-            print('repairflag')
+            current_app.logger.debug('repairflag')
             user_doc[element] = ''
             if user_doc.store(db):
                 return True
@@ -201,7 +200,7 @@ class MainModel:
         for teamd in user_doc.teams:
             
             if teamd['teamname'] == team:
-                print('flag at1')
+                current_app.logger.debug('flag at1')
                 
                 teamd.members.append(handle=author,addedby=author,added=datetime.now())
                 teamd.roles.append(role='team_writer',addedby=author,added=datetime.now())
@@ -251,7 +250,7 @@ class MainModel:
     #MAINMODEL  
     def select_user(self,dbname,username):
         self.db = self.select_db(dbname)
-        #print('Notice: Selecting User ->'+username)
+        #current_app.logger.debug('Notice: Selecting User ->'+username)
         return MyRingUser.load(self.db, username)
 
 
@@ -271,7 +270,7 @@ class MainModel:
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
-        #print('iterview result for '+dbview+' with key '+key+':',result)
+        #current_app.logger.debug('iterview result for '+dbview+' with key '+key+':',result)
         #options: key, startkey, endkey
         
         if batch == 1:
@@ -316,7 +315,7 @@ class MainModel:
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
-        #print('iterview result for '+dbview+' with key '+key+':',result)
+        #current_app.logger.debug('iterview result for '+dbview+' with key '+key+':',result)
         
         if batch == 1:
             for r in result:     
@@ -352,7 +351,7 @@ class MainModel:
     #MAINMODEL  
     def delete_user(self,dbname,user):
         self.db = self.select_db(dbname)
-        #print('Notice: Deleting User ->'+user)
+        #current_app.logger.debug('Notice: Deleting User ->'+user)
         #del self.db[user]
         return True
 
@@ -373,7 +372,7 @@ class MainModel:
                 user[field] = []
             else:
                 if type(user[field]) is not list:
-                    print('Cant append things to something that is not a list')
+                    current_app.logger.debug('Cant append things to something that is not a list')
                     return False
 
         
@@ -386,7 +385,7 @@ class MainModel:
                         if sublist not in u:
                             user[field][s][sublist] = []
                         elif type(user[field][s][sublist]) is not list:
-                            print('Cant append things to something that is not a list..')
+                            current_app.logger.debug('Cant append things to something that is not a list..')
                             return False
 
                         user[field][s][sublist].append(data)
@@ -398,55 +397,55 @@ class MainModel:
 
 
             if user.store(self.db):  
-                print('Data updated succesfully')             
+                current_app.logger.debug('Data updated succesfully')             
                 return True
             else:
-                print('Could not update user')
+                current_app.logger.debug('Could not update user')
                 return False
 
         else:
 
-            print('No user:'+handle)
+            current_app.logger.debug('No user:'+handle)
             return False
 
 
     #MAINMODEL 
     def update_user(self,data,user_database=None):
 
-        #print("update user data:")
-        #print(data)
+        #current_app.logger.debug("update user data:")
+        #current_app.logger.debug(data)
 
-        #print("update_user 1:")
+        #current_app.logger.debug("update_user 1:")
 
         if not user_database : 
             user_database = self.user_database
 
-        #print("update_user 2:")
+        #current_app.logger.debug("update_user 2:")
         current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
-        #print("update_user 3:")
+        #current_app.logger.debug("update_user 3:")
         user =  MyRingUser.load(self.db, data['id'])
-        #print("update_user 4:")
-        #print(user)
+        #current_app.logger.debug("update_user 4:")
+        #current_app.logger.debug(user)
 
         if user:
-            #print("update_user 5:")
+            #current_app.logger.debug("update_user 5:")
 
             for field in data:
                 if field!='id':
-                    print("Old Value:"+str(user[field]))
-                    print("New Value:"+str(data[field]))
+                    current_app.logger.debug("Old Value:"+str(user[field]))
+                    current_app.logger.debug("New Value:"+str(data[field]))
                     user[field]=data[field]
 
             if user.store(self.db):  
-                print('Data updated succesfully')             
+                current_app.logger.debug('Data updated succesfully')             
                 return True
             else:
-                print('Could not update user')
+                current_app.logger.debug('Could not update user')
                 return False
 
         else:
-            print('No user'+data['_id'])
+            current_app.logger.debug('No user'+data['_id'])
 
 
     #ROLEMODEL
@@ -458,8 +457,8 @@ class MainModel:
         user_authorizations = []
         rolelist = []
 
-        print('Method:', method)
-        print('depth:',depth)
+        current_app.logger.debug('Method:'+ method)
+        current_app.logger.debug('depth:'+ depth)
 
         if api:
             user_authorizations = self.sum_role_auth(user_authorizations,'api_user')
@@ -469,7 +468,7 @@ class MainModel:
 
             if current_user == handle: 
                 #This user is a Handle Owner
-                print('This user is a Handle Owner') 
+                current_app.logger.debug('This user is a Handle Owner') 
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
             else:
 
@@ -481,8 +480,8 @@ class MainModel:
                  
                     if rolelist:
 
-                        print('rolelist1:',rolelist)
-                        print('This user is a member of a team') 
+                        current_app.logger.debug('rolelist1:'+str(rolelist))
+                        current_app.logger.debug('This user is a member of a team') 
 
                         for role in rolelist:
                                 user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -490,7 +489,7 @@ class MainModel:
        
                     
                 else:
-                    print('This user is Anonymous 1')
+                    current_app.logger.debug('This user is Anonymous 1')
                     user_authorizations += self.roles['anonymous']
 
 
@@ -502,8 +501,8 @@ class MainModel:
                 rolelist = self.user_belongs_org_team(current_user,handle,ring=ring)
 
                 if rolelist:
-                    print('rolelist2:',rolelist)
-                    print('This user can act on this ring:'+ring) 
+                    current_app.logger.debug('rolelist2:'+str(rolelist))
+                    current_app.logger.debug('This user can act on this ring:'+ring) 
 
                     for role in rolelist:
                             user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -512,39 +511,39 @@ class MainModel:
                 if depth == '_a_b_c':
 
                     db_ringname=str(handle)+'_'+str(ring) 
-                    #print('db_ringname:',db_ringname)
+                    #current_app.logger.debug('db_ringname:',db_ringname)
                     db = self.select_db(db_ringname)
-                    #print('db:',db)
+                    #current_app.logger.debug('db:',db)
 
                     options = {}
                     options['key']=str(idx)
 
                     #Retrieving from ring/items view
                     result = db.iterview('item/roles',1,**options)
-                    print('item/roles:',result)
+                    current_app.logger.debug('item/roles:'+str(result))
 
                     
 
                     try:
                         for roles in result:
-                            print('roles for item:',roles['value'])
+                            current_app.logger.debug('roles for item:',roles['value'])
                             #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
 
                             for role in roles['value']:
-                                print(roles['value'][role])
-                                print(type(roles['value'][role]))
+                                current_app.logger.debug(roles['value'][role])
+                                current_app.logger.debug(type(roles['value'][role]))
 
 
                                 if type(roles['value'][role]) is list and current_user in roles['value'][role]:
-                                    print('This user is an Item '+role+':'+ring) 
+                                    current_app.logger.debug('This user is an Item '+role+':'+ring) 
                                     if role in self.roles:
-                                        print('Adding:'+role+'.')
+                                        current_app.logger.debug('Adding:'+role+'.')
                                         user_authorizations = self.sum_role_auth(user_authorizations,role)
                             
                     except(ResourceNotFound):
                         #AUTOREPAIR
 
-                        print('item/roles db view does not exist. Will regenerate')
+                        current_app.logger.debug('item/roles db view does not exist. Will regenerate')
 
                         from avispa.avispa_rest.AvispaModel import AvispaModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
                         AVM = AvispaModel()
@@ -554,32 +553,32 @@ class MainModel:
 
 
                         for roles in result:
-                            print('roles for item:',roles['value'])
+                            current_app.logger.debug('roles for item:',roles['value'])
                             #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
 
                             for role in roles['value']:
-                                print(roles['value'][role])
-                                print(type(roles['value'][role]))
+                                current_app.logger.debug(roles['value'][role])
+                                current_app.logger.debug(type(roles['value'][role]))
 
 
                                 if type(roles['value'][role]) is list and current_user in roles['value'][role]:
-                                    print('This user is an Item '+role+':'+ring) 
+                                    current_app.logger.debug('This user is an Item '+role+':'+ring) 
                                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
 
         elif depth == '_a_p' or depth == '_a_p_q':
-            print('Testing authorizations for /_people section')
+            current_app.logger.debug('Testing authorizations for /_people section')
 
             team = 'owner'
             rolelist = self.user_belongs_org_team(current_user,handle,team)
             if rolelist:
-                print('rolelist3:',rolelist)
-                print('This user is a member of team:'+team)
+                current_app.logger.debug('rolelist3:',rolelist)
+                current_app.logger.debug('This user is a member of team:'+team)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
             else:
-                print('This user is Anonymous 2')
+                current_app.logger.debug('This user is Anonymous 2')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
                 rolelist.append('anonymous')
 
@@ -587,20 +586,20 @@ class MainModel:
         elif depth == '_a_m' or depth == '_a_m_n' or depth == '_a_m_n_settings' or depth == '_a_m_n_invite':
 
             if not team:
-                print('Testing authorizations for /_teams section')
+                current_app.logger.debug('Testing authorizations for /_teams section')
                 rolelist = self.user_belongs_org_team(current_user,handle)
             else:
-                print('Testing authorizations for /_teams/'+team)
+                current_app.logger.debug('Testing authorizations for /_teams/'+team)
                 rolelist = self.user_belongs_org_team(current_user,handle,team)
                       
             
             if rolelist:
-                print('rolelist4:',rolelist)
+                current_app.logger.debug('rolelist4:',rolelist)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
                     
             else:
-                print('This user is Anonymous 3')
+                current_app.logger.debug('This user is Anonymous 3')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
                 rolelist.append('anonymous')
 
@@ -609,14 +608,14 @@ class MainModel:
             if current_user == handle: 
                 #This user is a Handle Owner
                 rolelist.append('handle_owner')
-                print('This user is a Handle Owner') 
+                current_app.logger.debug('This user is a Handle Owner') 
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
 
             else:
                 rolelist = self.user_belongs_org_team(current_user,handle)
                 if rolelist:
-                    print('rolelist5:',rolelist)
-                    print('This user is a member of a team accesing a collection') 
+                    current_app.logger.debug('rolelist5:',rolelist)
+                    current_app.logger.debug('This user is a member of a team accesing a collection') 
                          
                     for role in rolelist:
                         user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -631,7 +630,7 @@ class MainModel:
 
 
         #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
-        print('Final user_authorizations:',user_authorizations)
+        current_app.logger.debug('Final user_authorizations:'+str(user_authorizations))
 
         method_parts = method.split('_')
 
@@ -650,7 +649,7 @@ class MainModel:
         out={}
         out['user_authorizations'] = user_authorizations
 
-        print('Method for this screen:',method)
+        current_app.logger.debug('Method for this screen:'+method)
 
         if method.lower() in user_authorizations:
             out['authorized'] = True
@@ -666,21 +665,21 @@ class MainModel:
             if role['role'] in self.roles:
 
                 if role['ring']:
-                    print('Adding ring role:'+role['ring']+'_'+role['role'],self.roles[role['role']])
+                    current_app.logger.debug('Adding ring role:'+role['ring']+'_'+role['role'],self.roles[role['role']])
                     for r in self.roles[role['role']]:
                         user_authorizations.append(role['ring']+'_'+r)
 
             else:
-                print(role+' was not found')
+                current_app.logger.debug(role+' was not found')
 
 
         else:
 
             if role in self.roles:
-                print('Adding role:'+role,self.roles[role])
+                current_app.logger.debug('Adding role:'+role+':'+str(self.roles[role]))
                 user_authorizations += self.roles[role]
             else:
-                print(role+' was not found')
+                current_app.logger.debug(role+' was not found')
 
         return user_authorizations
 
@@ -692,7 +691,7 @@ class MainModel:
 
     def user_belongs_org_team(self,username,org,team=None,ring=None):
    
-        print('Will check if '+username+' belongs to a team ')
+        current_app.logger.debug('Will check if '+username+' belongs to a team ')
         rolelist = []
         result = self.select_user_doc_view('orgs/peopleteams',org)
         if result:
@@ -701,7 +700,7 @@ class MainModel:
                 for teamd in result['teams']:
                     for member in teamd['members']:               
                         if member['handle'] == username:  
-                            print(teamd['teamname']+' team has as member: '+member['handle'])
+                            current_app.logger.debug(teamd['teamname']+' team has as member: '+member['handle'])
                             #Will add only those roles of a team the user belongs to
                             if teamd['teamname'] == 'owner':
                                 rolelist.append('org_owner')
@@ -714,10 +713,10 @@ class MainModel:
             elif ring: #Check if this username can act on this ring
                 for teamd in result['teams']:
 
-                    print('flagx1')
+                    current_app.logger.debug('flagx1')
 
                     if teamd['teamname'] == 'owner':
-                        print('Checking is this user is in owner team',teamd['members'])
+                        current_app.logger.debug('Checking is this user is in owner team:'+str(teamd['members']))
                         for member in teamd['members']:
                                 
                                 if member['handle'] == username:
@@ -733,7 +732,7 @@ class MainModel:
                                     
                     else:
                         for ringd in teamd['rings']:
-                            print('flagx2',ringd['ringname'] , ring)
+                            current_app.logger.debug('flagx2'+ringd['ringname']+str(ring))
 
                             if ring == '*':
                                 for member in teamd['members']:
@@ -749,7 +748,7 @@ class MainModel:
                                             
 
                             elif ringd['ringname'] == ring: 
-                                print('flagx3')
+                                current_app.logger.debug('flagx3')
                                 #This team acts on this ring!
                                 for member in teamd['members']:
                                     if member['handle'] == username:
