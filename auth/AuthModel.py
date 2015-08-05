@@ -4,7 +4,7 @@ import os
 import errno
 from couchdb.http import PreconditionFailed
 from couchdb.design import ViewDefinition
-from flask import flash
+from flask import flash, current_app
 
 
 import couchdb
@@ -18,10 +18,10 @@ class AuthModel:
 
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        #print('self.couch :ATM')
-        #print(self.couch)
-        #print('self.couch.resource.credentials :ATM')
-        #print(self.couch.resource.credentials)
+        #current_app.logger.debug('self.couch :ATM')
+        #current_app.logger.debug(self.couch)
+        #current_app.logger.debug('self.couch.resource.credentials :ATM')
+        #current_app.logger.debug(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
         self.MAM = MainModel()
@@ -34,22 +34,22 @@ class AuthModel:
         #Added validation for SaaS users go here
 
         #Check if that username or email exists before trying to create the new user. Reject if TRUE
-        print("self.userdb_get_user_by_email")     
+        current_app.logger.debug("self.userdb_get_user_by_email")     
         if self.userdb_get_user_by_email(user['email']):
-            print('User with this email already exists')
+            current_app.logger.debug('User with this email already exists')
             flash('User with this email already exists','UI')
             return False
 
-        print("self.userdb_get_user_by_handle")
+        current_app.logger.debug("self.userdb_get_user_by_handle")
         if self.userdb_get_user_by_handle(user['username']):
-            print('Organization or User with this username already exists')
+            current_app.logger.debug('Organization or User with this username already exists')
             flash('Organization or User with this username already exists','UI')
             return False
 
 
 
         if self.MAM.create_user(user):
-            print("User created in DB. Attempting to create image folders...")
+            current_app.logger.debug("User created in DB. Attempting to create image folders...")
             self.create_user_imagefolder(user['username'])
             return True
 
@@ -58,22 +58,22 @@ class AuthModel:
         #Added validation for SaaS users go here
 
         #Check if that username exists before trying to create the new orguser. Reject if TRUE     
-        print("self.userdb_get_user_by_handle")
+        current_app.logger.debug("self.userdb_get_user_by_handle")
         if self.userdb_get_user_by_handle(user['username']):
-            print('Organization or User with this username already exists')
+            current_app.logger.debug('Organization or User with this username already exists')
             flash('Organization or User with this username already exists','UI')
             return False
 
         if self.MAM.create_orguser(user):
-            print("Organization created in DB. Attempting to create image folders...")
+            current_app.logger.debug("Organization created in DB. Attempting to create image folders...")
             self.create_user_imagefolder(user['username'])
             return True
 
     def saas_create_password_key(self,user,key):
 
-        print("saas_create_password_key")
-        print(user)
-        print(key)
+        current_app.logger.debug("saas_create_password_key")
+        current_app.logger.debug(user)
+        current_app.logger.debug(key)
 
         data = {}
         data['id']=user
@@ -83,9 +83,9 @@ class AuthModel:
 
     def saas_set_password(self,user,passhash):
 
-        print("saas_set_password")
-        print(user)
-        print(passhash)
+        current_app.logger.debug("saas_set_password")
+        current_app.logger.debug(user)
+        current_app.logger.debug(passhash)
 
         data = {}
         data['id']=user
@@ -112,14 +112,14 @@ class AuthModel:
         return True
 
     def safe_create_dir(self,path): 
-        print(path)
+        current_app.logger.debug(path)
         try:
             os.makedirs(path)
         except OSError as exception:
             if exception.errno != errno.EEXIST:
                 raise
 
-        print('Folder created:'+path)
+        current_app.logger.debug('Folder created:'+path)
         return True
 
 
@@ -132,29 +132,30 @@ class AuthModel:
 
         try:          
             #self.db = self.couch[self.user_database]
-            print('Notice: Entering TRY block')  
+            current_app.logger.debug('Notice: Entering TRY block')
+
             self.db = self.MAM.create_db(user_database) 
-            print('Notice: '+user_database+' database did not exist. Will create')
+            current_app.logger.debug('Notice: '+user_database+' database did not exist. Will create')
 
             self.userdb_set_db_views(user_database)
-            print('Notice: DB Views Created')
+            current_app.logger.debug('Notice: DB Views Created')
 
             return True
 
         except(PreconditionFailed):  
             
-            print('Notice: Entering EXCEPT(PreconditionFailed) block') 
+            current_app.logger.debug('Notice: Entering EXCEPT(PreconditionFailed) block') 
 
-            print "Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1]
+            current_app.logger.debug("Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1])
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             #raise
 
             # Will not get here because of 'raise'
-            print "Notice: Since it already existed, selecting existing one"
+            current_app.logger.debug("Notice: Since it already existed, selecting existing one")
             self.MAM.select_db(user_database)
             
-            print('Notice: '+user_database+' database exists already')
+            current_app.logger.debug('Notice: '+user_database+' database exists already')
             return False
 
     #AUTHMODEL
@@ -162,15 +163,16 @@ class AuthModel:
 
         if not user_database : 
             user_database = self.user_database
-
+        
+        current_app.logger.debug('#couchdb_call:'+user_database+'->admin_user_create()')
         db = self.couch[user_database]
 
         auser = self.MAM.select_user(user_database, data['username'])
 
-        print('Notice: User subtracted from DB ')
+        current_app.logger.debug('Notice: User subtracted from DB ')
 
         if auser:
-            print('Notice: '+data['username']+' exists already')
+            current_app.logger.debug('Notice: '+data['username']+' exists already')
             return False
 
         else:
@@ -178,7 +180,7 @@ class AuthModel:
             auser._id = data['username']
             storeresult = auser.store(db)
             
-            print('Notice: '+data['username'] +' created -> '+str(storeresult))
+            current_app.logger.debug('Notice: '+data['username'] +' created -> '+str(storeresult))
             return True
 
     #AUTHMODEL
@@ -187,6 +189,7 @@ class AuthModel:
         if not user_database : 
             user_database = self.user_database
 
+        current_app.logger.debug('#couchdb_call:'+user_database+'->userdb_set_db_views()')
         db = self.couch[user_database]
 
         
@@ -380,25 +383,25 @@ class AuthModel:
     #AUTHMODEL
     def userdb_get_user_by_email(self,email,user_database=None):
 
-        #print('flag1.1')
+        #current_app.logger.debug('flag1.1')
 
         if not user_database : 
             user_database = self.user_database
 
-        #print('flag1.2')
-
+        #current_app.logger.debug('flag1.2')
+        current_app.logger.debug('#couchdb_call:'+user_database+'->userdb_get_user_by_email()')
         db = self.couch[user_database]
 
-        #print('flag1.3')
+        #current_app.logger.debug('flag1.3')
         
         options = {}
         options['key']=email
         result = db.view('auth/userbyemail',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
-        #print(result)
+        #current_app.logger.debug(result)
 
-        #print('flag1.4')
+        #current_app.logger.debug('flag1.4')
         item = {}
                
         for row in result:
@@ -408,7 +411,7 @@ class AuthModel:
             item[u'key'] = row['key']
             item[u'value'] = row['value']
 
-        #print('flag1.5')
+        #current_app.logger.debug('flag1.5')
             
         if item:
             return item
@@ -418,16 +421,16 @@ class AuthModel:
     #AUTHMODEL
     def userdb_get_user_by_handle(self,handle,user_database=None):
 
-        #print('flag1.1')
+        #current_app.logger.debug('flag1.1')
 
         if not user_database : 
             user_database = self.user_database
 
-        #print('flag1.2')
-
+        #current_app.logger.debug('flag1.2')
+        current_app.logger.debug('#couchdb_call:'+user_database+'->userdb_get_user_by_handle()')
         db = self.couch[user_database]
 
-        #print('flag1.3')
+        #current_app.logger.debug('flag1.3')
         
         options = {}
         # options will only accept this: 'key', 'startkey', 'endkey'
@@ -435,9 +438,9 @@ class AuthModel:
         result = db.view('auth/userbyhandle',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
-        #print(result)
+        #current_app.logger.debug(result)
 
-        #print('flag1.4')
+        #current_app.logger.debug('flag1.4')
         item = {}
                
         for row in result:
@@ -447,7 +450,7 @@ class AuthModel:
             item[u'key'] = row['key']
             item[u'value'] = row['value']
 
-        #print('flag1.5')
+        #current_app.logger.debug('flag1.5')
             
 
         return item
