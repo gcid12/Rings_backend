@@ -919,7 +919,7 @@ class AvispaModel:
   
 
     #AVISPAMODEL
-    def get_a_b(self,handle,ringname,limit=25,lastkey=None,sort=None,human=False):
+    def get_a_b(self,handle,ringname,limit=25,lastkey=None,endkey=None,sort=None,human=False):
 
         
         items = []
@@ -944,10 +944,9 @@ class AvispaModel:
                 if sort_parts[1].lower()=='desc':
                     sort_reverse=True
                 sort= sort_parts[0]
-        else:
-            sort = OrderedFields[0]
+        
 
-        result = self.select_ring_doc_view('ring/items',handle,ringname,limit=limit)
+        result = self.select_ring_doc_view('ring/items',handle,ringname,limit=limit,lastkey=lastkey,endkey=endkey)
         #current_app.logger.debug('result:'+str(result))
     
         
@@ -964,13 +963,15 @@ class AvispaModel:
 
             if item:
                 items.append(item)
-                self.sort = sort
-                items = sorted(items, key=self.sort_item_list, reverse=sort_reverse)
+                
+        if len(items)>1 and sort:
+            self.sort = sort
+            items = sorted(items, key=self.sort_item_list, reverse=sort_reverse)
 
         return items
 
 
-    def select_ring_doc_view(self,dbview,handle,ringname,limit=25,key=None,batch=None,lastkey=None):
+    def select_ring_doc_view(self,dbview,handle,ringname,limit=25,key=None,batch=None,lastkey=None,endkey=None):
 
         # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
 
@@ -986,7 +987,11 @@ class AvispaModel:
             options['key']=str(key)
         if lastkey:
             limit +=1
-            options['startkey']=lastkey  #Where the last page left  
+            options['startkey']=lastkey  #Where the last page left 
+
+        if endkey:
+            options['endkey']=endkey
+
         options['limit']=limit #Number of results per page  
         result = db.iterview(dbview,batch,**options)
 
@@ -1338,7 +1343,7 @@ class AvispaModel:
         
         for row in result:
 
-            current_app.logger.debug('row:'+str(row))
+            #current_app.logger.debug('row:'+str(row))
 
             item = self.populate_item(OrderedFields,row)
 

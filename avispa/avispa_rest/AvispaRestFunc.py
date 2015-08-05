@@ -227,6 +227,11 @@ class AvispaRestFunc:
         else:
             lastkey = None
 
+        if 'endkey' in request.args:
+            endkey = request.args.get('endkey')
+        else:
+            endkey = None
+
         if 'limit' in request.args:
             limit = int(request.args.get('limit'))
         else:
@@ -259,7 +264,7 @@ class AvispaRestFunc:
         layers,widgets,sources,labels,names = self.field_dictonaries_init(schema['fields'],layer=layer)
 
         #Subtract items from DB
-        preitems = self.AVM.get_a_b(handle,ring,limit,lastkey,sort)
+        preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
         #current_app.logger.debug('PREITEMLIST:'+str(preitems))
 
         #Prepare data
