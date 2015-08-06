@@ -5,13 +5,30 @@ from flask.ext.openid import OpenID
 from flask.ext.bcrypt import Bcrypt
 #
 import os
+import logging
+from AvispaLogging import AvispaLoggerAdapter, LoggingSetUp
+
+#import os
+import json
+import logging.config
 
 # Define the WSGI application object
 app = Flask(__name__)
-
-
 # Configurations
 app.config.from_object('default_config')
+
+#setup_logging()
+LS = LoggingSetUp()
+LS.setup()
+
+
+logger = logging.getLogger('Avispa')
+lggr = AvispaLoggerAdapter(logger, {'tid': '0','ip':'0'})
+
+
+# Log something
+lggr.info('Flask App defined!')
+
 
 if app.config['DEBUG']:
     from flask_debugtoolbar import DebugToolbarExtension

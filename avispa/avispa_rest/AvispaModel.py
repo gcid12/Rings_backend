@@ -579,14 +579,14 @@ class AvispaModel:
             #current_app.logger.debug(args_f)
 
             if action == 'new':
-                args_f['FieldId'] = self.random_hash_generator(36)
+                args_f['FieldId'] = self.MAM.random_hash_generator(36)
 
                 schema.fields.append(**args_f)
                 
             elif action == 'edit' :
 
                 if 'FieldId' not in schema.fields[i]:
-                    args_f['FieldId'] = self.random_hash_generator(36)
+                    args_f['FieldId'] = self.MAM.random_hash_generator(36)
 
                 for y in args_f:
                     schema.fields[i][y] = args_f[y]
@@ -599,21 +599,6 @@ class AvispaModel:
         schema.store(db)
 
         return 'ok'
-
-    #AVISPAMODEL
-    def random_hash_generator(self,bits=36):  
-        if bits % 8 != 0:
-          bits = bits - (bits % 8)
-        if bits < 8:
-          bits = 8
-
-        required_length = bits / 8 * 2
-        
-        s = hex(random.getrandbits(bits)).lstrip('0x').rstrip('L')
-        if len(s) < required_length:
-            return self.random_hash_generator(bits)
-        else:
-            return s
 
     
     #AVISPAMODEL
