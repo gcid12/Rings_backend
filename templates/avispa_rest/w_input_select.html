@@ -1,3 +1,4 @@
+{{data.item}}
 <div class="form-group">
     <label for='{{ field.FieldId }}' class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
     <div class="col-sm-3">
@@ -8,7 +9,7 @@
     </div>
     <div class="col-sm-7 text-left">
 
-        <input type="hidden" name="{{ field.FieldId }}" class="form-control flag-aware" order="{{ field.FieldOrder }}" id="input_select_{{ field.FieldOrder }}" placeholder="{% if field.FieldHint %}{{ field.FieldHint}}{% else %} Enter {{ field.FieldName }}{% endif %}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldName] }}" />
+        <input type="hidden" name="{{ field.FieldId }}" class="form-control flag-aware" order="{{ field.FieldOrder }}" id="input_select_{{ field.FieldOrder }}" placeholder="{% if field.FieldHint %}{{ field.FieldHint}}{% else %} Enter {{ field.FieldName }}{% endif %}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldId] }}" />
 
         <!--select id="input_select_{{ field.FieldOrder }}" name="{{ field.FieldName }}" class="select-chosen"  {% if field.FieldCardinality=='Multiple' %} multiple {% endif %}-->
 
