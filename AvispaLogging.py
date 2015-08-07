@@ -28,10 +28,13 @@ class LoggingSetUp:
 
 	    """
 	    path = default_path
+            
 	    value = os.getenv(env_key, None)
 	    if value:
 	        path = value
-	    if os.path.exists(path):
+            dir = os.path.dirname(__file__)  
+            path = os.path.join(dir,path)
+            if os.path.exists(path):
 	        with open(path, 'rt') as f:
 	            config = json.load(f)
 	            if logfile_path:
@@ -42,8 +45,9 @@ class LoggingSetUp:
                     	if config['handlers'][han]['class'] == 'logging.handlers.RotatingFileHandler':
                             filename = config['handlers'][han]['filename']
                             config['handlers'][han]['filename'] = logfile_path+'/'+datestring+filename
-
+                            print("Logfile:"+config['handlers'][han]['filename'])
     	
 	        logging.config.dictConfig(config)
 	    else:
+                print('basic logging')
 	        logging.basicConfig(level=default_level)
