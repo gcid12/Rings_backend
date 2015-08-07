@@ -1126,7 +1126,7 @@ class AvispaModel:
 
                 result_rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx,human=True)
                 if result_rich_item:
-                    rich_item = rich_item
+                    rich_item = result_rich_item
 
                 rs = self.ring_get_schema_from_view(external_handle,external_ringname)
 
