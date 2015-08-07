@@ -181,6 +181,7 @@ Create the directories where the application is going to live
 $ mkdir /var/www
 $ mkdir /var/www/avispa
 $ mkdir /var/www/_images
+$ mkdir /var/log/avispa
 ```
 
 
@@ -188,6 +189,7 @@ $ mkdir /var/www/_images
 Change the ownership to the group that will have access to it
 ```
 chown -R :www-data /var/www/avispa
+chown -R www-data:www-data /var/log/avispa
 ```
 
 We'll use the Machine-User method to connect to GitHub where each machine has its own set of credentials to access the Private Github repository. For that we need to create the SSH keys for the server and give the Public Key to GitHub.
