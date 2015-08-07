@@ -28,6 +28,7 @@ lggr = AvispaLoggerAdapter(logger, {'tid': '0','ip':'0'})
 
 # Log something
 lggr.info('Flask App defined!')
+lggr.debug('Checking debug log')
 
 
 if app.config['DEBUG']:

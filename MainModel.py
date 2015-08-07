@@ -17,7 +17,7 @@ class MainModel:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
-        self.lggr.info('Main Model Initialized!!!')
+        self.lggr.info('Main Model Initialized')
         
         self.couch = couchdb.Server(current_app.config['COUCHDB_SERVER'])
         self.couch.resource.credentials = (current_app.config['COUCHDB_USER'],current_app.config['COUCHDB_PASS'])
@@ -46,22 +46,19 @@ class MainModel:
 
     #MAINMODEL
     def create_db(self,dbname):
-        #self.lggr.debug('Notice: Creating db ->>'+dbname)
-        self.lggr.debug('#couchdb_call:'+dbname+'->create_db()')
+        self.lggr.debug('#couchdb_call: create_db('+dbname+')')
         return self.couch.create(dbname)     
 
     #MAINMODEL
     def select_db(self,dbname):
-        #self.lggr.debug('Notice: Selecting db ->'+dbname)
-        self.lggr.debug('#couchdb_call:'+dbname+'->select_db()')
+        self.lggr.debug('#couchdb_call: select_db('+dbname+')')
         result = self.couch[dbname] 
         #self.lggr.debug('db selected!')
         return result
          
     #MAINMODEL
     def delete_db(self,dbname):
-        #self.lggr.debug('Notice: Deleting db ->'+dbname)
-        self.lggr.debug('#couchdb_call:'+dbname+'->delete_db()')
+        self.lggr.debug('#couchdb_call: delete_db('+dbname+')')
         del self.couch[dbname] 
         return True
 

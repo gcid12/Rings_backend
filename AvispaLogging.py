@@ -37,9 +37,13 @@ class LoggingSetUp:
 	            if logfile_path:
 	            	localtime = time.localtime()
 	            	datestring = time.strftime("%Y%m%d",localtime)
-	            	filename = config['handlers']['info_file_handler']['filename'] 
-	                config['handlers']['info_file_handler']['filename'] = logfile_path+'/'+datestring+filename
 
+                    for han in config['handlers']:
+                    	if config['handlers'][han]['class'] == 'logging.handlers.RotatingFileHandler':
+                            filename = config['handlers'][han]['filename']
+                            config['handlers'][han]['filename'] = logfile_path+'/'+datestring+filename
+
+    	
 	        logging.config.dictConfig(config)
 	    else:
 	        logging.basicConfig(level=default_level)
