@@ -365,7 +365,8 @@
   <!-- AS MOSAIC close -->  
     {% endif %} 
       <div>
-      Prev | Next
+      
+      <a href="?endkey={{data.itemlist[-1]._id}}">Prev</a> | <a href="?lastkey={{data.itemlist[-1]._id}}">Next</a>
       </div>
   {% endif %} 
       </div>  

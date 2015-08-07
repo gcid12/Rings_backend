@@ -1,6 +1,6 @@
 # Import flask dependencies
 import urlparse, time, datetime, collections, json
-from flask import Blueprint, render_template, request, redirect, current_app
+from flask import Blueprint, render_template, request, redirect, current_app , g
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
@@ -19,6 +19,7 @@ avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 
 
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
+
     
     ARF = AvispaRestFunc()
 
@@ -281,6 +282,10 @@ def home_dispatcher(handle):
 
     MAM = MainModel()
     data = {}
+
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+    
 
     if MAM.user_exists(handle):
 

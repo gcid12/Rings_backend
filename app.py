@@ -3,21 +3,38 @@ from flask import Flask, render_template
 from flask.ext.login import LoginManager
 from flask.ext.openid import OpenID
 from flask.ext.bcrypt import Bcrypt
-#from flask_debugtoolbar import DebugToolbarExtension
+#
 import os
+import logging
+from AvispaLogging import AvispaLoggerAdapter, LoggingSetUp
+
+#import os
+import json
+import logging.config
 
 # Define the WSGI application object
-#app = Flask(__name__)
 app = Flask(__name__)
-
-
 # Configurations
 app.config.from_object('default_config')
 
-#toolbar = DebugToolbarExtension(app)
+#setup_logging()
+LS = LoggingSetUp()
+LS.setup(logfile_path=app.config['LOGFILE_PATH'])
 
-#app.config.from_object('env_config')
-#print(os.path.join(app.config['BASE_DIR'], 'tmp'))
+
+logger = logging.getLogger('Avispa')
+lggr = AvispaLoggerAdapter(logger, {'tid': '0','ip':'0'})
+
+
+# Log something
+lggr.info('Flask App defined!')
+lggr.debug('Checking debug log')
+
+
+if app.config['DEBUG']:
+    from flask_debugtoolbar import DebugToolbarExtension
+    toolbar = DebugToolbarExtension(app)
+
 
 # Flask BCrypt will be used to salt the user password
 flask_bcrypt = Bcrypt(app)

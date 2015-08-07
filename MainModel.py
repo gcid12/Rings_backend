@@ -1,16 +1,23 @@
 # AuthModel.py
 
 import couchdb
-from flask import current_app
+import logging
+import random
+from flask import current_app, g
 from MyRingUser import MyRingUser
 #from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
+from AvispaLogging import AvispaLoggerAdapter
 
 class MainModel:
 
     def __init__(self):
+      
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
+        self.lggr.info('Main Model Initialized')
         
         self.couch = couchdb.Server(current_app.config['COUCHDB_SERVER'])
         self.couch.resource.credentials = (current_app.config['COUCHDB_USER'],current_app.config['COUCHDB_PASS'])
@@ -39,30 +46,27 @@ class MainModel:
 
     #MAINMODEL
     def create_db(self,dbname):
-        #current_app.logger.debug('Notice: Creating db ->>'+dbname)
-        current_app.logger.debug('#couchdb_call:'+dbname+'->create_db()')
+        self.lggr.debug('#couchdb_call: create_db('+dbname+')')
         return self.couch.create(dbname)     
 
     #MAINMODEL
     def select_db(self,dbname):
-        #current_app.logger.debug('Notice: Selecting db ->'+dbname)
-        current_app.logger.debug('#couchdb_call:'+dbname+'->select_db()')
+        self.lggr.debug('#couchdb_call: select_db('+dbname+')')
         result = self.couch[dbname] 
-        #current_app.logger.debug('db selected!')
+        #self.lggr.debug('db selected!')
         return result
          
     #MAINMODEL
     def delete_db(self,dbname):
-        #current_app.logger.debug('Notice: Deleting db ->'+dbname)
-        current_app.logger.debug('#couchdb_call:'+dbname+'->delete_db()')
+        self.lggr.debug('#couchdb_call: delete_db('+dbname+')')
         del self.couch[dbname] 
         return True
 
     #MAINMODEL
     def create_doc(self,dbname,id,doc):
-        #current_app.logger.debug('Notice: Creating doc ->'+str(doc))
-        #current_app.logger.debug('Notice: in DB ->'+dbname)
-        #current_app.logger.debug('Notice: With ID ->'+id)
+        #self.lggr.debug('Notice: Creating doc ->'+str(doc))
+        #self.lggr.debug('Notice: in DB ->'+dbname)
+        #self.lggr.debug('Notice: With ID ->'+id)
         db=self.select_db(dbname)
         doc['_id']= id
         db.save(doc)
@@ -73,7 +77,7 @@ class MainModel:
 
         
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.debug('#couchdb_call:'+db_ringname+'->select_item_doc()')
+        self.lggr.debug('#couchdb_call:'+db_ringname+'->select_item_doc()')
         db = self.couch[db_ringname]
         AVM = AvispaModel()
         schema = AVM.ring_get_schema_from_view(handle,ringname) 
@@ -87,11 +91,11 @@ class MainModel:
         if not dbname:
             dbname=self.user_database
         
-        #current_app.logger.debug('flag1')
+        #self.lggr.debug('flag1')
         self.db = self.select_db(dbname)
-        #current_app.logger.debug('flag2')
+        #self.lggr.debug('flag2')
 
-        #current_app.logger.debug('Notice: Creating User ->'+userd['username'])
+        #self.lggr.debug('Notice: Creating User ->'+userd['username'])
         auser = MyRingUser(
             email= userd['email'],
             billingemail = userd['email'],
@@ -109,9 +113,9 @@ class MainModel:
         if not dbname:
             dbname=self.user_database
         
-        #current_app.logger.debug('flag1')
+        #self.lggr.debug('flag1')
         self.db = self.select_db(dbname)
-        #current_app.logger.debug('flag2')
+        #self.lggr.debug('flag2')
 
 
         people = {}
@@ -134,7 +138,7 @@ class MainModel:
         people2['added'] = datetime.now()
 
 
-        current_app.logger.debug('Notice: Creating User ->'+data['username'])
+        self.lggr.debug('Notice: Creating User ->'+data['username'])
         auser = MyRingUser(
             email= data['username']+'@id.myring.io',
             billingemail = data['email'],  
@@ -147,10 +151,10 @@ class MainModel:
         auser.teams.append(teamname='staff',addedby=data['owner'],added=datetime.now())
 
         for team in auser.teams:
-            current_app.logger.debug("Teamowner:",team)
-            current_app.logger.debug("team.teamname:",team.teamname)
-            current_app.logger.debug("team.members:",team.members, type(team.members))
-            current_app.logger.debug("team.added:",team.added)
+            self.lggr.debug("Teamowner:",team)
+            self.lggr.debug("team.teamname:",team.teamname)
+            self.lggr.debug("team.members:",team.members, type(team.members))
+            self.lggr.debug("team.added:",team.added)
             if team.teamname == 'owner':
                 team.members.append(handle=data['owner'],addedby=data['owner'],added=datetime.now())
             elif team.teamname == 'staff':
@@ -165,22 +169,22 @@ class MainModel:
 
     def repair_user_doc(self,element,username,dbname=None):
 
-        current_app.logger.debug('Repairing user_doc for '+username+'. Adding element: '+str(element))
+        self.lggr.debug('Repairing user_doc for '+username+'. Adding element: '+str(element))
         if not dbname:
             dbname=self.user_database
 
         db = self.select_db(dbname)
         user_doc = MyRingUser.load(db, username)
 
-        current_app.logger.debug('user_doc:',user_doc,type(user_doc))
-        current_app.logger.debug('element:',element,type(element))
+        self.lggr.debug('user_doc:',user_doc,type(user_doc))
+        self.lggr.debug('element:',element,type(element))
 
     
         #if not hasattr(user_doc,str(element)): 
         try:
             user_doc[element]
         except(KeyError):
-            current_app.logger.debug('repairflag')
+            self.lggr.debug('repairflag')
             user_doc[element] = ''
             if user_doc.store(db):
                 return True
@@ -200,7 +204,7 @@ class MainModel:
         for teamd in user_doc.teams:
             
             if teamd['teamname'] == team:
-                current_app.logger.debug('flag at1')
+                self.lggr.debug('flag at1')
                 
                 teamd.members.append(handle=author,addedby=author,added=datetime.now())
                 teamd.roles.append(role='team_writer',addedby=author,added=datetime.now())
@@ -250,7 +254,7 @@ class MainModel:
     #MAINMODEL  
     def select_user(self,dbname,username):
         self.db = self.select_db(dbname)
-        #current_app.logger.debug('Notice: Selecting User ->'+username)
+        #self.lggr.debug('Notice: Selecting User ->'+username)
         return MyRingUser.load(self.db, username)
 
 
@@ -270,7 +274,7 @@ class MainModel:
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
-        #current_app.logger.debug('iterview result for '+dbview+' with key '+key+':',result)
+        #self.lggr.debug('iterview result for '+dbview+' with key '+key+':',result)
         #options: key, startkey, endkey
         
         if batch == 1:
@@ -315,7 +319,7 @@ class MainModel:
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
-        #current_app.logger.debug('iterview result for '+dbview+' with key '+key+':',result)
+        #self.lggr.debug('iterview result for '+dbview+' with key '+key+':',result)
         
         if batch == 1:
             for r in result:     
@@ -351,7 +355,7 @@ class MainModel:
     #MAINMODEL  
     def delete_user(self,dbname,user):
         self.db = self.select_db(dbname)
-        #current_app.logger.debug('Notice: Deleting User ->'+user)
+        #self.lggr.debug('Notice: Deleting User ->'+user)
         #del self.db[user]
         return True
 
@@ -361,7 +365,7 @@ class MainModel:
         if not user_database : 
             user_database = self.user_database
         
-        current_app.logger.debug('#couchdb_call')
+        self.lggr.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db,handle)
 
@@ -372,7 +376,7 @@ class MainModel:
                 user[field] = []
             else:
                 if type(user[field]) is not list:
-                    current_app.logger.debug('Cant append things to something that is not a list')
+                    self.lggr.debug('Cant append things to something that is not a list')
                     return False
 
         
@@ -385,7 +389,7 @@ class MainModel:
                         if sublist not in u:
                             user[field][s][sublist] = []
                         elif type(user[field][s][sublist]) is not list:
-                            current_app.logger.debug('Cant append things to something that is not a list..')
+                            self.lggr.debug('Cant append things to something that is not a list..')
                             return False
 
                         user[field][s][sublist].append(data)
@@ -397,55 +401,55 @@ class MainModel:
 
 
             if user.store(self.db):  
-                current_app.logger.debug('Data updated succesfully')             
+                self.lggr.debug('Data updated succesfully')             
                 return True
             else:
-                current_app.logger.debug('Could not update user')
+                self.lggr.debug('Could not update user')
                 return False
 
         else:
 
-            current_app.logger.debug('No user:'+handle)
+            self.lggr.debug('No user:'+handle)
             return False
 
 
     #MAINMODEL 
     def update_user(self,data,user_database=None):
 
-        #current_app.logger.debug("update user data:")
-        #current_app.logger.debug(data)
+        #self.lggr.debug("update user data:")
+        #self.lggr.debug(data)
 
-        #current_app.logger.debug("update_user 1:")
+        #self.lggr.debug("update_user 1:")
 
         if not user_database : 
             user_database = self.user_database
 
-        #current_app.logger.debug("update_user 2:")
-        current_app.logger.debug('#couchdb_call')
+        #self.lggr.debug("update_user 2:")
+        self.lggr.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
-        #current_app.logger.debug("update_user 3:")
+        #self.lggr.debug("update_user 3:")
         user =  MyRingUser.load(self.db, data['id'])
-        #current_app.logger.debug("update_user 4:")
-        #current_app.logger.debug(user)
+        #self.lggr.debug("update_user 4:")
+        #self.lggr.debug(user)
 
         if user:
-            #current_app.logger.debug("update_user 5:")
+            #self.lggr.debug("update_user 5:")
 
             for field in data:
                 if field!='id':
-                    current_app.logger.debug("Old Value:"+str(user[field]))
-                    current_app.logger.debug("New Value:"+str(data[field]))
+                    self.lggr.debug("Old Value:"+str(user[field]))
+                    self.lggr.debug("New Value:"+str(data[field]))
                     user[field]=data[field]
 
             if user.store(self.db):  
-                current_app.logger.debug('Data updated succesfully')             
+                self.lggr.debug('Data updated succesfully')             
                 return True
             else:
-                current_app.logger.debug('Could not update user')
+                self.lggr.debug('Could not update user')
                 return False
 
         else:
-            current_app.logger.debug('No user'+data['_id'])
+            self.lggr.debug('No user'+data['_id'])
 
 
     #ROLEMODEL
@@ -457,8 +461,8 @@ class MainModel:
         user_authorizations = []
         rolelist = []
 
-        current_app.logger.debug('Method:'+ method)
-        current_app.logger.debug('depth:'+ depth)
+        self.lggr.debug('Method:'+ method)
+        self.lggr.debug('depth:'+ depth)
 
         if api:
             user_authorizations = self.sum_role_auth(user_authorizations,'api_user')
@@ -468,7 +472,7 @@ class MainModel:
 
             if current_user == handle: 
                 #This user is a Handle Owner
-                current_app.logger.debug('This user is a Handle Owner') 
+                self.lggr.debug('This user is a Handle Owner') 
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
             else:
 
@@ -480,8 +484,8 @@ class MainModel:
                  
                     if rolelist:
 
-                        current_app.logger.debug('rolelist1:'+str(rolelist))
-                        current_app.logger.debug('This user is a member of a team') 
+                        self.lggr.debug('rolelist1:'+str(rolelist))
+                        self.lggr.debug('This user is a member of a team') 
 
                         for role in rolelist:
                                 user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -489,7 +493,7 @@ class MainModel:
        
                     
                 else:
-                    current_app.logger.debug('This user is Anonymous 1')
+                    self.lggr.debug('This user is Anonymous 1')
                     user_authorizations += self.roles['anonymous']
 
 
@@ -501,8 +505,8 @@ class MainModel:
                 rolelist = self.user_belongs_org_team(current_user,handle,ring=ring)
 
                 if rolelist:
-                    current_app.logger.debug('rolelist2:'+str(rolelist))
-                    current_app.logger.debug('This user can act on this ring:'+ring) 
+                    self.lggr.debug('rolelist2:'+str(rolelist))
+                    self.lggr.debug('This user can act on this ring:'+ring) 
 
                     for role in rolelist:
                             user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -511,39 +515,39 @@ class MainModel:
                 if depth == '_a_b_c':
 
                     db_ringname=str(handle)+'_'+str(ring) 
-                    #current_app.logger.debug('db_ringname:',db_ringname)
+                    #self.lggr.debug('db_ringname:',db_ringname)
                     db = self.select_db(db_ringname)
-                    #current_app.logger.debug('db:',db)
+                    #self.lggr.debug('db:',db)
 
                     options = {}
                     options['key']=str(idx)
 
                     #Retrieving from ring/items view
                     result = db.iterview('item/roles',1,**options)
-                    current_app.logger.debug('item/roles:'+str(result))
+                    self.lggr.debug('item/roles:'+str(result))
 
                     
 
                     try:
                         for roles in result:
-                            current_app.logger.debug('roles for item:',roles['value'])
+                            self.lggr.debug('roles for item:',roles['value'])
                             #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
 
                             for role in roles['value']:
-                                current_app.logger.debug(roles['value'][role])
-                                current_app.logger.debug(type(roles['value'][role]))
+                                self.lggr.debug(roles['value'][role])
+                                self.lggr.debug(type(roles['value'][role]))
 
 
                                 if type(roles['value'][role]) is list and current_user in roles['value'][role]:
-                                    current_app.logger.debug('This user is an Item '+role+':'+ring) 
+                                    self.lggr.debug('This user is an Item '+role+':'+ring) 
                                     if role in self.roles:
-                                        current_app.logger.debug('Adding:'+role+'.')
+                                        self.lggr.debug('Adding:'+role+'.')
                                         user_authorizations = self.sum_role_auth(user_authorizations,role)
                             
                     except(ResourceNotFound):
                         #AUTOREPAIR
 
-                        current_app.logger.debug('item/roles db view does not exist. Will regenerate')
+                        self.lggr.debug('item/roles db view does not exist. Will regenerate')
 
                         from avispa.avispa_rest.AvispaModel import AvispaModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
                         AVM = AvispaModel()
@@ -553,32 +557,32 @@ class MainModel:
 
 
                         for roles in result:
-                            current_app.logger.debug('roles for item:',roles['value'])
+                            self.lggr.debug('roles for item:',roles['value'])
                             #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
 
                             for role in roles['value']:
-                                current_app.logger.debug(roles['value'][role])
-                                current_app.logger.debug(type(roles['value'][role]))
+                                self.lggr.debug(roles['value'][role])
+                                self.lggr.debug(type(roles['value'][role]))
 
 
                                 if type(roles['value'][role]) is list and current_user in roles['value'][role]:
-                                    current_app.logger.debug('This user is an Item '+role+':'+ring) 
+                                    self.lggr.debug('This user is an Item '+role+':'+ring) 
                                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
 
         elif depth == '_a_p' or depth == '_a_p_q':
-            current_app.logger.debug('Testing authorizations for /_people section')
+            self.lggr.debug('Testing authorizations for /_people section')
 
             team = 'owner'
             rolelist = self.user_belongs_org_team(current_user,handle,team)
             if rolelist:
-                current_app.logger.debug('rolelist3:',rolelist)
-                current_app.logger.debug('This user is a member of team:'+team)
+                self.lggr.debug('rolelist3:',rolelist)
+                self.lggr.debug('This user is a member of team:'+team)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
             else:
-                current_app.logger.debug('This user is Anonymous 2')
+                self.lggr.debug('This user is Anonymous 2')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
                 rolelist.append('anonymous')
 
@@ -586,20 +590,20 @@ class MainModel:
         elif depth == '_a_m' or depth == '_a_m_n' or depth == '_a_m_n_settings' or depth == '_a_m_n_invite':
 
             if not team:
-                current_app.logger.debug('Testing authorizations for /_teams section')
+                self.lggr.debug('Testing authorizations for /_teams section')
                 rolelist = self.user_belongs_org_team(current_user,handle)
             else:
-                current_app.logger.debug('Testing authorizations for /_teams/'+team)
+                self.lggr.debug('Testing authorizations for /_teams/'+team)
                 rolelist = self.user_belongs_org_team(current_user,handle,team)
                       
             
             if rolelist:
-                current_app.logger.debug('rolelist4:',rolelist)
+                self.lggr.debug('rolelist4:',rolelist)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
                     
             else:
-                current_app.logger.debug('This user is Anonymous 3')
+                self.lggr.debug('This user is Anonymous 3')
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
                 rolelist.append('anonymous')
 
@@ -608,14 +612,14 @@ class MainModel:
             if current_user == handle: 
                 #This user is a Handle Owner
                 rolelist.append('handle_owner')
-                current_app.logger.debug('This user is a Handle Owner') 
+                self.lggr.debug('This user is a Handle Owner') 
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
 
             else:
                 rolelist = self.user_belongs_org_team(current_user,handle)
                 if rolelist:
-                    current_app.logger.debug('rolelist5:',rolelist)
-                    current_app.logger.debug('This user is a member of a team accesing a collection') 
+                    self.lggr.debug('rolelist5:',rolelist)
+                    self.lggr.debug('This user is a member of a team accesing a collection') 
                          
                     for role in rolelist:
                         user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -630,7 +634,7 @@ class MainModel:
 
 
         #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
-        current_app.logger.debug('Final user_authorizations:'+str(user_authorizations))
+        self.lggr.debug('Final user_authorizations:'+str(user_authorizations))
 
         method_parts = method.split('_')
 
@@ -649,7 +653,7 @@ class MainModel:
         out={}
         out['user_authorizations'] = user_authorizations
 
-        current_app.logger.debug('Method for this screen:'+method)
+        self.lggr.debug('Method for this screen:'+method)
 
         if method.lower() in user_authorizations:
             out['authorized'] = True
@@ -665,21 +669,21 @@ class MainModel:
             if role['role'] in self.roles:
 
                 if role['ring']:
-                    current_app.logger.debug('Adding ring role:'+role['ring']+'_'+role['role'],self.roles[role['role']])
+                    self.lggr.debug('Adding ring role:'+role['ring']+'_'+role['role'],self.roles[role['role']])
                     for r in self.roles[role['role']]:
                         user_authorizations.append(role['ring']+'_'+r)
 
             else:
-                current_app.logger.debug(role+' was not found')
+                self.lggr.debug(role+' was not found')
 
 
         else:
 
             if role in self.roles:
-                current_app.logger.debug('Adding role:'+role+':'+str(self.roles[role]))
+                self.lggr.debug('Adding role:'+role+':'+str(self.roles[role]))
                 user_authorizations += self.roles[role]
             else:
-                current_app.logger.debug(role+' was not found')
+                self.lggr.debug(role+' was not found')
 
         return user_authorizations
 
@@ -691,7 +695,7 @@ class MainModel:
 
     def user_belongs_org_team(self,username,org,team=None,ring=None):
    
-        current_app.logger.debug('Will check if '+username+' belongs to a team ')
+        self.lggr.debug('Will check if '+username+' belongs to a team ')
         rolelist = []
         result = self.select_user_doc_view('orgs/peopleteams',org)
         if result:
@@ -700,7 +704,7 @@ class MainModel:
                 for teamd in result['teams']:
                     for member in teamd['members']:               
                         if member['handle'] == username:  
-                            current_app.logger.debug(teamd['teamname']+' team has as member: '+member['handle'])
+                            self.lggr.debug(teamd['teamname']+' team has as member: '+member['handle'])
                             #Will add only those roles of a team the user belongs to
                             if teamd['teamname'] == 'owner':
                                 rolelist.append('org_owner')
@@ -713,10 +717,10 @@ class MainModel:
             elif ring: #Check if this username can act on this ring
                 for teamd in result['teams']:
 
-                    current_app.logger.debug('flagx1')
+                    self.lggr.debug('flagx1')
 
                     if teamd['teamname'] == 'owner':
-                        current_app.logger.debug('Checking is this user is in owner team:'+str(teamd['members']))
+                        self.lggr.debug('Checking is this user is in owner team:'+str(teamd['members']))
                         for member in teamd['members']:
                                 
                                 if member['handle'] == username:
@@ -732,7 +736,7 @@ class MainModel:
                                     
                     else:
                         for ringd in teamd['rings']:
-                            current_app.logger.debug('flagx2'+ringd['ringname']+str(ring))
+                            self.lggr.debug('flagx2'+ringd['ringname']+str(ring))
 
                             if ring == '*':
                                 for member in teamd['members']:
@@ -748,7 +752,7 @@ class MainModel:
                                             
 
                             elif ringd['ringname'] == ring: 
-                                current_app.logger.debug('flagx3')
+                                self.lggr.debug('flagx3')
                                 #This team acts on this ring!
                                 for member in teamd['members']:
                                     if member['handle'] == username:
@@ -772,3 +776,18 @@ class MainModel:
             return rolelist
                             
         return False
+
+        #MAINMODEL
+    def random_hash_generator(self,bits=36):  
+        if bits % 8 != 0:
+          bits = bits - (bits % 8)
+        if bits < 8:
+          bits = 8
+
+        required_length = bits / 8 * 2
+        
+        s = hex(random.getrandbits(bits)).lstrip('0x').rstrip('L')
+        if len(s) < required_length:
+            return self.random_hash_generator(bits)
+        else:
+            return s
