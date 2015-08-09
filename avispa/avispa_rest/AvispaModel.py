@@ -913,21 +913,18 @@ class AvispaModel:
 
     #AVISPAMODEL
     def get_a_b(self,handle,ringname,limit=25,lastkey=None,endkey=None,sort=None,human=False):
-
-        
+       
         items = []
         i = 0
 
         schema = self.ring_get_schema_from_view(handle,ringname) 
         OrderedFields=[]
+        OFH = {}
         for field in schema['fields']:
+            OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
 
             if human:
-                OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
-            else:
-                OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
-
-            
+                OFH[field['FieldId']] = field['FieldName']
 
         # sort exists if it is sent in the url as ?sort=<name-of-field>_<desc|asc>
         sort_reverse=False
@@ -952,7 +949,7 @@ class AvispaModel:
                 #as it was the last item in the last page
                 continue
 
-            item = self.populate_item(OrderedFields,row)
+            item = self.populate_item(OrderedFields,row,OFH=OFH)
 
             if item:
                 items.append(item)
@@ -1002,20 +999,32 @@ class AvispaModel:
         return result
 
 
-    def populate_item(self,OrderedFields,row):
+    def populate_item(self,OrderedFields,row,OFH=False):
         item = collections.OrderedDict()
+        if not OFH:
+            OFH={}
+
         if 'id' in row:        
             item[u'_id'] = row['id']
 
-            for fieldname in OrderedFields:
-                if fieldname in row['value']:
-                    if row['value'][fieldname]:
-                        item[fieldname] = row['value'][fieldname]
+            for fieldid in OrderedFields:
+                if fieldid in row['value']:
+                    if row['value'][fieldid]:
+                        if fieldid in OFH:
+                            item[OFH[fieldid]] = row['value'][fieldid]
 
-                        if fieldname+'_flag' in row['value']:
-                                item[fieldname+'_flag'] = row['value'][fieldname+'_flag']
-                        if fieldname+'_rich' in row['value']:
-                            item[fieldname+'_rich'] = row['value'][fieldname+'_rich']
+                            if fieldid+'_flag' in row['value']:
+                                item[OFH[fieldid]+'_flag'] = row['value'][fieldid+'_flag']
+                            if fieldid+'_rich' in row['value']:
+                                item[OFH[fieldid]+'_rich'] = row['value'][fieldid+'_rich']
+
+                        else:
+                            item[fieldid] = row['value'][fieldid]
+
+                            if fieldid+'_flag' in row['value']:
+                                item[fieldid+'_flag'] = row['value'][fieldid+'_flag']
+                            if fieldid+'_rich' in row['value']:
+                                item[fieldid+'_rich'] = row['value'][fieldid+'_rich']
 
 
             return item
@@ -1332,24 +1341,27 @@ class AvispaModel:
 
         schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
+        OFH={}
         for field in schema['fields']:
+            OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
+
             if human:
-                OrderedFields.insert(int(field['FieldOrder']),field['FieldName'])
-            else:
-                OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
+                OFH[field['FieldId']] = field['FieldName']
+                
 
-
-        current_app.logger.debug('select_ring_doc_view(ring/items,'+str(handle)+','+str(ringname)+','+str(idx)+') ')            
+        #self.lggr.debug('select_ring_doc_view(ring/items,'+str(handle)+','+str(ringname)+','+str(idx)+') ')            
         
         result = self.select_ring_doc_view('ring/items',handle,ringname,key=idx)
         
-        current_app.logger.debug('result:'+str(result))
+        #self.lggr.debug('result:'+str(result))
         
         for row in result:
 
-            #current_app.logger.debug('row:'+str(row))
+            #self.lggr.debug('row:'+str(row))
 
-            item = self.populate_item(OrderedFields,row)
+            #Here i need to convert row keys to Human
+
+            item = self.populate_item(OrderedFields,row,OFH=OFH)
 
             if item:
                 return item
