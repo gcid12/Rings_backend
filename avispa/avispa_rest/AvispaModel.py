@@ -9,17 +9,20 @@ import sys
 import requests
 import urlparse
 import json
-
 import traceback
 import collections
-from flask import flash, current_app
+import logging
+import couchdb
+
+from flask import flash, current_app, g
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
 from MyRingSchema import MyRingSchema
+from AvispaLogging import AvispaLoggerAdapter
 
 
-import couchdb
+
 from MyRingUser import MyRingUser
 from MainModel import MainModel
 from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
@@ -32,6 +35,11 @@ class AvispaModel:
 
 
     def __init__(self):
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
+        self.lggr.info('__init__()')
   
         #current_app.logger.debug('#couchdb_call')
         self.couch = couchdb.Server(COUCHDB_SERVER)
@@ -112,7 +120,7 @@ class AvispaModel:
                     except ResourceNotFound:
                         pass
                         
-                        current_app.logger.info('skipping ring '+ ringname + '. Schema does not exist')
+                        self.lggr.info('skipping ring '+ ringname + '. Schema does not exist')
                         
 
             #current_app.logger.debug('flag6')
@@ -125,7 +133,7 @@ class AvispaModel:
             #The problem has to do with pagination. It can't find it in the current page
 
             #flash("You have no rings yet, create one!")
-            current_app.logger.info("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.info("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
             #current_app.logger.debug('Notice: No rings for this user.')
 
         return data
@@ -360,7 +368,7 @@ class AvispaModel:
         current_app.logger.debug('#couchdb_call')
         db = self.couch[user_database]
         
-        current_app.logger.info("handle:",handle)
+        self.lggr.info("handle:",handle)
         doc =  MyRingUser.load(db, handle)
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
         doc.store(db)
@@ -381,34 +389,34 @@ class AvispaModel:
         #Clean all the references to this ring in the user document
         # This is NOT a tombstone. The database and its data will be deleted. 
         # TO DO : Backup the data in a secondary database
-        current_app.logger.info('Looking for ring '+ringname+' in the ringlist for this user')
+        self.lggr.info('Looking for ring '+ringname+' in the ringlist for this user')
         i = 0
         for ring in doc['rings']:
             
             if ring['ringname']==ringname:
-                current_app.logger.info('Found it!... Deleting it')
-                current_app.logger.info("doc['rings']["+str(i)+"]")
+                self.lggr.info('Found it!... Deleting it')
+                self.lggr.info("doc['rings']["+str(i)+"]")
                 del doc['rings'][i]
                 #current_app.logger.debug()
                 #ring['deleted']=True           
                 # This is NOT a tombstone. The database and its data will be deleted. 
                 # TO DO : Backup the data in a secondary database
                 try:
-                    current_app.logger.info('Try to Delete DB')
+                    self.lggr.info('Try to Delete DB')
                     if self.MAM.delete_db(handle+'_'+ringname):
-                        current_app.logger.info('DB Deleted')
+                        self.lggr.info('DB Deleted')
                 except:
-                    current_app.logger.info('DB already does not exist. Deleting all its references')    
+                    self.lggr.info('DB already does not exist. Deleting all its references')    
             i = i+1
 
         j = 0
         for collection in doc['collections']:
-            current_app.logger.info('Looking in collection '+collection['collectionname']+' for this ring')
+            self.lggr.info('Looking in collection '+collection['collectionname']+' for this ring')
             k = 0
             for ring in collection['rings']:
                 if ring['ringname']==ringname:
-                    current_app.logger.info('Found it! ... Deleting it'+ str(j)+'-')
-                    current_app.logger.info("doc['collections']["+str(j)+"]['rings']["+str(k)+"]")
+                    self.lggr.info('Found it! ... Deleting it'+ str(j)+'-')
+                    self.lggr.info("doc['collections']["+str(j)+"]['rings']["+str(k)+"]")
                     del doc['collections'][j]['rings'][k]
 
                 k = k+1
@@ -429,7 +437,7 @@ class AvispaModel:
         #dbname = handle+'_'+ringname+'_'+ringversion
         dbname = handle+'_'+ringname
         if self.MAM.delete_db(dbname):
-            current_app.logger.info('Deleted from COUCHDB')
+            self.lggr.info('Deleted from COUCHDB')
             del1 = True
 
 
@@ -448,7 +456,7 @@ class AvispaModel:
                 #ring['deleted']=True
                 
         if user_doc.store(db):
-            current_app.logger.info('Deleted from USERDB')
+            self.lggr.info('Deleted from USERDB')
             del2 = True
       
 
@@ -492,7 +500,7 @@ class AvispaModel:
 
         
         if ringversion == 'None' or ringversion == None:
-            current_app.logger.info('ringversion none')
+            self.lggr.info('ringversion none')
             ringversion = ''
 
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
@@ -527,10 +535,10 @@ class AvispaModel:
             elif(action == 'edit'):
                 if r in schema.rings[0]:
                     if pinput['rings'][0][r] == schema.rings[0][r]:
-                        current_app.logger.info(r+' did not change')
+                        self.lggr.info(r+' did not change')
                         
                     else:
-                        current_app.logger.info(r+' changed. Old: "'+ str(schema.rings[0][r]) +'" ('+ str(type(schema.rings[0][r])) +')'+\
+                        self.lggr.info(r+' changed. Old: "'+ str(schema.rings[0][r]) +'" ('+ str(type(schema.rings[0][r])) +')'+\
                                 '  New: "'+ str(pinput['rings'][0][r]) + '" ('+ str(type(pinput['rings'][0][r])) +')' )
                         args_r[r] = pinput['rings'][0][r]
 
@@ -567,9 +575,9 @@ class AvispaModel:
 
                 elif action == 'edit':
                     if pinput['fields'][i][f] == schema.fields[i][f]:  # Checks if old and new are the same
-                        current_app.logger.info(f+'_'+str(i+1)+' did not change')
+                        self.lggr.info(f+'_'+str(i+1)+' did not change')
                     else:                      
-                        current_app.logger.info(f+'_'+str(i+1)+' changed. Old: "'+ str(schema.fields[i][f]) +'" ('+ str(type(schema.fields[i][f])) +')'+\
+                        self.lggr.info(f+'_'+str(i+1)+' changed. Old: "'+ str(schema.fields[i][f]) +'" ('+ str(type(schema.fields[i][f])) +')'+\
                             '  New: "'+ str(pinput['fields'][i][f]) + '" ('+ str(type(pinput['fields'][i][f])) +')' )
                         
                         args_f[f] = pinput['fields'][i][f]
@@ -708,7 +716,7 @@ class AvispaModel:
                                                 )))
                                                }) 
 
-        current_app.logger.info('RingClass:'+str(RingClass))
+        self.lggr.info('RingClass:'+str(RingClass))
 
         return RingClass
 
@@ -721,7 +729,7 @@ class AvispaModel:
             user_database = self.user_database
 
         user_doc = self.MAM.select_user(user_database,handle)
-        current_app.logger.info('user rings:'+str(user_doc['rings']))
+        self.lggr.info('user rings:'+str(user_doc['rings']))
         for user_ring in user_doc['rings']:
             if user_ring['ringname']==ringname:
                 return user_ring['count']
@@ -742,7 +750,7 @@ class AvispaModel:
             for ring in user['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] += 1
-                    current_app.logger.info('Item Count increased')
+                    self.lggr.info('Item Count increased')
 
             if user.store(self.db):
                 
@@ -762,7 +770,7 @@ class AvispaModel:
             for ring in user['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] -= 1
-                    current_app.logger.info('Item Count decreased')
+                    self.lggr.info('Item Count decreased')
 
             if user.store(self.db):       
                 return True
@@ -782,7 +790,7 @@ class AvispaModel:
                 if ring['ringname'] == ringname:
 
                     ring['origin'] = origin
-                    current_app.logger.info('Ring origin set to '+origin)
+                    self.lggr.info('Ring origin set to '+origin)
 
             if user.store(self.db):
                 
@@ -880,7 +888,7 @@ class AvispaModel:
 
         user_doc = self.MAM.select_user(user_database,handle)
 
-        #current_app.logger.info('user rings:',user_doc['rings'])
+        #self.lggr.info('user rings:',user_doc['rings'])
         for user_ring in user_doc['rings']:
             if user_ring['ringname']==ringname:
               
@@ -1043,7 +1051,7 @@ class AvispaModel:
 
         #########
 
-        current_app.logger.info(field['FieldName']+'('+field['FieldId']+') is a RICH Field ')
+        self.lggr.info(field['FieldName']+'('+field['FieldId']+') is a RICH Field ')
 
         #1. Convert values to list
         #external_uri_list = request.form.get(field['FieldName']).split(',')
@@ -1060,7 +1068,7 @@ class AvispaModel:
 
 
             #3. In case of valid multiple cardinality you need to enter as many items in the rich list for that field.
-            current_app.logger.info('external_uri '+str(external_uri))
+            self.lggr.info('external_uri '+str(external_uri))
             urlparts = urlparse.urlparse(external_uri)
 
             if urlparts.scheme == '' or urlparts.netloc == '':
@@ -1115,14 +1123,14 @@ class AvispaModel:
 
 
             external_host=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, '', '', '', ''))
-            current_app.logger.info('external_host: '+str(external_host))
+            self.lggr.info('external_host: '+str(external_host))
 
             rqurl = urlparse.urlparse(request_url)
             local_host=urlparse.urlunparse((rqurl.scheme, rqurl.netloc, '', '', '', ''))
-            current_app.logger.info('local_host: '+str(local_host))
+            self.lggr.info('local_host: '+str(local_host))
         
             if local_host==external_host:
-                current_app.logger.info('Data source is in the same server')
+                self.lggr.info('Data source is in the same server')
 
                 result_rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx,human=True)
                 if result_rich_item:
@@ -1137,10 +1145,16 @@ class AvispaModel:
 
                 
             else:
-                current_app.logger.info('Data source is in another server')
+                self.lggr.info('Data source is in another server')
              
-                current_app.logger.info('Retrieving source at:'+str(url))
+                self.lggr.info('Retrieving source at:'+str(url))
+
                 r = requests.get(url)
+
+                self.lggr.info(r)
+
+                self.lggr.info(r.text)
+
                 #current_app.logger.debug('Raw JSON schema:'+str(r.text))
                 rs = json.loads(r.text)
                 #current_app.logger.debug('rich_rs:'+str(rs))
@@ -1207,7 +1221,7 @@ class AvispaModel:
         flag_values = {}
         fields = schema['fields']
 
-        current_app.logger.info("post_a_b raw arguments sent:"+str(request.form))
+        self.lggr.info("post_a_b raw arguments sent:"+str(request.form))
         
 
 
@@ -1244,7 +1258,7 @@ class AvispaModel:
             else:
 
                 #Not a rich widget. Will not have rich data
-                current_app.logger.info(field['FieldName'] +' ('+field['FieldId']+') is NOT a RICH Field ')
+                self.lggr.info(field['FieldName'] +' ('+field['FieldId']+') is NOT a RICH Field ')
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
                 if field['FieldName'] in request.form:
@@ -1342,6 +1356,8 @@ class AvispaModel:
     #AVISPAMODEL
     def put_a_b_c(self,request,handle,ringname,idx):
 
+        self.lggr.info('put_a_b_c()')
+
         db_ringname=str(handle)+'_'+str(ringname)
         #current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
@@ -1390,12 +1406,14 @@ class AvispaModel:
                new = None
 
             if old == new:
-              pass
-                #current_app.logger.info(field['FieldName']+' ('+field['FieldId']+') did not change')  
+                self.lggr.info(field['FieldId']+' did NOT change')
+                pass
+                #self.lggr.info(field['FieldName']+' ('+field['FieldId']+') did not change')  
 
             else:
+                
                 needs_store = True
-                current_app.logger.info(field['FieldName']+' ('+field['FieldId']+') changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
+                self.lggr.info(field['FieldName']+' ('+field['FieldId']+') changed. Old: "'+ str(old) +'" ('+ str(type(old)) +')'+\
                                 '  New: "'+ str(new) + '" ('+ str(type(new)) +')' )
 
                                     #This will record the history for the item update 
@@ -1433,12 +1451,12 @@ class AvispaModel:
                     new_flag = unicode(request.form.get('flag_'+field['FieldId']))
 
             if old_flag == new_flag:
-                current_app.logger.info('Flag for: '+field['FieldName']+' ('+field['FieldId']+') did not change') 
+                self.lggr.info('Flag for: '+field['FieldName']+' ('+field['FieldId']+') did not change') 
 
             else:
                 needs_store = True
 
-                current_app.logger.info(field['FieldName']+'_flag ('+field['FieldId']+') changed. Old: "'+ str(old_flag) +'" ('+ str(type(old_flag)) +')'+\
+                self.lggr.info(field['FieldName']+'_flag ('+field['FieldId']+') changed. Old: "'+ str(old_flag) +'" ('+ str(type(old_flag)) +')'+\
                                 '  New: "'+ str(new_flag) + '" ('+ str(type(new_flag)) +')' )
 
                 history_item_dict = {}
