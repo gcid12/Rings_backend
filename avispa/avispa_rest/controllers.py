@@ -318,6 +318,8 @@ def home_dispatcher(handle):
 
         data['image_cdn_root'] = IMAGE_CDN_ROOT
 
+
+        '''
         
         # Daily Activity Graph steps
         #0. Create the general count dictionary (with 365 slots)
@@ -397,22 +399,9 @@ def home_dispatcher(handle):
         data['dac_totals'] = totals_list[::-1]
 
 
-
-        #data['dac_totals_date'] = { k: h_new.get(k, 0) + h_update.get(k, 0) for k in h_new | h_update }
-        #data['dac_totals'] = [ h_new.get(k, 0) + h_update.get(k, 0) for k in h_new | h_update ]
-
-        #data['dac_new'] = h_new
-        #data['dac_update'] = h_update
-
-
-        #3a: Load its database
-        #3b: Call its dailyactivity view with key=handle
-        #3c: If something is found iterate through each one of the rows looking for the last 365 days
-        #3d: add "New" and "Update "counts to the general count for that specific day
-        
-
-
         # END DAILYGRAPH
+
+        '''
         
 
 
