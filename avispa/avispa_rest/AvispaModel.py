@@ -1131,10 +1131,16 @@ class AvispaModel:
         
             if local_host==external_host:
                 self.lggr.info('Data source is in the same server')
+                self.lggr.info('Retrieving source locally at:'+external_handle+'/'+external_ringname+'/'+external_idx)
 
                 result_rich_item = self.get_a_b_c(None,external_handle,external_ringname,external_idx,human=True)
                 if result_rich_item:
+                    self.lggr.info('Retrieving data successful')
+                    self.lggr.info(result_rich_item)
                     rich_item = result_rich_item
+                else:
+                    self.lggr.error('Could not retrieve data locally')
+
 
                 rs = self.ring_get_schema_from_view(external_handle,external_ringname)
 
@@ -1146,7 +1152,6 @@ class AvispaModel:
                 
             else:
                 self.lggr.info('Data source is in another server')
-             
                 self.lggr.info('Retrieving source at:'+str(url))
 
                 r = requests.get(url)
