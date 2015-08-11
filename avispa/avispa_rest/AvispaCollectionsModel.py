@@ -30,7 +30,6 @@ class AvispaCollectionsModel:
             user_database = self.user_database
 
         try:               
-            db = self.MAM.select_db(user_database)
             user_doc = self.MAM.select_user(user_database,handle) 
 
             collections = user_doc['collections']  

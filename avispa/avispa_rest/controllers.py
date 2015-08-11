@@ -20,6 +20,10 @@ avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
+    MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+
     
     ARF = AvispaRestFunc()
 
@@ -48,7 +52,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     if not api:
 
-        MAM = MainModel()
         authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
         if not authorization_result['authorized']:
             return render_template('avispa_rest/error_401.html', data=data),401
@@ -141,6 +144,10 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         #return 'ok'
 
 def tool_dispatcher(tool):
+
+    MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
     
     MRT = MyRingTool()
 
@@ -165,6 +172,10 @@ def tool_dispatcher(tool):
 
 def patch_dispatcher(patchnumber):
 
+    MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+
 
     MRP = MyRingPatch()
     patch = str(patchnumber)
@@ -177,6 +188,10 @@ def patch_dispatcher(patchnumber):
 
 
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
+
+    MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
 
     ACF = AvispaCollectionsRestFunc()
 
@@ -281,10 +296,10 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 def home_dispatcher(handle):
 
     MAM = MainModel()
-    data = {}
-
     g.ip = request.remote_addr
     g.tid = MAM.random_hash_generator(36)
+
+    data = {}
     
 
     if MAM.user_exists(handle):
@@ -318,6 +333,8 @@ def home_dispatcher(handle):
 
         data['image_cdn_root'] = IMAGE_CDN_ROOT
 
+
+        '''
         
         # Daily Activity Graph steps
         #0. Create the general count dictionary (with 365 slots)
@@ -397,22 +414,9 @@ def home_dispatcher(handle):
         data['dac_totals'] = totals_list[::-1]
 
 
-
-        #data['dac_totals_date'] = { k: h_new.get(k, 0) + h_update.get(k, 0) for k in h_new | h_update }
-        #data['dac_totals'] = [ h_new.get(k, 0) + h_update.get(k, 0) for k in h_new | h_update ]
-
-        #data['dac_new'] = h_new
-        #data['dac_update'] = h_update
-
-
-        #3a: Load its database
-        #3b: Call its dailyactivity view with key=handle
-        #3c: If something is found iterate through each one of the rows looking for the last 365 days
-        #3d: add "New" and "Update "counts to the general count for that specific day
-        
-
-
         # END DAILYGRAPH
+
+        '''
         
 
 
@@ -511,6 +515,10 @@ def home_dispatcher(handle):
 
 def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 
+    MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+
     ARR = AvispaRolesRestFunc()
 
 
@@ -566,8 +574,11 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 
 def people_dispatcher(depth,handle,person=None):
 
-    APR = AvispaPeopleRestFunc()
     MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+
+    APR = AvispaPeopleRestFunc()
     data = {}
 
     data['section'] = '_people'
@@ -643,8 +654,11 @@ def people_dispatcher(depth,handle,person=None):
 
 def teams_dispatcher(depth,handle,team=None):
 
-    ATR = AvispaTeamsRestFunc()
     MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+
+    ATR = AvispaTeamsRestFunc()
     data = {}
 
 
