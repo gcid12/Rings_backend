@@ -89,6 +89,7 @@
         </div>
         
         {% for field in data.fieldsschema %}
+          {% if field.FieldLayer != '7' %}
             <div class="row spa10">
                 <div class="col-sm-1">&nbsp;</div>
                 <div class=" col-sm-2 col-sm-push-8 text-left alpha">
@@ -103,6 +104,8 @@
                 </div>
 
             </div>
+          {% endif %}
+          
         {% endfor %}
             
               <div class="row">
