@@ -108,7 +108,7 @@ class User(UserMixin):
     def get_user(self):
 
         try:
-            self.lggr.error('get_user_flag1')
+            self.lggr.debug('get_user_flag1')
             if self.email:
                 self.lggr.debug('self.email:'+self.email)
                 dbUser =self.ATM.userdb_get_user_by_email(self.email)
