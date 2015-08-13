@@ -2,6 +2,7 @@
 import sys
 import os
 import errno
+import logging
 from couchdb.http import PreconditionFailed
 from couchdb.design import ViewDefinition
 from flask import flash, current_app,g

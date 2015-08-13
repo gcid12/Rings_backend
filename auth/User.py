@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import logging
 from AuthModel import AuthModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from MainModel import MainModel
 from flask import flash, current_app, g
 from AvispaLogging import AvispaLoggerAdapter
+
 
 
 
