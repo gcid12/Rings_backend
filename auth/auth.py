@@ -428,7 +428,7 @@ def orgregister_post():
     g.tid = MAM.random_hash_generator(36)
 
     logger = logging.getLogger('Avispa')
-    self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
     username = request.form.get('username')
     email = request.form.get('email')
