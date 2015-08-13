@@ -423,11 +423,11 @@ def api_orgregister_post():
 @login_required
 def orgregister_post():
 
-	MAM = MainModel()
+    MAM = MainModel()
     g.ip = request.remote_addr
     g.tid = MAM.random_hash_generator(36)
 
-	logger = logging.getLogger('Avispa')
+    logger = logging.getLogger('Avispa')
     self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
     username = request.form.get('username')
@@ -453,10 +453,10 @@ def orgregister_post():
     except:
     #else:
 
-        self.lggr.error("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
+        self.lggr.error("Notice: Unexpected error:"+str(sys.exc_info()[0])+' '+str(sys.exc_info()[1]))
         flash("unable to register the organization",'UI')
 
-        mpp = {'status':'KO','msg':"Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]}
+        mpp = {'status':'KO','msg':"Notice: Unexpected error:"+str(sys.exc_info()[0])+' '+str(sys.exc_info()[1])}
         flash({'f':'track','v':'_orgregister','p':mpp},'MP')
                
         return redirect('/_orgregister')
