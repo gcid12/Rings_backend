@@ -1,4 +1,4 @@
-import sys, os, time, smtplib, urlparse, random, json
+import sys, os, time, smtplib, urlparse, random, json,logging
 from datetime import datetime
 from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for, g
 from jinja2 import TemplateNotFound
