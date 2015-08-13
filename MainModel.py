@@ -118,7 +118,7 @@ class MainModel:
 
     #MAINMODEL
     def create_user(self,userd,dbname=None):
-        self.lggr.debug('create_user('+str(userd)+','+dbname+')') 
+        
         if not dbname:
             dbname=self.user_database
         
@@ -136,7 +136,7 @@ class MainModel:
 
         auser._id = userd['username']
         storeresult = auser.store(self.db)
-        #self.lggr.debug('create_user()->'+str(storeresult))
+        self.lggr.info(str(storeresult))
         return True
 
     #MAINMODEL

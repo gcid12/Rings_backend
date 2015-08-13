@@ -1,12 +1,13 @@
 import sys, os, time, smtplib, urlparse, random, json
 from datetime import datetime
-from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
+from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for, g
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required,login_url)
 from env_config import FROMEMAIL, FROMPASS, IMAGE_CDN_ROOT
 from MainModel import MainModel
 from EmailModel import EmailModel
+from AvispaLogging import AvispaLoggerAdapter
 
 from User import User
 
@@ -422,6 +423,13 @@ def api_orgregister_post():
 @login_required
 def orgregister_post():
 
+	MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+
+	logger = logging.getLogger('Avispa')
+    self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
     username = request.form.get('username')
     email = request.form.get('email')
 
@@ -444,10 +452,11 @@ def orgregister_post():
 
     except:
     #else:
-        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
-        flash("unable to register with that email address",'UI')
 
-        mpp = {'status':'KO','msg':'Unable to register with that email address'}
+        self.lggr.error("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
+        flash("unable to register the organization",'UI')
+
+        mpp = {'status':'KO','msg':"Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1]}
         flash({'f':'track','v':'_orgregister','p':mpp},'MP')
                
         return redirect('/_orgregister')

@@ -39,15 +39,15 @@ class AvispaModel:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
-        self.lggr.info('__init__()')
+        #self.lggr.debug('__init__()')
   
-        #current_app.logger.debug('#couchdb_call')
+        #self.lggr.debug('#couchdb_call')
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        ##current_app.logger.debug('self.couch :AVM')
-        #current_app.logger.debug(self.couch)
-        #current_app.logger.debug('self.couch.resource.credentials :AVM')
-        #current_app.logger.debug(self.couch.resource.credentials)
+        ##self.lggr.debug('self.couch :AVM')
+        #self.lggr.debug(self.couch)
+        #self.lggr.debug('self.couch.resource.credentials :AVM')
+        #self.lggr.debug(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
 
@@ -72,7 +72,7 @@ class AvispaModel:
             
             rings = user_doc['rings']
             
-            #current_app.logger.debug(rings)
+            #self.lggr.debug(rings)
          
 
             for ring in rings:
@@ -88,20 +88,20 @@ class AvispaModel:
 
                     ringversionh = ringversion.replace('-','.')
                     count = ring['count']
-                    #current_app.logger.debug('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
-                    #current_app.logger.debug('flag5b:'+str(handle)+'_'+ringname)
+                    #self.lggr.debug('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
+                    #self.lggr.debug('flag5b:'+str(handle)+'_'+ringname)
                     #ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
                     ringnamedb=str(handle)+'_'+ringname
-                    #current_app.logger.debug('ringnamedb::'+ringnamedb) 
+                    #self.lggr.debug('ringnamedb::'+ringnamedb) 
                     try:
                         db = self.MAM.select_db(ringnamedb)
-                        #current_app.logger.debug('Get RingDescription:')
+                        #self.lggr.debug('Get RingDescription:')
                         try: 
                             RingDescription = db['schema']['rings'][0]['RingDescription'] 
                         except KeyError:
                             RingDescription = False 
                         
-                        #current_app.logger.debug('Get RingLabel:')
+                        #self.lggr.debug('Get RingLabel:')
                         try:       
                             RingLabel = db['schema']['rings'][0]['RingLabel'] 
                         except KeyError:
@@ -120,10 +120,10 @@ class AvispaModel:
                     except ResourceNotFound:
                         pass
                         
-                        self.lggr.info('skipping ring '+ ringname + '. Schema does not exist')
+                        self.lggr.error('skipping ring '+ ringname + '. Schema does not exist')
                         
 
-            #current_app.logger.debug('flag6')
+            #self.lggr.debug('flag6')
 
             
 
@@ -133,8 +133,8 @@ class AvispaModel:
             #The problem has to do with pagination. It can't find it in the current page
 
             #flash("You have no rings yet, create one!")
-            self.lggr.info("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
-            #current_app.logger.debug('Notice: No rings for this user.')
+            self.lggr.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            #self.lggr.debug('Notice: No rings for this user.')
 
         return data
 
@@ -168,7 +168,7 @@ class AvispaModel:
     #Python + CouchDB very poor and complicated as of now. 
     #I rather use JS in the meantime
 
-        current_app.logger.debug('#couchdb_call')
+        
         db = self.couch[db_ringname]
 
         CVS = CouchViewSync()
@@ -177,7 +177,7 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_set_db_views(self,db_ringname,specific=False):
 
-        current_app.logger.debug('#couchdb_call')
+        
         db = self.couch[db_ringname]
 
         
@@ -365,7 +365,7 @@ class AvispaModel:
         if not user_database : 
             user_database = self.user_database
 
-        current_app.logger.debug('#couchdb_call')
+        
         db = self.couch[user_database]
         
         self.lggr.info("handle:",handle)
@@ -381,7 +381,7 @@ class AvispaModel:
         if not user_database : 
             user_database = self.user_database
 
-        current_app.logger.debug('#couchdb_call')
+        
         db = self.couch[user_database]
         doc =  MyRingUser.load(db, handle)
         
@@ -397,7 +397,7 @@ class AvispaModel:
                 self.lggr.info('Found it!... Deleting it')
                 self.lggr.info("doc['rings']["+str(i)+"]")
                 del doc['rings'][i]
-                #current_app.logger.debug()
+                #self.lggr.debug()
                 #ring['deleted']=True           
                 # This is NOT a tombstone. The database and its data will be deleted. 
                 # TO DO : Backup the data in a secondary database
@@ -440,8 +440,6 @@ class AvispaModel:
             self.lggr.info('Deleted from COUCHDB')
             del1 = True
 
-
-        current_app.logger.debug('#couchdb_call')
         db = self.couch[self.user_database]
         user_doc =  MyRingUser.load(db, handle)
         rings = user_doc['rings']
@@ -470,7 +468,7 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         
-        current_app.logger.debug('#couchdb_call:'+db_ringname+'->ring_get_schema()')
+        #self.lggr.debug(db_ringname+'->ring_get_schema()')
 
         db = self.couch[db_ringname]
         schema = MyRingSchema.load(db,'schema')
@@ -482,7 +480,7 @@ class AvispaModel:
     def ring_get_item_document(self,handle,ringname,idx):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.debug('#couchdb_call')
+        
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
@@ -498,16 +496,17 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_set_schema(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
 
-        
+        #self.lggr.info('ring_set_schema('+str(handle)+','+str(ringname)+','+str(ringversion)+','+str(pinput)+','+str(ringprotocol)+','+str(fieldprotocol))
+
         if ringversion == 'None' or ringversion == None:
-            self.lggr.info('ringversion none')
+            self.lggr.error('ringversion none')
             ringversion = ''
 
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname=str(handle)+'_'+str(ringname)
         
-        current_app.logger.debug('db_ringname:'+str(db_ringname))
-        current_app.logger.debug('#couchdb_call')
+        #self.lggr.debug('db_ringname:'+str(db_ringname))
+        
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
         schema = MyRingSchema.load(db,'schema')
@@ -583,8 +582,8 @@ class AvispaModel:
                         args_f[f] = pinput['fields'][i][f]
 
 
-            #current_app.logger.debug('args_f:')
-            #current_app.logger.debug(args_f)
+            #self.lggr.debug('args_f:')
+            #self.lggr.debug(args_f)
 
             if action == 'new':
                 args_f['FieldId'] = self.MAM.random_hash_generator(36)
@@ -601,7 +600,7 @@ class AvispaModel:
 
             args_f={}
 
-        current_app.logger.debug(schema)
+        #self.lggr.debug(schema)
 
         
         schema.store(db)
@@ -662,7 +661,7 @@ class AvispaModel:
             d1 = {}
             d1['_id']=TextField()
             d1['_source']=TextField()
-            current_app.logger.debug('len:'+str(len(d1)))
+            self.lggr.debug('len:'+str(len(d1)))
             args_rich[field['FieldId']] = ListField(DictField())
             
 
@@ -683,11 +682,11 @@ class AvispaModel:
             
 
 
-        current_app.logger.debug('args_i'+str(args_i))
-        current_app.logger.debug('args_rich'+str(args_rich))
-        current_app.logger.debug('args_history'+str(args_history))
-        current_app.logger.debug('args_flags'+str(args_flags))
-        current_app.logger.debug('args_meta'+str(args_meta))
+        self.lggr.debug('args_i'+str(args_i))
+        self.lggr.debug('args_rich'+str(args_rich))
+        self.lggr.debug('args_history'+str(args_history))
+        self.lggr.debug('args_flags'+str(args_flags))
+        self.lggr.debug('args_meta'+str(args_meta))
 
  
 
@@ -740,8 +739,7 @@ class AvispaModel:
 
     #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
-
-        current_app.logger.debug('#couchdb_call')
+       
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db, handle)
 
@@ -756,13 +754,12 @@ class AvispaModel:
                 
                 return True
             else:
-                current_app.logger.error('Could not increase item count')
+                self.lggr.error('Could not increase item count')
                 return False
 
         #AVISPAMODEL
     def decrease_item_count(self,handle,ringname):
 
-        current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db, handle)
 
@@ -775,12 +772,11 @@ class AvispaModel:
             if user.store(self.db):       
                 return True
             else:
-                current_app.logger.error('Could not decrease item count')
+                self.lggr.error('Could not decrease item count')
                 return False
 
     def set_ring_origin(self,handle,ringname,origin):
 
-        current_app.logger.debug('#couchdb_call')
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db, handle)
 
@@ -805,17 +801,14 @@ class AvispaModel:
     def ring_get_schema_from_view(self,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        
-        
-        current_app.logger.debug('#couchdb_call:'+db_ringname+'->ring_get_schema_from_view()')
         db = self.couch[db_ringname]
 
         options = {}
         result  = db.iterview('ring/schema',1,**options)
 
         for row in result:  
-            #current_app.logger.debug('row.value.fields:')
-            #current_app.logger.debug(row.value['fields'])    
+            #self.lggr.debug('row.value.fields:')
+            #self.lggr.debug(row.value['fields'])    
             schema = {}
             #schema['rings']=row.value
             schema['fields']=row.value['fields']
@@ -823,8 +816,8 @@ class AvispaModel:
             #schema['rings']=row.rings
             #schema['fields']=row.fields
 
-        #current_app.logger.debug('schema:')
-        #current_app.logger.debug(schema)
+        #self.lggr.debug('schema:')
+        #self.lggr.debug(schema)
 
         return schema
 
@@ -937,7 +930,7 @@ class AvispaModel:
         
 
         result = self.select_ring_doc_view('ring/items',handle,ringname,limit=limit,lastkey=lastkey,endkey=endkey)
-        #current_app.logger.debug('result:'+str(result))
+        #self.lggr.debug('result:'+str(result))
     
         
 
@@ -966,7 +959,7 @@ class AvispaModel:
         # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
 
         db_ringname=str(handle)+'_'+str(ringname)
-        #current_app.logger.debug('#couchdb_call')
+        #self.lggr.debug('#couchdb_call')
         db = self.couch[db_ringname] 
  
         if not batch : 
@@ -1095,7 +1088,7 @@ class AvispaModel:
 
 
 
-            #current_app.logger.debug('urlparts '+ str(urlparts))
+            #self.lggr.debug('urlparts '+ str(urlparts))
 
             pathparts = urlparts.path.split('/')
             if pathparts[1]!='_api':
@@ -1153,8 +1146,8 @@ class AvispaModel:
 
                 rs = self.ring_get_schema_from_view(external_handle,external_ringname)
 
-                #current_app.logger.debug('rich_rs:'+str(rs))
-                #current_app.logger.debug('rich_item:'+str(rich_item))
+                #self.lggr.debug('rich_rs:'+str(rs))
+                #self.lggr.debug('rich_item:'+str(rich_item))
                 
                 
 
@@ -1169,11 +1162,11 @@ class AvispaModel:
 
                 self.lggr.info(r.text)
 
-                #current_app.logger.debug('Raw JSON schema:'+str(r.text))
+                #self.lggr.debug('Raw JSON schema:'+str(r.text))
                 rs = json.loads(r.text)
-                #current_app.logger.debug('rich_rs:'+str(rs))
+                #self.lggr.debug('rich_rs:'+str(rs))
                 rich_item = rs['items'][0]
-                #current_app.logger.debug('rich_item:'+str(rich_item))
+                #self.lggr.debug('rich_item:'+str(rich_item))
                 
 
             if not rich_item:
@@ -1224,7 +1217,6 @@ class AvispaModel:
     def post_a_b(self,request,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        current_app.logger.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
@@ -1241,11 +1233,11 @@ class AvispaModel:
 
         for field in fields:
             
-            #current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
-            #current_app.logger.debug(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
+            #self.lggr.debug(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
+            #self.lggr.debug(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
 
-            #current_app.logger.debug('FieldSource:'+str(field['FieldSource']))
-            #current_app.logger.debug('FieldWidget:'+str(field['FieldWidget']))
+            #self.lggr.debug('FieldSource:'+str(field['FieldSource']))
+            #self.lggr.debug('FieldWidget:'+str(field['FieldWidget']))
 
             
 
@@ -1320,7 +1312,7 @@ class AvispaModel:
         item._id= str(random.randrange(1000000000,9999999999))
         #item.deleted = 
         item.items.append(**item_values)
-        #current_app.logger.debug("rich_values:"+str(rich_values))
+        #self.lggr.debug("rich_values:"+str(rich_values))
         #item.rich.append(**rich_values)
         item.rich.append(**rich_values)
         item.history.append(**history_values)
@@ -1376,7 +1368,7 @@ class AvispaModel:
         self.lggr.info('put_a_b_c()')
 
         db_ringname=str(handle)+'_'+str(ringname)
-        #current_app.logger.debug('#couchdb_call')
+        #self.lggr.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
@@ -1516,17 +1508,17 @@ class AvispaModel:
 
                     #Repair rich object if needed
                     if 'rich' not in item:
-                        current_app.logger.debug('REPAIR FLAG 1')
+                        self.lggr.debug('REPAIR FLAG 1')
                         #item.rich = []
                         #rich_dict = {}
                         #item.rich.append(rich_dict)
                     elif type(item.rich) is not list:
-                        current_app.logger.debug('REPAIR FLAG 2')
+                        self.lggr.debug('REPAIR FLAG 2')
                         #item.rich = []
                         #rich_dict = {}
                         #item.rich.append(rich_dict)
                     elif type(item.rich[0]) is not dict:
-                        current_app.logger.debug('REPAIR FLAG 3')
+                        self.lggr.debug('REPAIR FLAG 3')
                         #rich_dict = {}
                         #item.rich.append(rich_dict)
 
@@ -1538,8 +1530,8 @@ class AvispaModel:
                         if '_source' in old_r:
                             old_rich_dictionary[old_r['_source']] = old_r
 
-                    #current_app.logger.debug('old_rich:'+str(old_rich))
-                    #current_app.logger.debug('old_rich_dictionary:'+str(old_rich_dictionary))
+                    #self.lggr.debug('old_rich:'+str(old_rich))
+                    #self.lggr.debug('old_rich_dictionary:'+str(old_rich_dictionary))
 
                     #2. Check if we got a 404
                     if field['FieldId'] in r_rich_values:
@@ -1566,7 +1558,7 @@ class AvispaModel:
 
 
         db_ringname=str(handle)+'_'+str(ringname)
-        #current_app.logger.debug('#couchdb_call')
+        #self.lggr.debug('#couchdb_call')
         db = self.couch[db_ringname]
 
         schema = self.ring_get_schema(handle,ringname)
