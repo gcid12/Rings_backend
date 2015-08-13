@@ -111,7 +111,7 @@
             <td>
 
               <!--img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
-              <div class="fw-c">
+              <div class="fw-c fs-0-8">
                 <div class="spa5"></div>             
                 {% if ringname+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
                   <a class="nounder" href="/{{handle}}/_collections/{{collection}}/{{ ringname }}"> {{ringname}}</a>
@@ -140,8 +140,8 @@
 
                   <a href="/{{handle}}/_collections/{{collection}}/{{ ringname }}" type="button" class="fc-b nounder" data-toggle="tooltip" title="See Ring">
                         <span class="fa-stack fa-lg">
-                          <i class="fa fa-circle fa-stack-1x fc-d fs-1-2"></i>
-                          <i class="fa fa-eye fa-stack-1x fa-inverse fs-0-6"></i>
+                          <i class="fa fa-circle fa-stack-1x fc-d fs-1"></i>
+                          <i class="fa fa-eye fa-stack-1x fa-inverse fs-0-5"></i>
                         </span>
                   </a>
 
@@ -152,14 +152,14 @@
 
                       <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
                         <span class="fa-stack fa-lg">
-                          <i class="fa fa-circle fa-stack-1x fc-c fs-1-2"></i>
-                          <i class="fa fa-gear fa-stack-1x fa-inverse fs-0-6"></i>
+                          <i class="fa fa-circle fa-stack-1x fc-c fs-1"></i>
+                          <i class="fa fa-gear fa-stack-1x fa-inverse fs-0-5"></i>
                         </span>
                       </a>
                       <a href="/_api/{{ handle }}/{{ ringname }}" type="button" class="nounder" data-toggle="tooltip" title="See REST">
                         <span class="fa-stack fa-lg">
-                          <i class="fa fa-circle fa-stack-1x fc-m fs-1-2"></i>
-                          <i class="fa fa-arrow-right fa-stack-1x fa-inverse fs-0-6"></i>
+                          <i class="fa fa-circle fa-stack-1x fc-m fs-1"></i>
+                          <i class="fa fa-arrow-right fa-stack-1x fa-inverse fs-0-5"></i>
                         </span>
                       </a>
                     {% endif %}
