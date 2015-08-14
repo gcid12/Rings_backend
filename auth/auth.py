@@ -453,7 +453,9 @@ def orgregister_post():
     except:
     #else:
 
+        
         lggr.error("Notice: Unexpected error:"+str(sys.exc_info()[0])+' '+str(sys.exc_info()[1]))
+        lggr.error(MAM.stack_parser(inspect.stack()))
         flash("unable to register the organization",'UI')
 
         mpp = {'status':'KO','msg':"Notice: Unexpected error:"+str(sys.exc_info()[0])+' '+str(sys.exc_info()[1])}
