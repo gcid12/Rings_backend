@@ -91,19 +91,21 @@ def login():
                     return redirect(rr)
                 else:
 
-                    lggr.info('Login attempt NOT successful for:'+request.form.get('email')) 
+                    lggr.info('Something went wrong in the user object:'+request.form.get('email')) 
                     flash("unable to log you in",'UI')
 
                     mpp = {'status':'KO','msg':'Unable to log in'}
                     flash({'f':'track','v':'_login','p':mpp},'MP')
                     #flash({'track':'_login KO, Try again'},'MP')
             else:
+                lggr.info('User/Password is not correct for:'+request.form.get('email')) 
                 flash("User/Password is not correct",'UI')
 
                 mpp = {'status':'KO','msg':'User/Password incorrect'}
                 flash({'f':'track','v':'_login','p':mpp},'MP')
                 #flash({'track':'_login KO, User/Password incorrect'},'MP')
         else:
+            lggr.info('User is not active:'+request.form.get('email')) 
             flash("User not active",'UI')
 
             mpp = {'status':'KO','msg':'User not active'}
