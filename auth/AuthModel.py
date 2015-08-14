@@ -21,7 +21,7 @@ class AuthModel:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
-        self.lggr.info('__init__()')
+        self.lggr.debug('__init__()')
 
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)

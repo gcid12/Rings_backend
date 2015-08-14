@@ -21,7 +21,7 @@ class MainModel:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
-        self.lggr.info('__init__()')
+        self.lggr.debug('__init__()')
         
         self.couch = couchdb.Server(current_app.config['COUCHDB_SERVER'])
         self.couch.resource.credentials = (current_app.config['COUCHDB_USER'],current_app.config['COUCHDB_PASS'])
@@ -83,7 +83,7 @@ class MainModel:
     #MAINMODEL
     def select_db(self,dbname):
         self.lggr.debug('select_db()') 
-        self.lggr.debug(self.stack_parser(inspect.stack()))
+        #self.lggr.debug(self.stack_parser(inspect.stack()))
         #self.lggr.debug()
         #self.lggr.debug(inspect.trace())
         #self.lggr.debug(inspect.getouterframes(inspect.currentframe())) 

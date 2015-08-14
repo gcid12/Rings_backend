@@ -18,7 +18,7 @@ class User(UserMixin):
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
-        self.lggr.info('__init__()')
+        self.lggr.debug('__init__()')
 
         self.username = username
         self.email = email
