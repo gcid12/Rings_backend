@@ -126,11 +126,8 @@ def login():
 @auth_flask_login.route("/_api/_register", methods=["POST"])
 def api_register_post():
 
-    MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    MAM = MainModel() 
+    lggr = lggr_setup()
 
     if request.args.get('token') != 'qwerty1234':
 
@@ -198,10 +195,7 @@ def api_register_post():
 def register_teaminvite():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
    
     logout_user()
 
@@ -230,10 +224,7 @@ def register_teaminvite():
 def register_get():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
@@ -246,11 +237,7 @@ def register_get():
 def register_post():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
-
+    lggr = lggr_setup()
 
     invite_organization = request.form.get('h') 
     invite_team = request.form.get('t') 
@@ -396,10 +383,7 @@ def register_post():
 def orgregister_get():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     #registerForm = forms.SignupForm(request.form)
     #current_app.logger.info(request.form)
@@ -430,10 +414,7 @@ def orgregister_get():
 def api_orgregister_post():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     if request.args.get('token') != 'qwerty1234':
         out = {} 
@@ -489,10 +470,7 @@ def api_orgregister_post():
 def orgregister_post():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     username = request.form.get('username')
     email = request.form.get('email')
@@ -533,10 +511,7 @@ def orgregister_post():
 def forgot():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
 
     if request.method == 'POST' and request.form.get('email'):
@@ -685,10 +660,7 @@ def forgot():
 def profile_get(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -727,10 +699,7 @@ def profile_get(handle):
 def profile_post(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
     
     user = User(username=current_user.id)
     if user.update_user_profile(request):
@@ -753,10 +722,7 @@ def profile_post(handle):
 def orgprofile_get(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     
     if MAM.user_belongs_org_team(current_user.id,handle,'owner'):
@@ -792,10 +758,7 @@ def orgprofile_get(handle):
 def orgprofile_post(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
     
     user = User(username=handle)
     if user.update_user_profile(request):
@@ -820,10 +783,7 @@ def orgprofile_post(handle):
 def reauth():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     return render_template("/auth/reauth.html")
 
@@ -832,10 +792,7 @@ def reauth():
 def logout():
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
 
     logout_user()
@@ -881,10 +838,7 @@ def load_user(id):
 def access_get(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -922,10 +876,7 @@ def access_get(handle):
 def email_get(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -965,10 +916,7 @@ def email_get(handle):
 def billing_get(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -1007,10 +955,7 @@ def billing_get(handle):
 def licenses_get(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr = lggr_setup()
 
     if handle == current_user.id:
         user = load_user(handle)
