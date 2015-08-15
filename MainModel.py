@@ -21,7 +21,7 @@ class MainModel:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
-        self.lggr.info('__init__()')
+        #self.lggr.debug('__init__()')
         
         self.couch = couchdb.Server(current_app.config['COUCHDB_SERVER'])
         self.couch.resource.credentials = (current_app.config['COUCHDB_USER'],current_app.config['COUCHDB_PASS'])
@@ -51,7 +51,7 @@ class MainModel:
     #MAINMODEL
 
     def create_db(self,dbname):
-        self.lggr.debug('create_db('+dbname+')')
+        
         return self.couch.create(dbname)     
 
     
@@ -82,8 +82,8 @@ class MainModel:
 
     #MAINMODEL
     def select_db(self,dbname):
-        self.lggr.debug('select_db()') 
-        self.lggr.debug(self.stack_parser(inspect.stack()))
+        
+        #self.lggr.debug(self.stack_parser(inspect.stack()))
         #self.lggr.debug()
         #self.lggr.debug(inspect.trace())
         #self.lggr.debug(inspect.getouterframes(inspect.currentframe())) 
@@ -93,13 +93,13 @@ class MainModel:
          
     #MAINMODEL
     def delete_db(self,dbname):
-        self.lggr.debug('delete_db('+dbname+')')
+        
         del self.couch[dbname] 
         return True
 
     #MAINMODEL
     def create_doc(self,dbname,id,doc):
-        self.lggr.debug('create_doc('+dbname+','+id+','+str(doc)+')')
+        
         db=self.select_db(dbname)
         doc['_id']= id
         db.save(doc)
@@ -107,7 +107,7 @@ class MainModel:
         return True 
 
     def select_item_doc(self,handle,ringname,idx):
-        self.lggr.debug('select_item_doc('+handle+','+ringname+','+str(idx)+')')     
+           
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.couch[db_ringname]
         AVM = AvispaModel()
@@ -118,7 +118,7 @@ class MainModel:
 
     #MAINMODEL
     def create_user(self,userd,dbname=None):
-        self.lggr.debug('create_user('+str(userd)+','+dbname+')') 
+        
         if not dbname:
             dbname=self.user_database
         
@@ -136,13 +136,12 @@ class MainModel:
 
         auser._id = userd['username']
         storeresult = auser.store(self.db)
-        #self.lggr.debug('create_user()->'+str(storeresult))
+        self.lggr.info(str(storeresult))
         return True
 
     #MAINMODEL
     def create_orguser(self,data,dbname=None):
-        self.lggr.debug('create_orguser('+str(data)+','+dbname+')')
-
+        
         if not dbname:
             dbname=self.user_database
         
@@ -201,7 +200,6 @@ class MainModel:
         return True
 
     def repair_user_doc(self,element,username,dbname=None):
-        self.lggr.debug('repair_user_doc('+str(element)+','+username+','+dbname+')')
 
         if not dbname:
             dbname=self.user_database
@@ -225,7 +223,6 @@ class MainModel:
         return False
 
     def add_team(self,handle,team,author,user_database=None):
-        self.lggr.debug('add_team('+handle+','+team+','+dbname+')')
 
         if not user_database:
             user_database=self.user_database
@@ -399,7 +396,7 @@ class MainModel:
         if not user_database : 
             user_database = self.user_database
         
-        self.lggr.debug('#couchdb_call')
+        
         self.db = self.couch[self.user_database]
         user =  MyRingUser.load(self.db,handle)
 
@@ -458,8 +455,7 @@ class MainModel:
         if not user_database : 
             user_database = self.user_database
 
-        #self.lggr.debug("update_user 2:")
-        self.lggr.debug('#couchdb_call')
+
         self.db = self.couch[self.user_database]
         #self.lggr.debug("update_user 3:")
         user =  MyRingUser.load(self.db, data['id'])

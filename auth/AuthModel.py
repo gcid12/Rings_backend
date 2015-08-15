@@ -2,9 +2,11 @@
 import sys
 import os
 import errno
+import logging
 from couchdb.http import PreconditionFailed
 from couchdb.design import ViewDefinition
-from flask import flash, current_app
+from flask import flash, current_app,g
+from AvispaLogging import AvispaLoggerAdapter
 
 
 import couchdb
@@ -16,12 +18,17 @@ class AuthModel:
 
     def __init__(self):
 
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
+        self.lggr.debug('__init__()')
+
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        #current_app.logger.debug('self.couch :ATM')
-        #current_app.logger.debug(self.couch)
-        #current_app.logger.debug('self.couch.resource.credentials :ATM')
-        #current_app.logger.debug(self.couch.resource.credentials)
+        #self.lggr.info('self.couch :ATM')
+        #self.lggr.info(self.couch)
+        #self.lggr.info('self.couch.resource.credentials :ATM')
+        #self.lggr.info(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
         self.MAM = MainModel()
@@ -34,22 +41,22 @@ class AuthModel:
         #Added validation for SaaS users go here
 
         #Check if that username or email exists before trying to create the new user. Reject if TRUE
-        current_app.logger.debug("self.userdb_get_user_by_email")     
+             
         if self.userdb_get_user_by_email(user['email']):
-            current_app.logger.debug('User with this email already exists')
+            self.lggr.info('User with this email already exists')
             flash('User with this email already exists','UI')
             return False
 
-        current_app.logger.debug("self.userdb_get_user_by_handle")
+        self.lggr.info("self.userdb_get_user_by_handle")
         if self.userdb_get_user_by_handle(user['username']):
-            current_app.logger.debug('Organization or User with this username already exists')
+            self.lggr.info('Organization or User with this username already exists')
             flash('Organization or User with this username already exists','UI')
             return False
 
 
 
         if self.MAM.create_user(user):
-            current_app.logger.debug("User created in DB. Attempting to create image folders...")
+            self.lggr.info("User created in DB. Attempting to create image folders...")
             self.create_user_imagefolder(user['username'])
             return True
 
@@ -58,22 +65,22 @@ class AuthModel:
         #Added validation for SaaS users go here
 
         #Check if that username exists before trying to create the new orguser. Reject if TRUE     
-        current_app.logger.debug("self.userdb_get_user_by_handle")
+        self.lggr.info("self.userdb_get_user_by_handle")
         if self.userdb_get_user_by_handle(user['username']):
-            current_app.logger.debug('Organization or User with this username already exists')
+            self.lggr.info('Organization or User with this username already exists')
             flash('Organization or User with this username already exists','UI')
             return False
 
         if self.MAM.create_orguser(user):
-            current_app.logger.debug("Organization created in DB. Attempting to create image folders...")
+            self.lggr.info("Organization created in DB. Attempting to create image folders...")
             self.create_user_imagefolder(user['username'])
             return True
 
     def saas_create_password_key(self,user,key):
 
-        current_app.logger.debug("saas_create_password_key")
-        current_app.logger.debug(user)
-        current_app.logger.debug(key)
+        self.lggr.info("saas_create_password_key")
+        self.lggr.info(user)
+        self.lggr.info(key)
 
         data = {}
         data['id']=user
@@ -83,9 +90,9 @@ class AuthModel:
 
     def saas_set_password(self,user,passhash):
 
-        current_app.logger.debug("saas_set_password")
-        current_app.logger.debug(user)
-        current_app.logger.debug(passhash)
+        self.lggr.info("saas_set_password")
+        self.lggr.info(user)
+        self.lggr.info(passhash)
 
         data = {}
         data['id']=user
@@ -112,14 +119,14 @@ class AuthModel:
         return True
 
     def safe_create_dir(self,path): 
-        current_app.logger.debug(path)
+        self.lggr.info(path)
         try:
             os.makedirs(path)
         except OSError as exception:
             if exception.errno != errno.EEXIST:
                 raise
 
-        current_app.logger.debug('Folder created:'+path)
+        self.lggr.info('Folder created:'+path)
         return True
 
 
@@ -132,30 +139,28 @@ class AuthModel:
 
         try:          
             #self.db = self.couch[self.user_database]
-            current_app.logger.debug('Notice: Entering TRY block')
+            self.lggr.info('Notice: Entering TRY block')
 
             self.db = self.MAM.create_db(user_database) 
-            current_app.logger.debug('Notice: '+user_database+' database did not exist. Will create')
+            self.lggr.info('Notice: '+user_database+' database did not exist. Will create')
 
             self.userdb_set_db_views(user_database)
-            current_app.logger.debug('Notice: DB Views Created')
+            self.lggr.info('Notice: DB Views Created')
 
             return True
 
         except(PreconditionFailed):  
-            
-            current_app.logger.debug('Notice: Entering EXCEPT(PreconditionFailed) block') 
 
-            current_app.logger.debug("Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1])
+            current_app.logger.info("Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1])
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             #raise
 
             # Will not get here because of 'raise'
-            current_app.logger.debug("Notice: Since it already existed, selecting existing one")
+            current_app.logger.info("Notice: Since it already existed, selecting existing one")
             self.MAM.select_db(user_database)
             
-            current_app.logger.debug('Notice: '+user_database+' database exists already')
+            self.lggr.info('Notice: '+user_database+' database exists already')
             return False
 
     #AUTHMODEL
@@ -164,15 +169,15 @@ class AuthModel:
         if not user_database : 
             user_database = self.user_database
         
-        current_app.logger.debug('#couchdb_call:'+user_database+'->admin_user_create()')
+        
         db = self.couch[user_database]
 
         auser = self.MAM.select_user(user_database, data['username'])
 
-        current_app.logger.debug('Notice: User subtracted from DB ')
+        self.lggr.info('Notice: User subtracted from DB ')
 
         if auser:
-            current_app.logger.debug('Notice: '+data['username']+' exists already')
+            self.lggr.info('Notice: '+data['username']+' exists already')
             return False
 
         else:
@@ -180,7 +185,7 @@ class AuthModel:
             auser._id = data['username']
             storeresult = auser.store(db)
             
-            current_app.logger.debug('Notice: '+data['username'] +' created -> '+str(storeresult))
+            self.lggr.info('Notice: '+data['username'] +' created -> '+str(storeresult))
             return True
 
     #AUTHMODEL
@@ -189,7 +194,7 @@ class AuthModel:
         if not user_database : 
             user_database = self.user_database
 
-        current_app.logger.debug('#couchdb_call:'+user_database+'->userdb_set_db_views()')
+        self.lggr.info('#couchdb_call:'+user_database+'->userdb_set_db_views()')
         db = self.couch[user_database]
 
         
@@ -383,25 +388,25 @@ class AuthModel:
     #AUTHMODEL
     def userdb_get_user_by_email(self,email,user_database=None):
 
-        #current_app.logger.debug('flag1.1')
+        #self.lggr.info('flag1.1')
 
         if not user_database : 
             user_database = self.user_database
 
-        #current_app.logger.debug('flag1.2')
-        current_app.logger.debug('#couchdb_call:'+user_database+'->userdb_get_user_by_email()')
+        #self.lggr.info('flag1.2')
+        
         db = self.couch[user_database]
 
-        #current_app.logger.debug('flag1.3')
+        #self.lggr.info('flag1.3')
         
         options = {}
         options['key']=email
         result = db.view('auth/userbyemail',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
-        #current_app.logger.debug(result)
+        #self.lggr.info(result)
 
-        #current_app.logger.debug('flag1.4')
+        #self.lggr.info('flag1.4')
         item = {}
                
         for row in result:
@@ -411,7 +416,7 @@ class AuthModel:
             item[u'key'] = row['key']
             item[u'value'] = row['value']
 
-        #current_app.logger.debug('flag1.5')
+        #self.lggr.info('flag1.5')
             
         if item:
             return item
@@ -421,16 +426,16 @@ class AuthModel:
     #AUTHMODEL
     def userdb_get_user_by_handle(self,handle,user_database=None):
 
-        #current_app.logger.debug('flag1.1')
+        #self.lggr.info('flag1.1')
 
         if not user_database : 
             user_database = self.user_database
 
-        #current_app.logger.debug('flag1.2')
-        current_app.logger.debug('#couchdb_call:'+user_database+'->userdb_get_user_by_handle()')
+        #self.lggr.info('flag1.2')
+        
         db = self.couch[user_database]
 
-        #current_app.logger.debug('flag1.3')
+        #self.lggr.info('flag1.3')
         
         options = {}
         # options will only accept this: 'key', 'startkey', 'endkey'
@@ -438,9 +443,9 @@ class AuthModel:
         result = db.view('auth/userbyhandle',**options)
         #result = db.iterview('auth/userhash',1,**options)
 
-        #current_app.logger.debug(result)
+        #self.lggr.info(result)
 
-        #current_app.logger.debug('flag1.4')
+        #self.lggr.info('flag1.4')
         item = {}
                
         for row in result:
@@ -450,7 +455,7 @@ class AuthModel:
             item[u'key'] = row['key']
             item[u'value'] = row['value']
 
-        #current_app.logger.debug('flag1.5')
+        #self.lggr.info('flag1.5')
             
 
         return item

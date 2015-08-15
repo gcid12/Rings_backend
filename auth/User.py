@@ -1,16 +1,25 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import logging
 from AuthModel import AuthModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from MainModel import MainModel
-from flask import flash, current_app
+from flask import flash, current_app, g
+from AvispaLogging import AvispaLoggerAdapter
+
 
 
 
 class User(UserMixin):
     def __init__(self, username=None, email=None, passhash=None, owner=None, isOrg=False, active=True, id=None, onlogin=False):
+        
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
+        self.lggr.debug('__init__()')
+
         self.username = username
         self.email = email
         self.passhash = passhash
@@ -40,21 +49,22 @@ class User(UserMixin):
         user['owner'] = self.owner 
         user['passhash'] = self.passhash
         user['onlogin'] = self.onlogin
-        
 
-        current_app.logger.debug(user)
+        self.lggr.info(user)
 
         if not self.isOrg:
+            self.lggr.info('is an Org')
             #You are registering a regular User
             if self.ATM.saas_create_user(user):
-                current_app.logger.debug("new user id = %s " % user['username'])     
+                self.lggr.info("new user id = %s " % user['username'])     
                 return user['username']
             else: 
                 return False
         else:
+            self.lggr.info('is NOT an Org')
             #You are registering an Organization
             if self.ATM.saas_create_orguser(user):
-                current_app.logger.debug("new organization id = %s " % user['username'])     
+                self.lggr.info("new organization id = %s " % user['username'])     
                 return user['username']
             else: 
                 return False
@@ -63,15 +73,15 @@ class User(UserMixin):
 
     def set_password_key(self,key):
 
-        current_app.logger.debug('set_password_key:')
-        current_app.logger.debug(self.id)
+        self.lggr.info('set_password_key:')
+        self.lggr.info(self.id)
  
         return self.ATM.saas_create_password_key(self.id,key)
 
     def set_password(self,passhash):
 
-        current_app.logger.debug('set_password:')
-        current_app.logger.debug(self.id)
+        self.lggr.info('set_password:')
+        self.lggr.info(self.id)
  
         return self.ATM.saas_set_password(self.id,passhash)
 
@@ -79,10 +89,9 @@ class User(UserMixin):
     def get_by_token(self, email, token):
 
         try:
-            current_app.logger.debug('flag1')
+            
             dbUser =self.ATM.userdb_get_user_by_email(email)
-            current_app.logger.debug('flag2')
-            current_app.logger.debug(dbUser)
+            self.lggr.info(dbUser)
             if dbUser:
                 self.email = dbUser['value']['email']
                 self.active = dbUser['value']['is_active'] 
@@ -92,25 +101,25 @@ class User(UserMixin):
             else:
                 return None
         except:
-            current_app.logger.debug("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
-            current_app.logger.debug("there was an error")
+            self.lggr.error("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.error("there was an error")
             return None
 
     def get_user(self):
 
         try:
-            current_app.logger.debug('get_user_flag1')
+            self.lggr.debug('get_user_flag1')
             if self.email:
-                current_app.logger.debug('self.email:'+self.email)
+                self.lggr.debug('self.email:'+self.email)
                 dbUser =self.ATM.userdb_get_user_by_email(self.email)
             elif self.username:
-                current_app.logger.debug('self.username'+self.username)
+                self.lggr.debug('self.username'+self.username)
                 dbUser =self.ATM.userdb_get_user_by_handle(self.username)
 
             
             if dbUser:
 
-                current_app.logger.debug('DBUSER:'+dbUser['value']['name'])
+                self.lggr.debug('DBUSER:'+dbUser['value']['name'])
                 
                 self.name = dbUser['value']['name']
                 self.email = dbUser['value']['email']
@@ -123,11 +132,11 @@ class User(UserMixin):
                 self.id = dbUser['value']['_id']
                 return self
             else:
-                current_app.logger.debug('User not found')
+                self.lggr.error('User: '+self.username+' not found')
                 return None
         except(KeyError):
-            current_app.logger.debug("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
-            current_app.logger.debug("there was an error, we need to repair the user_document")
+            self.lggr.error("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.error("there was an error, we need to repair the user_document")
 
             preconditions = ['name','email','url','profilepic','location','onlogin']
             repaired = False
@@ -135,7 +144,7 @@ class User(UserMixin):
                 MAM = MainModel()
                 if MAM.repair_user_doc(element_to_add,dbUser['value']['_id']):
                     repaired = True
-                    current_app.logger.debug('Repaired '+element_to_add+'. ')
+                    current_app.logger.info('Repaired '+element_to_add+'. ')
                     #flash('Repaired '+element_to_add+'. ')
 
             #Let's try again
@@ -173,24 +182,24 @@ class User(UserMixin):
 
         if dbUser:
             if request.form.get('profilepic') != dbUser['value']['profilepic']:
-                current_app.logger.debug('profilepic changed!')
+                self.lggr.info('profilepic changed!')
                 changes['profilepic'] = request.form.get('profilepic')
 
             if request.form.get('name') != dbUser['value']['name']:
-                current_app.logger.debug('name changed!')
+                self.lggr.info('name changed!')
                 changes['name'] = request.form.get('name')
                 mp_change = True
             
             if request.form.get('url') != dbUser['value']['url']:
-                current_app.logger.debug('url changed!')
+                self.lggr.info('url changed!')
                 changes['url'] = request.form.get('url')
 
             if request.form.get('location') != dbUser['value']['location']:
-                current_app.logger.debug('location changed!')
+                self.lggr.info('location changed!')
                 changes['location'] = request.form.get('location')
 
             if request.form.get('onlogin') != dbUser['value']['onlogin']:
-                current_app.logger.debug('onlogin changed!')
+                self.lggr.info('onlogin changed!')
                 changes['onlogin'] = request.form.get('onlogin')
 
 
@@ -202,17 +211,17 @@ class User(UserMixin):
     def is_valid_password_key(self,email,key):
 
         try:
-            #current_app.logger.debug('flag1')
+            #self.lggr.info('flag1')
             dbUser =self.ATM.userdb_get_user_by_email(email)
-            #current_app.logger.debug('flag2')
-            #current_app.logger.debug(dbUser)
+            #self.lggr.info('flag2')
+            #self.lggr.info(dbUser)
             if dbUser['value']['new_password_key']==key:   
                 return True
             else:
                 return False
         except:
-            current_app.logger.debug("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
-            current_app.logger.debug("There was an error validating the Key")
+            self.lggr.error("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.error("There was an error validating the Key")
             return False
 
 

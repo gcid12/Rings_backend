@@ -32,8 +32,9 @@ lggr.debug('Checking debug log')
 
 
 if app.config['DEBUG']:
-    from flask_debugtoolbar import DebugToolbarExtension
-    toolbar = DebugToolbarExtension(app)
+	pass
+    #from flask_debugtoolbar import DebugToolbarExtension
+    #toolbar = DebugToolbarExtension(app)
 
 
 # Flask BCrypt will be used to salt the user password

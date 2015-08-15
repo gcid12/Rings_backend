@@ -1,25 +1,43 @@
-import sys, os, time, smtplib, urlparse, random, json
+import sys, os, time, smtplib, urlparse, random, json,logging,traceback
 from datetime import datetime
-from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for
+from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for, g
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required,login_url)
 from env_config import FROMEMAIL, FROMPASS, IMAGE_CDN_ROOT
 from MainModel import MainModel
 from EmailModel import EmailModel
+from AvispaLogging import AvispaLoggerAdapter
 
 from User import User
 
 auth_flask_login = Blueprint('auth_flask_login', __name__, template_folder='templates',url_prefix='')
 
+def lggr_setup():
+
+    MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+    logger = logging.getLogger('Avispa')
+    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
+    return lggr
+
+
 @auth_flask_login.route("/_login", methods=["GET", "POST"])
 def login():
 
-    if current_user.is_authenticated():    
+    MAM = MainModel()
+
+    lggr = lggr_setup()
+
+    if current_user.is_authenticated(): 
+
         return redirect('/'+current_user.id+'/_home')
-    
-   
+     
     if request.method == "POST" and "email" in request.form:
+
+        lggr.info('Login attempt for:'+request.form.get('email')) 
         email = request.form.get('email')
         userObj = User(email=email)
         user = userObj.get_user()
@@ -33,6 +51,8 @@ def login():
             if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
                 remember = request.form.get("remember", "no") == "yes"
                 if login_user(userObj, remember=remember):
+
+                    lggr.info('Login attempt successful for:'+request.form.get('email')) 
 
                     #next = request.args.get('next')
                     #if not next_is_valid(next):
@@ -54,25 +74,38 @@ def login():
                     flash("Logged in!",'UI')
 
                     if 'r' in request.form:
-                        return redirect('/'+request.form.get('r'))
+                        #lggr.info('Redirecting to :'+'/'+request.form.get('r')) 
+                        #return redirect('/'+request.form.get('r'))
+                        rr = '/'+request.form.get('r')
 
-                    if user.onlogin != '':
-                        return redirect(user.onlogin)
+                    elif user.onlogin != '':
+                        #lggr.info('Redirecting to :'+user.onlogin) 
+                        #return redirect(user.onlogin)
+                        rr = user.onlogin
 
-                    return redirect('/'+user.id+'/_home')
+                    else:
+                        rr = '/'+user.id+'/_home'
+
+                    lggr.info('Redirecting to :'+rr) 
+
+                    return redirect(rr)
                 else:
+
+                    lggr.info('Something went wrong in the user object:'+request.form.get('email')) 
                     flash("unable to log you in",'UI')
 
                     mpp = {'status':'KO','msg':'Unable to log in'}
                     flash({'f':'track','v':'_login','p':mpp},'MP')
                     #flash({'track':'_login KO, Try again'},'MP')
             else:
+                lggr.info('User/Password is not correct for:'+request.form.get('email')) 
                 flash("User/Password is not correct",'UI')
 
                 mpp = {'status':'KO','msg':'User/Password incorrect'}
                 flash({'f':'track','v':'_login','p':mpp},'MP')
                 #flash({'track':'_login KO, User/Password incorrect'},'MP')
         else:
+            lggr.info('User is not active:'+request.form.get('email')) 
             flash("User not active",'UI')
 
             mpp = {'status':'KO','msg':'User not active'}
@@ -93,6 +126,9 @@ def login():
 @auth_flask_login.route("/_api/_register", methods=["POST"])
 def api_register_post():
 
+    MAM = MainModel() 
+    lggr = lggr_setup()
+
     if request.args.get('token') != 'qwerty1234':
 
         out = {} 
@@ -112,17 +148,18 @@ def api_register_post():
 
     # prepare User
     user = User(username,email,password_hash)
-    current_app.logger.debug(user)
+    lggr.debug(user)
+
 
     try:
     #if True:
         if user.set_user():
-            current_app.logger.debug('Now log in the user')
+            lggr.info('Now log in the user')
 
             #Go through regular login process
             userObj = User(email=email)
             userview = userObj.get_user()
-            current_app.logger.debug(userObj)
+            lggr.info(userObj)
     
 
             out = {} 
@@ -145,7 +182,7 @@ def api_register_post():
     #except(KeyError):
     except:
 
-        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])           
+        lggr.error(traceback.format_exception(sys.exc_info()[0],sys.exc_info()[1],sys.exc_info()[2]))         
         out = {} 
         out['Success'] = False
         out['Message'] = 'The user could not be created'
@@ -157,7 +194,9 @@ def api_register_post():
 @auth_flask_login.route("/_teaminvite", methods=["GET"])
 def register_teaminvite():
 
-    MAM = MainModel()   
+    MAM = MainModel()
+    lggr = lggr_setup()
+   
     logout_user()
 
     if current_user.is_authenticated():  
@@ -184,6 +223,9 @@ def register_teaminvite():
 @auth_flask_login.route("/_register", methods=["GET"])
 def register_get():
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
     data['method'] = '_register'
@@ -195,6 +237,7 @@ def register_get():
 def register_post():
 
     MAM = MainModel()
+    lggr = lggr_setup()
 
     invite_organization = request.form.get('h') 
     invite_team = request.form.get('t') 
@@ -211,7 +254,7 @@ def register_post():
 
     # prepare User
     user = User(username,email,password_hash)
-    current_app.logger.debug(user)
+    lggr.info(user)
 
     try:
         if user.set_user():
@@ -222,7 +265,7 @@ def register_post():
         
 
     except:
-        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])          
+        lggr.error(traceback.format_exception(sys.exc_info()[0],sys.exc_info()[1],sys.exc_info()[2]))         
 
         flash("unable to register with that email address",'UI')
         mpp = {'status':'KO','msg':'Unable to register with that email address'}
@@ -283,11 +326,11 @@ def register_post():
 
 
 
-            current_app.logger.debug('User created, now log in the user')
+            lggr.info('User created, now log in the user')
             #Go through regular login process
             userObj = User(email=email)
             userview = userObj.get_user()
-            current_app.logger.debug(userObj)
+            lggr.info(userObj)
 
             mpp = {'status':'OK'}
             flash({'f':'track','v':'_register','p':mpp},'MP')
@@ -339,14 +382,15 @@ def register_post():
 @login_required
 def orgregister_get():
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     #registerForm = forms.SignupForm(request.form)
     #current_app.logger.info(request.form)
         
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
     data['method'] = '_orgregister'
-
-    MAM = MainModel()
 
     #This is to be used by the user bar
     cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
@@ -369,6 +413,9 @@ def orgregister_get():
 @auth_flask_login.route("/_api/_orgregister", methods=["POST"])
 def api_orgregister_post():
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     if request.args.get('token') != 'qwerty1234':
         out = {} 
         out['Success'] = False
@@ -384,7 +431,7 @@ def api_orgregister_post():
 
     # prepare User
     user = User(username,email,'',owner,isOrg=True)
-    current_app.logger.debug(user)
+    lggr.info(user)
 
     try:
     
@@ -408,7 +455,7 @@ def api_orgregister_post():
 
     except:
     
-        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
+        lggr.error(traceback.format_exception(sys.exc_info()[0],sys.exc_info()[1],sys.exc_info()[2]))
 
         out = {} 
         out['Success'] = False
@@ -422,6 +469,9 @@ def api_orgregister_post():
 @login_required
 def orgregister_post():
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     username = request.form.get('username')
     email = request.form.get('email')
 
@@ -430,7 +480,7 @@ def orgregister_post():
 
     # prepare User
     user = User(username,email,password_hash,current_user.id,True)
-    current_app.logger.debug(user)
+    lggr.info(user)
 
     try:
     #if True:
@@ -442,12 +492,15 @@ def orgregister_post():
 
         return redirect('/'+username+'/_home')
 
-    except:
-    #else:
-        current_app.logger.debug("Notice: Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
-        flash("unable to register with that email address",'UI')
+    except(TypeError):
 
-        mpp = {'status':'KO','msg':'Unable to register with that email address'}
+    #else:
+ 
+        
+        lggr.error(traceback.format_exception(sys.exc_info()[0],sys.exc_info()[1],sys.exc_info()[2]))
+        flash("unable to register the organization",'UI')
+
+        mpp = {'status':'KO','msg':"Notice: Unexpected error:"+str(sys.exc_info()[0])+' '+str(sys.exc_info()[1])}
         flash({'f':'track','v':'_orgregister','p':mpp},'MP')
                
         return redirect('/_orgregister')
@@ -457,13 +510,16 @@ def orgregister_post():
 @auth_flask_login.route("/_forgot", methods=["GET", "POST"])
 def forgot():
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
 
     if request.method == 'POST' and request.form.get('email'):
 
         email = request.form.get('email')
         userObj = User(email=email)
         user = userObj.get_user()
-        current_app.logger.debug(user)
+        lggr.info(user)
 
 
         if user and user.is_active():
@@ -476,7 +532,7 @@ def forgot():
                 #save the token in the database
                 key = flask_bcrypt.generate_password_hash(request.form.get('email')+str(random.randint(0,9999)))
                 #key = 'qwerty1234'
-                current_app.logger.debug("key:"+key)
+                lggr.info("key:"+key)
                 userObj.set_password_key(key)
 
 
@@ -487,7 +543,7 @@ def forgot():
 
                 EMO = EmailModel()
                 if EMO.send_one_email(to,subject,content):
-                    current_app.logger.debug("Sending password recovery email to: "+user.email)
+                    lggr.info("Sending password recovery email to: "+user.email)
                     flash("Please check your mail's inbox for the password recovery instructions.",'UI')
 
 
@@ -495,7 +551,7 @@ def forgot():
                     flash({'f':'track','v':'_forgot','p':mpp},'MP')
                     #flash({'track':'_forgot OK, sent recovery email'},'MP')
                 else:
-                    current_app.logger.debug("Something went wrong with sending the email but no error was raised")
+                    lggr.info("Something went wrong with sending the email but no error was raised")
 
                 '''
 
@@ -526,8 +582,8 @@ def forgot():
                 
 
             except:
-                current_app.logger.debug("Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
-                current_app.logger.debug("Error sending password revovery email")
+                lggr.error(traceback.format_exception(sys.exc_info()[0],sys.exc_info()[1],sys.exc_info()[2]))
+                lggr.error("Error sending password revovery email")
                 flash("There was an error sending the password recovery instructions")
                 flash({'track':'_forgot KO, error sending recovery email'},'MP')
                 pass
@@ -545,13 +601,13 @@ def forgot():
         data['email'] = request.args.get('e')
         userObj = User()
         if userObj.is_valid_password_key(data['email'],data['key']):
-            current_app.logger.debug('Token authorized')
+            lggr.info('Token authorized')
             mpp = {'status':'OK','msg':'Token authorized'}
             flash({'f':'track','v':'_forgot','p':mpp},'MP')
             #flash({'track':'_forgot OK, Token authorized'},'MP')
             return render_template("/auth/new_password.html", data=data)
         else:
-            current_app.logger.debug('Token Rejected')
+            lggr.info('Token Rejected')
             mpp = {'status':'KO','msg':'Token not authorized'}
             flash({'f':'track','v':'_forgot','p':mpp},'MP')
             #flash({'track':'_forgot KO, Token not authorized'},'MP')
@@ -568,7 +624,7 @@ def forgot():
 
         if request.form.get('password') == request.form.get('confirm'):
             if userObj.is_valid_password_key(request.form.get('e'),request.form.get('k')):
-                current_app.logger.debug('Token authorized')
+                lggr.info('Token authorized')
                 # generate password hash
                 passhash = flask_bcrypt.generate_password_hash(request.form.get('password'))
                 userObj.set_password(passhash)
@@ -603,6 +659,9 @@ def forgot():
 @login_required
 def profile_get(handle):
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     if handle == current_user.id:
         user = load_user(handle)
 
@@ -618,7 +677,7 @@ def profile_get(handle):
 
         
         #This is for the upperbar only
-        MAM = MainModel()
+        
         user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if user_doc:   
             data['cu_profilepic'] = user_doc['profilepic']
@@ -638,6 +697,9 @@ def profile_get(handle):
 @auth_flask_login.route("/<handle>/_profile", methods=["POST"])
 @login_required
 def profile_post(handle):
+
+    MAM = MainModel()
+    lggr = lggr_setup()
     
     user = User(username=current_user.id)
     if user.update_user_profile(request):
@@ -660,6 +722,9 @@ def profile_post(handle):
 def orgprofile_get(handle):
 
     MAM = MainModel()
+    lggr = lggr_setup()
+
+    
     if MAM.user_belongs_org_team(current_user.id,handle,'owner'):
 
         user = load_user(handle)
@@ -679,7 +744,6 @@ def orgprofile_get(handle):
         return redirect('/'+current_user.id+'/_profile')
 
     #This is for the current user thumbnail in the upperbar only
-    MAM = MainModel()
     user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
     if user_doc:   
         data['cu_profilepic'] = user_doc['profilepic']
@@ -692,6 +756,9 @@ def orgprofile_get(handle):
 @auth_flask_login.route("/<handle>/_orgprofile", methods=["POST"])
 @login_required
 def orgprofile_post(handle):
+
+    MAM = MainModel()
+    lggr = lggr_setup()
     
     user = User(username=handle)
     if user.update_user_profile(request):
@@ -715,11 +782,19 @@ def orgprofile_post(handle):
 @login_required
 def reauth():
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     return render_template("/auth/reauth.html")
 
 
 @auth_flask_login.route("/_logout")
 def logout():
+
+    MAM = MainModel()
+    lggr = lggr_setup()
+
+
     logout_user()
     flash("Logged out.",'UI') 
 
@@ -743,7 +818,7 @@ def unauthorized_callback():
 def load_user(id):
     # This is called every single time when you are logged in.
 
-    #current_app.logger.debug('xload_user id is:',str(id))
+    #lggr.info('xload_user id is:',str(id))
     
 
     if id is None:
@@ -762,6 +837,9 @@ def load_user(id):
 @login_required
 def access_get(handle):
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     if handle == current_user.id:
         user = load_user(handle)
 
@@ -777,7 +855,6 @@ def access_get(handle):
 
         
         #This is for the upperbar only
-        MAM = MainModel()
         user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if user_doc:   
             data['cu_profilepic'] = user_doc['profilepic']
@@ -798,6 +875,9 @@ def access_get(handle):
 @login_required
 def email_get(handle):
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     if handle == current_user.id:
         user = load_user(handle)
 
@@ -813,7 +893,7 @@ def email_get(handle):
 
         
         #This is for the upperbar only
-        MAM = MainModel()
+        
         user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if user_doc:   
             data['cu_profilepic'] = user_doc['profilepic']
@@ -835,6 +915,9 @@ def email_get(handle):
 @login_required
 def billing_get(handle):
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     if handle == current_user.id:
         user = load_user(handle)
 
@@ -850,7 +933,7 @@ def billing_get(handle):
 
         
         #This is for the upperbar only
-        MAM = MainModel()
+        
         user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if user_doc:   
             data['cu_profilepic'] = user_doc['profilepic']
@@ -871,6 +954,9 @@ def billing_get(handle):
 @login_required
 def licenses_get(handle):
 
+    MAM = MainModel()
+    lggr = lggr_setup()
+
     if handle == current_user.id:
         user = load_user(handle)
 
@@ -886,7 +972,7 @@ def licenses_get(handle):
 
         
         #This is for the upperbar only
-        MAM = MainModel()
+        
         user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         if user_doc:   
             data['cu_profilepic'] = user_doc['profilepic']
