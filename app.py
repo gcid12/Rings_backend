@@ -18,8 +18,8 @@ app = Flask(__name__)
 app.config.from_object('default_config')
 
 #setup_logging()
-LS = LoggingSetUp()
-LS.setup(logfile_path=app.config['LOGFILE_PATH'])
+# LS = LoggingSetUp()
+# LS.setup(logfile_path=app.config['LOGFILE_PATH'])
 
 
 logger = logging.getLogger('Avispa')
