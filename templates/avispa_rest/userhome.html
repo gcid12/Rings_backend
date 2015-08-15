@@ -31,12 +31,12 @@
 <section>
     <div class="container-fluid">
         <div class="row m-10">
-            <div class="col-sm-3 col-md-2 hidden-xs">
+            <div class="col-sm-3 ">
                 <div class="gcard">
 
 
                     <div class="row">
-                        <div class="col-xs-4 col-sm-12">
+                        <div class="col-xs-4 col-sm-12 hidden-xs">
                             
                             {% if data.handle_profilepic %}
                             <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="profile-1"> 
@@ -52,7 +52,7 @@
                         </div>
                         
 
-                        <div class="col-xs-8 col-sm-12">
+                        <div class="col-xs-12 col-sm-12">
                             <div class="p-10">
                                 
                                 <hr class="hidden-xs">
@@ -86,7 +86,7 @@
 
             <!-- SECOND COLUMN :::::::::::::::::::::::::::::::::::::::::-->
 
-            <div class="col-sm-9 col-md-10  alpha">
+            <div class="col-sm-9  alpha">
 
             <!-- {% if 'post_a_x' in data.user_authorizations %}
               {% if data.dac_totals|sum!=0 %}
