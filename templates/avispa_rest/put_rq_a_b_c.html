@@ -105,9 +105,7 @@
 	            {% if data.raw %} 
 	                <input value="update" type="submit" class="btn btn-primary pull-right"> 
 	            {%endif%} 
-	        </div>
-
-	                 
+	        </div>     
           	{% if data.raw %}
           		<h3>{{data.ring}}</h3>
           	{%endif%}
@@ -118,15 +116,12 @@
           {% if field.FieldLayer != '7' %}
     	    	<div class="row spa10">
                     <div class="col-sm-1">&nbsp;</div>
-                    <div class=" col-sm-2 col-sm-push-8 text-left alpha">
-    	                		
+                    <div class=" col-sm-2 col-sm-push-8 text-left alpha">	
     	                {{ ui.flagmarker(field,data.item) }}
     	            </div>
     	            <div class="col-sm-8 col-sm-pull-2 text-left omega">
-
                       	{% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
                       	{% include widget  %}    
-
                     </div>     	
     	      </div>
           {% endif %}

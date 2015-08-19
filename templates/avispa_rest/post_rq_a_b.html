@@ -57,7 +57,7 @@
 
     <div class="rn-curtain">
           
-        <form  role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?method=post{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
+        <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?method=post{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
             
             {% if not data.raw %}
                 <table class="table table-condensed"> 

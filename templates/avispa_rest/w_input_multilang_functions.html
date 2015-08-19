@@ -1,0 +1,65 @@
+
+
+<script>
+
+$(document).ready(function(){
+
+    var b = 0;
+    $('.more').on('click', function () {
+         b++;
+         
+         var div = $(this).prev().clone()
+         div.find('input').val('');
+         div.appendTo($(this));
+         div.find(".increment").attr("id",function(i,id){
+             return id.replace(/\d+/,b)
+         })
+
+         $(this).before(div);
+
+
+
+    }); 
+
+
+    $('#item0').on("input", function() {
+        $('#out_item0').text(this.value);
+    });
+    $('#lang0').on("input", function() {
+        $('#out_lang0').text(this.value);
+    });
+
+
+    $('#item1').on("input", function() {
+        $('#out_item1').text(this.value);
+    });
+    $('#lang1').on("input", function() {
+        $('#out_lang1').text(this.value);
+    });
+   
+    
+
+});
+
+</script>
+
+
+<script>
+$(document).ready(function(){
+    $( "#b_eng" ).click(function() {     
+       $('#t_eng').toggle("slide", { direction: "right" }, 500);
+       $("#i_eng").toggleClass('fa-toggle-off');
+       $("#m_eng").toggleClass('fc-g');
+    });
+    $( "#b_spa" ).click(function() {     
+       $('#t_spa').toggle("slide", { direction: "right" }, 500);
+       $("#i_spa").toggleClass('fa-times fa-check');
+
+    });
+});
+</script>
+
+
+
+
+

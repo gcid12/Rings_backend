@@ -1,0 +1,85 @@
+    <div class="form-group">
+        <label for="{{ field.FieldId }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+        <div class="col-sm-10">
+
+        	
+	         	
+		    <!-- <div>
+		    	<div class="form-group eye">
+				  <div class="input-group">
+				    <div class="input-group-btn">
+				      	<select  class="increment fancyselect pull-right" id='lang0'>
+				            <option>Choose</option>
+				            <option value='eng'>English</option>
+				            <option value='spa'>Spanish</option>
+				            <option value='fra'>French</option>
+				            <option value='jap'>Jap</option>
+				            <option value='rus'>Russian</option>
+				            <option value='ger'>German</option>
+				        </select>
+				    </div>
+				    <input type="text" class="form-control input-sm flag-aware increment" id='item0'>
+				    
+				  </div>
+				</div>
+
+		    </div>
+
+		    <i class=" fa fa-plus-square more fc-h"><span class="fs-0-8 fc-h"> New Translation</span></i>  -->
+
+
+		    	<div id="t_eng">
+		    		<div class="input-group">
+					  <span class="input-group-addon" id="basic-addon1">ENG</span>
+					  <input type="text" class="form-control flag-aware increment" id='item0'>
+					  
+					</div>
+		    	</div>
+		    	<div id="t-spa">
+		    		<div class="input-group">
+					  <span class="input-group-addon" id="basic-addon1">SPA</span>
+					  <input type="text" class="form-control flag-aware increment" id='item1'>
+					  
+					</div>
+		    	</div>
+
+
+
+		    	<div class="dropdown pull-right">
+				  <a class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    <span class="fs-0-8">Translations</span>
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+				    
+				    <li>
+				    	<a id="b_eng">
+				    		<span id="m_eng" class="fc-b">
+				    			<i id="i_eng" class="fa fa-toggle-on"></i> English
+				    		</span>
+				    	</a>
+				    </li>
+
+				    <li id="b_spa"><a id="b_spa"><i id="i_spa" class="fa fa-check"></i>Spanish</a></li>
+				    
+				  </ul>
+				</div>
+
+
+
+
+				
+
+		    
+        	
+
+
+		    <hr/>
+		    <pre class="fs-0-7">something:["<span id="out_lang0"></span>":"<span id="out_item0"></span>,<span id="out_lang1"></span>":"<span id="out_item1"></span>"]</pre>
+
+
+		    <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="input_multilang_{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value="{{ [{"eng":"hello","spa":"hola","fra":"bonjour"}] }}">
+	        
+        </div>
+
+    </div>
