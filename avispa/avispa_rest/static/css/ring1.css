@@ -576,7 +576,7 @@ filter: grayscale(100%);
 
 
 
-/*SETTINGS*/
+/*AVISPA SPECIFIC*/
 
 .set_active{
 
@@ -598,6 +598,14 @@ filter: grayscale(100%);
   padding:8px;
   color:#000;
 }
+
+.langtab{
+  font-size:0.8em;
+  min-width: 20px;
+  color: white;
+
+}
+
 
 /*LABEL*/
 
@@ -675,6 +683,7 @@ margin:2px 3px 2px 0;
   padding:5px 40px; 
   border-radius: 0px; 
   border-width: 0px;}
+
 
 
 /*GRAPH WRAPPER*/

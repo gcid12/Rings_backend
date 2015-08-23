@@ -2,46 +2,82 @@
         <label for="{{ field.FieldId }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
         <div class="col-sm-10">
 
-        	
-	         	
-		    <!-- <div>
-		    	<div class="form-group eye">
-				  <div class="input-group">
-				    <div class="input-group-btn">
-				      	<select  class="increment fancyselect pull-right" id='lang0'>
-				            <option>Choose</option>
-				            <option value='eng'>English</option>
-				            <option value='spa'>Spanish</option>
-				            <option value='fra'>French</option>
-				            <option value='jap'>Jap</option>
-				            <option value='rus'>Russian</option>
-				            <option value='ger'>German</option>
-				        </select>
-				    </div>
-				    <input type="text" class="form-control input-sm flag-aware increment" id='item0'>
-				    
-				  </div>
-				</div>
-
-		    </div>
-
-		    <i class=" fa fa-plus-square more fc-h"><span class="fs-0-8 fc-h"> New Translation</span></i>  -->
 
 
-		    	<div id="t_eng">
+		    	<div id="t_01">
 		    		<div class="input-group">
-					  <span class="input-group-addon" id="basic-addon1">ENG</span>
-					  <input type="text" class="form-control flag-aware increment" id='item0'>
-					  
+					  <input type="text" class="form-control flag-aware increment" id='in_01'>
+					  <span class="input-group-addon fs-0-7">ENG</span>
+					  <input type="hidden" id='a01'  value="0">
 					</div>
 		    	</div>
-		    	<div id="t-spa">
+
+		    	<div id="t_02">
 		    		<div class="input-group">
-					  <span class="input-group-addon" id="basic-addon1">SPA</span>
-					  <input type="text" class="form-control flag-aware increment" id='item1'>
-					  
+					  <input type="text" class="form-control flag-aware increment" id='in_02'>
+					  <span class="input-group-addon fs-0-7">SPA</span>
+					  <input type="hidden" id='a02'  value="0">
 					</div>
 		    	</div>
+		    	<div id="t_03">
+		    		<div class="input-group">
+					  <input type="text" class="form-control flag-aware increment" id='in_03'>
+					  <span class="input-group-addon fs-0-7">POR</span>
+					  <input type="hidden" id='a03'  value="0">
+					</div>
+		    	</div>
+		    	<div id="t_04">
+		    		<div class="input-group">
+					  <input type="text" class="form-control flag-aware increment" id='in_04'>
+					  <span class="input-group-addon fs-0-7">GER</span>
+					  <input type="hidden" id='a04'  value="0">
+					</div>
+		    	</div>
+		    	<div id="t_05">
+		    		<div class="input-group">
+					  <input type="text" class="form-control flag-aware increment" id='in_05'>
+					  <span class="input-group-addon fs-0-7">FRA</span>
+					  <input type="hidden" id='a05'  value="0">
+					</div>
+		    	</div>
+
+		    	<div id="t_06">
+		    		<div class="input-group">
+					  
+					  <input type="text" class="form-control flag-aware increment" id='in_06'>
+					  <span class="input-group-addon fs-0-7">ITA &nbsp;</span>
+					  <input type="hidden" id='a06'  value="0">
+					</div>
+		    	</div>
+
+		    	
+		    	<div id="t_07">
+		    		<div class="input-group">
+					  
+					  <input type="text" class="form-control flag-aware increment" id='in_07'>
+					  <span class="input-group-addon fs-0-7">CHI2 &nbsp;</span>
+					  <input type="hidden" id='a07'  value="0">
+					</div>
+		    	</div>
+		    	<div id="t_08">
+		    		<div class="input-group">
+					  
+					  <input type="text" class="form-control flag-aware increment" id='in_08'>
+					  <span class="input-group-addon fs-0-7">JAP &nbsp;</span>
+					  <input type="hidden" id='a08'  value="0">
+					</div>
+		    	</div>
+		    	<div id="t_09">
+		    		<div class="input-group">
+					  
+					  <input type="text" class="form-control flag-aware increment" id='in_09'>
+					  <span class="input-group-addon fs-0-7" id="basic-addon1">RUS</span>
+					  <input type="hidden" id='a09'  value="0">
+					</div>
+		    	</div>
+
+
+
 
 
 
@@ -54,14 +90,68 @@
 				    
 				    <li>
 				    	<a id="b_eng">
-				    		<span id="m_eng" class="fc-b">
-				    			<i id="i_eng" class="fa fa-toggle-on"></i> English
+				    		<span id="m_01" class="fc-g">
+				    			<i id="i_01" class="fa fa-toggle-off"></i> English
 				    		</span>
 				    	</a>
 				    </li>
-
-				    <li id="b_spa"><a id="b_spa"><i id="i_spa" class="fa fa-check"></i>Spanish</a></li>
-				    
+				    <li>
+				    	<a id="b_02">
+				    		<span id="m_02" class="fc-g">
+				    			<i id="i_02" class="fa fa-toggle-off"></i> Spanish
+				    		</span>
+				    	</a>
+				    </li>
+				    <li>
+				    	<a id="b_03">
+				    		<span id="m_03" class="fc-g">
+				    			<i id="i_03" class="fa fa-toggle-off"></i> Portuguese
+				    		</span>
+				    	</a>
+				    </li>
+				    <li>
+				    	<a id="b_04">
+				    		<span id="m_04" class="fc-g">
+				    			<i id="i_04" class="fa fa-toggle-off"></i> German
+				    		</span>
+				    	</a>
+				    </li>
+				    <li>
+				    	<a id="b_05">
+				    		<span id="m_05" class="fc-g">
+				    			<i id="i_05" class="fa fa-toggle-off"></i> French
+				    		</span>
+				    	</a>
+				    </li>
+				    <li>
+				    	<a id="b_06">
+				    		<span id="m_06" class="fc-g">
+				    			<i id="i_06" class="fa fa-toggle-off"></i> Italian
+				    		</span>
+				    	</a>
+				    </li>
+				    <li>
+				    	<a id="b_07">
+				    		<span id="m_07" class="fc-g">
+				    			<i id="i_07" class="fa fa-toggle-off"></i> Chinese
+				    		</span>
+				    	</a>
+				    </li>
+				    <li>
+				    	<a id="b_08">
+				    		<span id="m_08" class="fc-g">
+				    			<i id="i_08" class="fa fa-toggle-off"></i> Japanese
+				    		</span>
+				    	</a>
+				    </li>
+				    <li>
+				    	<a id="b_09">
+				    		<span id="m_09" class="fc-g">
+				    			<i id="i_09" class="fa fa-toggle-off"></i> Russian
+				    		</span>
+				    	</a>
+				    </li>
+ 
 				  </ul>
 				</div>
 
@@ -75,7 +165,39 @@
 
 
 		    <hr/>
-		    <pre class="fs-0-7">something:["<span id="out_lang0"></span>":"<span id="out_item0"></span>,<span id="out_lang1"></span>":"<span id="out_item1"></span>"]</pre>
+		    <span class="fs-0-7" id="salida">something:[
+
+		    <span id="d_01">
+		    	"<span id="lang">eng</span>":"<span id="out_l1"></span>",
+		    </span>
+		    <span id="d_02">
+		    	"<span id="lang">spa</span>":"<span id="out_l2"></span>",
+		    </span>
+		    <span id="d_03">
+		    	"<span id="lang">por</span>":"<span id="out_l3"></span>",
+		    </span>
+		    <span id="d_04">
+		    	"<span id="lang">ger</span>":"<span id="out_l4"></span>",
+		    </span>
+		    <span id="d_05">
+		    	"<span id="lang">fra</span>":"<span id="out_l5"></span>",
+		    </span>
+		    <span id="d_06">
+		    	"<span id="lang">ita</span>":"<span id="out_l6"></span>",
+		    </span>
+		    <span id="d_07">
+		    	"<span id="lang">chi</span>":"<span id="out_l7"></span>",
+		    </span>
+		    <span id="d_08">
+		    	"<span id="lang">jap</span>":"<span id="out_l8"></span>",
+		    </span>
+		    <span id="d_09">
+		    	"<span id="lang">rus</span>":"<span id="out_l9"></span>",
+		    </span>
+
+
+		    ]
+		    </span>
 
 
 		    <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="input_multilang_{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value="{{ [{"eng":"hello","spa":"hola","fra":"bonjour"}] }}">
