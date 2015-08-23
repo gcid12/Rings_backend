@@ -1,0 +1,73 @@
+    <div class="form-group">
+        <label for="{{ field.FieldId }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+        <div class="col-sm-10">
+
+        		<!-- TTTTTTTTTTT -->
+        		<div id="wt_1"></div>
+        		<div id="wt_2"></div>
+        		<div id="wt_3"></div>
+        		<div id="wt_4"></div>
+        		<div id="wt_5"></div>
+        		<div id="wt_6"></div>
+        		<div id="wt_7"></div>
+        		<div id="wt_8"></div>
+        		<div id="wt_9"></div>
+
+
+				<!-- BBBBBBBBBBBBBBB -->
+
+
+		    	<div class="dropdown pull-right">
+				  <a class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				  	<i class="fa fa-language"></i>
+				    <span class="fs-0-8">Translations</span>
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+				    <li>qwert</li>
+				    <li id="wb_1">
+				    </li>
+				    <li id="wb_2">
+				    </li>
+				    <li id="wb_3">
+				    </li>
+				    <li id="wb_4">
+				    </li>
+				    <li id="wb_5">
+				    </li>
+				    <li id="wb_6">
+				    </li>
+				    <li id="wb_7">
+				    </li>
+				    <li id="wb_8">
+				    </li>
+				    <li id="wb_9">
+				    </li>
+ 
+				  </ul>
+				</div>
+
+		    <hr/>
+
+		    <!-- HHHHHHHHHHHHHHHHHH -->
+
+		    <span class="fs-0-8 fc-b" id="salida">something:[
+			    <span id="wh_1"></span>
+				<span id="wh_2"></span>
+				<span id="wh_3"></span>
+				<span id="wh_4"></span>
+				<span id="wh_5"></span>
+				<span id="wh_6"></span>
+				<span id="wh_7"></span>
+				<span id="wh_8"></span>
+				<span id="wh_9"></span>
+		    ]
+		    </span>
+
+
+		    <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="input_multilang_{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" 
+		    value=''>
+	        
+        </div>
+
+    </div>

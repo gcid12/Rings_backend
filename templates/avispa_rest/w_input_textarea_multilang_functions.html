@@ -1,0 +1,97 @@
+
+<script>
+
+$(document).ready(function(){
+
+var langs ={
+          "1":{"short":"eng", "long":"English"},
+          "2":{"short":"spa", "long":"Spanish"},
+          "3":{"short":"por", "long":"Portuguese"},
+          "4":{"short":"ger", "long":"German"},
+          "5":{"short":"fra", "long":"French"},
+          "6":{"short":"ita", "long":"Italian"},
+          "7":{"short":"chi", "long":"Chinese"},
+          "8":{"short":"jap", "long":"Japanese"},
+          "9":{"short":"rus", "long":"Russian"}
+        }
+    
+
+
+    function langtoggle(y,z){
+
+      var ran = Math.floor(Math.random() * 90000) + 10000;
+      var num = y;
+      
+      var wt= '#wt_'+num, //div wrapper
+          wb= '#wb_'+num, //div wrapper
+          wh= '#wh_'+num, //div wrapper
+
+          rid= num+ran, //random id
+
+          t= '#t_'+num+ran, //div wrapper
+          b= '#b_'+num+ran, //menu button
+          h= '#h_'+num+ran, //hidden input
+          shortname= z[num]["short"],
+          longname= z[num]["long"],
+          uppername= shortname.toUpperCase();
+
+      // $(wt).html("<div id='t_"+rid+"'><div class='input-group'><textarea class='form-control flag-aware increment' id='inp' rows='4' ></textarea><span class='input-group-addon fs-0-7' id='lan'></span><input type='hidden' id='inp_hidden'  value='0'></div></div>");
+
+      $(wt).html("<div class='input-group' id='t_"+rid+"'><input type='text' class='form-control flag-aware increment' id='inp' placeholder=''><span class='input-group-addon fs-0-7' id='lan'></span><input type='hidden' id='inp_hidden'  value='1'></div>");
+
+      $(wb).html("<a id='b_"+rid+"'><span id='item' class='fc-b'><i id='icon' class='fa fa-toggle-on'></i> <span id='lan'></span></span></a>");
+
+      $(wh).html("<span id='h_"+rid+"'><span id='lan'></span> : <span id='out'></span>, </span> ");
+
+      a1= $(t).find('#inp_hidden').val();
+      
+      $(t).find('#lan').append(uppername);
+      $(t).find('#inp_hidden').attr("placeholder",longname);
+      $(b).find('#lan').append(longname);
+      $(h).find('#lan').append(shortname);
+
+
+      if (shortname != 'eng') {
+        $(t).hide(); 
+        $(h).hide(); 
+        $(b).find('#icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
+        $(b).find('#item').switchClass('fc-b' , 'fc-g');
+      }
+
+      $(b).click(function() {     
+         $(t).toggle("slide", { direction: "up" }, 500);
+         $(b).find('#icon').toggleClass('fa-toggle-off fa-toggle-on');
+         $(b).find('#item').toggleClass('fc-b fc-g');
+         $(h).toggle(); 
+      });
+
+
+      //INPUT , OUTPUT
+      var inp= $(t).find('#inp');
+
+      inp.on("input", function() {
+        
+        $(h).find('#out').text(this.value);
+
+
+      });
+
+    }
+
+    langtoggle('1',langs);
+    langtoggle('2',langs);
+    langtoggle('3',langs);
+    langtoggle('4',langs);
+    langtoggle('5',langs);
+    langtoggle('6',langs);
+    langtoggle('7',langs);
+    langtoggle('8',langs);
+    langtoggle('9',langs);
+
+});
+</script>
+
+
+
+
+
