@@ -128,6 +128,7 @@ def api_register_post():
 
     MAM = MainModel() 
     lggr = lggr_setup()
+    lggr = lggr_info('_api/_register attempt')
 
     if request.args.get('token') != 'qwerty1234':
 
@@ -136,6 +137,7 @@ def api_register_post():
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
+        lggr = lggr_info('_api/_register attempt')
         return render_template("/base_json.html", data=data)
 
 

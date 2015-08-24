@@ -17,10 +17,15 @@ app = Flask(__name__)
 # Configurations
 app.config.from_object('default_config')
 
+
+if 'DEBUG' in app.config:
+    app_debug = app.config['DEBUG']
+else:
+    app_debug = True
+
 #setup_logging()
 LS = LoggingSetUp()
-LS.setup(logfile_path=app.config['LOGFILE_PATH'])
-
+LS.setup(logfile_path=app.config['LOGFILE_PATH'],app_debug=app_debug)
 
 logger = logging.getLogger('Avispa')
 lggr = AvispaLoggerAdapter(logger, {'tid': '0','ip':'0'})
@@ -28,11 +33,11 @@ lggr = AvispaLoggerAdapter(logger, {'tid': '0','ip':'0'})
 
 # Log something
 lggr.info('Flask App defined!')
-lggr.debug('Checking debug log')
+lggr.debug('Debug log is ON')
 
 
-if app.config['DEBUG']:
-	pass
+#if app.config['DEBUG']:
+ #   pass
     #from flask_debugtoolbar import DebugToolbarExtension
     #toolbar = DebugToolbarExtension(app)
 
