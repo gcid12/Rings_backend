@@ -1,17 +1,23 @@
+
     <div class="form-group">
-        <label for="{{ field.FieldId }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+        <label for="{{ field.FieldId }}" class="col-sm-2 control-label" id="{{ field.FieldId}}">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
         <div class="col-sm-10">
+        
+
+
 
         		<!-- TTTTTTTTTTT -->
-        		<div id="wt_1"></div>
-        		<div id="wt_2"></div>
-        		<div id="wt_3"></div>
-        		<div id="wt_4"></div>
-        		<div id="wt_5"></div>
-        		<div id="wt_6"></div>
-        		<div id="wt_7"></div>
-        		<div id="wt_8"></div>
-        		<div id="wt_9"></div>
+        		<div id="wt_1_{{ field.FieldId}}"></div>
+        		<div id="wt_2_{{ field.FieldId}}"></div>
+        		<div id="wt_3_{{ field.FieldId}}"></div>
+        		<div id="wt_4_{{ field.FieldId}}"></div>
+        		<div id="wt_5_{{ field.FieldId}}"></div>
+        		<div id="wt_6_{{ field.FieldId}}"></div>
+        		<div id="wt_7_{{ field.FieldId}}"></div>
+        		<div id="wt_8_{{ field.FieldId}}"></div>
+        		<div id="wt_9_{{ field.FieldId}}"></div>
+
+
 
 
 				<!-- BBBBBBBBBBBBBBB -->
@@ -24,24 +30,23 @@
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-				    <li>qwert</li>
-				    <li id="wb_1">
+				    <li id="wb_1_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_2">
+				    <li id="wb_2_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_3">
+				    <li id="wb_3_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_4">
+				    <li id="wb_4_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_5">
+				    <li id="wb_5_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_6">
+				    <li id="wb_6_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_7">
+				    <li id="wb_7_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_8">
+				    <li id="wb_8_{{ field.FieldId}}">
 				    </li>
-				    <li id="wb_9">
+				    <li id="wb_9_{{ field.FieldId}}">
 				    </li>
  
 				  </ul>
@@ -52,15 +57,15 @@
 		    <!-- HHHHHHHHHHHHHHHHHH -->
 
 		    <span class="fs-0-8 fc-b" id="salida">something:[
-			    <span id="wh_1"></span>
-				<span id="wh_2"></span>
-				<span id="wh_3"></span>
-				<span id="wh_4"></span>
-				<span id="wh_5"></span>
-				<span id="wh_6"></span>
-				<span id="wh_7"></span>
-				<span id="wh_8"></span>
-				<span id="wh_9"></span>
+			    <span id="wh_1_{{ field.FieldId}}"></span>
+				<span id="wh_2_{{ field.FieldId}}"></span>
+				<span id="wh_3_{{ field.FieldId}}"></span>
+				<span id="wh_4_{{ field.FieldId}}"></span>
+				<span id="wh_5_{{ field.FieldId}}"></span>
+				<span id="wh_6_{{ field.FieldId}}"></span>
+				<span id="wh_7_{{ field.FieldId}}"></span>
+				<span id="wh_8_{{ field.FieldId}}"></span>
+				<span id="wh_9_{{ field.FieldId}}"></span>
 		    ]
 		    </span>
 
