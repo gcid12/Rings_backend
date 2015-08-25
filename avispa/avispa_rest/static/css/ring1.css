@@ -231,6 +231,7 @@ filter: grayscale(100%);
 .mb-20{margin-bottom:20px !important;}
 .mb-30{margin-bottom:30px !important;}
 .mt-10{margin-top:10px !important;}
+.mr-10{margin-right:10px !important;}
 .mr-15{margin-right:15px !important;}
 .mr-20{margin-right:20px !important;}
 .mr-50{margin-right:50px !important;}
@@ -597,13 +598,6 @@ filter: grayscale(100%);
   background-color:#fff;
   padding:8px;
   color:#000;
-}
-
-.langtab{
-  font-size:0.8em;
-  min-width: 20px;
-  color: white;
-
 }
 
 
