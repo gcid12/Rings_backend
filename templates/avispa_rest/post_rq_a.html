@@ -128,6 +128,7 @@
 
     $(document).ready(function(){
 
+      //SET LAYER IN PORTLET
       $('#columnfields')
       .on('click', 'div div div div table tbody tr td div.treset' , function () {
         var layer = $(this).attr('layer');
@@ -138,7 +139,7 @@
         $("#tagvalue_"+order).attr("value",layer); 
       });
 
-      
+      //DELETE PORTLET
       $('#columnfields')
       .on('click', 'div div div div table tbody tr td div.delset' , function () {
         var order = $(this).attr('order');
@@ -150,10 +151,11 @@
 </script>
 
 <script type="text/javascript">
-
 //PORTLET
 $(function() {
 
+
+  //REORDERING OF PORTLETS
   $(".portlet-content").hide();
   $( "#columnfields" ).sortable({
     // connectWith: ".columnfields",
@@ -163,8 +165,7 @@ $(function() {
     opacity:0.7,
     cursor: "move",
     axis: 'y',
-    stop: function(event,ui){
-      
+    stop: function(event,ui){   
       var c = 1;    
       $('.field-order-input').each(function(index, value){
         //$(this).html(c.toString());
@@ -178,14 +179,7 @@ $(function() {
     }
   });
 
-  /*
-  $('.portlet-toggle').on('click', function () {
-   var icon = $( this );
-    icon.toggleClass( "fa-plus-circle fa-minus-circle" );
-    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle(); 
-  });
-*/
-
+  // SHOW/HIDE ADVANCED FIELDS IN PORTLET
   $('#columnfields')
       .on('click', 'div div table tbody tr td span i.fa-plus-circle' , function () {
         var icon = $( this );
@@ -196,17 +190,15 @@ $(function() {
       .on('click', 'div div table tbody tr td span i.fa-minus-circle' , function () {
         var icon = $( this );
         //console.log('open!'+fieldcount);
-        icon.toggleClass( "fa-plus-circle fa-minus-circle" );
+        icon.toggleClass( "fa-minus-circle fa-plus-circle" );
         icon.closest( ".portlet" ).find( ".portlet-content" ).toggle(); 
       });
-
-  //$(".tog").prepend( "<span class='label label-warning'>W</span>");
 });
-
-
 </script>
 
 <script type="text/javascript">
+
+  //CONVERT FIELDLABEL INTO SLUG AND PUT IN FIELDNAME 
   function string_to_slug(str) {
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
@@ -223,10 +215,8 @@ $(function() {
       .replace(/-+/g, '_'); // collapse dashes
 
     return str;
-}
-</script>
+  }
 
-<script type="text/javascript">
   $('#columnfields').on('change paste','div div table tbody tr td input.fieldlabel', function() {
     console.log('The field '+$(this).attr('name')+' has changed its value to '+$(this).val()); 
     var order = $(this).attr('order');
@@ -243,16 +233,18 @@ $(function() {
 </script>
 
 <script id="portlet-template" type="text/x-handlebars-template">
-{{ ui.portlet_raw() }}
+  //LOAD THE PORTLET TEMPLATE
+  {{ ui.portlet_raw() }}
 </script>
 
 <script type="text/javascript">
-   var source   = $("#portlet-template").html();
-   var template = Handlebars.compile(source);
+  //COMPILE THE PORTLET TEMPLATE
+  var source   = $("#portlet-template").html();
+  var template = Handlebars.compile(source);
 </script>
 
 <script type="text/javascript">
-
+  //CREATE A PORTLET IF THERE ARE NONE WHEN PAGE LOADS
   var fieldcount = "{{ request.args.get('n') }}"
   //console.log(fieldcount)
   if(fieldcount == "None"){
@@ -263,7 +255,7 @@ $(function() {
 
   }
   
-
+  //ADD NEW PORTLET/FIELD
   $( ".addfield" ).click(function() {
     fieldcount = parseInt(fieldcount,10)+ 1
     var context = {FieldOrder:fieldcount,FieldLayer:'2',new:false,FieldName:'',FieldWidget:'text',FieldCardinality:'single',FieldHint:'',FieldSource:'',FieldSemantic:'',FieldLabel:''}

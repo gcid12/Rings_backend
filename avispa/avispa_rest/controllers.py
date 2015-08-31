@@ -12,12 +12,14 @@ from flask.ext.login import (current_user, login_required, login_user, logout_us
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE, IMAGE_CDN_ROOT
 from MainModel import MainModel
+from timethis import timethis
+
 
 
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 
-
+@timethis
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     MAM = MainModel()
@@ -143,6 +145,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         return render_template(data['template'], data=data)
         #return 'ok'
 
+@timethis
 def tool_dispatcher(tool):
 
     MAM = MainModel()
@@ -169,7 +172,7 @@ def tool_dispatcher(tool):
     else:
         return render_template(data['template'], data=data)
 
-
+@timethis
 def patch_dispatcher(patchnumber):
 
     MAM = MainModel()
@@ -186,7 +189,7 @@ def patch_dispatcher(patchnumber):
     else:    
         return render_template(data['template'], data=data)
 
-
+@timethis
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     MAM = MainModel()
@@ -292,7 +295,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         return render_template(data['template'], data=data)
 
 
-
+@timethis
 def home_dispatcher(handle):
 
     MAM = MainModel()
@@ -513,6 +516,7 @@ def home_dispatcher(handle):
         data['redirect'] = '/'+current_user.id+'/_home'
         return data
 
+@timethis
 def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 
     MAM = MainModel()
@@ -571,7 +575,7 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
         return render_template(data['template'], data=data)
 
     
-
+@timethis
 def people_dispatcher(depth,handle,person=None):
 
     MAM = MainModel()
@@ -652,6 +656,7 @@ def people_dispatcher(depth,handle,person=None):
         return render_template(data['template'], data=data)
 
 
+@timethis
 def teams_dispatcher(depth,handle,team=None):
 
     MAM = MainModel()
@@ -737,6 +742,7 @@ def teams_dispatcher(depth,handle,team=None):
 
 
 # Set the route and accepted methods
+@timethis
 @avispa_rest.route('/')
 @login_required
 def index():
@@ -746,9 +752,8 @@ def index():
     #return render_template("avispa_rest/intro.html", data=data)
     return redirect('/'+current_user.id+'/_home')
 
-
+@timethis
 @avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
-
 def imageserver(filename,depth1,depth2):
 
     #current_app.logger.debug('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
@@ -756,43 +761,42 @@ def imageserver(filename,depth1,depth2):
     avispa_rest.static_folder=IMAGE_STORE+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
 
-
+@timethis
 @avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
-
 def static(filename):
 
     avispa_rest.static_folder='static'
     return avispa_rest.send_static_file(filename)
 
+@timethis
 @avispa_rest.route('/static/<depth1>/<filename>', methods=['GET', 'POST'])
-
 def static2(filename,depth1):
 
     avispa_rest.static_folder='static/'+depth1
     return avispa_rest.send_static_file(filename)
 
+@timethis
 @avispa_rest.route('/static/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
-
 def static3(filename,depth1,depth2):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
 
+@timethis
 @avispa_rest.route('/static/<depth1>/<depth2>/<depth3>/<filename>', methods=['GET', 'POST'])
-
 def static4(filename,depth1,depth2,depth3):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3
     return avispa_rest.send_static_file(filename)
 
+@timethis
 @avispa_rest.route('/static/<depth1>/<depth2>/<depth3>/<depth4>/<filename>/', methods=['GET', 'POST'])
-
 def static5(filename,depth1,depth2,depth3,depth4):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
     return avispa_rest.send_static_file(filename)
 
-
+@timethis
 @avispa_rest.route('/_tools/install', methods=['GET'])
 #This is needed because in a Vanilla install there are no users so /_tools/install would redirect me to /_login
 def first_install():
@@ -805,6 +809,7 @@ def first_install():
     else:
         return result
 
+@timethis
 @avispa_rest.route('/_tools/<tool>', methods=['GET','POST'])
 def tool(tool):
 
@@ -815,7 +820,7 @@ def tool(tool):
     else:
         return result
 
-
+@timethis
 @avispa_rest.route('/_patch/<patchnumber>', methods=['GET'])
 def patch(patchnumber):
 
@@ -826,7 +831,7 @@ def patch(patchnumber):
     else:
         return result
 
-
+@timethis
 @avispa_rest.route('/<handle>/_home', methods=['GET'])
 #The home of user <handle>
 def home(handle):
@@ -839,6 +844,7 @@ def home(handle):
         return result
 
 
+@timethis
 @avispa_rest.route('/<handle>/_people', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 def people_a_p(handle):
@@ -850,6 +856,7 @@ def people_a_p(handle):
     else:
         return result
 
+@timethis
 @avispa_rest.route('/<handle>/_people/<person>', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 def people_a_p_q(handle,person):
@@ -862,7 +869,7 @@ def people_a_p_q(handle,person):
         return result
     
 
-
+@timethis
 @avispa_rest.route('/<handle>/_teams', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 def teams_a_m(handle):
@@ -874,6 +881,7 @@ def teams_a_m(handle):
     else:
         return result
 
+@timethis
 @avispa_rest.route('/<handle>/_teams/<team>', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 def teams_a_m_n(handle,team):
@@ -886,6 +894,7 @@ def teams_a_m_n(handle,team):
         return result
 
 
+@timethis
 @avispa_rest.route('/<handle>/_teams/<team>/_settings', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 @login_required
@@ -898,6 +907,7 @@ def teams_a_m_n_settings(handle,team):
     else:
         return result
 
+@timethis
 @avispa_rest.route('/<handle>/_teams/<team>/_invite', methods=['GET','POST','PUT','PATCH','DELETE'])
 #The home of user <handle>
 @login_required
@@ -912,7 +922,7 @@ def teams_a_m_n_invite(handle,team):
 
 
 
-
+@timethis
 @avispa_rest.route('/_roles/<handle>', methods=['GET'])
 @login_required
 def roles_a(handle):
@@ -925,6 +935,7 @@ def roles_a(handle):
         return result
 
 
+@timethis
 @avispa_rest.route('/_roles/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def roles_a_b(handle,ring):
@@ -936,7 +947,7 @@ def roles_a_b(handle,ring):
     else:
         return result
     
-
+@timethis
 @avispa_rest.route('/_roles/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def roles_a_b_c(handle,ring,idx):
@@ -948,6 +959,7 @@ def roles_a_b_c(handle,ring,idx):
     else:
         return result
 
+@timethis
 @avispa_rest.route('/_roles/<handle>/_collection', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def roles_a_x(handle,collection):
@@ -959,6 +971,7 @@ def roles_a_x(handle,collection):
     else:
         return result
 
+@timethis
 @avispa_rest.route('/_roles/<handle>/_collection/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def roles_a_x_y(handle,collection):
@@ -972,6 +985,7 @@ def roles_a_x_y(handle,collection):
 
 
 #API
+@timethis
 @avispa_rest.route('/_api/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def api_collections_route_a_x(handle):
 
@@ -990,7 +1004,7 @@ def api_collections_route_a_x(handle):
     else:
         return result
 
-
+@timethis
 @avispa_rest.route('/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def collections_route_a_x(handle):
@@ -1003,6 +1017,7 @@ def collections_route_a_x(handle):
         return result
 
 #API
+@timethis
 @avispa_rest.route('/_api/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def api_collections_route_a_x_y(handle,collection):
 
@@ -1050,6 +1065,7 @@ def api_collections_route_a_x_y(handle,collection):
         return result
 
 
+@timethis
 @avispa_rest.route('/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def collections_route_a_x_y(handle,collection):
@@ -1089,7 +1105,7 @@ def collections_route_a_x_y(handle,collection):
     else:
         return result
 
-
+@timethis
 @avispa_rest.route('/_api/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def api_collections_route_a_x_y_b(handle,collection,ring):
 
@@ -1108,6 +1124,7 @@ def api_collections_route_a_x_y_b(handle,collection,ring):
     else:
         return result
 
+@timethis
 @avispa_rest.route('/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def collections_route_a_x_y_b(handle,collection,ring):
@@ -1119,7 +1136,7 @@ def collections_route_a_x_y_b(handle,collection,ring):
     else:
         return result
 
-
+@timethis
 @avispa_rest.route('/<handle>/_collections/<collection>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def collections_route_a_x_y_b_c(handle,collection,ring,idx):
@@ -1134,6 +1151,7 @@ def collections_route_a_x_y_b_c(handle,collection,ring,idx):
 
 
 #API
+@timethis
 @avispa_rest.route('/_api/<handle>', methods=['GET','POST'])
 def api_route_a(handle):
 
@@ -1145,6 +1163,7 @@ def api_route_a(handle):
         return result
 
 #API
+@timethis
 @avispa_rest.route('/_api/<handle>/<ring>', methods=['GET','POST'])
 def api_route_a_b(handle,ring):
 
@@ -1156,6 +1175,7 @@ def api_route_a_b(handle,ring):
         return result
 
 #API
+@timethis
 @avispa_rest.route('/_api/<handle>/<ring>/<idx>', methods=['GET','POST'])
 def api_route_a_b_c(handle,ring,idx):
 
@@ -1167,6 +1187,7 @@ def api_route_a_b_c(handle,ring,idx):
         return result
 
 
+@timethis
 @avispa_rest.route('/<handle>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def route_a(handle):
@@ -1185,7 +1206,7 @@ def route_a(handle):
     else:
         return result
     
-
+@timethis
 @avispa_rest.route('/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def route_a_b(handle,ring):
@@ -1197,8 +1218,7 @@ def route_a_b(handle,ring):
     else:
         return result
         
-
-
+@timethis
 @avispa_rest.route('/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def route_a_b_c(handle,ring,idx):

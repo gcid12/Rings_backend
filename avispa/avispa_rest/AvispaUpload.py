@@ -95,7 +95,7 @@ class AvispaUpload:
             self.uploaded_file = os.path.join(self.IMAGE_FOLDER, filename)
             return True
         except:
-            current_app.logger.debug("Unexpected error:", sys.exc_info()[0])
+            current_app.logger.debug("Unexpected error:"+str(sys.exc_info()[0]))
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
             self.rs_status='500'
             raise
@@ -189,7 +189,7 @@ class AvispaUpload:
             self.image_sizes.append(multiplied)
             return True
         except:
-            current_app.logger.debug("Unexpected error:", sys.exc_info()[0])
+            current_app.logger.debug("Unexpected error:"+str(sys.exc_info()[0]))
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
             self.rs_status='500'
             raise

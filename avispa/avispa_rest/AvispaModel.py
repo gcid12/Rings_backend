@@ -154,7 +154,7 @@ class AvispaModel:
             return True    
 
         except:
-            current_app.logger.error ("Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            current_app.logger.error ("Unexpected error:"+str( sys.exc_info()[0] )+str( sys.exc_info()[1]))
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             raise

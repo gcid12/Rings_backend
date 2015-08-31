@@ -3,177 +3,156 @@
 {% block title %} {% endblock %}
 
 {% block crumb02 %}
-  <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-      <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
-          <span class="fc-a fs-0-7">{{ data.collection }}</span> 
-      </a>
+<i class="fa fa-arrow-right breadinter"></i>
+<a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
+  <span class="fc-a fs-0-7">{{ data.collection }}</span> 
+</a>
 {% endblock %}
+
 {% block crumb03 %}
-    <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-    <a href="/{{ data.handle }}/_collections/{{ data.collection}}/{{ data.ring }}" class="nounder">
-        <span class="fc-a fs-0-7">{{ data.ring }}</span>
-    </a>
+<i class="fa fa-arrow-right breadinter"></i>
+<a href="/{{ data.handle }}/_collections/{{ data.collection}}/{{ data.ring }}" class="nounder">
+  <span class="fc-a fs-0-7">{{ data.ring }}</span>
+</a>
 {% endblock %}
-
-
 
 {% block tabcontent %}
-
-
 <div class="rn-curtain"> 
-        <table class="table table-condensed"> 
-            {#{ ui.panel(data.ring, data.ringorigin, data.handle, '#fce121', data.ringcount , '','',data.collection, data.user_authorizations) }#}  
-
-            {{ ui.panel3(data,'#fce121') }} 
-                   
-        </table>
-            
-        <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
-                   <span class="fs-1-2"><i class="fa fa-pencil pad-x-10"></i> <strong> Modifying</strong> the ring schema for "{{ data.handle }}/{{ data.ring }}"</span>
-        </div>
-   
-
-<!-- ROW NAME AND DESCRIPTION -->
-
-<form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}/{{ data.ring }}?method=PUT" method="POST">
-
-
-<div class="row rn-box-content">
-    <div class="col-sm-2">
-        
-        
+  <table class="table table-condensed"> 
+    {{ ui.panel3(data,'#fce121') }}              
+  </table>     
+  <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
+    <span class="fs-1-2">
+      <i class="fa fa-pencil pad-x-10"></i>
+      <strong> Modifying</strong> the ring schema for "{{ data.handle }}/{{ data.ring }}"
+    </span>
+  </div>
+  <!-- ROW NAME AND DESCRIPTION -->
+  <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}/{{ data.ring }}?method=PUT" method="POST">
+    <div class="row rn-box-content">
+      <div class="col-sm-2"> 
         <h2 class="fs-4">1</h2> 
         <p class=" text-s1">Ring Name and Description</p>
-
-
-    </div>
-    <div class="col-sm-10">
+      </div>
+      <div class="col-sm-10">
         <div class="spa20">
         </div>
-
-
-                {%if data.collection %}
-                <input type="hidden" name="collection" value="{{data.collection}}">
-                {%endif%}
-                
-                <div class="input-group input-group-sm">
-                  <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
-                  <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}" disabled>
-                     <input name="RingName" type="hidden" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}">
-                </div>
-                
-                <div class="input-group input-group-sm">
-                  <span class="input-group-addon" id="sizing-addon1">Description</span>
-                  <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this ring unique?" style="height:100px;" >{{ data.ringschema.RingDescription }}</textarea>
-                </div>
-
-
-                <div class="text-right spa10">
-                    <a class="clearlink" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                      <p><i class="fa fa-wrench"></i> &nbsp; Advanced settings</p>
-                    </a>
-                </div>
-                    
-                <div class="collapse" id="collapseExample">
-                    <div class="box box-clear">
-                        <div class="input-group input-group-sm">
-                          <span class="input-group-addon" id="sizing-addon1">Label</span>
-                          <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the ring" value="{{ data.ringschema.RingLabel }}">
-                        </div>
-                        <div class="input-group input-group-sm">
-                          <span class="input-group-addon" id="sizing-addon1">Version</span>
-                          <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="" value="{{ data.ringschema.RingVersion }}">
-                        </div>
-                        <div class="input-group input-group-sm">
-                          <span class="input-group-addon" id="sizing-addon1">URI</span>
-                          <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="" value="{{ data.ringschema.RingURI }}">
-                        </div>
-                        <div class="input-group input-group-sm">
-                          <span class="input-group-addon" id="sizing-addon1">Build</span>
-                          <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="" value="{{ data.ringschema.RingBuild }}">
-                        </div>
-                        <div class="text-right">
-                            {#{ Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" /> }#}
-                        </div>
-                    </div>
-                    <br/>
-                </div>
-
-
-                
-        
-    </div>
-</div>
-<div class="row rn-box-content">
-    <div class="col-sm-12">
-        <hr/>
-    </div>          
-</div>
-
-<div class="row rn-box-content">
-          <div class="col-sm-2">
-            <h2 class="fs-4 ">2</h2> <p class="text-s1">Ring fields</p>
-              
-          </div>
-          <div class="col-sm-10">
-
-            
-              <div id="columnfields"> <!-- A. START DRAG AREA -->
-                {% for field in data.fieldsschema %}
-                
-                    {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSource,field.FieldSemantic,field.FieldLabel) }}
-                  <!-- N FIELD END -->
-
-              {% endfor %}
-
-              </div> <!-- A. CLOSE COLUMN  -->
-              Add a new field
-            
-          </div><!-- CLOSE COLSM10 -->
-        </div><!-- CLOSE ROW -->
-     
-    <div>
-        <!-- SUBMIT -->
-
-        <div class="rn-box-content">
-          <br/>
-          <div class="form-group">
-            <label for="inputPassword3" class="col-sm-2 control-label"></label>
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary">Save</button>
-              <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
-            </div>
-            <a style="float:right; padding:25px;" href="/{{ data.handle }}/{{ data.ring }}?method=delete" ><p><i class="fa fa-trash-o"></i> &nbsp; Delete this Ring</p></a>
-
-            
-
-          </div>
+  {%if data.collection %}
+        <input type="hidden" name="collection" value="{{data.collection}}">
+  {%endif%}  
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon" id="sizing-addon1">
+            Ring Name
+          </span>
+          <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}" disabled>
+          <input name="RingName" type="hidden" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}">
         </div>
-
-        <!-- SUBMIT END -->
-        <!-- RING END -->          
-    </div> 
-</div>
-<br/><br/><br/>
-</form> 
-
-
-<hr/>
-
-<h4>Schema</h4>
-
-<div class="row">
-  <div class="col-sm-offset-2 col-sm-5">
-    
-    <table class="table table-condensed fs-0-8">
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon" id="sizing-addon1">
+            Description
+          </span>
+          <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this ring unique?" style="height:100px;" >
+            {{ data.ringschema.RingDescription }}
+          </textarea>
+        </div>
+        <div class="text-right spa10">
+          <a class="clearlink" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <p>
+              <i class="fa fa-wrench"></i>
+              &nbsp; Advanced settings
+            </p>
+          </a>
+        </div>               
+        <div class="collapse" id="collapseExample">
+          <div class="box box-clear">
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon" id="sizing-addon1">
+                Label
+              </span>
+              <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the ring" value="{{ data.ringschema.RingLabel }}"/>
+            </div>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon" id="sizing-addon1">
+                Version
+              </span>
+              <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="" value="{{ data.ringschema.RingVersion }}">
+            </div>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon" id="sizing-addon1">
+                URI
+              </span>
+              <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="" value="{{ data.ringschema.RingURI }}"/>
+            </div>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon" id="sizing-addon1"> 
+                Build
+              </span>
+              <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="" value="{{ data.ringschema.RingBuild }}"/>
+            </div>
+            <div class="text-right">
+              {#{ Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" /> }#}
+            </div>
+          </div>
+          <br/>
+        </div>    
+      </div>
+    </div>
+    <div class="row rn-box-content">
+      <div class="col-sm-12">
+        <hr/>
+      </div>          
+    </div>
+    <div class="row rn-box-content">
+      <div class="col-sm-2">
+        <h2 class="fs-4 ">2</h2>
+        <p class="text-s1">Ring fields</p>     
+      </div>
+      <div class="col-sm-10">
+        <div id="columnfields">
+          <!-- A. START DRAG AREA -->
+  {% for field in data.fieldsschema %}
+          {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSource,field.FieldSemantic,field.FieldLabel) }}
+          <!-- N FIELD END -->
+  {% endfor %}
+        </div> <!-- A. CLOSE COLUMN  -->
+        Add a new field
+      </div><!-- CLOSE COLSM10 -->
+    </div><!-- CLOSE ROW -->  
+    <div>
+      <!-- SUBMIT -->
+      <div class="rn-box-content">
+        <br/>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label"></label>
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">
+              Save
+            </button>
+            <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>  
+          </div>
+          <a style="float:right; padding:25px;" href="/{{ data.handle }}/{{ data.ring }}?method=delete" >
+            <p>
+              <i class="fa fa-trash-o"></i> &nbsp; Delete this Ring
+            </p>
+          </a>
+        </div>
+      </div>
+      <!-- SUBMIT END -->
+      <!-- RING END -->          
+    </div>  
+    <br/><br/><br/>
+  </form> 
+  <hr/>
+  <h4>Schema</h4>
+  <div class="row">
+    <div class="col-sm-offset-2 col-sm-5">
+      <table class="table table-condensed fs-0-8">
     {% for field in data.fieldsschema %}
         {{ ui.showSchema(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSemantic,field.FieldLabel) }}
     {% endfor %}
-    </table>
-
+      </table>
+    </div> 
   </div>
-  
-</div>
 
 {% endblock %}
 
@@ -192,6 +171,8 @@
     var allbb= "bc-1 bc-2 bc-3 bc-4 bc-5 bc-6 bc-7 ";
 
       $(document).ready(function(){
+
+        //SET LAYER IN PORTLET(OLD)
         $(".treset").click(function(){
           var layer = $(this).attr('layer');
           var order = $(this).attr('order');
@@ -204,32 +185,27 @@
 
 
     <script type="text/javascript">
-        //PORTLET
+        
         $(function() {
+
+          //REORDERING OF PORTLETS(OLD)
           $(".portlet-content").hide();
           $( "#columnfields" ).sortable({
           // connectWith: ".columnfields",
-          handle: ".handler",
-          cancel: ".portlet-toggle",
-          placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
-          opacity:0.7,
-          cursor: "move",
-          axis: 'y',
-          stop: function(event,ui){
-            var pOrder = $(this).sortable('toArray').toString();
-            $(".exit").prepend( pOrder);
-          }
-
-
+            handle: ".handler",
+            cancel: ".portlet-toggle",
+            placeholder: "portlet-placeholder ui-corner-all ui-sort-position",
+            opacity:0.7,
+            cursor: "move",
+            axis: 'y',
+            stop: function(event,ui){
+              var pOrder = $(this).sortable('toArray').toString();
+              $(".exit").prepend( pOrder);
+            }
           });
-          //$( ".portlet" )
 
-            //.addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-            //.find( ".portlet-header" )
-            //.addClass( "ui-widget-header ui-corner-all" );
 
-          //$(".tog")
-          //  .prepend( "<i class='fa fa-plus-circle portlet-toggle'></i>");
+          // SHOW/HIDE ADVANCED FIELDS IN PORTLET (OLD)
           $( ".portlet-toggle" ).click(function() {
             var icon = $( this );
             icon.toggleClass( "fa-plus-circle fa-minus-circle" );
@@ -243,6 +219,8 @@
     </script>
 
     <script>
+
+      //CONVERT FIELDLABEL INTO SLUG AND PUT IN FIELDNAME (OLD)
       function string_to_slug(str) {
         str = str.replace(/^\s+|\s+$/g, ''); // trim
         str = str.toLowerCase();
