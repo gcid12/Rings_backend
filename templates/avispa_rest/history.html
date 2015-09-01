@@ -33,7 +33,7 @@
     <div class="row m-10">
       <div class="col-sm-12  alpha">
   {% if 'post_a_x' in data.user_authorizations %}
-    {% if data.dac_totals|sum!=0 %}
+    {#% if data.dac_totals|sum!=0 %#}
         <div class="gcard hidden-xs">
           <div class="gcard-title">
             Activity
@@ -42,23 +42,23 @@
           </div>
           <div class="row">
             <div class="col-sm-12 " id="step1">
-      {% if data.dac_totals|sum<=0 %}
-        {% set graph = 'avispa_rest/graph_dailyactivity.html' %}   
-        {% include graph  %} 
-      {%endif%}
+      {#% if data.dac_totals|sum <= 0 %#}
+        {#% set graph = 'avispa_rest/graph_dailyactivity.html' %#}   
+        {#% include graph  %#} 
+      {#%endif%#}
               <div id="usergraph" class="ugp-container">
               </div>
-      {% if data.dac_totals|sum >=1 %}
+      {#% if data.dac_totals|sum >=1 %#}
               <div class="lead fs-1 text-lgray hidden-xs" id="chisme" style="float:right;">
                 <a data-toggle="modal" data-target="#intro-graph" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4">
                   <i class="fa fa-question-circle"></i>
                 </a>
               </div>
-      {%endif%}
+      {#%endif%#}
             </div>  
           </div>
         </div>
-    {%endif%}
+    {#%endif%#}
   {%endif%}
         <div style="display:none;" id="step2"> 
           <div class="box box-title">
@@ -117,7 +117,7 @@
                   <h4>{{d}}</h4>
                   {% for t in data.timeline[d]%}
                       
-                      <b>{{t['action']}}</b> ({{t['author']}}) <a href="/{{t['handle']}}/{{t['ring']}}/{{t['id']}}">{{t['handle']}}/{{t['ring']}}/{{t['id']}}</a><br/>
+                      <b>{{t['action']}}</b> ({{t['author']}}) <a href="/{{t['handle']}}/{{t['ring']}}/{{t['id']}}">{{t['handle']}}/{{t['ring']}}/{{t['id']}}</a>  Datapoints:{{t['size']}}<br/>
                   {%endfor%}
               {% endfor %}
             </div>
@@ -127,11 +127,21 @@
     </div>
   </div>
 </section>
-                    
-                    {#{data.dac_totals}#}                   
-                    {#{data.dac_totals_date}#}
-                    {#{data.ring_counts}#}                    
-                    {#{data.total_items}#}
-                    {#{data.timeline}#}
+                    <!--
+                    data.dac_totals <br/>
+                    {#{data.dac_totals}#} <br/><br/> 
+
+                    data.dac_totals_date<br/>   
+                    {#{data.dac_totals_date}#} <br/><br/> 
+
+                    data.ring_counts <br/>
+                    {#{data.ring_counts}#} <br/><br/>  
+
+                    data.total_items <br/>
+                    {#{data.total_items}#}<br/><br/>
+
+                    data.timeline <br/>
+                    {#{data.timeline}#}<br/><br/>
+                    -->
 {% endblock %}
 

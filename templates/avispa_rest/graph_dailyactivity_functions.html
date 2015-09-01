@@ -1,35 +1,41 @@
                              <!-- To use the graph, just load "days" with an array full of numbers, the javascript will adapt to them This is a Work in Progress.. -->
 
                               <script>
+                               
+                                days = {{data.dac_totals}}
+                                daysdate = {{data.dac_totals_date|tojson}};
+                                console.log(daysdate);
 
-                                days = {{data.dac_totals}};
+                                var length = days.length;
+                                var min = Math.min.apply(null, days);
+                                var max = Math.max.apply(null, days);
+                                var sum = days.reduce( function(total, num){ return total + num }, 0);
+                                var avg = Math.round(sum / length);
 
+                                $("#chisme").append("<span> <strong>Items: </strong>"+ {{data.total_items}} +" | </span>");
+                                $("#chisme").append("<span> <strong>Points: </strong>"+ sum +" | </span>");
+                                $("#chisme").append("<span> <strong>Upload</strong> Average: "+ avg +" /day | </span>");
+                                $("#chisme").append("<span> Record: "+ max +" </span>");
+                                
+                                var i;
 
-                                var length = days.length ,
-                                  min = Math.min.apply(null, days),
-                                  max = Math.max.apply(null, days),
-                                  sum = days.reduce( function(total, num){ return total + num }, 0),
-                                  avg = Math.round(sum / length) ;
+                                for(i in daysdate){
 
-                                  $("#chisme").append("<span> <strong>Items: </strong>"+ {{data.total_items}} +" | </span>");
-                                  $("#chisme").append("<span> <strong>Points: </strong>"+ sum +" | </span>");
-                                  $("#chisme").append("<span> <strong>Upload</strong> Average: "+ avg +" /day | </span>");
-                                  $("#chisme").append("<span> Record: "+ max +" </span>");
-                                  var i;
-                                for (i = 0; i < days.length; i++) {
-                                  //1 day more, to avoid problems with zero
-                                  var d= parseInt(days[i]);
-                                  var d1= parseInt(days[i]) + 1;
+                                  var d= parseInt(daysdate[i]);
+                                  var d1= parseInt(daysdate[i]) + 1;
                                   var pcent= (d1 * 100) / max;
                                   //Setting opacity
                                   var opacity= (pcent +20) / 100;
                                   //Creating the day inside usergraph
                                     if (d != max) { 
-                                      $("#usergraph").append("<div class='ugp' style='height: "+pcent + "%; opacity:"+ opacity + ";' data-toggle='tooltip' title=' " + d +"'></div>");
+                                      $("#usergraph").append("<div class='ugp' style='height: "+pcent + "%; opacity:"+ opacity + ";' data-toggle='tooltip' title='"+i+": " + d +"'></div>");
                                     }else{
-                                      $("#usergraph").append("<div class='ugp ugp2' style='height: "+pcent + "%; opacity:"+ opacity + "; ' data-toggle='tooltip' title='Record: " + d +"' id='t002_2'></div>");
-                                    }  
+                                      $("#usergraph").append("<div class='ugp ugp2' style='height: "+pcent + "%; opacity:"+ opacity + "; ' data-toggle='tooltip' title='"+i+": " + d +"' id='t002_2'></div>");
+                                    } 
+
                                 }
+
+
                                 //defining the witdth of div (amount of items / 100%)
                                 var divisions = 100 / length +"%";
                                 $('.ugp').css('width', divisions);

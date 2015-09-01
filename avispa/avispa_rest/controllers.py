@@ -586,7 +586,7 @@ def history_dispatcher(handle,ring=None):
             for item_dac in ring_dac:
 
                 
-
+                
                 for t in item_dac['value']:
 
                     # t is the history type. It could be 'new', 'update', etc
@@ -609,6 +609,7 @@ def history_dispatcher(handle,ring=None):
                                                         'size':item_dac['value'][t][q],
                                                         'handle': parts[0],
                                                         'ring':parts[1]})
+                
 
 
                 for n in item_dac['value']['new']:
@@ -616,40 +617,49 @@ def history_dispatcher(handle,ring=None):
                         pass
                         #current_app.logger.debug('NEW TODAY:',item_dac['new'][n])
 
-                    if n in h_generic:
-                        h_generic[n] += item_dac['value']['new'][n]
+                    date = n[:10]
+
+                    if date in h_generic:
+                        h_generic[date] += item_dac['value']['new'][n]
 
                     
-                    if n in h_new:
-                        h_new[n] += item_dac['value']['new'][n]
+                    if date in h_new:
+                        h_new[date] += item_dac['value']['new'][n]
                     else:
-                        h_new[n] = item_dac['value']['new'][n]
+                        h_new[date] = item_dac['value']['new'][n]
                     
 
                 for n in item_dac['value']['update']:
+
                     if n == str(today):
                         pass
                         #current_app.logger.debug('UPDATED TODAY:',item_dac['update'][n])
 
+                    date = n[:10]
+
                     if n in h_generic:
-                        h_generic[n] += item_dac['value']['update'][n]
+                        h_generic[date] += item_dac['value']['update'][n]
                     
                     
                     if n in h_update:
-                        h_update[n] += item_dac['value']['update'][n]
+                        h_update[date] += item_dac['value']['update'][n]
                     else:
-                        h_update[n] = item_dac['value']['update'][n]
+                        h_update[date] = item_dac['value']['update'][n]
 
         data['timeline'] = collections.OrderedDict(sorted(timeline.items(), key=lambda t: t[0],reverse=True))
    
 
+        #data['dac_totals_date'] = h_generic
         data['dac_totals_date'] = h_generic
+
         totals_list = [ h_generic.get(k, 0) for k in h_generic]
         for tl in totals_list:
             if tl==0:
                 del tl
 
+        # [::-1] is used to reverse a list 
         data['dac_totals'] = totals_list[::-1]
+
 
 
         # END DAILYGRAPH
