@@ -16,7 +16,6 @@
 {% block footscripts %}
 
   {% if 'post_a_x' in data.user_authorizations %} 
-      {% include 'avispa_rest/graph_dailyactivity_functions.html'  %}
       {% include 'avispa_rest/steps_userhome_functions.html' %}
   {% endif %}
 
@@ -87,54 +86,7 @@
             <!-- SECOND COLUMN :::::::::::::::::::::::::::::::::::::::::-->
 
             <div class="col-sm-9  alpha">
-
-            <!-- {% if 'post_a_x' in data.user_authorizations %}
-              {% if data.dac_totals|sum!=0 %}
-                
-                <div class="gcard hidden-xs">
-
-                    <div class="gcard-title">
-
-                        Activity
-                        
-                        <div class="btn-group pull-right" role="group">
-                        </div>
-                        
-                    </div>
-
-                    {#{data.dac_totals}#}
-                    {#{data.dac_totals_date}#}
-                    {#{data.ring_counts}#}
-                    {#{data.total_items}#}
-                    <div class="row">
-                        <div class="col-sm-12 " id="step1">
-
-
-                          
-                            {% if data.dac_totals|sum<=0 %}
-
-                              {% set graph = 'avispa_rest/graph_dailyactivity.html' %}   
-                              {% include graph  %} 
-
-                            {%endif%}
-                          
-
-                            <div id="usergraph" class="ugp-container">
-                            </div>
-
-
-                            {% if data.dac_totals|sum >=1 %}
-                            <div class="lead fs-1 text-lgray hidden-xs" id="chisme" style="float:right;">
-                                <a data-toggle="modal" data-target="#intro-graph" type="button" class="btn btn-default btn-xs pull-right margin-x-10" id="t002_4"><i class="fa fa-question-circle"></i></a>
-                            </div>
-                            {%endif%}
-
-                        </div>  
-                    </div>
-                </div>
-              {%endif%}
-            {%endif%} -->
-
+            
                 <!-- <div class="spa5"></div>
                 <div class="gcard">
                     <div class="gcard-title">
