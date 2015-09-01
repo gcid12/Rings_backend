@@ -338,7 +338,9 @@ class MainModel:
 
         return result
 
-    def select_ring_doc_view(self,ringdb,dbview,key,batch=None):
+    def select_ring_doc_view(self,ringdb,dbview,key=None,batch=None,showall=False):
+
+        print('select_ring_doc_view::'+ringdb+','+dbview+','+str(key)+','+str(batch))
 
 
         if not batch : 
@@ -346,24 +348,33 @@ class MainModel:
 
         db = self.select_db(ringdb)
         options = {}
-        options['key']=str(key)
+        if key:
+            options['key']=str(key)
+
         result = db.iterview(dbview,batch,**options)
         # This is a generator. If it comes empty, the username didn't exist.
         # The only way to figure that out is trying to iterate in it.
         #self.lggr.debug('iterview result for '+dbview+' with key '+key+':',result)
+
+        #print('gen len:',sum(1 for _ in result))
         
-        if batch == 1:
-            for r in result:     
-                return r['value']
-        else:
+        if batch == 1:           
+            for r in result: 
+                if showall:
+                    rr = {'key':r['key'],'id':r['id'],'value':r['value']}    
+                    return rr
+                else:
+                    return r['value']
+        else:           
             out = []
-            for r in result:
-                out.append(r['value'])
-            return out
-
-
+            for r in result:  
+                if showall: 
+                    rr = {'key':r['key'],'id':r['id'],'value':r['value']}       
+                    out.append(rr) 
+                else:
+                    out.append(r['value'])         
+            return out       
         return False
-
 
 
     def general_daily_activity(self,handle,user_database=None):

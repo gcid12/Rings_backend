@@ -1,11 +1,7 @@
                              <!-- To use the graph, just load "days" with an array full of numbers, the javascript will adapt to them This is a Work in Progress.. -->
 
                               <script>
-                                daysx = [20, 0, 0, 40, 0, 50, 30, 25,15, 00, 20, 35,13,20, 15, 0, 0,20, 0, 0, 15,15, 10, 40, 35,70, 85,35, 20, 0, 5,7,0, 0, 2, 0,25, 33, 0, 65,90, 67,32, 60, 0, 5,7,20, 15, 30, 65,30, 50, 80, 55,95, 10, 60, 115,70,20, 15, 30, 65,20, 0, 50, 90,95, 126, 40, 35,70, 85,35, 20, 0, 5,7,0, 1, 2, 0,25, 33, 0, 65,90, 90,32, 60, 0, 5,7];
-                                daysx = [30, 50, 80, 55,95, 10, 60, 115,70,20, 15, 30, 65,20, 0, 50, 90,95, 126, 40, 35,70, 85,35, 20, 0, 5,7,0, 1, 2, 0,25, 33, 0, 65,90, 90,32, 60, 0, 5,7];
-                                daysx = [85,35, 20, 0, 5,7,0, 1, 2, 0,25, 33, 0, 65,90, 90,32, 60, 0, 5,7];
-                                daysx = [ 33, 0, 65,90, 91,32, 60, 0, 5,7];
-                                daysx = [3,5,7];
+
                                 days = {{data.dac_totals}};
 
 
@@ -31,7 +27,7 @@
                                     if (d != max) { 
                                       $("#usergraph").append("<div class='ugp' style='height: "+pcent + "%; opacity:"+ opacity + ";' data-toggle='tooltip' title=' " + d +"'></div>");
                                     }else{
-                                      $("#usergraph").append("<div class='ugp ugp2' style='height: "+pcent + "%; opacity:"+ opacity + "; ' data-toggle='tooltip' title='Record: " + d +" <br/> Jan 23, 2015' id='t002_2'></div>");
+                                      $("#usergraph").append("<div class='ugp ugp2' style='height: "+pcent + "%; opacity:"+ opacity + "; ' data-toggle='tooltip' title='Record: " + d +"' id='t002_2'></div>");
                                     }  
                                 }
                                 //defining the witdth of div (amount of items / 100%)

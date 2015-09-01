@@ -517,6 +517,224 @@ def home_dispatcher(handle):
         return data
 
 @timethis
+def history_dispatcher(handle,ring=None):
+
+    MAM = MainModel()
+    g.ip = request.remote_addr
+    g.tid = MAM.random_hash_generator(36)
+
+    data = {}
+    
+
+    if MAM.user_exists(handle):
+
+        method= 'GET_a_home'
+        data['method'] = method
+        depth = '_a'  
+        authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle)
+
+        if 'authorized' not in authorization_result:
+            return render_template('avispa_rest/error_401.html', data=data),401
+
+        data['user_authorizations'] = authorization_result['user_authorizations']
+        data['handle'] = handle
+        data['image_cdn_root'] = IMAGE_CDN_ROOT
+
+
+        ##DAC
+        
+        # Daily Activity Graph steps
+        #0. Create the general count dictionary (with 365 slots)
+        #1. Retrieve all rings for this handle. Use view myringusers:ring/count
+        ringcounts = MAM.select_user_doc_view('rings/count',handle)
+        if ringcounts:
+            data['ring_counts'] = ringcounts
+            data['total_items'] = 0
+            for c in ringcounts:
+                data['total_items'] += ringcounts[c]
+
+        #2. Rerieve all the rings of all organizations where this user has something to do
+        #3. For each of the rings found:
+        
+
+        h_new = collections.OrderedDict()
+        h_update = collections.OrderedDict()
+        h_generic = collections.OrderedDict()
+
+        today = datetime.date.today()
+        one_day = datetime.timedelta(days=1)
+        needle = today
+        for d in range(93):
+            
+            ##current_app.logger.debug('NEEDLE:',needle)
+            h_new[str(needle)] = 0
+            h_update[str(needle)] = 0
+            h_generic[str(needle)] = 0
+            needle = needle - one_day
+
+        ##current_app.logger.debug('h_new:',h_new)
+        
+        timeline = {}
+            
+        for ringx in ringcounts:
+            ringdb = handle+'_'+ringx
+            ring_dac = MAM.select_ring_doc_view(ringdb,'ring/dailyactivity',batch=5000,showall=True)
+
+
+            #All the for loops below are very short. Should not cause an O(n^4)
+
+            for item_dac in ring_dac:
+
+                
+
+                for t in item_dac['value']:
+
+                    # t is the history type. It could be 'new', 'update', etc
+                    # item_dac['value'][t] is a date
+
+                    for q in item_dac['value'][t]:
+                        # q is a date
+
+                        if q not in timeline:
+                            timeline[q] = []
+
+                        if len(item_dac['value'][t])>0:
+                            parts = ringdb.split('_',1)
+
+
+                            timeline[q].append({
+                                                        'id':item_dac['id'],
+                                                        'author':item_dac['key'],
+                                                        'action':t,
+                                                        'size':item_dac['value'][t][q],
+                                                        'handle': parts[0],
+                                                        'ring':parts[1]})
+
+
+                for n in item_dac['value']['new']:
+                    if n == str(today):
+                        pass
+                        #current_app.logger.debug('NEW TODAY:',item_dac['new'][n])
+
+                    if n in h_generic:
+                        h_generic[n] += item_dac['value']['new'][n]
+
+                    
+                    if n in h_new:
+                        h_new[n] += item_dac['value']['new'][n]
+                    else:
+                        h_new[n] = item_dac['value']['new'][n]
+                    
+
+                for n in item_dac['value']['update']:
+                    if n == str(today):
+                        pass
+                        #current_app.logger.debug('UPDATED TODAY:',item_dac['update'][n])
+
+                    if n in h_generic:
+                        h_generic[n] += item_dac['value']['update'][n]
+                    
+                    
+                    if n in h_update:
+                        h_update[n] += item_dac['value']['update'][n]
+                    else:
+                        h_update[n] = item_dac['value']['update'][n]
+
+        data['timeline'] = collections.OrderedDict(sorted(timeline.items(), key=lambda t: t[0],reverse=True))
+   
+
+        data['dac_totals_date'] = h_generic
+        totals_list = [ h_generic.get(k, 0) for k in h_generic]
+        for tl in totals_list:
+            if tl==0:
+                del tl
+
+        data['dac_totals'] = totals_list[::-1]
+
+
+        # END DAILYGRAPH
+
+        ## END DAC DAC
+        
+
+
+        #This is to be used by the user bar
+        cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+        if cu_user_doc:
+
+            #data['cu_actualname'] = cu_user_doc['name']
+            data['cu_profilepic'] = cu_user_doc['profilepic']
+            #data['cu_location'] = cu_user_doc['location']
+            #data['cu_handle'] = current_user.id
+
+        #Thisi is the data from the handle we are visiting
+        if current_user.id == handle:
+            data['handle_actualname'] = cu_user_doc['name']
+            data['handle_profilepic'] = cu_user_doc['profilepic']
+            data['handle_location'] = cu_user_doc['location']
+            data['is_org'] = False
+
+        else:
+            handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+            if handle_user_doc:
+                data['handle_actualname'] = handle_user_doc['name']
+                data['handle_profilepic'] = handle_user_doc['profilepic']
+                data['handle_location'] = handle_user_doc['location']
+
+                if 'is_org' in handle_user_doc:
+                    if handle_user_doc['is_org']:
+                        data['is_org'] = True
+                    else:
+                        data['is_org'] = False
+
+
+        
+        peopleteams = MAM.is_org(handle) 
+        if peopleteams: 
+            #This is an organization         
+            data['people'] = peopleteams['people'] 
+            data['peoplethumbnails'] = {}
+            for person in peopleteams['people']:
+                #get the profilepic for this person
+                person_user_doc = MAM.select_user_doc_view('auth/userbasic',person['handle'])
+                if person_user_doc:
+                    data['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
+
+            data['teammembership'] = {}
+            allteams = {}
+            for teamd in peopleteams['teams']:
+                teamd['count']=len(teamd['members'])
+                for member in teamd['members']:
+                    if current_user.id == member['handle']:
+                        if teamd['teamname'] == 'owner':
+                            data['teammembership'][teamd['teamname']] = 'org_owner'
+                        else:
+                            if len(teamd['roles']) >= 1:
+                                data['teammembership'][teamd['teamname']] = teamd['roles'][-1]['role']
+                
+                allteams[teamd['teamname']] = 'org_owner'
+
+            if 'owner' in data['teammembership']:
+                data['teammembership'] = allteams
+
+
+            data['teams'] = peopleteams['teams']
+
+            data['template'] = 'avispa_rest/history.html'
+        else:
+            #This is a regular user
+         
+            
+            data['template'] = 'avispa_rest/history.html'
+
+     
+        return render_template(data['template'], data=data)
+
+    else:
+        data['redirect'] = '/'+current_user.id+'/_home'
+        return data
+
+@timethis
 def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 
     MAM = MainModel()
@@ -795,6 +1013,31 @@ def static5(filename,depth1,depth2,depth3,depth4):
 
     avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
     return avispa_rest.send_static_file(filename)
+
+@timethis
+@avispa_rest.route('/<handle>/_history', methods=['GET'])
+#This is to get the activity for a given user
+def history_h(handle):
+
+    result = history_dispatcher(handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/<handle>/<ring>/_history', methods=['GET'])
+#This is to get the activity for a given user
+def history_h_r(handle,ring):
+
+    result = history_dispatcher(handle,ring=ring)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
 
 @timethis
 @avispa_rest.route('/_tools/install', methods=['GET'])
