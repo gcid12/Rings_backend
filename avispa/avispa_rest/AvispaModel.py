@@ -466,6 +466,7 @@ class AvispaModel:
 
     #AVISPAMODEL
     def ring_get_schema(self,handle,ringname):
+        #Consider deprecating this function for ring_get_schema_from_view
 
         db_ringname=str(handle)+'_'+str(ringname)
         
@@ -793,7 +794,8 @@ class AvispaModel:
                 
                 return True
             else:
-                current_app.logger.error('Could not set origin')
+                
+                self.lggr.error('Could not set origin')
                 return False
 
 
@@ -812,8 +814,14 @@ class AvispaModel:
             #self.lggr.debug(row.value['fields'])    
             schema = {}
             #schema['rings']=row.value
+
+            
+
             schema['fields']=row.value['fields']
             schema['rings']=row.value['rings']
+
+            schema = self.schema_health_check(schema)
+            
             #schema['rings']=row.rings
             #schema['fields']=row.fields
 
@@ -823,6 +831,54 @@ class AvispaModel:
         return schema
 
         #return False
+
+    #AVISPAMODEL
+    def schema_health_check(self,schema):
+        # 1. Check if the FieldOrders are unique. If they aren't reassign
+        l = len(schema['fields'])
+        orderd= []
+        needsrepair = False
+
+        # Checking
+        for f in schema['fields']:
+            self.lggr.debug('Checking:'+str(f))
+            self.lggr.debug(orderd)
+            if f['FieldOrder']:
+                if f['FieldOrder'] in orderd:
+                    # Duplicated!
+                    needsrepair = True
+                else:
+                    orderd.append(f['FieldOrder'])
+            else:
+                needsrepair = True
+
+        # Repairing
+        if needsrepair:
+            self.lggr.info('Repairing FieldOrder. There where some duplicates')
+
+            i = 1
+            for f in schema['fields']:
+                f['FieldOrder'] = i
+                i = i+1
+        else:
+            self.lggr.info('No need for repair')
+
+
+        return schema
+            
+
+        
+
+
+        #if len(needsrepair)>0:
+
+           # for order[]
+           # for(r in needsrepair):
+
+
+
+
+
 
 
     #AVISPAMODEL

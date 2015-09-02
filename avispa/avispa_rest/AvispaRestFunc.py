@@ -640,7 +640,10 @@ class AvispaRestFunc:
         Form to create new item
         '''
         #current_app.logger.debug(ring)
-        schema = self.AVM.ring_get_schema(handle,ring)
+        schema = self.AVM.ring_get_schema_from_view(handle,ring)
+
+
+        #schema = self.AVM.ring_get_schema(handle,ring)
 
         d = {}
         d['ringdescription'] = schema['rings'][0]['RingDescription']
@@ -731,7 +734,8 @@ class AvispaRestFunc:
         Edits the Schema
         '''
 
-        schema = self.AVM.ring_get_schema(handle,ring)
+        schema = self.AVM.ring_get_schema_from_view(handle,ring)
+        print('SCHEMA',schema)
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)

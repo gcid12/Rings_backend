@@ -603,12 +603,12 @@ def history_dispatcher(handle,ring=None):
 
 
                             timeline[q].append({
-                                                        'id':item_dac['id'],
-                                                        'author':item_dac['key'],
-                                                        'action':t,
-                                                        'size':item_dac['value'][t][q],
-                                                        'handle': parts[0],
-                                                        'ring':parts[1]})
+                                                'id':item_dac['id'],
+                                                'author':item_dac['key'],
+                                                'action':t,
+                                                'size':item_dac['value'][t][q],
+                                                'handle': parts[0],
+                                                'ring':parts[1]})
                 
 
 
