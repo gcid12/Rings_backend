@@ -41,11 +41,11 @@
       {%endif%}  
       <div class="input-group input-group-sm">
         <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
-        <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring">
+        <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring" value="{{request.args.get('RingName')}}">
       </div>
       <div class="input-group input-group-sm">
         <span class="input-group-addon" id="sizing-addon1">Description</span>
-        <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" ></textarea>
+        <textarea name="RingDescription" class="form-control" rows="10" placeholder="Please describe the Ring" style="height:100px;" >{{request.args.get('RingDescription')}}</textarea>
       </div>
       <div class="spa20 hidden-xs"></div>
     </div>
@@ -60,10 +60,21 @@
         <p class="text-s1 text-lgray fs-1-5">Ring fields</p>   
       </div>
     <div class="col-sm-9">
-      {% set numfields = request.args.get('n')|int %}
+      {% set n = request.args.get('n')|int %}
       <div id="columnfields"> <!-- A. START DRAG AREA -->
-      {% for FieldOrder in range( 1, numfields+1) %}
-        {{ ui.portlet(FieldOrder,3,True,FieldName,'text',FieldCardinality,'','',FieldSemantic,FieldLabel) }}
+      
+      {% for m in range( 1, n+1) %}
+        {% set FieldLayer = request.args.get('FieldLayer_'~m) or 3 %}
+        {% set FieldName = request.args.get('FieldName_'~m) %}
+        {% set FieldWidget = request.args.get('FieldWidget_'~m) or 'text' %}
+        {% set FieldCardinality = request.args.get('FieldCardinality_'~m) %}
+        {% set FieldHint = request.args.get('FieldHint_'~m) or '' %}
+        {% set FieldSource = request.args.get('FieldSource_'~m) or '' %}
+        {% set FieldSemantic = request.args.get('FieldSemantic_'~m) %}
+        {% set FieldLabel = request.args.get('FieldLabel_'~m) %}
+
+        {{ ui.portlet(m,FieldLayer,True,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel) }}
+        
       {% endfor %}    
       </div> <!-- A. CLOSE COLUMN  -->
       <span class="addfield">Add a new field</span>  

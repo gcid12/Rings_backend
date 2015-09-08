@@ -126,15 +126,23 @@ class AvispaRestFunc:
 
                 flash(" There has been an issue, please check your parameters and try again. ",'UI')
                 param_list = []
+                unique = []
                 for p in request.form:
                     q =  p+'='+request.form.get(p)
                     param_list.append(q)
+                    
+                    parts = p.split('_')
+                    if len(parts)>=2:
+                        if parts[1] not in unique:
+                            print('FLAG1:',parts)
+                            unique.append(parts[1])
+
 
                 lpl = str(len(param_list))
                 recovery_string = '&'.join(param_list)
 
                 if collection:
-                    redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                    redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n='+str(len(unique))+'&'+str(recovery_string)
                 else:
                     redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
 
