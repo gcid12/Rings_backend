@@ -35,43 +35,43 @@ var langs ={
 
       // $(wt).html("<div id='t_"+num+"'><div class='input-group'><textarea class='form-control flag-aware increment' id='inp' rows='4' ></textarea><span class='input-group-addon fs-0-7' id='lan'></span><input type='hidden' id='inp_hidden'  value='0'></div></div>");
 
-      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment' id='inp' placeholder=''><span class='input-group-addon fs-0-7' id='lan'></span><input type='hidden' id='inp_hidden'  value='1'></div>");
+      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder=''><span class='input-group-addon fs-0-7 lan' ></span><input type='hidden' class='inp_hidden'  value='1'></div>");
 
-      $(wb).html("<a id='b_"+num+"'><span id='item' class='fc-b'><i id='icon' class='fa fa-toggle-on'></i> <span id='lan'></span></span></a>");
+      $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>");
 
-      $(wh).html("<span id='h_"+num+"'><span id='lan'></span> : <span id='out'></span>, </span> ");
+      $(wh).html("<span id='h_"+num+"'><span class='lan'></span> : <span class='out'></span>, </span> ");
 
 
 
       a1= $(t).find('#inp_hidden').val();
       
-      $(t).find('#lan').append(uppername);
-      $(t).find('#inp_hidden').attr("placeholder",longname);
-      $(b).find('#lan').append(longname);
-      $(h).find('#lan').append(shortname);
+      $(t).find('.lan').append(uppername);
+      $(t).find('.inp_hidden').attr("placeholder",longname);
+      $(b).find('.lan').append(longname);
+      $(h).find('.lan').append(shortname);
 
 
       if (shortname != 'eng') {
         $(t).hide(); 
         $(h).hide(); 
-        $(b).find('#icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
-        $(b).find('#item').switchClass('fc-b' , 'fc-g');
+        $(b).find('.icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
+        $(b).find('.item').switchClass('fc-b' , 'fc-g');
       }
 
       $(b).click(function() {     
          $(t).toggle("slide", { direction: "up" }, 500);
-         $(b).find('#icon').toggleClass('fa-toggle-off fa-toggle-on');
-         $(b).find('#item').toggleClass('fc-b fc-g');
+         $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
+         $(b).find('.item').toggleClass('fc-b fc-g');
          $(h).toggle(); 
       });
 
 
       //INPUT , OUTPUT
-      var inp= $(t).find('#inp');
+      var inp= $(t).find('.inp');
 
       inp.on("input", function() {
         
-        $(h).find('#out').text(this.value);
+        $(h).find('.out').text(this.value);
 
 
       });
