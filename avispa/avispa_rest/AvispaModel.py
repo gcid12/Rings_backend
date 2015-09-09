@@ -154,7 +154,7 @@ class AvispaModel:
             return True    
 
         except:
-            current_app.logger.error ("Unexpected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            current_app.logger.error ("Unexpected error:"+str( sys.exc_info()[0] )+str( sys.exc_info()[1]))
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             raise
@@ -308,25 +308,25 @@ class AvispaModel:
             view.sync(db)
 
         if not specific or specific == 'ring/dailyactivity':
-            view = ViewDefinition('ring', 'dailyactivity', 
+            view = ViewDefinition('ring', 'dailyactivity',
                    '''
                     function(doc) {
                       if(doc.history) {
                          if(!doc.deleted) {
-                            var c = new Object(); 
-                            
+                            var c = {}; 
+
                             for (var key in doc.history[0]) {           
                                for (var h in doc.history[0][key]){ 
                                    var author = doc.history[0][key][h]['author'];
                                    var action = doc.history[0][key][h]['action'];
-                                   var date = doc.history[0][key][h]['date'].substring(0,10);
-                                   var before = doc.history[0][key][h]['before']
-                                   var after = doc.history[0][key][h]['after']
-                                   
+                                   var date = doc.history[0][key][h]['date'].substring(0,16);
+                                   var before = doc.history[0][key][h]['before'];
+                                   var after = doc.history[0][key][h]['after'];
+
                                    if(!(author in c)){               
-                                       var a = new Object();
-                                       a['new'] = new Object();
-                                       a['update'] = new Object();                
+                                       var a = {};
+                                       a['new'] = {};
+                                       a['update'] = {};                
                                        c[author] = a;
                                    }
 
@@ -345,12 +345,13 @@ class AvispaModel:
                                    }                              
                                }
                             }
-                            for(ax in c){
+                            for(var ax in c){
                                 emit(ax, c[ax]); 
                             }       
                          }
                       }
                     }
+
                    ''')
 
             view.get_doc(db)
@@ -465,6 +466,7 @@ class AvispaModel:
 
     #AVISPAMODEL
     def ring_get_schema(self,handle,ringname):
+        #Consider deprecating this function for ring_get_schema_from_view
 
         db_ringname=str(handle)+'_'+str(ringname)
         
@@ -792,7 +794,8 @@ class AvispaModel:
                 
                 return True
             else:
-                current_app.logger.error('Could not set origin')
+                
+                self.lggr.error('Could not set origin')
                 return False
 
 
@@ -811,8 +814,14 @@ class AvispaModel:
             #self.lggr.debug(row.value['fields'])    
             schema = {}
             #schema['rings']=row.value
+
+            
+
             schema['fields']=row.value['fields']
             schema['rings']=row.value['rings']
+
+            schema = self.schema_health_check(schema)
+            
             #schema['rings']=row.rings
             #schema['fields']=row.fields
 
@@ -822,6 +831,54 @@ class AvispaModel:
         return schema
 
         #return False
+
+    #AVISPAMODEL
+    def schema_health_check(self,schema):
+        # 1. Check if the FieldOrders are unique. If they aren't reassign
+        l = len(schema['fields'])
+        orderd= []
+        needsrepair = False
+
+        # Checking
+        for f in schema['fields']:
+            self.lggr.debug('Checking:'+str(f))
+            self.lggr.debug(orderd)
+            if f['FieldOrder']:
+                if f['FieldOrder'] in orderd:
+                    # Duplicated!
+                    needsrepair = True
+                else:
+                    orderd.append(f['FieldOrder'])
+            else:
+                needsrepair = True
+
+        # Repairing
+        if needsrepair:
+            self.lggr.info('Repairing FieldOrder. There where some duplicates')
+
+            i = 1
+            for f in schema['fields']:
+                f['FieldOrder'] = i
+                i = i+1
+        else:
+            self.lggr.info('No need for repair')
+
+
+        return schema
+            
+
+        
+
+
+        #if len(needsrepair)>0:
+
+           # for order[]
+           # for(r in needsrepair):
+
+
+
+
+
 
 
     #AVISPAMODEL

@@ -61,7 +61,7 @@
                     <span class="caret"></span><span class="hidden-xs">Actions</span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}/_collections/{{ data.collection}}?rq=post&n=10"><i class="fa fa-plus-circle"></i> New Ring</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}/_collections/{{ data.collection}}?rq=post&n=1"><i class="fa fa-plus-circle"></i> New Ring</a></li>
                     <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
                     <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{ data.collection }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
                   </ul>
@@ -586,12 +586,11 @@
 {% endmacro %}
 
 
-
 {% macro portlet(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel) %}
                    
                     <div id="portlet_{{ FieldOrder }}" class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"> <!-- B. -->
                       <!-- TAGS -->
-                      <input id="tagvalue_{{ FieldOrder }}" type="hidden" name="FieldLayer_{{ FieldOrder }}" value="{{ FieldLayer }}">
+                      <input id="tagvalue_{{ FieldOrder }}" type="hidden" name="FieldLayer_{{ FieldOrder }}" value="{{ FieldLayer|default('', true) }}">
                       <div id="tagged{{ FieldOrder }}" class="portlet-header bt-{{ FieldLayer }} ui-widget-header ui-corner-all">
                         <!-- <div id="tagged{{ f }}" class="bt-7">G</div> -->
                         <table>
@@ -631,7 +630,7 @@
                             </td>
                             <td>
                               <!--  <span class="fs-0-8">({{ FieldLabel }})</span> -->
-                              <input type="text" name="FieldLabel_{{ FieldOrder }}" order="{{ FieldOrder }}" name="FieldLabel_{{ FieldOrder }}" class="form-control input-sm fs-0-6 fieldlabel" value="{{ FieldLabel }}" placeholder="label"/>
+                              <input type="text" name="FieldLabel_{{ FieldOrder }}" order="{{ FieldOrder }}" name="FieldLabel_{{ FieldOrder }}" class="form-control input-sm fs-0-6 fieldlabel" value="{{ FieldLabel|default('', true) }}" placeholder="label"/>
                               <!-- <div class="input-group input-group-sm m-10">
                               <span class="input-group-addon" id="sizing-addon1">*Source</span>
                               <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="source"/>
@@ -641,7 +640,7 @@
                               &nbsp;
                             </td>
                             <td class="" style="width:40%;">
-                              <input type="text" name="FieldHint_{{ FieldOrder }}" class="form-control input-sm fs-0-6 " value="{{ FieldHint }}" placeholder="placeholder"/> 
+                              <input type="text" name="FieldHint_{{ FieldOrder }}" class="form-control input-sm fs-0-6 " value="{{ FieldHint|default('', true) }}" placeholder="placeholder"/> 
                             </td>
                             <td>
                               <span class="tog"><i class='fa fa-plus-circle portlet-toggle'></i></span>
@@ -698,11 +697,11 @@
                             </div>     
                           </div>
                           <br/>
-                          <input type="hidden" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder }}" class="fc-0-9 field-order-input">
+                          <input type="hidden" name="FieldOrder_{{ FieldOrder }}" value="{{ FieldOrder|default('', true) }}" class="fc-0-9 field-order-input">
                           <div class="col-sm-6">
                             <div class="input-group input-group-sm">
                               <span class="input-group-addon" id="sizing-addon1">Default</span>
-                              <input type="text" name="FieldDefault_{{ FieldOrder }}" class="form-control" placeholder=""/>
+                              <input type="text" name="FieldDefault_{{ FieldOrder }}" class="form-control" placeholder="" value="{{ FieldDefault|default('', true) }}"/>
                                 <!-- <input type="hidden" name="FieldDefault_{{ FieldOrder }}"> -->
                             </div> 
                           </div>
@@ -711,9 +710,9 @@
                               <span class="input-group-addon" id="sizing-addon1">Slug label</span>
                             {% if new == True %}
                               <input type="text" id="FieldNameDis_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="to be assigned" disabled/>
-                              <input type="hidden" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value="to be assigned"/>
+                              <input type="hidden" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value=""/>
                             {% else %}
-                              <input type="text" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control fieldname" placeholder="" value="{{ FieldName }}"/>
+                              <input type="text" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control fieldname" placeholder="" value="{{ FieldName|default('', true) }}"/>
                             {% endif %}    
                             </div> 
                           </div>                         
@@ -764,6 +763,8 @@
                                 <option value="select">select</option>
                                 <option value="text">text</option>
                                 <option value="textarea">textarea</option>
+                                <option value="text_multilang">text (multi-language)</option>
+                                <option value="textarea_multilang">textarea (multi-language)</option>
                                 <option value="url">url</option> 
                               </select>
                             </td>

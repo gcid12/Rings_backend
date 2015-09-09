@@ -52,7 +52,7 @@ class RingBuilder:
             else:
                 ringversion = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
 
-            current_app.logger.debug('ringversion:',ringversion)
+            current_app.logger.debug('ringversion:'+str(ringversion))
             
             requestparameters = {}
 
@@ -64,7 +64,7 @@ class RingBuilder:
 
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
-                current_app.logger.debug(p+':'+request.form.get(p))
+                current_app.logger.debug((p)+':'+str(request.form.get(p)))
  
             # Generate rings block                         
             pinput['rings'] = self._generate_ring_block(requestparameters)
@@ -77,10 +77,10 @@ class RingBuilder:
 
             try:
                 self.AVM.ring_set_db(handle,ringname,ringversion)
-                current_app.logger.debug('New Ring database created: '+ ringname)
+                current_app.logger.debug('New Ring database created: '+ str(ringname))
 
             except(PreconditionFailed):
-                current_app.logger.debug('The Ring '+ ringname +' database already exists')
+                current_app.logger.debug('The Ring '+ str(ringname) +' database already exists')
                 flash('The Ring '+ ringname+' already exists','ER')
                 return False
 
@@ -174,7 +174,7 @@ class RingBuilder:
                     for k in n:   
                         requestparameters[k+'_'+str(i)] = n[k]
 
-                current_app.logger.debug('requestparameters:',requestparameters)
+                current_app.logger.debug('requestparameters:'+str(requestparameters))
 
                 # Generate rings block                         
                 pinput['rings'] = self._generate_ring_block(requestparameters)
@@ -203,7 +203,7 @@ class RingBuilder:
 
                 #x = '{"source": "/blalab/mecanismos_0-3-0", "items": [{"Descripcion": "Cigue\u00f1al de cuatro codos", "Referencia": "2.1 f", "Imagen": "", "Clasificacion": "Eslabon", "Subclasificacion": "Manivela", "_id": "1378154159"}], "rings": [{"RingVersion": "0.3.0", "RingDescription": "Descripcion de Mecanismos", "RingName": "Mecanismos", "RingURI": "http://ring.apiring.org/mecanismos", "RingBuild": "1"}], "fields": [{"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "textarea", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Descripcion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "images", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Imagen", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Clasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Subclasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Referencia", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}]} '
                 #schema = json.loads(x)
-                current_app.logger.debug('schema:',schema)
+                current_app.logger.debug('schema:'+str(schema))
 
 
                 handle = handle.lower()
@@ -215,7 +215,7 @@ class RingBuilder:
                 for k in schema['rings'][0]:
                     requestparameters[k] = schema['rings'][0][k]
 
-                current_app.logger.debug('pre_requestparameters:',requestparameters)
+                current_app.logger.debug('pre_requestparameters:'+str(requestparameters))
 
                 if 'RingParent' not in requestparameters:
                     current_app.logger.debug('adding RingParent to requestparameters')
@@ -234,7 +234,7 @@ class RingBuilder:
                     for k in n:   
                         requestparameters[k+'_'+str(i)] = n[k]
 
-                current_app.logger.debug('requestparameters:',requestparameters)
+                current_app.logger.debug('requestparameters:'+str(requestparameters))
 
 
                
@@ -247,9 +247,9 @@ class RingBuilder:
 
             try: 
                 self.AVM.ring_set_db(handle,ringname,ringversion)
-                current_app.logger.debug('New Ring database created:'+handle+'_'+ringname)
+                current_app.logger.debug('New Ring database created:'+str(handle)+'_'+str(ringname))
             except(PreconditionFailed):
-                current_app.logger.debug('The Ring '+ ringname +' database already exists')
+                current_app.logger.debug('The Ring '+ str(ringname)+' database already exists')
                 flash('The Ring '+ ringname+'_'+ringversion +' already exists','ER')
                 return False
 
@@ -303,7 +303,7 @@ class RingBuilder:
             
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
-                current_app.logger.debug(p+':'+request.form.get(p))
+                current_app.logger.debug(str(p)+':'+str(request.form.get(p)))
             
 
             pinput['rings'] = self._generate_ring_block(requestparameters)
@@ -341,7 +341,7 @@ class RingBuilder:
         
         # Collect all the 'Ring*' fields coming via the RQ
         for k in self.ringprotocols['ringprotocol']:
-            current_app.logger.debug('generate_ring_block iteration:',k)
+            current_app.logger.debug('generate_ring_block iteration:'+str(k))
             if k in requestparameters:
                 current_app.logger.debug('in')
             #if request.form.get(k):
@@ -360,7 +360,7 @@ class RingBuilder:
                         else:
                             ringsbuffer[k] = ''
 
-        current_app.logger.debug('ringsbuffer:',ringsbuffer)
+        current_app.logger.debug('ringsbuffer:'+str(ringsbuffer))
 
         ringblock = []
         ringblock.append(ringsbuffer)
@@ -391,7 +391,7 @@ class RingBuilder:
 
                 #if request.form.get(val+'_'+str(i)):
                 #if requestparameters[val+'_'+str(i)]:
-                current_app.logger.debug(val+'_'+str(i))
+                current_app.logger.debug(str(val)+'_'+str(i))
                 current_app.logger.debug('gfb1')
                 #current_app.logger.debug('requestparameters')
                 #current_app.logger.debug(requestparameters)
