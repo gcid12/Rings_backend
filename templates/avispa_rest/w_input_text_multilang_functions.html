@@ -16,6 +16,12 @@ var langs ={
           "9":{"short":"rus", "long":"Russian"}
         }
 
+var completing=[];
+
+   function writeToDom(title, content) {
+    $("#results").append("<div class='header'>" + title + ":</div><div><pre>" + content + "</pre></div>");
+    }
+
     function langtoggle(x,y,z){
 
 
@@ -33,6 +39,10 @@ var langs ={
           uppername= shortname.toUpperCase();
 
 
+
+      
+         
+
       // $(wt).html("<div id='t_"+num+"'><div class='input-group'><textarea class='form-control flag-aware increment' id='inp' rows='4' ></textarea><span class='input-group-addon fs-0-7' id='lan'></span><input type='hidden' id='inp_hidden'  value='0'></div></div>");
 
       $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment' id='inp' placeholder=''><span class='input-group-addon fs-0-7' id='lan'></span><input type='hidden' id='inp_hidden'  value='1'></div>");
@@ -49,6 +59,7 @@ var langs ={
       $(t).find('#inp_hidden').attr("placeholder",longname);
       $(b).find('#lan').append(longname);
       $(h).find('#lan').append(shortname);
+      
 
 
       if (shortname != 'eng') {
@@ -58,26 +69,45 @@ var langs ={
         $(b).find('#item').switchClass('fc-b' , 'fc-g');
       }
 
+      //INPUT , OUTPUT
+      var inp= $(t).find('#inp');
+
+      inp.on("input", function() {
+        $(h).find('#out').text(this.value);
+
+        
+
+      });
+
+
+      var person = {
+            'shortname': shortname,
+            'longname': longname,
+            'content': 'input',
+        };
+
+      completing.push(JSON.stringify(person));
+
+
       $(b).click(function() {     
          $(t).toggle("slide", { direction: "up" }, 500);
          $(b).find('#icon').toggleClass('fa-toggle-off fa-toggle-on');
          $(b).find('#item').toggleClass('fc-b fc-g');
          $(h).toggle(); 
-      });
-
-
-      //INPUT , OUTPUT
-      var inp= $(t).find('#inp');
-
-      inp.on("input", function() {
-        
-        $(h).find('#out').text(this.value);
-
+         alert(completing);
 
       });
 
+
+      
+
+
+      
     }
 
+
+    
+    $('#results').append(JSON.stringify(completing));
 
 
     langtoggle('1','{{ field.FieldId}}',langs);
@@ -91,9 +121,6 @@ var langs ={
     langtoggle('9','{{ field.FieldId}}',langs);
 
 
-
-
-    
 
 });
 </script>
