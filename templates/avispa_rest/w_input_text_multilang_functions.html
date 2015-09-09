@@ -16,44 +16,47 @@ var langs ={
           "9":{"short":"rus", "long":"Russian"}
         }
 
-    function langtoggle(x,y,z){
+    function langtoggle(lang_id,FieldId,lang_dict){
+
+      var num = lang_id+"_"+FieldId,
+        wt= '#wt_'+num, //div wrapper
+        wb= '#wb_'+num,
+        t= '#t_'+num,//div wrapper
+        b= '#b_'+num, //menu button
+        shortname= lang_dict[lang_id]["short"],
+        longname= lang_dict[lang_id]["long"],
+        uppername= shortname.toUpperCase();
 
 
-      //var ran = Math.floor(Math.random() * 90000) + 10000;
-      var num = x+"_"+y;
-      
-      var wt= '#wt_'+num, //div wrapper
-          wb= '#wb_'+num, 
-          wh= '#wh_'+num,
-          t= '#t_'+num, //div wrapper
-          b= '#b_'+num, //menu button
-          h= '#h_'+num, //hidden input
-          shortname= z[x]["short"],
-          longname= z[x]["long"],
-          uppername= shortname.toUpperCase();
+  {% if data.item[field.FieldId] %}
+
+      var fvalue = {{ data.item[field.FieldId] | safe }};
+      if(fvalue[shortname]){
+        //This language exists
+        var lang_hide= false;
+      }else{
+        var lang_hide= true;
+        fvalue[shortname] = '';  
+      }
+
+  {% else %}
+
+      if(shortname == 'eng'){
+        var lang_hide = false;
+      } 
 
 
-      // $(wt).html("<div id='t_"+num+"'><div class='input-group'><textarea class='form-control flag-aware increment' id='inp' rows='4' ></textarea><span class='input-group-addon fs-0-7' id='lan'></span><input type='hidden' id='inp_hidden'  value='0'></div></div>");
+  {% endif %}
 
-      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder=''><span class='input-group-addon fs-0-7 lan' ></span><input type='hidden' class='inp_hidden'  value='1'></div>");
+      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='' value='"+fvalue[shortname]+"'><span class='input-group-addon fs-0-7 lan' ></span></div>");
 
       $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>");
-
-      $(wh).html("<span id='h_"+num+"'><span class='lan'></span> : <span class='out'></span>, </span> ");
-
-
-
-      a1= $(t).find('#inp_hidden').val();
-      
+  
       $(t).find('.lan').append(uppername);
-      $(t).find('.inp_hidden').attr("placeholder",longname);
       $(b).find('.lan').append(longname);
-      $(h).find('.lan').append(shortname);
 
-
-      if (shortname != 'eng') {
+      if (lang_hide) {
         $(t).hide(); 
-        $(h).hide(); 
         $(b).find('.icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
         $(b).find('.item').switchClass('fc-b' , 'fc-g');
       }
@@ -62,38 +65,33 @@ var langs ={
          $(t).toggle("slide", { direction: "up" }, 500);
          $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
          $(b).find('.item').toggleClass('fc-b fc-g');
-         $(h).toggle(); 
+         
       });
 
 
       //INPUT , OUTPUT
-      var inp= $(t).find('.inp');
+      inp= $(t).find('.inp');
+      inp.on("change paste", function() {
 
-      inp.on("input", function() {
-        
-        $(h).find('.out').text(this.value);
+        oldvalue = $("#text_multilang{{ field.FieldOrder }}").val();
+        if(oldvalue==''){
+          oldvalue = '{}'
+        }
 
+        var jsonold = JSON.parse(oldvalue);
+        jsonold[shortname] = this.value;
+        $("#text_multilang{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
 
       });
 
     }
 
 
+    for(l in langs){
+      console.log(l);
+      langtoggle(l,'{{ field.FieldId}}',langs);
+    }
 
-    langtoggle('1','{{ field.FieldId}}',langs);
-    langtoggle('2','{{ field.FieldId}}',langs);
-    langtoggle('3','{{ field.FieldId}}',langs);
-    langtoggle('4','{{ field.FieldId}}',langs);
-    langtoggle('5','{{ field.FieldId}}',langs);
-    langtoggle('6','{{ field.FieldId}}',langs);
-    langtoggle('7','{{ field.FieldId}}',langs);
-    langtoggle('8','{{ field.FieldId}}',langs);
-    langtoggle('9','{{ field.FieldId}}',langs);
-
-
-
-
-    
 
 });
 </script>
