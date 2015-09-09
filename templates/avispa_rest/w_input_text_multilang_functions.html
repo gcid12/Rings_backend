@@ -55,18 +55,10 @@ var completing=[];
 
       a1= $(t).find('#inp_hidden').val();
       
-<<<<<<< HEAD
-      $(t).find('#lan').append(uppername);
-      $(t).find('#inp_hidden').attr("placeholder",longname);
-      $(b).find('#lan').append(longname);
-      $(h).find('#lan').append(shortname);
-      
-=======
       $(t).find('.lan').append(uppername);
       $(t).find('.inp_hidden').attr("placeholder",longname);
       $(b).find('.lan').append(longname);
       $(h).find('.lan').append(shortname);
->>>>>>> dec3caf89a536ad40fe6f292db49fe90565adaa0
 
 
       if (shortname != 'eng') {
@@ -105,19 +97,13 @@ var completing=[];
 
       });
 
-<<<<<<< HEAD
-=======
+
       //INPUT , OUTPUT
       var inp= $(t).find('.inp');
 
       inp.on("input", function() {
         
         $(h).find('.out').text(this.value);
->>>>>>> dec3caf89a536ad40fe6f292db49fe90565adaa0
-
-      
-
-
       
     }
 
