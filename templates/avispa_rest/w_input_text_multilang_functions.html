@@ -57,13 +57,6 @@ $(document).ready(function(){
 
       });
 
-      var person = {
-            'shortname': shortname,
-            'longname': longname,
-            'content': 'input',
-        };
-
-      completing.push(JSON.stringify(person));
       $(b).click(function() {     
          $(t).toggle("slide", { direction: "up" }, 500);
          $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
