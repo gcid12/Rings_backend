@@ -1,10 +1,6 @@
-
 <script>
-
 $(document).ready(function(){
-
-
-var langs ={
+  var langs ={
           "1":{"short":"eng", "long":"English"},
           "2":{"short":"spa", "long":"Spanish"},
           "3":{"short":"por", "long":"Portuguese"},
@@ -17,7 +13,6 @@ var langs ={
         }
 
     function langtoggle(lang_id,FieldId,lang_dict){
-
       var num = lang_id+"_"+FieldId,
         wt= '#wt_'+num, //div wrapper
         wb= '#wb_'+num,
@@ -26,7 +21,6 @@ var langs ={
         shortname= lang_dict[lang_id]["short"],
         longname= lang_dict[lang_id]["long"],
         uppername= shortname.toUpperCase();
-
 
   {% if data.item[field.FieldId] %}
 
@@ -45,58 +39,54 @@ var langs ={
         var lang_hide = false;
       } 
 
-
   {% endif %}
 
       $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='' value='"+fvalue[shortname]+"'><span class='input-group-addon fs-0-7 lan' ></span></div>");
-
-      $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>");
-  
+      $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>"); 
       $(t).find('.lan').append(uppername);
       $(b).find('.lan').append(longname);
-
       if (lang_hide) {
         $(t).hide(); 
         $(b).find('.icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
         $(b).find('.item').switchClass('fc-b' , 'fc-g');
       }
+      //INPUT , OUTPUT
+      var inp= $(t).find('#inp');
+      inp.on("input", function() {
+        $(h).find('#out').text(this.value);
 
+      });
+
+      var person = {
+            'shortname': shortname,
+            'longname': longname,
+            'content': 'input',
+        };
+
+      completing.push(JSON.stringify(person));
       $(b).click(function() {     
          $(t).toggle("slide", { direction: "up" }, 500);
          $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
          $(b).find('.item').toggleClass('fc-b fc-g');
-         
       });
-
 
       //INPUT , OUTPUT
       inp= $(t).find('.inp');
       inp.on("change paste", function() {
-
         oldvalue = $("#text_multilang{{ field.FieldOrder }}").val();
         if(oldvalue==''){
           oldvalue = '{}'
         }
-
         var jsonold = JSON.parse(oldvalue);
         jsonold[shortname] = this.value;
         $("#text_multilang{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
-
       });
-
     }
-
 
     for(l in langs){
       console.log(l);
       langtoggle(l,'{{ field.FieldId}}',langs);
     }
 
-
 });
 </script>
-
-
-
-
-
