@@ -52,9 +52,9 @@ $(document).ready(function(){
   {% endif %}
 
   {% if field.FieldWidget == 'text_multilang' %}
-      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 lan' ></span></div>");
+      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint|diablo}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 lan' ></span></div>");
   {% else %}
-      $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' >"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 lan' ></span></div>");
+      $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint|diablo}}' >"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 lan' ></span></div>");
   {% endif %}
 
       $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>"); 

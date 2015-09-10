@@ -45,14 +45,14 @@
             Ring Name
           </span>
           <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}" disabled>
-          <input name="RingName" type="hidden" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}">
+          <input name="RingName" type="hidden" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringschema.RingName | nonone }}">
         </div>
         <div class="input-group input-group-sm">
           <span class="input-group-addon" id="sizing-addon1">
             Description
           </span>
           <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this ring unique?" style="height:100px;" >
-            {{ data.ringschema.RingDescription }}
+            {{ data.ringschema.RingDescription | nonone }}
           </textarea>
         </div>
         <div class="text-right spa10">
@@ -69,28 +69,28 @@
               <span class="input-group-addon" id="sizing-addon1">
                 Label
               </span>
-              <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the ring" value="{{ data.ringschema.RingLabel }}"/>
+              <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the ring" value="{{ data.ringschema.RingLabel | nonone }}"/>
             </div>
             <div class="input-group input-group-sm">
               <span class="input-group-addon" id="sizing-addon1">
                 Version
               </span>
-              <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="" value="{{ data.ringschema.RingVersion }}">
+              <input name="RingVersion" type="text" class="form-control" id="RingVersion" placeholder="" value="{{ data.ringschema.RingVersion | nonone }}">
             </div>
             <div class="input-group input-group-sm">
               <span class="input-group-addon" id="sizing-addon1">
                 URI
               </span>
-              <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="" value="{{ data.ringschema.RingURI }}"/>
+              <input name="RingURI" type="text" class="form-control" id="RingURI" placeholder="" value="{{ data.ringschema.RingURI | nonone }}"/>
             </div>
             <div class="input-group input-group-sm">
               <span class="input-group-addon" id="sizing-addon1"> 
                 Build
               </span>
-              <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="" value="{{ data.ringschema.RingBuild }}"/>
+              <input name="RingBuild" type="text" class="form-control" id="RingBuild" placeholder="" value="{{ data.ringschema.RingBuild | nonone }}"/>
             </div>
             <div class="text-right">
-              {#{ Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin}}" /> }#}
+              {#{ Ring's origin: <input type="text" name="ringorigin" value="{{data.ringorigin | nonone}}" /> }#}
             </div>
           </div>
           <br/>
