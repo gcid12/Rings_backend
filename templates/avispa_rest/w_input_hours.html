@@ -1,74 +1,177 @@
-
-
-<hr/>
     <div class="form-group">
-        <label for="{{ field.FieldId }}" class="col-sm-2 control-label" id="{{ field.FieldId}}">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-        <div class="col-sm-7">
-        		<!-- TTTTTTTTTTT -->
+      <label for="{{ field.FieldId }}" class="col-sm-2 control-label" id="{{ field.FieldId}}">
+        {% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}
+      </label>
+      <div class="col-sm-10">
+        <!-- TTTTTTTTTTT -->
+        <table class="table table-striped table-condensed">
+        	<tr>
+        		<td>
+        			<span class="fw-c fc-l">Monday</span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Open</span>
+        		</td>
+        		<!-- OPEN -->
+        		<td>
+        			<span id="wt_1_{{ field.FieldId}}"></span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Close</span>
+        		</td>
+        		<!-- CLOSE -->
+        		<td>
+        			<span id="wt_2_{{ field.FieldId}}"></span>
+        		</td>
+        	</tr>
 
-        		<div id="wt_1_{{ field.FieldId}}" class="m-10"></div>
-        		<div id="wt_2_{{ field.FieldId}}" class="m-10"></div>
-        		<div id="wt_3_{{ field.FieldId}}" class="m-10"></div>
-        		<div id="wt_4_{{ field.FieldId}}" class="m-10"></div>
-        		<div id="wt_5_{{ field.FieldId}}" class="m-10"></div>
-        		<div id="wt_6_{{ field.FieldId}}" class="m-10"></div>
-        		<div id="wt_7_{{ field.FieldId}}" class="m-10"></div>
-        		<!-- BBBBBBBBBBBBBBB -->
+        	<tr>
+        		<td>
+        			<span class="fw-c fc-l">Tuesday</span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Open</span>
+        		</td>
+        		<!-- OPEN -->
+        		<td>
+        			<span id="wt_3_{{ field.FieldId}}"></span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Close</span>
+        		</td>
+        		<!-- CLOSE -->
+        		<td>
+        			<span id="wt_4_{{ field.FieldId}}"></span>
+        		</td>
+        	</tr>
 
+        	<tr>
+        		<td>
+        			<span class="fw-c fc-l">Wednesday</span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Open</span>
+        		</td>
+        		<!-- OPEN -->
+        		<td>
+        			<span id="wt_5_{{ field.FieldId}}"></span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Close</span>
+        		</td>
+        		<!-- CLOSE -->
+        		<td>
+        			<span id="wt_6_{{ field.FieldId}}"></span>
+        		</td>
+        	</tr>
 
-        		<!-- <span class="fs-0-8 fc-b" id="salida">hidden:[
-				    <span id="wh_1_{{ field.FieldId}}"></span>
-					<span id="wh_2_{{ field.FieldId}}"></span>
-					<span id="wh_3_{{ field.FieldId}}"></span>
-					<span id="wh_4_{{ field.FieldId}}"></span>
-					<span id="wh_5_{{ field.FieldId}}"></span>
-					<span id="wh_6_{{ field.FieldId}}"></span>
-					<span id="wh_7_{{ field.FieldId}}"></span>
-					<span id="wh_8_{{ field.FieldId}}"></span>
-					<span id="wh_9_{{ field.FieldId}}"></span>
-			    ]
-			    </span> -->
+        	<tr>
+        		<td>
+        			<span class="fw-c fc-l">Thursday</span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Open</span>
+        		</td>
+        		<!-- OPEN -->
+        		<td>
+        			<span id="wt_7_{{ field.FieldId}}"></span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Close</span>
+        		</td>
+        		<!-- CLOSE -->
+        		<td>
+        			<span id="wt_8_{{ field.FieldId}}"></span>
+        		</td>
+        	</tr>
 
+        	<tr>
+        		<td>
+        			<span class="fw-c fc-l">Friday</span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Open</span>
+        		</td>
+        		<!-- OPEN -->
+        		<td>
+        			<span id="wt_9_{{ field.FieldId}}"></span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Close</span>
+        		</td>
+        		<!-- CLOSE -->
+        		<td>
+        			<span id="wt_10_{{ field.FieldId}}"></span>
+        		</td>
+        	</tr>
 
-			    
+        	<tr>
+        		<td>
+        			<span class="fw-c fc-l">Saturday</span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Open</span>
+        		</td>
+        		<!-- OPEN -->
+        		<td>
+        			<span id="wt_11_{{ field.FieldId}}"></span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Close</span>
+        		</td>
+        		<!-- CLOSE -->
+        		<td>
+        			<span id="wt_12_{{ field.FieldId}}"></span>
+        		</td>
+        	</tr>
 
-			    
-				
-        </div>
-        <div class="col-sm-3">
-        	<div class="dropdown pull-right">
-				  <a class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				  	
-				    <span class="fs-0-8"><i class="fa fa-plus"></i> Add / Remove Days</span>
-				    <span class="caret"></span>
-				  </a>
-				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-				    <li id="wb_1_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_2_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_3_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_4_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_5_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_6_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_7_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_8_{{ field.FieldId}}">
-				    </li>
-				    <li id="wb_9_{{ field.FieldId}}">
-				    </li>
- 
-				  </ul>
-			</div>
+        	<tr>
+        		<td>
+        			<span class="fw-c fc-l">Sunday</span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Open</span>
+        		</td>
+        		<!-- OPEN -->
+        		<td>
+        			<span id="wt_13_{{ field.FieldId}}"></span>
+        		</td>
+        		<td>
+        			<span class="fs-0-7">Close</span>
+        		</td>
+        		<!-- CLOSE -->
+        		<td>
+        			<span id="wt_14_{{ field.FieldId}}"></span>
+        		</td>
+        	</tr>
 
-			
-
-
-        </div>
-
+        </table>
+        <!-- BBBBBBBBBBBBBBB -->
+        <!-- <div class="dropdown pull-right">
+          <a class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-language"></i>
+            <span class="fs-0-8">Translations</span>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li id="wb_1_{{ field.FieldId}}"></li>
+            <li id="wb_2_{{ field.FieldId}}"></li>
+            <li id="wb_3_{{ field.FieldId}}"></li>
+            <li id="wb_4_{{ field.FieldId}}"></li>
+            <li id="wb_5_{{ field.FieldId}}"></li>
+            <li id="wb_6_{{ field.FieldId}}"></li>
+            <li id="wb_7_{{ field.FieldId}}"></li>
+            <li id="wb_8_{{ field.FieldId}}"></li>
+            <li id="wb_9_{{ field.FieldId}}"></li>
+            <li id="wb_10_{{ field.FieldId}}"></li>
+            <li id="wb_11_{{ field.FieldId}}"></li>
+            <li id="wb_12_{{ field.FieldId}}"></li>
+            <li id="wb_13_{{ field.FieldId}}"></li>
+            <li id="wb_14_{{ field.FieldId}}"></li>
+          </ul>
+        </div> -->
+        <hr/>
+        <!-- HHHHHHHHHH -->
+        <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="text_multilang{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value='{{ data.item[field.FieldId] }}'>          
+      </div>
     </div>
-</hr>
