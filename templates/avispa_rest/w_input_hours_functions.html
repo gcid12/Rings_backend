@@ -19,46 +19,18 @@ $(document).ready(function(){
           "14":{"short":"sun_close", "long":"Sunday Close"}
     };
 
-    var times ={ 
-          "1":{"rhour":"1:00 am", "mhour":"100"},
-          "2":{"rhour":"2:00 am", "mhour":"200"},
-          "3":{"rhour":"3:00 am", "mhour":"300"},
-          "4":{"rhour":"4:00 am", "mhour":"400"},
-          "5":{"rhour":"5:00 am", "mhour":"500"},
-          "6":{"rhour":"6:00 am", "mhour":"600"},
-          "7":{"rhour":"7:00 am", "mhour":"700"},
-          "8":{"rhour":"8:00 am", "mhour":"800"},
-          "9":{"rhour":"9:00 am", "mhour":"900"},
-          "10":{"rhour":"10:00 am", "mhour":"1000"},
-          "11":{"rhour":"11:00 am", "mhour":"1100"},
-          "12":{"rhour":"12:00 am", "mhour":"1200"},
-          "13":{"rhour":"13:00 am", "mhour":"1300"},
-          "14":{"rhour":"14:00 am", "mhour":"1400"},
-          "15":{"rhour":"15:00 am", "mhour":"1500"},
-          "16":{"rhour":"16:00 am", "mhour":"1600"},
-          "17":{"rhour":"17:00 am", "mhour":"1700"},
-          "18":{"rhour":"18:00 am", "mhour":"1800"},
-          "19":{"rhour":"19:00 am", "mhour":"1900"},
-          "20":{"rhour":"20:00 am", "mhour":"2000"},
-          "21":{"rhour":"21:00 am", "mhour":"2100"},
-          "22":{"rhour":"22:00 am", "mhour":"2200"},
-          "23":{"rhour":"23:00 am", "mhour":"2300"},
-          "24":{"rhour":"24:00 am", "mhour":"2400"}
 
-    }
-
-
-    function hoursweek(lang_id,FieldId,lang_dict, times){
-      var num = lang_id+"_"+FieldId,
+    function hoursweek(id,FieldId,dict){
+      var num = id+"_"+FieldId,
         wt= '#wt_'+num, //div wrapper
         wb= '#wb_'+num,
         t= '#t_'+num,//div wrapper
         b= '#b_'+num, //menu button
-        shortname= lang_dict[lang_id]["short"],
-        longname= lang_dict[lang_id]["long"],
+        shortname= dict[id]["short"],
+        longname= dict[id]["long"],
         uppername= shortname.toUpperCase(),
         lang_hide = false,
-        default_lang= 'mon_open';
+        default_item= 'mon_open';
 
 
   {% if data.item[field.FieldId] %}
@@ -80,18 +52,20 @@ $(document).ready(function(){
   {% else %}
       //If new
       var inputvalue = ''; 
-      if(shortname == default_lang){
+      if(shortname == default_item){
         lang_hide = false;
       }
        
   {% endif %}
 
 
-      // $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment input-sm inp' placeholder='09:00 am' value='"+inputvalue+"'></div>");
+  $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment input-sm inp' placeholder='HH:MM am/pm' value='"+inputvalue+"'></div>");
 
 
-$(wt).html("<span id='t_"+num+"' class='flag-aware increment inp p-5 m-10' style='width:300px;'><span class='fs-1'><select class='fc-b inp'><option>Closed</option><option>6:00 am</option><option>6:30 am</option><option>7:00 am</option><option>7:30 am</option><option>8:00 am</option><option>8:30 am</option><option>9:00 am</option><option>9:30 am</option><option>10:00 am</option><option>10:30 am</option><option>11:00 am</option><option>11:30 am</option><option>12:00 pm</option><option>12:30 pm</option><option>1:00 pm</option><option>1:30 pm</option><option>2:00 pm</option><option>2:30 pm</option><option>3:00 pm</option><option>3:30 pm</option><option>4:00 pm</option><option id='430' value='430'>4:30 pm</option><option>5:00 pm</option><option>5:30 pm</option><option>6:00 pm</option><option>6:30 pm</option><option>7:00 pm</option><option>7:30 pm</option><option>8:00 pm</option><option>8:30 pm</option><option>9:00 pm</option><option>9:30 pm</option><option>10:00 pm</option><option>10:30 pm</option><option>11:00 pm</option><option>11:30 pm</option><option>12:00 pm</option></select></span> <input type='hidden' id='inp_hidden'  value='1'></span>");
-  
+  // $(wt).html("<span id='t_"+num+"' class='flag-aware increment inp p-5 m-10' style='width:300px;'><span>"+inputvalue+"</span><span class='fs-1'><select class='fc-b inp' id='ophours'><option id='c'>Closed</option><option id='0100'>1:00 am</option><option id='0200'>2:00 am</option><option id='0300'>3:00 am</option><option id='0400'>4:00 am</option><option id='0500'>5:00 am</option><option id='0600'>6:00 am</option><option id='0700'>7:00 am</option><option id='0730'>7:30 am</option><option id='0800'>8:00 am</option><option id='0830'>8:30 am</option><option id='0900'>9:00 am</option><option id='0930'>9:30 am</option><option id='1000'>10:00 am</option><option id='1100'>11:00 am</option><option id='1200'>12:00 pm</option><option id='1300'>1:00 pm</option><option id='1400'>2:00 pm</option><option id='1500'>3:00 pm</option><option id='1600'>4:00 pm</option><option id='1700'>5:00 pm</option><option id='1800'>6:00 pm</option><option id='1900'>7:00 pm</option><option id='2000'>8:00 pm</option><option id='2100'>9:00 pm</option><option id='2200'>10:00 pm</option><option id='2323'>11:23 pm</option><option id='2400'>12:00 pm</option></select></span><input type='hidden' id='inp_hidden'  value='1'></span>");
+
+    
+
 
       $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>"); 
       $(t).find('.day').append(uppername);
@@ -126,13 +100,16 @@ $(wt).html("<span id='t_"+num+"' class='flag-aware increment inp p-5 m-10' style
         $("#text_multilang{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
       });
 
+
+      $("#ophours").val('0900');
+
      
 
     }
 
     for(l in days){
       console.log(l);
-      hoursweek(l,'{{ field.FieldId}}',days, times);
+      hoursweek(l,'{{ field.FieldId}}',days);
     }
 
 });
