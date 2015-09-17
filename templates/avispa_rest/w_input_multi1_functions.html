@@ -2,17 +2,17 @@
 $(document).ready(function(){
 
 
-    function menutoggle(item_id,FieldId,lang_dict){
+    function menutoggle(item_id,FieldId,menu_dict){
       var num = item_id+"_"+FieldId,
         wt= '#wt_'+num, //div wrapper
         wb= '#wb_'+num,
         t= '#t_'+num,//div wrapper
         b= '#b_'+num, //menu button
-        shortname= lang_dict[item_id]["short"],
-        longname= lang_dict[item_id]["long"],
+        shortname= menu_dict[item_id]["short"],
+        longname= menu_dict[item_id]["long"],
         uppername= shortname.toUpperCase(),
-        lang_hide = true,
-        default_item= '2';
+        menu_hide = true,
+        default_item= '1';
 
       
 
@@ -22,9 +22,9 @@ $(document).ready(function(){
       console.log(fvalue)
       //if($.inArray(value, array)!=-1){
       if(fvalue[shortname]){
-        //This language exists
-        console.log('This language exists'+shortname)
-        lang_hide= false;
+        //This exists
+        console.log('This exists'+shortname)
+        menu_hide= false;
         var inputvalue = fvalue[shortname];
 
       }else{
@@ -36,32 +36,36 @@ $(document).ready(function(){
       //If new
       var inputvalue = ''; 
       if(item_id == default_item){
-        lang_hide = false;
+        menu_hide = false;
       }
        
   {% endif %}
 
-  {% if field.FieldWidget == 'text_multilang' %}
-      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 lan' ></span></div>");
+  //SETTING DIVS WRAPPERS
+  {% if field.FieldWidget == 'textarea_multilang' %}
+      $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' >"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 name' ></span></div>");
   {% else %}
-      $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' >"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 lan' ></span></div>");
+      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 name' ></span></div>");
   {% endif %}
 
-      $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>"); 
-      $(t).find('.lan').append(uppername);
-      $(b).find('.lan').append(longname);
-      if (lang_hide) {
+  //SETTING BUTTON WRAPPER
+      $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='name'></span></span></a>"); 
+
+
+  //TAKING ACTION
+
+      //SET NAME TAGS
+      $(t).find('.name').append(uppername);
+      $(b).find('.name').append(longname);
+
+      //MAKE DEFAULT VISIBLE
+      if (menu_hide) {
         $(t).hide(); 
         $(b).find('.icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
         $(b).find('.item').switchClass('fc-b' , 'fc-g');
       }
-      //INPUT , OUTPUT
-      var inp= $(t).find('#inp');
-      inp.on("input", function() {
-        $(h).find('#out').text(this.value);
 
-      });
-
+      //MAKING OTHER ITEMS VISIBLE
       $(b).click(function() {     
          $(t).toggle("slide", { direction: "up" }, 500);
          $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
@@ -71,19 +75,20 @@ $(document).ready(function(){
       //INPUT , OUTPUT
       inp= $(t).find('.inp');
       inp.on("change paste", function() {
-        oldvalue = $("#text_multilang{{ field.FieldOrder }}").val();
+        oldvalue = $("#hidden{{ field.FieldOrder }}").val();
         if(oldvalue==''){
           oldvalue = '{}';
         }
         var jsonold = JSON.parse(oldvalue);
         jsonold[shortname] = this.value;
-        $("#text_multilang{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
+        $("#hidden{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
       });
     }
 
-    for(l in langs){
+    // ITERATE MENU OBJECT
+    for(l in menu){
       console.log(l);
-      menutoggle(l,'{{ field.FieldId}}',langs);
+      menutoggle(l,'{{ field.FieldId}}',menu);
     }
 
 });
