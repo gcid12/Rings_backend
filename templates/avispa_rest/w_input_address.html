@@ -1,0 +1,36 @@
+    <div class="form-group">
+      <label for="{{ field.FieldId }}" class="col-sm-2 control-label" id="{{ field.FieldId}}">
+        {% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}
+      </label>
+
+      <div class="col-sm-10">
+          <div class="row">
+            <div class="col-sm-12">
+                <div id="wt_1_{{ field.FieldId}}"></div>
+            </div>
+            
+          </div>
+          <div class="row">
+              <div class="col-sm-6 omega">
+                <div id="wt_2_{{ field.FieldId}}"></div>
+              </div>
+              <div class="col-sm-6 alpha">
+                <div id="wt_3_{{ field.FieldId}}"></div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-6 omega">
+                <div id="wt_4_{{ field.FieldId}}"></div>
+              </div>
+              <div class="col-sm-6 alpha">
+                <div id="wt_5_{{ field.FieldId}}"></div>
+              </div>       
+          </div>
+          <!-- HHHHHHHHHH -->
+          <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="hidden{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value='{{ data.item[field.FieldId] }}'>   
+        
+      </div>
+
+      
+
+    </div>

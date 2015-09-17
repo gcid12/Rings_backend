@@ -1,0 +1,95 @@
+<script>
+$(document).ready(function(){
+
+
+    function menutoggle(item_id,FieldId,menu_dict){
+      var num = item_id+"_"+FieldId,
+        wt= '#wt_'+num, //div wrapper
+        wb= '#wb_'+num,
+        t= '#t_'+num,//div wrapper
+        b= '#b_'+num, //menu button
+        shortname= menu_dict[item_id]["short"],
+        longname= menu_dict[item_id]["long"],
+        uppername= shortname.toUpperCase(),
+        menu_hide = false,
+        default_item= '1';
+
+      
+
+  {% if data.item[field.FieldId] %}
+
+      fvalue = {{ data.item[field.FieldId] | safe }};
+      console.log(fvalue)
+      //if($.inArray(value, array)!=-1){
+      if(fvalue[shortname]){
+        //This exists
+        console.log('This exists'+shortname)
+        menu_hide= false;
+        var inputvalue = fvalue[shortname];
+
+      }else{
+        //fvalue[shortname] = '';
+        var inputvalue = '';  
+      }
+
+  {% else %}
+      //If new
+      var inputvalue = ''; 
+      if(item_id == default_item){
+        menu_hide = false;
+      }
+       
+  {% endif %}
+
+  //SETTING DIVS WRAPPERS
+  {% if field.FieldWidget == 'address' %}
+      $(wt).html("<div class='input-group' id='t_"+num+"'><span class='input-group-addon input-sm name' style='font-size:0.7em' ></span><input type='text' class='form-control flag-aware input-sm increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'></div>");
+  {% else %}
+      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 name' ></span></div>");
+  {% endif %}
+
+  //SETTING BUTTON WRAPPER
+      $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='name'></span></span></a>"); 
+
+
+  //TAKING ACTION
+
+      //SET NAME TAGS
+      $(t).find('.name').append(uppername);
+      $(b).find('.name').append(longname);
+
+      //MAKE DEFAULT VISIBLE
+      if (menu_hide) {
+        $(t).hide(); 
+        $(b).find('.icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
+        $(b).find('.item').switchClass('fc-b' , 'fc-g');
+      }
+
+      //MAKING OTHER ITEMS VISIBLE
+      $(b).click(function() {     
+         $(t).toggle("slide", { direction: "up" }, 500);
+         $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
+         $(b).find('.item').toggleClass('fc-b fc-g');
+      });
+
+      //INPUT , OUTPUT
+      inp= $(t).find('.inp');
+      inp.on("change paste", function() {
+        oldvalue = $("#hidden{{ field.FieldOrder }}").val();
+        if(oldvalue==''){
+          oldvalue = '{}';
+        }
+        var jsonold = JSON.parse(oldvalue);
+        jsonold[shortname] = this.value;
+        $("#hidden{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
+      });
+    }
+
+    // ITERATE MENU
+    for(l in menu{{ field.FieldId}}){
+      console.log(l);
+      menutoggle(l,'{{ field.FieldId}}',menu{{ field.FieldId}} );
+    }
+
+});
+</script>
