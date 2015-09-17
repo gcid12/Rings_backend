@@ -1,17 +1,20 @@
 <script>
+$(document).ready(function(){
 
-    function hoursweek(id,FieldId,dict){
-      var num = id+"_"+FieldId,
+
+    function menutoggle(item_id,FieldId,lang_dict){
+      var num = item_id+"_"+FieldId,
         wt= '#wt_'+num, //div wrapper
         wb= '#wb_'+num,
         t= '#t_'+num,//div wrapper
         b= '#b_'+num, //menu button
-        shortname= dict[id]["short"],
-        longname= dict[id]["long"],
+        shortname= lang_dict[item_id]["short"],
+        longname= lang_dict[item_id]["long"],
         uppername= shortname.toUpperCase(),
-        lang_hide = false,
-        default_item= 'mon_open';
+        lang_hide = true,
+        default_item= '2';
 
+      
 
   {% if data.item[field.FieldId] %}
 
@@ -20,7 +23,7 @@
       //if($.inArray(value, array)!=-1){
       if(fvalue[shortname]){
         //This language exists
-        console.log('This exists'+shortname)
+        console.log('This language exists'+shortname)
         lang_hide= false;
         var inputvalue = fvalue[shortname];
 
@@ -32,18 +35,20 @@
   {% else %}
       //If new
       var inputvalue = ''; 
-      if(shortname == default_item){
+      if(item_id == default_item){
         lang_hide = false;
       }
        
   {% endif %}
 
-
-  $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment input-sm inp' placeholder='HH:MM am/pm' value='"+inputvalue+"'></div>");
-
+  {% if field.FieldWidget == 'text_multilang' %}
+      $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 lan' ></span></div>");
+  {% else %}
+      $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' >"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 lan' ></span></div>");
+  {% endif %}
 
       $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>"); 
-      $(t).find('.day').append(uppername);
+      $(t).find('.lan').append(uppername);
       $(b).find('.lan').append(longname);
       if (lang_hide) {
         $(t).hide(); 
@@ -63,7 +68,7 @@
          $(b).find('.item').toggleClass('fc-b fc-g');
       });
 
-      //INPUT , OUTPUT  
+      //INPUT , OUTPUT
       inp= $(t).find('.inp');
       inp.on("change paste", function() {
         oldvalue = $("#text_multilang{{ field.FieldOrder }}").val();
@@ -74,43 +79,11 @@
         jsonold[shortname] = this.value;
         $("#text_multilang{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
       });
-
-
-
     }
 
-
-    
-</script>
-
-
-<script>
-$(document).ready(function(){
-
-
-    var days ={
-          "1":{"short":"mon_open", "long":"Monday Open"},
-          "2":{"short":"mon_close", "long":"Monday Close"},
-          "3":{"short":"tue_open", "long":"Tuesday Open"},
-          "4":{"short":"tue_close", "long":"Tuesday Close"},
-          "5":{"short":"wed_open", "long":"Wednesday Open"},
-          "6":{"short":"wed_close", "long":"Wednesday Close"},
-          "7":{"short":"thu_open", "long":"Thursday Open"},
-          "8":{"short":"thu_close", "long":"Thursday Close"},
-          "9":{"short":"fri_open", "long":"Friday Open"},
-          "10":{"short":"fri_close", "long":"Friday Close"},
-          "11":{"short":"sat_open", "long":"Saturday Open"},
-          "12":{"short":"sat_close", "long":"Saturday Close"},
-          "13":{"short":"sun_open", "long":"Sunday Open"},
-          "14":{"short":"sun_close", "long":"Sunday Close"}
-    };
-
-
-
-
-    for(l in days){
+    for(l in langs){
       console.log(l);
-      hoursweek(l,'{{ field.FieldId}}',days);
+      menutoggle(l,'{{ field.FieldId}}',langs);
     }
 
 });
