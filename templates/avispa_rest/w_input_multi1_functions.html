@@ -85,10 +85,10 @@ $(document).ready(function(){
       });
     }
 
-    // ITERATE MENU OBJECT
-    for(l in menu){
+    // ITERATE MENU
+    for(l in menu{{ field.FieldId}}){
       console.log(l);
-      menutoggle(l,'{{ field.FieldId}}',menu);
+      menutoggle(l,'{{ field.FieldId}}',menu{{ field.FieldId}} );
     }
 
 });
