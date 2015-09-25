@@ -609,6 +609,7 @@
                             <td>
                               <select name="FieldWidget_{{ FieldOrder }}" class="form-control input-sm" style="background-color:#666; color:white;">
                                 <option value="">SELECT ONE</option>
+                                <option value="address" {% if FieldWidget == "address" %}selected=""{% endif %}>address</option>
                                 <option value="checkbox" {% if FieldWidget == "checkbox" %}selected=""{% endif %}>checkbox</option>
                                 <option value="date" {% if FieldWidget == "date" %}selected=""{% endif %}>date</option>
                                 <option value="hours" {% if FieldWidget == "hours" %}selected=""{% endif %}>hours</option>
@@ -616,7 +617,9 @@
                                 <option value="images" {% if FieldWidget == "images" %}selected=""{% endif %}>images</option>
                                 <option value="items" {% if FieldWidget == "items" %}selected=""{% endif %}>items</option>
                                 <option value="location" {% if FieldWidget == "location" %}selected=""{% endif %}>location</option>
+                                <option value="mail" {% if FieldWidget == "mail" %}selected=""{% endif %}>mail</option>
                                 <option value="password" {% if FieldWidget == "password" %}selected=""{% endif %}>password</option>
+                                <option value="phone" {% if FieldWidget == "phone" %}selected=""{% endif %}>phone</option>
                                 <option value="radio" {% if FieldWidget == "radio" %}selected=""{% endif %}>radio</option>
                                 <option value="select" {% if FieldWidget == "select" %}selected=""{% endif %}>select</option>
                                 <option value="text" {% if FieldWidget == "text" %}selected=""{% endif %}>text</option>

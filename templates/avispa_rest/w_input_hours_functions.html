@@ -8,6 +8,7 @@ $(document).ready(function(){
     });
 
     $('.dtpckr').on("change paste", function(){
+
         oldvalue = $("#text_multilang{{ field.FieldOrder }}").val();
         if(oldvalue==''){
           oldvalue = '{}';
@@ -17,8 +18,10 @@ $(document).ready(function(){
         var shortname = parts[0];
         jsonold[shortname] = this.value;
 
+
         $("#text_multilang{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
     });
+
 
 });
 </script>
