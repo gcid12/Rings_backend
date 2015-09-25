@@ -136,8 +136,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
         if 'accept' in request.args:
             accept = request.args.get("accept").lower()
+
         else:
             accept = 'json'
+
+        print('ACCEPT:',accept)
 
         if accept=='csv':
 
