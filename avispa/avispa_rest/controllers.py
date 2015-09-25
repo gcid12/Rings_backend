@@ -1,6 +1,6 @@
 # Import flask dependencies
-import urlparse, time, datetime, collections, json
-from flask import Blueprint, render_template, request, redirect, current_app , g
+import urlparse, time, datetime, collections, json, csv
+from flask import Blueprint, render_template, request, redirect, current_app , g , make_response, Response
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
@@ -129,22 +129,102 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     else:
         status = 200
 
-    if 'redirect' in data:
-        #current_app.logger.debug('flag0')
-        #current_app.logger.debug(data)
-        return data  
-    elif api:  
-        #current_app.logger.debug(data)      
-        return render_template(data['template'], data=data), status            
+    if 'redirect' in data:       
+        return data 
+
+    elif api: 
+
+        if 'accept' in request.args:
+            accept = request.args.get("accept").lower()
+
+        else:
+            accept = 'json'
+
+        print('ACCEPT:',accept)
+
+        if accept=='csv':
+
+            #This is where a function converts this into CSV.
+            def generate(data_raw,fl=None):
+
+                d = data_raw['items']
+
+                
+                outfields=[]
+                csvdoc = ''
+
+                print('data[raw_out]',d)
+                i = 0
+
+                for row in d:
+                    i = i+1
+                    line = [] 
+
+                    if i==1: 
+                        csvheader = []         
+                    # Just the first time to set the CSV header
+                        for field in row:        
+                            if field[:1]=='_':
+                                if field == '_id': 
+                                    csvheader.append(field)
+                            elif field[-5:]=='_rich':
+                                pass
+                            else:
+                                if fl:
+                                    if field in fl:
+                                        csvheader.append(field)
+                                else:
+                                    csvheader.append(field)
+
+                        headerline = [ str(f) for f in csvheader]
+                        csvline = ','.join(headerline) + '\n'
+                        csvdoc += csvline
+
+                    for field in csvheader: 
+                    # Fill the line with authorized data
+                        print('row:',row)
+                        if field in row:
+                            line.append(row[field])
+                        else:
+                            line.append('')
+                    
+                    strline = [ str(f) for f in line]
+                    csvline = ','.join(strline) + '\n'
+                    csvdoc += csvline
+
+                return csvdoc
+            
+            if 'fl' in request.args:
+                fl = request.args.get("fl").lower().split(',')
+            else:
+                fl = None
+                
+            csvout = generate(data['raw_out'],fl)
+            print('csvout:',csvout)
+
+            response = make_response(csvout)
+            # This is the key: Set the right header for the response
+            # to be downloaded, instead of just printed on the browser
+            response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+".csv"
+            return response
+
+            #return Response(csvout), mimetype='text/csv')
+
+
+        elif accept=='json':
+            # By default we return JSON
+            data['json_out'] = json.dumps(data['raw_out'])
+            return render_template(data['template'], data=data), status
+     
+
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-        #current_app.logger.debug('flag1')
-        #current_app.logger.debug(data)      
+
+             
         return render_template(data['template'], data=data), status     
     else:
-        #current_app.logger.debug('flag2')
-        ##current_app.logger.debug(data) 
+        
         return render_template(data['template'], data=data)
-        #return 'ok'
+        
 
 @timethis
 def tool_dispatcher(tool):
@@ -967,6 +1047,7 @@ def teams_dispatcher(depth,handle,team=None):
         return data                 
     else:
         return render_template(data['template'], data=data)
+
     
 
 
@@ -1423,10 +1504,12 @@ def api_route_a_b(handle,ring):
 
     result = route_dispatcher('_a_b',handle,ring,api=True)
  
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
+    #if 'redirect' in result:
+     #   return redirect(result['redirect'])        
+    #else:
+     #   return result
+
+    return result
 
 #API
 @timethis
@@ -1483,6 +1566,26 @@ def route_a_b_c(handle,ring,idx):
         return redirect(result['redirect'])
     else:
         return result
+
+
+'''
+THIS IS A TEST FUNCTION. PLEASE DELETE
+'''
+@avispa_rest.route('/_csv/')
+def csv_download():
+    csv = """"REVIEW_DATE","AUTHOR","ISBN","DISCOUNTED_PRICE"
+"1985/01/21","Douglas Adams",0345391802,5.95
+"1990/01/12","Douglas Hofstadter",0465026567,9.95
+"1998/07/15","Timothy ""The Parser"" Campbell",0968411304,18.99
+"1999/12/03","Richard Friedman",0060630353,5.95
+"2004/10/04","Randel Helms",0879755725,4.50"""
+    # We need to modify the response, so the first thing we 
+    # need to do is create a response out of the CSV string_
+    response = make_response(csv)
+    # This is the key: Set the right header for the response
+    # to be downloaded, instead of just printed on the browser
+    response.headers["Content-Disposition"] = "attachment; filename=books.csv"
+    return response
 
     
 

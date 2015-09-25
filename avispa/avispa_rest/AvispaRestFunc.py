@@ -155,7 +155,7 @@ class AvispaRestFunc:
         if not api:
             d = {'redirect': redirect, 'status':200}
         else:
-            d = {'template':'/base_json.html','api_out':json.dumps(out) ,'status':status}
+            d = {'template':'/base_json.html','raw_out':out ,'status':status}
 
         return d
 
@@ -312,9 +312,12 @@ class AvispaRestFunc:
                 out['rings'] = schema['rings']
                 out['fields'] = schema['fields']
             
-            out['items'] = itemlist                    
-            d['api_out'] = json.dumps(out)
-            d['template'] = 'avispa_rest/get_api_a_b.html'
+            out['items'] = itemlist 
+
+            d['raw_out'] = out
+            d['template'] = 'avispa_rest/get_json_a_b.html'
+            #d['api_out'] = json.dumps(out)
+            #d['template'] = 'avispa_rest/get_json_a_b.html'
 
         else:
 
@@ -636,7 +639,8 @@ class AvispaRestFunc:
                 d = {'redirect': redirect, 'status':201}
 
         else:
-            d = {'template':'/base_json.html','api_out':json.dumps(out) ,'status':status}
+
+            d = {'template':'/base_json.html','raw_out':out ,'status':status}
 
         return d
 
@@ -913,8 +917,8 @@ class AvispaRestFunc:
                 
                 out['items'] = [] 
                 out['items'].append(Item)
-                d['api_out'] = json.dumps(out)
-                d['template'] = 'avispa_rest/get_api_a_b_c.html'
+                d['raw_out'] = out
+                d['template'] = 'avispa_rest/get_json_a_b_c.html'
 
             else:
                 #Determine if there will be images
