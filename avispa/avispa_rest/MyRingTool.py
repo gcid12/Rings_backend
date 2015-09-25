@@ -447,12 +447,6 @@ class MyRingTool:
 
 
 
-
-
-
-
-
-
             
 
 

@@ -1,116 +1,24 @@
 <script>
 $(document).ready(function(){
 
+    $('.dtpckr').datetimepicker({
+      datepicker:false,
+      format:'H:i',
+      step:30
+    });
 
-    var days ={
-          "1":{"short":"mon_open", "long":"Monday Open"},
-          "2":{"short":"mon_close", "long":"Monday Close"},
-          "3":{"short":"tue_open", "long":"Tuesday Open"},
-          "4":{"short":"tue_close", "long":"Tuesday Close"},
-          "5":{"short":"wed_open", "long":"Wednesday Open"},
-          "6":{"short":"wed_close", "long":"Wednesday Close"},
-          "7":{"short":"thu_open", "long":"Thursday Open"},
-          "8":{"short":"thu_close", "long":"Thursday Close"},
-          "9":{"short":"fri_open", "long":"Friday Open"},
-          "10":{"short":"fri_close", "long":"Friday Close"},
-          "11":{"short":"sat_open", "long":"Saturday Open"},
-          "12":{"short":"sat_close", "long":"Saturday Close"},
-          "13":{"short":"sun_open", "long":"Sunday Open"},
-          "14":{"short":"sun_close", "long":"Sunday Close"}
-    };
-
-
-    function hoursweek(id,FieldId,dict){
-      var num = id+"_"+FieldId,
-        wt= '#wt_'+num, //div wrapper
-        wb= '#wb_'+num,
-        t= '#t_'+num,//div wrapper
-        b= '#b_'+num, //menu button
-        shortname= dict[id]["short"],
-        longname= dict[id]["long"],
-        uppername= shortname.toUpperCase(),
-        lang_hide = false,
-        default_item= 'mon_open';
-
-
-  {% if data.item[field.FieldId] %}
-
-      fvalue = {{ data.item[field.FieldId] | safe }};
-      console.log(fvalue)
-      //if($.inArray(value, array)!=-1){
-      if(fvalue[shortname]){
-        //This language exists
-        console.log('This language exists'+shortname)
-        lang_hide= false;
-        var inputvalue = fvalue[shortname];
-
-      }else{
-        //fvalue[shortname] = '';
-        var inputvalue = '';  
-      }
-
-  {% else %}
-      //If new
-      var inputvalue = ''; 
-      if(shortname == default_item){
-        lang_hide = false;
-      }
-       
-  {% endif %}
-
-
-  $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment input-sm inp' placeholder='HH:MM am/pm' value='"+inputvalue+"'></div>");
-
-
-  // $(wt).html("<span id='t_"+num+"' class='flag-aware increment inp p-5 m-10' style='width:300px;'><span>"+inputvalue+"</span><span class='fs-1'><select class='fc-b inp' id='ophours'><option id='c'>Closed</option><option id='0100'>1:00 am</option><option id='0200'>2:00 am</option><option id='0300'>3:00 am</option><option id='0400'>4:00 am</option><option id='0500'>5:00 am</option><option id='0600'>6:00 am</option><option id='0700'>7:00 am</option><option id='0730'>7:30 am</option><option id='0800'>8:00 am</option><option id='0830'>8:30 am</option><option id='0900'>9:00 am</option><option id='0930'>9:30 am</option><option id='1000'>10:00 am</option><option id='1100'>11:00 am</option><option id='1200'>12:00 pm</option><option id='1300'>1:00 pm</option><option id='1400'>2:00 pm</option><option id='1500'>3:00 pm</option><option id='1600'>4:00 pm</option><option id='1700'>5:00 pm</option><option id='1800'>6:00 pm</option><option id='1900'>7:00 pm</option><option id='2000'>8:00 pm</option><option id='2100'>9:00 pm</option><option id='2200'>10:00 pm</option><option id='2323'>11:23 pm</option><option id='2400'>12:00 pm</option></select></span><input type='hidden' id='inp_hidden'  value='1'></span>");
-
-    
-
-
-      $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='lan'></span></span></a>"); 
-      $(t).find('.day').append(uppername);
-      $(b).find('.lan').append(longname);
-      if (lang_hide) {
-        $(t).hide(); 
-        $(b).find('.icon').switchClass( 'fa-toggle-on' ,'fa-toggle-off');
-        $(b).find('.item').switchClass('fc-b' , 'fc-g');
-      }
-      //INPUT , OUTPUT
-      var inp= $(t).find('#inp');
-      inp.on("input", function() {
-        $(h).find('#out').text(this.value);
-
-      });
-
-      $(b).click(function() {     
-         $(t).toggle("slide", { direction: "up" }, 500);
-         $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
-         $(b).find('.item').toggleClass('fc-b fc-g');
-      });
-
-      //INPUT , OUTPUT  
-      inp= $(t).find('.inp');
-      inp.on("change paste", function() {
+    $('.dtpckr').on("change paste", function(){
         oldvalue = $("#text_multilang{{ field.FieldOrder }}").val();
         if(oldvalue==''){
           oldvalue = '{}';
         }
         var jsonold = JSON.parse(oldvalue);
+        var parts = this.name.split('-');
+        var shortname = parts[0];
         jsonold[shortname] = this.value;
+
         $("#text_multilang{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
-      });
-
-
-      $("#ophours").val('0900');
-
-     
-
-    }
-
-    for(l in days){
-      console.log(l);
-      hoursweek(l,'{{ field.FieldId}}',days);
-    }
+    });
 
 });
 </script>
