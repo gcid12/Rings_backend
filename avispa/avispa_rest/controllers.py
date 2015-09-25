@@ -194,7 +194,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
                 return csvdoc
             
-            fl = request.args.get("fl").lower().split(',')
+            if 'fl' in request.args:
+                fl = request.args.get("fl").lower().split(',')
+            else:
+                fl = None
+                
             csvout = generate(data['raw_out'],fl)
             print('csvout:',csvout)
 
