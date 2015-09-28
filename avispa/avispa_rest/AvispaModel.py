@@ -985,11 +985,8 @@ class AvispaModel:
                     sort_reverse=True
                 sort= sort_parts[0]
         
-
         result = self.select_ring_doc_view('ring/items',handle,ringname,limit=limit,lastkey=lastkey,endkey=endkey)
         #self.lggr.debug('result:'+str(result))
-    
-        
 
         for row in result:
 
@@ -1023,6 +1020,9 @@ class AvispaModel:
             batch = 500
 
         options = {}
+        if limit != '_all':
+            options['limit']= int(limit) #Number of results per page 
+            
         if key:
             options['key']=str(key)
         if lastkey:
@@ -1032,7 +1032,7 @@ class AvispaModel:
         if endkey:
             options['endkey']=endkey
 
-        options['limit']=limit #Number of results per page  
+         
         result = db.iterview(dbview,batch,**options)
 
         #options['key']='4393588627'

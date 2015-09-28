@@ -260,9 +260,9 @@ class AvispaRestFunc:
             endkey = None
 
         if 'limit' in request.args:
-            limit = int(request.args.get('limit'))
+            limit = request.args.get('limit')
         else:
-            limit = 25
+            limit = "25"
 
         if 'sort' in request.args:
             sort = request.args.get('sort')

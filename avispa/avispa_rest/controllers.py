@@ -171,7 +171,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                                 pass
                             else:
                                 if fl:
-                                    if field in fl:
+                                    if field.lower() in fl:
                                         csvheader.append(field)
                                 else:
                                     csvheader.append(field)
@@ -198,7 +198,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 fl = request.args.get("fl").lower().split(',')
             else:
                 fl = None
-                
+
             csvout = generate(data['raw_out'],fl)
             print('csvout:',csvout)
 
