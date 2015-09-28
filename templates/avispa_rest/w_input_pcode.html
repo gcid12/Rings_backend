@@ -16,8 +16,8 @@
         <!-- BBBBBBBBBBBBBBB -->
         <div class="dropdown pull-right">
           <a class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-language"></i>
-            <span class="fs-0-8">Translations</span>
+            <i class="fa fa-plus"></i>&nbsp;
+            <span class="fs-0-8">Add Product Code</span>
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -34,6 +34,6 @@
         </div>
         <hr/>
         <!-- HHHHHHHHHH -->
-        <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="text_multilang{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value='{{ data.item[field.FieldId] }}'>          
+        <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="hidden{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value='{{ data.item[field.FieldId] }}'>          
       </div>
     </div>
