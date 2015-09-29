@@ -144,7 +144,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
         if accept=='csv':
 
-            #This is where a function converts this into CSV.
+            #This is where a function converts output into CSV.
             def generate(data_raw,fl=None):
 
                 d = data_raw['items']
@@ -153,7 +153,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 outfields=[]
                 csvdoc = ''
 
-                print('data[raw_out]',d)
+                #print('data[raw_out]',d)
                 i = 0
 
                 for row in d:
@@ -182,9 +182,19 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
                     for field in csvheader: 
                     # Fill the line with authorized data
-                        print('row:',row)
+                        #print('row:',row)
                         if field in row:
-                            line.append(row[field])
+                            print('Field:',field)
+                            print('rowfield:',row[field])
+
+                            if isinstance(row[field], list):
+                            #if row[field] is list:
+                                print('flag2')
+                                r = [str(p) for p in row[field]]
+                                line.append('|'.join(r))
+
+                            else:
+                                line.append(row[field])
                         else:
                             line.append('')
                     
@@ -200,7 +210,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 fl = None
 
             csvout = generate(data['raw_out'],fl)
-            print('csvout:',csvout)
+            #print('csvout:',csvout)
 
             response = make_response(csvout)
             # This is the key: Set the right header for the response
@@ -214,6 +224,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         elif accept=='json':
             # By default we return JSON
             data['json_out'] = json.dumps(data['raw_out'])
+            print('JSONOUT',data['raw_out'])
             return render_template(data['template'], data=data), status
      
 
