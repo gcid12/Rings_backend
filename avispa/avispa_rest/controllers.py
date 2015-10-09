@@ -188,8 +188,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                             print('rowfield:',row[field])
 
                             if isinstance(row[field], list):
-                            #if row[field] is list:
-                                print('flag2')
                                 r = [str(p) for p in row[field]]
                                 line.append('|'.join(r))
 

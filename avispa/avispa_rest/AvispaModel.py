@@ -657,6 +657,8 @@ class AvispaModel:
 
         fields = schema['fields']
         for field in fields:
+
+            #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
             args_i[field['FieldId']] = TextField()
 
             #d1={'source':TextField()}
@@ -690,7 +692,6 @@ class AvispaModel:
         self.lggr.debug('args_flags'+str(args_flags))
         self.lggr.debug('args_meta'+str(args_meta))
 
- 
 
         RingClass = type('RingClass',
                          (Document,),

@@ -673,6 +673,17 @@
                                 <option value="Multiple" {% if FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
                               </select>   
                             </span>
+                            <span class="fc-g fs-0-8 margin-x-7">
+                              Type
+                              
+                              <select name="FieldType_{{ FieldOrder }}" class="fc-b">
+                                <option value="STRING" {% if FieldType == "STRING" or FieldType=="TEXT" %} selected {% endif %}>String</option>
+                                <option value="INTEGER" {% if FieldType == "INTEGER" %} selected {% endif %}>Integer</option>
+                                <option value="OBJECT" {% if FieldType == "OBJECT" %} selected {% endif %}>Object</option>
+                                <option value="ARRAY" {% if FieldType == "ARRAY" %} selected {% endif %}>Array</option>
+                                <option value="BOOLEAN" {% if FieldType == "BOOLEAN" %} selected {% endif %}>Boolean</option>
+                              </select>   
+                            </span>
                           </div>
                           <div class="col-sm-4">
                             <table>
@@ -721,7 +732,8 @@
                         </div>
                         <!-- CLOSE ROW 1 -->
                         <!-- NEW ORDER -->
-                        <input type="hidden" name="FieldType_{{ FieldOrder }}">
+                        
+                        
                         <div class="input-group input-group-sm">
                         </div>
                         <!-- SUBMIT -->
@@ -850,6 +862,13 @@
                         <!-- NEW ORDER -->
                         <input type="hidden" name="FieldType_{{ FieldOrder }}">
                         <div class="input-group input-group-sm">
+                          <select>
+                            <option>STRING</option>
+                            <option>INTEGER</option>
+                            <option>OBJECT</option>
+                            <option>ARRAY</option>
+                            <option>BOOLEAN</option>
+                          </select>
                         </div>
                         <!-- SUBMIT -->
                       </div> <!-- C. PORTLET CONTENT -->

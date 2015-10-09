@@ -29,7 +29,7 @@ class RingBuilder:
                            'FieldWidget','FieldOrder', 'FieldCardinality', 'FieldMultilingual',\
                            'FieldRequired', 'FieldDefault', 'FieldHint', 'FieldLayer']
         self.fieldprotocols['mandatory'] = ['FieldName']
-        self.fieldprotocols['defaults'] = {'FieldType':'TEXT','FieldWidget':'text','FieldCardinality':'single',\
+        self.fieldprotocols['defaults'] = {'FieldType':'STRING','FieldWidget':'text','FieldCardinality':'single',\
                                   'FieldMultilingual':'FALSE', 'FieldRequired':'FALSE', 'FieldLayer':'2', 'FieldOrder':'1' }
 
 
