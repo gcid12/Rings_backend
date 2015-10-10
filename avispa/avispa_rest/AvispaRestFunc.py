@@ -260,9 +260,9 @@ class AvispaRestFunc:
             endkey = None
 
         if 'limit' in request.args:
-            limit = int(request.args.get('limit'))
+            limit = request.args.get('limit')
         else:
-            limit = 25
+            limit = "25"
 
         if 'sort' in request.args:
             sort = request.args.get('sort')
@@ -311,6 +311,9 @@ class AvispaRestFunc:
             if 'schema' in request.args:
                 out['rings'] = schema['rings']
                 out['fields'] = schema['fields']
+
+            d['fieldtitles'] = [ f['FieldName'] for f in schema['fields'] ]
+
             
             out['items'] = itemlist 
 
@@ -374,7 +377,8 @@ class AvispaRestFunc:
 
                 if layer:
                     if int(layers[fieldid])>int(layer):
-                        continue
+                        #continue
+                        pass
 
                 if label:
                     Item[names[fieldid]] = preitem[fieldid]

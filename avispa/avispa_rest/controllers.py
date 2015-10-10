@@ -1,5 +1,5 @@
 # Import flask dependencies
-import urlparse, time, datetime, collections, json, csv
+import urlparse, time, datetime, collections, json, csv, types, cStringIO
 from flask import Blueprint, render_template, request, redirect, current_app , g , make_response, Response
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
@@ -144,63 +144,79 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
         if accept=='csv':
 
-            #This is where a function converts this into CSV.
+            #This is where a function converts output into CSV.
             def generate(data_raw,fl=None):
 
                 d = data_raw['items']
 
-                
-                outfields=[]
-                csvdoc = ''
+                cvsdocIO = cStringIO.StringIO()
+                writer = csv.writer(cvsdocIO , delimiter=',',quoting=csv.QUOTE_NONNUMERIC)
 
-                print('data[raw_out]',d)
-                i = 0
+                #Generate the header first 
+                csvheader = ['_id'] 
+                for f in fl:
+                    csvheader.append(f)
+       
+                '''
+                for field in fl:        
+                    if field[:1]=='_':
+                        if field == '_id': 
+                            csvheader.append(field)
+                    elif field[-5:]=='_rich':
+                        pass
+                    else:
+                        if fl:
+                            if field.lower() in fl:
+                                csvheader.append(field)
+                        else:
+                            csvheader.append(field)
+                '''
 
+                headerline = [ str(f) for f in csvheader]
+                writer.writerow(headerline)
+
+                # Add the items
                 for row in d:
-                    i = i+1
+                    
                     line = [] 
-
-                    if i==1: 
-                        csvheader = []         
-                    # Just the first time to set the CSV header
-                        for field in row:        
-                            if field[:1]=='_':
-                                if field == '_id': 
-                                    csvheader.append(field)
-                            elif field[-5:]=='_rich':
-                                pass
-                            else:
-                                if fl:
-                                    if field in fl:
-                                        csvheader.append(field)
-                                else:
-                                    csvheader.append(field)
-
-                        headerline = [ str(f) for f in csvheader]
-                        csvline = ','.join(headerline) + '\n'
-                        csvdoc += csvline
 
                     for field in csvheader: 
                     # Fill the line with authorized data
-                        print('row:',row)
+                        #print('row:',row)
                         if field in row:
-                            line.append(row[field])
+                            print('Field:',field)
+                            print('rowfield:',row[field])
+
+                            if isinstance(row[field], list):
+                            #if row[field] is list:
+                                print('flag2')
+                                r = [str(p) for p in row[field]]
+                                line.append('|'.join(r))
+
+                            else:
+                                line.append(row[field])
                         else:
                             line.append('')
                     
                     strline = [ str(f) for f in line]
-                    csvline = ','.join(strline) + '\n'
-                    csvdoc += csvline
+                    writer.writerow(strline)
+                    #csvline = ','.join(strline) + '\n'
+                    #csvdoc += csvline
+
+                csvdoc = cvsdocIO.getvalue()
+                cvsdocIO.close()
 
                 return csvdoc
             
             if 'fl' in request.args:
                 fl = request.args.get("fl").lower().split(',')
             else:
-                fl = None
-                
+                fl = data['fieldtitles']
+
+
+
             csvout = generate(data['raw_out'],fl)
-            print('csvout:',csvout)
+            #print('csvout:',csvout)
 
             response = make_response(csvout)
             # This is the key: Set the right header for the response
@@ -214,6 +230,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         elif accept=='json':
             # By default we return JSON
             data['json_out'] = json.dumps(data['raw_out'])
+            print('JSONOUT',data['raw_out'])
             return render_template(data['template'], data=data), status
      
 
