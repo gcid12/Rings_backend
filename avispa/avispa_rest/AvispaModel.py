@@ -1503,7 +1503,10 @@ class AvispaModel:
                 except:
                     new = unicode(new_raw).strip()
             else:
-                new = unicode(new_raw).strip()
+                if new_raw:
+                    new = unicode(new_raw).strip()
+                else:
+                    new = None
                    
 
             if new == '':
