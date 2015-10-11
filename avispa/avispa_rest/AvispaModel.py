@@ -659,7 +659,16 @@ class AvispaModel:
         for field in fields:
 
             #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
-            args_i[field['FieldId']] = TextField()
+            if field['FieldType'] == 'INTEGER':
+                args_i[field['FieldId']] = IntegerField()
+            elif field['FieldType'] == 'OBJECT':
+                args_i[field['FieldId']] = DictField()
+            elif field['FieldType'] == 'ARRAY':
+                args_i[field['FieldId']] = ListField()
+            elif field['FieldType'] == 'BOOLEAN':
+                args_i[field['FieldId']] = BooleanField()
+            else:
+                args_i[field['FieldId']] = TextField()
 
             #d1={'source':TextField()}
             d1 = {}
@@ -1053,29 +1062,40 @@ class AvispaModel:
     def populate_item(self,OrderedFields,row,OFH=False):
         item = collections.OrderedDict()
         if not OFH:
+            #OFH Returns results with Human readable keys instead of fieldids
             OFH={}
 
         if 'id' in row:        
             item[u'_id'] = row['id']
 
             for fieldid in OrderedFields:
-                if fieldid in row['value']:
-                    if row['value'][fieldid]:
-                        if fieldid in OFH:
-                            item[OFH[fieldid]] = row['value'][fieldid]
+                if fieldid in row['value']: 
 
-                            if fieldid+'_flag' in row['value']:
-                                item[OFH[fieldid]+'_flag'] = row['value'][fieldid+'_flag']
-                            if fieldid+'_rich' in row['value']:
-                                item[OFH[fieldid]+'_rich'] = row['value'][fieldid+'_rich']
 
-                        else:
-                            item[fieldid] = row['value'][fieldid]
 
-                            if fieldid+'_flag' in row['value']:
-                                item[fieldid+'_flag'] = row['value'][fieldid+'_flag']
-                            if fieldid+'_rich' in row['value']:
-                                item[fieldid+'_rich'] = row['value'][fieldid+'_rich']
+                    #self.lggr.debug(fieldid+' has type:'+type(row['value']))
+
+                    if fieldid in OFH:
+
+                        #Add Value
+                        item[OFH[fieldid]] = row['value'][fieldid]
+                        #Add Flag
+                        if fieldid+'_flag' in row['value']:
+                            item[OFH[fieldid]+'_flag'] = row['value'][fieldid+'_flag']
+                        #Add Rich 
+                        if fieldid+'_rich' in row['value']:
+                            item[OFH[fieldid]+'_rich'] = row['value'][fieldid+'_rich']
+
+                    else:
+
+                        #Add Value
+                        item[fieldid] = row['value'][fieldid]
+                        #Add Flag
+                        if fieldid+'_flag' in row['value']:
+                            item[fieldid+'_flag'] = row['value'][fieldid+'_flag']
+                        #Add Rich
+                        if fieldid+'_rich' in row['value']:
+                            item[fieldid+'_rich'] = row['value'][fieldid+'_rich']
 
 
             return item
@@ -1461,13 +1481,30 @@ class AvispaModel:
             
             if field['FieldName'] in request.form:
                 if len(request.form.get(field['FieldName']))!=0:
-                    new = unicode(request.form.get(field['FieldName']))
+                    new_raw = request.form.get(field['FieldName'])
+                else:
+                    new_raw = None
+                    
             elif field['FieldId'] in request.form:
                 if len(request.form.get(field['FieldId']))!=0:
-                    new = unicode(request.form.get(field['FieldId']))
+                    new_raw = request.form.get(field['FieldId'])
+                else:
+                    new_raw = None
 
-            #old = old.strip()
-            new = new.strip()
+
+            
+            ####TO-DO. We need to check if new_raw is a valid json object or just a regular string
+            
+            #new = new_raw
+
+            if field['FieldType'] == 'OBJECT':
+                try:
+                    new = json.loads(new_raw.strip())
+                except:
+                    new = unicode(new_raw).strip()
+            else:
+                new = unicode(new_raw).strip()
+                   
 
             if new == '':
                new = None

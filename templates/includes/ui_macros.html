@@ -586,7 +586,8 @@
 {% endmacro %}
 
 
-{% macro portlet(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel) %}
+{% macro portlet(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel,FieldType) %}
+{#% macro portlet(field,new) %#}
                    
                     <div id="portlet_{{ FieldOrder }}" class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"> <!-- B. -->
                       <!-- TAGS -->
@@ -814,6 +815,16 @@
                               <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
                                 <option value="Single">Single</option>
                                 <option value="Multiple">Multiple</option>
+                              </select>   
+                            </span>
+                            <span class="fc-g fs-0-8 margin-x-7">
+                              Type
+                              <select name="FieldType_{{ FieldOrder }}" class="fc-b">
+                                <option value="STRING" {% if FieldType == "STRING" or FieldType=="TEXT" %} selected {% endif %}>String</option>
+                                <option value="INTEGER" {% if FieldType == "INTEGER" %} selected {% endif %}>Integer</option>
+                                <option value="OBJECT" {% if FieldType == "OBJECT" %} selected {% endif %}>Object</option>
+                                <option value="ARRAY" {% if FieldType == "ARRAY" %} selected {% endif %}>Array</option>
+                                <option value="BOOLEAN" {% if FieldType == "BOOLEAN" %} selected {% endif %}>Boolean</option>
                               </select>   
                             </span>
                           </div>

@@ -51,9 +51,7 @@
           <span class="input-group-addon" id="sizing-addon1">
             Description
           </span>
-          <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this ring unique?" style="height:100px;" >
-            {{ data.ringschema.RingDescription | nonone }}
-          </textarea>
+          <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this ring unique?" style="height:100px;" >{{ data.ringschema.RingDescription | nonone }}</textarea>
         </div>
         <div class="text-right spa10">
           <a class="clearlink" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -112,7 +110,9 @@
           <!-- A. START DRAG AREA -->
           
   {% for field in data.fieldsschema %}
-          {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSource,field.FieldSemantic,field.FieldLabel) }}
+          {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSource,field.FieldSemantic,field.FieldLabel,field.FieldType) }}
+
+          {#{ ui.portlet(field,False) }#}
           <!-- N FIELD END -->
   {% endfor %}
         </div> <!-- A. CLOSE COLUMN  -->

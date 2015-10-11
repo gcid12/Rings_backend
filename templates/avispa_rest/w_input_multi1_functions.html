@@ -16,14 +16,22 @@ $(document).ready(function(){
 
       
 
-  {% if data.item[field.FieldId] %}
+     {% if data.item[field.FieldId] %}
 
-      fvalue = {{ data.item[field.FieldId] | safe }};
+      fvalue = {}
+      
+      {% for s in data.item[field.FieldId] %}
+
+        fvalue['{{s}}'] = '{{data.item[field.FieldId][s]}}'
+
+      {% endfor %}
+
       console.log(fvalue)
-      //if($.inArray(value, array)!=-1){
+
+      
       if(fvalue[shortname]){
         //This exists
-        console.log('This exists'+shortname)
+        console.log('This exists:'+shortname)
         menu_hide= false;
         var inputvalue = fvalue[shortname];
 
@@ -32,21 +40,21 @@ $(document).ready(function(){
         var inputvalue = '';  
       }
 
-  {% else %}
+     {% else %}
       //If new
       var inputvalue = ''; 
       if(item_id == default_item){
         menu_hide = false;
       }
        
-  {% endif %}
+     {% endif %}
 
-  //SETTING DIVS WRAPPERS
-  {% if field.FieldWidget == 'textarea_multilang' %}
+    //SETTING DIVS WRAPPERS
+     {% if field.FieldWidget == 'textarea_multilang' %}
       $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' >"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 name' ></span></div>");
-  {% else %}
+     {% else %}
       $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 name' ></span></div>");
-  {% endif %}
+     {% endif %}
 
   //SETTING BUTTON WRAPPER
       $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='name'></span></span></a>"); 

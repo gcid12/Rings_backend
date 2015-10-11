@@ -918,6 +918,8 @@ class AvispaRestFunc:
                 if 'schema' in request.args:
                     out['rings'] = schema['rings']
                     out['fields'] = schema['fields']
+
+                d['fieldtitles'] = [ f['FieldName'] for f in schema['fields'] ]
                 
                 out['items'] = [] 
                 out['items'].append(Item)
