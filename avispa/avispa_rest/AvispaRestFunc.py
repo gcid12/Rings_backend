@@ -511,9 +511,10 @@ class AvispaRestFunc:
                         del images[0]
                         Item[fieldid] = images
                     elif names[fieldid] in Item:
-                        images=Item[names[fieldid]].split(',')                
-                        del images[0]
-                        Item[names[fieldid]] = images
+                        if Item[names[fieldid]]:
+                            images=Item[names[fieldid]].split(',')                
+                            del images[0]
+                            Item[names[fieldid]] = images
                     
                 
 
