@@ -29,7 +29,7 @@ class RingBuilder:
                            'FieldWidget','FieldOrder', 'FieldCardinality', 'FieldMultilingual',\
                            'FieldRequired', 'FieldDefault', 'FieldHint', 'FieldLayer']
         self.fieldprotocols['mandatory'] = ['FieldName']
-        self.fieldprotocols['defaults'] = {'FieldType':'TEXT','FieldWidget':'text','FieldCardinality':'single',\
+        self.fieldprotocols['defaults'] = {'FieldType':'STRING','FieldWidget':'text','FieldCardinality':'single',\
                                   'FieldMultilingual':'FALSE', 'FieldRequired':'FALSE', 'FieldLayer':'2', 'FieldOrder':'1' }
 
 
@@ -289,6 +289,7 @@ class RingBuilder:
             ringname = request.form.get('RingName').lower() # I dont like this here
             handle = handle.lower()
             ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
+
             
             
             # Generate rings block  
@@ -346,10 +347,11 @@ class RingBuilder:
                 current_app.logger.debug('in')
             #if request.form.get(k):
                 #ringsbuffer[k] = request.form[k]
-                ringsbuffer[k] = requestparameters[k]
+                ringsbuffer[k] = requestparameters[k].strip()
                 #current_app.logger.debug(k)
+                
 
-                if requestparameters[k]=='':
+                if ringsbuffer[k]=='':
 
                     if k in self.ringprotocols['mandatory']:
                         raise Exception('Field in Ring Protocol missing : '+k)

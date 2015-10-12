@@ -72,8 +72,23 @@
         {% set FieldSource = request.args.get('FieldSource_'~m) or '' %}
         {% set FieldSemantic = request.args.get('FieldSemantic_'~m) %}
         {% set FieldLabel = request.args.get('FieldLabel_'~m) %}
+        {% set FieldType = request.args.get('FieldType_'~m) %}
+        {% set FieldOrder = m %}
 
-        {{ ui.portlet(m,FieldLayer,True,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel) }}
+        {#% set field = {} %#}
+        {#% set field.FieldLayer = request.args.get('FieldLayer_'~m) or 3 %#}
+        {#% set field.FieldName = request.args.get('FieldName_'~m) %#}
+        {#% set field.FieldWidget = request.args.get('FieldWidget_'~m) or 'text' %#}
+        {#% set field.FieldCardinality = request.args.get('FieldCardinality_'~m) %#}
+        {#% set field.FieldHint = request.args.get('FieldHint_'~m) or '' %#}
+        {#% set field.FieldSource = request.args.get('FieldSource_'~m) or '' %#}
+        {#% set field.FieldSemantic = request.args.get('FieldSemantic_'~m) %#}
+        {#% set field.FieldLabel = request.args.get('FieldLabel_'~m) %#}
+        {#% set field.FieldOrder = str(m) %#}
+
+        {{ ui.portlet(m,FieldLayer,True,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel,FieldType) }}
+
+        {#{ ui.portlet(field,True) }#}
         
       {% endfor %}    
       </div> <!-- A. CLOSE COLUMN  -->

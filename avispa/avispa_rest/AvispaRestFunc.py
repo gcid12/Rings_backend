@@ -511,9 +511,10 @@ class AvispaRestFunc:
                         del images[0]
                         Item[fieldid] = images
                     elif names[fieldid] in Item:
-                        images=Item[names[fieldid]].split(',')                
-                        del images[0]
-                        Item[names[fieldid]] = images
+                        if Item[names[fieldid]]:
+                            images=Item[names[fieldid]].split(',')                
+                            del images[0]
+                            Item[names[fieldid]] = images
                     
                 
 
@@ -610,7 +611,7 @@ class AvispaRestFunc:
 
             if not api:
                 #current_app.logger.debug('There was an error creating the item')
-                current_app.logger.debug('Item saved with id: '+idx)           
+                current_app.logger.debug('There was an error creating the item')           
                 flash("There was an error creating the item",'ER')
             else:
                 out['Success'] = False
@@ -918,6 +919,8 @@ class AvispaRestFunc:
                 if 'schema' in request.args:
                     out['rings'] = schema['rings']
                     out['fields'] = schema['fields']
+
+                d['fieldtitles'] = [ f['FieldName'] for f in schema['fields'] ]
                 
                 out['items'] = [] 
                 out['items'].append(Item)

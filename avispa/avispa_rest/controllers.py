@@ -188,8 +188,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                             print('rowfield:',row[field])
 
                             if isinstance(row[field], list):
-                            #if row[field] is list:
-                                print('flag2')
                                 r = [str(p) for p in row[field]]
                                 line.append('|'.join(r))
 
@@ -221,7 +219,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             response = make_response(csvout)
             # This is the key: Set the right header for the response
             # to be downloaded, instead of just printed on the browser
-            response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+".csv"
+            if idx:
+                response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+"_"+str(idx)+".csv"
+            else:
+                response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+".csv"
+
             return response
 
             #return Response(csvout), mimetype='text/csv')
@@ -1535,10 +1537,7 @@ def api_route_a_b_c(handle,ring,idx):
 
     result = route_dispatcher('_a_b_c',handle,ring,idx,api=True)
 
-    if 'redirect' in result:
-        return redirect(result['redirect'])
-    else:
-        return result
+    return result
 
 
 @timethis

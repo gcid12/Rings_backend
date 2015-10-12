@@ -110,7 +110,9 @@
           <!-- A. START DRAG AREA -->
           
   {% for field in data.fieldsschema %}
-          {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSource,field.FieldSemantic,field.FieldLabel) }}
+          {{ ui.portlet(field.FieldOrder,field.FieldLayer,False,field.FieldName,field.FieldWidget,field.FieldCardinality,field.FieldHint,field.FieldSource,field.FieldSemantic,field.FieldLabel,field.FieldType) }}
+
+          {#{ ui.portlet(field,False) }#}
           <!-- N FIELD END -->
   {% endfor %}
         </div> <!-- A. CLOSE COLUMN  -->
