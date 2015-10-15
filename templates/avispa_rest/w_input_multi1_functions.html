@@ -49,10 +49,12 @@ $(document).ready(function(){
        
      {% endif %}
 
-    //SETTING DIVS WRAPPERS
-     {% if field.FieldWidget == 'textarea_multilang' %}
-      $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' >"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 name' ></span></div>");
-     {% else %}
+
+  //SETTING DIVS WRAPPERS
+  {% if field.FieldWidget == 'textarea_multilang' %}
+      $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' rows='8'>"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 name' ></span></div>");
+  {% else %}
+
       $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 name' ></span></div>");
      {% endif %}
 
