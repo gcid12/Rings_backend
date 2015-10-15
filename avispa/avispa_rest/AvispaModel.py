@@ -1036,7 +1036,7 @@ class AvispaModel:
         if key:
             options['key']=str(key)
         if lastkey:
-            limit +=1
+            
             options['startkey']=lastkey  #Where the last page left 
 
         if endkey:
