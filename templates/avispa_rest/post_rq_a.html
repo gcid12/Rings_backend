@@ -73,6 +73,7 @@
         {% set FieldSemantic = request.args.get('FieldSemantic_'~m) %}
         {% set FieldLabel = request.args.get('FieldLabel_'~m) %}
         {% set FieldType = request.args.get('FieldType_'~m) %}
+        {% set FieldMultilingual = request.args.get('FieldMultilingual_'~m) %}
         {% set FieldOrder = m %}
 
         {#% set field = {} %#}
@@ -86,7 +87,7 @@
         {#% set field.FieldLabel = request.args.get('FieldLabel_'~m) %#}
         {#% set field.FieldOrder = str(m) %#}
 
-        {{ ui.portlet(m,FieldLayer,True,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel,FieldType) }}
+        {{ ui.portlet(m,FieldLayer,True,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel,FieldType,FieldMultilingual) }}
 
         {#{ ui.portlet(field,True) }#}
         

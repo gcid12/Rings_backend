@@ -586,7 +586,7 @@
 {% endmacro %}
 
 
-{% macro portlet(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel,FieldType) %}
+{% macro portlet(FieldOrder,FieldLayer,new,FieldName,FieldWidget,FieldCardinality,FieldHint,FieldSource,FieldSemantic,FieldLabel,FieldType,FieldMultilingual) %}
 {#% macro portlet(field,new) %#}
                    
                     <div id="portlet_{{ FieldOrder }}" class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"> <!-- B. -->
@@ -661,12 +661,12 @@
                           <div class="col-sm-8">
                             <span class="fc-g fs-0-8 margin-x-7">    
                               required
-                              <input name="FieldRequired_{{ FieldOrder }}" value="TRUE" type="checkbox">
+                              <input name="FieldRequired_{{ FieldOrder }}" value="1" {% if FieldRequired %} checked {% endif %} type="checkbox">
                             </span>
 
                             <span class="lfc-g fs-0-8 margin-x-7">
                               multilingual
-                              <input name="FieldMultilingual_{{ FieldOrder }}" value="TRUE" type="checkbox">  
+                              <input name="FieldMultilingual_{{ FieldOrder }}" value="1" {% if FieldMultilingual %} checked {% endif %} type="checkbox">  
                             </span> 
 
                             <span class="fc-g fs-0-8 margin-x-7">
