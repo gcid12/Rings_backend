@@ -663,10 +663,12 @@
                               required
                               <input name="FieldRequired_{{ FieldOrder }}" value="TRUE" type="checkbox">
                             </span>
-                            <!-- <span class="label bg-gray margin-x-7">
+
+                            <span class="lfc-g fs-0-8 margin-x-7">
                               <input name="FieldMultilingual_{{ FieldOrder }}" value="TRUE" type="checkbox">
                               multilingual
-                            </span> -->
+                            </span> 
+                            
                             <span class="fc-g fs-0-8 margin-x-7">
                               Cardinality
                               <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
@@ -675,8 +677,7 @@
                               </select>   
                             </span>
                             <span class="fc-g fs-0-8 margin-x-7">
-                              Type
-                              
+                              Type 
                               <select name="FieldType_{{ FieldOrder }}" class="fc-b">
                                 <option value="STRING" {% if FieldType == "STRING" or FieldType=="TEXT" %} selected {% endif %}>String</option>
                                 <option value="INTEGER" {% if FieldType == "INTEGER" %} selected {% endif %}>Integer</option>
@@ -726,7 +727,9 @@
                               <input type="hidden" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control" placeholder="" value=""/>
                             {% else %}
                               <input type="text" id="FieldName_{{ FieldOrder }}" name="FieldName_{{ FieldOrder }}" class="form-control fieldname" placeholder="" value="{{ FieldName|nonone }}"/>
-                            {% endif %}    
+                            {% endif %}  
+
+
                             </div> 
                           </div>                         
                           <br/>
