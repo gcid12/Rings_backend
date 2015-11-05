@@ -644,6 +644,7 @@ class AvispaRestFunc:
                 d = {'redirect': redirect, 'status':201}
 
         else:
+            print(out)
 
             d = {'template':'/base_json.html','raw_out':out ,'status':status}
 
