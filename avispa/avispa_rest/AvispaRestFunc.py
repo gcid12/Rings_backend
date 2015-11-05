@@ -1024,7 +1024,11 @@ class AvispaRestFunc:
         for i in item:
             #current_app.logger.debug(i+str(item[i]))
             if i[-5:] == '_flag':
-                if int(item[i])<1000 or int(item[i])>=10000 : #Invalid Status
+
+                if not item[i]:
+                    item[i] = '0000'
+
+                elif int(item[i])<1000 or int(item[i])>=10000 : #Invalid Status
                     if len(str(item[i[:-5]])) < 1: #Empty
                         item[i] = '0000'
                     else:  # If has something
