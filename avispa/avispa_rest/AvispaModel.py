@@ -1310,14 +1310,14 @@ class AvispaModel:
 
 
         for field in fields:
+
+
             
             #self.lggr.debug(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
             #self.lggr.debug(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
 
             #self.lggr.debug('FieldSource:'+str(field['FieldSource']))
             #self.lggr.debug('FieldWidget:'+str(field['FieldWidget']))
-
-            
 
             #Detect if FieldWidget is "select" . If it is you are getting an ID. 
             #You need to query the source to get the real value and the _rich values
@@ -1341,16 +1341,30 @@ class AvispaModel:
                  
             else:
 
+
+
                 #Not a rich widget. Will not have rich data
                 self.lggr.info(field['FieldName'] +' ('+field['FieldId']+') is NOT a RICH Field ')
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
                 if field['FieldName'] in request.form:
                     if len(request.form.get(field['FieldName']))!=0:
-                        item_values[field['FieldId']] = request.form.get(field['FieldName'])
+                        new_raw = request.form.get(field['FieldName'])
                 elif field['FieldId'] in request.form:
                     if len(request.form.get(field['FieldId']))!=0:
-                        item_values[field['FieldId']] = request.form.get(field['FieldId'])
+                        new_raw = request.form.get(field['FieldId'])
+
+
+                if field['FieldType'] == 'OBJECT':
+                    try:
+                        item_values[field['FieldId']] = json.loads(new_raw.strip())
+                    except:
+                        item_values[field['FieldId']] = unicode(new_raw).strip()
+                else:
+                    if new_raw:
+                        item_values[field['FieldId']] = unicode(new_raw).strip()
+                    else:
+                        item_values[field['FieldId']] = None
 
                             
                 #This will record the history for the first entry in the item history
