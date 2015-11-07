@@ -232,7 +232,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         elif accept=='json':
             # By default we return JSON
             data['json_out'] = json.dumps(data['raw_out'])
-            print('JSONOUT',data['raw_out'])
+            print('JSONOUT',data['json_out'])
             return render_template(data['template'], data=data), status
      
 
