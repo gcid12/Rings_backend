@@ -394,17 +394,17 @@
                 {% for i in data.item%}  
                   {%if i[:1] != '_' and i[5:] != '_rich' %} 
                     {%if not x%}
-                      {{data.item[i]}}                    
+                      {{data.item[i]|nonone}}                    
                       {%set x = True%}
                     {%endif%}
                   {%endif%}
                 {%endfor%}
                 </span>
 
-                <div class="fc-g fs-0-7">{{data.ring}}</div>
+                <div class="fc-g fs-0-7">{{data.ring|nonone}}</div>
                 
               {% else %}
-                <span class="fw-c">{{data.ring}}</span>
+                <span class="fw-c">{{data.ring|nonone}}</span>
 
               {% endif %} 
             </div>
