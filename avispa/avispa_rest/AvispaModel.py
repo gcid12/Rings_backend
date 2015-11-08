@@ -1347,12 +1347,14 @@ class AvispaModel:
                 self.lggr.info(field['FieldName'] +' ('+field['FieldId']+') is NOT a RICH Field ')
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
+                new_raw = ''
                 if field['FieldName'] in request.form:
                     if len(request.form.get(field['FieldName']))!=0:
                         new_raw = request.form.get(field['FieldName'])
                 elif field['FieldId'] in request.form:
                     if len(request.form.get(field['FieldId']))!=0:
                         new_raw = request.form.get(field['FieldId'])
+
 
 
                 if field['FieldType'] == 'OBJECT':
