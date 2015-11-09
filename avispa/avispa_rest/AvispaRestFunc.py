@@ -1129,7 +1129,10 @@ class AvispaRestFunc:
     def delete_a_b_c(self,request,handle,ring,idx,api=False,collection=None,*args):
         result = self.AVM.delete_a_b_c(request,handle,ring,idx)
 
+        print('flag1')
+
         if result:
+            print('flag2')
             #current_app.logger.debug('Item deleted..')
             #msg = 'Item put with id: '+idx
             flash('Item deleted..','UI')
@@ -1139,7 +1142,8 @@ class AvispaRestFunc:
                 redirect = '/'+handle+'/'+ring
 
 
-            if 'raw' in request.args:          
+            if 'raw' in request.args: 
+                print('flag3')         
                 #o = urlparse.urlparse(request.url)
                 #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
                 m = {}
@@ -1147,13 +1151,25 @@ class AvispaRestFunc:
                 m['ui_action'] = 'delete'
                 message = json.dumps(m)
                 d = {'message':message,'template':'avispa_rest/delete_a_b_c_raw.html'}
-            else:      
+
+            elif api:
+                out = {}
+                out['uri'] = handle+'/'+ring+'/'+idx
+                out['method'] = 'DELETE'
+                out['success'] = True
+
+                d = {'template':'/base_json.html','raw_out':out ,'status':200}
+
+            else: 
+                print('flag4')
+
                 d = {'redirect': redirect, 'status':200}
                 
 
             
 
         else:
+            print('flag5')
             d = {'message': 'There was an error deleting this item' , 'template':'avispa_rest/index.html'}
         
         return d
