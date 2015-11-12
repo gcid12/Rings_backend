@@ -248,8 +248,8 @@ def register_post():
     
     #if e and email are not the same that is ok.
 
-    username = request.form.get('username')
-    email = request.form.get('email')
+    username = request.form.get('username').lower()
+    email = request.form.get('email').lower()
 
     # generate password hash
     password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
@@ -260,8 +260,10 @@ def register_post():
 
     try:
         if user.set_user():
+            lggr.info('User created')
             user_created = True
         else:
+            lggr.info('User NOT created')
             user_created = False
 
         
@@ -292,11 +294,14 @@ def register_post():
                 # Verify if this is a valid invitation
                 for i in result['invitations']:
                     
+                    
                     if i['token'] == invite_token and i['email'] == email :
+                        lggr.info('Invitation valid')
                         
                         valid_invite = True
                         break
                     else:
+                        lggr.info('Invitation invalid')
                         valid_invite = False
                 
                 
@@ -308,6 +313,7 @@ def register_post():
                     people['addedby'] = i['author']
                     # Add the user to the organization people
                     MAM.append_to_user_field(invite_organization,'people',people)
+                    lggr.info('User appended to org: %s'%(invite_organization))
                    
                     # Add the user to the team
                     MAM.append_to_user_field(invite_organization,'teams',people,
@@ -315,6 +321,10 @@ def register_post():
                                              wherefield = 'teamname',
                                              wherefieldvalue = invite_team
                                              )
+
+                    lggr.info('User added to team: %s'%(invite_team))
+
+
 
                     
  
@@ -361,6 +371,7 @@ def register_post():
 
         else:
 
+            lggr.info('User could not be created')
             mpp = {'status':'KO','msg':'User could not be created'}
             flash({'f':'track','v':'_register','p':mpp},'MP')
             flash({'f':'alias','v':username},'MP')          
