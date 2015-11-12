@@ -248,8 +248,8 @@ def register_post():
     
     #if e and email are not the same that is ok.
 
-    username = request.form.get('username').lower()
-    email = request.form.get('email').lower()
+    username = request.form.get('username').lower().replace(' ','')
+    email = request.form.get('email').lower().replace(' ','')
 
     # generate password hash
     password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
