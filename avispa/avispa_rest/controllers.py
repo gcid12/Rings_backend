@@ -1186,9 +1186,8 @@ def patch(patchnumber):
         return result
 
 @timethis
-@login_required
 @avispa_rest.route('/<handle>/_home', methods=['GET'])
-#The home of user <handle>
+@login_required
 def home(handle):
 
     result = home_dispatcher(handle)
