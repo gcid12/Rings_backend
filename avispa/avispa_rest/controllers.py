@@ -123,7 +123,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     data['collection'] = collection
 
-
     if 'status' in data.keys():
         status = int(data['status'])
     else:

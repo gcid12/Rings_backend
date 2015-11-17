@@ -291,7 +291,7 @@ class AvispaRestFunc:
             else:
                 idlabel = False
         else:
-            idlabel = False
+            idlabel = True
 
         #Subtract Schema
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
@@ -361,7 +361,7 @@ class AvispaRestFunc:
         return d
 
 
-    def prepare_item(self,preitem,layers,widgets,sources,labels,names,layer=None,flag=None,idlabel=False):
+    def prepare_item(self,preitem,layers,widgets,sources,labels,names,layer=None,flag=None,idlabel=True):
 
         Item = collections.OrderedDict()  
         Item[u'_id'] = preitem[u'_id']
@@ -512,11 +512,14 @@ class AvispaRestFunc:
                 #Convert comma separated string into list. Also delete first element as it comes empty
                 
                 if  widgets[fieldid]=='images':
+
+                    Item[fieldid] = None
                     
-                    if fieldid in Item:
-                        images=Item[fieldid].split(',')                
-                        del images[0]
-                        Item[fieldid] = images
+                    if fieldid in Item:  #Checks if key exists
+                        if Item[fieldid]:  # Checks if value is not NoneType
+                            images=Item[fieldid].split(',')                
+                            del images[0]
+                            Item[fieldid] = images
                     elif names[fieldid] in Item:
                         if Item[names[fieldid]]:
                             images=Item[names[fieldid]].split(',')                
@@ -907,7 +910,7 @@ class AvispaRestFunc:
             else:
                 idlabel = False
         else:
-            idlabel = False
+            idlabel = True
 
         #Subtract Schema
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
@@ -924,7 +927,7 @@ class AvispaRestFunc:
         else:
             Item = False
         
-        #Output                
+        #Output               
         if Item:
             #current_app.logger.debug('Awesome , you just retrieved the item from the DB')
             if api:              
@@ -944,6 +947,7 @@ class AvispaRestFunc:
                 d['template'] = 'avispa_rest/get_json_a_b_c.html'
 
             else:
+
                 #Determine if there will be images
                 d['imagesui'] = False
                 for widget in widgets:
