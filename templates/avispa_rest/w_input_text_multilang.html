@@ -35,6 +35,6 @@
         </div>
         <hr/>
         <!-- HHHHHHHHHH -->
-        <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="hidden{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value='{{ data.item[field.FieldId] }}'>          
+        <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="hidden{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value='{{ data.item[field.FieldId]|tojson|safe }}'>          
       </div>
     </div>

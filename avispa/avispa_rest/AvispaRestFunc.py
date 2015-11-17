@@ -728,7 +728,6 @@ class AvispaRestFunc:
     
     def put_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
 
-
         #current_app.logger.debug('Changing origin?')
         current_app.logger.debug(request.form.get('ringorigin'))
         if request.form.get('ringorigin'):
@@ -1035,32 +1034,6 @@ class AvispaRestFunc:
         '''
         Repopulates form to be sent for a put
         '''
-        item = self.AVM.get_a_b_c(request,handle,ring,idx)
-
-        #current_app.logger.debug('ITEM',item)
-
-        #We need to check if flags are not corrupt or showing an invalid status. Repair if needed
-
-        for i in item:
-            #current_app.logger.debug(i+str(item[i]))
-            if i[-5:] == '_flag':
-
-                if not item[i]:
-                    item[i] = '0000'
-
-                elif int(item[i])<1000 or int(item[i])>=10000 : #Invalid Status
-                    if len(str(item[i[:-5]])) < 1: #Empty
-                        item[i] = '0000'
-                    else:  # If has something
-                        item[i] = '1000'
-
-            if item[i] == None:
-                item[i] = ''
-
-        #if item['Images']:
-         #   images=item['Images'].split(',')
-          #  item['Images']=images
-        
         schema = self.AVM.ring_get_schema(handle,ring)
 
         d = {}
@@ -1068,12 +1041,37 @@ class AvispaRestFunc:
         d['ringdescription'] = schema['rings'][0]['RingDescription']
   
         labels = {}
+        
         for schemafield in schema['fields']:
-            labels[schemafield['FieldId']]=schemafield['FieldLabel']
+            labels[schemafield['FieldId']] = schemafield['FieldLabel']
+            
 
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
+        item = self.AVM.get_a_b_c(request,handle,ring,idx)
+
+        print(labels)
+
+        #REPAIR FIELDS!
+        for f in item:
+            print('XXXXX',f)
+            
+            #REPAIR FLAGS
+            if f[-5:] == '_flag':
+                if not item[f]:
+                    item[f] = '0000'
+
+                elif int(item[f])<1000 or int(item[f])>=10000 : #Invalid Status
+                    if len(str(item[f[:-5]])) < 1: #Empty
+                        item[f] = '0000'
+                    else:  # If has something
+                        item[f] = '1000'
+
+            #REPAIR NULLS
+            if item[f] == None:
+                item[f] = '' 
+
 
         #Make FieldSource canonical   
         for field in schema['fields']:
@@ -1089,8 +1087,6 @@ class AvispaRestFunc:
                 
                     field['FieldSource'] = ','.join(canonical_uri_list)
                     field['FieldSourceRaw'] = source
-
-        
 
         
         d['message'] = 'Using put_rq_a_b_c for handle '+handle+' ring:'+ring  
