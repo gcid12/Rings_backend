@@ -235,6 +235,7 @@ class AvispaRestFunc:
     def get_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
         '''
         List of items in the ring
+
         '''
         d = {}
 
@@ -284,11 +285,19 @@ class AvispaRestFunc:
         else:
             flag = None
 
+        if 'fieldid' in request.args:
+            if request.args.get('fieldid') == '1':
+                idlabel = True
+            else:
+                idlabel = False
+        else:
+            idlabel = False
+
         #Subtract Schema
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels,names = self.field_dictonaries_init(schema['fields'],layer=layer)
+        layers,widgets,sources,labels,names = self.field_dictionaries_init(schema['fields'],layer=layer)
 
         #Subtract items from DB
         preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
@@ -297,7 +306,7 @@ class AvispaRestFunc:
         #Prepare data
         itemlist = []
         for preitem in preitems:          
-            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,layer=layer,flag=flag,label=api)
+            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,layer=layer,flag=flag,idlabel=idlabel)
             #current_app.logger.debug('ITEM:'+str(Item))
             itemlist.append(Item)
 
@@ -352,20 +361,18 @@ class AvispaRestFunc:
         return d
 
 
-    def prepare_item(self,preitem,layers,widgets,sources,labels,names,layer=None,flag=None,label=False):
+    def prepare_item(self,preitem,layers,widgets,sources,labels,names,layer=None,flag=None,idlabel=False):
 
         Item = collections.OrderedDict()  
         Item[u'_id'] = preitem[u'_id']
         Item['_fieldcount'] = 0
         Item['_fullcount'] = 0
 
-
         #current_app.logger.debug('LAYERS'+str(layers))
         #current_app.logger.debug('LABELS'+str(labels))
 
         for fieldid in preitem:
-
-            
+          
             #current_app.logger.debug ('fieldid'+str(fieldid))
             
             if fieldid in layers:
@@ -380,10 +387,10 @@ class AvispaRestFunc:
                         #continue
                         pass
 
-                if label:
-                    Item[names[fieldid]] = preitem[fieldid]
-                else:                   
+                if idlabel:
                     Item[fieldid] = preitem[fieldid]
+                else:                   
+                    Item[names[fieldid]] = preitem[fieldid]
 
 
                 if fieldid+'_rich' in preitem and (sources[fieldid] is not None):
@@ -496,10 +503,10 @@ class AvispaRestFunc:
                             #current_app.logger.debug('REPR:', Item[fieldid])
 
                 if fieldid+'_flag' in preitem and flag:
-                    if label:
-                        Item[names[fieldid]+'_flag'] = preitem[fieldid+'_flag']
-                    else:
+                    if idlabel:
                         Item[fieldid+'_flag'] = preitem[fieldid+'_flag']
+                    else:
+                        Item[names[fieldid]+'_flag'] = preitem[fieldid+'_flag']
 
                
                 #Convert comma separated string into list. Also delete first element as it comes empty
@@ -536,7 +543,7 @@ class AvispaRestFunc:
             return False
 
         
-    def field_dictonaries_init(self,schemafields,layer=False):
+    def field_dictionaries_init(self,schemafields,layer=False):
 
         layers = {}
         widgets = {}
@@ -894,18 +901,26 @@ class AvispaRestFunc:
 
         d = {}
 
+        if 'fieldid' in request.args:
+            if request.args.get('fieldid') == '1':
+                idlabel = True
+            else:
+                idlabel = False
+        else:
+            idlabel = False
+
         #Subtract Schema
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels,names = self.field_dictonaries_init(schema['fields'])
+        layers,widgets,sources,labels,names = self.field_dictionaries_init(schema['fields'])
         
         #Subtract item from DB
         preitem_result = self.AVM.get_a_b_c(request,handle,ring,idx)
         if preitem_result:
             preitem = preitem_result
             #current_app.logger.debug('PREITEM get_a_b_c:',preitem)
-            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,flag=1,label=api)
+            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,flag=1,idlabel=idlabel)
         else:
             Item = False
         
