@@ -396,7 +396,7 @@ class AvispaRestFunc:
                 if fieldid+'_rich' in preitem and (sources[fieldid] is not None):
 
 
-                    if label:
+                    if idlabel:
                         Item[names[fieldid]+'_rich'] = preitem[fieldid+'_rich']                      
                     else:
                         Item[fieldid+'_rich'] = preitem[fieldid+'_rich']
@@ -495,7 +495,7 @@ class AvispaRestFunc:
 
                     #In case Item[fieldid] needs to be replaced by its human version (not only URIs)
                     if len(ItemL)>0:
-                        if label:
+                        if idlabel:
                             Item[names[fieldid]] = ','.join(ItemL)
                         else:
                             Item[fieldid] = ','.join(ItemL)
