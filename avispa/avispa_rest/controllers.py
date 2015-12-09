@@ -30,12 +30,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     
     ARF = AvispaRestFunc()
 
-    if 'q' in request.args:
-        if request.args.get("q"):
-            method = 'search'
-        else:
-            method = 'search_rq'
-    elif request.args.get("rq"):
+    
+    if request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
     elif request.args.get("rs"):
         method = request.args.get("rq")+'_rs'
@@ -297,12 +293,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     ACF = AvispaCollectionsRestFunc()
 
-    if 'q' in request.args:
-        if request.args.get("q"):
-            method = 'search'
-        else:
-            method = 'search_rq'
-    elif request.args.get("rq"):
+    if request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
     elif request.args.get("rs"):
         method = request.args.get("rq")+'_rs'
@@ -853,12 +844,7 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
     ARR = AvispaRolesRestFunc()
 
 
-    if 'q' in request.args:
-        if request.args.get("q"):
-            method = 'search'
-        else:
-            method = 'search_rq'
-    elif request.args.get("rq"):
+    if request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
     elif request.args.get("rs"):
         method = request.args.get("rq")+'_rs'
@@ -915,12 +901,7 @@ def people_dispatcher(depth,handle,person=None):
     data['section'] = '_people'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
-    if 'q' in request.args:
-        if request.args.get("q"):
-            method = 'search'
-        else:
-            method = 'search_rq'
-    elif request.args.get("rq"):
+    if request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
     elif request.args.get("rs"):
         method = request.args.get("rq")+'_rs'
@@ -997,12 +978,7 @@ def teams_dispatcher(depth,handle,team=None):
     data['section'] = '_teams'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
-    if 'q' in request.args:
-        if request.args.get("q"):
-            method = 'search'
-        else:
-            method = 'search_rq'
-    elif request.args.get("rq"):
+    if request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
     elif request.args.get("rs"):
         method = request.args.get("rq")+'_rs'

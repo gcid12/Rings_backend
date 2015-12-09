@@ -419,6 +419,15 @@
 
           <div class="pull-right">
 
+            <div class="text-white">
+                <form action='' method='GET'>
+                    <input type="text" class="text-gray" name="q" placeholder="search {{data.ring|nonone}}" value="{{ request.args.get('q')|nonone }}">
+                    <button class="text-black">go</button>
+                </form>
+            </div>
+            <br/>
+
+
             <div class="btn-group">
               {% if 'post_a_b' in data.user_authorizations %}
               <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>

@@ -3,6 +3,7 @@ import urlparse, time, datetime
 from flask import redirect, flash, current_app
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
+from ElasticSearchModel import ElasticSearchModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from env_config import PREVIEW_LAYER
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -293,15 +294,35 @@ class AvispaRestFunc:
         else:
             idlabel = True
 
+        if 'q' in request.args:
+            q = request.args.get('q')
+        else:
+            q = ''
+
+
         #Subtract Schema
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
         layers,widgets,sources,labels,names = self.field_dictionaries_init(schema['fields'],layer=layer)
 
+        '''
         #Subtract items from DB
         preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
         #current_app.logger.debug('PREITEMLIST:'+str(preitems))
+        print
+        print('PREITEMS:')
+        print(preitems)
+        '''
+
+        #Search ElasticSearch
+        self.ESM = ElasticSearchModel()
+        preitems = self.ESM.get_a_b(handle,ring,q=q)
+        
+        print
+        print('ES PREITEMS:')
+        print(preitems)
+        
 
         #Prepare data
         itemlist = []

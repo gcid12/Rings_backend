@@ -969,6 +969,12 @@ class AvispaModel:
 
         return False
 
+    def get_a_b_search(handle,ring,limit=None,querystring=None):
+        
+        ESModel
+
+
+
   
 
     #AVISPAMODEL
