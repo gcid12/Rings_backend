@@ -39,78 +39,85 @@ def login():
 
         lggr.info('Login attempt for:'+request.form.get('email')) 
         email = request.form.get('email')
-        userObj = User(email=email)
-        user = userObj.get_user()
-        #print("user:")
-        #print(user.password)
-        #print(request.form.get('password'))
-        #print(flask_bcrypt.check_password_hash(user.password,request.form.get('password')))
-        #print(user)
-        #print(userObj.is_active())
-        if userObj.is_active():
-            if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
-                remember = request.form.get("remember", "no") == "yes"
-                if login_user(userObj, remember=remember):
 
-                    lggr.info('Login attempt successful for:'+request.form.get('email')) 
+        
+        if email.strip() != '':
+            userObj = User(email=email)
+            user = userObj.get_user()
+            #print("user:")
+            #print(user.password)
+            #print(request.form.get('password'))
+            #print(flask_bcrypt.check_password_hash(user.password,request.form.get('password')))
+            #print(user)
+            #print(userObj.is_active())
+            if userObj.is_active():
+                if user and flask_bcrypt.check_password_hash(user.password,request.form.get('password')):
+                    remember = request.form.get("remember", "no") == "yes"
+                    if login_user(userObj, remember=remember):
 
-                    #next = request.args.get('next')
-                    #if not next_is_valid(next):
-                    #    return flask.abort(400)
+                        lggr.info('Login attempt successful for:'+request.form.get('email')) 
 
-                    mpp = {'status':'OK'}
-                    flash({'f':'track','v':'_login','p':mpp},'MP')
-                    #flash({'track':'_login OK'},'MP')
+                        #next = request.args.get('next')
+                        #if not next_is_valid(next):
+                        #    return flask.abort(400)
 
-                    
-                    flash({'f':'identify','v':current_user.id},'MP')
-                    #flash({'identify':current_user.id},'MP')
+                        mpp = {'status':'OK'}
+                        flash({'f':'track','v':'_login','p':mpp},'MP')
+                        #flash({'track':'_login OK'},'MP')
 
-                    mpp = {'$name':current_user.id}
-                    flash({'f':'people.set','p':mpp},'MP')
-                    #msg = {"$name":current_user.id}
-                    #flash({'people.set': msg },'MP') 
+                        
+                        flash({'f':'identify','v':current_user.id},'MP')
+                        #flash({'identify':current_user.id},'MP')
 
-                    flash("Logged in!",'UI')
+                        mpp = {'$name':current_user.id}
+                        flash({'f':'people.set','p':mpp},'MP')
+                        #msg = {"$name":current_user.id}
+                        #flash({'people.set': msg },'MP') 
 
-                    if 'r' in request.form:
-                        #lggr.info('Redirecting to :'+'/'+request.form.get('r')) 
-                        #return redirect('/'+request.form.get('r'))
-                        rr = '/'+request.form.get('r')
+                        flash("Logged in!",'UI')
 
-                    elif user.onlogin != '':
-                        #lggr.info('Redirecting to :'+user.onlogin) 
-                        #return redirect(user.onlogin)
-                        rr = user.onlogin
+                        if 'r' in request.form:
+                            #lggr.info('Redirecting to :'+'/'+request.form.get('r')) 
+                            #return redirect('/'+request.form.get('r'))
+                            rr = '/'+request.form.get('r')
 
+                        elif user.onlogin != '':
+                            #lggr.info('Redirecting to :'+user.onlogin) 
+                            #return redirect(user.onlogin)
+                            rr = user.onlogin
+
+                        else:
+                            rr = '/'+user.id+'/_home'
+
+                        lggr.info('Redirecting to :'+rr) 
+
+                        return redirect(rr)
                     else:
-                        rr = '/'+user.id+'/_home'
 
-                    lggr.info('Redirecting to :'+rr) 
+                        lggr.info('Something went wrong in the user object:'+request.form.get('email')) 
+                        flash("unable to log you in",'UI')
 
-                    return redirect(rr)
+                        mpp = {'status':'KO','msg':'Unable to log in'}
+                        flash({'f':'track','v':'_login','p':mpp},'MP')
+                        #flash({'track':'_login KO, Try again'},'MP')
                 else:
+                    lggr.info('User/Password is not correct for:'+request.form.get('email')) 
+                    flash("User/Password is not correct",'UI')
 
-                    lggr.info('Something went wrong in the user object:'+request.form.get('email')) 
-                    flash("unable to log you in",'UI')
-
-                    mpp = {'status':'KO','msg':'Unable to log in'}
+                    mpp = {'status':'KO','msg':'User/Password incorrect'}
                     flash({'f':'track','v':'_login','p':mpp},'MP')
-                    #flash({'track':'_login KO, Try again'},'MP')
+                    #flash({'track':'_login KO, User/Password incorrect'},'MP')
             else:
-                lggr.info('User/Password is not correct for:'+request.form.get('email')) 
-                flash("User/Password is not correct",'UI')
+                lggr.info('User is not active:'+request.form.get('email')) 
+                flash("User not active",'UI')
 
-                mpp = {'status':'KO','msg':'User/Password incorrect'}
+                mpp = {'status':'KO','msg':'User not active'}
                 flash({'f':'track','v':'_login','p':mpp},'MP')
-                #flash({'track':'_login KO, User/Password incorrect'},'MP')
+                #flash("_login KO, User not active",'MP')
         else:
-            lggr.info('User is not active:'+request.form.get('email')) 
-            flash("User not active",'UI')
+            lggr.info('Enter a valid email:') 
+            flash("Enter a valid email",'UI')
 
-            mpp = {'status':'KO','msg':'User not active'}
-            flash({'f':'track','v':'_login','p':mpp},'MP')
-            #flash("_login KO, User not active",'MP')
 
 
     data = {}

@@ -108,13 +108,15 @@ class User(UserMixin):
     def get_user(self):
 
         try:
-            self.lggr.debug('get_user_flag1')
+            
             if self.email:
                 self.lggr.debug('self.email:'+self.email)
                 dbUser =self.ATM.userdb_get_user_by_email(self.email)
             elif self.username:
                 self.lggr.debug('self.username'+self.username)
                 dbUser =self.ATM.userdb_get_user_by_handle(self.username)
+            else:
+                return None
 
             
             if dbUser:
@@ -132,7 +134,7 @@ class User(UserMixin):
                 self.id = dbUser['value']['_id']
                 return self
             else:
-                self.lggr.error('User: '+self.username+' not found')
+                self.lggr.error('User: not found')
                 return None
         except(KeyError):
             self.lggr.error("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
