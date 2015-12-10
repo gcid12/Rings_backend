@@ -421,8 +421,14 @@
 
             <div class="text-white">
                 <form action='' method='GET'>
-                    <input type="text" class="text-gray" name="q" placeholder="search {{data.ring|nonone}}" value="{{ request.args.get('q')|nonone }}">
-                    <button class="text-black">go</button>
+
+                    <div class="input-group input-group-md">
+                      <span class="input-group-addon">
+                          <!--i class="fa fa-envelope"></i-->This dataset
+                      </span>
+                      <input type="text" name="q" class="form-control" placeholder="Search" value="{{ request.args.get('q')|nonone }}">
+                    </div>
+                    <!--button class="text-black">go</button-->
                 </form>
             </div>
             <br/>
