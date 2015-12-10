@@ -89,6 +89,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         #current_app.logger.debug('Collection:',collection)
         if collection:       
             data['collection'] = collection
+        else:
+            data['collection'] = ''
 
         
 
@@ -104,6 +106,16 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         o = urlparse.urlparse(request.url)
         data['host_url'] = urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
         data['api_url'] = urlparse.urlunparse((o.scheme, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
+        
+
+        #search_path = '/'.join(o.path.split('/')[:-1])
+        if collection:
+            search_path = "/%s/_collections/%s/%s"%(handle,collection,ring)
+        else:
+            search_path = "/%s/%s"%(handle,ring)            
+
+        data['search_url'] = urlparse.urlunparse(('', '', search_path,'', '', ''))
+
 
         data['image_cdn_root'] = IMAGE_CDN_ROOT
 

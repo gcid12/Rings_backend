@@ -362,100 +362,84 @@
     <td style="width:3%" class="hidden-xs">
     </td>
     <td style="width:10%">
-      {% if data.item %}
-        <div class=" col-sm-1 hidden-xs ">
-            {{ icon_med('',color) }} 
-          </div> 
-          <div class=" col-xs-1 visible-xs">
-            {{ icon_sma('',color) }}
-        </div>
-
-      {% else%}
-        <div class=" col-sm-1 hidden-xs ">
-            {{ icon_stack(data.ringcount,color) }} 
-          </div> 
-          <div class=" col-xs-1 visible-xs">
-            {{ icon_sma(data.ringcount,color) }}
-        </div>
-      {% endif %}
+  {% if data.item %}
+      <div class=" col-sm-1 hidden-xs ">
+        {{ icon_med('',color) }} 
+      </div> 
+      <div class=" col-xs-1 visible-xs">
+        {{ icon_sma('',color) }}
+      </div>
+  {% else%}
+      <div class=" col-sm-1 hidden-xs ">
+        {{ icon_stack(data.ringcount,color) }} 
+      </div> 
+      <div class=" col-xs-1 visible-xs">
+        {{ icon_sma(data.ringcount,color) }}
+      </div>
+  {% endif %}
     </td>
     <td> 
       <div class="row">
-        
-
         <div class="col-xs-8 col-sm-7">
-
           <div class="spa10 text-left ">
             <div class="fs-1-5">
               <div class="spa10"></div>
-              {% if data.item %} 
-
-                <span class="fw-c">
-                {% for i in data.item%}  
-                  {%if i[:1] != '_' and i[5:] != '_rich' %} 
-                    {%if not x%}
-                      {{data.item[i]|nonone}}                    
-                      {%set x = True%}
-                    {%endif%}
-                  {%endif%}
-                {%endfor%}
-                </span>
-
-                <div class="fc-g fs-0-7">{{data.ring|nonone}}</div>
-                
-              {% else %}
-                <span class="fw-c">{{data.ring|nonone}}</span>
-
-              {% endif %} 
+  {% if data.item %} 
+              <span class="fw-c">
+    {% for i in data.item%}  
+      {%if i[:1] != '_' and i[5:] != '_rich' %} 
+        {%if not x%}
+          {{data.item[i]|nonone}}                    
+          {%set x = True%}
+        {%endif%}
+      {%endif%}
+    {%endfor%}
+              </span>
+              <div class="fc-g fs-0-7">{{data.ring|nonone}}</div>  
+  {% else %}
+              <span class="fw-c">{{data.ring|nonone}}</span>
+  {% endif %} 
             </div>
-            {% if data.item %} 
-            {% else%}
-              <p class="fc-m fs-0-7">{{ data.ringdescription}}</p>
-            {% endif %}
-            
+  {% if data.item %} 
+  {% else%}
+            <p class="fc-m fs-0-7">{{ data.ringdescription}}</p>
+  {% endif %}     
           </div>
         </div> 
         <div class="col-xs-4 col-sm-5">
-
           <div class="pull-right">
-
             <div class="text-white">
-                <form action='' method='GET'>
-
-                    <div class="input-group input-group-md">
-                      <span class="input-group-addon">
-                          <!--i class="fa fa-envelope"></i-->This dataset
-                      </span>
-                      <input type="text" name="q" class="form-control" placeholder="Search" value="{{ request.args.get('q')|nonone }}">
-                    </div>
-                    <!--button class="text-black">go</button-->
-                </form>
+              <form action='{{data.search_url|nonone}}' method='GET'>
+                <div class="input-group input-group-md">
+                  <span class="input-group-addon">
+                    <!--i class="fa fa-envelope"></i-->This dataset
+                  </span>
+                  <input type="text" name="q" class="form-control" placeholder="Search" value="{{ request.args.get('q')|nonone }}">
+                </div>
+              </form>
             </div>
             <br/>
-
-
             <div class="btn-group">
-              {% if 'post_a_b' in data.user_authorizations %}
-              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus fa-1x"></i></a>
-              {% endif %}
-
-              
-              {% if 'put_a_b' in data.user_authorizations %}
-              
-              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              <a href="/_api/{{ data.handle }}/{{ data.ring }}{%if data.idx%}/{{data.idx}}{%endif%}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
-              {% endif %}
-
-            </div> 
-            
+  {% if 'post_a_b' in data.user_authorizations %}
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs">
+                <i class="fa fa-plus fa-1x"></i>
+              </a>
+  {% endif %}
+  {% if 'put_a_b' in data.user_authorizations %}         
+              <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=put" type="button" class="btn btn-warning btn-xs">
+                <i class="fa fa-cog fa-1x"></i>
+              </a>
+              <a href="/_api/{{ data.handle }}/{{ data.ring }}{%if data.idx%}/{{data.idx}}{%endif%}" type="button" class="btn  btn-xs">
+                <img src="/static/images/icons/json.png">
+              </a>
+  {% endif %}
+            </div>   
             <span class="label label-discrete pull-right">{{ data.date }}</span>
           </div>
         </div>
       </div>  
     </td>
   </tr>
-
-
 {% endmacro %}
 
 

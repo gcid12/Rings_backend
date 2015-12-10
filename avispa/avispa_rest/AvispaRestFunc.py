@@ -316,8 +316,11 @@ class AvispaRestFunc:
         '''
 
         #Search ElasticSearch
-        self.ESM = ElasticSearchModel()
-        preitems = self.ESM.get_a_b(handle,ring,q=q)
+        if q != '' :
+            self.ESM = ElasticSearchModel()
+            preitems = self.ESM.get_a_b(handle,ring,q=q)
+        else:
+            preitems = {}
         
         print
         print('ES PREITEMS:')
