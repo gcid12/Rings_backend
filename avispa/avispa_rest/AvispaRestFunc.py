@@ -1,6 +1,7 @@
 import json, collections
+import logging
 import urlparse, time, datetime
-from flask import redirect, flash, current_app
+from flask import redirect, flash, current_app, g
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
 from ElasticSearchModel import ElasticSearchModel
@@ -8,11 +9,16 @@ from AvispaCollectionsModel import AvispaCollectionsModel
 from env_config import PREVIEW_LAYER
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from timethis import timethis
+from AvispaLogging import AvispaLoggerAdapter
 
 class AvispaRestFunc:
 
     def __init__(self):
         self.AVM = AvispaModel()
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
 
     # /a
 
@@ -534,17 +540,14 @@ class AvispaRestFunc:
 
                
                 #Convert comma separated string into list. Also delete first element as it comes empty
-                
                 if  widgets[fieldid]=='images':
 
-                    Item[fieldid] = None
-                    
-                    if fieldid in Item:  #Checks if key exists
+                    if fieldid in Item:  #Using fieldid     
                         if Item[fieldid]:  # Checks if value is not NoneType
                             images=Item[fieldid].split(',')                
                             del images[0]
                             Item[fieldid] = images
-                    elif names[fieldid] in Item:
+                    elif names[fieldid] in Item: #Using fieldname
                         if Item[names[fieldid]]:
                             images=Item[names[fieldid]].split(',')                
                             del images[0]
@@ -943,15 +946,16 @@ class AvispaRestFunc:
         
         #Subtract item from DB
         preitem_result = self.AVM.get_a_b_c(request,handle,ring,idx)
+
         if preitem_result:
-            preitem = preitem_result
-            #current_app.logger.debug('PREITEM get_a_b_c:',preitem)
+            preitem = preitem_result  
             Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,flag=1,idlabel=idlabel)
         else:
             Item = False
         
         #Output               
         if Item:
+            
             #current_app.logger.debug('Awesome , you just retrieved the item from the DB')
             if api:              
                 out = collections.OrderedDict()
