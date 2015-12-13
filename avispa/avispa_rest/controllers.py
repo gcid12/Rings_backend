@@ -29,17 +29,22 @@ lggr.debug('Controller start')
 
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 
-@timethis
-def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
-
+def setup_log_vars():
     MAM = MainModel()
     g.ip = request.remote_addr
     g.tid = MAM.random_hash_generator(36)
 
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
-    lggr.debug('Route Dispatcher log')
-    lggr.debug(g.get('tid'))
+def setup_local_logger():
+    return AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    
 
+@timethis
+def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
+
+    MAM = MainModel()
+
+    setup_log_vars()
+    lggr = setup_local_logger()   
     
     ARF = AvispaRestFunc()
 
@@ -57,6 +62,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     m = method+depth
     data['method'] = m
+    lggr.debug('Method:%s',m)
 
     if api:
         current_user.id = 'token:'+str(request.args.get('token')) #Please change this to the actual username that is using this token
@@ -268,9 +274,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 @timethis
 def tool_dispatcher(tool):
 
-    MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
+    setup_log_vars()
+    lggr = setup_local_logger() 
     
     MRT = MyRingTool()
 
@@ -295,10 +300,8 @@ def tool_dispatcher(tool):
 @timethis
 def patch_dispatcher(patchnumber):
 
-    MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-
+    setup_log_vars()
+    lggr = setup_local_logger() 
 
     MRP = MyRingPatch()
     patch = str(patchnumber)
@@ -313,8 +316,9 @@ def patch_dispatcher(patchnumber):
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
+    
+    setup_log_vars()
+    lggr = setup_local_logger() 
 
     ACF = AvispaCollectionsRestFunc()
 
@@ -414,8 +418,9 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 def home_dispatcher(handle):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
+    
+    setup_log_vars()
+    lggr = setup_local_logger() 
 
     data = {}
     
@@ -635,8 +640,9 @@ def home_dispatcher(handle):
 def history_dispatcher(handle,ring=None):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
+    
+    setup_log_vars()
+    lggr = setup_local_logger() 
 
     data = {}
     
@@ -862,9 +868,8 @@ def history_dispatcher(handle,ring=None):
 @timethis
 def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 
-    MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
+    setup_log_vars()
+    lggr = setup_local_logger() 
 
     ARR = AvispaRolesRestFunc()
 
@@ -917,8 +922,9 @@ def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
 def people_dispatcher(depth,handle,person=None):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
+    
+    setup_log_vars()
+    lggr = setup_local_logger() 
 
     APR = AvispaPeopleRestFunc()
     data = {}
@@ -993,8 +999,9 @@ def people_dispatcher(depth,handle,person=None):
 def teams_dispatcher(depth,handle,team=None):
 
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
+    
+    setup_log_vars()
+    lggr = setup_local_logger() 
 
     ATR = AvispaTeamsRestFunc()
     data = {}
@@ -1073,6 +1080,10 @@ def teams_dispatcher(depth,handle,team=None):
 def labels_dispatcher(depth,handle,ring):
 
     MAM = MainModel()
+
+    setup_log_vars()
+    lggr = setup_local_logger() 
+    
     ALR = AvispaLabelsRestFunc()
     data = {}
 
