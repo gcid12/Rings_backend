@@ -748,6 +748,32 @@ class AvispaModel:
 
         return False
 
+        #AVISPAMODEL
+    def put_labels(self,handle,ringname,labels):
+
+        # "labels" is a list of dictionaries  i.e : {'name':'urgent', 'color':'#f00'}
+
+        labels = [{'name':'urgent', 'color':'#f00'},
+         {'name':'ok', 'color':'#00f'},
+         {'name':'ready', 'color':'#0f0'}]
+       
+        self.db = self.couch[self.user_database]
+        user =  MyRingUser.load(self.db, handle)
+
+        if user:
+
+            for ring in user['rings']:
+                if ring['ringname'] == ringname:
+                    ring['labels'] = json.dumps(labels)
+                    self.lggr.info('Labels added to the ring')
+
+            if user.store(self.db):
+                
+                return True
+            else:
+                self.lggr.error('Could not add the labels')
+                return False
+
 
     #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
@@ -849,10 +875,11 @@ class AvispaModel:
         orderd= []
         needsrepair = False
 
+        #self.lggr.debug('Checking schema')
+
         # Checking
         for f in schema['fields']:
-            self.lggr.debug('Checking:'+str(f))
-            self.lggr.debug(orderd)
+            
             if f['FieldOrder']:
                 if f['FieldOrder'] in orderd:
                     # Duplicated!
@@ -871,7 +898,8 @@ class AvispaModel:
                 f['FieldOrder'] = i
                 i = i+1
         else:
-            self.lggr.info('No need for repair')
+            pass
+            #self.lggr.info('No need for repair')
 
 
         return schema

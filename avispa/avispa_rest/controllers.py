@@ -1,5 +1,8 @@
 # Import flask dependencies
 import urlparse, time, datetime, collections, json, csv, types, cStringIO
+import logging
+from AvispaLogging import AvispaLoggerAdapter
+
 from flask import Blueprint, render_template, request, redirect, current_app , g , make_response, Response
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
@@ -18,6 +21,12 @@ from timethis import timethis
 
 
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
+
+logger = logging.getLogger('Avispa')
+#lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+lggr = AvispaLoggerAdapter(logger, {'tid': '0','ip': '0'})
+lggr.debug('Controller start')
+
 #It is very important to leave url_prefix empty as all the segments will be dynamic
 
 @timethis
@@ -26,6 +35,10 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     MAM = MainModel()
     g.ip = request.remote_addr
     g.tid = MAM.random_hash_generator(36)
+
+    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    lggr.debug('Route Dispatcher log')
+    lggr.debug(g.get('tid'))
 
     
     ARF = AvispaRestFunc()
@@ -1054,6 +1067,82 @@ def teams_dispatcher(depth,handle,team=None):
     else:
         return render_template(data['template'], data=data)
 
+
+
+@timethis
+def labels_dispatcher(depth,handle,ring):
+
+    MAM = MainModel()
+    ALR = AvispaLabelsRestFunc()
+    data = {}
+
+
+    data['section'] = '_teams'
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
+
+    if request.args.get("rq"):
+        method = request.args.get("rq")+'_rq'
+    elif request.args.get("rs"):
+        method = request.args.get("rq")+'_rs'
+    elif request.args.get("method"):
+        method = request.args.get("method")
+    else:
+        method = request.method
+
+    #method = request.method
+    m = method+depth
+    data['method'] = m
+
+    #depth = '_a_n'
+    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle,team=team)
+    if not authorization_result['authorized']:
+        return render_template('avispa_rest/error_401.html', data=data),401
+    data['user_authorizations'] = authorization_result['user_authorizations']
+
+
+    try:
+        data.update(getattr(ALR, m.lower())(request,handle,team))
+    except(AttributeError):
+        data['template'] = 'avispa_rest/error_404.html'
+
+    data['handle'] = handle
+
+
+        #This is to be used by the user bar
+    cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
+    if cu_user_doc:
+
+        #data['cu_actualname'] = cu_user_doc['name']
+        data['cu_profilepic'] = cu_user_doc['profilepic']
+        #data['cu_location'] = cu_user_doc['location']
+        #data['cu_handle'] = current_user.id
+
+    #Thisi is the data from the handle we are visiting
+    if current_user.id == handle:
+        data['handle_actualname'] = cu_user_doc['name']
+        data['handle_profilepic'] = cu_user_doc['profilepic']
+        data['handle_location'] = cu_user_doc['location']
+        data['is_org'] = False
+
+    else:
+        handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
+        if handle_user_doc:
+            data['handle_actualname'] = handle_user_doc['name']
+            data['handle_profilepic'] = handle_user_doc['profilepic']
+            data['handle_location'] = handle_user_doc['location']
+
+            if 'is_org' in handle_user_doc:
+                if handle_user_doc['is_org']:
+                    data['is_org'] = True
+                else:
+                    data['is_org'] = False
+
+
+
+    if 'redirect' in data:
+        return data                 
+    else:
+        return render_template(data['template'], data=data)
     
 
 
@@ -1178,6 +1267,18 @@ def patch(patchnumber):
 def home(handle):
 
     result = home_dispatcher(handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/<handle>/<ring>/_labels', methods=['GET','POST','PUT','DELETE'])
+@login_required
+def labels_a_l(handle):
+
+    result = labels_dispatcher(handle)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
@@ -1571,24 +1672,7 @@ def route_a_b_c(handle,ring,idx):
         return result
 
 
-'''
-THIS IS A TEST FUNCTION. PLEASE DELETE
-'''
-@avispa_rest.route('/_csv/')
-def csv_download():
-    csv = """"REVIEW_DATE","AUTHOR","ISBN","DISCOUNTED_PRICE"
-"1985/01/21","Douglas Adams",0345391802,5.95
-"1990/01/12","Douglas Hofstadter",0465026567,9.95
-"1998/07/15","Timothy ""The Parser"" Campbell",0968411304,18.99
-"1999/12/03","Richard Friedman",0060630353,5.95
-"2004/10/04","Randel Helms",0879755725,4.50"""
-    # We need to modify the response, so the first thing we 
-    # need to do is create a response out of the CSV string_
-    response = make_response(csv)
-    # This is the key: Set the right header for the response
-    # to be downloaded, instead of just printed on the browser
-    response.headers["Content-Disposition"] = "attachment; filename=books.csv"
-    return response
+
 
     
 

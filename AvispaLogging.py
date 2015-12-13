@@ -64,5 +64,5 @@ class AvispaLoggerAdapter(logging.LoggerAdapter):
     'connid' key, whose value in brackets is prepended to the log message.
     """
     def process(self, msg, kwargs):
-        return '[%s-%s] - %s' % (self.extra['ip'],self.extra['tid'], msg), kwargs
+        return '[%s-%s] +- %s' % (self.extra['ip'],self.extra['tid'], msg), kwargs
 
