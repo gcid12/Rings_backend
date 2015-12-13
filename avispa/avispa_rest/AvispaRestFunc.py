@@ -27,13 +27,12 @@ class AvispaRestFunc:
     def get_a(self,request,handle,ring,idx,api=False,collection=None,*args):
 
         ringlist = self.AVM.user_get_rings(handle)
-        #current_app.logger.debug('ringlist:'+str(ringlist))
 
         collectionname = ''
         if collection:
             self.ACM = AvispaCollectionsModel()
             collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection 
-            #current_app.logger.debug('collectiond:'+str(collectiond))           
+         
             if collectiond:
                 if collectiond['valid']:
                     collectionname = collectiond['collectionname']                 
@@ -43,7 +42,7 @@ class AvispaRestFunc:
                         ringd[rc['handle']+'_'+rc['ringname']+'_'+rc['version'].replace('.','-')] = rc
                     ringlistmod = []
                     for ring in ringlist:
-                        #current_app.logger.debug('trying to match:'+handle+'_'+ring['ringname']+'_'+ring['ringversion'])
+                        # Trying to find a match
                         if handle+'_'+ring['ringname']+'_'+ring['ringversion'] in ringd:
                             # A match! One of the collection's ring. Add it to the list
                             ringlistmod.append(ring) 
@@ -92,8 +91,7 @@ class AvispaRestFunc:
         out = {} 
             
         if result:
-            #current_app.logger.debug('Awesome , you just created a new Ring Schema'+str(result))
-            #msg = 'Item put with id: '+idx
+            # New Schema has been created
             flash(" Your new Ring has been created. ",'UI')
             if collection:
 
@@ -337,7 +335,6 @@ class AvispaRestFunc:
         itemlist = []
         for preitem in preitems:          
             Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,layer=layer,flag=flag,idlabel=idlabel)
-            #current_app.logger.debug('ITEM:'+str(Item))
             itemlist.append(Item)
 
         
@@ -368,7 +365,6 @@ class AvispaRestFunc:
             d['imagesui'] = False
             if not noimages:
                 for w in widgets:
-                    ##current_app.logger.debug('if '+widgets[w]+' == images')
                     if widgets[w] == 'images':
                         d['imagesui'] = True
 
@@ -398,12 +394,7 @@ class AvispaRestFunc:
         Item['_fieldcount'] = 0
         Item['_fullcount'] = 0
 
-        #current_app.logger.debug('LAYERS'+str(layers))
-        #current_app.logger.debug('LABELS'+str(labels))
-
         for fieldid in preitem:
-          
-            #current_app.logger.debug ('fieldid'+str(fieldid))
             
             if fieldid in layers:
                 Item['_fieldcount'] += 1
@@ -436,33 +427,27 @@ class AvispaRestFunc:
                     field_sources = {}
                     list_sources = sources[fieldid].split(',')
                     for source in list_sources:
-                        #current_app.logger.debug('source:'+str(source.strip()))
+                        
                         if source == '':
                             continue
                         o = urlparse.urlparse(source.strip())
-                        # source_uri= urlparse.urlunparse((o1.scheme, o1.netloc, o1.path,'', '', ''))
-                        
-                        #current_app.logger.debug('o.scheme:'+str(o.scheme))
-                        #current_app.logger.debug('o.netloc:'+str(o.netloc))
-                        #current_app.logger.debug('o.path:',o.path)
 
                         if not o.scheme:
                             continue
 
                         path_parts = o.path.split('/')
-                        #if len(path_parts>1):
 
                         if path_parts[1] == '_api':
                             del path_parts[1]
                             path = '/'.join(path_parts)
                         else:
+                            # Corrected path
                             path = o.path   
-                            #current_app.logger.debug('corrected xo.path:',path)
+                            
 
                         source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
 
                         no_field = True
-                        #current_app.logger.debug('o.query:',o.query)
                         queryparts = o.query.split('&')
                         if len(queryparts) > 0:
                             for querypart in queryparts:
@@ -480,12 +465,9 @@ class AvispaRestFunc:
                     for rich_item in preitem[fieldid+'_rich']:
 
                         ItemPart = ''
-
-                        #current_app.logger.debug('rich_item',rich_item)
+                        
                         if '_source' in rich_item:
                             o = urlparse.urlparse(rich_item['_source'].strip())
-                            #current_app.logger.debug('xo.netloc:',o.netloc)
-                            #current_app.logger.debug('xo.path:',o.path)
 
                             path_parts = o.path.split('/')
                             if path_parts[1] == '_api':
@@ -494,18 +476,16 @@ class AvispaRestFunc:
                             del path_parts[-1]
                             path = '/'.join(path_parts)  
                             
-                            #current_app.logger.debug('adjusted xo.path:',path)
+                            # Adjusted path
                             
                             source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
-                            #current_app.logger.debug('source_id',source_id)
                             if source_id in field_sources:
                                 #There is a way to translate
                                 #We are going to overwrite the URLs for the REPRESENTATION
                                     
                                 for fl in field_sources[source_id]:
                                     #This will happen as many times as "fl" are indicated
-                                    #current_app.logger.debug(fieldid+':fl',fl)
-                                    
+                                 
                                     if fl in rich_item:
                                         ItemPart += rich_item[fl]+' '
                                     else:
@@ -513,11 +493,8 @@ class AvispaRestFunc:
                             if no_field:
                                 for fl in rich_item:
                                     #This will only happen once with the first real field
-                                    if fl[:1] != '_':
-                                        #current_app.logger.debug(fieldid+':Not a "_" field:',fl)
-                                        ItemPart = rich_item[fl]
-                                        #current_app.logger.debug('Item',Item[fieldid])
-                            
+                                    if fl[:1] != '_':                                       
+                                        ItemPart = rich_item[fl]                          
                                         break
 
                                 
@@ -529,8 +506,6 @@ class AvispaRestFunc:
                             Item[names[fieldid]] = ','.join(ItemL)
                         else:
                             Item[fieldid] = ','.join(ItemL)
-                     
-                            #current_app.logger.debug('REPR:', Item[fieldid])
 
                 if fieldid+'_flag' in preitem and flag:
                     if idlabel:
@@ -553,11 +528,6 @@ class AvispaRestFunc:
                             del images[0]
                             Item[names[fieldid]] = images
                     
-                
-
-
-        #current_app.logger.debug('PREVIEW ITEM:',Item)
-        #current_app.logger.debug(Item)
         return Item
 
 
@@ -635,8 +605,7 @@ class AvispaRestFunc:
         if idx:
 
             if not api:
-                #current_app.logger.debug('Awesome , you just saved the item to the DB')
-                current_app.logger.debug('Item saved with id: '+idx)
+                self.lggr.info('Item saved with id: '+idx)
                 flash("The new item has been created",'UI')
             else:
                 out['Success'] = True
@@ -647,8 +616,8 @@ class AvispaRestFunc:
         else:
 
             if not api:
-                #current_app.logger.debug('There was an error creating the item')
-                current_app.logger.debug('There was an error creating the item')           
+                
+                self.lggr.error('There was an error creating the item')           
                 flash("There was an error creating the item",'ER')
             else:
                 out['Success'] = False
@@ -694,11 +663,7 @@ class AvispaRestFunc:
         '''
         Form to create new item
         '''
-        #current_app.logger.debug(ring)
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
-
-
-        #schema = self.AVM.ring_get_schema(handle,ring)
 
         d = {}
         d['ringdescription'] = schema['rings'][0]['RingDescription']
@@ -755,10 +720,9 @@ class AvispaRestFunc:
     
     def put_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
 
-        #current_app.logger.debug('Changing origin?')
+        # Changing origin?
         current_app.logger.debug(request.form.get('ringorigin'))
         if request.form.get('ringorigin'):
-            #current_app.logger.debug('Changing origin!')
             originresult = self.AVM.set_ring_origin(handle,ring,request.form.get('ringorigin'))
 
         RB = RingBuilder()
@@ -804,33 +768,28 @@ class AvispaRestFunc:
         for field in fieldsschema:
             
             if str(field['FieldOrder']) not in existingO:
-                # it is new
+                # It is new
                 existingO.append(field['FieldOrder'])    
             else:
-                # it is repeated
-                #current_app.logger.debug(field['FieldName']+'('+field['FieldId']+') FieldOrder exists already!')
+                # It is repeated
                 repeatedF.append(m)
 
             m += 1
 
         if len(repeatedF) > 0:
-            #current_app.logger.debug('Reapairing the FieldOrders')
-            #current_app.logger.debug('Existing Orders:',existingO)
-            #current_app.logger.debug('FieldSchema before:',fieldsschema)
+            # 'Reapairing the FieldOrders'
             for n in repeatedF:
                 #Go through each one of the repeats and try to find a unique number for it
                 for F in range(1,100):
-                    #current_app.logger.debug('testing for '+ str(F))
+                    # Testing for F 
                     if str(F) not in existingO:
-                        #current_app.logger.debug(str(F),' is Unique!')
+                        # It is Unique!
                         fieldsschema[n]['FieldOrder'] = str(F)
                         existingO.append(str(F))
                         break
                     else:
                         pass
-                        #current_app.logger.debug(str(F),' already exists!')
-
-            #current_app.logger.debug('FieldSchema after:',fieldsschema)
+                        # F already exists!
 
         #####
 
@@ -946,6 +905,7 @@ class AvispaRestFunc:
         
         #Subtract item from DB
         preitem_result = self.AVM.get_a_b_c(request,handle,ring,idx)
+        
 
         if preitem_result:
             preitem = preitem_result  
@@ -956,7 +916,7 @@ class AvispaRestFunc:
         #Output               
         if Item:
             
-            #current_app.logger.debug('Awesome , you just retrieved the item from the DB')
+            # Awesome , you just retrieved the item from the DB
             if api:              
                 out = collections.OrderedDict()
                 o = urlparse.urlparse(request.url)
@@ -991,14 +951,9 @@ class AvispaRestFunc:
             d['status'] = '404'
             d['template'] = 'avispa_rest/get_api_a_b_c.html'                     
             flash('This item does not exist','ER')
-            #current_app.logger.debug('This item does not exist')
-
 
         return d
-
-        
-
-    
+  
     def get_rq_a_b_c(self,request,handle,ring,idx,api=False,collection=None,*args): 
         d = {'message': 'Using get_rq_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/get_rq_a_b_c.html'}
         return d
@@ -1033,8 +988,7 @@ class AvispaRestFunc:
         result = self.AVM.put_a_b_c(request,handle,ring,idx)
 
         if result:
-            #current_app.logger.debug('Awesome , you just put the changes in the Item')
-            #msg = 'Item put with id: '+idx
+            # Awesome , you just put the changes in the Item
             flash("Changes saved",'UI')
             if collection:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring     
@@ -1042,8 +996,6 @@ class AvispaRestFunc:
                 redirect = '/'+handle+'/'+ring
 
             if 'raw' in request.args:          
-                #o = urlparse.urlparse(request.url)
-                #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
                 m = {}
                 m['uri'] = handle+'/'+ring+'/'+idx
                 m['ui_action'] = 'put'
@@ -1172,12 +1124,9 @@ class AvispaRestFunc:
     def delete_a_b_c(self,request,handle,ring,idx,api=False,collection=None,*args):
         result = self.AVM.delete_a_b_c(request,handle,ring,idx)
 
-        print('flag1')
-
         if result:
-            print('flag2')
-            #current_app.logger.debug('Item deleted..')
-            #msg = 'Item put with id: '+idx
+            
+            # Item deleted..
             flash('Item deleted..','UI')
             if collection:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
@@ -1186,9 +1135,6 @@ class AvispaRestFunc:
 
 
             if 'raw' in request.args: 
-                print('flag3')         
-                #o = urlparse.urlparse(request.url)
-                #host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
                 m = {}
                 m['uri'] = handle+'/'+ring+'/'+idx
                 m['ui_action'] = 'delete'
@@ -1217,10 +1163,6 @@ class AvispaRestFunc:
         
         return d
 
-
-
-        #d = {'message': 'Using delete_a_b_c for handle '+handle+', ring->'+ring+'  idx->'+idx , 'template':'avispa_rest/index.html'}
-        #return d
 
     
     def delete_rq_a_b_c(self,request,handle,ring,idx,api=False,collection=None,*args):
