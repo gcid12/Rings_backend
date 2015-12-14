@@ -408,6 +408,7 @@
         </div> 
         <div class="col-xs-4 col-sm-5">
           <div class="pull-right">
+  {% if data.searchbox %}
             <div class="text-white">
               <form action='{{data.search_url|nonone}}' method='GET'>
                 <div class="input-group input-group-md">
@@ -419,6 +420,7 @@
               </form>
             </div>
             <br/>
+  {% endif %}
             <div class="btn-group">
   {% if 'post_a_b' in data.user_authorizations %}
               <a href="/{{ data.handle }}{% if data.collection %}/_collections/{{ data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs">
