@@ -11,6 +11,7 @@ from AvispaPeopleRestFunc import AvispaPeopleRestFunc
 from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
+from MyRingIndexer import MyRingIndexer
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE, IMAGE_CDN_ROOT
@@ -1316,7 +1317,7 @@ def index_a(handle):
 @timethis
 @avispa_rest.route('/_api/<handle>/<ring>/_index', methods=['GET'])
 @login_required
-def index_a(handle,ring):
+def index_a_b(handle,ring):
 
     result = index_dispatcher(handle,ring)
  
@@ -1328,7 +1329,7 @@ def index_a(handle,ring):
 @timethis
 @avispa_rest.route('/_api/<handle>/<ring>/<idx>/_index', methods=['GET'])
 @login_required
-def index_a_b(handle,ring,idx):
+def index_a_b_c(handle,ring,idx):
 
     result = index_dispatcher(handle,ring,idx)
  
