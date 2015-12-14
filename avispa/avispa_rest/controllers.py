@@ -313,6 +313,20 @@ def patch_dispatcher(patchnumber):
         return render_template(data['template'], data=data)
 
 @timethis
+def index_dispatcher(handle,ring=None,idx=None):
+
+    setup_log_vars()
+    lggr = setup_local_logger() 
+
+    MRI = MyRingIndexer()
+    data = MRI.indexer(handle,ring,idx)
+
+    if 'redirect' in data:
+        return data              
+    else:    
+        return render_template(data['template'], data=data)
+
+@timethis
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     MAM = MainModel()
@@ -1154,7 +1168,9 @@ def labels_dispatcher(depth,handle,ring):
         return data                 
     else:
         return render_template(data['template'], data=data)
-    
+
+
+
 
 
 # Set the route and accepted methods
