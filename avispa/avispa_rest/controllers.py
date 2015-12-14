@@ -1284,6 +1284,45 @@ def home(handle):
     else:
         return result
 
+
+@timethis
+@avispa_rest.route('/_api/<handle>/_index', methods=['GET'])
+@login_required
+def index_a(handle):
+
+    result = index_dispatcher(handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/_index', methods=['GET'])
+@login_required
+def index_a(handle,ring):
+
+    result = index_dispatcher(handle,ring)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/<idx>/_index', methods=['GET'])
+@login_required
+def index_a_b(handle,ring,idx):
+
+    result = index_dispatcher(handle,ring,idx)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+
+
 @timethis
 @avispa_rest.route('/<handle>/<ring>/_labels', methods=['GET','POST','PUT','DELETE'])
 @login_required
