@@ -7,22 +7,29 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q
 
 #INDEXING
+import json
 import requests
 import urlparse
 from datetime import datetime
 from elasticsearch_dsl import DocType, String, Date, Integer, Object
 
+#LOGGING
+import logging
+from AvispaLogging import AvispaLoggerAdapter
+from flask import g
+
 
 class ElasticSearchModel:
 
     def __init__(self):
-        pass
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
 
     def get_a_b(self,handle,ring,q=None):
 
         # Connect to Elastic Search Node
-        es_url = ES_NODE
-            
+        es_url = ES_NODE     
         connections.create_connection(hosts=[es_url])
       
         field = '_all'
@@ -60,6 +67,62 @@ class ElasticSearchModel:
 
         return out   
 
+    def indexer(self,url,handle,ring,idx):
+
+        print('flag1')
+
+        # Connect to Elastic Search Node
+        es_url = ES_NODE     
+        connections.create_connection(hosts=[es_url])
+
+        print('flag2')
+
+        o = urlparse.urlparse(url) 
+
+        if idx:       
+            path = '_api/%s/%s/%s'%(handle,ring,idx)             
+        else:
+            path = '_api/%s/%s'%(handle,ring)  
+
+        origin_url = urlparse.urlunparse((o.scheme, o.netloc, path, '', '', ''))
+        schema,items = self.get_items(origin_url)
+
+        print('flag3')
+
+        #Preprare the ES Map (as a class)
+        ring_class = self.prepare_class(schema)
+        print(ring_class)
+
+        print('flag4')
+
+        #Create the index (indempotent)
+        self.create_index(ring_class,origin_url)
+
+        print('flag5')
+        
+        #Index the item 
+        out = {}
+        out['indexed']=[] 
+        out['not_indexed']=[]     
+        for item in items:
+            #try:
+            if True:
+                handle,ring,idx = self.index_item(ring_class,origin_url,item)
+                i = '%s/%s/%s'%(handle,ring,idx)
+                out['indexed'].append(i)
+                self.lggr.info('Indexed:%s'%i)
+            else:
+            #except():
+                m = '%s/%s/%s'%(handle,ring,idx)
+                out['not_indexed'].append(m)
+                self.lggr.error('Not Indexed:%s'%m)
+ 
+        d = {}
+        d['json_out'] = json.dumps(out)
+        d['template']='base_json.html'
+        return d
+
+
     def valid_api_url(self,url):
 
         o = urlparse.urlparse(url)
@@ -75,7 +138,7 @@ class ElasticSearchModel:
 
     def get_items(self,url):
         url = self.valid_api_url(url)
-        #print(url)
+        print(url)
         result = requests.get(url, verify=False)
         #print(result.text)
         r = result.json()
@@ -158,7 +221,7 @@ class ElasticSearchModel:
         print(article)  
         article.save()
         print('SAVED')
-        return True
+        return (handle,ringname,idx)
 
             
 

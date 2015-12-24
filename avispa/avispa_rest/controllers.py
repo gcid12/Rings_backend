@@ -11,7 +11,8 @@ from AvispaPeopleRestFunc import AvispaPeopleRestFunc
 from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
-from MyRingIndexer import MyRingIndexer
+#from MyRingIndexer import MyRingIndexer
+from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE, IMAGE_CDN_ROOT
@@ -150,6 +151,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
 
     data['collection'] = collection
+    data['searchbox'] = True
 
     if 'status' in data.keys():
         status = int(data['status'])
@@ -317,10 +319,10 @@ def patch_dispatcher(patchnumber):
 def index_dispatcher(handle,ring=None,idx=None):
 
     setup_log_vars()
-    lggr = setup_local_logger() 
+    lggr = setup_local_logger()    
 
-    MRI = MyRingIndexer()
-    data = MRI.indexer(handle,ring,idx)
+    ESM = ElasticSearchModel()
+    data = ESM.indexer(request.url,handle,ring,idx)
 
     if 'redirect' in data:
         return data              

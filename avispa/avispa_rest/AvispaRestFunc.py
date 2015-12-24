@@ -310,15 +310,16 @@ class AvispaRestFunc:
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
         layers,widgets,sources,labels,names = self.field_dictionaries_init(schema['fields'],layer=layer)
 
-        
+        '''
         #Subtract items from DB
         preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
         #current_app.logger.debug('PREITEMLIST:'+str(preitems))
         #print
         #print('PREITEMS:')
         #print(preitems)
-        
         '''
+        
+        
         #Search ElasticSearch
         if q != '' :
             self.ESM = ElasticSearchModel()
@@ -329,7 +330,7 @@ class AvispaRestFunc:
         print
         print('ES PREITEMS:')
         print(preitems)
-        '''
+        
         
 
         #Prepare data
