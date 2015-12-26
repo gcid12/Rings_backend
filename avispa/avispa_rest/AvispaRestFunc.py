@@ -522,30 +522,23 @@ class AvispaRestFunc:
                             
                 if  widgets[fieldid]=='images':
 
-                    print('PREIMAGES:',Item[fieldid])
-
                     if fieldid in Item:
-                        #Using fieldid 
-                        print('XX Using fieldid' )     
+                        #Using fieldid                            
                         if Item[fieldid]:
                             if(isinstance(Item[fieldid],str) or 
                                isinstance(Item[fieldid],unicode)): 
-                                print('f11')
+                                
                                 images=Item[fieldid].split(',')                
                                 del images[0]
                                 Item[fieldid] = images
                     elif names[fieldid] in Item: 
-                        #Using fieldname  
-                        print('XX Using fieldname' )  
+                        #Using fieldname                         
                         if Item[names[fieldid]]:
                             if(isinstance(Item[names[fieldid]],str) or 
                                isinstance(Item[fieldid],unicode)):
                                 images=Item[names[fieldid]].split(',')                
                                 del images[0]
                                 Item[names[fieldid]] = images
-
-                    print('IMAGES:',Item[fieldid])
-
                     
         return Item
 
