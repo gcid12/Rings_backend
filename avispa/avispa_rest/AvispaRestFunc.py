@@ -308,7 +308,7 @@ class AvispaRestFunc:
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels,names = self.field_dictionaries_init(schema['fields'],layer=layer)
+        layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'],layer=layer)
 
         '''
         #Subtract items from DB
@@ -337,7 +337,7 @@ class AvispaRestFunc:
         #Prepare data
         itemlist = []
         for preitem in preitems:          
-            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,layer=layer,flag=flag,idlabel=idlabel)
+            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,types,layer=layer,flag=flag,idlabel=idlabel)
             itemlist.append(Item)
 
         
@@ -390,7 +390,7 @@ class AvispaRestFunc:
         return d
 
 
-    def prepare_item(self,preitem,layers,widgets,sources,labels,names,layer=None,flag=None,idlabel=True):
+    def prepare_item(self,preitem,layers,widgets,sources,labels,names,types,layer=None,flag=None,idlabel=True):
 
         Item = collections.OrderedDict()  
         Item[u'_id'] = preitem[u'_id']
@@ -539,7 +539,30 @@ class AvispaRestFunc:
                                 images=Item[names[fieldid]].split(',')                
                                 del images[0]
                                 Item[names[fieldid]] = images
+
+                if types[fieldid].upper()=='OBJECT':
+                    print('THIS IS AN OBJECT!!!')
                     
+                    if fieldid in Item:
+                        print('USING FIELDID:',fieldid)
+                        #Using fieldid                            
+                        if Item[fieldid]:
+                            print('F1')
+                            if not isinstance(Item[fieldid],dict):  
+                                print('F2')  
+                                Item[fieldid] = {}
+                        else:
+                            Item[fieldid] = {}
+
+                    elif names[fieldid] in Item: 
+                        #Using fieldname                         
+                        if Item[names[fieldid]]:
+                            if not isinstance(Item[names[fieldid]],dict):     
+                                Item[names[fieldid]] = {}
+
+                        else:
+                            Item[names[fieldid]] = {}
+
         return Item
 
 
@@ -562,6 +585,7 @@ class AvispaRestFunc:
         sources = {}
         labels = {}
         names = {}
+        types = {}
 
         for schemafield in schemafields:
 
@@ -569,6 +593,7 @@ class AvispaRestFunc:
             widgets[schemafield['FieldId']]=schemafield['FieldWidget']
             sources[schemafield['FieldId']]=schemafield['FieldSource']
             names[schemafield['FieldId']]=schemafield['FieldName']
+            types[schemafield['FieldId']]=schemafield['FieldType']
 
             if int(schemafield['FieldLayer']) <= int(layer) or (layer is False) :
                 
@@ -578,7 +603,7 @@ class AvispaRestFunc:
                 else:
                     labels[schemafield['FieldId']]=schemafield['FieldName']
 
-        return layers,widgets,sources,labels,names     
+        return layers,widgets,sources,labels,names,types     
 
     def validate_collectioname(self,precollectionname):
 
@@ -913,15 +938,15 @@ class AvispaRestFunc:
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels,names = self.field_dictionaries_init(schema['fields'])
+        layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'])
         
+        print('TYPES:',types)
         #Subtract item from DB
         preitem_result = self.AVM.get_a_b_c(request,handle,ring,idx)
-        
 
         if preitem_result:
             preitem = preitem_result  
-            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,flag=1,idlabel=idlabel)
+            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,types,flag=1,idlabel=idlabel)
         else:
             Item = False
         
@@ -961,7 +986,8 @@ class AvispaRestFunc:
         else: 
           
             d['status'] = '404'
-            d['template'] = 'avispa_rest/get_api_a_b_c.html'                     
+            d['redirect'] = '/'+handle+'/'+ring
+            self.lggr.info('This item does not exist')            
             flash('This item does not exist','ER')
 
         return d
