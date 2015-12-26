@@ -10,6 +10,7 @@ from elasticsearch_dsl import Search, Q
 import json
 import requests
 import urlparse
+from AvispaModel import AvispaModel
 from datetime import datetime
 from elasticsearch_dsl import DocType, String, Date, Integer, Object
 
@@ -77,6 +78,7 @@ class ElasticSearchModel:
         out['unindexed']=[]
 
         if handle and ring and idx:
+
             es.delete(index=handle,doc_type=ring,id=idx, ignore=[400, 404])
             i = '%s/%s/%s'%(handle,ring,idx)
         elif handle and ring:
@@ -88,6 +90,8 @@ class ElasticSearchModel:
             es.indices.delete(index=handle, ignore=[400, 404])
             i = '%s'%(handle)
 
+        self.lggr.info('UnIndexing:%s'%i)
+
         out['unindexed'].append(i)
         
         d = {}
@@ -98,8 +102,36 @@ class ElasticSearchModel:
 
         #'index':handle,'type':ringname,'id': idx
 
+    def handle_indexer(self,url,handle):
 
-    def indexer(self,url,handle,ring,idx):
+        #1. Get all the active rings for this handle
+        self.AVM = AvispaModel()
+        ringlist = self.AVM.user_get_rings(handle)
+        print('RINGLIST:',ringlist)
+
+        #2. Index one by one
+        out = {}
+        out['indexed'] = []
+
+        for ring in ringlist:
+
+            result = self.indexer(url,handle,ring['ringname'])
+
+            x = json.loads(result['json_out'])
+            out['indexed'] += x['indexed']
+
+        self.lggr.info('Handle Indexed:%s'%handle)
+        
+        d = {}
+        d['json_out'] = json.dumps(out)
+        d['template']='base_json.html'
+        return d
+
+
+
+    def indexer(self,url,handle,ring,idx=None):
+        # Good to Index (a/b) and (a/b/c) as they use same ring_class. 
+        # If you want to index a whole handle (a) use handle_indexer
 
         # Connect to Elastic Search Node
         es_url = ES_NODE     

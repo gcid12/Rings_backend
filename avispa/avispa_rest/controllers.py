@@ -326,7 +326,10 @@ def index_dispatcher(handle,ring=None,idx=None,unindex=False):
     if unindex:
         data = ESM.unindexer(handle,ring,idx)
     else:
-        data = ESM.indexer(request.url,handle,ring,idx)
+        if ring:
+            data = ESM.indexer(request.url,handle,ring,idx)
+        else:
+            data = ESM.handle_indexer(request.url,handle)
 
     if 'redirect' in data:
         return data              
