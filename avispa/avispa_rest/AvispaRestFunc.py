@@ -325,7 +325,8 @@ class AvispaRestFunc:
             self.ESM = ElasticSearchModel()
             preitems = self.ESM.get_a_b(handle,ring,q=q)
         else:
-            preitems = {}
+            preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
+
         
         print
         print('ES PREITEMS:')
