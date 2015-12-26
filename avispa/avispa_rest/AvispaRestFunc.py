@@ -518,18 +518,34 @@ class AvispaRestFunc:
 
                
                 #Convert comma separated string into list. Also delete first element as it comes empty
+                #If the item comes from the index it will be a list (not a string)
+                            
                 if  widgets[fieldid]=='images':
 
-                    if fieldid in Item:  #Using fieldid     
-                        if Item[fieldid]:  # Checks if value is not NoneType
-                            images=Item[fieldid].split(',')                
-                            del images[0]
-                            Item[fieldid] = images
-                    elif names[fieldid] in Item: #Using fieldname
+                    print('PREIMAGES:',Item[fieldid])
+
+                    if fieldid in Item:
+                        #Using fieldid 
+                        print('XX Using fieldid' )     
+                        if Item[fieldid]:
+                            if(isinstance(Item[fieldid],str) or 
+                               isinstance(Item[fieldid],unicode)): 
+                                print('f11')
+                                images=Item[fieldid].split(',')                
+                                del images[0]
+                                Item[fieldid] = images
+                    elif names[fieldid] in Item: 
+                        #Using fieldname  
+                        print('XX Using fieldname' )  
                         if Item[names[fieldid]]:
-                            images=Item[names[fieldid]].split(',')                
-                            del images[0]
-                            Item[names[fieldid]] = images
+                            if(isinstance(Item[names[fieldid]],str) or 
+                               isinstance(Item[fieldid],unicode)):
+                                images=Item[names[fieldid]].split(',')                
+                                del images[0]
+                                Item[names[fieldid]] = images
+
+                    print('IMAGES:',Item[fieldid])
+
                     
         return Item
 
