@@ -316,13 +316,17 @@ def patch_dispatcher(patchnumber):
         return render_template(data['template'], data=data)
 
 @timethis
-def index_dispatcher(handle,ring=None,idx=None):
+def index_dispatcher(handle,ring=None,idx=None,unindex=False):
 
     setup_log_vars()
     lggr = setup_local_logger()    
 
     ESM = ElasticSearchModel()
-    data = ESM.indexer(request.url,handle,ring,idx)
+
+    if unindex:
+        data = ESM.unindexer(handle,ring,idx)
+    else:
+        data = ESM.indexer(request.url,handle,ring,idx)
 
     if 'redirect' in data:
         return data              
@@ -1340,6 +1344,41 @@ def index_a_b_c(handle,ring,idx):
     else:
         return result
 
+@timethis
+@avispa_rest.route('/_api/<handle>/_unindex', methods=['GET'])
+@login_required
+def unindex_a(handle):
+
+    result = index_dispatcher(handle,unindex=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/_unindex', methods=['GET'])
+@login_required
+def unindex_a_b(handle,ring):
+
+    result = index_dispatcher(handle,ring,unindex=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/<idx>/_unindex', methods=['GET'])
+@login_required
+def unindex_a_b_c(handle,ring,idx):
+
+    result = index_dispatcher(handle,ring,idx,unindex=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
 
 
 @timethis

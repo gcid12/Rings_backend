@@ -65,17 +65,45 @@ class ElasticSearchModel:
 
             out.append(item)
 
-        return out   
+        return out 
+
+
+    def unindexer(self,handle,ring=None,idx=None):
+        
+        # Connect to Elastic Search Node
+        es = Elasticsearch([ES_NODE])
+
+        out = {}
+        out['unindexed']=[]
+
+        if handle and ring and idx:
+            es.delete(index=handle,doc_type=ring,id=idx, ignore=[400, 404])
+            i = '%s/%s/%s'%(handle,ring,idx)
+        elif handle and ring:
+            #es.delete(index=handle,doc_type=ring, ignore=[400, 404]) This doesnt work
+            # Could not make elasticsearch_py delete a doc_type only
+            requests.delete('%s/%s/%s'%(ES_NODE,handle,ring))
+            i = '%s/%s'%(handle,ring)
+        elif handle:
+            es.indices.delete(index=handle, ignore=[400, 404])
+            i = '%s'%(handle)
+
+        out['unindexed'].append(i)
+        
+        d = {}
+        d['json_out'] = json.dumps(out)
+        d['template']='base_json.html'
+        return d
+
+
+        #'index':handle,'type':ringname,'id': idx
+
 
     def indexer(self,url,handle,ring,idx):
-
-        print('flag1')
 
         # Connect to Elastic Search Node
         es_url = ES_NODE     
         connections.create_connection(hosts=[es_url])
-
-        print('flag2')
 
         o = urlparse.urlparse(url) 
 
@@ -87,22 +115,12 @@ class ElasticSearchModel:
         origin_url = urlparse.urlunparse((o.scheme, o.netloc, path, '', '', ''))
         schema,items = self.get_items(origin_url)
 
-        print('ITEMS:',items)
-
-        print('flag3')
-
         #Preprare the ES Map (as a class)
         ring_class,ring_map = self.prepare_class(schema)
-        print(ring_class)
-        print(ring_map)
-
-        print('flag4')
 
         #Create the index in the ES Cluster (indempotent action)
         self.create_index(ring_class,origin_url)
 
-        print('flag5')
-        
         #Index the item 
         out = {}
         out['indexed']=[] 
@@ -283,6 +301,9 @@ class ElasticSearchModel:
         article.save()
         print('SAVED')
         return (handle,ringname,idx)
+
+
+
 
             
 
