@@ -87,15 +87,18 @@ class ElasticSearchModel:
         origin_url = urlparse.urlunparse((o.scheme, o.netloc, path, '', '', ''))
         schema,items = self.get_items(origin_url)
 
+        print('ITEMS:',items)
+
         print('flag3')
 
         #Preprare the ES Map (as a class)
-        ring_class = self.prepare_class(schema)
+        ring_class,ring_map = self.prepare_class(schema)
         print(ring_class)
+        print(ring_map)
 
         print('flag4')
 
-        #Create the index (indempotent)
+        #Create the index in the ES Cluster (indempotent action)
         self.create_index(ring_class,origin_url)
 
         print('flag5')
@@ -103,16 +106,24 @@ class ElasticSearchModel:
         #Index the item 
         out = {}
         out['indexed']=[] 
-        out['not_indexed']=[]     
+            
         for item in items:
-            #try:
-            if True:
-                handle,ring,idx = self.index_item(ring_class,origin_url,item)
-                i = '%s/%s/%s'%(handle,ring,idx)
-                out['indexed'].append(i)
-                self.lggr.info('Indexed:%s'%i)
+
+            #Check that item is valid before attempting to index it
+            if self.valid_item(item,ring_map):
+                
+                #try:
+                if True:
+                    handle,ring,idx = self.index_item(ring_class,origin_url,item)
+                    i = '%s/%s/%s'%(handle,ring,idx)
+                    out['indexed'].append(i)
+                    self.lggr.info('Indexed:%s'%i)
+
             else:
-            #except():
+            
+                if 'not_indexed' not in out:
+                    out['not_indexed']=[] 
+
                 m = '%s/%s/%s'%(handle,ring,idx)
                 out['not_indexed'].append(m)
                 self.lggr.error('Not Indexed:%s'%m)
@@ -121,6 +132,55 @@ class ElasticSearchModel:
         d['json_out'] = json.dumps(out)
         d['template']='base_json.html'
         return d
+
+    def valid_item(self,item,ring_map):
+
+        print("Check item against map:")
+        print(ring_map)
+        v_item = {}
+
+        for f in ring_map:
+
+            #print(f)
+            valid = False
+            if f in item:
+
+                #print(ring_map[f],type(ring_map[f]))
+                #if ring_map[f] is elasticsearch_dsl.field.String:
+                if isinstance(ring_map[f],String):
+                    #Check if item[f] is a string
+                    if isinstance(item[f],str):
+                       valid = True
+
+                #elif ring_map[f] is elasticsearch_dsl.field.Object:
+                elif isinstance(ring_map[f],Object):
+                    #Check if item[f] is an object
+                    if isinstance(item[f],dict):
+                        v_item[f]={}
+                        
+                        print(ring_map[f].properties)
+
+                        for p in ring_map[f].properties:
+                            #Check if the property exists in the item
+                            if p in item[f]:
+                                #Check if the property is a string
+                                if isinstance(ring_map[f].properties[p],String):
+                                    v_item[f][p]= ring_map[f].properties[p]
+                                    valid = True
+
+                                # TO-DO: Do we want nested objects? If yes develop.
+
+
+                if valid:
+                    # Add field to the output
+                    v_item[f] = item[f]
+                    print('ok')
+                
+        if len(v_item)>0:
+            return v_item
+        else:
+            return False
+
 
 
     def valid_api_url(self,url):
@@ -172,8 +232,9 @@ class ElasticSearchModel:
                 d[field['FieldId']] = String()
 
         print(d)
+        raw_map = d.copy()
 
-        return type(str(schema['rings'][0]['RingName']),(DocType,),d) 
+        return type(str(schema['rings'][0]['RingName']),(DocType,),d),raw_map
 
     def subtract_h_r_i(self,origin_url):
         url = self.valid_api_url(origin_url)
