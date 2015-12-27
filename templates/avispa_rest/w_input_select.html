@@ -1,12 +1,12 @@
 <div class="form-group">
-    <label for='{{ field.FieldId }}' class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-    <div class="col-sm-3">
+    <label for='{{ field.FieldId }}' class="col-xs-3 col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+    <div class="col-xs-3 col-sm-3">
         <div class="fc-g fs-0-9">
             {% if field.FieldHint %}{{ field.FieldHint }}{% endif %}
             <i class="fa fa-arrow-right"></i>
         </div>
     </div>
-    <div class="col-sm-7 text-left">
+    <div class="col-xs-6 col-sm-7 text-left">
 
         <input type="hidden" name="{{ field.FieldId }}" class="form-control flag-aware" order="{{ field.FieldOrder }}" id="input_select_{{ field.FieldOrder }}" placeholder="{% if field.FieldHint %}{{ field.FieldHint}}{% else %} Enter {{ field.FieldName }}{% endif %}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldId] }}" />
 

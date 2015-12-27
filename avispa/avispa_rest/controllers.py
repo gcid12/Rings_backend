@@ -11,6 +11,8 @@ from AvispaPeopleRestFunc import AvispaPeopleRestFunc
 from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
+#from MyRingIndexer import MyRingIndexer
+from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE, IMAGE_CDN_ROOT
@@ -149,6 +151,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
 
     data['collection'] = collection
+    data['searchbox'] = True
 
     if 'status' in data.keys():
         status = int(data['status'])
@@ -307,6 +310,27 @@ def patch_dispatcher(patchnumber):
     patch = str(patchnumber)
     data = getattr(MRP, patch.lower())(request)
     
+    if 'redirect' in data:
+        return data              
+    else:    
+        return render_template(data['template'], data=data)
+
+@timethis
+def index_dispatcher(handle,ring=None,idx=None,unindex=False):
+
+    setup_log_vars()
+    lggr = setup_local_logger()    
+
+    ESM = ElasticSearchModel()
+
+    if unindex:
+        data = ESM.unindexer(handle,ring,idx)
+    else:
+        if ring:
+            data = ESM.indexer(request.url,handle,ring,idx)
+        else:
+            data = ESM.handle_indexer(request.url,handle)
+
     if 'redirect' in data:
         return data              
     else:    
@@ -1154,7 +1178,9 @@ def labels_dispatcher(depth,handle,ring):
         return data                 
     else:
         return render_template(data['template'], data=data)
-    
+
+
+
 
 
 # Set the route and accepted methods
@@ -1283,6 +1309,80 @@ def home(handle):
         return redirect(result['redirect'])        
     else:
         return result
+
+
+@timethis
+@avispa_rest.route('/_api/<handle>/_index', methods=['GET'])
+@login_required
+def index_a(handle):
+
+    result = index_dispatcher(handle)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/_index', methods=['GET'])
+@login_required
+def index_a_b(handle,ring):
+
+    result = index_dispatcher(handle,ring)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/<idx>/_index', methods=['GET'])
+@login_required
+def index_a_b_c(handle,ring,idx):
+
+    result = index_dispatcher(handle,ring,idx)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/_unindex', methods=['GET'])
+@login_required
+def unindex_a(handle):
+
+    result = index_dispatcher(handle,unindex=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/_unindex', methods=['GET'])
+@login_required
+def unindex_a_b(handle,ring):
+
+    result = index_dispatcher(handle,ring,unindex=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@timethis
+@avispa_rest.route('/_api/<handle>/<ring>/<idx>/_unindex', methods=['GET'])
+@login_required
+def unindex_a_b_c(handle,ring,idx):
+
+    result = index_dispatcher(handle,ring,idx,unindex=True)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
 
 @timethis
 @avispa_rest.route('/<handle>/<ring>/_labels', methods=['GET','POST','PUT','DELETE'])

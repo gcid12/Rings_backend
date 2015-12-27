@@ -81,11 +81,11 @@
       {% for field in data.fieldsschema %}
         {% if field.FieldLayer != '7' %}
         <div class="row spa10">
-          <div class="col-sm-1">&nbsp;</div>
-          <div class=" col-sm-2 col-sm-push-8 text-left alpha">
-            {{ ui.flagmarker(field,data.item) }}
+          <div class="col-sm-1 hidden-xs">&nbsp;</div>
+          <div class="col-sm-2 col-sm-push-8 text-left alpha hidden-xs">
+            {{ ui.flagmarker(field,data.item) }}1234
           </div>
-          <div class="col-sm-8 col-sm-pull-2 text-left omega">
+          <div class="col-xs-12 col-sm-8 col-sm-pull-2 text-left omega">
             {% set widget = 'avispa_rest/w_input_'+field.FieldWidget+'.html' %}   
             {% include widget  %}  
           </div>

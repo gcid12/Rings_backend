@@ -1543,7 +1543,7 @@ class AvispaModel:
 
 
             
-            ####TO-DO. We need to check if new_raw is a valid json object or just a regular string
+            #We need to check if new_raw is a valid json object or just a regular string
             
             #new = new_raw
 
@@ -1551,7 +1551,8 @@ class AvispaModel:
                 try:
                     new = json.loads(new_raw.strip())
                 except:
-                    new = unicode(new_raw).strip()
+                    new = ''
+                    #new = unicode(new_raw).strip()
             else:
                 if new_raw:
                     new = unicode(new_raw).strip()
