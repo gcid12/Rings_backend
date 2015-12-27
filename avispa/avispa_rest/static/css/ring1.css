@@ -1871,3 +1871,47 @@ ul.affix-bottom {
     /* Your styles here */
 }
 
+
+@media only screen
+and (min-device-width : 375px)
+and (max-device-width : 667px)
+and (orientation : portrait) {
+
+  .container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0px;
+    padding-right: 0px;
+    }
+
+    .form-group {
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+
+    .dropdown {
+        position: relative;
+        display:none;
+    }
+
+    .dropzone {
+        min-height: 50px;
+        padding: 13px;
+    }
+
+    .spa10 {
+        padding: 0px 0px;
+    }
+
+}
+
+@media only screen
+and (min-device-width : 375px)
+and (max-device-width : 667px)
+and (orientation : landscape) {
+
+
+
+}
+
+
