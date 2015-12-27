@@ -1,6 +1,6 @@
         <div class="form-group">
-            <label for="{{ field.FieldId }}" class="col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-            <div class="col-sm-1 text-left">
+            <label for="{{ field.FieldId }}" class="col-xs-3 col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+            <div class="col-xs-9 col-sm-1 text-left">
 
               <input type="checkbox" id="checkbox{{ field.FieldOrder }}" class="flag-aware" order="{{ field.FieldOrder }}" placeholder="{{ field.FieldHint }}" name="{{ field.FieldId }}" value="Prendido" {% if field.FieldRequired %}checked{% endif %}>
               

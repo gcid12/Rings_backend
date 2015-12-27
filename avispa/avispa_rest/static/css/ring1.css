@@ -1895,12 +1895,12 @@ and (orientation : portrait) {
     }
 
     .dropzone {
-        min-height: 50px;
+        min-height: 50px !important;
         padding: 13px;
     }
 
     .spa10 {
-        padding: 0px 0px;
+        padding: 2px 0px;
     }
 
 }
