@@ -1,7 +1,5 @@
 <script>
-$(document).ready(function(){
-
-
+  $(document).ready(function(){
     function menutoggle(item_id,FieldId,menu_dict){
       var num = item_id+"_"+FieldId,
         wt= '#wt_'+num, //div wrapper
@@ -14,45 +12,40 @@ $(document).ready(function(){
         menu_hide = true,
         default_item= '1';
 
-  {% if data.item[field.FieldId] %}
-        fvalue = {}
-      
-    {% for s in data.item[field.FieldId] %}
-        fvalue['{{s}}'] = '{{data.item[field.FieldId][s]}}'
-    {% endfor %}
+{% if data.item[field.FieldId] %}
+      fvalue = {}
 
-        console.log(fvalue)
-     
-        if(fvalue[shortname]){
+{% for s in data.item[field.FieldId] %}
+      fvalue['{{s}}'] = '{{data.item[field.FieldId][s]}}'
+{% endfor %}
+
+      console.log(fvalue)
+      if(fvalue[shortname]){
           //This exists
-          console.log('This exists:'+shortname)
-          menu_hide= false;
-          var inputvalue = fvalue[shortname];
-
-        }else{
+        console.log('This exists:'+shortname)
+        menu_hide= false;
+        var inputvalue = fvalue[shortname];
+      }else{
           //fvalue[shortname] = '';
           var inputvalue = '';  
-        }
-
-  {% else %}
+      }
+{% else %}
       //If new
       var inputvalue = ''; 
       if(item_id == default_item){
         menu_hide = false;
-      }
-       
-  {% endif %}
+      }     
+{% endif %}
 
-
-  //SETTING DIVS WRAPPERS
-  {% if field.FieldWidget == 'textarea_multilang' %}
+      //SETTING DIVS WRAPPERS
+{% if field.FieldWidget == 'textarea_multilang' %}
       $(wt).html("<div class='input-group' id='t_"+num+"'><textarea class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' rows='8'>"+inputvalue+"</textarea><span class='input-group-addon fs-0-7 name' ></span></div>");
-  {% else %}
+{% else %}
       $(wt).html("<div class='input-group' id='t_"+num+"'><input type='text' class='form-control flag-aware increment inp' placeholder='{{field.FieldHint}}' value='"+inputvalue+"'><span class='input-group-addon fs-0-7 name' ></span></div>");
-  {% endif %}
-  //SETTING BUTTON WRAPPER
+{% endif %}
+      //SETTING BUTTON WRAPPER
       $(wb).html("<a id='b_"+num+"'><span class='fc-b item'><i class='fa fa-toggle-on icon'></i> <span class='name'></span></span></a>"); 
-  //TAKING ACTION
+  
 
       //SET NAME TAGS
       $(t).find('.name').append(uppername);
@@ -67,26 +60,36 @@ $(document).ready(function(){
 
       //MAKING OTHER ITEMS VISIBLE
       $(b).click(function() {     
-         $(t).toggle("slide", { direction: "up" }, 500);
-         $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
-         $(b).find('.item').toggleClass('fc-b fc-g');
+        $(t).toggle("slide", { direction: "up" }, 500);
+        $(b).find('.icon').toggleClass('fa-toggle-off fa-toggle-on');
+        $(b).find('.item').toggleClass('fc-b fc-g');
       });
 
       //INPUT , OUTPUT
       inp= $(t).find('.inp');
-      inp.on("change paste", function() {
+      inp.on("change paste", function(){
         oldvalue = $("#hidden{{ field.FieldOrder }}").val();
         if(oldvalue==''){
           oldvalue = '{}';
         }
+
+        //Here, check if oldvalue is an object or not. If it is a string delete it.
         console.log(oldvalue);
-        var jsonold = JSON.parse(oldvalue);
-        //jsonold = {}
+        try{
+          var jsonold = JSON.parse(oldvalue);        
+        }
+        catch{
+          //Invalid JSON. Reset it
+          console.log('Invalid JSON. Reset it')
+          var jsonold = {};
+        }
+
         console.log(jsonold)
         jsonold[shortname] = this.value;
         $("#hidden{{ field.FieldOrder }}").val(JSON.stringify(jsonold));
+
       });
-    }
+    } //END menutoogle function
 
     // ITERATE MENU
     for(l in menu_{{ field.FieldId}}){
@@ -94,5 +97,5 @@ $(document).ready(function(){
       menutoggle(l,'{{ field.FieldId}}',menu_{{ field.FieldId}} );
     }
 
-});
+  });
 </script>
