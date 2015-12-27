@@ -174,9 +174,9 @@ class ElasticSearchModel:
                 if 'not_indexed' not in out:
                     out['not_indexed']=[] 
 
-                m = '%s/%s/%s'%(handle,ring,idx)
-                out['not_indexed'].append(m)
-                self.lggr.error('Not Indexed:%s'%m)
+                
+                out['not_indexed'].append(item)
+                self.lggr.error('Not Indexed:%s'%item)
  
         d = {}
         d['json_out'] = json.dumps(out)
@@ -198,9 +198,13 @@ class ElasticSearchModel:
                 #print(ring_map[f],type(ring_map[f]))
                 #if ring_map[f] is elasticsearch_dsl.field.String:
                 if isinstance(ring_map[f],String):
-                    #Check if item[f] is a string
-                    if isinstance(item[f],str):
-                       valid = True
+                    #Check if item[f] is a string 
+                    if(isinstance(item[f],str) or 
+                       isinstance(item[f],unicode)): 
+                        valid = True
+                    else:
+                        self.lggr.error('%s not a string (%s)'%(item[f],type(item[f])))
+
 
                 #elif ring_map[f] is elasticsearch_dsl.field.Object:
                 elif isinstance(ring_map[f],Object):
@@ -213,18 +217,33 @@ class ElasticSearchModel:
                         for p in ring_map[f].properties:
                             #Check if the property exists in the item
                             if p in item[f]:
-                                #Check if the property is a string
+                                #Check if the property is an elasticsearch_dsl.field.String:
                                 if isinstance(ring_map[f].properties[p],String):
-                                    v_item[f][p]= ring_map[f].properties[p]
-                                    valid = True
+                                    #Check if item[f] is a string 
+                                    if(isinstance(item[f][p],str) or 
+                                       isinstance(item[f][p],unicode)):
+                                        v_item[f][p]= item[f][p]
+                                        valid = True
+                                else:
+                                    self.lggr.error('%s not a string (%s)'%(item[f],type(item[f])))
+                            else: 
+                                self.lggr.error('%s not in item'%p)
+
+                    else:
+                        self.lggr.error('%s not a dictionary (%s)'%(item[f],type(item[f])))
 
                                 # TO-DO: Do we want nested objects? If yes develop.
-
 
                 if valid:
                     # Add field to the output
                     v_item[f] = item[f]
                     print('ok')
+                else:
+                    self.lggr.info('Invalid item. Will not index')
+
+            else:
+                self.lggr.info('%s not in map'%f)
+
                 
         if len(v_item)>0:
             return v_item
