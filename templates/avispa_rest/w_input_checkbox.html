@@ -1,13 +1,20 @@
-        <div class="form-group">
-            <label for="{{ field.FieldId }}" class="col-xs-3 col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-            <div class="col-xs-9 col-sm-1 text-left">
+        
 
-              <input type="checkbox" id="checkbox{{ field.FieldOrder }}" class="flag-aware" order="{{ field.FieldOrder }}" placeholder="{{ field.FieldHint }}" name="{{ field.FieldId }}" value="Prendido" {% if field.FieldRequired %}checked{% endif %}>
+        <div class="form-group">
+            <label for="{{ field.FieldId }}" class="hidden-xs col-xs-2 col-sm-2 control-label fs-0-8">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+            <div class="col-xs-1 col-sm-1 text-left">
+
+              <input type="checkbox" id="checkbox{{ field.FieldOrder }}" class="flag-aware bigcheck" order="{{ field.FieldOrder }}" placeholder="{{ field.FieldHint }}" name="{{ field.FieldId }}" value="true" {% if field.FieldRequired %}checked{% endif %}>
+  
               
             </div>
-            <div>
-            	<span class="fc-g fs-0-8">
+            <div class="col-xs-9">
+            	<span class="fs-1" style="color:#000;">
             		{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}
             	</span>
             </div>
+            <div class="col-xs-12 visible-xs">
+                <hr/>
+            </div>
         </div>
+
