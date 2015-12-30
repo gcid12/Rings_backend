@@ -136,29 +136,23 @@ class ElasticSearchModel:
         # Connect to Elastic Search Node
         es_url = ES_NODE     
         connections.create_connection(hosts=[es_url])
-
         o = urlparse.urlparse(url) 
 
         if idx:       
             path = '_api/%s/%s/%s'%(handle,ring,idx)             
         else:
             path = '_api/%s/%s'%(handle,ring)  
-
         origin_url = urlparse.urlunparse((o.scheme, o.netloc, path, '', '', ''))
         schema,items = self.get_items(origin_url)
-
         #Preprare the ES Map (as a class)
         ring_class,ring_map = self.prepare_class(schema)
-
         #Create the index in the ES Cluster (indempotent action)
         self.create_index(ring_class,origin_url)
-
         #Index the item 
         out = {}
         out['indexed']=[] 
             
         for item in items:
-
             #Check that item is valid before attempting to index it
             if self.valid_item(item,ring_map):
                 
@@ -177,7 +171,6 @@ class ElasticSearchModel:
                 
                 out['not_indexed'].append(item)
                 self.lggr.error('Not Indexed:%s'%item)
- 
         d = {}
         d['json_out'] = json.dumps(out)
         d['template']='base_json.html'
