@@ -4,8 +4,10 @@ import urllib2
 import json
 import urlparse
 import requests
+import logging
 from couchdb.http import PreconditionFailed
-from flask import flash , current_app
+from flask import flash, g 
+from AvispaLogging import AvispaLoggerAdapter
 
 from AvispaModel import AvispaModel
 
@@ -35,6 +37,9 @@ class RingBuilder:
 
         self.AVM = AvispaModel()
 
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
 
     
     def JSONRingGenerator(self,request,handle):
@@ -52,35 +57,42 @@ class RingBuilder:
             else:
                 ringversion = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
 
-            current_app.logger.debug('ringversion:'+str(ringversion))
+            
+            self.lggr.info('ringversion:'+str(ringversion))
             
             requestparameters = {}
 
             if request.form.get('RingParent'):
                 requestparameters['RingParent'] = request.form.get('RingParent')
             else: 
-                requestparameters['RingParent'] = request.form.get('RingName')
+                requestparameters['RingParent'] = ringname
 
 
             for p in request.form:
-                requestparameters[p] = request.form.get(p)
-                current_app.logger.debug((p)+':'+str(request.form.get(p)))
+                if p == 'RingName':
+                    requestparameters['RingName'] = ringname
+                    requestparameters['RingLabel'] = ringname
+                    self.lggr.info((p)+':'+ringname)
+
+                else:
+                    requestparameters[p] = request.form.get(p)
+                    self.lggr.info((p)+':'+str(request.form.get(p)))
  
             # Generate rings block                         
             pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
             pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
 
-            current_app.logger.debug(pinput)
+            self.lggr.info(pinput)
             
             #Check if a database with that name already exists
 
             try:
                 self.AVM.ring_set_db(handle,ringname,ringversion)
-                current_app.logger.debug('New Ring database created: '+ str(ringname))
+                self.lggr.info('New Ring database created: '+ str(ringname))
 
             except(PreconditionFailed):
-                current_app.logger.debug('The Ring '+ str(ringname) +' database already exists')
+                self.lggr.info('The Ring '+ str(ringname) +' database already exists')
                 flash('The Ring '+ ringname+' already exists','ER')
                 return False
 
@@ -94,10 +106,10 @@ class RingBuilder:
                                         self.fieldprotocols['fieldprotocol']):
 
                 ringd = {'handle':handle,'ringname':ringname,'version':ringversion}
-                current_app.logger.debug('Schema inserted/updated')
+                self.lggr.info('Schema inserted/updated')
                 return ringd
             else:
-                current_app.logger.debug('Schema could not be inserted')
+                self.lggr.info('Schema could not be inserted')
                 return False
 
         elif request.form.get('ringurl') :
@@ -107,14 +119,14 @@ class RingBuilder:
             
             o1 = urlparse.urlparse(request.url)
             host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
-            current_app.logger.debug(host_url)
+            self.lggr.info(host_url)
 
             
 
             o2 = urlparse.urlparse(request.form.get('ringurl'))
 
             pathparts = o2.path.split('/')
-            current_app.logger.debug(pathparts)
+            self.lggr.info(pathparts)
             if pathparts[1]!='_api':
                 corrected_path = '/_api'+o2.path
             else:
@@ -124,13 +136,13 @@ class RingBuilder:
 
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
             host_ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
-            current_app.logger.debug(host_ring_url)
+            self.lggr.info(host_ring_url)
 
             
             if host_url==host_ring_url:
                 #You are cloning a ring from your localhost
                 #Although the result is like doing a put_a_b with no changes as system won't allow duplicates
-                current_app.logger.debug('Cloning local ring')
+                self.lggr.info('Cloning local ring')
 
                 pathparts=corrected_path.split('/')
                 origin_handle = pathparts[2] #BUG! This will set origin database as handle for new ring 
@@ -141,7 +153,7 @@ class RingBuilder:
                 
                 #original schema
                 schema = self.AVM.ring_get_schema_from_view(origin_handle,ringdbname)
-                current_app.logger.debug(schema) 
+                self.lggr.debug(schema) 
                 #Generate pinput from schema
                 
                 if schema['rings'][0]['RingVersion']:
@@ -152,10 +164,8 @@ class RingBuilder:
                 requestparameters = {}
 
 
-                current_app.logger.debug('schema rings:')
-
-
-                current_app.logger.debug(schema['rings'])
+                self.lggr.info('schema rings:')
+                self.lggr.info(schema['rings'])
 
                 
                 for k in schema['rings'][0]:
@@ -169,12 +179,12 @@ class RingBuilder:
                 i = 0
                 for n in schema['fields']:
                     
-                    current_app.logger.debug(n)
+                    self.lggr.info(n)
                     i = i + 1
                     for k in n:   
                         requestparameters[k+'_'+str(i)] = n[k]
 
-                current_app.logger.debug('requestparameters:'+str(requestparameters))
+                self.lggr.info('requestparameters:'+str(requestparameters))
 
                 # Generate rings block                         
                 pinput['rings'] = self._generate_ring_block(requestparameters)
@@ -185,29 +195,29 @@ class RingBuilder:
 
             else:
                 # You are cloning a ring from another server 
-                current_app.logger.debug('Cloning non local ring')
+                self.lggr.info('Cloning non local ring')
 
                 try:
                     r = requests.get(ring_url)
                 except(requests.exceptions.ConnectionError):
-                    current_app.logger.debug('The connection was refused')
+                    self.lggr.info('The connection was refused')
                     flash('The connection to the parent ring was refused. Check the URL in your browser.','ER')
                     return False
                 #r = requests.get('http://localhost:8080/_api/blalab2/reactivoexamen_0-1-2')             
                 
-                current_app.logger.debug('Raw JSON schema:')
-                current_app.logger.debug(r.text)
+                self.lggr.info('Raw JSON schema:')
+                self.lggr.info(r.text)
                 schema = json.loads(r.text)
                 
                 #Generate pinput from r.text
 
                 #x = '{"source": "/blalab/mecanismos_0-3-0", "items": [{"Descripcion": "Cigue\u00f1al de cuatro codos", "Referencia": "2.1 f", "Imagen": "", "Clasificacion": "Eslabon", "Subclasificacion": "Manivela", "_id": "1378154159"}], "rings": [{"RingVersion": "0.3.0", "RingDescription": "Descripcion de Mecanismos", "RingName": "Mecanismos", "RingURI": "http://ring.apiring.org/mecanismos", "RingBuild": "1"}], "fields": [{"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "textarea", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Descripcion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "1", "FieldRequired": false, "FieldWidget": "images", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Imagen", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Clasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Subclasificacion", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}, {"FieldLabel": "None", "FieldOrder": "None", "FieldDefault": "None", "FieldSource": "None", "FieldLayer": "2", "FieldRequired": false, "FieldWidget": "text", "FieldHint": "None", "FieldMultilingual": false, "FieldName": "Referencia", "FieldType": "TEXT", "FieldCardinality": "Single", "FieldSemantic": "None"}]} '
                 #schema = json.loads(x)
-                current_app.logger.debug('schema:'+str(schema))
+                self.lggr.info('schema:'+str(schema))
 
 
                 handle = handle.lower()
-                ringname = schema['rings'][0]['RingName'].lower()
+                ringname = schema['rings'][0]['RingName'].lower().replace(' ','')
                 ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
                 
                 requestparameters = {}
@@ -215,10 +225,10 @@ class RingBuilder:
                 for k in schema['rings'][0]:
                     requestparameters[k] = schema['rings'][0][k]
 
-                current_app.logger.debug('pre_requestparameters:'+str(requestparameters))
+                self.lggr.info('pre_requestparameters:'+str(requestparameters))
 
                 if 'RingParent' not in requestparameters:
-                    current_app.logger.debug('adding RingParent to requestparameters')
+                    self.lggr.info('adding RingParent to requestparameters')
                     requestparameters['RingParent'] = requestparameters['RingName']
 
                 '''
@@ -229,12 +239,12 @@ class RingBuilder:
                 i = 0
                 for n in schema['fields']:
                     
-                    current_app.logger.debug(n)
+                    self.lggr.info(n)
                     i = i + 1
                     for k in n:   
                         requestparameters[k+'_'+str(i)] = n[k]
 
-                current_app.logger.debug('requestparameters:'+str(requestparameters))
+                self.lggr.info('requestparameters:'+str(requestparameters))
 
 
                
@@ -247,9 +257,9 @@ class RingBuilder:
 
             try: 
                 self.AVM.ring_set_db(handle,ringname,ringversion)
-                current_app.logger.debug('New Ring database created:'+str(handle)+'_'+str(ringname))
+                self.lggr.info('New Ring database created:'+str(handle)+'_'+str(ringname))
             except(PreconditionFailed):
-                current_app.logger.debug('The Ring '+ str(ringname)+' database already exists')
+                self.lggr.info('The Ring '+ str(ringname)+' database already exists')
                 flash('The Ring '+ ringname+'_'+ringversion +' already exists','ER')
                 return False
 
@@ -263,19 +273,19 @@ class RingBuilder:
 
                 
                 ringd = {'handle':handle,'ringname':ringname,'version':ringversion}
-                current_app.logger.debug('Schema inserted/updated')
+                self.lggr.info('Schema inserted/updated')
                 return ringd
             except(ValueError,KeyError):
                 #Delete db you just created
                 self.AVM.user_hard_delete_ring(handle,ringname,ringversion)
-                current_app.logger.debug('Schema could not be inserted, Delete all trace.')
+                self.lggr.info('Schema could not be inserted, Delete all trace.')
                 return False
                 
 
             
         else:
 
-            current_app.logger.debug('There is not enough information to create a Ring')
+            self.lggr.info('There is not enough information to create a Ring')
             return False
 
     def put_a_b(self,request,handle,ring):
@@ -304,14 +314,14 @@ class RingBuilder:
             
             for p in request.form:
                 requestparameters[p] = request.form.get(p)
-                current_app.logger.debug(str(p)+':'+str(request.form.get(p)))
+                self.lggr.info(str(p)+':'+str(request.form.get(p)))
             
 
             pinput['rings'] = self._generate_ring_block(requestparameters)
             # Generate fields block
             pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
 
-            current_app.logger.debug(pinput)
+            self.lggr.info(pinput)
             
             
             if self.AVM.ring_set_schema(handle,
@@ -321,16 +331,16 @@ class RingBuilder:
                                         self.ringprotocols['ringprotocol'],
                                         self.fieldprotocols['fieldprotocol']):
 
-                current_app.logger.debug('Schema inserted/updated')
+                self.lggr.info('Schema inserted/updated')
                 return True
             else:
-                current_app.logger.debug('Schema could not be inserted')
+                self.lggr.info('Schema could not be inserted')
                 return False
 
 
         else:
 
-            current_app.logger.debug('There is not enough information to create a Ring')
+            self.lggr.info('There is not enough information to create a Ring')
             return False
 
 
@@ -342,27 +352,27 @@ class RingBuilder:
         
         # Collect all the 'Ring*' fields coming via the RQ
         for k in self.ringprotocols['ringprotocol']:
-            current_app.logger.debug('generate_ring_block iteration:'+str(k))
+            self.lggr.info('generate_ring_block iteration:'+str(k))
             if k in requestparameters:
-                current_app.logger.debug('in')
+                self.lggr.debug('in')
             #if request.form.get(k):
                 #ringsbuffer[k] = request.form[k]
                 ringsbuffer[k] = requestparameters[k].strip()
-                #current_app.logger.debug(k)
+                #self.lggr.info(k)
                 
 
                 if ringsbuffer[k]=='':
 
                     if k in self.ringprotocols['mandatory']:
                         raise Exception('Field in Ring Protocol missing : '+k)
-                        #current_app.logger.debug('Field in Ring Protocol missing : '+k)
+                        #self.lggr.debug('Field in Ring Protocol missing : '+k)
                     else:
                         if k in self.ringprotocols['defaults']:
                             ringsbuffer[k] = self.ringprotocols['defaults'][k]
                         else:
                             ringsbuffer[k] = ''
 
-        current_app.logger.debug('ringsbuffer:'+str(ringsbuffer))
+        self.lggr.debug('ringsbuffer:'+str(ringsbuffer))
 
         ringblock = []
         ringblock.append(ringsbuffer)
@@ -393,67 +403,67 @@ class RingBuilder:
 
                 #if request.form.get(val+'_'+str(i)):
                 #if requestparameters[val+'_'+str(i)]:
-                current_app.logger.debug(str(val)+'_'+str(i))
-                current_app.logger.debug('gfb1')
-                #current_app.logger.debug('requestparameters')
-                #current_app.logger.debug(requestparameters)
+                self.lggr.debug(str(val)+'_'+str(i))
+                self.lggr.debug('gfb1')
+                #self.lggr.logger.debug('requestparameters')
+                #self.lggr.logger.debug(requestparameters)
                 if val+'_'+str(i) in requestparameters:
 
-                    current_app.logger.debug('gfb2')
+                    self.lggr.logger.debug('gfb2')
                     
                     if requestparameters[val+'_'+str(i)] and requestparameters[val+'_'+str(i)]!='None' :
 
-                        current_app.logger.debug('gfb3')
-                        current_app.logger.debug(requestparameters[val+'_'+str(i)])
+                        self.lggr.logger.debug('gfb3')
+                        self.lggr.logger.debug(requestparameters[val+'_'+str(i)])
 
                         fieldsbuffer[i][val] = requestparameters[val+'_'+str(i)]
-                        #current_app.logger.debug(val+'_'+str(i))
+                        #self.lggr.logger.debug(val+'_'+str(i))
                     else:
                         #The parameter exists but it is empty
-                        current_app.logger.debug('gfb4')
-                        current_app.logger.debug(val+'_'+str(i))
-                        current_app.logger.debug('gone none')
-                        #current_app.logger.debug
+                        self.lggr.logger.debug('gfb4')
+                        self.lggr.logger.debug(val+'_'+str(i))
+                        self.lggr.logger.debug('gone none')
+                        #self.lggr.logger.debug
                         fieldsbuffer[i][val] = ''
 
                         if val in self.fieldprotocols['mandatory']:
                             raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
 
                         if val in self.fieldprotocols['defaults']:
-                            current_app.logger.debug("DEFAULTS:")
-                            current_app.logger.debug(val+'_'+str(i))
-                            current_app.logger.debug(self.fieldprotocols['defaults'][val])
-                            #current_app.logger.debug
+                            self.lggr.logger.debug("DEFAULTS:")
+                            self.lggr.logger.debug(val+'_'+str(i))
+                            self.lggr.logger.debug(self.fieldprotocols['defaults'][val])
+                            #self.lggr.logger.debug
                             fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
                             #fieldsbuffer[i][val] = True
                     
 
                 else:
                     #The checkboxes or fields could not be in the request but still need to be introduced in the database
-                    current_app.logger.debug('gfb5')
+                    self.lggr.logger.debug('gfb5')
                 
                     if val in self.fieldprotocols['mandatory']:
                         raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
 
                     if val in self.fieldprotocols['defaults']:
-                        current_app.logger.debug('gfb6')
-                        current_app.logger.debug("DEFAULTS 2:")
-                        current_app.logger.debug(val+'_'+str(i))
-                        current_app.logger.debug(self.fieldprotocols['defaults'][val])
-                        #current_app.logger.debug
+                        self.lggr.logger.debug('gfb6')
+                        self.lggr.logger.debug("DEFAULTS 2:")
+                        self.lggr.logger.debug(val+'_'+str(i))
+                        self.lggr.logger.debug(self.fieldprotocols['defaults'][val])
+                        #self.lggr.logger.debug
                         fieldsbuffer[i][val] = self.fieldprotocols['defaults'][val]
-                        current_app.logger.debug(fieldsbuffer[i][val])
+                        self.lggr.logger.debug(fieldsbuffer[i][val])
                     else:
-                        current_app.logger.debug('gfb7')
-                        current_app.logger.debug("BLANK DEFAULTS:")
-                        current_app.logger.debug(val+'_'+str(i))
+                        self.lggr.logger.debug('gfb7')
+                        self.lggr.logger.debug("BLANK DEFAULTS:")
+                        self.lggr.logger.debug(val+'_'+str(i))
                         fieldsbuffer[i][val] = ''
-                        current_app.logger.debug(fieldsbuffer[i][val])
+                        self.lggr.logger.debug(fieldsbuffer[i][val])
 
                 
                 
-        current_app.logger.debug("fieldsbuffer:")
-        current_app.logger.debug(fieldsbuffer)
+        self.lggr.logger.debug("fieldsbuffer:")
+        self.lggr.logger.debug(fieldsbuffer)
          
         fieldblock = []
 
