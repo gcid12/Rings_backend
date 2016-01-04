@@ -611,7 +611,7 @@
                             <td>
                               <select name="FieldWidget_{{ FieldOrder }}" class="form-control input-sm" style="background-color:#666; color:white;">
                                 <option value="">SELECT ONE</option>
-                                <option value="address" {% if FieldWidget == "address" %}selected=""{% endif %}>address</option>
+                                <!--option value="address" {% if FieldWidget == "address" %}selected=""{% endif %}>address</option-->
                                 <option value="checkbox" {% if FieldWidget == "checkbox" %}selected=""{% endif %}>checkbox</option>
                                 <option value="date" {% if FieldWidget == "date" %}selected=""{% endif %}>date</option>
                                 <option value="hours" {% if FieldWidget == "hours" %}selected=""{% endif %}>hours</option>
@@ -619,13 +619,13 @@
                                 <option value="images" {% if FieldWidget == "images" %}selected=""{% endif %}>images</option>
                                 <option value="items" {% if FieldWidget == "items" %}selected=""{% endif %}>items</option>
                                 <option value="location" {% if FieldWidget == "location" %}selected=""{% endif %}>location</option>
-                                <option value="mail" {% if FieldWidget == "mail" %}selected=""{% endif %}>mail</option>
+                                <!--option value="mail" {% if FieldWidget == "mail" %}selected=""{% endif %}>mail</option-->
                                 <option value="password" {% if FieldWidget == "password" %}selected=""{% endif %}>password</option>
-                                <option value="phone" {% if FieldWidget == "phone" %}selected=""{% endif %}>phone</option>
-                                <option value="pcode" {% if FieldWidget == "pcode" %}selected=""{% endif %}>productCode</option>
+                                <!--option value="phone" {% if FieldWidget == "phone" %}selected=""{% endif %}>phone</option-->
+                                <!--option value="pcode" {% if FieldWidget == "pcode" %}selected=""{% endif %}>productCode</option-->
                                 <option value="radio" {% if FieldWidget == "radio" %}selected=""{% endif %}>radio</option>
                                 <option value="select" {% if FieldWidget == "select" %}selected=""{% endif %}>select</option>
-                                <option value="social" {% if FieldWidget == "social" %}selected=""{% endif %}>social</option>
+                                <!--option value="social" {% if FieldWidget == "social" %}selected=""{% endif %}>social</option-->
                                 <option value="text" {% if FieldWidget == "text" %}selected=""{% endif %}>text</option>
                                 <option value="text_multilang" {% if FieldWidget == "text_multilang" %}selected=""{% endif %}>text (multi-language)</option>
                                 <option value="textarea" {% if FieldWidget == "textarea" %}selected=""{% endif %}>textarea</option>
@@ -669,7 +669,6 @@
                               multilingual
                               <input name="FieldMultilingual_{{ FieldOrder }}" value="1" {% if FieldMultilingual %} checked {% endif %} type="checkbox">  
                             </span> 
-
                             <span class="fc-g fs-0-8 margin-x-7">
                               Cardinality
                               <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
@@ -808,12 +807,12 @@
                           <div class="col-sm-8">
                             <span class="fc-g fs-0-8 margin-x-7">    
                               required
-                              <input name="FieldRequired_{{ FieldOrder }}" value="TRUE" type="checkbox">
+                              <input name="FieldRequired_{{ FieldOrder }}" value="1" type="checkbox">
                             </span>
-                            <!-- <span class="label bg-gray margin-x-7">
+                            <span class="label bg-gray margin-x-7">
                               <input name="FieldMultilingual_{{ FieldOrder }}" value="TRUE" type="checkbox">
                               multilingual
-                            </span> -->
+                            </span>
                             <span class="fc-g fs-0-8 margin-x-7">
                               Cardinality
                               <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
@@ -824,12 +823,13 @@
                             <span class="fc-g fs-0-8 margin-x-7">
                               Type
                               <select name="FieldType_{{ FieldOrder }}" class="fc-b">
-                                <option value="STRING" {% if FieldType == "STRING" or FieldType=="TEXT" %} selected {% endif %}>String</option>
-                                <option value="INTEGER" {% if FieldType == "INTEGER" %} selected {% endif %}>Integer</option>
-                                <option value="OBJECT" {% if FieldType == "OBJECT" %} selected {% endif %}>Object</option>
-                                <option value="ARRAY" {% if FieldType == "ARRAY" %} selected {% endif %}>Array</option>
-                                <option value="BOOLEAN" {% if FieldType == "BOOLEAN" %} selected {% endif %}>Boolean</option>
-                              </select>   
+                                <option value="STRING">String</option>
+                                <option value="INTEGER">Integer</option>
+                                <option value="OBJECT">Object</option>
+                                <option value="ARRAY">Array</option>
+                                <option value="BOOLEAN">Boolean</option>
+                              </select> 
+
                             </span>
                           </div>
                           <div class="col-sm-4">
@@ -875,17 +875,7 @@
                         </div>
                         <!-- CLOSE ROW 1 -->
                         <!-- NEW ORDER -->
-                        <input type="hidden" name="FieldType_{{ FieldOrder }}">
-                        <div class="input-group input-group-sm">
-                          <select>
-                            <option>STRING</option>
-                            <option>INTEGER</option>
-                            <option>OBJECT</option>
-                            <option>ARRAY</option>
-                            <option>BOOLEAN</option>
-                          </select>
-                        </div>
-                        <!-- SUBMIT -->
+                        
                       </div> <!-- C. PORTLET CONTENT -->
                     </div> <!-- B. CLOSE PORTLET -->
                      <!-- N FIELD END -->
