@@ -40,90 +40,121 @@ class RingBuilder:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
+    def generate_blocks(self,requestparameters,fieldprotocol):
 
-    
-    def JSONRingGenerator(self,request,handle):
+        pinput = collections.OrderedDict()
 
-                
-        if request.form.get('RingName') and request.form.get('FieldName_1'):
+        # Generate rings block                         
+        pinput['rings'] = self._generate_ring_block(requestparameters)
+        # Generate fields block
+        pinput['fields'] = self._generate_field_block(requestparameters,fieldprotocol)
 
-            pinput = collections.OrderedDict()
+        self.lggr.info(pinput)
 
-            ringname = request.form.get('RingName').lower().replace(' ','') # I dont like this here
+        return pinput
 
-            handle = handle.lower()
-            if request.form.get('RingVersion'):
-                ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
-            else:
-                ringversion = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
+    def update_ring_schema(self,p):
 
+        pinput = self.generate_blocks(p,self.fieldprotocols['fieldprotocol'])
+
+        if self.AVM.ring_set_schema(p['handle'],
+                                    p['RingName'],
+                                    p['RingVersion'],
+                                    pinput,
+                                    self.ringprotocols['ringprotocol'],
+                                    self.fieldprotocols['fieldprotocol']):
+
+            ringd = {'handle':p['handle'],'ringname':p['RingName'],'version':p['RingVersion']}
+            self.lggr.info('Schema inserted/updated')
+            return ringd
+        else:
+            self.lggr.info('Schema could not be inserted')
+            return False
+
+
+
+
+    def create_ring_db(self,handle,ringname,ringversion):
+        
+        try:
+            self.AVM.ring_set_db(handle,ringname,ringversion)
+            self.lggr.info('New Ring database created: '+ str(ringname))
+            return True
+
+        except(PreconditionFailed):
+            self.lggr.info('The Ring '+ str(ringname) +' database already exists')
+            flash('The Ring '+ ringname+' already exists','ER')
+            return False
+
+    def subtract_request_parameters(self,request,handle,ring=None):
+
+        p = {}
+
+        p['handle'] = handle.lower()
+
+        if ring:
+            p['RingName'] = ring 
+        elif 'RingName' in request.form:  
+            p['RingName'] = request.form.get('RingName').lower().replace(' ','')
+            #There should be also a nonaplhanumeric character strip here
+        else:
+            self.lggr.info('No name for the ring')
+            return False
             
-            self.lggr.info('ringversion:'+str(ringversion))
-            
-            requestparameters = {}
 
-            if request.form.get('RingParent'):
-                requestparameters['RingParent'] = request.form.get('RingParent')
-            else: 
-                requestparameters['RingParent'] = ringname
+        if 'RingVersion' in request.form:
+            p['RingVersion'] = request.form.get('RingVersion').replace('.','-') # I dont like this here
+        else:
+            p['RingVersion'] = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
+
+        if 'RingParent' in request.form:
+            p['RingParent'] = request.form.get('RingParent')
+        else:
+            p['RingParent'] = p['RingName']
+        
+        if 'RingLabel' in request.form:
+            p['RingLabel'] = request.form.get('RingLabel')
+        else:
+            p['RingLabel'] = p['RingName'] 
+
+        for parameter in request.form:
+            if parameter not in p:
+                p[parameter] = request.form.get(parameter)
+                self.lggr.info((parameter)+':'+str(request.form.get(parameter)))
+
+        return p
 
 
-            for p in request.form:
-                if p == 'RingName':
-                    requestparameters['RingName'] = ringname
-                    requestparameters['RingLabel'] = ringname
-                    self.lggr.info((p)+':'+ringname)
+    def post_a(self,request,handle):
 
-                else:
-                    requestparameters[p] = request.form.get(p)
-                    self.lggr.info((p)+':'+str(request.form.get(p)))
+        p = self.subtract_request_parameters(request,handle)
+             
+        if p['RingName'] and ('FieldName_1' in p):
+            # Minumum requirements ok, create a ring
+
+            # 1. Create empty schema document
+            if not self.create_ring_db(p['handle'],p['RingName'],p['RingVersion']):
+                return False
  
-            # Generate rings block                         
-            pinput['rings'] = self._generate_ring_block(requestparameters)
-            # Generate fields block
-            pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
+            # 2. Add fields and extra parameters
+            return self.update_ring_schema(p)
 
-            self.lggr.info(pinput)
-            
-            #Check if a database with that name already exists
-
-            try:
-                self.AVM.ring_set_db(handle,ringname,ringversion)
-                self.lggr.info('New Ring database created: '+ str(ringname))
-
-            except(PreconditionFailed):
-                self.lggr.info('The Ring '+ str(ringname) +' database already exists')
-                flash('The Ring '+ ringname+' already exists','ER')
-                return False
-
-
-
-            if self.AVM.ring_set_schema(handle,
-                                        ringname,
-                                        ringversion,
-                                        pinput,
-                                        self.ringprotocols['ringprotocol'],
-                                        self.fieldprotocols['fieldprotocol']):
-
-                ringd = {'handle':handle,'ringname':ringname,'version':ringversion}
-                self.lggr.info('Schema inserted/updated')
-                return ringd
-            else:
-                self.lggr.info('Schema could not be inserted')
-                return False
-
-        elif request.form.get('ringurl') :
-            #We are cloning a Ring!!!
+        elif 'ringurl' in request.form:
+            # We are cloning a Ring
 
             pinput = collections.OrderedDict()              
             
+            # ORIGIN
+            # Base URL
             o1 = urlparse.urlparse(request.url)
             host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
-            self.lggr.info(host_url)
-
+            self.lggr.debug(host_url)
             
-
+            # TARGET 
+            # Base URL
             o2 = urlparse.urlparse(request.form.get('ringurl'))
+            host_ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
+            self.lggr.info(host_ring_url)
 
             pathparts = o2.path.split('/')
             self.lggr.info(pathparts)
@@ -131,12 +162,10 @@ class RingBuilder:
                 corrected_path = '/_api'+o2.path
             else:
                 corrected_path = o2.path
-
             corrected_query = 'schema'
-
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
-            host_ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
-            self.lggr.info(host_ring_url)
+            
+            
 
             
             if host_url==host_ring_url:
@@ -289,60 +318,17 @@ class RingBuilder:
             return False
 
     def put_a_b(self,request,handle,ring):
-        #Same as JSONRingGenerator but to edit schema
+        # Update the ring schema
+
+        p = self.subtract_request_parameters(request,handle,ring=ring)
 
                 
-        if request.form.get('RingName') and request.form.get('FieldName_1'):
+        if p['RingName'] and ('FieldName_1' in p):
 
-            pinput = collections.OrderedDict()
-
-            ringname = request.form.get('RingName').lower() # I dont like this here
-            handle = handle.lower()
-            ringversion = request.form.get('RingVersion').replace('.','-') # I dont like this here
-
-            
-            
-            # Generate rings block  
-
-            requestparameters = {}
-
-            if 'RingParent' not in request.form:
-                requestparameters['RingParent'] = request.form.get('RingName')   
-
-            if 'RingLabel' not in request.form:
-                requestparameters['RingLabel'] = request.form.get('RingName')          
-            
-            for p in request.form:
-                requestparameters[p] = request.form.get(p)
-                self.lggr.info(str(p)+':'+str(request.form.get(p)))
-            
-
-            pinput['rings'] = self._generate_ring_block(requestparameters)
-            # Generate fields block
-            pinput['fields'] = self._generate_field_block(requestparameters,self.fieldprotocols['fieldprotocol'])
-
-            self.lggr.info(pinput)
-            
-            
-            if self.AVM.ring_set_schema(handle,
-                                        ringname,
-                                        ringversion,
-                                        pinput,
-                                        self.ringprotocols['ringprotocol'],
-                                        self.fieldprotocols['fieldprotocol']):
-
-                self.lggr.info('Schema inserted/updated')
-                return True
-            else:
-                self.lggr.info('Schema could not be inserted')
-                return False
-
+            return self.update_ring_schema(p)
 
         else:
-
-            self.lggr.info('There is not enough information to create a Ring')
             return False
-
 
 
     def _generate_ring_block(self, requestparameters):
@@ -427,7 +413,7 @@ class RingBuilder:
                         fieldsbuffer[i][val] = ''
 
                         if val in self.fieldprotocols['mandatory']:
-                            raise Exception('Field in Ring Protocol missing : '+val+'_'+str(i))
+                            raise Exception('Field listed as mandatory is missing : '+val+'_'+str(i))
 
                         if val in self.fieldprotocols['defaults']:
                             self.lggr.logger.debug("DEFAULTS:")
