@@ -164,16 +164,20 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
         if 'accept' in request.args:
             accept = request.args.get("accept").lower()
-
         else:
             accept = 'json'
+
+        if 'human' in request.args:
+            human = True
+        else:
+            human = False
 
         print('ACCEPT:',accept)
 
         if accept=='csv':
 
             #This is where a function converts output into CSV.
-            def generate(data_raw,fl=None):
+            def generate(data_raw,fl=None,fl_names=None):
 
                 d = data_raw['items']
 
@@ -181,42 +185,42 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 writer = csv.writer(cvsdocIO , delimiter=',',quoting=csv.QUOTE_NONNUMERIC)
 
                 #Generate the header first 
+                humancsvheader = ['_id'] 
                 csvheader = ['_id'] 
                 for f in fl:
-                    csvheader.append(f)
-       
-                '''
-                for field in fl:        
-                    if field[:1]=='_':
-                        if field == '_id': 
-                            csvheader.append(field)
-                    elif field[-5:]=='_rich':
-                        pass
-                    else:
-                        if fl:
-                            if field.lower() in fl:
-                                csvheader.append(field)
-                        else:
-                            csvheader.append(field)
-                '''
 
-                headerline = [ str(f) for f in csvheader]
+                    csvheader.append(f)
+                    if fl_names:
+                        humancsvheader.append(fl_names[f])
+               
+
+                if fl_names:
+                    headerline = [ str(f) for f in humancsvheader]
+                else:
+                    headerline = [ str(f) for f in csvheader]
+      
+
+                #headerline = [ str(f) for f in csvheader]
                 writer.writerow(headerline)
 
                 # Add the items
                 for row in d:
                     
                     line = [] 
+                    print('row:',row)
 
                     for field in csvheader: 
                     # Fill the line with authorized data
-                        #print('row:',row)
+                        
+                        print('Field:',field)
                         if field in row:
-                            print('Field:',field)
-                            print('rowfield:',row[field])
+                            #print('Field:',field)
+                            #print('rowfield:',row[field])
+                            v = row[field]
+                            print(v)
 
-                            if isinstance(row[field], list):
-                                r = [str(p) for p in row[field]]
+                            if isinstance(v, list):
+                                r = [str(p) for p in v]
                                 line.append('|'.join(r))
 
                             else:
@@ -237,11 +241,16 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             if 'fl' in request.args:
                 fl = request.args.get("fl").lower().split(',')
             else:
-                fl = data['fieldtitles']
+                #fl = data['fieldnames']
+                #fl = data['fieldlabels']
+                fl = data['fieldids']
 
 
+            if human:
+                csvout = generate(data['raw_out'],fl,data['fieldnames'])
+            else:
+                csvout = generate(data['raw_out'],fl)
 
-            csvout = generate(data['raw_out'],fl)
             #print('csvout:',csvout)
 
             response = make_response(csvout)

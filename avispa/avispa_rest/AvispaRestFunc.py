@@ -352,7 +352,15 @@ class AvispaRestFunc:
                 out['rings'] = schema['rings']
                 out['fields'] = schema['fields']
 
-            d['fieldtitles'] = [ f['FieldName'] for f in schema['fields'] ]
+            d['fieldnames'] = {}
+            for f in schema['fields']:
+                d['fieldnames'][f['FieldId']] = f['FieldName'] 
+
+            d['fieldlabels'] = {}
+            for f in schema['fields']:
+                d['fieldlabels'][f['FieldId']] = f['FieldLabel'] 
+
+            d['fieldids'] = [ f['FieldId'] for f in schema['fields'] ]
 
             
             out['items'] = itemlist 
