@@ -87,7 +87,7 @@ class AvispaRestFunc:
 
        
         RB = RingBuilder()
-        result = RB.JSONRingGenerator(request,handle)
+        result = RB.post_a(request,handle)
         out = {} 
             
         if result:

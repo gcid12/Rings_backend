@@ -1518,15 +1518,39 @@ class AvispaModel:
 
 
         for field in fields:
+
+            newfield = False
             
             #VALUES
             new = ''
             old = ''
 
-            if item.items[0][field['FieldId']] == None:
-                old = item.items[0][field['FieldId']]
+            #INITIALIZE IF IT DOES NOT EXIST
+            if field['FieldId'] not in item.items[0]:
+                # If it doesn't exist create it
+                item.items[0][field['FieldId']] = ''
+
+            if field['FieldId'] not in item.flags[0]:
+                # If it doesn't exist create it
+                item.flags[0][field['FieldId']] = ''
+
+            if field['FieldId'] not in item.history[0]:
+                # If it doesn't exist create it
+                item.history[0][field['FieldId']] = []
+
+            
+            if field['FieldId'] in item.items[0]:
+
+              if item.items[0][field['FieldId']] == None:
+                  old = item.items[0][field['FieldId']]
+              else:
+                  old = unicode(item.items[0][field['FieldId']])
+
             else:
-                old = unicode(item.items[0][field['FieldId']])
+              # This indicates that this field has been added after this item was created
+              self.lggr.info(field['FieldId']+' did NOT exist before in this document. It will be added')
+              old = ''
+              newfield = True
 
             
             if field['FieldName'] in request.form:
@@ -1540,11 +1564,10 @@ class AvispaModel:
                     new_raw = request.form.get(field['FieldId'])
                 else:
                     new_raw = None
+            else:
+                new_raw = None
 
-
-            
-            #We need to check if new_raw is a valid json object or just a regular string
-            
+            #We need to check if new_raw is a valid json object or just a regular string            
             #new = new_raw
 
             if field['FieldType'] == 'OBJECT':
@@ -1582,9 +1605,7 @@ class AvispaModel:
                 history_item_dict['after'] = str(new) + ' '+ str(type(new))
                 history_item_dict['action'] = 'Update item'
 
-                item.history[0][field['FieldId']].append(history_item_dict)
-
-
+                item.history[0][field['FieldId']].append(history_item_dict)    
                 item.items[0][field['FieldId']] = new
 
             
@@ -1594,10 +1615,6 @@ class AvispaModel:
             if type(item.flags) is list:
                 item.flags = []
                 item.flags.append({})
-
-
-            if field['FieldId'] not in item.flags[0]:
-                item.flags[0][field['FieldId']] = ''
 
             old_flag = unicode(item.flags[0][field['FieldId']])
 
