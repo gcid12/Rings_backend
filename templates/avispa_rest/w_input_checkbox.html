@@ -4,7 +4,9 @@
             <label for="{{ field.FieldId }}" class="hidden-xs col-xs-2 col-sm-2 control-label fs-0-8">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
             <div class="col-xs-1 col-sm-1 text-left">
 
-              <input type="checkbox" id="checkbox{{ field.FieldOrder }}" class="flag-aware bigcheck" order="{{ field.FieldOrder }}" placeholder="{{ field.FieldHint }}" name="{{ field.FieldId }}" value="true" {% if field.FieldRequired %}checked{% endif %}>
+              <input type="checkbox" id="checkbox{{ field.FieldOrder }}" class="flag-aware bigcheck" order="{{ field.FieldOrder }}" placeholder="{{ field.FieldHint }}" name="{{ field.FieldId }}" value="true" {% if data.item[field.FieldId] %}checked{% endif %}>
+
+              {{ data.item[field.FieldId] }}
   
               
             </div>
