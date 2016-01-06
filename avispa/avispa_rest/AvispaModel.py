@@ -19,9 +19,8 @@ from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, Li
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
 from MyRingSchema import MyRingSchema
+#from ElasticSearchModel import ElasticSearchModel
 from AvispaLogging import AvispaLoggerAdapter
-
-
 
 from MyRingUser import MyRingUser
 from MainModel import MainModel
@@ -50,10 +49,7 @@ class AvispaModel:
         #self.lggr.debug(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
-
-
         self.MAM = MainModel()
- 
 
     #AVISPAMODEL
     def user_get_rings(self,handle,user_database=None):
@@ -915,10 +911,6 @@ class AvispaModel:
 
 
 
-
-
-
-
     #AVISPAMODEL
     def couchdb_pager(db, view_name='_all_docs',
                   startkey=None, startkey_docid=None,
@@ -1340,19 +1332,9 @@ class AvispaModel:
         fields = schema['fields']
 
         self.lggr.info("post_a_b raw arguments sent:"+str(request.form))
-        
-
 
         for field in fields:
-
-
-            
-            #self.lggr.debug(field['FieldName']+' ('+field['FieldId']+') content: '+str(request.form.get(field['FieldName'])))
-            #self.lggr.debug(field['FieldName']+' ('+field['FieldId']+') type: '+str(type(request.form.get(field['FieldName']))))
-
-            #self.lggr.debug('FieldSource:'+str(field['FieldSource']))
-            #self.lggr.debug('FieldWidget:'+str(field['FieldWidget']))
-
+       
             #Detect if FieldWidget is "select" . If it is you are getting an ID. 
             #You need to query the source to get the real value and the _rich values
             if field['FieldSource'] and (field['FieldWidget']=='select' or field['FieldWidget']=='items'):
@@ -1449,8 +1431,8 @@ class AvispaModel:
         
         if item.store(db):
         
+            #Increase item count
             self.increase_item_count(handle,ringname)
-
             return item._id
 
         return False
@@ -1493,7 +1475,7 @@ class AvispaModel:
     #AVISPAMODEL
     def put_a_b_c(self,request,handle,ringname,idx):
 
-        self.lggr.info('put_a_b_c()')
+        self.lggr.debug('put_a_b_c()')
 
         db_ringname=str(handle)+'_'+str(ringname)
         #self.lggr.debug('#couchdb_call')
@@ -1515,17 +1497,14 @@ class AvispaModel:
         else:
             item['public']=False
 
-
-
+        
         for field in fields:
-
-            newfield = False
             
             #VALUES
-            new = ''
-            old = ''
+            new = None
+            old = None
 
-            #INITIALIZE IF IT DOES NOT EXIST
+            #INITIALIZE FIELD IF IT DOES NOT EXIST
             if field['FieldId'] not in item.items[0]:
                 # If it doesn't exist create it
                 item.items[0][field['FieldId']] = ''
@@ -1539,38 +1518,36 @@ class AvispaModel:
                 item.history[0][field['FieldId']] = []
 
             
-            if field['FieldId'] in item.items[0]:
-
-              if item.items[0][field['FieldId']] == None:
-                  old = item.items[0][field['FieldId']]
-              else:
-                  old = unicode(item.items[0][field['FieldId']])
-
-            else:
-              # This indicates that this field has been added after this item was created
-              self.lggr.info(field['FieldId']+' did NOT exist before in this document. It will be added')
-              old = ''
-              newfield = True
-
             
+            if item.items[0][field['FieldId']] == None:
+                #Exists in the list but its value is None
+                old = None
+            else:
+                old = item.items[0][field['FieldId']]
+            
+         
             if field['FieldName'] in request.form:
                 if len(request.form.get(field['FieldName']))!=0:
                     new_raw = request.form.get(field['FieldName'])
                 else:
-                    new_raw = None
-                    
+                    new_raw = None                   
             elif field['FieldId'] in request.form:
                 if len(request.form.get(field['FieldId']))!=0:
                     new_raw = request.form.get(field['FieldId'])
                 else:
                     new_raw = None
             else:
+                #When a value is expected but not sent 
                 new_raw = None
 
-            #We need to check if new_raw is a valid json object or just a regular string            
-            #new = new_raw
+                # i.e: Checkboxes won't send a value if not selected
+                '''if field['FieldWidget'] == 'checkbox':
+                    new_raw = "false"
+                '''
+
 
             if field['FieldType'] == 'OBJECT':
+                #We need to check if new_raw is a valid json object or just a regular string
                 try:
                     new = json.loads(new_raw.strip())
                 except:
@@ -1578,7 +1555,7 @@ class AvispaModel:
                     #new = unicode(new_raw).strip()
             else:
                 if new_raw:
-                    new = unicode(new_raw).strip()
+                    new = new_raw.strip()
                 else:
                     new = None
                    
@@ -1586,7 +1563,7 @@ class AvispaModel:
             if new == '':
                new = None
 
-            if old == new:
+            if unicode(old) == unicode(new):
                 self.lggr.info(field['FieldId']+' did NOT change')
                 pass
                 #self.lggr.info(field['FieldName']+' ('+field['FieldId']+') did not change')  
@@ -1712,7 +1689,8 @@ class AvispaModel:
                         item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
 
         if needs_store:
-            if item.store(db):      
+            if item.store(db): 
+              
                 return item._id
         else:
             return item._id
@@ -1748,7 +1726,7 @@ class AvispaModel:
 
         if item.store(db): 
 
-            self.decrease_item_count(handle,ringname)
+            self.decrease_item_count(handle,ringname) 
 
             return item._id
 

@@ -322,8 +322,9 @@ class AvispaRestFunc:
         
         #Search ElasticSearch
         if q != '' :
-            self.ESM = ElasticSearchModel()
-            preitems = self.ESM.get_a_b(handle,ring,q=q)
+
+            ESM = ElasticSearchModel()
+            preitems = ESM.get_a_b(handle,ring,q=q)
         else:
             preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
 
@@ -641,6 +642,10 @@ class AvispaRestFunc:
 
         if idx:
 
+            #Index new item in the search engine
+            ESM = ElasticSearchModel()
+            ESM.indexer(request.url,handle,ring,idx)
+
             if not api:
                 self.lggr.info('Item saved with id: '+idx)
                 flash("The new item has been created",'UI')
@@ -875,9 +880,12 @@ class AvispaRestFunc:
     
     #DELETE /a/b
     
-    def delete_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
+    def delete_a_b(self,request,handle,ring,idx=False,api=False,collection=None,*args):
         
         if self.AVM.user_delete_ring(handle,ring):
+
+            ESM = ElasticSearchModel()
+            ESM.unindexer(request.url,handle,ring)
             flash('Ring '+ring+' deleted','UI')
         else:
             flash('Could not delete the Ring','ER')
@@ -1026,6 +1034,11 @@ class AvispaRestFunc:
         result = self.AVM.put_a_b_c(request,handle,ring,idx)
 
         if result:
+
+            #Index new item in the search engine
+            ESM = ElasticSearchModel()
+            ESM.indexer(request.url,handle,ring,idx)
+
             # Awesome , you just put the changes in the Item
             flash("Changes saved",'UI')
             if collection:
@@ -1163,6 +1176,9 @@ class AvispaRestFunc:
         result = self.AVM.delete_a_b_c(request,handle,ring,idx)
 
         if result:
+
+            ESM = ElasticSearchModel()
+            ESM.unindexer(handle,ring,idx)
             
             # Item deleted..
             flash('Item deleted..','UI')

@@ -11,7 +11,6 @@ from AvispaPeopleRestFunc import AvispaPeopleRestFunc
 from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
-#from MyRingIndexer import MyRingIndexer
 from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_STORE

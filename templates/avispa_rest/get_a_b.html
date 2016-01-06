@@ -32,11 +32,15 @@
   <div class="row">
     <div class="col-xs-12 text-center">
       <div class="spa20">
+      {% if data.ringcount==0 %}
         <h4>You have no items in this Ring. Create one, click here:
           <a href="/{{ data.handle }}{% if data.collection != '' %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}?rq=post" type="button" class="btn btn-success btn-xs " style="margin:0 5px;">
             <i class="fa fa-plus"></i> &nbsp; ADD FIRST ITEM
           </a>
         </h4>
+      {%else%}
+        <h4>There are no results for <b>{{ request.args.get('q')|nonone }}</b>. Please try another search </h4>
+      {%endif%}
       </div>
     </div>
   </div>
@@ -365,8 +369,9 @@
   <!-- AS MOSAIC close -->  
     {% endif %} 
       <div>
-      
-      <a href="?endkey={{data.itemlist[-1]._id}}">Prev</a> | <a href="?lastkey={{data.itemlist[-1]._id}}">Next</a>
+      {% if not request.args.get('q') %}   
+        <a href="?endkey={{data.itemlist[-1]._id}}">Prev</a> | <a href="?lastkey={{data.itemlist[-1]._id}}">Next</a>
+      {%endif%}
       </div>
   {% endif %} 
       </div>  
