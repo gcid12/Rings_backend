@@ -4,13 +4,16 @@ import sys
 import errno
 import random
 import werkzeug 
+import logging
+
 from werkzeug import secure_filename
-from flask import flash, current_app
+from flask import flash, g
 from wand.image import Image 
 from wand.display import display
 
 from default_config import IMAGE_STORE
 from env_config import IMAGE_STORE
+from AvispaLogging import AvispaLoggerAdapter
 
 
 class AvispaUpload:
@@ -24,6 +27,10 @@ class AvispaUpload:
 
         self.officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
         self.thumbnailsizes = {'t75':75,'t150':150}
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
 
     def do_upload(self,request,*args):
 
@@ -52,13 +59,14 @@ class AvispaUpload:
     def _request_complete(self,request):
 
         if not request.method == 'POST':
-            current_app.logger.error('Error: You can only use upload via POST')
+            
+            self.lggr.error('Error: You can only use upload via POST')
             flash(u'You can only use upload via POST','ER')
             self.rs_status='405'
             return False
 
         if not request.files['file']:
-            current_app.logger.error('Error: There are no files in the request')
+            self.lggr.error('Error: There are no files in the request')
             flash(u'There are no files in the request','ER')
             self.rs_status='400'
             return False
@@ -69,7 +77,7 @@ class AvispaUpload:
 
         file = request.files['file']
         if not self.__allowed_file(file.filename):
-            current_app.logger.error('Error: This file is not allowed: '+str(file.filename))
+            self.lggr.error('Error: This file is not allowed: '+str(file.filename))
             flash(u'This file is not allowed: '+str(file.filename),'ER')
             self.rs_status='415'
             return False
@@ -85,17 +93,17 @@ class AvispaUpload:
         filename = self.imgid+'_o.jpg'
         originalversionpath = self.IMAGE_FOLDER + '/o/'
 
-        current_app.logger.debug('filename',filename)
-        current_app.logger.debug('originalversionpath',originalversionpath)
+        self.lggr.debug('filename',filename)
+        self.lggr.debug('originalversionpath',originalversionpath)
 
 
         try:     
             file.save(os.path.join(originalversionpath, filename))
-            current_app.logger.debug('File uploaded successfully here:' + os.path.join(self.IMAGE_FOLDER, filename))
+            self.lggr.debug('File uploaded successfully here:' + os.path.join(self.IMAGE_FOLDER, filename))
             self.uploaded_file = os.path.join(self.IMAGE_FOLDER, filename)
             return True
         except:
-            current_app.logger.debug("Unexpected error:"+str(sys.exc_info()[0]))
+            self.lggr.debug("Unexpected error:"+str(sys.exc_info()[0]))
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
             self.rs_status='500'
             raise
@@ -130,7 +138,7 @@ class AvispaUpload:
             multiplied['height']=img.height
             multiplied['sizename']='o'
             multiplied['unit']='pixel'
-            current_app.logger.debug(multiplied)
+            self.lggr.debug(multiplied)
             self.image_sizes.append(multiplied)
 
         
@@ -177,7 +185,7 @@ class AvispaUpload:
 
         try:     
             img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
-            current_app.logger.debug('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            self.lggr.debug('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
             multiplied={}
             multiplied['mime-type']='image/jpeg'
             multiplied['extension']='jpg'
@@ -185,11 +193,11 @@ class AvispaUpload:
             multiplied['height']=img.height
             multiplied['sizename']=sizename
             multiplied['unit']='pixel'
-            current_app.logger.debug(multiplied)
+            self.lggr.debug(multiplied)
             self.image_sizes.append(multiplied)
             return True
         except:
-            current_app.logger.debug("Unexpected error:"+str(sys.exc_info()[0]))
+            self.lggr.debug("Unexpected error:"+str(sys.exc_info()[0]))
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
             self.rs_status='500'
             raise
@@ -224,14 +232,14 @@ class AvispaUpload:
     
 
     def x_safe_create_dir(self,path): #DONT USE HERE! #Moved to AuthModel.py
-        current_app.logger.debug(path)
+        self.lggr.debug(path)
         try:
             os.makedirs(path)
         except OSError as exception:
             if exception.errno != errno.EEXIST:
                 raise
 
-        current_app.logger.debug('flag1')
+        self.lggr.debug('flag1')
         return True
 
 
