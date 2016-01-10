@@ -11,8 +11,7 @@ from flask import flash, g
 from wand.image import Image 
 from wand.display import display
 
-from default_config import IMAGE_STORE
-from env_config import IMAGE_STORE
+from env_config import IMAGE_FOLDER_NAME, STORE_MODE
 from AvispaLogging import AvispaLoggerAdapter
 
 
@@ -20,7 +19,8 @@ class AvispaUpload:
 
     def __init__(self,handle):
 
-        self.IMAGE_FOLDER = IMAGE_STORE+'/'+handle
+        self.IMAGE_FOLDER = IMAGE_FOLDER_NAME+'/'+handle
+        self.handle = handle
         self.filename = ''
         self.rs_status = ''
         self.image_sizes = []
@@ -59,7 +59,7 @@ class AvispaUpload:
     def _request_complete(self,request):
 
         if not request.method == 'POST':
-            
+
             self.lggr.error('Error: You can only use upload via POST')
             flash(u'You can only use upload via POST','ER')
             self.rs_status='405'
@@ -184,7 +184,12 @@ class AvispaUpload:
         
 
         try:     
-            img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            #img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            
+            path = '%s/%s'%(self.handle,sizename)
+            filename = self.imgid+'_'+sizename+'.jpg'
+            self._file_save(img,path,filename)
+
             self.lggr.debug('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
             multiplied={}
             multiplied['mime-type']='image/jpeg'
@@ -202,8 +207,15 @@ class AvispaUpload:
             self.rs_status='500'
             raise
 
+    def _file_save(self,file,path,filename):
 
         
+        if STORE_MODE = 'LOCAL':
+
+            file.save(filename=('%s/%s/%s/%s'%(IMAGE_FOLDER_NAME,self.handle,path,filename)))
+            
+        elif STORE_MODE = 'S3':
+            pass
 
 
     def __allowed_file(self,filename):
