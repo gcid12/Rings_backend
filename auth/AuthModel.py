@@ -12,7 +12,7 @@ from AvispaLogging import AvispaLoggerAdapter
 import couchdb
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, IMAGE_STORE
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, IMAGE_FOLDER_NAME
 
 class AuthModel:
 
@@ -107,14 +107,14 @@ class AuthModel:
         return self.MAM.update_user(changes)
 
     def create_user_imagefolder(self,username):         
-        self.safe_create_dir(IMAGE_STORE+'/'+username+'/o') #Original folder
+        self.safe_create_dir(IMAGE_FOLDER_NAME+'/'+username+'/o') #Original folder
 
         for r in self.officialsizes:
-            self.safe_create_dir(IMAGE_STORE+'/'+username+'/'+r)  # Scale-down version folders
+            self.safe_create_dir(IMAGE_FOLDER_NAME+'/'+username+'/'+r)  # Scale-down version folders
 
 
         for t in self.thumbnailsizes:
-            self.safe_create_dir(IMAGE_STORE+'/'+username+'/'+t)  # Thumbnail folders
+            self.safe_create_dir(IMAGE_FOLDER_NAME+'/'+username+'/'+t)  # Thumbnail folders
 
         return True
 

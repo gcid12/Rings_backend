@@ -5,6 +5,9 @@ import errno
 import random
 import werkzeug 
 import logging
+import cStringIO
+
+
 
 from werkzeug import secure_filename
 from flask import flash, g
@@ -12,6 +15,13 @@ from wand.image import Image
 from wand.display import display
 
 from env_config import IMAGE_FOLDER_NAME, STORE_MODE
+
+if STORE_MODE == 'S3':
+    import boto
+    from boto.s3.key import Key
+    from env_config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, IMAGE_BUCKET_NAME
+
+
 from AvispaLogging import AvispaLoggerAdapter
 
 
@@ -19,7 +29,6 @@ class AvispaUpload:
 
     def __init__(self,handle):
 
-        self.IMAGE_FOLDER = IMAGE_FOLDER_NAME+'/'+handle
         self.handle = handle
         self.filename = ''
         self.rs_status = ''
@@ -87,20 +96,19 @@ class AvispaUpload:
 
     def _upload_file(self,request):
 
-        file = request.files['file']
-        #filename = secure_filename(file.filename)
-        self.imgid = str(random.randrange(1000000000,9999999999))
+        self.f = request.files['file']
+        path = '%s/%s'%(self.handle,'o')
+        self.imgid = str(random.randrange(1000000000,9999999999)) 
         filename = self.imgid+'_o.jpg'
-        originalversionpath = self.IMAGE_FOLDER + '/o/'
+        
+        self.lggr.debug('path:%s'%path)
+        self.lggr.debug('filename:%s'%filename)
 
-        self.lggr.debug('filename',filename)
-        self.lggr.debug('originalversionpath',originalversionpath)
-
-
-        try:     
-            file.save(os.path.join(originalversionpath, filename))
-            self.lggr.debug('File uploaded successfully here:' + os.path.join(self.IMAGE_FOLDER, filename))
-            self.uploaded_file = os.path.join(self.IMAGE_FOLDER, filename)
+        try:
+            # OLD : file.save(os.path.join(originalversionpath, filename)) 
+            self._file_save(self.f,path,filename)
+            self.lggr.debug('Original File uploaded successfully')
+            
             return True
         except:
             self.lggr.debug("Unexpected error:"+str(sys.exc_info()[0]))
@@ -111,7 +119,25 @@ class AvispaUpload:
 
     def _multi_size(self):
 
-        with Image(filename=self.IMAGE_FOLDER+'/o/'+self.imgid+'_o.jpg') as img:
+        #### REFACTOR TO CALL S3 or LOCAL depeding on config
+
+        
+
+        #f = request.files['file']
+        print('FILE')
+        print(self.f)
+        self.f.seek(0)
+        
+        image_binary = self.f.read()
+
+        #with open(self.f) as f:
+         #   image_binary = f.read()
+
+        print('IMAGE_BINARY:')
+        print(image_binary)
+
+        # OLD with Image(filename=self.IMAGE_FOLDER+'/o/'+self.imgid+'_o.jpg') as img:
+        with Image(blob=image_binary) as img:
 
             orientation = self._img_orientation(img)
             if orientation == 'portrait' or orientation == 'square':
@@ -181,16 +207,17 @@ class AvispaUpload:
                 img.transform(resize=str(mainside))
             
 
-        
+        path = '%s/%s'%(self.handle,sizename)
+        filename = self.imgid+'_'+sizename+'.jpg'
+
+        self.lggr.debug('path:%s'%path)
+        self.lggr.debug('filename:%s'%filename)
+
 
         try:     
-            #img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
-            
-            path = '%s/%s'%(self.handle,sizename)
-            filename = self.imgid+'_'+sizename+'.jpg'
+            #OLD VERSION: img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')  
             self._file_save(img,path,filename)
-
-            self.lggr.debug('File multiplied successfully here:' + self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')
+            self.lggr.debug('File multiplied successfully ')
             multiplied={}
             multiplied['mime-type']='image/jpeg'
             multiplied['extension']='jpg'
@@ -208,15 +235,50 @@ class AvispaUpload:
             raise
 
     def _file_save(self,file,path,filename):
+      
+        if STORE_MODE == 'LOCAL':
+            self.lggr.info("Storing image in LOCAL: %s/%s"%(path,filename))
+            file.save(filename=('%s/%s/%s'%(IMAGE_FOLDER_NAME,path,filename)))          
+        elif STORE_MODE == 'S3':
+            self.lggr.info("Storing image in S3: %s/%s"%(path,filename))
+            self._s3_save(file,path,filename)
+
+    def _s3_save(self,f,path,filename):
+
+        conn = boto.connect_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY)
+        bucket = conn.get_bucket(IMAGE_BUCKET_NAME)       
+        #k = Key(bucket)
+        k = boto.s3.key.Key(bucket)
+        k.key = '%s/%s'%(path,filename)
+        print(k)
+        print(k.key)
+        print(f)
+
+        fl = cStringIO.StringIO()
+        f.save(fl)
+
+        #print fl
+        fl.seek(0)
+
 
         
-        if STORE_MODE = 'LOCAL':
-
-            file.save(filename=('%s/%s/%s/%s'%(IMAGE_FOLDER_NAME,self.handle,path,filename)))
-            
-        elif STORE_MODE = 'S3':
-            pass
-
+        k.set_contents_from_file(fl)
+        #AttributeError: 'Image' object has no attribute 'tell'
+        
+        
+        
+        #b = fl.read()
+        #print(b)
+        #k.set_contents_from_string(b)
+        '''
+        File "/Users/ricardocid/Code/avispa/avispa/avispa_rest/AvispaUpload.py", line 257, in _s3_save
+        k.set_contents_from_string(f.read())
+        File "/usr/local/lib/python2.7/site-packages/boto/s3/key.py", line 1422, in set_contents_from_string
+        string_data = string_data.encode("utf-8")
+        AttributeError: 'NoneType' object has no attribute 'encode'
+        '''
+        
+        return True
 
     def __allowed_file(self,filename):
 
@@ -226,33 +288,6 @@ class AvispaUpload:
                 filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
 
 
-
-    def x_create_user_imagefolder(self): #DONT USE HERE! #Moved to AuthModel.py
-
-        
-        self.safe_create_dir(self.IMAGE_FOLDER+'/o') #Original folder
-
-        for r in self.officialsizes:
-            self.safe_create_dir(self.IMAGE_FOLDER+'/'+r)  # Scale-down version folders
-
-
-        for t in self.thumbnailsizes:
-            self.safe_create_dir(self.IMAGE_FOLDER+'/'+t)  # Thumbnail folders
-
-        return True
-
-    
-
-    def x_safe_create_dir(self,path): #DONT USE HERE! #Moved to AuthModel.py
-        self.lggr.debug(path)
-        try:
-            os.makedirs(path)
-        except OSError as exception:
-            if exception.errno != errno.EEXIST:
-                raise
-
-        self.lggr.debug('flag1')
-        return True
 
 
     

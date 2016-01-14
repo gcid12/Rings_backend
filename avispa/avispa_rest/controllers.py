@@ -13,8 +13,8 @@ from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-from default_config import IMAGE_STORE
-from env_config import IMAGE_STORE, IMAGE_CDN_ROOT
+from default_config import IMAGE_FOLDER_NAME
+from env_config import IMAGE_FOLDER_NAME, IMAGE_CDN_ROOT
 from MainModel import MainModel
 from timethis import timethis
 
@@ -1208,7 +1208,7 @@ def imageserver(filename,depth1,depth2):
 
     #current_app.logger.debug('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
 
-    avispa_rest.static_folder=IMAGE_STORE+'/'+depth1+'/'+depth2
+    avispa_rest.static_folder=IMAGE_FOLDER_NAME+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
 
 @timethis
