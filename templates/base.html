@@ -90,7 +90,7 @@
               </li>
               <li class="active">
                 <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink">
-                  <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"/>
+                  <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"/>
                     <span class="fs-1-5 text-s2 pr-20 pl-5 text-black">{{ current_user.id }}</span>
                 </a>
               </li>
@@ -157,7 +157,7 @@
                   <li role="presentation">
                     <a href="/{{organization['handle']}}/_home">
                       <span >
-                        <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;"/>
+                        <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;"/>
                         <strong>{{organization['handle']}}</strong>
                       </span>
                     </a>
@@ -179,7 +179,7 @@
             <ul class="nav navbar-nav navbar-left visible-xs">
               <li class="active">
                 <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink pull-right">
-                  <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar pull-right"/>
+                  <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar pull-right"/>
                 </a>
                 <a href="#menu" class="clearlink">
                   <i class="fa fa-bars fa-2x"></i>
@@ -240,7 +240,7 @@
                   <td style="padding:10px 3px 10px 20px;"></td>
                   <td>
                     <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink">
-                      <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/_images/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"/>
+                      <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{current_user.id}}/t150/{{data.cu_profilepic}}_t150.jpg{%else%}/static/images/ph/ph_user2.gif{%endif%}" class="user-bar"/>
                       <span class="fs-1-5 text-s2 pr-20 pl-5 fc-a"> {{ data.handle_actualname }}</span>
                     </a>
                     <span class="text-s1 fc-m fs-0-9"> @{{ current_user.id }} </span>
@@ -268,7 +268,7 @@
             <li role="presentation">
               <a href="/{{organization['handle']}}/_home">
                 <span>
-                  <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/_images/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;"/>
+                  <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}_t75.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="desaturate" style="width:15px;"/>
                   <strong>{{organization['handle']}}</strong> Settings
                 </span>
               </a>

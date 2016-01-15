@@ -72,7 +72,7 @@
 
             <div class="fs-1-7 text-s1">
               <a class="nounder" href="/{{data.handle}}">
-                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
+                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
                 
                 <span class="fc-a">{{ data.handle|lower() }}</span>   
                 <span class="fc-a">/</span>
@@ -1033,7 +1033,7 @@
 
 {% macro org_header(data,handle) %}
 
-        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
+        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
 
         {% if data.handle_actualname %} 
          <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{data.handle_actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h3><br/>

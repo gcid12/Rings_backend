@@ -65,7 +65,7 @@
                     <td>
                     {% for member in team.members%}
                         <a class="rn-b1" href="/{{ member.handle }}">
-                          <img class="img-responsive center-block user-small" src="{% if member.thumbnail %}{{data.image_cdn_root}}/_images/{{member.handle}}/t150/{{member.thumbnail}}_t150.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
+                          <img class="img-responsive center-block user-small" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t150/{{member.thumbnail}}_t150.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
                           {#{ member.handle }#}
                        </a>
                     {% endfor%}

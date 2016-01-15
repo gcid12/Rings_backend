@@ -1,7 +1,7 @@
 <script>
 Dropzone.autoDiscover = false;
 var myDropzone{{ field.FieldOrder }} = new Dropzone("#dropzone{{ field.FieldOrder }}", { 
-      url: "{{data.image_cdn_root}}/_tools/upload_via_aud?handle={{ data.handle }}",
+      url: "{{data.host_url}}/_tools/upload_via_aud?handle={{ data.handle }}",
       addRemoveLinks: true  
       });
 
@@ -16,9 +16,9 @@ $( ".dz-size" ).css( "display", "none" );
     {% if image %}
       {% if image!='1' %}
         console.log("{{image}}");
-        var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"  };
+        var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/{{data.handle}}/t75/{{image}}_t75.jpg"  };
         myDropzone{{ field.FieldOrder }}.options.addedfile.call(myDropzone{{ field.FieldOrder }}, fieldvalue);
-        myDropzone{{ field.FieldOrder }}.options.thumbnail.call(myDropzone{{ field.FieldOrder }}, fieldvalue, "{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{image}}_t75.jpg"); 
+        myDropzone{{ field.FieldOrder }}.options.thumbnail.call(myDropzone{{ field.FieldOrder }}, fieldvalue, "{{data.image_cdn_root}}/{{data.handle}}/t75/{{image}}_t75.jpg"); 
 
       {% endif %}
     {% endif %}
@@ -117,7 +117,7 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     		//This still needs to be implemented in the server side
     		$.ajax({
 				type: "GET",
-				url: "{{data.image_cdn_root}}/_tools/delete_via_aud?id="+resource2delete,
+				url: "{{data.host_url}}/_tools/delete_via_aud?id="+resource2delete,
 				success: function(response){
 					//alert('Response:'+response);
 				}

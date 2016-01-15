@@ -36,7 +36,7 @@
           <div class="fs-1-7 text-s1">
             {% block crumb01 %}
               <a class="nounder" href="/{{data.handle}}" class="nounder">
-                <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/_images/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
+                <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
                   <span class="fc-a fs-0-7">{{ data.handle|lower() }}</span>
               </a>
             {% endblock %}
