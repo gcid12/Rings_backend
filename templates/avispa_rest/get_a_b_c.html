@@ -80,8 +80,8 @@
       <div class="{% if data.imagesui==True %}col-sm-5 col-md-4 col-lg-3 {% else %} col-sm-offset-1 col-sm-10{%endif%}">
         <div class="pad-x-20">
           <form class="form-horizontal" role="form">        
-            <table class="table table-condensed table-striped">                    
-    {% for k,v in data.item.items() %}
+            <table class="table table-condensed table-striped">                  
+    {% for k in data['item'] %}
       {% if k in data.FieldLabel %}
           {% if data.widget[k] != 'images' %}
               <tr> 
@@ -95,7 +95,7 @@
                   <p class="fs-0-8 fw-a fc-g">{{data.FieldLabel[k]}}:</p>
                 </td>
                 <td>
-                  <p class="fs-0-8 fw-b">{{ v|nonone }}</p>
+                  <p class="fs-0-8 fw-b">{{ data['item'][k]|nonone }}</p>
                 </td>                    
               </tr>
           {% else %}
@@ -105,13 +105,17 @@
                 </td>
                 <td>
                   <div id="links">
-            {% for image in v %}
-              {% if image %}             
-                    <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
+            {% if data['item'][k]|is_list %}
+              {% for image in data['item'][k] %}
+                {% if image %}             
+                    <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
                         <img src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}_t150.jpg" alt="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}_t150.jpg">
                     </a>
-              {% endif %}
-            {% endfor %}                                           
+                {% endif %}
+              {% endfor %} 
+            {% else %}
+              {# No images #}
+            {% endif %}                                          
                   </div>
                 </td>
               </tr>
@@ -124,18 +128,21 @@
       </div>
 
       <div class=" col-sm-5 col-md-8 col-lg-9" style="display:none;">
-    {% for k,v in data.item.items() %}
+    {% for k in data['item'] %}
       {% if k in data.FieldLabel %}
         {% if data.widget[k] =='images' %}           
         <p class="fs-0-8 fw-a fc-g">{%if data.FieldLabel[k]%}{{data.FieldLabel[k]}}{%else%}{{data.names[k]}}{%endif%}:</p>
         <div id="links">
-          {% for image in v %}
-            {% if image %}                   
-          <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/˚{{data.ring}}/{{data.idx}}" class="thumbnailxx" data-gallery>
+          {% if data['item'][k]|is_list %}
+            {% for image in data['item'][k] %}
+              {% if image %}                   
+          <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/{{data.ring}}/{{data.idx}}" class="thumbnailxx" data-gallery>
             <img src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}_t150.jpg" alt="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}_t150.jpg">
           </a>
-            {% endif %}
-          {% endfor %}            
+              {% endif %}
+            {% endfor %} 
+          {%else%}
+          {% endif %}           
         </div>         
         {% endif %}
       {% endif %}
@@ -151,7 +158,7 @@
         <div class="pad-x-20">
       {% if 'put_a_b_c' in data.user_authorizations %}
           <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?rq=put' type="submit" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-      {%endif%}
+      {% endif %}
         </div>
       </div>
       <div class="col-sm-6 text-right">
@@ -159,15 +166,15 @@
       {% if 'delete_a_b_c' in data.user_authorizations %}
           <a href='/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=delete' type="submit" class="btn btn-default btn-xs pull-right"> <i class="fa fa-trash-o"></i> DELETE
           </a>
-      {%endif%}
+      {% endif %}
         </div>
       </div>
     </div> 
-    {%endif%}
+    {% endif %}
     <!-- MODALS -->
-    {% for k,v in data.item.items() %}
+    {% for k in data['item'] %}
       {% if data.widget[k] =='images' %}
-        {% for image in v %}
+        {% for image in data['item'][v] %}
           {% if image %}
     <div class="modal fade" id="{{image}}" tabindex="-1" role="dialog" aria-labelledby="{{image}}" aria-hidden="true">
       <div class="modal-dialog">

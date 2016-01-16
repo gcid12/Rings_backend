@@ -10,3 +10,7 @@ def nonone(val):
         return val
     else:
         return ''
+
+@app.template_filter()
+def is_list(val):
+    return isinstance(val, list)
