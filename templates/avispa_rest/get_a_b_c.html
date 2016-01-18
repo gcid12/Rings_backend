@@ -108,7 +108,7 @@
             {% if data['item'][k]|is_list %}
               {% for image in data['item'][k] %}
                 {% if image %}             
-                    <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
+                    <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}.jpg" title="{{data.handle}}/{{data.ring}}/{{data.idx}}" class="thumbnailXX" data-gallery>
                         <img src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}.jpg" alt="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}.jpg">
                     </a>
                 {% endif %}
@@ -136,7 +136,7 @@
           {% if data['item'][k]|is_list %}
             {% for image in data['item'][k] %}
               {% if image %}                   
-          <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}_o.jpg" title="{{data.handle}}/{{data.ring}}/{{data.idx}}" class="thumbnailxx" data-gallery>
+          <a href="{{data.image_cdn_root}}/{{data.handle}}/o/{{image}}.jpg" title="{{data.handle}}/{{data.ring}}/{{data.idx}}" class="thumbnailxx" data-gallery>
             <img src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}.jpg" alt="{{data.image_cdn_root}}/{{data.handle}}/t150/{{image}}.jpg">
           </a>
               {% endif %}
@@ -181,7 +181,7 @@
           <div class="modal-content" style="padding:1px; margin:1px; background-color:black;">
             <div class="modal-body " style="padding:1px; margin:1px;">
               <button type="button" class="btn btn-default btn-xs pull-right" data-dismiss="modal"><i class="fa fa-times"></i></button><br/>
-              <img src="{{data.image_cdn_root}}/{{data.handle}}/r500/{{image}}_r500.jpg" class="img-thumbnail" >
+              <img src="{{data.image_cdn_root}}/{{data.handle}}/r500/{{image}}.jpg" class="img-thumbnail" >
             </div>
           </div>
       </div>

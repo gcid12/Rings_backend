@@ -99,7 +99,7 @@ class AvispaUpload:
         self.f = request.files['file']
         path = '%s/%s'%(self.handle,'o')
         self.imgid = str(random.randrange(1000000000,9999999999)) 
-        filename = self.imgid+'_o.jpg'
+        filename = self.imgid+'.jpg'
         
         self.lggr.debug('path:%s'%path)
         self.lggr.debug('filename:%s'%filename)
@@ -136,7 +136,7 @@ class AvispaUpload:
         print('IMAGE_BINARY:')
         print(image_binary)
 
-        # OLD with Image(filename=self.IMAGE_FOLDER+'/o/'+self.imgid+'_o.jpg') as img:
+        # OLD with Image(filename=self.IMAGE_FOLDER+'/o/'+self.imgid+'.jpg') as img:
         with Image(blob=image_binary) as img:
 
             orientation = self._img_orientation(img)
