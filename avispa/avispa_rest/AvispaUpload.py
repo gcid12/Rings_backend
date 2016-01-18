@@ -208,7 +208,7 @@ class AvispaUpload:
             
 
         path = '%s/%s'%(self.handle,sizename)
-        filename = self.imgid+'_'+sizename+'.jpg'
+        filename = self.imgid+'.jpg'
 
         self.lggr.debug('path:%s'%path)
         self.lggr.debug('filename:%s'%filename)
@@ -263,6 +263,7 @@ class AvispaUpload:
 
         
         k.set_contents_from_file(fl)
+        k.set_acl('public-read')
         #AttributeError: 'Image' object has no attribute 'tell'
         
         
