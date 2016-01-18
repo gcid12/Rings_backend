@@ -140,7 +140,7 @@
             {% if first==1 %} 
               {% set first= 2 %}
               {% if v[0] %}                    
-                  <img style="width:40px;" src="{{data.image_cdn_root}}/{{data.handle}}/t75/{{v[0]}}_t75.jpg" class="img-thumbnail" >
+                  <img style="width:40px;" src="{{data.image_cdn_root}}/{{data.handle}}/t75/{{v[0]}}.jpg" class="img-thumbnail" >
               {% else %}
                   <img style="width:40px;" src="/static/images/ph/ph_img2.gif" class="img-thumbnail" >
               {% endif %}
@@ -219,7 +219,7 @@
           {% if data.widget[k] == 'images' %} 
             {% set margin2 = margin2|int + 20  %}
             {% if v[0] %}         
-                  <img style="width:100px; margin-top:-80px; margin-left:{{margin2}}px;" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{v[0]}}_t150.jpg" class="img-thumbnail" />   
+                  <img style="width:100px; margin-top:-80px; margin-left:{{margin2}}px;" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{v[0]}}.jpg" class="img-thumbnail" />   
             {% else %}
                   <img style="width:100px; margin-top:-80px; margin-left:{{margin2}}px;" src="/static/images/ph/ph_img.gif" class="img-thumbnail"/>
             {% endif %}
@@ -326,7 +326,7 @@
                 {% if mos==1 %}
                   {% set mos=2 %}
                   {% if v[0] %}                      
-                      <img style="width:150px;" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{v[0]}}_t150.jpg">
+                      <img style="width:150px;" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{v[0]}}.jpg">
                   {% else %}
                       <img style="width:150px;" src="/static/images/ph/ph_img.gif" >
                   {% endif %}
@@ -346,7 +346,7 @@
             {% if data.widget[k] == 'images' %}       
                   <div style="width:150px; background-color:red; padding:10px;">
               {% if v[0] %}                      
-                    <img src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{v[0]}}_t150.jpg" >
+                    <img src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{v[0]}}.jpg" >
               {% else %}
                     <img src="/static/images/ph/ph_img.gif" >
               {% endif %}

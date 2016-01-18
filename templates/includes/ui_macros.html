@@ -72,7 +72,7 @@
 
             <div class="fs-1-7 text-s1">
               <a class="nounder" href="/{{data.handle}}">
-                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}_t75.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
+                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
                 
                 <span class="fc-a">{{ data.handle|lower() }}</span>   
                 <span class="fc-a">/</span>
@@ -1033,7 +1033,7 @@
 
 {% macro org_header(data,handle) %}
 
-        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{handle}}/t150/{{data.handle_profilepic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
+        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{handle}}/t150/{{data.handle_profilepic}}.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
 
         {% if data.handle_actualname %} 
          <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{data.handle_actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h3><br/>
@@ -1064,7 +1064,7 @@
         <div class="row">
                 {% if pic %} 
                   <div class="col-sm-1 col-xs-2">
-                    <a href="/{{handle}}"><img class="img-responsive center-block user-small" src="{% if pic %}{{cdn}}/_images/{{handle}}/t150/{{pic}}_t150.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="margin-right:10px;" alt=""></a>
+                    <a href="/{{handle}}"><img class="img-responsive center-block user-small" src="{% if pic %}{{cdn}}/_images/{{handle}}/t150/{{pic}}.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="margin-right:10px;" alt=""></a>
                   </div>
                 {% endif %}
 
@@ -1402,7 +1402,7 @@
 
         <div style="width:{{size}}px; float:{{float}}; padding:0 2px;">
           <a href="https://avispa.myring.io/_images/{{ owner }}/o/{{item}}_o.jpg" class="text-left" target="_blank">
-               <img src="https://avispa.myring.io/_images/{{ owner }}/t150/{{item}}_t150.jpg" class="img-responsive">
+               <img src="https://avispa.myring.io/_images/{{ owner }}/t150/{{item}}.jpg" class="img-responsive">
 
           </a>
           <div style="margin-top:-25px; margin-bottom:10px;">

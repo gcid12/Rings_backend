@@ -53,7 +53,7 @@
                     </td>
                     <td> 
                       {%if 'get_a_m_n' in data.user_authorizations %}
-                        <a class="rn-b1" href="/{{ data.handle }}/_teams/{{ team.teamname }}">
+                        <a class="rn-b1" href="/{{ data.handle }}/eams/{{ team.teamname }}">
                             {{ team.teamname }}
                         </a>
                       {%else%}
@@ -65,7 +65,7 @@
                     <td>
                     {% for member in team.members%}
                         <a class="rn-b1" href="/{{ member.handle }}">
-                          <img class="img-responsive center-block user-small" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t150/{{member.thumbnail}}_t150.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
+                          <img class="img-responsive center-block user-small" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t150/{{member.thumbnail}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
                           {#{ member.handle }#}
                        </a>
                     {% endfor%}
@@ -74,7 +74,7 @@
                       <div class="pull-right">
                         {%if 'get_a_m_n' in data.user_authorizations %}
                         <div class="btn-group"> 
-                          <a href="/{{ data.handle }}/_teams/{{ team.teamname }}" >Show</a>
+                          <a href="/{{ data.handle }}/eams/{{ team.teamname }}" >Show</a>
                         </div>
                         {%endif%}
                         {%if 'delete_a_m_n' in data.user_authorizations %}

@@ -20,7 +20,7 @@
                 <!-- PHOTO  -->
                 <div class="pad-x-16">
                 {% if data.handle_profilepic %}
-                    <img class="img-responsive center-block user-big" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}_t150.jpg" style="float:left; margin-right:10px;" alt="">
+                    <img class="img-responsive center-block user-big" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg" style="float:left; margin-right:10px;" alt="">
                 {% else %}
 
                     <a href="/{{data.handle}}/_orgprofile" class="pull-left fs-0-8">
@@ -197,7 +197,7 @@
                                 <td width="20%">
                                     <a href="/{{person.handle}}/_home" class="clearlink" data-toggle="tooltip" title="{{person.handle}}">
 
-                                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}_t75.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
+                                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
                                     </a>
                                 </td>
                                 <td>
@@ -261,7 +261,7 @@
                                                 {%for member in team.members%}
 
                                                 <a href="/{{member.handle}}" data-toggle="tooltip" title="{{member.handle}}">
-                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}_t75.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
+                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
                                                 </a>
 
                                                 {%endfor%}

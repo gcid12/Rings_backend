@@ -269,9 +269,9 @@
       {% if image %}
         {% if image!='1' %}
           console.log("{{image}}");
-          var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/{{data.handle}}/t75/{{image}}_t75.jpg"  };
+          var fieldvalue = { "name": "Click for preview", "size": 12345, imgurl:"{{data.image_cdn_root}}/{{data.handle}}/t75/{{image}}.jpg"  };
           myDropzone1.options.addedfile.call(myDropzone1, fieldvalue);
-          myDropzone1.options.thumbnail.call(myDropzone1, fieldvalue, "{{data.image_cdn_root}}/{{data.handle}}/t75/{{image}}_t75.jpg"); 
+          myDropzone1.options.thumbnail.call(myDropzone1, fieldvalue, "{{data.image_cdn_root}}/{{data.handle}}/t75/{{image}}.jpg"); 
 
         {% endif %}
       {% endif %}
