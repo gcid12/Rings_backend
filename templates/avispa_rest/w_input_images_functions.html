@@ -73,7 +73,7 @@ myDropzone{{ field.FieldOrder }}.on("removedfile", function(file) {
     			var imgurl = file.imgurl;
                 var parts = imgurl.split('/');
                 var filename = parts[parts.length-1];
-                var filenameparts = filename.split('_');
+                var filenameparts = filename.split('.');
                 var resource2delete = filenameparts[0];
     		}else{
     			console.log('file.xhr.response:'+file.xhr.response);
