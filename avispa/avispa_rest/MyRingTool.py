@@ -263,13 +263,19 @@ class MyRingTool:
         
         if 'imgid' in response.keys():
             print(response)
-            d = {'data_string':json_string, 'imgid': response['imgid'], 'imgsizes': response['imgsizes'] ,'imgbase': response['imgsizes'] , 'template':'avispa_rest/tools/uploadresponsejson.html'} 
+            d = {'data_string':json_string, 
+                 'imgid': response['imgid'], 
+                 'imgsizes': response['imgsizes'] ,
+                 'imgbase': response['imgsizes'] , 
+                 'template':'avispa_rest/tools/uploadresponsejson.html'} 
             
         elif 'status' in response.keys():
-            d = {'status':response['status'],'template':'avispa_rest/tools/uploadresponsejson.html'}
+            d = {'status':response['status'],
+                 'template':'avispa_rest/tools/uploadresponsejson.html'}
 
         else:
-            d = {'status':'500','template':'avispa_rest/tools/uploadresponsejson.html'}
+            d = {'status':'500',
+                 'template':'avispa_rest/tools/uploadresponsejson.html'}
 
 
         return d
@@ -277,10 +283,18 @@ class MyRingTool:
 
     def delete_via_aud(self,request,*args):
 
-        rq = 'DELETE image/'+request.args.get('id')
-        flash(u'Succesfully deleted','message','UI')
+        
+        #Here is where you call the Avispa Uploader to delete an image in the image store
 
-        d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
+        #The document already unlinked this image. No references to it exist. It should be
+        #queued for deletion or deleted instantly 
+
+        #Not safe to implement until we secure the API
+
+        # NOT IMPLEMENTED YET. 
+
+        out = {'success':True,'message':'Queued for deletion'}
+        d = {'template':'base_json.html','json_out':json.dumps(out)}
 
         return d
 
@@ -294,7 +308,7 @@ class MyRingTool:
 
         self.AVM.ring_set_db_views(db_ringname)
 
-        flash(u'Views synced to ring :'+db_ringname,'message','UI')
+        flash(u'Views synced to ring :'+db_ringname,'UI')
         rq='Loading the Views into CouchDB via python'
 
         d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
