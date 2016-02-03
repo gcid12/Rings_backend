@@ -1,8 +1,12 @@
 ## Avispa installation in EC2 Instance
 
-##### Install Virtualenv
+#### Dependencies:
 
+##### Virtualenv
 $ sudo yum install python-virtualenv
+
+##### Imagemagick + Wand
+$ sudo yum install ImageMagick-devel
 
 ##### Source Code
 
