@@ -1,0 +1,948 @@
+{
+	"AWSTemplateFormatVersion" : "2010-09-09",
+	"Description" : "Version 0.2.0 template for creating a MongoDB Replica Set",
+
+	"Parameters" : {
+
+		"VPC" : {
+			"Description" : "Main VPC Id",
+			"Type" : "AWS::EC2::VPC::Id"
+		},
+
+		"ReplicaSetName" : {
+			"Description" : "Name of the Replica Set Cluster",
+			"Type" : "String",
+			"Default" : "SamTheEagle"
+		},
+
+		"ClusterReplicaSetCount": {
+	      	"Description": "Number of Replica Set Members. Choose 1 or 3",
+	      	"Type": "String",
+	      	"Default": "3",
+	      	"AllowedValues": [
+	        "1",
+	        "3"
+	      ]
+	    },
+
+	    "ClusterShardCount": {
+			"Description": "Number of Shards [0,1,2,3]. 0==No Sharding. Set to > 1 for Sharding",
+			"Type": "String",
+			"Default": "0",
+			"AllowedValues": [
+	        "0",
+	        "1",
+	        "2",
+	        "3"
+	      ]
+	    },
+
+	    "MongoDBVersion": {
+			"Description": "MongoDB version",
+			"Type": "String",
+			"Default": "3.2",
+			"AllowedValues": [
+			"3.2",
+	        "3.0",
+	        "2.6"
+	      ]
+	    },
+
+	    "MongoDBAuthorization" : {
+	    	"Description" : "Whether or not to use authorization for the Replica Set. (boolean)",
+	    	"Type" : "String",
+	    	"Default" : "true",
+	    	"AllowedValues" : [ "true", "false" ],
+	    	"ConstraintDescription" : "Must be set to true or false"
+	    },
+
+	    "ShardsPerNode": {
+			"Description": "Number of Micro Shards Per Node",
+			"Type": "String",
+			"Default": "0",
+			"AllowedValues": [
+			"0",
+	        "1",
+	        "2",
+	        "3",
+	        "4",
+	        "5",
+	        "6",
+	        "7",
+	        "8",
+	        "9",
+	        "10",
+	        "11",
+	        "12",
+	        "13",
+	        "14",
+	        "15",
+	        "16"
+	      ]
+	    },
+
+	    "VolumeSize": {
+	      "Type": "String",
+	      "Description": "EBS Volume Size (data) to be attached to node in GBs",
+	      "Default": "10"
+	    },
+
+		"MongoInstanceType" : {
+			"Description" : "Type of instance to be used for the MongoDB instances.",
+			"Type" : "String"
+		},
+
+		"MongoKeyPair" : {
+			"Description" : "Name of an existing EC2 key pair",
+			"Type" : "AWS::EC2::KeyPair::KeyName",
+			"Default" : "Mongo",
+			"ConstraintDescription" : "Must be the name of an existing EC2 KeyPair"
+		},
+
+		"PrivateSubnetOne" : { 
+			"Description" : "Private Subnet in us-east-1a",
+			"Type" : "AWS::EC2::Subnet::Id"
+		},
+
+		"PrivateSubnetTwo" : { 
+			"Description" : "Private Subnet in us-east-1c",
+			"Type" : "AWS::EC2::Subnet::Id"
+		},
+
+		"DBServerSecurityGroup" : {
+			"Description" : "Security Group Id for the MongoDB Servers",
+			"Type" : "AWS::EC2::SecurityGroup::Id" 
+		},
+
+		"DBReplicaSecurityGroup" : {
+			"Description" : "Security Group Id for the MongoDB Replica Set Members",
+			"Type" : "AWS::EC2::SecurityGroup::Id" 
+		},
+
+		"MongoConfigBucket" : {
+			"Description" : "Bucket holding the MongoDB configuration file",
+			"Type" : "String",
+			"Default" : "dev-instance-code-1-2015"
+		},
+
+		"ProductionEnvironment" : {
+			"Description" : "Production environment for the VPC - (Dev1, Alpha, Beta, Pre-Prod, Prod, Test)",
+			"Type" : "String",
+			"Default" : "Dev1",
+			"AllowedValues" : [ "Dev1", "Alpha", "Beta", "Pre-Prod", "Prod", "Test" ],
+			"ConstraintDescription" : "must be either Dev1, Alpha or Prod."
+		},
+		"Version" : {
+			"Description" : "Code Version",
+			"Type" : "String",
+			"AllowedPattern" : "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})",
+			"ConstraintDescription" : "must be a valid system version in the form x.x.x"
+		},
+
+		"CredentialBucket" : {
+			"Description" : "Bucket holding configuration files",
+			"Type" : "String",
+			"Default" : "credentials-1-05182015"
+		},
+		"DBSnapshotData" : {
+			"Description" : "Mongo Snapshot of the Data volume",
+			"Type" : "String"
+		},
+		"DBSnapshotJournal" : {
+			"Description" : "Mongo Snapshot of the Journal volume",
+			"Type" : "String"
+		}
+	},
+
+	"Mappings" : {
+		"AWSInstanceType2Arch" : {
+			"t2.micro"  : { "Arch" : "32" },
+			"t2.medium" : { "Arch" : "64" },
+			"m1.small"  : { "Arch" : "64" },
+			"m1.medium" : { "Arch" : "64" },
+			"m3.medium" : { "Arch" : "64" },
+			"m3.large"  : { "Arch" : "64" }
+		},
+		"AWSRegionArch2AMI" : {
+			"us-east-1" : { "32" : "ami-1ecae776", "64" : "ami-1ecae776" }
+		}
+	},
+
+	"Resources" : {
+
+		"MongoIAMRole" : {
+			"Type" : "AWS::IAM::Role",
+			"Properties" : {
+				"AssumeRolePolicyDocument" : {
+					"Version" : "2012-10-17",
+					"Statement" : [{ 
+						"Effect" : "Allow",
+						"Principal" : {
+							"Service" : [ "ec2.amazonaws.com"]
+						},
+						"Action" : [ "sts:AssumeRole" ]
+					}]
+				},
+				"Path" : "/",
+				"Policies" : [{
+					"PolicyName" : "root",
+					"PolicyDocument" : {
+						"Version" : "2012-10-17",
+						"Statement" : [
+						{
+							"Effect" : "Allow",
+							"Action" : "cloudformation:DescribeStackResource",
+							"Resource" : "*"
+						},
+						{
+							"Effect" : "Allow",
+							"Action" : "s3:ListAllMyBuckets",
+							"Resource" : "arn:aws:s3:::*"
+						},
+						{
+							"Effect" : "Allow",
+							"Action" : [
+								"s3:ListBucket",
+								"s3:GetBucketLocation"
+							],
+							"Resource" : [{ "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "MongoConfigBucket" } ] ] }]
+						},
+						{
+							"Effect" : "Allow",
+							"Action" : [
+								"s3:GetObject",
+								"s3:PutObject"
+							],
+							"Resource" : [{ "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "MongoConfigBucket" }, "/", { "Ref" : "Version" }, "/mongo/*"] ] },
+							{ "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "MongoConfigBucket" }, "/", { "Ref" : "Version" }, "/cron/db-snapshot/*"] ] },
+							{ "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "CredentialBucket" }, "/mongo/keyfiles/*"] ] }]
+						}, 
+						{
+							"Effect" : "Allow",
+							"Action" : [
+								"ec2:AttachVolume",
+				                "ec2:CreateVolume",
+				                "ec2:ModifyVolumeAttribute",
+				                "ec2:Describe*",
+				                "ec2:DetachVolume",
+				                "ec2:EnableVolumeIO",
+				                "ec2:CreateSnapshot",
+               					"ec2:CreateTags",
+               					"ec2:CreateSnapshot",
+               					"ec2:DeleteSnapshot"
+							],
+							"Resource" : "*"
+						},
+						{
+							"Effect" : "Allow",
+							"Action" : [
+			               		"dynamodb:*",
+			                    "dynamodb:Scan",
+			                    "dynamodb:Query",
+			                    "dynamodb:GetItem",
+			                    "dynamodb:BatchGetItem",
+			                    "dynamodb:UpdateTable"	
+ 							],
+ 							"Resource" : "*"						
+ 						}]
+					}
+				}]
+			}
+		},
+
+		"MongoInstanceProfile" : {
+			"Type" : "AWS::IAM::InstanceProfile",
+			"Properties" : {
+				"Path" : "/",
+				"Roles" : [{ "Ref" : "MongoIAMRole"}]
+			}
+		},
+
+		"MongoDBPrimaryServer" : {
+			"Type" : "AWS::EC2::Instance",
+			"Properties" : {
+				"ImageId" : { "Fn::FindInMap" : [
+					"AWSRegionArch2AMI", 
+					{ "Ref" : "AWS::Region" },
+					{ "Fn::FindInMap" : [
+						"AWSInstanceType2Arch", { "Ref" : "MongoInstanceType" }, "Arch"
+					]}
+				]},
+				"IamInstanceProfile" : { "Ref" : "MongoInstanceProfile" },
+				"InstanceType" : { "Ref" : "MongoInstanceType" },
+				"KeyName" : { "Ref" : "MongoKeyPair" },
+				"SecurityGroupIds" : [ { "Ref" : "DBServerSecurityGroup" }, { "Ref" : "DBReplicaSecurityGroup" } ],
+				"SubnetId" : { "Ref" : "PrivateSubnetOne" },
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": { "Fn::Join" : ["", [ "Primary-", { "Ref" : "ProductionEnvironment" }, "-ReplicaNode" ] ] }
+					},
+					{
+						"Key": "ClusterReplicaSetCount",
+						"Value": { "Ref": "ClusterReplicaSetCount" }
+					},
+					{
+						"Key": "NodeReplicaSetIndex",
+						"Value": "0"
+					},
+					{
+						"Key": "ClusterShardCount",
+						"Value": { "Ref": "ClusterShardCount" }
+					},
+					{
+						"Key": "ShardsPerNode",
+						"Value": { "Ref": "ShardsPerNode" }
+					},
+					{
+						"Key": "NodeShardIndex",
+						"Value": "0"
+					},
+					{
+						"Key": "ReplicaSetName",
+						"Value": { "Ref" : "ReplicaSetName" }
+					},
+					{
+						"Key": "MongoDBAuthorization",
+						"Value": { "Ref" : "MongoDBAuthorization" }
+					}
+				],
+				"BlockDeviceMappings": [
+					{
+			            "DeviceName": "/dev/xvdg",
+			            "Ebs": {
+			            	"VolumeType": "gp2",
+			            	"DeleteOnTermination": "true",
+			            	"SnapshotId" : { "Ref": "DBSnapshotJournal" },
+			            	"VolumeSize": "25"
+			            }
+		        	},
+		          	{
+			            "DeviceName": "/dev/xvdh",
+			            "Ebs": {
+			              	"VolumeType": "gp2",
+			              	"DeleteOnTermination": "true",
+			              	"VolumeSize": "10"
+			            }
+		          	},
+		          	{
+			            "DeviceName": "/dev/xvdf",
+			            "Ebs": {
+			              	"VolumeSize": { "Ref": "VolumeSize" },
+			              	"VolumeType": "gp2",
+			              	"SnapshotId" : { "Ref": "DBSnapshotData" },
+			              	"DeleteOnTermination": "true"
+			            }
+		          	}
+		        ],
+				"UserData" : {
+					"Fn::Base64" : { "Fn::Join" : ["", [
+		                "#!/bin/bash -v\n",
+		                "PRIVATE_DNS=$(curl http://169.254.169.254/latest/meta-data/hostname)\n",
+		                "echo 127.0.0.1   ${PRIVATE_DNS} >> /etc/hosts\n",
+		                "mkdir -p /home/ec2-user/mongodb \n",
+
+		                "#  Run cfn-init to install executable files\n",
+		                "/opt/aws/bin/cfn-init -v ",
+						"--stack ", { "Ref" : "AWS::StackName" },
+						" --resource MongoDBPrimaryServer ",
+						"--configsets config_mongodb ",
+						"--region ", { "Ref" : "AWS::Region" }, "\n",
+
+		                "#  Run the install \n",
+		                "#  Store stack name to tag DDB name\n",
+		                "cd /home/ec2-user/mongodb\n",
+		                "echo ",
+			            { "Fn::Join": [ "_", [
+		                    "export TABLE_NAMETAG=",
+		                    { "Ref": "AWS::StackName" }
+		                ]]},
+		                " >> config.sh\n",
+		                "echo ",
+		                { "Fn::Join": [ "", [
+		                    "export VPC=",
+		                    { "Ref": "VPC" }
+		                ]]},
+		                " >> config.sh\n",
+		                "echo ",
+		                { "Fn::Join": [ "", [
+		                    "export MongoDBVersion=",
+		                    { "Ref": "MongoDBVersion" }
+		                ]]},
+	                	" >> config.sh\n",
+
+		                "./init.sh > install.log 2>&1 \n",
+		                "#  Cleanup \n",
+		                "/home/ec2-user/mongodb/signalFinalStatus.sh 0\n",
+		                "#rm -rf /home/ec2-user/mongodb\n",
+		                "chown -R ec2-user:ec2-user /home/ec2-user/ \n"
+					]]}
+				}
+			},
+			"Metadata" : {
+				"AWS::CloudFormation::Authentication" : {
+					"S3AccessCreds" : {
+						"type" : "s3",
+						"rolename" : { "Ref" : "MongoIAMRole" } 
+					}
+				},
+				"AWS::CloudFormation::Init" : {
+					"configSets" : {
+						"config_mongodb" : [ "install_cfn", "download_S3_files", "make_files_executable", "disable_transparent_hugepages" ]
+					},
+					"install_cfn" : {
+					    "files" : {
+						    "/etc/cfn/cfn-hup.conf" : {
+						      "content" : { "Fn::Join" : ["", [
+						        "[main]\n",
+						        "stack=", { "Ref": "AWS::StackId" }, "\n",
+						        "region=", { "Ref" : "AWS::Region" }, "\n"
+						      ]]},
+						      "mode"  : "000400",
+						      "owner" : "root",
+						      "group" : "root"
+						    },
+					    	"/etc/cfn/hooks.d/cfn-auto-reloader.conf" : {
+						        "content" : { "Fn::Join" : ["", [
+						        "[cfn-auto-reloader-hook]\n",
+						        "triggers=post.update\n",
+						        "path=Resources.MongoDBPrimaryServer.Metadata.AWS::CloudFormation::Init\n",
+						        "action=/opt/aws/bin/cfn-init -v ",
+						          "--stack ", { "Ref" : "AWS::StackName" },
+						          "--resource MongoDBPrimaryServer ",
+						          "--configsets config_mongodb ",
+						          "--region ", { "Ref" : "AWS::Region" }, "\n"
+						      ]]},
+							      "mode"  : "000400",
+							      "owner" : "root",
+							      "group" : "root" 
+					    	}
+					    },
+					    "services" : {
+					    	"sysvinit" : {
+					      		"cfn-hup" : { "enabled" : "true", "ensureRunning" : "true",
+					            	"files" : ["/etc/cfn/cfn-hup.conf", "/etc/cfn/hooks.d/cfn-auto-reloader.conf"]
+	    						}
+	  						}
+						}
+					},
+					"download_S3_files" : {
+						"commands" : {
+							"01_download_bash_files" : {
+								"command" : { "Fn::Join" : ["", [
+									"aws s3 cp --recursive s3://",
+                					{ "Ref": "MongoConfigBucket" },
+                					"/",
+                					{"Ref": "Version"},
+                					"/mongo",
+                					" /home/ec2-user/mongodb"
+								]]}
+							}
+						}
+					},
+					"make_files_executable" : {
+						"commands" : {
+							"01_make_init.sh_executable" : {
+								"command" : "chmod +x init.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							},
+							"02_make_orchestrator.sh_executable" : {
+								"command" : "chmod +x orchestrator.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							},
+							"03_make_signalFinalStatus.sh_executable" : {
+								"command" : "chmod +x signalFinalStatus.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							}
+						}
+					},
+					"disable_transparent_hugepages" : {
+						"commands" : {
+							"01_disable_transparent_hugepages" : {
+								"command" : "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+							},
+							"02_disable_defrag" : {
+								"command" : "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+							},
+							"03_disable_on_boot" : {
+								"command" : "echo 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' >> /etc/rc.local"
+							},
+							"04_disable_defrag_on_boot" : {
+								"command" : "echo 'echo never > /sys/kernel/mm/transparent_hugepage/defrag' >> /etc/rc.local"
+							}
+						}
+					}
+ 				}
+			}
+		},
+
+		"MongoDBSecondaryServer" : {
+			"Type" : "AWS::EC2::Instance",
+			"DependsOn" : "MongoDBPrimaryServer",
+			"Properties" : {
+				"ImageId" : { "Fn::FindInMap" : [
+					"AWSRegionArch2AMI", 
+					{ "Ref" : "AWS::Region" },
+					{ "Fn::FindInMap" : [
+						"AWSInstanceType2Arch", { "Ref" : "MongoInstanceType" }, "Arch"
+					]}
+				]},
+				"IamInstanceProfile" : { "Ref" : "MongoInstanceProfile" },
+				"InstanceType" : { "Ref" : "MongoInstanceType" },
+				"KeyName" : { "Ref" : "MongoKeyPair" },
+				"SecurityGroupIds" : [ { "Ref" : "DBServerSecurityGroup" }, { "Ref" : "DBReplicaSecurityGroup" } ],
+				"SubnetId" : { "Ref" : "PrivateSubnetOne" },
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": { "Fn::Join" : ["", [ "Secondary-", { "Ref" : "ProductionEnvironment" }, "-ReplicaNode1a" ] ] }
+					},
+					{
+						"Key": "ClusterReplicaSetCount",
+						"Value": { "Ref": "ClusterReplicaSetCount" }
+					},
+					{
+						"Key": "NodeReplicaSetIndex",
+						"Value": "1"
+					},
+					{
+						"Key": "ClusterShardCount",
+						"Value": { "Ref": "ClusterShardCount" }
+					},
+					{
+						"Key": "ShardsPerNode",
+						"Value": { "Ref": "ShardsPerNode" }
+					},
+					{
+						"Key": "NodeShardIndex",
+						"Value": "0"
+					},
+					{
+						"Key": "ReplicaSetName",
+						"Value": { "Ref" : "ReplicaSetName" }
+					},
+					{
+						"Key": "MongoDBAuthorization",
+						"Value": { "Ref" : "MongoDBAuthorization" }
+					}
+				],
+				"BlockDeviceMappings": [
+					{
+			            "DeviceName": "/dev/xvdg",
+			            "Ebs": {
+			            	"VolumeType": "gp2",
+			            	"DeleteOnTermination": "true",
+			            	"VolumeSize": "25"
+			            }
+		        	},
+		          	{
+			            "DeviceName": "/dev/xvdh",
+			            "Ebs": {
+			              	"VolumeType": "gp2",
+			              	"DeleteOnTermination": "true",
+			              	"VolumeSize": "10"
+		            	}
+		          	},
+		          	{
+			            "DeviceName": "/dev/xvdf",
+			            "Ebs": {
+			              	"VolumeSize": { "Ref": "VolumeSize" },
+			              	"VolumeType": "gp2",
+			              	"DeleteOnTermination": "true"
+			            }
+		          	}
+		        ],
+				"UserData" : {
+					"Fn::Base64" : { "Fn::Join" : ["", [
+		                "#!/bin/bash -v\n",
+		                "PRIVATE_DNS=$(curl http://169.254.169.254/latest/meta-data/hostname)\n",
+		                "echo 127.0.0.1   ${PRIVATE_DNS} >> /etc/hosts\n",
+		                "mkdir -p /home/ec2-user/mongodb \n",
+
+		                "#  Run cfn-init to install executable files\n",
+		                "/opt/aws/bin/cfn-init -v ",
+						"--stack ", { "Ref" : "AWS::StackName" },
+						" --resource MongoDBSecondaryServer ",
+						"--configsets config_mongodb ",
+						"--region ", { "Ref" : "AWS::Region" }, "\n",
+
+		                "#  Run the install \n",
+		                "#  Store stack name to tag DDB name\n",
+		                "cd /home/ec2-user/mongodb\n",
+		                "echo ",
+		                { "Fn::Join": [ "_", [
+		                    "export TABLE_NAMETAG=",
+		                    { "Ref": "AWS::StackName" }
+		                ]]},
+		                " >> config.sh\n",
+		                "echo ",
+		                { "Fn::Join": [ "", [
+		                    "export VPC=",
+		                    { "Ref": "VPC" }
+		                ]]},
+		                " >> config.sh\n",
+		                "echo ",
+		                { "Fn::Join": [ "", [
+		                    "export MongoDBVersion=",
+		                    { "Ref": "MongoDBVersion" }
+		                ]]},
+		                " >> config.sh\n",
+
+		                "./init.sh > install.log 2>&1 \n",
+		                "#  Cleanup \n",
+		                "/home/ec2-user/mongodb/signalFinalStatus.sh 0\n",
+		                "#rm -rf /home/ec2-user/mongodb\n",
+		                "chown -R ec2-user:ec2-user /home/ec2-user/ \n"
+					]]}
+				}
+			},
+			"Metadata" : {
+				"AWS::CloudFormation::Authentication" : {
+					"S3AccessCreds" : {
+						"type" : "s3",
+						"rolename" : { "Ref" : "MongoIAMRole" } 
+					}
+				},
+				"AWS::CloudFormation::Init" : {
+					"configSets" : {
+						"config_mongodb" : [ "install_cfn", "download_S3_files", "make_files_executable", "disable_transparent_hugepages" ]
+					},
+					"install_cfn" : {
+					    "files" : {
+						    "/etc/cfn/cfn-hup.conf" : {
+						      "content" : { "Fn::Join" : ["", [
+						        "[main]\n",
+						        "stack=", { "Ref": "AWS::StackId" }, "\n",
+						        "region=", { "Ref" : "AWS::Region" }, "\n"
+						      ]]},
+						      "mode"  : "000400",
+						      "owner" : "root",
+						      "group" : "root"
+						    },
+					    	"/etc/cfn/hooks.d/cfn-auto-reloader.conf" : {
+						        "content" : { "Fn::Join" : ["", [
+						        "[cfn-auto-reloader-hook]\n",
+						        "triggers=post.update\n",
+						        "path=Resources.MongoDBPrimaryServer.Metadata.AWS::CloudFormation::Init\n",
+						        "action=/opt/aws/bin/cfn-init -v ",
+						          "--stack ", { "Ref" : "AWS::StackName" },
+						          "--resource MongoDBPrimaryServer ",
+						          "--configsets config_mongodb ",
+						          "--region ", { "Ref" : "AWS::Region" }, "\n"
+						      ]]},
+							      "mode"  : "000400",
+							      "owner" : "root",
+							      "group" : "root" 
+					    	}
+					    },
+					    "services" : {
+					    	"sysvinit" : {
+					      		"cfn-hup" : { "enabled" : "true", "ensureRunning" : "true",
+					            	"files" : ["/etc/cfn/cfn-hup.conf", "/etc/cfn/hooks.d/cfn-auto-reloader.conf"]
+	    						}
+	  						}
+						}
+					},
+					"download_S3_files" : {
+						"commands" : {
+							"01_download_bash_files" : {
+								"command" : { "Fn::Join" : ["", [
+									"aws s3 cp --recursive s3://",
+                					{ "Ref": "MongoConfigBucket" },
+                					"/",
+                					{"Ref": "Version"},
+                					"/mongo",
+                					" /home/ec2-user/mongodb"
+								]]}
+							}
+						}
+					},
+					"make_files_executable" : {
+						"commands" : {
+							"01_make_init.sh_executable" : {
+								"command" : "chmod +x init.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							},
+							"02_make_orchestrator.sh_executable" : {
+								"command" : "chmod +x orchestrator.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							},
+							"03_make_signalFinalStatus.sh_executable" : {
+								"command" : "chmod +x signalFinalStatus.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							}
+						}
+					},
+					"disable_transparent_hugepages" : {
+						"commands" : {
+							"01_disable_transparent_hugepages" : {
+								"command" : "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+							},
+							"02_disable_defrag" : {
+								"command" : "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+							},
+							"03_disable_on_boot" : {
+								"command" : "echo 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' >> /etc/rc.local"
+							},
+							"04_disable_defrag_on_boot" : {
+								"command" : "echo 'echo never > /sys/kernel/mm/transparent_hugepage/defrag' >> /etc/rc.local"
+							}
+						}
+					}
+ 				}
+			}
+		},
+
+		"MongoDBSecondaryServer00" : {
+			"Type" : "AWS::EC2::Instance",
+			"DependsOn" : "MongoDBPrimaryServer",
+			"Properties" : {
+				"ImageId" : { "Fn::FindInMap" : [
+					"AWSRegionArch2AMI", 
+					{ "Ref" : "AWS::Region" },
+					{ "Fn::FindInMap" : [
+						"AWSInstanceType2Arch", { "Ref" : "MongoInstanceType" }, "Arch"
+					]}
+				]},
+				"IamInstanceProfile" : { "Ref" : "MongoInstanceProfile" },
+				"InstanceType" : { "Ref" : "MongoInstanceType" },
+				"KeyName" : { "Ref" : "MongoKeyPair" },
+				"SecurityGroupIds" : [ { "Ref" : "DBServerSecurityGroup" }, { "Ref" : "DBReplicaSecurityGroup" } ],
+				"SubnetId" : { "Ref" : "PrivateSubnetTwo" },
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": { "Fn::Join" : ["", [ "Secondary-", { "Ref" : "ProductionEnvironment" }, "-ReplicaSnapshotNode" ] ] }
+					},
+					{
+						"Key": "ClusterReplicaSetCount",
+						"Value": { "Ref": "ClusterReplicaSetCount" }
+					},
+					{
+						"Key": "NodeReplicaSetIndex",
+						"Value": "1"
+					},
+					{
+						"Key": "ClusterShardCount",
+						"Value": { "Ref": "ClusterShardCount" }
+					},
+					{
+						"Key": "ShardsPerNode",
+						"Value": { "Ref": "ShardsPerNode" }
+					},
+					{
+						"Key": "NodeShardIndex",
+						"Value": "0"
+					},
+					{
+						"Key": "ReplicaSetName",
+						"Value": { "Ref" : "ReplicaSetName" }
+					},
+					{
+						"Key": "MongoDBAuthorization",
+						"Value": { "Ref" : "MongoDBAuthorization" }
+					}
+				],
+				"BlockDeviceMappings": [
+					{
+			            "DeviceName": "/dev/xvdg",
+			            "Ebs": {
+			            	"VolumeType": "gp2",
+			            	"DeleteOnTermination": "true",
+			            	"VolumeSize": "25"
+			            }
+		        	},
+		          	{
+			            "DeviceName": "/dev/xvdh",
+			            "Ebs": {
+			              	"VolumeType": "gp2",
+			              	"DeleteOnTermination": "true",
+			              	"VolumeSize": "10"
+			            }
+		          	},
+		          	{
+			            "DeviceName": "/dev/xvdf",
+			            "Ebs": {
+			              	"VolumeSize": { "Ref": "VolumeSize" },
+			              	"VolumeType": "gp2",
+			              	"DeleteOnTermination": "true"
+			            }
+		         	}
+		        ],
+				"UserData" : {
+					"Fn::Base64" : { "Fn::Join" : ["", [
+		                "#!/bin/bash -v\n",
+		                "PRIVATE_DNS=$(curl http://169.254.169.254/latest/meta-data/hostname)\n",
+		                "echo 127.0.0.1   ${PRIVATE_DNS} >> /etc/hosts\n",
+		                "mkdir -p /home/ec2-user/mongodb \n",
+
+		                "#  Run cfn-init to install executable files\n",
+		                "/opt/aws/bin/cfn-init -v ",
+						"--stack ", { "Ref" : "AWS::StackName" },
+						" --resource MongoDBSecondaryServer00 ",
+						"--configsets config_mongodb ",
+						"--region ", { "Ref" : "AWS::Region" }, "\n",
+
+		                "#  Run the install \n",
+		                "#  Store stack name to tag DDB name\n",
+		                "cd /home/ec2-user/mongodb\n",
+		                "echo ",
+		                { "Fn::Join": [ "_", [
+		                    "export TABLE_NAMETAG=",
+		                    { "Ref": "AWS::StackName" }
+		                ]]},
+		                " >> config.sh\n",
+		                "echo ",
+		                { "Fn::Join": [ "", [
+		                    "export VPC=",
+		                    { "Ref": "VPC" }
+		                ]]},
+		                " >> config.sh\n",
+		                "echo ",
+		                { "Fn::Join": [ "", [
+		                    "export MongoDBVersion=",
+		                    { "Ref": "MongoDBVersion" }
+		                ]]},
+		                " >> config.sh\n",
+
+		                "./init.sh > install.log 2>&1 \n",
+		                "#  Cleanup \n",
+		                "/home/ec2-user/mongodb/signalFinalStatus.sh 0\n",
+		                "#rm -rf /home/ec2-user/mongodb\n",
+		                "chown -R ec2-user:ec2-user /home/ec2-user/ \n"
+					]]}
+				}
+			},
+			"Metadata" : {
+				"AWS::CloudFormation::Authentication" : {
+					"S3AccessCreds" : {
+						"type" : "s3",
+						"rolename" : { "Ref" : "MongoIAMRole" } 
+					}
+				},
+				"AWS::CloudFormation::Init" : {
+					"configSets" : {
+						"config_mongodb" : [ "install_cfn", "download_S3_files", "make_files_executable", "disable_transparent_hugepages", "setup_cron_job"]
+					},
+					"install_cfn" : {
+					    "files" : {
+						    "/etc/cfn/cfn-hup.conf" : {
+						      "content" : { "Fn::Join" : ["", [
+						        "[main]\n",
+						        "stack=", { "Ref": "AWS::StackId" }, "\n",
+						        "region=", { "Ref" : "AWS::Region" }, "\n"
+						      ]]},
+						      "mode"  : "000400",
+						      "owner" : "root",
+						      "group" : "root"
+						    },
+					    	"/etc/cfn/hooks.d/cfn-auto-reloader.conf" : {
+						        "content" : { "Fn::Join" : ["", [
+						        "[cfn-auto-reloader-hook]\n",
+						        "triggers=post.update\n",
+						        "path=Resources.MongoDBPrimaryServer.Metadata.AWS::CloudFormation::Init\n",
+						        "action=/opt/aws/bin/cfn-init -v ",
+						          "--stack ", { "Ref" : "AWS::StackName" },
+						          "--resource MongoDBPrimaryServer ",
+						          "--configsets config_mongodb ",
+						          "--region ", { "Ref" : "AWS::Region" }, "\n"
+						      ]]},
+							      "mode"  : "000400",
+							      "owner" : "root",
+							      "group" : "root" 
+					    	}
+					    },
+					    "services" : {
+					    	"sysvinit" : {
+					      		"cfn-hup" : { "enabled" : "true", "ensureRunning" : "true",
+					            	"files" : ["/etc/cfn/cfn-hup.conf", "/etc/cfn/hooks.d/cfn-auto-reloader.conf"]
+	    						}
+	  						}
+						}
+					},
+					"download_S3_files" : {
+						"commands" : {
+							"01_download_bash_files" : {
+								"command" : { "Fn::Join" : ["", [
+									"aws s3 cp --recursive s3://",
+                					{ "Ref": "MongoConfigBucket" },
+                					"/",
+                					{"Ref": "Version"},
+                					"/mongo",
+                					" /home/ec2-user/mongodb"
+								]]}
+							},
+							"02_cron_job_files" : {
+								"command" : { "Fn::Join" : ["", [
+									"aws s3 cp --recursive s3://",
+                					{ "Ref": "MongoConfigBucket" },
+                					"/",
+                					{"Ref": "Version"},
+                					"/cron/db-snapshot",
+                					" /home/ec2-user/cron"
+								]]}
+							}
+						}
+					},
+					"make_files_executable" : {
+						"commands" : {
+							"01_make_init.sh_executable" : {
+								"command" : "chmod +x init.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							},
+							"02_make_orchestrator.sh_executable" : {
+								"command" : "chmod +x orchestrator.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							},
+							"03_make_signalFinalStatus.sh_executable" : {
+								"command" : "chmod +x signalFinalStatus.sh",
+								"cwd" : "/home/ec2-user/mongodb"
+							},
+							"04_make_cronjob_file_executable" : {
+								"command" : "chmod +x daily-snapshot.sh",
+								"cwd" : "/home/ec2-user/cron"
+							}
+						}
+					},
+					"disable_transparent_hugepages" : {
+						"commands" : {
+							"01_disable_transparent_hugepages" : {
+								"command" : "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+							},
+							"02_disable_defrag" : {
+								"command" : "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+							},
+							"03_disable_on_boot" : {
+								"command" : "echo 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' >> /etc/rc.local"
+							},
+							"04_disable_defrag_on_boot" : {
+								"command" : "echo 'echo never > /sys/kernel/mm/transparent_hugepage/defrag' >> /etc/rc.local"
+							}
+						}
+					},
+					"setup_cron_job" : {
+						"commands" : {
+							"01_setup" : {
+								"command" : "echo \"12  3  *  *  * root /home/ec2-user/cron/daily-snapshot.sh\" >> /etc/crontab"
+							}
+						}
+					}
+ 				}
+			}
+		}
+	},
+	"Outputs" : {
+		"MongoPrimaryPrivateIp" : {
+			"Description" : "Private IP of the MongoDB Primary Server",
+			"Value" : { "Fn::GetAtt" : [ "MongoDBPrimaryServer", "PrivateIp" ] }
+		},
+		"MongoSecondaryPrivateIp" : {
+			"Description" : "Private IP of one of the MongoDB Secondary Servers",
+			"Value" : { "Fn::GetAtt" : [ "MongoDBSecondaryServer", "PrivateIp" ] }
+		},
+		"MongoSecondaryTwoPrivateIp" : {
+			"Description" : "Private Ip of the other MongoDB Secondary Server",
+			"Value" : { "Fn::GetAtt" : [ "MongoDBSecondaryServer00", "PrivateIp" ] }
+		}
+	}
+}

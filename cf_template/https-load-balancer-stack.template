@@ -1,0 +1,117 @@
+{
+	"AWSTemplateFormatVersion" : "2010-09-09",
+	"Description" : "Version 0.0.7 template for creating an Elastic Load Balancer with embedded https creds",
+	"Parameters" : {
+		"SubnetOne" : {
+			"Description" : "Subnet in us-east-1 where Elastic Load Balancer will be attached, ( Verify private if scheme is internal )",
+			"Type" : "AWS::EC2::Subnet::Id"
+		},
+		"SubnetTwo" : {
+			"Description" : "Subnet in us-east-1 where Elastic Load Balancer will be attached ( Verify private if scheme is internal )",
+			"Type" : "AWS::EC2::Subnet::Id"
+		},
+		"LoadBalancerSecurityGroup" : {
+			"Description" : "Security Group Id for the Elastic Load Balancer ( Make sure Internal vs External is correct ) ",
+			"Type" : "AWS::EC2::SecurityGroup::Id"
+		},
+		"ForwardingPort" :{
+			"Description" : "TCP port the Load Balancer forwards traffic to",
+			"Type" : "String"
+		},
+		"Scheme" : {
+			"Description" : "Where the Load Balancer is positioned",
+			"Type" : "String",
+			"AllowedValues" : [ "internal", "internet-facing"]
+		},
+		"ProductionEnvironment" : {
+			"Description" : "Production environment for the VPC - (Dev1, Alpha, Beta, Pre-Prod, Prod, Test)",
+			"Type" : "String",
+			"Default" : "Dev1",
+			"AllowedValues" : [ "Dev1", "Alpha", "Beta", "Pre-Prod", "Prod", "Test" ],
+			"ConstraintDescription" : "must be either Dev1, Alpha or Prod."
+		},
+		"CertificateName": {
+			"Description" : "Name of the certificate to be installed on the Load Balancer",
+			"Type" : "String",
+			"Default" : "sampleSelfSignedCertificate"
+		},
+		"LBName" : {
+			"Description" : "Name of the Load Balancer",
+			"Type" : "String"
+		},
+		"InstanceProtocol" : {
+			"Description" : "Protocol of the forwarding port",
+			"Type" : "String",
+			"AllowedValues" : [ "HTTPS", "HTTP"]
+		}
+	},
+	"Resources" : {
+		"S3LoggingBucket" : {
+			"Type" : "AWS::S3::Bucket"
+		},
+		"S3LoggingBucketPolicy" : {
+			"Type" : "AWS::S3::BucketPolicy",
+			"Properties" : {
+				"Bucket" : { "Ref" : "S3LoggingBucket" },
+				"PolicyDocument" : {
+					"Version" : "2012-10-17",
+					"Statement" : [{
+						"Effect" : "Allow",
+						"Action" : [ "s3:PutObject" ],
+						"Resource" : { "Fn::Join" : ["", [ "arn:aws:s3:::", { "Ref" : "S3LoggingBucket" }, "/Logs/AWSLogs/", { "Ref" : "AWS::AccountId" }, "/*" ] ] },
+						"Principal" : "*"
+					}]
+				}
+			}
+		},
+		"LoadBalancer" : {
+			"Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
+			"DependsOn" : [ "S3LoggingBucketPolicy" ],
+			"Properties" : {
+				"CrossZone" : true,
+				"Subnets" : [ { "Ref" : "SubnetOne" }, { "Ref" : "SubnetTwo" } ],
+				"Scheme" : {"Ref": "Scheme"},
+				"SecurityGroups" : [ { "Ref" : "LoadBalancerSecurityGroup" } ],
+				"AppCookieStickinessPolicy" : [{
+					"CookieName" : "AppSticky",
+					"PolicyName" : "StickyPolicy"
+				}],
+				"Listeners" : [{
+					"InstancePort" : { "Ref" : "ForwardingPort"},
+					"LoadBalancerPort" : "443",
+					"Protocol" : "HTTPS",
+					"InstanceProtocol" : { "Ref" : "InstanceProtocol" },
+					"SSLCertificateId" : { "Fn::Join" : ["", [ "arn:aws:iam::268344141537:server-certificate/", { "Ref" : "CertificateName" } ]]}
+				}],
+				"LoadBalancerName" : { "Fn::Join" : ["", [ { "Ref" : "ProductionEnvironment" }, "-",  { "Ref" : "LBName" } ] ] },
+				"HealthCheck" : {
+					"Target" : { "Fn::Join" : ["", [ "TCP:", { "Ref" : "ForwardingPort" } ] ] },
+					"HealthyThreshold" : "3",
+					"UnhealthyThreshold" : "5",
+					"Interval" : "30",
+					"Timeout" : "5"
+				},
+				"AccessLoggingPolicy" : {
+					"S3BucketName" : { "Ref" : "S3LoggingBucket" },
+					"S3BucketPrefix" : "Logs",
+					"Enabled" : "true",
+					"EmitInterval" : "60"
+				},
+				"Tags" : [{
+					"Key" : "Name",
+					"Value" : { "Fn::Join" : ["", [ { "Ref" : "ProductionEnvironment" }, "-", { "Ref" : "Scheme" }, "-LoadBalancer" ] ] }
+				}]
+			}
+		}
+	},
+	"Outputs" : {
+		"LoadBalancerDNS" : {
+			"Description" : "DNS associated with the back-end internal Load Balancer",
+			"Value" : { "Fn::GetAtt" : [ "LoadBalancer", "DNSName" ] }
+		},
+		"LoadBalancer" : {
+			"Description" : "DNS associated with the back-end internal Load Balancer",
+			"Value" : { "Ref": "LoadBalancer" }
+		}
+	}
+}

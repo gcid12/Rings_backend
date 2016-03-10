@@ -1,0 +1,274 @@
+{
+	"AWSTemplateFormatVersion" : "2010-09-09",
+	"Description" : "Version 0.0.7 template for a Full Cloud Development Environment",
+	
+	"Parameters" : {
+
+		"NATInstanceType" : {
+			"Description" : "Type of instance to be used for the NAT Server",
+			"Type" : "String",
+			"Default" : "t2.small",
+			"AllowedValues" : ["t2.micro", "t2.small", "t2.medium", "m1.small", "m1.medium", "m3.medium", "m3.large"],
+			"ConstraintDescription" : "must be a valid EC2 instance type."
+		},
+
+		"MongoInstanceType" : {
+			"Description" : "Type of instance to be used for the MongoDB Replica Set",
+			"Type" : "String",
+			"Default" : "m3.medium",
+			"AllowedValues" : ["t2.micro", "t2.medium", "m1.small", "m1.medium", "m3.medium", "m3.large"],
+			"ConstraintDescription" : "must be a valid EC2 instance type."
+		},
+
+		"RoutingServerInstanceType" : {
+			"Description" : "Type of instance to be used for the Auto Scaling Group of Routing Servers",
+			"Type" : "String",
+			"Default" : "t2.medium",
+			"AllowedValues" : ["t2.micro", "t2.medium", "m1.small", "m1.medium", "m3.medium", "m3.large"],
+			"ConstraintDescription" : "must be a valid EC2 instance type."
+		},
+
+		"KinesisConsumerInstanceType" : {
+			"Description" : "Type of instance to be used for the Auto Scaling Group of Kinesis Consumers",
+			"Type" : "String",
+			"Default" : "t2.medium",
+			"AllowedValues" : ["t2.micro", "t2.medium", "m1.small", "m1.medium", "m3.medium", "m3.large"],
+			"ConstraintDescription" : "must be a valid EC2 instance type."
+		},
+
+		"WebServerInstanceType" : {
+			"Description" : "Type of instance to be used for the Auto Scaling Group of Web Servers",
+			"Type": "String",
+			"Default" : "t2.medium",
+			"AllowedValues" : ["t2.micro", "t2.medium", "m1.small", "m1.medium", "m3.medium", "m3.large"],
+			"ConstraintDescription" : "must be a valid EC2 instance type."
+		},
+
+		"VPCCIDR" : {
+			"Description" : "CIDR Block for the VPC",
+			"Type" : "String",
+			"Default" : "10.0.0.0/16",
+			"AllowedPattern" : "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+			"ConstraintDescription" : "must be a valid CIDR range of the form x.x.x.x/x."
+		},
+
+		"RemoteAccessCIDR" : {
+			"Description" : "CIDR IP from where we can SSH into Private Subnet via NAT instance",
+			"Type" : "String",
+			"MinLength" : "9",
+			"MaxLength" : "18",
+			"Default" : "x.x.x.x/32",
+			"NoEcho" : true,
+			"AllowedPattern" : "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+			"ConstraintDescription" : "must be a valid CIDR range of the form x.x.x.x/x."
+		},
+
+		"ProductionEnvironment" : {
+			"Description" : "Production environment for the VPC - (Dev1, Alpha, Beta, Pre-Prod, Prod, Test)",
+			"Type" : "String",
+			"Default" : "Dev1",
+			"AllowedValues" : [ "Dev1", "Alpha", "Beta", "Pre-Prod", "Prod", "Test" ],
+			"ConstraintDescription" : "must be either Dev1, Alpha or Prod."
+		},
+		"Version" : {
+			"Description" : "Code Version",
+			"Type" : "String",
+			"AllowedPattern" : "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})",
+			"ConstraintDescription" : "must be a valid system version in the form x.x.x"
+		},
+		"DBSnapshotData" : {
+			"Description" : "MongoDB Snapshot of most recent data",
+			"Type" : "String"
+		},
+		"DBSnapshotJournal" : {
+			"Description" : "MongoDB Snapshot of most recent journal",
+			"Type" : "String"
+		},
+		"CertificateName": {
+			"Description" : "Name of the certificate to be installed on the Load Balancer",
+			"Type" : "String",
+			"Default" : "sampleSelfSignedCertificate"
+		}
+
+	},
+
+	"Resources" : {
+
+		"VPCStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/vpc-stack.template",
+				"Parameters" : {
+					"VPCCIDR"               : { "Ref" : "VPCCIDR" },
+					"RemoteAccessCIDR"      : { "Ref" : "RemoteAccessCIDR" },
+					"ProductionEnvironment" : { "Ref" : "ProductionEnvironment" }
+				}
+			}
+		},
+
+		"SecurityGroupStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/security-group-stack.template",
+				"Parameters" : {
+					"VPC"                   : { "Fn::GetAtt" : [ "VPCStack", "Outputs.VpcId" ] },
+					"RemoteAccessCIDR"      : { "Ref" : "RemoteAccessCIDR" },
+					"ProductionEnvironment" : { "Ref" : "ProductionEnvironment" }
+				}
+			}
+		},
+
+		"NATServerStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/nat-stack.template",
+				"Parameters" : {
+					"NATInstanceType"       : { "Ref" : "NATInstanceType" },
+					"PublicSubnetOne"       : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PublicSubnetOne" ] },
+					"PublicSubnetTwo"       : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PublicSubnetTwo" ] },
+					"PrivateRouteTable"     : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateRouteTable" ] },
+					"NATServerSecurityGroup"      : { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.NATServerSecurityGroup" ] },
+					"ProductionEnvironment" : { "Ref" : "ProductionEnvironment" }
+				}
+			}
+		},
+
+		"DBServerStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack", "NATServerStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/mongo-stack.template",
+				"Parameters" : {
+					"Version"				 : { "Ref" : "Version"},
+					"MongoInstanceType"      : { "Ref" : "MongoInstanceType" },
+					"VPC"                    : { "Fn::GetAtt" : [ "VPCStack", "Outputs.VpcId" ] },
+					"PrivateSubnetOne"       : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetOne" ] },
+					"PrivateSubnetTwo"       : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetTwo" ] },
+					"DBServerSecurityGroup"  : { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.DBServerSecurityGroup" ] },
+					"DBReplicaSecurityGroup" : { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.DBReplicaSecurityGroup"] },
+					"ProductionEnvironment"  : { "Ref" : "ProductionEnvironment" },
+					"DBSnapshotData" 		 : { "Ref" : "DBSnapshotData" },
+					"DBSnapshotJournal"		 : { "Ref" : "DBSnapshotJournal" }
+				}
+			}
+		},
+
+		"ExtLoadBalancerStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/https-load-balancer-stack.template",
+				"Parameters" : {
+					"SubnetOne"          			: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PublicSubnetOne" ] },
+					"SubnetTwo"          			: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PublicSubnetTwo" ] },
+					"LoadBalancerSecurityGroup" 		: { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.ExternalELBSecurityGroup" ] },
+					"ProductionEnvironment"             : { "Ref" : "ProductionEnvironment" },
+					"Scheme"							: "internet-facing",
+					"ForwardingPort"					: "3000",
+					"CertificateName" 					: { "Ref" : "CertificateName"},
+					"LBName" 							: "EXTERNAL-LB",
+					"InstanceProtocol" 					: "HTTP"
+				}
+			}
+		},
+
+		"FERSLoadBalancerStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/https-load-balancer-stack.template",
+				"Parameters" : {
+					"SubnetOne"          			: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetOne" ] },
+					"SubnetTwo"          			: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetTwo" ] },
+					"LoadBalancerSecurityGroup" 		: { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.InternalELBSecurityGroup" ] },
+					"ProductionEnvironment"             : { "Ref" : "ProductionEnvironment" },
+					"Scheme"							: "internal",
+					"ForwardingPort"					: "443",
+					"CertificateName" 					: { "Ref" : "CertificateName"},
+					"LBName" 							: "Front-End-LB",
+					"InstanceProtocol"					: "HTTPS"
+				}
+			}
+		},
+
+		"BERSLoadBalancerStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/load-balancer-stack.template",
+				"Parameters" : {
+					"SubnetOne"          			: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetOne" ] },
+					"SubnetTwo"          			: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetTwo" ] },
+					"LoadBalancerSecurityGroup" 		: { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.InternalSocketELBSecurityGroup" ] },
+					"ProductionEnvironment"             : { "Ref" : "ProductionEnvironment" },
+					"Scheme"							: "internal",
+					"LoadBalancerPort"					: "80",
+					"ForwardingPort"					: "80",
+					"LBName" 							: "Socket-LB"
+				}
+			}
+		},
+
+		"RoutingServerStack" : {
+			"Type" : "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack", "NATServerStack", "DBServerStack", "FERSLoadBalancerStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/fe-routing-server-stack.template",
+				"Parameters" : {
+					"Version"							 : { "Ref" : "Version"},
+					"RoutingServerInstanceType"          : { "Ref" : "RoutingServerInstanceType" },
+					"PrivateSubnetOne"                   : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetOne" ] },
+					"PrivateSubnetTwo"                   : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetTwo" ] },
+					"RoutingServerSecurityGroup"         : { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.RoutingServerSecurityGroup" ] },
+					"InternalELBSecurityGroup"           : { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.InternalELBSecurityGroup" ] },
+					"MongoPrimaryPrivateIp"              : { "Fn::GetAtt" : [ "DBServerStack", "Outputs.MongoPrimaryPrivateIp" ] },
+					"MongoSecondaryPrivateIp"            : { "Fn::GetAtt" : [ "DBServerStack", "Outputs.MongoSecondaryPrivateIp" ] },
+					"MongoSecondaryTwoPrivateIp"         : { "Fn::GetAtt" : [ "DBServerStack", "Outputs.MongoSecondaryTwoPrivateIp" ] },
+					"LoadBalancerName" 					 : { "Fn::GetAtt" : [ "FERSLoadBalancerStack" , "Outputs.LoadBalancer" ] },
+					"ProductionEnvironment"              : { "Ref" : "ProductionEnvironment" }
+				}
+			}
+		},
+
+		"KinesisConsumerStack" : {
+			"Type": "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack", "NATServerStack", "DBServerStack", "BERSLoadBalancerStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/kinesis-stack.template",
+				"Parameters" : {
+					"Version"					   : { "Ref" : "Version"},
+					"KinesisConsumerInstanceType"  : { "Ref" : "KinesisConsumerInstanceType" },
+					"PrivateSubnetOne"             : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetOne" ] },
+					"PrivateSubnetTwo"             : { "Fn::GetAtt" : [ "VPCStack", "Outputs.PrivateSubnetTwo" ] },
+					"KinesisConsumerSecurityGroup" : { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.KinesisConsumerSecurityGroup" ] },
+					"MongoPrimaryPrivateIp"        : { "Fn::GetAtt" : [ "DBServerStack", "Outputs.MongoPrimaryPrivateIp" ] },
+					"MongoSecondaryPrivateIp"      : { "Fn::GetAtt" : [ "DBServerStack", "Outputs.MongoSecondaryPrivateIp" ] },
+					"MongoSecondaryTwoPrivateIp"   : { "Fn::GetAtt" : [ "DBServerStack", "Outputs.MongoSecondaryTwoPrivateIp" ] },
+					"LoadBalancerName" 			   : { "Fn::GetAtt" : [ "BERSLoadBalancerStack" , "Outputs.LoadBalancer" ] },
+					"ProductionEnvironment"        : { "Ref" : "ProductionEnvironment" }
+				}
+			}
+		},
+
+		"WebServerStack" : {
+			"Type": "AWS::CloudFormation::Stack",
+			"DependsOn" : [ "VPCStack", "SecurityGroupStack",  "ExtLoadBalancerStack", "KinesisConsumerStack" ],
+			"Properties" : {
+				"TemplateURL" : "https://s3.amazonaws.com/cf-avispa-templates/beta/web-stack.template",
+				"Parameters" : {
+					"Version"				   		: { "Ref" : "Version"},
+					"WebServerInstanceType"    		: { "Ref" : "WebServerInstanceType" },
+					"PublicSubnetOne"          		: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PublicSubnetOne" ] },
+					"PublicSubnetTwo"          		: { "Fn::GetAtt" : [ "VPCStack", "Outputs.PublicSubnetTwo" ] },
+					"WebServerSecurityGroup"   		: { "Fn::GetAtt" : [ "SecurityGroupStack", "Outputs.WebServerSecurityGroup" ] },
+					"LoadBalancerName" 		   		: { "Fn::GetAtt" : [ "ExtLoadBalancerStack" , "Outputs.LoadBalancer" ] },
+					"InternalRESTLoadBalancerDNS"  	: { "Fn::GetAtt" : [ "FERSLoadBalancerStack", "Outputs.LoadBalancerDNS" ] },
+					"InternalSocketLoadBalancerDNS" : { "Fn::GetAtt" : [ "BERSLoadBalancerStack", "Outputs.LoadBalancerDNS" ] },
+					"ProductionEnvironment"    		: { "Ref" : "ProductionEnvironment" }
+				}
+			}
+		}
+	}
+}
