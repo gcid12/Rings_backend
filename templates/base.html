@@ -75,7 +75,7 @@
         <nav class="navbar navbar-default color-a-bar" style="padding-top:0px;">
           <div class="container-fluid bg-bargray">
             <!-- Brand and toggle get grouped for better mobile display -->
-        {%if current_user.is_authenticated()%}
+        {%if current_user.is_authenticated%}
             <ul class="nav navbar-nav navbar-right hidden-xs w-links">
               <li class="active hidden-xs">
                 <a class="navbar-brand clearlink hidden-xs" href="/">
@@ -175,7 +175,7 @@
               </li>
             </ul>
         {%endif%}  
-        {%if current_user.is_authenticated()%}
+        {%if current_user.is_authenticated%}
             <ul class="nav navbar-nav navbar-left visible-xs">
               <li class="active">
                 <a href="/{{ current_user.id }}/_home" class="text-lgray clearlink pull-right">

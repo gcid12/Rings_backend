@@ -31,7 +31,7 @@ def login():
 
     lggr = lggr_setup()
 
-    if current_user.is_authenticated(): 
+    if current_user.is_authenticated: 
 
         return redirect('/'+current_user.id+'/_home')
      
@@ -208,7 +208,7 @@ def register_teaminvite():
    
     logout_user()
 
-    if current_user.is_authenticated():  
+    if current_user.is_authenticated:  
         return redirect('/_teaminvite2?h='+request.args.get('h')+
                             '&t='+request.args.get('t')+
                             '&k='+request.args.get('k')+
