@@ -107,13 +107,15 @@ class User(UserMixin):
 
     def get_user(self):
 
+        #raise Exception ('stop here')
+
         try:
             
             if self.email:
                 self.lggr.debug('self.email:'+self.email)
                 dbUser =self.ATM.userdb_get_user_by_email(self.email)
             elif self.username:
-                self.lggr.debug('self.username'+self.username)
+                self.lggr.info('START AUTHENTICATION:'+self.username)
                 dbUser =self.ATM.userdb_get_user_by_handle(self.username)
             else:
                 return None
@@ -121,7 +123,7 @@ class User(UserMixin):
             
             if dbUser:
 
-                self.lggr.debug('DBUSER:'+dbUser['value']['name'])
+                self.lggr.info('END AUTHENTICATION:'+dbUser['value']['name'])
                 
                 self.name = dbUser['value']['name']
                 self.email = dbUser['value']['email']

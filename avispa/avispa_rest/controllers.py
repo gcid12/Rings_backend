@@ -41,12 +41,13 @@ def setup_local_logger():
 
 @timethis
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
+     
+    setup_log_vars()
+    lggr = setup_local_logger()
+
+    lggr.info('START route_dispatcher')
 
     MAM = MainModel()
-
-    setup_log_vars()
-    lggr = setup_local_logger()   
-    
     ARF = AvispaRestFunc()
 
     
@@ -66,12 +67,14 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     lggr.debug('Method:%s',m)
 
     if api:
-        current_user.id = 'token:'+str(request.args.get('token')) #Please change this to the actual username that is using this token
-    
+        
+        #current_user.id = 'token:'+str(request.args.get('token')) #Please change this to the actual username that is using this token
+        authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
 
     if not api:
-
+  
         authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
+        
         if not authorization_result['authorized']:
             return render_template('avispa_rest/error_401.html', data=data),401
 
@@ -146,8 +149,9 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         #current_app.logger.debug(data['host_url'])
 
 
-
+    lggr.info('START RESTFUL FUNCTION')
     data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
+    lggr.info('END RESTFUL FUNCTION')
 
     data['collection'] = collection
     data['searchbox'] = True
@@ -157,7 +161,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     else:
         status = 200
 
-    if 'redirect' in data:       
+    if 'redirect' in data:
+        lggr.info('Before RETURN')      
         return data 
 
     elif api: 
@@ -235,7 +240,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
                 csvdoc = cvsdocIO.getvalue()
                 cvsdocIO.close()
-
+ 
+                lggr.info('Before RETURN')
                 return csvdoc
             
             if 'fl' in request.args:
@@ -261,6 +267,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             else:
                 response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+".csv"
 
+            lggr.info('Before RETURN')
             return response
 
             #return Response(csvout), mimetype='text/csv')
@@ -270,15 +277,16 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             # By default we return JSON
             data['json_out'] = json.dumps(data['raw_out'])
             print('JSONOUT',data['json_out'])
+            
+            lggr.info('Before RETURN')
             return render_template(data['template'], data=data), status
      
 
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-
-             
+        lggr.info('Before RETURN')   
         return render_template(data['template'], data=data), status     
     else:
-        
+        lggr.info('Before RETURN')
         return render_template(data['template'], data=data)
         
 

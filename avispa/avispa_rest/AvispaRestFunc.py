@@ -8,7 +8,6 @@ from ElasticSearchModel import ElasticSearchModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from env_config import PREVIEW_LAYER
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-from timethis import timethis
 from AvispaLogging import AvispaLoggerAdapter
 
 class AvispaRestFunc:
@@ -23,7 +22,6 @@ class AvispaRestFunc:
     # /a
 
     # GET/a
-    
     def get_a(self,request,handle,ring,idx,api=False,collection=None,*args):
 
         ringlist = self.AVM.user_get_rings(handle)
@@ -236,8 +234,7 @@ class AvispaRestFunc:
     # /a/b
     
     #GET /a/b
-    
-    def get_a_b(self,request,handle,ring,idx,api=False,collection=None,*args):
+    def get_a_b(self,request,handle,ring,idx,api=False,collection=None,*args,**kargs):
         '''
         List of items in the ring
 
@@ -329,9 +326,9 @@ class AvispaRestFunc:
             preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
 
         
-        print
-        print('ES PREITEMS:')
-        print(preitems)
+        #print
+        #print('ES PREITEMS:')
+        #print(preitems)
         
         
 

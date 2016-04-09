@@ -31,7 +31,10 @@ def login():
 
     lggr = lggr_setup()
 
-    if current_user.is_authenticated: 
+    lggr.debug('current_user:'+str(current_user.is_authenticated()))
+    
+
+    if current_user.is_authenticated(): 
 
         return redirect('/'+current_user.id+'/_home')
      
@@ -89,7 +92,7 @@ def login():
                         else:
                             rr = '/'+user.id+'/_home'
 
-                        lggr.info('Redirecting to :'+rr) 
+                        lggr.info('Redirecting to :'+str(rr)) 
 
                         return redirect(rr)
                     else:

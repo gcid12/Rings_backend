@@ -498,6 +498,8 @@ class MainModel:
 
         # @method : is what is going to be checked against the user_authorization list
         # @depth : how deep to dig in the user_authorizations
+
+        self.lggr.info('START AUTHORIZATION')
         
         user_authorizations = []
         rolelist = []
@@ -700,6 +702,8 @@ class MainModel:
             out['authorized'] = True
         else:
             out['authorized'] = False
+
+        self.lggr.info('END AUTHORIZATION')
 
         return out
 

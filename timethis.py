@@ -1,25 +1,33 @@
 import time
-from flask import request
+
 
 class timethis:
-    def __init__(self, function):
+    def __init__(self,function):
+
         self.function = function
 
 
-    def __call__(self, *args, **kw):
+    def __call__(self,*args,**kargs):
+
+        #print "Inside __call__()"      
 
         ts = time.time()
-        result = self.function(*args, **kw)
+
+        #print('args',args)
+        #print('kargs',kargs)
+        result = self.function(*args,**kargs)
         te = time.time()
-        
-        
-        print 'TIMETHIS: %r,%r,%2.2f sec' % \
-              (request.method,request.url, te-ts)
+
+        #print 'TIMETHIS: %r,%r,%2.2f sec' % \
+              #(request.method,request.url, te-ts)
 
         #print 'TIMETHIS: %r,%r,%r,%r,%r,%2.2f sec' % \
-              #(request.method,request.url,self.function.__name__, args, kw, te-ts)
+            #(request.method,request.url,self.function.__name__, args, kargs, te-ts)
 
-        #print '%r (%r, %r) %2.2f sec' % \
-        #     ("xxx", args, kw, te-ts)
+
+        print 'TIMETHIS: %r (%r, %r) %2.2f sec' % \
+             (self.function.__name__, args, kargs, te-ts)
 
         return result
+
+        

@@ -841,13 +841,13 @@ class AvispaModel:
         options = {}
         result  = db.iterview('ring/schema',1,**options)
 
+        schema = {}
+
         for row in result:  
             #self.lggr.debug('row.value.fields:')
             #self.lggr.debug(row.value['fields'])    
             schema = {}
             #schema['rings']=row.value
-
-            
 
             schema['fields']=row.value['fields']
             schema['rings']=row.value['rings']
