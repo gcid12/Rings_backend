@@ -100,7 +100,7 @@ hooks:
 # During the AfterInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   AfterInstall:
-    - location: life/app_dependecies.sh    
+    - location: life/app_dependencies.sh    
       timeout: 1800
       runas: root
 # During the ApplicationInstall deployment lifecycle event, run the commands 
