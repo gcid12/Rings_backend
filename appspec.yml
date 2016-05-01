@@ -90,34 +90,34 @@ hooks:
   ApplicationStop:
     - location: life/server_stop.sh
       timeout: 300
-      runas: root
+      runas: ec2-user
     - location: life/app_stop.sh
       timeout: 300
-      runas: root  
+      runas: ec2-user  
 # During the BeforeInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   BeforeInstall:
     - location: life/server_configure.sh
       timeout: 300
-      runas: root
+      runas: ec2-user
 # During the AfterInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   AfterInstall:
     - location: life/app_dependencies.sh    
       timeout: 1800
-      runas: root
+      runas: ec2-user
 # During the ApplicationInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   ApplicationStart:
     - location: life/app_start.sh   
       timeout: 300
-      runas: root
+      runas: ec2-user
     - location: life/server_start.sh
       timeout: 300
-      runas: root
+      runas: ec2-user
 # During the ValidateService deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   ValidateService:
     - location: life/app_validate.sh 
       timeout: 300
-      runas: root
+      runas: ec2-user
