@@ -41,6 +41,11 @@ permissions:
     mode: 555
     type:
       - directory
+  - object: /var/www/
+    owner: ec2-user
+    mode: 555
+    type:
+      - file
 #  - object:
 #    pattern:
 #    except:
