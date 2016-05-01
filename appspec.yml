@@ -99,7 +99,7 @@ hooks:
   BeforeInstall:
     - location: life/server_configure.sh
       timeout: 300
-      runas: ec2-user
+      runas: root
 # During the AfterInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   AfterInstall:
