@@ -36,9 +36,7 @@ files:
 #   "permissions" section altogether. A blank or incomplete "permissions"
 #   section may cause associated deployments to fail.
 permissions:
-  - object: /var/www/app/
-    pattern: "*my-folder*"
-    except: [tmp/my-app/my-folder-2/my-folder-3]
+  - object: /var/www/
     owner: ec2-user
     mode: 555
     type:
