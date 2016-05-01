@@ -8,3 +8,4 @@ pip install flask
 pip install flask-login
 pip install flask-openid
 pip install flask-bcrypt
+pip install tornado
