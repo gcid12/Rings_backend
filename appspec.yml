@@ -95,7 +95,7 @@ hooks:
       timeout: 300
       runas: ec2-user  
 # During the BeforeInstall deployment lifecycle event, run the commands 
-#   in the script specified in "location".
+#   in the script specified in "location"..
   BeforeInstall:
     - location: life/server_configure.sh
       timeout: 300
