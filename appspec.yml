@@ -38,12 +38,12 @@ files:
 permissions:
   - object: /var/www/
     owner: ec2-user
-    mode: 555
+    mode: 755
     type:
       - directory
   - object: /var/www/
     owner: ec2-user
-    mode: 555
+    mode: 755
     type:
       - file
 #  - object:
