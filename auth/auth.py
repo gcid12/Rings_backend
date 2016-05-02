@@ -30,7 +30,8 @@ def login():
     MAM = MainModel()
 
     lggr = lggr_setup()
-
+    print(current_user)
+    print(type(current_user))
     lggr.debug('current_user:'+str(current_user.is_authenticated()))
     
 
