@@ -51,12 +51,9 @@ def login():
     MAM = MainModel()
 
     lggr = lggr_setup()
-    print(current_user)
-    print(type(current_user))
-    lggr.debug('current_user:'+str(current_user.is_authenticated)
-    
+    lggr.debug('current_user:'+str(current_user.is_authenticated))
 
-    if current_user.is_authenticated: 
+    if current_user.is_authenticated :
 
         return redirect('/'+current_user.id+'/_home')
      
