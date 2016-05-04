@@ -45,7 +45,10 @@ if app.config['DEBUG']:
 flask_bcrypt = Bcrypt(app)
 # Associate Flask-Login manager with current app
 login_manager = LoginManager()
+lggr.info('Login Manager defined!')
 login_manager.init_app(app)
+lggr.info('Login Manager initialized!')
+lggr.info(login_manager)
 
 oid = OpenID(app, os.path.join(app.config['BASE_DIR'], 'tmp'))
 

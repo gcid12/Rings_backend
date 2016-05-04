@@ -23,6 +23,27 @@ def lggr_setup():
 
     return lggr
 
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+
+    return redirect('/_login')
+
+@login_manager.user_loader
+def load_user(id):
+    # This is called every single time when you are logged in.
+
+    #lggr.info('xload_user id is:',str(id))
+    
+
+    if id is None:
+        redirect('/_login')
+    user = User(username=id)
+    user.get_user()
+    if user.is_active():
+        return user
+    else:
+        return None
+
 
 @auth_flask_login.route("/_login", methods=["GET", "POST"])
 def login():
@@ -32,10 +53,10 @@ def login():
     lggr = lggr_setup()
     print(current_user)
     print(type(current_user))
-    lggr.debug('current_user:'+str(current_user.is_authenticated()))
+    lggr.debug('current_user:'+str(current_user.is_authenticated)
     
 
-    if current_user.is_authenticated(): 
+    if current_user.is_authenticated: 
 
         return redirect('/'+current_user.id+'/_home')
      
@@ -830,30 +851,6 @@ def logout():
     #flash({'cookie.clear':None},'MP')
     
     return redirect('/_login')
-
-
-
-@login_manager.unauthorized_handler
-def unauthorized_callback():
-
-    return redirect('/_login')
-
-@login_manager.user_loader
-def load_user(id):
-    # This is called every single time when you are logged in.
-
-    #lggr.info('xload_user id is:',str(id))
-    
-
-    if id is None:
-        redirect('/_login')
-    user = User(username=id)
-    user.get_user()
-    if user.is_active():
-        return user
-    else:
-        return None
-    
 
 
 

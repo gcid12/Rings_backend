@@ -1,7 +1,9 @@
+from AvispaLogging import AvispaLoggerAdapter
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from run import app
+
 
 def main():
 
@@ -13,7 +15,7 @@ def main():
 
 	
 	# Multi Process
-	http_server.bind(5000)
+	http_server.bind(8000)
 	http_server.start(0) # forks one process per cpu
 	
 
