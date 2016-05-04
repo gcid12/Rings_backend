@@ -6,4 +6,5 @@ pwd
 echo $PATH
 source env/bin/activate
 echo $PATH
-nohup python /var/www/app/tornado_start.py &
+#nohup python /var/www/app/tornado_start.py &
+python /var/www/app/tornado_start.py &
