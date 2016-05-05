@@ -31,7 +31,6 @@ echo '[include]' >> /tmp/supervisord.ini
 echo 'files = /etc/supervisord.d/*.ini' >> /tmp/supervisord.ini
 sudo cp /tmp/supervisord.conf /etc/supervisord.ini
 
-
 # put life/flask.ini -> /etc/supervisord.d/flask.ini
 # put life/supervisord -> /etc/rc.d/init.d/supervisord
 
