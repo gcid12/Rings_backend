@@ -26,9 +26,9 @@ files:
   - source: /
     destination: /var/www/app/
   - source: life/flask.ini
-    destination: /etc/supervisor.d/flask.ini
+    destination: /etc/supervisor.d
   - source: life/supervisord
-    destination: /etc/rc.d/init.d/supervisord
+    destination: /etc/rc.d/init.d
 
 # For deployments to Amazon Linux, Ubuntu Server, or RHEL instances,
 #   you can specify a "permissions" 
