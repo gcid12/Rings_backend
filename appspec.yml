@@ -51,6 +51,11 @@ permissions:
     mode: 755
     type:
       - file
+  - object: /etc/rc.d/init.d/supervisord
+    owner: root
+    mode: 764
+    type:
+      - file
 #  - object:
 #    pattern:
 #    except:
