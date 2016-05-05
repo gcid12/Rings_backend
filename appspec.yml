@@ -119,7 +119,7 @@ hooks:
   ApplicationStart:
     - location: life/app_start.sh   
       timeout: 300
-      runas: ec2-user
+      runas: root
     - location: life/server_start.sh
       timeout: 300
       runas: ec2-user

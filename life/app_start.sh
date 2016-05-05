@@ -1,6 +1,7 @@
 #!/bin/bash
 
-supervisorctl reload
+#supervisorctl reload
+service supervisord start
 #pwd
 #cd /var/www/app
 #pwd
