@@ -1,6 +1,6 @@
 #!/bin/bash
 
-supervisord
+service supervisord start
 
 #supervisorctl reload
 #service supervisord start
