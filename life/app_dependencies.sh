@@ -23,6 +23,20 @@ pip install elasticsearch_dsl
 pip install flanker
 pip install Wand
 pip install boto
+pip install supervisor
+
+#Prepare supervisor config
+echo_supervisord_conf > /tmp/supervisord.ini
+echo '[include]' >> /tmp/supervisord.ini
+echo 'files = /etc/supervisord.d/*.ini' >> /tmp/supervisord.ini
+sudo cp /tmp/supervisord.conf /etc/supervisord.ini
+
+
+# put life/flask.ini -> /etc/supervisord.d/flask.ini
+# put life/supervisord -> /etc/rc.d/init.d/supervisord
+
+
+
 
 aws s3 cp s3://myring-infra/avispa/20160501/env_config.py env_config.py
 id
