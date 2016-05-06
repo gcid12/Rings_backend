@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm /etc/supervisor.d
-rm /etc/rc.d/init.d/supervisord
+rm -rf /etc/supervisor.d
+rm -rf /etc/rc.d/init.d/supervisord
