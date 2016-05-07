@@ -31,10 +31,10 @@ pip install supervisor
 echo 'Setting up supervisord'
 
 #Prepare supervisor config
-echo_supervisord_conf > /tmp/supervisord.ini
-echo '[include]' >> /tmp/supervisord.ini
-echo 'files = /etc/supervisord.d/*.ini' >> /tmp/supervisord.ini
-sudo cp /tmp/supervisord.ini /etc/supervisord.ini
+echo_supervisord_conf > /tmp/supervisord.conf
+echo '[include]' >> /tmp/supervisord.conf
+echo 'files = /etc/supervisord.d/*.ini' >> /tmp/supervisord.conf
+sudo cp /tmp/supervisord.conf /etc/supervisord.conf
 
 echo 'Installing Avispa configuration'
 
