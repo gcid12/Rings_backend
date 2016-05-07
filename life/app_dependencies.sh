@@ -2,6 +2,9 @@
 #virtualenv --no-site-packages --distribute env && source env/bin/activate && pip install -r requirements.txt
 
 #This should be in the cloudformation template and it is for the APP not for the server
+
+echo 'Installing dependencies...'
+
 sudo yum install gcc-c++
 sudo yum install openssl-devel
 
@@ -25,19 +28,20 @@ pip install Wand
 pip install boto
 pip install supervisor
 
+echo 'Setting up supervisord'
+
 #Prepare supervisor config
 echo_supervisord_conf > /tmp/supervisord.ini
 echo '[include]' >> /tmp/supervisord.ini
 echo 'files = /etc/supervisord.d/*.ini' >> /tmp/supervisord.ini
-sudo cp /tmp/supervisord.conf /etc/supervisord.ini
+sudo cp /tmp/supervisord.ini /etc/supervisord.ini
 
-# put life/flask.ini -> /etc/supervisord.d/flask.ini
-# put life/supervisord -> /etc/rc.d/init.d/supervisord
-
-
-
+echo 'Installing Avispa configuration'
 
 aws s3 cp s3://myring-infra/avispa/20160501/env_config.py env_config.py
 id
+
+echo 'Creating avispa log folder'
+
 sudo mkdir -m 755 -p /var/www/log/avispa
 sudo chown -R ec2-user /var/www/log
