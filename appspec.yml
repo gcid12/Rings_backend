@@ -29,6 +29,8 @@ files:
     destination: /etc/supervisord.d
   - source: life/supervisord
     destination: /etc/rc.d/init.d
+  - source: life/supervisord.conf
+    destination: /etc
 
 # For deployments to Amazon Linux, Ubuntu Server, or RHEL instances,
 #   you can specify a "permissions" 
@@ -52,6 +54,11 @@ permissions:
     type:
       - file
   - object: /etc/rc.d/init.d/supervisord
+    owner: root
+    mode: 764
+    type:
+      - file
+  - object: /etc/supervisord.conf
     owner: root
     mode: 764
     type:

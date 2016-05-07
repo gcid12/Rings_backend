@@ -28,13 +28,12 @@ pip install Wand
 pip install boto
 pip install supervisor
 
-echo 'Setting up supervisord'
-
+#echo 'Setting up supervisord'
 #Prepare supervisor config
-echo_supervisord_conf > /tmp/supervisord.conf
-echo '[include]' >> /tmp/supervisord.conf
-echo 'files = /etc/supervisord.d/*.ini' >> /tmp/supervisord.conf
-sudo cp /tmp/supervisord.conf /etc/supervisord.conf
+#echo_supervisord_conf > /tmp/supervisord.conf
+#echo '[include]' >> /tmp/supervisord.conf
+#echo 'files = /etc/supervisord.d/*.ini' >> /tmp/supervisord.conf
+#sudo cp /tmp/supervisord.conf /etc/supervisord.conf
 
 echo 'Installing Avispa configuration'
 
