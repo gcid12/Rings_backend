@@ -35,6 +35,7 @@ class MainModel:
         self.roles['team_writer'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
         self.roles['team_admin'] = ['get_a_home','get_a_m','get_a_m_n','get_a','get_a_b','get_a_b_c','post_a','post_a_b','put_a','put_a_b','put_a_b_c','delete_a','delete_a_b','delete_a_b_c','put_a_m_n_invite']
         self.roles['anonymous'] = ['get_a_home']
+        self.roles['api_anonymous'] = ['get_a','get_a_b','get_a_b_c']
 
         self.roles['handle_member'] = ['get_a','get_a_b','get_a_b_c']
         self.roles['ring_owner'] = ['get_a_b','get_a_b_c','post_a','post_a_b','put_a_b','put_a_b_c','delete_a_b','delete_a_b_c']
@@ -536,8 +537,13 @@ class MainModel:
        
                     
                 else:
-                    self.lggr.debug('This user is Anonymous 1')
-                    user_authorizations += self.roles['anonymous']
+                    if current_user == '_api_anonymous':
+                        self.lggr.debug('This user is API Anonymous')
+                        user_authorizations += self.roles['api_anonymous']
+
+                    else:
+                        self.lggr.debug('This user is Anonymous 1')
+                        user_authorizations += self.roles['anonymous']
 
 
 

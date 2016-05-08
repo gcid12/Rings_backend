@@ -14,7 +14,7 @@ from MyRingPatch import MyRingPatch
 from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_FOLDER_NAME
-from env_config import IMAGE_FOLDER_NAME, IMAGE_CDN_ROOT
+from env_config import IMAGE_FOLDER_NAME, IMAGE_CDN_ROOT, TEMP_ACCESS_TOKEN
 from MainModel import MainModel
 from timethis import timethis
 
@@ -68,7 +68,12 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     if api:
         
-        #current_user.id = 'token:'+str(request.args.get('token')) #Please change this to the actual username that is using this token
+        # PLEASE REMOVE TEMP_ACCESS_TOKEN with real OAuth access token  ASAP!
+        if request.headers['access_token'] == TEMP_ACCESS_TOKEN:
+            current_user.id = '_api_anonymous' #Please change this to the actual username that is using this token
+        else:
+            return render_template('avispa_rest/error_401.html', data=data),401
+
         authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
 
     if not api:
@@ -1558,14 +1563,6 @@ def roles_a_x_y(handle,collection):
 @avispa_rest.route('/_api/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def api_collections_route_a_x(handle):
 
-    if request.args.get('token') != 'qwerty1234':
-        out = {} 
-        out['Sucess'] = False
-        out['Message'] = 'Wrong Token'
-        data = {}
-        data['api_out'] = json.dumps(out)
-        return render_template("/base_json.html", data=data)
-
     result = collection_dispatcher('_a_x',handle,api=True)
  
     if 'redirect' in result:
@@ -1589,14 +1586,6 @@ def collections_route_a_x(handle):
 @timethis
 @avispa_rest.route('/_api/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def api_collections_route_a_x_y(handle,collection):
-
-    if request.args.get('token') != 'qwerty1234':
-        out = {} 
-        out['Sucess'] = False
-        out['Message'] = 'Wrong Token'
-        data = {}
-        data['api_out'] = json.dumps(out)
-        return render_template("/base_json.html", data=data)
 
     if ('rq' not in request.args) and ('method' not in request.args): 
         #current_app.logger.debug('FLAGx1')
@@ -1678,13 +1667,6 @@ def collections_route_a_x_y(handle,collection):
 @avispa_rest.route('/_api/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 def api_collections_route_a_x_y_b(handle,collection,ring):
 
-    if request.args.get('token') != 'qwerty1234':
-        out = {} 
-        out['Sucess'] = False
-        out['Message'] = 'Wrong Token'
-        data = {}
-        data['api_out'] = json.dumps(out)
-        return render_template("/base_json.html", data=data)
 
     result = route_dispatcher('_a_b',handle,ring,api=True,collection=collection)
 
