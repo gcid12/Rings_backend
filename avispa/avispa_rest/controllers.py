@@ -67,6 +67,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     lggr.debug('Method:%s',m)
 
     if api:
+
+        lggr.info('API call')
         
         # PLEASE REMOVE TEMP_ACCESS_TOKEN with real OAuth access token  ASAP!
         lggr.info('TEMP_ACCESS_TOKEN:'+str(TEMP_ACCESS_TOKEN))
@@ -81,6 +83,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         authorization_result = MAM.user_is_authorized(user_handle,m,depth,handle,ring=ring,idx=idx,api=api)
 
     if not api:
+
+        lggr.info('Not an API call')
   
         authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
         
