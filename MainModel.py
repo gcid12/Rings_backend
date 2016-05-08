@@ -538,11 +538,11 @@ class MainModel:
                     
                 else:
                     if current_user == '_api_anonymous':
-                        self.lggr.debug('This user is API Anonymous')
+                        self.lggr.info('This user is API Anonymous')
                         user_authorizations += self.roles['api_anonymous']
 
                     else:
-                        self.lggr.debug('This user is Anonymous 1')
+                        self.lggr.info('This user is Anonymous 1')
                         user_authorizations += self.roles['anonymous']
 
 
