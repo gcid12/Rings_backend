@@ -73,19 +73,20 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     if api:
 
-        lggr.info('API call')
-        
+        lggr.debug('API call')       
         # PLEASE REMOVE TEMP_ACCESS_TOKEN with real OAuth access token  ASAP!
-        lggr.info('TEMP_ACCESS_TOKEN:'+str(TEMP_ACCESS_TOKEN))
-        
+        lggr.debug('TEMP_ACCESS_TOKEN:'+str(TEMP_ACCESS_TOKEN))       
         # Load Balancer is not letting the headers pass. Will have to use args
         #lggr.info('Header:'+str(request.headers.get('access_token')))
         lggr.info('Arg:'+str(request.args.get('access_token')))
 
+        if hasattr(current_user,'id'):
+            user_handle = current_user.id
 
-        if request.args.get('access_token') == TEMP_ACCESS_TOKEN:
+        elif request.args.get('access_token') == TEMP_ACCESS_TOKEN:
             lggr.info('TEMP_ACCESS_TOKEN matches!')
             user_handle = '_api_anonymous' #Please change this to the actual username that is using this token
+        
         else:
             return render_template('avispa_rest/error_401.html', data=data),401
  

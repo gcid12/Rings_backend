@@ -51,11 +51,15 @@ def login():
     MAM = MainModel()
 
     lggr = lggr_setup()
-    lggr.debug('current_user:'+str(current_user.is_authenticated))
+    lggr.debug('current_user:'+str(current_user.is_authenticated()))
 
-    if current_user.is_authenticated :
+    if current_user.is_authenticated() :
 
-        return redirect('/'+current_user.id+'/_home')
+        if hasattr(current_user,'id'):
+            return redirect('/'+current_user.id+'/_home')
+        else:
+            return redirect('/_login')
+
      
     if request.method == "POST" and "email" in request.form:
 
