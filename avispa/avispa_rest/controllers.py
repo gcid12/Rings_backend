@@ -70,11 +70,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         
         # PLEASE REMOVE TEMP_ACCESS_TOKEN with real OAuth access token  ASAP!
         if request.headers['access_token'] == TEMP_ACCESS_TOKEN:
-            current_user.id = '_api_anonymous' #Please change this to the actual username that is using this token
+            user_handle = '_api_anonymous' #Please change this to the actual username that is using this token
         else:
             return render_template('avispa_rest/error_401.html', data=data),401
-
-        authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
+ 
+        authorization_result = MAM.user_is_authorized(user_handle,m,depth,handle,ring=ring,idx=idx,api=api)
 
     if not api:
   
