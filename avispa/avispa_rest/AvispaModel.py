@@ -24,7 +24,7 @@ from AvispaLogging import AvispaLoggerAdapter
 
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN
 
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
@@ -1222,7 +1222,7 @@ class AvispaModel:
 
 
 
-            query = 'schema=1'
+            query = 'schema=1'+'&access_token=%s'%TEMP_ACCESS_TOKEN
             url=urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', query, ''))
             source_url = urlparse.urlunparse((urlparts.scheme, urlparts.netloc, corrected_path , '', '', ''))
             canonical_url = urlparse.urlunparse((urlparts.scheme, urlparts.netloc, canonical_path , '', '', ''))

@@ -1,6 +1,6 @@
 import collections
 from elasticsearch_dsl.connections import connections
-from env_config import ES_NODE
+from env_config import ES_NODE, TEMP_ACCESS_TOKEN
 
 #SEARCHING
 from elasticsearch import Elasticsearch
@@ -259,8 +259,8 @@ class ElasticSearchModel:
 
 
     def get_items(self,url):
-        url = self.valid_api_url(url)
-        print(url)
+        url = self.valid_api_url(url)+'&access_token=%s'%TEMP_ACCESS_TOKEN
+        print('get_items ->%s'%url)
         result = requests.get(url, verify=False)
         #print(result.text)
         r = result.json()

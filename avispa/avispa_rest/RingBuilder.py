@@ -8,6 +8,7 @@ import logging
 from couchdb.http import PreconditionFailed
 from flask import flash, g 
 from AvispaLogging import AvispaLoggerAdapter
+from env_config import TEMP_ACCESS_TOKEN
 
 from AvispaModel import AvispaModel
 
@@ -162,7 +163,7 @@ class RingBuilder:
                 corrected_path = '/_api'+o2.path
             else:
                 corrected_path = o2.path
-            corrected_query = 'schema'
+            corrected_query = 'schema=1'+'&access_token=%s'%TEMP_ACCESS_TOKEN
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
             
             
