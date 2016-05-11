@@ -175,8 +175,18 @@
 
 
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="p-10 nostroke">People</a></li>
-                            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="p-10 p-x-32 nostroke">Teams</a></li>
+                            <li role="presentation" class="active">
+                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="p-10 nostroke">
+                                <i class="fa fa-user"></i>
+                                Collaborators
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="p-10 p-x-32 nostroke">
+                                <i class="fa fa-shield"></i>
+                                Teams
+                                </a>
+                            </li>
                         </ul>   
 
                     </div>
@@ -247,29 +257,34 @@
                                     <div class="">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class=" text-lgray darklink">
                                             <div class="panel-heading" role="tab" id="headingOne">
-                                  
                                                 <h4 class="panel-title">
+
+                                                    
+                                                    <i class="fa fa-shield"></i>
+
+                                                    
                                                     {{team.teamname}}
                                                 </h4>
+                                                {%for member in team.members%}
 
-                                                <span class="caret"></span>
+                                                <a href="/{{member.handle}}" data-toggle="tooltip" title="{{member.handle}}">
+                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:10px;" alt=""/>
+                                                </a>
+
+                                                {%endfor%}
+
                                             </div>
                                         </a>
                             
                                         <div id="{{team.teamname}}" class="panel-collapse collapse {% if openthis==1 %} in {% set openthis= 2 %} {% endif %} " role="tabpanel">
                                             <div class="p-15 bord-bottom bc-8 bw-2">
-                                                {%for member in team.members%}
 
-                                                <a href="/{{member.handle}}" data-toggle="tooltip" title="{{member.handle}}">
-                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
-                                                </a>
-
-                                                {%endfor%}
+                                                
 
                                                 {%if 'post_a_m' in data.user_authorizations %}
                                                     
                                                     
-                                                        <a href="/{{data.handle}}/_teams/{{team.teamname}}" class="float-right fc-g clearlink"><div class=""><i class="fa fa-plus"></i> </div></a>
+                                                        <a href="/{{data.handle}}/_teams/{{team.teamname}}" class="float-right fc-g clearlink"><i class="fa fa-plus"></i> Add member</a>
                                                     
 
                                                 {%endif%}
