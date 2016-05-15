@@ -83,15 +83,15 @@ class MainModel:
 
     #MAINMODEL
     def select_db(self,dbname):
-        self.lggr.debug('++ select_db')
+        
         
         #self.lggr.debug(self.stack_parser(inspect.stack()))
-        #self.lggr.debug()
         #self.lggr.debug(inspect.trace())
         #self.lggr.debug(inspect.getouterframes(inspect.currentframe())) 
-              
+             
+        self.lggr.debug('++@ MAM.select_db') 
         result = self.couch[dbname] 
-        self.lggr.debug('-- select_db')
+        self.lggr.debug('--@ MAM.select_db')
         return result
          
     #MAINMODEL

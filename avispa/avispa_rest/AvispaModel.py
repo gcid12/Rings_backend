@@ -835,10 +835,13 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_get_schema_from_view(self,handle,ringname):
 
-        self.lggr.debug('++ ring_get_schema_from_view() ')
+        self.lggr.debug('++ AVM.ring_get_schema_from_view() ')
 
         db_ringname=str(handle)+'_'+str(ringname)
+
+        self.lggr.debug('++@ AVM.select_db')
         db = self.couch[db_ringname]
+        self.lggr.debug('--@ AVM.select_db')
 
         options = {}
         self.lggr.debug('++@ db.iterview(ring/schema)')
@@ -863,7 +866,7 @@ class AvispaModel:
 
         #self.lggr.debug('schema:')
         #self.lggr.debug(schema)
-        self.lggr.debug('-- ring_get_schema_from_view() ')
+        self.lggr.debug('-- AVM.ring_get_schema_from_view() ')
 
         return schema
 
@@ -871,12 +874,11 @@ class AvispaModel:
 
     #AVISPAMODEL
     def schema_health_check(self,schema):
+        self.lggr.debug('++ AVM.schema_health_check')
         # 1. Check if the FieldOrders are unique. If they aren't reassign
         l = len(schema['fields'])
         orderd= []
         needsrepair = False
-
-        #self.lggr.debug('Checking schema')
 
         # Checking
         for f in schema['fields']:
@@ -902,7 +904,7 @@ class AvispaModel:
             pass
             #self.lggr.info('No need for repair')
 
-
+        self.lggr.debug('-- AVM.schema_health_check')
         return schema
             
 
