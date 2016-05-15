@@ -1490,7 +1490,7 @@ class AvispaModel:
     #AVISPAMODEL
     def put_a_b_c(self,request,handle,ringname,idx):
 
-        self.lggr.debug('put_a_b_c()')
+        self.lggr.info('START AVM.put_a_b_c')
 
         db_ringname=str(handle)+'_'+str(ringname)
         #self.lggr.debug('#couchdb_call')
@@ -1616,6 +1616,8 @@ class AvispaModel:
             elif 'flag_'+field['FieldId'] in request.form:
                 if len(request.form.get('flag_'+field['FieldId']))!=0:
                     new_flag = unicode(request.form.get('flag_'+field['FieldId']))
+            else:
+                new_flag = False
 
             if old_flag == new_flag:
                 self.lggr.info('Flag for: '+field['FieldName']+' ('+field['FieldId']+') did not change') 
@@ -1702,6 +1704,8 @@ class AvispaModel:
                     if r_rich_values:
                                     
                         item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
+
+        self.lggr.info('END AVM.put_a_b_c')
 
         if needs_store:
             if item.store(db): 

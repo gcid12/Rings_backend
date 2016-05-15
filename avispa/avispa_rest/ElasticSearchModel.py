@@ -130,12 +130,15 @@ class ElasticSearchModel:
 
 
     def indexer(self,url,handle,ring,idx=None):
+        self.lggr.info('START indexer')
         # Good to Index (a/b) and (a/b/c) as they use same ring_class. 
         # If you want to index a whole handle (a) use handle_indexer
 
         # Connect to Elastic Search Node
-        es_url = ES_NODE     
+        es_url = ES_NODE
+        self.lggr.info('START @ create_connection')     
         connections.create_connection(hosts=[es_url])
+        self.lggr.info('END @ create_connection') 
         o = urlparse.urlparse(url) 
 
         if idx:       
@@ -174,9 +177,12 @@ class ElasticSearchModel:
         d = {}
         d['json_out'] = json.dumps(out)
         d['template']='base_json.html'
+        self.lggr.info('END indexer')
         return d
 
     def valid_item(self,item,ring_map):
+
+        self.lggr.info('START valid_item')
 
         print("Check item against map:")
         print(ring_map)
@@ -195,8 +201,9 @@ class ElasticSearchModel:
                     if(isinstance(item[f],str) or 
                        isinstance(item[f],unicode)): 
                         valid = True
+                        self.lggr.info('%s -> %s is a string (%s)'%(f,item[f],type(item[f])))
                     else:
-                        self.lggr.error('%s not a string (%s)'%(item[f],type(item[f])))
+                        self.lggr.error('%s -> %s not a string (%s)'%(f,item[f],type(item[f])))
 
 
                 #elif ring_map[f] is elasticsearch_dsl.field.Object:
@@ -230,14 +237,15 @@ class ElasticSearchModel:
                 if valid:
                     # Add field to the output
                     v_item[f] = item[f]
-                    print('ok')
+                    self.lggr.info('Valid item. Will Index')
                 else:
                     self.lggr.info('Invalid item. Will not index')
 
             else:
                 self.lggr.info('%s not in map'%f)
 
-                
+        self.lggr.info('END valid_item')        
+        
         if len(v_item)>0:
             return v_item
         else:
@@ -260,15 +268,19 @@ class ElasticSearchModel:
 
     def get_items(self,url):
         url = self.valid_api_url(url)+'&access_token=%s'%TEMP_ACCESS_TOKEN
-        print('get_items ->%s'%url)
+        self.lggr.info('START get_items ->%s'%url)
         result = requests.get(url, verify=False)
-        #print(result.text)
+        self.lggr.info('result ->%s'%result.text)
+        self.lggr.info('result.text ->%s'%result.text)
         r = result.json()
+        self.lggr.info('result.json() ->%s'%r)
         schema = {'rings':r['rings'],'fields':r['fields']}
         items = r['items']
+        self.lggr.info('END get_items')
         return schema,items
             
     def prepare_class(self,schema):
+        self.lggr.info('START prepare_class') 
 
         d = {}
         for field in schema['fields']:
@@ -296,9 +308,11 @@ class ElasticSearchModel:
         print(d)
         raw_map = d.copy()
 
+        self.lggr.info('END prepare_class') 
         return type(str(schema['rings'][0]['RingName']),(DocType,),d),raw_map
 
     def subtract_h_r_i(self,origin_url):
+        self.lggr.info('START subtract_h_r_i') 
         url = self.valid_api_url(origin_url)
         print(url)
         o = urlparse.urlparse(url)
@@ -313,18 +327,22 @@ class ElasticSearchModel:
         else:
             idx = None
 
+        self.lggr.info('END subtract_h_r_i') 
         return handle,ringname,idx
 
     def create_index(self,ring_class,origin_url):
+        self.lggr.info('START create_index') 
 
         handle,ringname,idx = self.subtract_h_r_i(origin_url)
         # create the mappings in elasticsearch 
         R = ring_class.init(handle)
+        self.lggr.info('END create_index') 
         return R
 
 
 
     def index_item(self,ring_class,origin_url,item):
+        self.lggr.info('START index_item') 
 
         handle,ringname,idx = self.subtract_h_r_i(origin_url)
 
@@ -344,6 +362,8 @@ class ElasticSearchModel:
         print(article)  
         article.save()
         print('SAVED')
+
+        self.lggr.info('END index_item') 
         return (handle,ringname,idx)
 
 
