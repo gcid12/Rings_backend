@@ -75,7 +75,7 @@
 <section>
     <div class="container">
         <div class="row spa15">
-            <div class="col-sm-8 alpha omega">
+            <div class="col-sm-7 alpha omega">
                 <!-- BOX CONTENT -->
 
                 <div class="gcard">
@@ -166,87 +166,114 @@
             </div><!-- close  --> 
 
             {% if 'get_a_m' in data.user_authorizations %}
-            <div class="col-sm-4 omega">
+            <div class="col-sm-5 omega">
           
-                <div class="gcard">
+                <div class="gcardx">
 
 
-                    <div class="gcard-title" style="padding-bottom:0px;">
+                   
 
 
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active">
-                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="p-10 nostroke">
-                                <i class="fa fa-user"></i>
-                                Collaborators
+                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+                                <i class="fa fa-user"></i> &nbsp;
+                                    Collaborators
                                 </a>
                             </li>
                             <li role="presentation">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="p-10 p-x-32 nostroke">
-                                <i class="fa fa-shield"></i>
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+                                <i class="fa fa-shield"></i> &nbsp;
                                 Teams
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+                                <i class="fa fa-flash"></i> &nbsp;
+                                Campaigns
                                 </a>
                             </li>
                         </ul>   
 
-                    </div>
+                    
               
 
                 <!-- Tab panes -->
-                    <div class="tab-content p-30">
+                    <div class="tab-content gcard">
                         <div role="tabpanel" class="tab-pane active" id="home">
 
+                       
 
-                        {% if 'get_a_p' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/_people" type="button" class="pull-right discretelink"><span class="fs-0-9 fc-g"></span> <i class="fa fa-gear"></i></a> <br/>
-                        {%endif%}
-                        <table class="table">
+                            <div class="panel-groupx" id="collaborators" role="tablist" aria-multiselectable="true">
+
    
-                            {% for person in data.people %}
-                            <tr class="bord-bottom bc-8 bw-2">
-                                <td width="20%">
-                                    <a href="/{{person.handle}}/_home" class="clearlink" data-toggle="tooltip" title="{{person.handle}}">
+                                {% for person in data.people %}
+                                <a data-toggle="collapse" data-parent="#collaborators" href="#{{person.handle}}" aria-expanded="true" class=" text-lgray darklink">
+                                    <div class="panel-heading" role="tab" id="headingOne">
 
-                                    <img class="user-small user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
-                                    </a>
-                                </td>
-                                <td>
-                                    
+                                        
+                                        <div class="bord-bottom bc-8 bw-2">
 
-                                    <span class="fs-0-9 fw-300 pull-left">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <i class="fa fa-caret-down"></i>123
+                                                    <a href="/{{person.handle}}/_home" class="clearlink" data-toggle="tooltip" title="{{person.handle}}">
+                                                        <img class="user-xsmall user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px;" alt=""/>
+                                                    </a>
+                                                    
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    456
+                                                    <span class="fs-0-9 fw-300 pull-left">
+                                                        <a href="/{{person.handle}}/_home" class="fw-c nounder fc-m">
+                                                                {{ person.handle }}
+                                                        </a>
+                                                    </span>
+                                                    
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    789
+                                                    <i class="fa fa-caret-down"></i>123
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div id="{{person.handle}}" class="panel-collapse collapse" role="tabpanel">
+                                    <div class="p-15 bord-bottom bc-8 bw-2">
+
                                         {% if person.handle_actualname %}
 
-                                            <a href="/{{person.handle}}/_home" class="fw-c nounder fc-m">{{ person.handle_actualname }}</a>
-                                            <br/>
-                                            <span class="text-lgray fs-1">{{person.handle}}</span>
-                                        {% else %}
-                                            <a href="/{{person.handle}}/_home" class="fw-c nounder fc-m">
-                                            {{ person.handle }}</a>
-                                            <br/>
-                                            <span class="text-lgray fs-1">{{person.handle}}</span>
+                                                            <a href="/{{person.handle}}/_home" class="fw-c nounder fc-m">{{ person.handle_actualname }}</a>
+                                                            <br/>
+                                                            <span class="text-lgray fs-1">{{person.handle}}</span>
+                                                        {% else %}
+                                                            <a href="/{{person.handle}}/_home" class="fw-c nounder fc-m">
+                                                            {{ person.handle }}</a>
+                                                            <br/>
+                                                            <span class="text-lgray fs-1">{{person.handle}}</span>
 
                                         {% endif %}
+                                    </div>
+                                </div>
 
 
-                                    </span>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-
-
-
+                                {% endfor %}
+                            </div>
+                        
+                            {% if 'get_a_p' in data.user_authorizations %}
+                            <a href="/{{data.handle}}/_people" type="button" class="pull-right discretelink">
+                                <span class="fs-0-9 fc-g">Add new collab</span> 
+                                <i class="fa fa-gear"></i>
+                            </a> <br/>
+                            {%endif%}
 
                         </div>
 
                         <!-- TEAMS -->
                         <div role="tabpanel" class="tab-pane" id="profile">
 
-                            <a href="/{{data.handle}}/_teams" type="button" class="pull-right discretelink"><span class="fs-0-9 fc-g"></span> <i class="fa fa-cog fa-1x"></i></a> 
-
-
-
-                                <div class="panel-groupX" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel-groupX" id="accordion" role="tablist" aria-multiselectable="true">
 
                                 {% set openthis= 1 %}
 
@@ -259,10 +286,8 @@
                                             <div class="panel-heading" role="tab" id="headingOne">
                                                 <h4 class="panel-title">
 
-                                                    
                                                     <i class="fa fa-shield"></i>
 
-                                                    
                                                     {{team.teamname}}
                                                 </h4>
                                                 {%for member in team.members%}
@@ -276,10 +301,8 @@
                                             </div>
                                         </a>
                             
-                                        <div id="{{team.teamname}}" class="panel-collapse collapse {% if openthis==1 %} in {% set openthis= 2 %} {% endif %} " role="tabpanel">
+                                        <div id="{{team.teamname}}" class="panel-collapse collapse" role="tabpanel">
                                             <div class="p-15 bord-bottom bc-8 bw-2">
-
-                                                
 
                                                 {%if 'post_a_m' in data.user_authorizations %}
                                                     
@@ -295,6 +318,7 @@
                                     {%endif%}
                                 {% endfor %}                        
                             </div> 
+                            <a href="/{{data.handle}}/_teams" type="button" class="pull-right discretelink"><span class="fs-0-9 fc-g"></span> <i class="fa fa-cog fa-1x"></i></a> 
 
 
 
