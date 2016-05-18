@@ -3,6 +3,7 @@ from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from run import app
+from env_config import NUMBER_OF_PROCESSES
 
 
 def main():
@@ -16,7 +17,7 @@ def main():
 	
 	# Multi Process
 	http_server.bind(8000)
-	http_server.start(0) # forks one process per cpu
+	http_server.start(NUMBER_OF_PROCESSES) # forks one process per cpu
 	
 
 	IOLoop.instance().start()

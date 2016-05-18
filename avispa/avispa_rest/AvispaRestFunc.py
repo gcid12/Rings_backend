@@ -575,12 +575,16 @@ class AvispaRestFunc:
 
     def ring_parameters(self,handle,ring):
 
+        self.lggr.debug('++ ring_parameters()')
+
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
 
         if ringparameters:
+            self.lggr.debug('-- ring_parameters()')
             return (ringparameters['count'],ringparameters['ringorigin'])
         else:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
+            self.lggr.debug('-- ring_parameters()')
             return False
 
         
@@ -937,6 +941,8 @@ class AvispaRestFunc:
         Gets existing item
         ''' 
 
+        self.lggr.debug('++ ARF_get_a_b_c')
+
         d = {}
 
         if 'fieldid' in request.args:
@@ -948,14 +954,18 @@ class AvispaRestFunc:
             idlabel = True
 
         #Subtract Schema
+        
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
+        
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
         layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'])
         
         print('TYPES:',types)
         #Subtract item from DB
+        
         preitem_result = self.AVM.get_a_b_c(request,handle,ring,idx)
+        
 
         if preitem_result:
             preitem = preitem_result  
@@ -1002,7 +1012,8 @@ class AvispaRestFunc:
             d['redirect'] = '/'+handle+'/'+ring
             self.lggr.info('This item does not exist')            
             flash('This item does not exist','ER')
-
+        
+        self.lggr.debug('-- ARF_get_a_b_c')
         return d
   
     def get_rq_a_b_c(self,request,handle,ring,idx,api=False,collection=None,*args): 

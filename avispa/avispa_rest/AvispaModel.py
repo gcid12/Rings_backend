@@ -835,11 +835,18 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_get_schema_from_view(self,handle,ringname):
 
+        self.lggr.debug('++ AVM.ring_get_schema_from_view() ')
+
         db_ringname=str(handle)+'_'+str(ringname)
+
+        self.lggr.debug('++@ AVM.select_db')
         db = self.couch[db_ringname]
+        self.lggr.debug('--@ AVM.select_db')
 
         options = {}
+        self.lggr.debug('++@ db.iterview(ring/schema)')
         result  = db.iterview('ring/schema',1,**options)
+        self.lggr.debug('--@ db.iterview(ring/schema)')
 
         schema = {}
 
@@ -859,6 +866,7 @@ class AvispaModel:
 
         #self.lggr.debug('schema:')
         #self.lggr.debug(schema)
+        self.lggr.debug('-- AVM.ring_get_schema_from_view() ')
 
         return schema
 
@@ -866,12 +874,11 @@ class AvispaModel:
 
     #AVISPAMODEL
     def schema_health_check(self,schema):
+        self.lggr.debug('++ AVM.schema_health_check')
         # 1. Check if the FieldOrders are unique. If they aren't reassign
         l = len(schema['fields'])
         orderd= []
         needsrepair = False
-
-        #self.lggr.debug('Checking schema')
 
         # Checking
         for f in schema['fields']:
@@ -897,7 +904,7 @@ class AvispaModel:
             pass
             #self.lggr.info('No need for repair')
 
-
+        self.lggr.debug('-- AVM.schema_health_check')
         return schema
             
 
@@ -962,6 +969,8 @@ class AvispaModel:
     
 
     def get_a_b_parameters(self,handle,ringname,user_database=None):
+
+        self.lggr.debug('++ get_a_b_parameters')
         
         if not user_database : 
             user_database = self.user_database
@@ -974,6 +983,7 @@ class AvispaModel:
               
                 if 'deleted' in user_ring:
                     if user_ring:
+                        self.lggr.debug('-- get_a_b_parameters')
                         return False
 
                 parameters = {}
@@ -984,6 +994,7 @@ class AvispaModel:
                     parameters['ringorigin'] = handle
 
                 
+                self.lggr.debug('-- get_a_b_parameters')
                 return parameters
 
 
@@ -1441,6 +1452,8 @@ class AvispaModel:
     #AVISPAMODEL
     def get_a_b_c(self,request,handle,ringname,idx,human=False):
 
+        self.lggr.debug('++ AVM.get_a_b_c')
+
         schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
         OFH={}
@@ -1466,16 +1479,18 @@ class AvispaModel:
             item = self.populate_item(OrderedFields,row,OFH=OFH)
 
             if item:
+                self.lggr.debug('-- AVM.get_a_b_c')
                 return item
 
         #There is no item. It could have been deleted.
+        self.lggr.debug('-- AVM.get_a_b_c')
         return False
 
 
     #AVISPAMODEL
     def put_a_b_c(self,request,handle,ringname,idx):
 
-        self.lggr.debug('put_a_b_c()')
+        self.lggr.info('START AVM.put_a_b_c')
 
         db_ringname=str(handle)+'_'+str(ringname)
         #self.lggr.debug('#couchdb_call')
@@ -1601,6 +1616,8 @@ class AvispaModel:
             elif 'flag_'+field['FieldId'] in request.form:
                 if len(request.form.get('flag_'+field['FieldId']))!=0:
                     new_flag = unicode(request.form.get('flag_'+field['FieldId']))
+            else:
+                new_flag = False
 
             if old_flag == new_flag:
                 self.lggr.info('Flag for: '+field['FieldName']+' ('+field['FieldId']+') did not change') 
@@ -1687,6 +1704,8 @@ class AvispaModel:
                     if r_rich_values:
                                     
                         item.rich[0][field['FieldId']] = r_rich_values[field['FieldId']]
+
+        self.lggr.info('END AVM.put_a_b_c')
 
         if needs_store:
             if item.store(db): 

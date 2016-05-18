@@ -69,7 +69,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     m = method+depth
     data['method'] = m
-    lggr.debug('Method:%s',m)
+    lggr.info('Route:%s',m)
 
     if api:
 
@@ -88,6 +88,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             user_handle = '_api_anonymous' #Please change this to the actual username that is using this token
         
         else:
+            lggr.info('END route_dispatcher')
             return render_template('avispa_rest/error_401.html', data=data),401
  
         authorization_result = MAM.user_is_authorized(user_handle,m,depth,handle,ring=ring,idx=idx,api=api)
@@ -99,6 +100,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
         
         if not authorization_result['authorized']:
+            lggr.info('END route_dispatcher')
             return render_template('avispa_rest/error_401.html', data=data),401
 
         data['user_authorizations'] = authorization_result['user_authorizations']
@@ -185,7 +187,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         status = 200
 
     if 'redirect' in data:
-        lggr.info('Before RETURN')      
+        
+        lggr.info('END route_dispatcher')     
         return data 
 
     elif api: 
@@ -264,7 +267,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 csvdoc = cvsdocIO.getvalue()
                 cvsdocIO.close()
  
-                lggr.info('Before RETURN')
+                lggr.info('END route_dispatcher')
                 return csvdoc
             
             if 'fl' in request.args:
@@ -290,7 +293,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             else:
                 response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+".csv"
 
-            lggr.info('Before RETURN')
+            lggr.info('END route_dispatcher')
             return response
 
             #return Response(csvout), mimetype='text/csv')
@@ -301,15 +304,15 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             data['json_out'] = json.dumps(data['raw_out'])
             print('JSONOUT',data['json_out'])
             
-            lggr.info('Before RETURN')
+            lggr.info('END route_dispatcher')
             return render_template(data['template'], data=data), status
      
 
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-        lggr.info('Before RETURN')   
+        lggr.info('END route_dispatcher')   
         return render_template(data['template'], data=data), status     
     else:
-        lggr.info('Before RETURN')
+        lggr.info('END route_dispatcher')
         return render_template(data['template'], data=data)
         
 
