@@ -26,7 +26,7 @@ def lggr_setup():
 @login_manager.unauthorized_handler
 def unauthorized_callback():
 
-    return redirect('/_login')
+    return redirect('/_unauthorized_handler')
 
 @login_manager.user_loader
 def load_user(id):
