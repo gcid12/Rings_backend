@@ -1519,10 +1519,18 @@ class AvispaModel:
             new = None
             old = None
 
+
+
             #INITIALIZE FIELD IF IT DOES NOT EXIST
             if field['FieldId'] not in item.items[0]:
                 # If it doesn't exist create it
                 item.items[0][field['FieldId']] = ''
+
+            #CHECK IF FLAGS EXISTS AND CREATE IT IF NOT
+            if 'flags' not in item:
+                item['flags'] = []
+                item['flags'].append({})
+
 
             if field['FieldId'] not in item.flags[0]:
                 # If it doesn't exist create it
