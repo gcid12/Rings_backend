@@ -149,25 +149,10 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def x_ring_set_db_views(self,db_ringname): 
-    #Implemented as indicated here: http://markhaase.com/2012/06/23/couchdb-views-in-python/
-    #Deprecated. Only useful if view function are in python. 
-    #Python + CouchDB very poor and complicated as of now. 
-    #I rather use JS in the meantime
-
-        
-        db = self.couch[db_ringname]
-
-        CVS = CouchViewSync()
-        return CVS.set_db_views(db)
-
-    #AVISPAMODEL
     def ring_set_db_views(self,db_ringname,specific=False):
-
-        
+     
         db = self.couch[db_ringname]
-
-        
+   
         if not specific or specific == 'ring/items':
             view = ViewDefinition('ring', 'items', 
                    '''
