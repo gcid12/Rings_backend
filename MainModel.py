@@ -16,14 +16,14 @@ from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_T
 
 class MainModel:
 
-    def __init__(self,test=False):
+    def __init__(self):
 
       
         logger = logging.getLogger('Avispa')
-        if test:
-            self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
-        else:
-            self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        #if test:
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
+        #else:
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
         
         #self.lggr.debug('__init__()')
         
@@ -49,9 +49,6 @@ class MainModel:
         self.roles['capturist'] = ['get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
         self.roles['fact_checker'] = ['get_a_b_c','put_a_b_c']
         
-
-
-        self.user_database = 'myring_users'
 
     #MAINMODEL
 

@@ -24,14 +24,13 @@ from AvispaLogging import AvispaLoggerAdapter
 
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN, USER_DB
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN
 
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
 
 
 class AvispaModel:
-
 
     def __init__(self,test=False):
 
@@ -46,22 +45,13 @@ class AvispaModel:
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.MAM = MainModel(test)
 
-
-    def get_user_doc(self,handle):
-           
-        return self.MAM.select_user(handle)
-
-    def post_user_doc(self,doc,handle):
-
-        return self.MAM.post_user_doc(handle)
-
     #AVISPAMODEL
     def user_get_rings(self,handle):
 
         data=[]
         try:
 
-            user_doc = self.get_user_doc(handle)        
+            user_doc = self.MAM.select_user(handle)       
             rings = user_doc['rings']
 
             for ring in rings:
@@ -337,20 +327,19 @@ class AvispaModel:
 
         self.lggr.info("handle:",handle)
 
-        doc = self.get_user_doc(handle)
+        doc = self.MAM.select_user(handle)
 
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
-        
-        self.post_user_doc(doc)
+
+        self.MAM.post_user_doc(doc)
 
         return True
 
     #AVISPAMODEL
     def user_delete_ring(self,handle,ringname):
-        
-        doc = self.get_user_doc(handle)
-        
 
+        doc = self.MAM.select_user(handle)
+        
         #Clean all the references to this ring in the user document
         # This is NOT a tombstone. The database and its data will be deleted. 
         # TO DO : Backup the data in a secondary database
@@ -388,7 +377,7 @@ class AvispaModel:
 
             j = j+1
                 
-        if self.post_user_doc(doc):
+        if self.MAM.post_user_doc(doc):
             return True
 
         
@@ -403,7 +392,7 @@ class AvispaModel:
             self.lggr.info('Deleted from COUCHDB')
             del1 = True
 
-        doc = self.get_user_doc(handle)
+        doc = self.MAM.select_user(handle)
         rings = doc['rings']
         count = 0
         for ring in rings:
@@ -415,7 +404,7 @@ class AvispaModel:
 
                 #ring['deleted']=True
                 
-        if self.post_user_doc(doc):
+        if self.MAM.post_user_doc(doc):
             self.lggr.info('Deleted from USERDB')
             del2 = True
       
@@ -674,9 +663,9 @@ class AvispaModel:
     #AVISPAMODEL
     def get_item_count(self,handle,ringname):
 
-        user_doc = self.get_user_doc(handle)
-        self.lggr.info('user rings:'+str(user_doc['rings']))
-        for user_ring in user_doc['rings']:
+        doc = self.MAM.select_user(handle)
+        self.lggr.info('user rings:'+str(doc['rings']))
+        for user_ring in doc['rings']:
             if user_ring['ringname']==ringname:
                 return user_ring['count']
 
@@ -692,7 +681,7 @@ class AvispaModel:
          {'name':'ok', 'color':'#00f'},
          {'name':'ready', 'color':'#0f0'}]
        
-        doc =  self.get_user_doc(handle)
+        doc = self.MAM.select_user(handle)
 
         if doc:
 
@@ -701,7 +690,7 @@ class AvispaModel:
                     ring['labels'] = json.dumps(labels)
                     self.lggr.info('Labels added to the ring')
 
-            if self.post_user_doc(doc):
+            if self.MAM.post_user_doc(doc):
                 
                 return True
             else:
@@ -712,7 +701,7 @@ class AvispaModel:
     #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
 
-        doc =  self.get_user_doc(handle)
+        doc = self.MAM.select_user(handle)
 
         if doc:
 
@@ -721,7 +710,7 @@ class AvispaModel:
                     ring['count'] += 1
                     self.lggr.info('Item Count increased')
 
-            if self.post_user_doc(doc):
+            if self.MAM.post_user_doc(doc):
                 
                 return True
             else:
@@ -731,7 +720,7 @@ class AvispaModel:
         #AVISPAMODEL
     def decrease_item_count(self,handle,ringname):
 
-        doc =  self.get_user_doc(handle)
+        doc = self.MAM.select_user(handle)
 
         if doc:
             for ring in doc['rings']:
@@ -739,7 +728,7 @@ class AvispaModel:
                     ring['count'] -= 1
                     self.lggr.info('Item Count decreased')
 
-            if self.post_user_doc(doc):       
+            if self.MAM.post_user_doc(doc):       
                 return True
             else:
                 self.lggr.error('Could not decrease item count')
@@ -747,7 +736,7 @@ class AvispaModel:
 
     def set_ring_origin(self,handle,ringname,origin):
 
-        doc = self.get_user_doc(handle)
+        doc = self.MAM.select_user(handle)
 
         if user:
 
@@ -757,7 +746,7 @@ class AvispaModel:
                     ring['origin'] = origin
                     self.lggr.info('Ring origin set to '+origin)
 
-            if self.post_user_doc(doc):
+            if self.MAM.post_user_doc(doc):
                 
                 return True
             else:
@@ -889,10 +878,11 @@ class AvispaModel:
     def get_a_b_parameters(self,handle,ringname):
 
         self.lggr.debug('++ get_a_b_parameters')
-        user_doc = self.get_user_doc(handle)
+
+        doc = self.MAM.select_user(handle)
 
         #self.lggr.info('user rings:',user_doc['rings'])
-        for user_ring in user_doc['rings']:
+        for user_ring in doc['rings']:
             if user_ring['ringname']==ringname:
               
                 if 'deleted' in user_ring:

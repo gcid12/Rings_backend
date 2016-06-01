@@ -175,7 +175,7 @@ class AuthModel:
         
         db = self.couch[user_database]
 
-        auser = self.MAM.select_user(user_database, data['username'])
+        auser = self.MAM.select_user(data['username'])
 
         self.lggr.info('Notice: User subtracted from DB ')
 

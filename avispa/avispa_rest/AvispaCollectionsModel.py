@@ -7,7 +7,7 @@ from couchdb.http import ResourceNotFound
 
 import couchdb
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, USER_DB
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 from flask import flash, current_app, g
 from AvispaLogging import AvispaLoggerAdapter
 
@@ -21,29 +21,18 @@ class AvispaCollectionsModel:
 
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        self.user_database = USER_DB
-
         self.MAM = MainModel()
-
-    def user_doc_save(self,user_doc):
-
-        db = self.MAM.select_db(USER_DB)
-        user_doc.store(db)
-
 
 
     #COLLECTIONSMODEL
-    def get_a_x(self,handle,user_database=None):
+    def get_a_x(self,handle):
 
         # Returns list of collections
-        user_database = self.user_database
 
         try:               
-            user_doc = self.MAM.select_user(handle) 
-
-            collections = user_doc['collections']  
-            rings = user_doc['rings']
-            
+            doc = self.MAM.select_user(handle) 
+            collections = doc['collections']  
+            rings = doc['rings'] 
 
             # 1. Here we need to call the DB again but now to get which 
             
@@ -110,14 +99,11 @@ class AvispaCollectionsModel:
 
     #COLLECTIONSMODEL
     def post_a_x(self,handle,collectiond):
+        '''Creates new collection'''
 
-        #Creates new collection 
-        #user_database = self.user_database
-                      
-        #db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(handle) 
+        doc = self.MAM.select_user(handle) 
 
-        self.lggr.debug('user_doc[colections]:',user_doc['collections'])
+        self.lggr.debug('user_doc[colections]:',doc['collections'])
 
         newcollection = {'collectionname' : str(collectiond['name']),
                          'collectiondescription' : str(collectiond['description']),
@@ -126,9 +112,10 @@ class AvispaCollectionsModel:
                          'added' : str(datetime.now())}
 
 
-        user_doc['collections'].append(newcollection)
+        doc['collections'].append(newcollection)
 
-        self.user_doc_save(user_doc)
+        
+        self.MAM.post_user_doc(doc)
 
         return True  
 
@@ -137,17 +124,14 @@ class AvispaCollectionsModel:
     def get_a_x_y(self,handle,collection):
 
         #Returns just one collection
-        
-        user_database = self.user_database
 
         try:               
-            db = self.MAM.select_db(user_database)
-            user_doc = self.MAM.select_user(handle) 
+            doc = self.MAM.select_user(handle) 
 
             #self.lggr.debug('user_doc:',user_doc)
 
-            collections = user_doc['collections'] 
-            rings = user_doc['rings']
+            collections = doc['collections'] 
+            rings = doc['rings']
             
             validring = {}
 
@@ -177,18 +161,14 @@ class AvispaCollectionsModel:
             #self.lggr.debug('ValidatedCollections:', collections)
                 
         except (ResourceNotFound, TypeError) as e:
-            self.lggr.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0],sys.exc_info()[1]))
             
 
     #COLLECTIONSMODEL
     def put_a_x_y(self,handle,collectiond):
 
-        user_database = self.user_database
-                     
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(handle) 
-
-        self.lggr.debug('user_doc[colections]:',user_doc['collections'])
+        doc = self.MAM.select_user(handle) 
+        self.lggr.debug('user_doc[colections]:',doc['collections'])
 
         newcollection = {'collectionname' : str(collectiond['name']),
                          'collectiondescription' : str(collectiond['description']),
@@ -197,40 +177,25 @@ class AvispaCollectionsModel:
                          'added' : str(datetime.now())}
 
         i = 0
-        for coll in user_doc['collections']:
+        for coll in doc['collections']:
 
-            #self.lggr.debug()
-            #self.lggr.debug('coll',coll)
-            #self.lggr.debug('user_doc[collections][i]',user_doc['collections'][i])
-            #self.lggr.debug()
-            #self.lggr.debug('coll[collectioname]:',coll['collectionname'])
-            #self.lggr.debug('newcoll:',newcollection['collectionname'])
             if coll['collectionname'] ==  newcollection['collectionname']:
                 self.lggr.debug('You need to replace this', coll)
                 self.lggr.debug('For this:', newcollection)
                 #This is a match. This is what we need to replace with incoming document
-                user_doc['collections'][i] = newcollection
+                doc['collections'][i] = newcollection
                 #self.lggr.debug('coll MOD',coll)
-
 
             i = i+1
 
-                #user_doc['collections'].append(newcollection)
-        self.lggr.debug('user_doc MOD:',user_doc)
-        user_doc.store(db)
-
+        self.MAM.post_user_doc(doc)
         return True  
 
 
         #COLLECTIONSMODEL
-    def patch_a_x_y(self,handle,collection,collectiond,user_database=None):
+    def patch_a_x_y(self,handle,collection,collectiond):
 
-        user_database = self.user_database
-                     
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(handle) 
-
-        self.lggr.debug('user_doc[colections]:',user_doc['collections'])
+        doc = self.MAM.select_user(handle) 
         
         path = {}
         if 'name' in collectiond:
@@ -243,55 +208,41 @@ class AvispaCollectionsModel:
             patch['rings'] = collectiond['ringlist']
 
         i = 0
-        for coll in user_doc['collections']:
+        for coll in doc['collections']:
 
             if coll['collectionname'] ==  collection:
                 
                 for p in patch:
-                    user_doc['collections'][i][p] = patch[p]
+                    doc['collections'][i][p] = patch[p]
 
             i = i+1
 
-                #user_doc['collections'].append(newcollection)
-        self.lggr.debug('user_doc PATCHED:',user_doc)
-        user_doc.store(db)
-
+        self.MAM.post_user_doc(doc)
         return True  
 
     def add_ring_to_collection(self,handle,collection,ringd):
-                     
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(handle) 
-
-        for coll in user_doc['collections']:
-
+ 
+        doc = self.MAM.select_user(handle) 
+        for coll in doc['collections']:
             if coll['collectionname'] ==  collection:
                 coll['rings'].append(ringd)
 
-        self.lggr.debug('Ring added to collection:',user_doc)
-        user_doc.store(db)
-
+        self.lggr.info('Ring added to collection:',doc)
+        self.MAM.post_user_doc(doc)
         return True
-
-
 
     #COLLECTIONSMODEL
     def delete_a_x_y(self,handle,collection):
 
-        user_database = self.user_database
-                      
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        doc = self.MAM.select_user(handle) 
 
         i = 0
-        for coll in user_doc['collections']:
+        for coll in doc['collections']:
             if coll['collectionname'] ==  collection:
-                del user_doc['collections'][i] 
+                del doc['collections'][i] 
 
             i = i+1
 
-        self.lggr.debug('user_doc MOD:',user_doc)
-        user_doc.store(db)
-
+        self.MAM.post_user_doc(doc)
         return True  
   
