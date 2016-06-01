@@ -7,7 +7,7 @@ from couchdb.http import ResourceNotFound
 
 import couchdb
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, USER_DB
 from flask import flash, current_app, g
 from AvispaLogging import AvispaLoggerAdapter
 
@@ -21,21 +21,25 @@ class AvispaCollectionsModel:
 
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        self.user_database = 'myring_users'
+        self.user_database = USER_DB
 
         self.MAM = MainModel()
+
+    def user_doc_save(self,user_doc):
+
+        db = self.MAM.select_db(USER_DB)
+        user_doc.store(db)
+
 
 
     #COLLECTIONSMODEL
     def get_a_x(self,handle,user_database=None):
 
         # Returns list of collections
-
-        if not user_database : 
-            user_database = self.user_database
+        user_database = self.user_database
 
         try:               
-            user_doc = self.MAM.select_user(user_database,handle) 
+            user_doc = self.MAM.select_user(handle) 
 
             collections = user_doc['collections']  
             rings = user_doc['rings']
@@ -96,7 +100,7 @@ class AvispaCollectionsModel:
                 
 
         except (ResourceNotFound, TypeError) as e:
-            self.lggr.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0] , sys.exc_info()[1]))
             
 
         return False
@@ -105,16 +109,13 @@ class AvispaCollectionsModel:
         
 
     #COLLECTIONSMODEL
-    def post_a_x(self,handle,collectiond,user_database=None):
+    def post_a_x(self,handle,collectiond):
 
-        #Creates new collection
-
-        if not user_database : 
-            user_database = self.user_database
-
+        #Creates new collection 
+        #user_database = self.user_database
                       
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        #db = self.MAM.select_db(user_database)
+        user_doc = self.MAM.select_user(handle) 
 
         self.lggr.debug('user_doc[colections]:',user_doc['collections'])
 
@@ -126,24 +127,22 @@ class AvispaCollectionsModel:
 
 
         user_doc['collections'].append(newcollection)
-        user_doc.store(db)
+
+        self.user_doc_save(user_doc)
 
         return True  
 
 
     #COLLECTIONSMODEL
-    def get_a_x_y(self,handle,collection,user_database=None):
+    def get_a_x_y(self,handle,collection):
 
         #Returns just one collection
-
-
-        if not user_database : 
-            user_database = self.user_database
+        
+        user_database = self.user_database
 
         try:               
             db = self.MAM.select_db(user_database)
-            user_doc = self.MAM.select_user(user_database,handle) 
-
+            user_doc = self.MAM.select_user(handle) 
 
             #self.lggr.debug('user_doc:',user_doc)
 
@@ -158,10 +157,7 @@ class AvispaCollectionsModel:
                     ringversion = str(ring['version'])
                     ringversionh = ringversion.replace('-','.')
                     count = ring['count']
-                    validring[ringname+'_'+ringversionh] = count
-
-            
-            
+                    validring[ringname+'_'+ringversionh] = count 
 
             for coll in collections:
                 #coll['valid'] = True
@@ -175,30 +171,22 @@ class AvispaCollectionsModel:
                             break
                         else:
                             ring['count'] = validring[ring['ringname']+'_'+ring['version']]
-
-
-
-                                            
+                                
                     return coll
                         
-
             #self.lggr.debug('ValidatedCollections:', collections)
                 
-
         except (ResourceNotFound, TypeError) as e:
             self.lggr.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
             
 
-
     #COLLECTIONSMODEL
-    def put_a_x_y(self,handle,collectiond,user_database=None):
+    def put_a_x_y(self,handle,collectiond):
 
-        if not user_database : 
-            user_database = self.user_database
-
-                      
+        user_database = self.user_database
+                     
         db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        user_doc = self.MAM.select_user(handle) 
 
         self.lggr.debug('user_doc[colections]:',user_doc['collections'])
 
@@ -237,11 +225,10 @@ class AvispaCollectionsModel:
         #COLLECTIONSMODEL
     def patch_a_x_y(self,handle,collection,collectiond,user_database=None):
 
-        if not user_database : 
-            user_database = self.user_database
+        user_database = self.user_database
                      
         db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        user_doc = self.MAM.select_user(handle) 
 
         self.lggr.debug('user_doc[colections]:',user_doc['collections'])
         
@@ -271,14 +258,10 @@ class AvispaCollectionsModel:
 
         return True  
 
-    def add_ring_to_collection(self,handle,collection,ringd,user_database=None):
-
-        if not user_database : 
-            user_database = self.user_database
-
+    def add_ring_to_collection(self,handle,collection,ringd):
                      
         db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        user_doc = self.MAM.select_user(handle) 
 
         for coll in user_doc['collections']:
 
@@ -293,11 +276,9 @@ class AvispaCollectionsModel:
 
 
     #COLLECTIONSMODEL
-    def delete_a_x_y(self,handle,collection,user_database=None):
+    def delete_a_x_y(self,handle,collection):
 
-        if not user_database : 
-            user_database = self.user_database
-
+        user_database = self.user_database
                       
         db = self.MAM.select_db(user_database)
         user_doc = self.MAM.select_user(user_database,handle) 
