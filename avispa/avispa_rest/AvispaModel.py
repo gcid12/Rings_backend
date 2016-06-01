@@ -24,7 +24,7 @@ from AvispaLogging import AvispaLoggerAdapter
 
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN, USER_DB
 
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
@@ -41,30 +41,16 @@ class AvispaModel:
             self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
         else:
             self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
-        
 
-        #self.lggr.debug('__init__()')
-  
-        #self.lggr.debug('#couchdb_call')
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        ##self.lggr.debug('self.couch :AVM')
-        #self.lggr.debug(self.couch)
-        #self.lggr.debug('self.couch.resource.credentials :AVM')
-        #self.lggr.debug(self.couch.resource.credentials)
-        self.user_database = 'myring_users'
-
+        self.user_database = USER_DB
         self.MAM = MainModel(test)
 
 
-
-    def get_user_doc(self,handle,user_database=None):
-
-        if not user_database : 
-            user_database = self.user_database
-
-        db = self.MAM.select_db(user_database)            
-        return self.MAM.select_user(user_database,handle)
+    def get_user_doc(self,handle):
+           
+        return self.MAM.select_user(handle)
 
     #AVISPAMODEL
     def user_get_rings(self,handle,user_database=None):
@@ -649,51 +635,36 @@ class AvispaModel:
         else:
             return TextField()
 
+    def ring_class_field_history(self):
+        '''Creates object that contains field history'''
+
+        d = {}
+        d['date']=DateTimeField()
+        d['author']=TextField()
+        d['before']=TextField()
+        d['after']=TextField()
+        d['action']=TextField()
+        d['doc']=DictField()
+        return ListField(DictField(Mapping.build(**d)))
+
+    def ring_class_prepare_class_arguments(self,schema):
+        '''Prepares argument objects for Ring Class '''
+
+        args = {'type':{},'rich':{},'history':{},'meta':{},'flags':{}}
+
+        for field in schema['fields']:
+            args['type'][field['FieldId']] = self.ring_class_field_type(field['FieldType'])
+            args['rich'][field['FieldId']] = ListField(DictField())
+            args['history'][field['FieldId']] = self.ring_class_field_history()
+            args['meta'][field['FieldId']] = DictField()
+            args['flags'][field['FieldId']] = TextField()
+
+        return args
+
     #AVISPAMODEL
     def ring_create_class(self,schema):
 
-        args_i = {}
-        args_rich = {}
-        args_history = {}
-        args_meta = {}
-        args_flags = {}
-
-        fields = schema['fields']
-        for field in fields:
-
-            args_i[field['FieldId']] = self.ring_class_field_type(field['FieldType'])
-
-            
-            d1 = {}
-            d1['_id']=TextField()
-            d1['_source']=TextField()
-            self.lggr.debug('len:'+str(len(d1)))
-            args_rich[field['FieldId']] = ListField(DictField())
-            
-
-            d2 = {}
-            d2['date']=DateTimeField()
-            d2['author']=TextField()
-            d2['before']=TextField()
-            d2['after']=TextField()
-            d2['action']=TextField()
-            d2['doc']=DictField()
-            args_history[field['FieldId']] = ListField(DictField(Mapping.build(**d2)))
-
-            args_flags[field['FieldId']] = TextField()
-
-            args_meta[field['FieldId']] = DictField()
-
-
-            
-
-
-        self.lggr.debug('args_i'+str(args_i))
-        self.lggr.debug('args_rich'+str(args_rich))
-        self.lggr.debug('args_history'+str(args_history))
-        self.lggr.debug('args_flags'+str(args_flags))
-        self.lggr.debug('args_meta'+str(args_meta))
-
+        args = self.ring_class_prepare_class_arguments(schema)
 
         RingClass = type('RingClass',
                          (Document,),
@@ -704,26 +675,24 @@ class AvispaModel:
                             'public' : BooleanField(default=False),
                             'deleted' : BooleanField(default=False),
                             'items': ListField(DictField(Mapping.build(
-                                                    **args_i
+                                                    **args['type']
                                                 ))),
                             'rich': ListField(DictField(Mapping.build(
-                                                    **args_rich
+                                                    **args['rich']
                                                 ))),
                             'history': ListField(DictField(Mapping.build(
-                                                    **args_history
+                                                    **args['history']
                                                 ))),
                             'flags': ListField(DictField(Mapping.build(
-                                                    **args_flags
+                                                    **args['flags']
                                                 ))),
                             'meta': ListField(DictField(Mapping.build(
-                                                    **args_meta
+                                                    **args['meta']
                                                 )))
                                                }) 
 
-        self.lggr.info('RingClass:'+str(RingClass))
-
+        #self.lggr.info('RingClass:'+str(RingClass))
         return RingClass
-
 
     #AVISPAMODEL
     def get_item_count(self,handle,ringname,user_database=None):
@@ -732,7 +701,7 @@ class AvispaModel:
         if not user_database : 
             user_database = self.user_database
 
-        user_doc = self.MAM.select_user(user_database,handle)
+        user_doc = self.get_user_doc(handle)
         self.lggr.info('user rings:'+str(user_doc['rings']))
         for user_ring in user_doc['rings']:
             if user_ring['ringname']==ringname:
@@ -972,7 +941,7 @@ class AvispaModel:
         if not user_database : 
             user_database = self.user_database
 
-        user_doc = self.MAM.select_user(user_database,handle)
+        user_doc = self.get_user_doc(handle)
 
         #self.lggr.info('user rings:',user_doc['rings'])
         for user_ring in user_doc['rings']:

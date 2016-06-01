@@ -10,7 +10,7 @@ from MyRingUser import MyRingUser
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
 from AvispaLogging import AvispaLoggerAdapter
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN, USER_DB
 
 
 
@@ -286,12 +286,10 @@ class MainModel:
         return result
 
     #MAINMODEL  
-    def select_user(self,dbname,username):
+    def select_user(self,username):
         
-        self.db = self.select_db(dbname)
-        #self.lggr.debug('Notice: Selecting User ->'+username)
-        
-        return MyRingUser.load(self.db, username)
+        db = self.select_db(USER_DB)
+        return MyRingUser.load(db, username)
 
 
     def select_user_doc_view(self,dbview,key,batch=None,user_database=None):
