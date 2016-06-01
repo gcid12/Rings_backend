@@ -10,21 +10,25 @@ from MyRingUser import MyRingUser
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
 from AvispaLogging import AvispaLoggerAdapter
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN
 
 
 
 class MainModel:
 
-    def __init__(self):
+    def __init__(self,test=False):
 
       
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
-
+        if test:
+            self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
+        else:
+            self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        
         #self.lggr.debug('__init__()')
         
-        self.couch = couchdb.Server(current_app.config['COUCHDB_SERVER'])
-        self.couch.resource.credentials = (current_app.config['COUCHDB_USER'],current_app.config['COUCHDB_PASS'])
+        self.couch = couchdb.Server(COUCHDB_SERVER)
+        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.user_database = 'myring_users'
 
         self.roles = {}
@@ -128,6 +132,9 @@ class MainModel:
         #self.lggr.debug('flag1')
         self.db = self.select_db(dbname)
         #self.lggr.debug('flag2')
+
+        if 'onLogin' not in userd:
+            userd['onlogin'] = ''
 
         #self.lggr.debug('Notice: Creating User ->'+userd['username'])
         auser = MyRingUser(
