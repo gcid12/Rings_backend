@@ -5,12 +5,12 @@ from MainModel import MainModel
 from auth.AuthModel import AuthModel
 import unittest
 
-class AvispaModelTestCase(unittest.TestCase):
+class TestAvispaModel(unittest.TestCase):
 
     def setUp(self):
-        self.AVM = AvispaModel() 
-        self.MAM = MainModel() 
-        self.ATM = AuthModel() 
+        self.AVM = AvispaModel(test=True) 
+        self.MAM = MainModel(test=True) 
+        self.ATM = AuthModel(test=True) 
         self.user_db = 'myring_users_test_1'
 
         self.user = {}
@@ -21,6 +21,7 @@ class AvispaModelTestCase(unittest.TestCase):
         self.user['passhash'] = 'testhash'
         self.user['guid'] = 'testguid'
         self.user['salt'] = 'testsalt'
+        #self.user['onlogin'] = 'testhandle'
 
         self.preschema = {}
         self.preschema['ringname'] = 'testring'
@@ -63,82 +64,9 @@ class AvispaModelTestCase(unittest.TestCase):
         self.MAM.delete_db(self.user_db)
         
 
-    #MAIN
-    def test_create_then_select_a_db(self):
-        #TEST
-        resultcreate = self.MAM.create_db(self.user_db)
-        resultselect = self.MAM.select_db(self.user_db)
-        self.assertTrue(resultselect)
-
-    #AUTH
-    def test_new_admin_user_db(self):
-        #TEST
-        result = self.ATM.admin_user_db_create(self.user_db)
-        self.assertTrue(result)
-
-    #AUTH
-    def test_duplicate_admin_user_db(self):
-        #SETUP
-        self.ATM.admin_user_db_create(self.user_db)
-        #TEST
-        result = self.ATM.admin_user_db_create(self.user_db)
-        self.assertFalse(result)
-
-    #AUTH
-    def test_new_admin_user(self):
-        #SETUP
-        self.ATM.admin_user_db_create(self.user_db)
-        #TEST
-        result = self.ATM.admin_user_create(self.user,self.user_db)
-        self.assertTrue(result)
-
-    #AUTH
-    def test_duplicate_admin_user(self):
-        #SETUP
-        self.ATM.admin_user_db_create(self.user_db)
-        self.ATM.admin_user_create(self.user,self.user_db)
-        #TEST
-        result = self.ATM.admin_user_create(self.user,self.user_db)
-        self.assertFalse(result)
-
-    #AUTH
-    def test_create_new_user(self):
-        #SETUP
-        self.ATM.admin_user_db_create(self.user_db)
-        #TEST
-        result = self.MAM.create_user(self.user,self.user_db)
-        self.assertTrue(result)
-
-    #AUTH
-    def test_select_existing_user_in_existing_db(self):
-        #SETUP
-        self.ATM.admin_user_db_create(self.user_db)
-        self.MAM.create_user(self.user,self.user_db)
-        #TEST
-        result = self.MAM.select_user(self.user_db,self.user['username'])
-        self.assertEqual(result['email'],self.user['email'])
-
-    #AUTH
-    def test_select_non_existing_user_in_existing_db(self):
-        #SETUP
-        self.ATM.admin_user_db_create(self.user_db)
-        #TEST
-        result = self.MAM.select_user(self.user_db,self.user['username'])
-        self.assertEqual(result,None)
-
-    #AUTH
-    def test_delete_existing_user_in_existing_db(self):
-        #SETUP
-        self.ATM.admin_user_db_create(self.user_db)
-        self.MAM.create_user(self.user,self.user_db)
-        self.MAM.select_user(self.user_db,self.user['username'])
-        #TEST
-        result = self.MAM.delete_user(self.user_db,self.user['username'])
-        self.assertTrue(result)
-
 
     #AVISPA
-    def test_get_rings_from_empty_ring_list(self):
+    def test__user_get_rings__from_empty_ring_list(self):
         #SETUP
         print('Function admin_user_db_create starts')
         self.ATM.admin_user_db_create(self.user_db)
@@ -150,23 +78,9 @@ class AvispaModelTestCase(unittest.TestCase):
         self.assertEqual(0,len(result))
 
     #AVISPA
-    def test_add_ring_to_user_ring_list(self):
+    def test__user_get_rings__from_ring_list(self):
         #SETUP
-        print('Function admin_user_db_create starts')
-        self.ATM.admin_user_db_create(self.user_db)
-        print('Function create_user starts')
-        self.MAM.create_user(self.user,self.user_db)
-        print('Function user_add_ring starts')
-        self.AVM.user_add_ring(self.user['username'],self.preschema['ringname'],self.preschema['ringversion'],self.user_db)
-        #TEST
-        result = self.MAM.select_user(self.user_db,self.user['username'])
-        if result['rings'][0]['ringname']:
-            self.assertEqual(result['rings'][0]['ringname'],self.preschema['ringname'])
-    
-    
-    #AVISPA
-    def test_get_rings_from_ring_list(self):
-        #SETUP
+        self.MAM.delete_db(self.ringdbname)
         print('Function admin_user_db_create starts')
         self.ATM.admin_user_db_create(self.user_db)
         print('Function create_user starts')
@@ -183,36 +97,116 @@ class AvispaModelTestCase(unittest.TestCase):
         #TEST
         print('Function user_get_rings starts')
         result = self.AVM.user_get_rings(self.handle,self.user_db)
+        print('RESULT:::')
+        print(result)
         self.assertEqual(result[0]['ringname'],self.preschema['ringname']+'_'+self.preschema['ringversion'])
         
         #TEARDOWN
-        self.MAM.delete_db(self.ringdbname)
+        #self.MAM.delete_db(self.ringdbname)
+        
+
+    #MAIN
+    def test__create_db__and__select_db(self):
+        #TEST
+        resultcreate = self.MAM.create_db(self.user_db)
+        resultselect = self.MAM.select_db(self.user_db)
+        self.assertTrue(resultselect)
+
+    #MAIN
+    def test__create_user__new(self):
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        #TEST
+        result = self.MAM.create_user(self.user,self.user_db)
+        self.assertTrue(result)
+
+    #MAIN
+    def test__select_user__existing_user_in_existing_db(self):
+        # Select existing user in existing DB
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        self.MAM.create_user(self.user,self.user_db)
+        #TEST
+        result = self.MAM.select_user(self.user_db,self.user['username'])
+        self.assertEqual(result['email'],self.user['email'])
+
+    #MAIN
+    def test__select_user__non_existing_user_in_existing_db(self):
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        #TEST
+        result = self.MAM.select_user(self.user_db,self.user['username'])
+        self.assertEqual(result,None)
+
+    #MAIN
+    def test__select_user__add_ring_to_user(self):
+        #test_add_ring_to_user_ring_list
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        self.MAM.create_user(self.user,self.user_db)
+        self.AVM.user_add_ring(self.user['username'],self.preschema['ringname'],self.preschema['ringversion'],self.user_db)
+        #TEST
+        result = self.MAM.select_user(self.user_db,self.user['username'])
+        if result['rings'][0]['ringname']:
+            self.assertEqual(result['rings'][0]['ringname'],self.preschema['ringname'])
+
+    #MAIN
+    def test__delete_user__existing_user_in_existing_db(self):
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        self.MAM.create_user(self.user,self.user_db)
+        self.MAM.select_user(self.user_db,self.user['username'])
+        #TEST
+        result = self.MAM.delete_user(self.user_db,self.user['username'])
+        self.assertTrue(result)
+
+    #AUTH
+    def test__admin_user_db_create(self):
+        #TEST
+        result = self.ATM.admin_user_db_create(self.user_db)
+        self.assertTrue(result)
+
+    #AUTH
+    def test__admin_user_db_create__duplicate(self):
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        #TEST
+        result = self.ATM.admin_user_db_create(self.user_db)
+        self.assertFalse(result)
+
+    #AUTH
+    def test__admin_user_create(self):
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        #TEST
+        result = self.ATM.admin_user_create(self.user,self.user_db)
+        self.assertTrue(result)
+
+    #AUTH
+    def test__admin_user_create__duplicate(self):
+        #SETUP
+        self.ATM.admin_user_db_create(self.user_db)
+        self.ATM.admin_user_create(self.user,self.user_db)
+        #TEST
+        result = self.ATM.admin_user_create(self.user,self.user_db)
+        self.assertFalse(result)
     
     #AUTH
-    def test_user_database_views(self):
+    def test__userdb_get_user_by_email(self):
         #SETUP
-        print('Function admin_user_db_create starts')
         self.ATM.admin_user_db_create(self.user_db)
-        print('Function create_user starts')
         self.MAM.create_user(self.user,self.user_db)
-        print('Function userdb_get_userhash')
-        result =self.ATM.userdb_get_userhash(self.user['email'],self.user_db)
-        print(result['key'])
-        print(result['value'])
+        #TEST
+        result =self.ATM.userdb_get_user_by_email(self.user['email'],self.user_db)
         self.assertEqual(result['key'],self.user['email'])
-
-
-
-
-
-    #def test_admin_user_create_new(self):
-
-        #self.AM.admin_user_create()
 
 
 
 if __name__ == '__main__':
     #unittest.main()
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(AvispaModelTestCase)
+    #If you want to run only one test
+    #python -m  unittest avispa.avispa_rest.test_AvispaModel.TestAvispaModel.test__userdb_get_user_by_email
+
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestAvispaModel)
     unittest.TextTestRunner(verbosity=2).run(suite)
