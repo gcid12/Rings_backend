@@ -16,10 +16,13 @@ from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, IMAGE_FOLDER_
 
 class AuthModel:
 
-    def __init__(self):
+    def __init__(self,test=False):
 
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        if test:
+            self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
+        else:
+            self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
         self.lggr.debug('__init__()')
 
@@ -31,7 +34,7 @@ class AuthModel:
         #self.lggr.info(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
-        self.MAM = MainModel()
+        self.MAM = MainModel(test)
 
         self.officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
         self.thumbnailsizes = {'t75':75,'t150':150}
@@ -151,13 +154,13 @@ class AuthModel:
 
         except(PreconditionFailed):  
 
-            current_app.logger.info("Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.info("Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1])
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             #raise
 
             # Will not get here because of 'raise'
-            current_app.logger.info("Notice: Since it already existed, selecting existing one")
+            self.lggr.info("Notice: Since it already existed, selecting existing one")
             self.MAM.select_db(user_database)
             
             self.lggr.info('Notice: '+user_database+' database exists already')
