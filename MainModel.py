@@ -88,14 +88,7 @@ class MainModel:
     #MAINMODEL
     def select_db(self,dbname):
         
-        
-        #self.lggr.debug(self.stack_parser(inspect.stack()))
-        #self.lggr.debug(inspect.trace())
-        #self.lggr.debug(inspect.getouterframes(inspect.currentframe())) 
-             
-        self.lggr.debug('++@ MAM.select_db') 
         result = self.couch[dbname] 
-        self.lggr.debug('--@ MAM.select_db')
         return result
          
     #MAINMODEL
@@ -294,10 +287,10 @@ class MainModel:
 
     #MAINMODEL  
     def select_user(self,dbname,username):
-        self.lggr.debug('++ select_user')
+        
         self.db = self.select_db(dbname)
         #self.lggr.debug('Notice: Selecting User ->'+username)
-        self.lggr.debug('-- select_user')
+        
         return MyRingUser.load(self.db, username)
 
 
