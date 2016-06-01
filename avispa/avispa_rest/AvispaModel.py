@@ -44,7 +44,6 @@ class AvispaModel:
 
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        self.user_database = USER_DB
         self.MAM = MainModel(test)
 
 
@@ -52,13 +51,17 @@ class AvispaModel:
            
         return self.MAM.select_user(handle)
 
+    def post_user_doc(self,doc,handle):
+
+        return self.MAM.post_user_doc(handle)
+
     #AVISPAMODEL
-    def user_get_rings(self,handle,user_database=None):
+    def user_get_rings(self,handle):
 
         data=[]
         try:
 
-            user_doc = self.get_user_doc(handle,user_database)        
+            user_doc = self.get_user_doc(handle)        
             rings = user_doc['rings']
 
             for ring in rings:
@@ -117,7 +120,7 @@ class AvispaModel:
             #The problem has to do with pagination. It can't find it in the current page
 
             #flash("You have no rings yet, create one!")
-            self.lggr.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0] , sys.exc_info()[1]))
             #self.lggr.debug('Notice: No rings for this user.')
 
         return data
@@ -345,30 +348,22 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def user_add_ring(self,handle,ringname,ringversion,user_database=None):
+    def user_add_ring(self,handle,ringname,ringversion):
 
-        if not user_database : 
-            user_database = self.user_database
-
-        
-        db = self.couch[user_database]
-        
         self.lggr.info("handle:",handle)
-        doc =  MyRingUser.load(db, handle)
+
+        doc = self.get_user_doc(handle)
+
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
-        doc.store(db)
+        
+        self.post_user_doc(doc)
 
         return True
 
     #AVISPAMODEL
-    def user_delete_ring(self,handle,ringname,user_database=None):
-
-        if not user_database : 
-            user_database = self.user_database
-
+    def user_delete_ring(self,handle,ringname):
         
-        db = self.couch[user_database]
-        doc =  MyRingUser.load(db, handle)
+        doc = self.get_user_doc(handle)
         
 
         #Clean all the references to this ring in the user document
@@ -408,16 +403,14 @@ class AvispaModel:
 
             j = j+1
                 
-        if doc.store(db):
+        if self.post_user_doc(doc):
             return True
 
-        #doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
-        #doc.store(db)
         
         return False
 
     #AVISPAMODEL
-    def user_hard_delete_ring(self,handle,ringname,ringversion,user_database=None):
+    def user_hard_delete_ring(self,handle,ringname,ringversion):
 
         #dbname = handle+'_'+ringname+'_'+ringversion
         dbname = handle+'_'+ringname
@@ -425,20 +418,19 @@ class AvispaModel:
             self.lggr.info('Deleted from COUCHDB')
             del1 = True
 
-        db = self.couch[self.user_database]
-        user_doc =  MyRingUser.load(db, handle)
-        rings = user_doc['rings']
+        doc = self.get_user_doc(handle)
+        rings = doc['rings']
         count = 0
         for ring in rings:
             if ring['ringname']==ringname and ring['version']==ringversion:
                 #Here you should also make a hard delete not only a tombstone
-                del user_doc['rings'][count]
+                del doc['rings'][count]
 
             count += 1
 
                 #ring['deleted']=True
                 
-        if user_doc.store(db):
+        if self.post_user_doc(doc):
             self.lggr.info('Deleted from USERDB')
             del2 = True
       
@@ -695,11 +687,7 @@ class AvispaModel:
         return RingClass
 
     #AVISPAMODEL
-    def get_item_count(self,handle,ringname,user_database=None):
-
-
-        if not user_database : 
-            user_database = self.user_database
+    def get_item_count(self,handle,ringname):
 
         user_doc = self.get_user_doc(handle)
         self.lggr.info('user rings:'+str(user_doc['rings']))
@@ -719,17 +707,16 @@ class AvispaModel:
          {'name':'ok', 'color':'#00f'},
          {'name':'ready', 'color':'#0f0'}]
        
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
+        doc =  self.get_user_doc(handle)
 
-        if user:
+        if doc:
 
-            for ring in user['rings']:
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
                     ring['labels'] = json.dumps(labels)
                     self.lggr.info('Labels added to the ring')
 
-            if user.store(self.db):
+            if self.post_user_doc(doc):
                 
                 return True
             else:
@@ -739,18 +726,17 @@ class AvispaModel:
 
     #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
-       
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
 
-        if user:
+        doc =  self.get_user_doc(handle)
 
-            for ring in user['rings']:
+        if doc:
+
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] += 1
                     self.lggr.info('Item Count increased')
 
-            if user.store(self.db):
+            if self.post_user_doc(doc):
                 
                 return True
             else:
@@ -760,16 +746,15 @@ class AvispaModel:
         #AVISPAMODEL
     def decrease_item_count(self,handle,ringname):
 
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
+        doc =  self.get_user_doc(handle)
 
-        if user:
-            for ring in user['rings']:
+        if doc:
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] -= 1
                     self.lggr.info('Item Count decreased')
 
-            if user.store(self.db):       
+            if self.post_user_doc(doc):       
                 return True
             else:
                 self.lggr.error('Could not decrease item count')
@@ -777,18 +762,17 @@ class AvispaModel:
 
     def set_ring_origin(self,handle,ringname,origin):
 
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
+        doc = self.get_user_doc(handle)
 
         if user:
 
-            for ring in user['rings']:
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
 
                     ring['origin'] = origin
                     self.lggr.info('Ring origin set to '+origin)
 
-            if user.store(self.db):
+            if self.post_user_doc(doc):
                 
                 return True
             else:
@@ -801,13 +785,8 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_get_schema_from_view(self,handle,ringname):
 
-        self.lggr.debug('++ AVM.ring_get_schema_from_view() ')
-
-        db_ringname=str(handle)+'_'+str(ringname)
-
-        self.lggr.debug('++@ AVM.select_db')
+        db_ringname=str(handle)+'_'+str(ringname)        
         db = self.couch[db_ringname]
-        self.lggr.debug('--@ AVM.select_db')
 
         options = {}
         self.lggr.debug('++@ db.iterview(ring/schema)')
@@ -817,26 +796,14 @@ class AvispaModel:
         schema = {}
 
         for row in result:  
-            #self.lggr.debug('row.value.fields:')
-            #self.lggr.debug(row.value['fields'])    
+ 
             schema = {}
-            #schema['rings']=row.value
-
             schema['fields']=row.value['fields']
             schema['rings']=row.value['rings']
 
             schema = self.schema_health_check(schema)
             
-            #schema['rings']=row.rings
-            #schema['fields']=row.fields
-
-        #self.lggr.debug('schema:')
-        #self.lggr.debug(schema)
-        self.lggr.debug('-- AVM.ring_get_schema_from_view() ')
-
         return schema
-
-        #return False
 
     #AVISPAMODEL
     def schema_health_check(self,schema):
@@ -934,13 +901,9 @@ class AvispaModel:
 
     
 
-    def get_a_b_parameters(self,handle,ringname,user_database=None):
+    def get_a_b_parameters(self,handle,ringname):
 
         self.lggr.debug('++ get_a_b_parameters')
-        
-        if not user_database : 
-            user_database = self.user_database
-
         user_doc = self.get_user_doc(handle)
 
         #self.lggr.info('user rings:',user_doc['rings'])

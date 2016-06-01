@@ -286,10 +286,16 @@ class MainModel:
         return result
 
     #MAINMODEL  
+    #TODO: Rename this method to get_user_doc()
     def select_user(self,username):
         
         db = self.select_db(USER_DB)
         return MyRingUser.load(db, username)
+
+    def post_user_doc(doc):
+
+        db = self.select_db(USER_DB)
+        return doc.store(db)
 
 
     def select_user_doc_view(self,dbview,key,batch=None,user_database=None):
