@@ -33,10 +33,15 @@ from flask.ext.login import (current_user, login_required, login_user, logout_us
 class AvispaModel:
 
 
-    def __init__(self):
+    def __init__(self,test=False):
 
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+
+        if test:
+            self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
+        else:
+            self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        
 
         #self.lggr.debug('__init__()')
   
@@ -49,27 +54,26 @@ class AvispaModel:
         #self.lggr.debug(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
-        self.MAM = MainModel()
+        self.MAM = MainModel(test)
 
-    #AVISPAMODEL
-    def user_get_rings(self,handle,user_database=None):
 
+
+    def get_user_doc(self,handle,user_database=None):
 
         if not user_database : 
             user_database = self.user_database
 
+        db = self.MAM.select_db(user_database)            
+        return self.MAM.select_user(user_database,handle)
+
+    #AVISPAMODEL
+    def user_get_rings(self,handle,user_database=None):
 
         data=[]
-
         try:
-                   
-            db = self.MAM.select_db(user_database)            
-            user_doc = self.MAM.select_user(user_database,handle)
-            
+
+            user_doc = self.get_user_doc(handle,user_database)        
             rings = user_doc['rings']
-            
-            #self.lggr.debug(rings)
-         
 
             for ring in rings:
                 
@@ -120,8 +124,6 @@ class AvispaModel:
                         
 
             #self.lggr.debug('flag6')
-
-            
 
         except (ResourceNotFound, TypeError) as e:
 
@@ -477,34 +479,24 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_get_item_document(self,handle,ringname,idx):
 
-        db_ringname=str(handle)+'_'+str(ringname)
-        
-        db = self.couch[db_ringname]
-
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.couch[db_ringname]
         item = RingClass.load(db,idx)
 
         return item
-
-        
-
 
 
     #AVISPAMODEL
     def ring_set_schema(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
 
-        #self.lggr.info('ring_set_schema('+str(handle)+','+str(ringname)+','+str(ringversion)+','+str(pinput)+','+str(ringprotocol)+','+str(fieldprotocol))
-
         if ringversion == 'None' or ringversion == None:
-            self.lggr.error('ringversion none')
             ringversion = ''
 
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname=str(handle)+'_'+str(ringname)
-        
-        #self.lggr.debug('db_ringname:'+str(db_ringname))
-        
         db = self.couch[db_ringname]
         numfields = len(pinput['fields'])
         schema = MyRingSchema.load(db,'schema')
@@ -641,7 +633,22 @@ class AvispaModel:
 
         return schemaclass
 
-    
+    #AVISPAMODEL
+    def ring_class_field_type(self,fieldtype):
+        '''Maps ring datatype with couchdb type'''
+
+        #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
+        if fieldtype == 'INTEGER':
+            return IntegerField()
+        elif fieldtype == 'OBJECT':
+            return DictField()
+        elif fieldtype == 'ARRAY':
+            return ListField()
+        elif fieldtype == 'BOOLEAN':
+            return BooleanField()
+        else:
+            return TextField()
+
     #AVISPAMODEL
     def ring_create_class(self,schema):
 
@@ -654,19 +661,9 @@ class AvispaModel:
         fields = schema['fields']
         for field in fields:
 
-            #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
-            if field['FieldType'] == 'INTEGER':
-                args_i[field['FieldId']] = IntegerField()
-            elif field['FieldType'] == 'OBJECT':
-                args_i[field['FieldId']] = DictField()
-            elif field['FieldType'] == 'ARRAY':
-                args_i[field['FieldId']] = ListField()
-            elif field['FieldType'] == 'BOOLEAN':
-                args_i[field['FieldId']] = BooleanField()
-            else:
-                args_i[field['FieldId']] = TextField()
+            args_i[field['FieldId']] = self.ring_class_field_type(field['FieldType'])
 
-            #d1={'source':TextField()}
+            
             d1 = {}
             d1['_id']=TextField()
             d1['_source']=TextField()
