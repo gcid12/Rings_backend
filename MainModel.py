@@ -20,9 +20,7 @@ class MainModel:
 
       
         logger = logging.getLogger('Avispa')
-        #if test:
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
-        #else:
+
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
         
         #self.lggr.debug('__init__()')
@@ -297,8 +295,6 @@ class MainModel:
 
     def select_user_doc_view(self,dbview,key,batch=None,user_database=None):
 
-
- 
         if not user_database : 
             user_database = self.user_database
 
