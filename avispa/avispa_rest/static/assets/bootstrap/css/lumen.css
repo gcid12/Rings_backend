@@ -6182,7 +6182,6 @@ button.close {
   border-width: 0 1px 4px 1px;
   font-size: 10px;
   font-weight: bold;
-  text-transform: uppercase;
 }
 .btn:hover {
   margin-top: 1px;
@@ -6384,7 +6383,7 @@ label {
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
-  background-color:#CCC;
+  /*background-color:#CCC;*/
   padding-top: 1px;
   padding-bottom: 1px;
 }

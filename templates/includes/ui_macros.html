@@ -9,7 +9,7 @@
  
         {% if 'get_a' in user_authorizations %}
 
-          <a href="/{{handle}}/_collections/{{collection}}">{{ collection|capitalize }}</a>
+          <a href="/{{handle}}/_collections/{{collection}}" class="fc-n"><i class="fa fa-cube"></i> {{ collection|capitalize }}</a>
 
                 {% if 'get_a_x' in user_authorizations %}
             

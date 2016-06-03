@@ -8,8 +8,8 @@
     font-weight:400;font-style:normal;}
 /*#f2f0ed*/
 
-/*body{background-color:#f5f5f5;}*/
-body{background-color:#f6f6f6; 
+body{
+  background-color:#f6f6f6;
 font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: none;
 }
 /*TEXT */
@@ -22,6 +22,9 @@ h5{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: n
 
 p{ font-family: Helvetica,Arial,sans-serif; font-weight: 300;}
 
+input:focus {
+    background-color: yellow;
+}
 
 .fw-a{font-weight:300;} /*light*/
 .fw-b{font-weight:400;} /*medium*/
@@ -49,7 +52,7 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .whitelink:hover{color:#FFF; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
 .whitelink:focus{color:#FFF; text-decoration:none !important; outline:0 !important;}
 
-
+.clearlink{color:#222 !important;}
 .clearlink:link{text-decoration:none !important; outline:0 !important;}
 .clearlink:active{text-decoration:none !important; outline:0 !important;}
 .clearlink:focus{text-decoration:none !important; outline:0 !important;}
@@ -57,10 +60,12 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .clearlink:focus{color:#CCC; text-decoration:none !important; outline:0 !important;}
 
 
+.darklink{color:#666;}
 .darklink:link{text-decoration:none !important; outline:0 !important;}
 .darklink:active{text-decoration:none !important; outline:0 !important;}
 .darklink:focus{text-decoration:none !important; outline:0 !important;}
-.darklink:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
+.darklink:hover{
+  color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
 .darklink:focus{color:#000; text-decoration:none !important; outline:0 !important;}
 
 
@@ -131,7 +136,7 @@ filter: grayscale(100%);
 
 
 .fc-a{color:#FFF;} /*white*/
-.fc-b{color:#000;} /*black*/
+.fc-b{color:#000 !important;} /*black*/
 .fc-c{color:#f69416;} /*orange*/
 .fc-d{color:#00acdd;} /*light blue*/
 .fc-e{color:#212f62;} /*dark blue*/
@@ -208,6 +213,7 @@ filter: grayscale(100%);
 .p-x-16{padding:0 16px;}
 .p-x-20{padding:0 20px;}
 .p-x-32{padding:0 32px;}
+.p-y-5{padding:5px 0 !important;}
 .p-y-20{padding:20px 0 !important;}
 .p-y-10{padding:10px 0 !important;}
 
@@ -240,6 +246,7 @@ filter: grayscale(100%);
 
 .pb-10{padding-bottom:10px;}
 .pb-20{padding-bottom:20px;}
+.pt-5{padding-top:5px;}
 .pt-10{padding-top:10px;}
 .pt-20{padding-top:20px;}
 .pl-5{padding-left:5px;}
@@ -254,7 +261,7 @@ filter: grayscale(100%);
 .mb-20{margin-bottom:20px;}
 
 
-
+.m-y-5{padding:5px 0 !important;}
 
 .margin-b-10{margin-bottom:10px;}
 .margin-b-20{margin-bottom:20px;}
@@ -304,6 +311,38 @@ filter: grayscale(100%);
 }
 
 .op-0-5{opacity:0.5;}
+
+
+
+.medal-icon{
+  text-shadow: 2px 2px #f8b500;
+}
+
+
+.medal-container{
+    display:inline-block;
+    font-size: 25px;
+    line-height: 42px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    vertical-align: bottom;
+    border-radius: 20px;
+    box-shadow: 1px 1px 2px #EFEFEF;
+    margin:0px 20px 0 0;
+}
+
+
+.bg-gold{
+background: #fceabb; /* Old browsers */
+background: -moz-linear-gradient(top,  #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#fbdf93',GradientType=0 ); /* IE6-9 */
+
+color:#f9e8c0 !important;
+}
+
 
 /*BACKGROUNDS*/
 
@@ -860,6 +899,10 @@ background-color:#75a017;
 color:#FFF;
 }
 
+.btn-100 {
+width:100%;
+}
+
 
 .rn-mar5{margin:5px}
 
@@ -1024,7 +1067,7 @@ font-family: 'Raleway', sans-serif; font-weight: 200;
 
 
 .gcard{
-box-shadow: 0px 1px 3px #d5d5d5;
+/*box-shadow: 0px 1px 3px #d5d5d5;*/
 border-radius: 4px 4px 4px 4px;
 background-color:white;
 }
@@ -1407,6 +1450,14 @@ border:1px solid #FFF;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
 border-radius: 5px;  }
+
+.user-xsmall{
+width:25px;    
+border:1px solid #FFF;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;  }
+
 
 .user-bar{
 width:28px;    
