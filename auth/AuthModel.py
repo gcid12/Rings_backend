@@ -16,16 +16,11 @@ from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, IMAGE_FOLDER_
 
 class AuthModel:
 
-    def __init__(self,test=False):
+    def __init__(self):
 
         logger = logging.getLogger('Avispa')
-        if test:
-            self.lggr = AvispaLoggerAdapter(logger, {'tid': 'test','ip':'test'})
-        else:
-            self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
-
-        self.lggr.debug('__init__()')
-
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         #self.lggr.info('self.couch :ATM')
@@ -34,7 +29,7 @@ class AuthModel:
         #self.lggr.info(self.couch.resource.credentials)
         self.user_database = 'myring_users'
 
-        self.MAM = MainModel(test)
+        self.MAM = MainModel()
 
         self.officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
         self.thumbnailsizes = {'t75':75,'t150':150}
