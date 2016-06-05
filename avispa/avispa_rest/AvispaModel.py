@@ -24,10 +24,9 @@ from AvispaLogging import AvispaLoggerAdapter
 
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN
+from env_config import TEMP_ACCESS_TOKEN
 
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
-
 
 
 class AvispaModel:
@@ -36,8 +35,6 @@ class AvispaModel:
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
-        self.couch = couchdb.Server(COUCHDB_SERVER)
-        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.MAM = MainModel()
 
     def ring_data_from_user_doc(self,handle,ring):
@@ -62,7 +59,6 @@ class AvispaModel:
                 'count':count}
 
         return r
-
 
     def ring_data_from_schema(self,schema):
 
@@ -125,14 +121,14 @@ class AvispaModel:
         db_ringname = db_ringname.replace(" ","")
 
         try:            
-            #self.couch.create(db_ringname) #Creates this ring database
+            
             self.MAM.create_db(db_ringname)
-            self.ring_set_db_views(db_ringname) #Sets all the CouchDB Views needed for this new ring
+            self.ring_set_db_views(db_ringname) #Sets all the DB Views needed for this new ring
             self.user_add_ring(handle,ringname,ringversion) #Adds the ring to the user's list
             return True    
 
         except:
-            current_app.logger.error ("Unexpected error:"+str( sys.exc_info()[0] )+str( sys.exc_info()[1]))
+            self.lggr.error ("Unexpected error:"+str( sys.exc_info()[0] )+str( sys.exc_info()[1]))
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             raise
@@ -141,8 +137,8 @@ class AvispaModel:
 
     #AVISPAMODEL
     def ring_set_db_views(self,db_ringname,specific=False):
-     
-        db = self.couch[db_ringname]
+
+        db = self.MAM.select_db(db_ringname)
    
         if not specific or specific == 'ring/items':
             view = ViewDefinition('ring', 'items', 
@@ -390,7 +386,7 @@ class AvispaModel:
         #dbname = handle+'_'+ringname+'_'+ringversion
         dbname = handle+'_'+ringname
         if self.MAM.delete_db(dbname):
-            self.lggr.info('Deleted from COUCHDB')
+            self.lggr.info('Deleted from DB')
             del1 = True
 
         doc = self.MAM.select_user(handle)
@@ -423,7 +419,7 @@ class AvispaModel:
         
         #self.lggr.debug(db_ringname+'->ring_get_schema()')
 
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
         schema = MyRingSchema.load(db,'schema')
 
         return schema
@@ -436,7 +432,7 @@ class AvispaModel:
         RingClass = self.ring_create_class(schema)
 
         db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
         item = RingClass.load(db,idx)
 
         return item
@@ -450,7 +446,7 @@ class AvispaModel:
 
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
         numfields = len(pinput['fields'])
         schema = MyRingSchema.load(db,'schema')
 
@@ -588,7 +584,7 @@ class AvispaModel:
 
     #AVISPAMODEL
     def ring_class_field_type(self,fieldtype):
-        '''Maps ring datatype with couchdb type'''
+        '''Maps ring datatype with db type'''
 
         #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
         if fieldtype == 'INTEGER':
@@ -760,9 +756,9 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_get_schema_from_view(self,handle,ringname):
 
-        db_ringname=str(handle)+'_'+str(ringname)        
-        db = self.couch[db_ringname]
-
+        db_ringname=str(handle)+'_'+str(ringname) 
+        db = self.MAM.select_db(db_ringname)       
+       
         options = {}
         self.lggr.debug('++@ db.iterview(ring/schema)')
         result  = db.iterview('ring/schema',1,**options)
@@ -966,7 +962,8 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         #self.lggr.debug('#couchdb_call')
-        db = self.couch[db_ringname] 
+        
+        db = self.MAM.select_db(db_ringname)
  
         if not batch : 
             batch = 500
@@ -1237,7 +1234,7 @@ class AvispaModel:
     def post_a_b(self,request,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
 
         schema = self.ring_get_schema(handle,ringname)
         
@@ -1398,8 +1395,7 @@ class AvispaModel:
         self.lggr.info('START AVM.put_a_b_c')
 
         db_ringname=str(handle)+'_'+str(ringname)
-        #self.lggr.debug('#couchdb_call')
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
 
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
@@ -1634,8 +1630,7 @@ class AvispaModel:
 
 
         db_ringname=str(handle)+'_'+str(ringname)
-        #self.lggr.debug('#couchdb_call')
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
 
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
