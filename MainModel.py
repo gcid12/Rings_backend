@@ -5,7 +5,6 @@ import logging
 import random
 import inspect
 import pprint
-from flask import current_app, g
 from MyRingUser import MyRingUser
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
@@ -22,8 +21,6 @@ class MainModel:
         logger = logging.getLogger('Avispa')
 
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
-        
-        #self.lggr.debug('__init__()')
         
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
