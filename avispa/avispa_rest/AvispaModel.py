@@ -14,7 +14,7 @@ import collections
 import logging
 import couchdb
 
-from flask import flash, current_app, g
+from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
