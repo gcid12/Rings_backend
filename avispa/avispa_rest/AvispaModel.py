@@ -35,7 +35,7 @@ class AvispaModel:
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
-        self.MAM = MainModel()
+        self.MAM = MainModel(tid=tid,ip=ip)
 
     def ring_data_from_user_doc(self,handle,ring):
 

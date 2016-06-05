@@ -16,12 +16,12 @@ from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_T
 
 class MainModel:
 
-    def __init__(self):
+    def __init__(self,tid=False,ip=False):
 
       
         logger = logging.getLogger('Avispa')
 
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
         
         #self.lggr.debug('__init__()')
         
