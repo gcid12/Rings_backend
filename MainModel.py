@@ -820,10 +820,7 @@ class MainModel:
                             if teamd['teamname'] == 'owner':
                                 rolelist.append('org_owner')
                             else:
-                                rolelist.append('team_generic')
-                   
-
-                            
+                                rolelist.append('team_generic')                          
                             
             return rolelist
                             

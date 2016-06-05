@@ -13,7 +13,7 @@ from AvispaLogging import AvispaLoggerAdapter
 class AvispaRestFunc:
 
     def __init__(self):
-        self.AVM = AvispaModel()
+        self.AVM = AvispaModel(tid=g.get('tid', None),ip=g.get('ip', None))
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})

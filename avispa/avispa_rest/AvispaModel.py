@@ -32,11 +32,10 @@ from flask.ext.login import (current_user, login_required, login_user, logout_us
 
 class AvispaModel:
 
-    def __init__(self):
+    def __init__(self,tid=False,ip=False):
 
         logger = logging.getLogger('Avispa')
-
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.MAM = MainModel()
@@ -50,6 +49,7 @@ class AvispaModel:
             ringorigin = str(ring['origin'])
         else:
             ringorigin = str(handle)
+
         ringversionh = ringversion.replace('-','.')
 
         count = ring['count']
@@ -63,33 +63,25 @@ class AvispaModel:
 
         return r
 
-    def ring_data_from_schema(self,handle,ring):
+
+    def ring_data_from_schema(self,schema):
 
         r = {}
-        try:
-            ringnamedb=str(handle)+'_'+str(ring['ringname'])
-            db = self.MAM.select_db(ringnamedb)
-            #self.lggr.debug('Get RingDescription:')
-            try: 
-                RingDescription = db['schema']['rings'][0]['RingDescription'] 
-            except KeyError:
-                RingDescription = False 
-            
-            #self.lggr.debug('Get RingLabel:')
-            try:       
-                RingLabel = db['schema']['rings'][0]['RingLabel'] 
-            except KeyError:
-                RingLabel = False 
 
-            r['ringlabel'] = RingLabel
-            r['ringdescription']=RingDescription
+        if 'RingDescription' in schema['rings'][0]:
+            RingDescription = schema['rings'][0]['RingDescription'] 
+        else:
+            RingDescription = False
+  
+        if 'RingLabel' in schema['rings'][0]:               
+            RingLabel = schema['rings'][0]['RingLabel'] 
+        else:
+            RingLabel = False 
 
-            return r
+        r['ringlabel'] = RingLabel
+        r['ringdescription']=RingDescription
 
-        except ResourceNotFound:
-
-            self.lggr.error('skipping ring %s. Schema does not exist'%ringname)       
-            return False
+        return r
 
     #AVISPAMODEL
     def user_get_rings(self,handle):
@@ -98,15 +90,15 @@ class AvispaModel:
         try:
 
             doc = self.MAM.select_user(handle)       
-            rings = doc['rings']
 
-            for ring in rings:
+            for ring in doc['rings']:
 
                 if 'deleted' in ring:
                     continue
 
                 r1 = self.ring_data_from_user_doc(handle,ring)
-                r2 = self.ring_data_from_schema(handle,ring)
+                schema = ring_get_schema_from_view(handle,ring)
+                r2 = self.ring_data_from_schema(schema)
 
                 if r2:
                    #If r2 doesn't exist that means ring db doesn't even exist. Skip
