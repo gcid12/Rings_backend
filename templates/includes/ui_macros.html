@@ -1599,4 +1599,17 @@
 {% endmacro %}
 
 
+{% macro c_item(icon, text, link) %}
+
+    <div class="fs-0-8">
+        <a href="{{ link }}" class="text-black">
+            <i class="fa fa-book {{ icon }} "></i> 
+            <span class="p-x-10">{{ text }}</span>
+        </a>
+    </div>                        
+                   
+{% endmacro %}
+
+
+
 
