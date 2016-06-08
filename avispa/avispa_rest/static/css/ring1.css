@@ -2023,3 +2023,20 @@ and (orientation : landscape) {
 }
 
 
+
+/*BOOTSTRAP OVERWRITES*/
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    
+     background-color: #818181 !important; 
+}
+
+.nav-tabs>li>a {
+    border: 1px solid #ddd;
+}
+
+
+
+
+
+
