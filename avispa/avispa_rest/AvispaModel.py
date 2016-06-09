@@ -37,69 +37,69 @@ class AvispaModel:
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
         self.MAM = MainModel(tid=tid,ip=ip)
 
-    def ring_data_from_user_doc(self,handle,ring):
+    #TESTED
+    def ring_data_from_user_doc(self,handle,ring):       
 
-        ringname = str(ring['ringname'])
-        ringversion = str(ring['version'])
+        r = {}
+
+        r['ringname'] = str(ring['ringname'])
+        r['ringversion'] = str(ring['version'])
 
         if 'origin' in ring:
-            ringorigin = str(ring['origin'])
+            r['ringorigin'] = str(ring['origin'])
         else:
-            ringorigin = str(handle)
+            r['ringorigin'] = str(handle)
 
-        ringversionh = ringversion.replace('-','.')
-
-        count = ring['count']
-
-        r = {
-                'ringname':ringname,
-                'ringversion':ringversion,
-                'ringversionh':ringversionh,
-                'ringorigin':ringorigin,
-                'count':count}
+        r['ringversionh'] = str(ring['version']).replace('-','.')
+        r['count'] = ring['count']
 
         return r
 
+    #TESTED
     def ring_data_from_schema(self,schema):
 
         r = {}
 
         if 'RingDescription' in schema['rings'][0]:
-            RingDescription = schema['rings'][0]['RingDescription'] 
+            r['ringdescription'] = schema['rings'][0]['RingDescription'] 
         else:
-            RingDescription = False
+            r['ringdescription'] = False
   
         if 'RingLabel' in schema['rings'][0]:               
-            RingLabel = schema['rings'][0]['RingLabel'] 
+            r['ringlabel'] = schema['rings'][0]['RingLabel'] 
         else:
-            RingLabel = False 
-
-        r['ringlabel'] = RingLabel
-        r['ringdescription']=RingDescription
+            r['ringlabel'] = False 
 
         return r
 
-    #AVISPAMODEL
+    #PROTOTYPE
+    def subtract_ring_data(self,handle,ringlist_from_user_doc):
+
+        data = []
+        for ring in ringlist_from_user_doc:
+
+            if 'deleted' in ring:
+                continue
+
+            r1 = self.ring_data_from_ring(handle,ring)
+            schema = ring_get_schema_from_view(handle,ring) # ACTIVE COLLABORATION
+            r2 = self.ring_data_from_schema(schema)
+
+            if r2:
+               #If r2 doesn't exist that means ring db doesn't even exist. Skip
+               r = dict(r1,**r2)
+               data.append(r)
+
+        return data
+
+    
     def user_get_rings(self,handle):
 
-        data=[]
+        
         try:
 
-            doc = self.MAM.select_user(handle)       
-
-            for ring in doc['rings']:
-
-                if 'deleted' in ring:
-                    continue
-
-                r1 = self.ring_data_from_user_doc(handle,ring)
-                schema = ring_get_schema_from_view(handle,ring)
-                r2 = self.ring_data_from_schema(schema)
-
-                if r2:
-                   #If r2 doesn't exist that means ring db doesn't even exist. Skip
-                   r = dict(r1,**r2)
-                   data.append(r)
+            doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION   
+            data = self.subtract_ring_data(handle,doc['rings']) 
 
         except (ResourceNotFound, TypeError) as e:
 
@@ -113,7 +113,7 @@ class AvispaModel:
         return data
 
 
-    #AVISPAMODEL
+    
     def ring_set_db(self,handle,ringname,ringversion):
            
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
@@ -135,7 +135,7 @@ class AvispaModel:
             return False
 
 
-    #AVISPAMODEL
+    
     def ring_set_db_views(self,db_ringname,specific=False):
 
         db = self.MAM.select_db(db_ringname)
@@ -319,7 +319,6 @@ class AvispaModel:
         return True
 
 
-    #AVISPAMODEL
     def user_add_ring(self,handle,ringname,ringversion):
 
         self.lggr.info("handle:",handle)

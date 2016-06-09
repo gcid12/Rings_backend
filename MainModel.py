@@ -12,16 +12,14 @@ from AvispaLogging import AvispaLoggerAdapter
 from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN, USER_DB
 
 
-
 class MainModel:
 
     def __init__(self,tid=False,ip=False):
-
-      
+    
         logger = logging.getLogger('Avispa')
 
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
-        
+
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.user_database = 'myring_users'
