@@ -3,7 +3,7 @@
 from avispa.avispa_rest.AvispaModel import AvispaModel
 import unittest
 
-class AvispaModelTestCase(unittest.TestCase):
+class TC(unittest.TestCase):
 
     def setUp(self):
 
@@ -50,5 +50,5 @@ class AvispaModelTestCase(unittest.TestCase):
 if __name__ == '__main__':
     #unittest.main()
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(AvispaModelTestCase)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TC)
     unittest.TextTestRunner(verbosity=2).run(suite)
