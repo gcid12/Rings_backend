@@ -1,6 +1,6 @@
 # Unit Testing for AvispaModel.py
 
-from AvispaModel import AvispaModel
+from avispa.avispa_rest.AvispaModel import AvispaModel
 import unittest
 
 class AvispaModelTestCase(unittest.TestCase):
@@ -8,26 +8,42 @@ class AvispaModelTestCase(unittest.TestCase):
     def setUp(self):
 
         self.AVM = AvispaModel() 
+
+        self.handle = 'testhandle'
+
         self.ring = {}
         self.ring['ringname'] = 'testring'
         self.ring['version'] = '0-1-1'
         self.ring['count'] = 66
         self.ring['origin'] = 'testorigin'
 
-        self.handle = 'testhandle'
+        self.schema = {}
+        self.schema['rings'] = []
+        self.schema['rings'].append({'RingDescription':'test description','RingLabel':'test label'})
+     
    
     def tearDown(self):
         pass
 
-    def test__ring_data_from_user_doc(self):
+    def test__ring_data_from_user_doc__output_check(self):
 
         r = self.AVM.ring_data_from_user_doc(self.handle,self.ring)
         self.assertEqual(r['ringversionh'],'0.1.1')
 
-    def test__ring_data_from_user_doc_is_dict(self):
+    def test__ring_data_from_user_doc__output_length(self):
 
         r = self.AVM.ring_data_from_user_doc(self.handle,self.ring)
-        self.assertEqual(type(r),dict)
+        self.assertEqual(len(r),5)
+
+    def test__ring_data_from_schema__output_check(self):
+
+        r = self.AVM.ring_data_from_schema(self.schema)
+        self.assertEqual(r['ringdescription'],'test description')
+
+    def test__ring_data_from_schema__output_length(self):
+
+        r = self.AVM.ring_data_from_schema(self.schema)
+        self.assertEqual(len(r),2)
 
 
 
