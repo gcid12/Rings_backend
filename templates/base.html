@@ -8,7 +8,7 @@
   {% import 'includes/ui_macros.html' as ui %}
   {% import 'includes/facts_macros.html' as fui %}
   {% import 'includes/graphs.html' as graphs %}  
-  <link href="{{ url_for('static',filename='assets/bootstrap/css/lumen.css') }}" rel="stylesheet" type="text/css" media="screen"/>
+  <!-- <link href="{{ url_for('static',filename='assets/bootstrap/css/lumen.css') }}" rel="stylesheet" type="text/css" media="screen"/> -->
   <link href="{{ url_for('static',filename='css/ring1.css') }}" rel="stylesheet" type="text/css" media="screen"/>
  
   {% if data.mask =='mbf' %}    
@@ -225,13 +225,13 @@
           </div>
         </div>
       </section>        
-      <span class="scro"><a href='#top'>&nbsp;Top</a></span>        
-      <div class="visible-xs bg-a">
+      <span class="scro fa-0-8 p-30 float-right"><a href='#top'><i class="fa fa-arrow-up"></i>&nbsp;Top</a></span>        
+      <div class="visible-xs ">
         <nav id="menu">
           <ul>
             <li class="active">
               <a class="clearlink" href="/{{current_user.id}}">
-                <img src="/static/images/logos/myring04.png" style="width:120px;" alt="MyRing04"/>
+                <img src="/static/images/logos/myring04.png" style="width:80px;" alt="MyRing04"/>
               </a>
             </li>
             <li>
