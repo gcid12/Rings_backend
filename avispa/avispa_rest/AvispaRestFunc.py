@@ -1,7 +1,7 @@
 import json, collections
 import logging
 import urlparse, time, datetime
-from flask import redirect, flash, g
+from flask import redirect, flash
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
 from ElasticSearchModel import ElasticSearchModel
@@ -28,9 +28,9 @@ class AvispaRestFunc:
 
         collectionname = ''
         if collection:
-            self.ACM = AvispaCollectionsModel()
-            collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection 
-         
+
+            collectiond = self.validate_collection(handle,collection)  # Active Collaboration
+
             if collectiond:
                 if collectiond['valid']:
                     collectionname = collectiond['collectionname']                 
@@ -242,9 +242,9 @@ class AvispaRestFunc:
         if collection:
             
             #TOFIX Can we avid this collectioname validation somehow?
-            result = self.validate_collectioname(handle,collection)
+            result = self.validate_collection(handle,collection) #Active Collaboration
             if result:
-                d['collection'] = result
+                d['collection'] = result['collectionname'] 
             else:
                 redirect = '/'+handle+'/_home'
                 return {'redirect': redirect, 'status':404}
@@ -613,20 +613,14 @@ class AvispaRestFunc:
 
         return layers,widgets,sources,labels,names,types     
 
-    def validate_collectioname(self,handle,precollectionname):
-
-        collectionname = ''
+    def validate_collection(self,handle,collectionname=None):
 
         self.ACM = AvispaCollectionsModel()
-        collectiond = self.ACM.get_a_x_y(handle,precollectionname) #It comes with just one collection
-        if collectiond:     
-            return collectiond['collectionname'] 
+        collectiond = self.ACM.get_a_x_y(handle,precollectionname) #Active Collaboration
+        if collectiond['collectionname'] == collectionname :     
+            return collectiond
         else:          
             return False
-
-
-
-
 
     
     def get_rq_a_b(self,handle,ring,idx=False,api=False,collection=None,*args,**kargs):
