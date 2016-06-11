@@ -38,7 +38,8 @@ class AvispaModel:
         self.MAM = MainModel(tid=tid,ip=ip)
 
     #TESTED
-    def ring_data_from_user_doc(self,handle,ring):       
+    def ring_data_from_user_doc(self,handle,ring): 
+        '''Subtracts relevant ring data from user doc'''      
 
         r = {}
 
@@ -57,6 +58,7 @@ class AvispaModel:
 
     #TESTED
     def ring_data_from_schema(self,schema):
+        '''Subtracts relevant ring data from schema'''
 
         r = {}
 
@@ -72,34 +74,32 @@ class AvispaModel:
 
         return r
 
-    #PROTOTYPE
-    def subtract_ring_data(self,handle,ringlist_from_user_doc):
 
+
+    def subtract_ring_data(self,handle,ringlist):
+        
         data = []
-        for ring in ringlist_from_user_doc:
 
-            if 'deleted' in ring:
-                continue
-
-            r1 = self.ring_data_from_ring(handle,ring)
-            schema = ring_get_schema_from_view(handle,ring) # ACTIVE COLLABORATION
-            r2 = self.ring_data_from_schema(schema)
-
-            if r2:
-               #If r2 doesn't exist that means ring db doesn't even exist. Skip
-               r = dict(r1,**r2)
-               data.append(r)
+        for ringobj in ringlist:
+            schema = self.ring_get_schema_from_view(handle,str(ringobj['ringname'])) # ACTIVE COLLABORATION
+           
+            if schema and 'deleted' not in ringobj:
+                r1 = self.ring_data_from_user_doc(handle,ringobj)
+                r2 = self.ring_data_from_schema(schema)
+                r = dict(r1,**r2)
+                data.append(newringobj)
 
         return data
 
     
     def user_get_rings(self,handle):
-
-        
+        '''Subtract ring data given a handle'''
+  
         try:
+            doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION 
+            data = self.subtract_ring_data(handle,doc['rings']) # ACTIVE COLLABORATION
 
-            doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION   
-            data = self.subtract_ring_data(handle,doc['rings']) 
+      
 
         except (ResourceNotFound, TypeError) as e:
 
