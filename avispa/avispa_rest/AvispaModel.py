@@ -1230,7 +1230,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def post_a_b(self,request,handle,ringname):
+    def post_a_b(self,handle,ringname,rqurl,rqform):
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.MAM.select_db(db_ringname)
@@ -1243,7 +1243,7 @@ class AvispaModel:
         flag_values = {}
         fields = schema['fields']
 
-        self.lggr.info("post_a_b raw arguments sent:"+str(request.form))
+        self.lggr.info("post_a_b raw arguments sent:"+str(rqform))
 
         for field in fields:
        
@@ -1254,16 +1254,16 @@ class AvispaModel:
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
                 external_uri_list = []
 
-                if field['FieldName'] in request.form:
-                    if len(request.form.get(field['FieldName']))!=0:
-                        external_uri_list = request.form.get(field['FieldName']).split(',')                     
-                elif field['FieldId'] in request.form:
-                    if len(request.form.get(field['FieldId']))!=0:
-                        external_uri_list = request.form.get(field['FieldId']).split(',')
+                if field['FieldName'] in rqform:
+                    if len(rqform.get(field['FieldName']))!=0:
+                        external_uri_list = rqform.get(field['FieldName']).split(',')                     
+                elif field['FieldId'] in rqform:
+                    if len(rqform.get(field['FieldId']))!=0:
+                        external_uri_list = rqform.get(field['FieldId']).split(',')
                 
 
                 if len(external_uri_list) > 0:
-                    r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,current_user.id)
+                    r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,rqurl,current_user.id)
                     item_values.update(r_item_values)
                     rich_values.update(r_rich_values)
                  
@@ -1276,12 +1276,12 @@ class AvispaModel:
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
                 new_raw = ''
-                if field['FieldName'] in request.form:
-                    if len(request.form.get(field['FieldName']))!=0:
-                        new_raw = request.form.get(field['FieldName'])
-                elif field['FieldId'] in request.form:
-                    if len(request.form.get(field['FieldId']))!=0:
-                        new_raw = request.form.get(field['FieldId'])
+                if field['FieldName'] in rqform:
+                    if len(rqform.get(field['FieldName']))!=0:
+                        new_raw = rqform.get(field['FieldName'])
+                elif field['FieldId'] in rqform:
+                    if len(rqform.get(field['FieldId']))!=0:
+                        new_raw = rqform.get(field['FieldId'])
 
 
 
@@ -1320,12 +1320,12 @@ class AvispaModel:
 
             #Subtract the Flag
 
-            if 'flag_'+field['FieldName'] in request.form:
-                if len(request.form.get('flag_'+field['FieldName']))!=0:
-                    flag_values[field['FieldId']] = request.form.get('flag_'+field['FieldName'])
-            elif 'flag_'+field['FieldId'] in request.form:
-                if len(request.form.get('flag_'+field['FieldId']))!=0:
-                    flag_values[field['FieldId']] = request.form.get('flag_'+field['FieldId'])
+            if 'flag_'+field['FieldName'] in rqform:
+                if len(rqform.get('flag_'+field['FieldName']))!=0:
+                    flag_values[field['FieldId']] = rqform.get('flag_'+field['FieldName'])
+            elif 'flag_'+field['FieldId'] in rqform:
+                if len(rqform.get('flag_'+field['FieldId']))!=0:
+                    flag_values[field['FieldId']] = rqform.get('flag_'+field['FieldId'])
 
 
 

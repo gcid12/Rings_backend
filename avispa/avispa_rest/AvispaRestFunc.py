@@ -617,7 +617,7 @@ class AvispaRestFunc:
         Creates new item
         '''
 
-        idx = self.AVM.post_a_b(request,handle,ring)
+        idx = self.AVM.post_a_b(handle,ring,rqurl,rqform)
         out = {}
 
         if idx:
@@ -746,7 +746,7 @@ class AvispaRestFunc:
             originresult = self.AVM.set_ring_origin(handle,ring,rqform.get('ringorigin'))
 
         RB = RingBuilder()
-        result =  RB.put_a_b(request,handle,ring)
+        result =  RB.put_a_b(rqform,handle,ring)
 
         if result:
             self.lggr.debug('Awesome , you just put the changes in the Ring Schema')

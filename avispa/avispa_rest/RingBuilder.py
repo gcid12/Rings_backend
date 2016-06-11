@@ -165,8 +165,6 @@ class RingBuilder:
                 corrected_path = o2.path
             corrected_query = 'schema=1'+'&access_token=%s'%TEMP_ACCESS_TOKEN
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
-            
-            
 
             
             if host_url==host_ring_url:
@@ -318,10 +316,10 @@ class RingBuilder:
             self.lggr.info('There is not enough information to create a Ring')
             return False
 
-    def put_a_b(self,request,handle,ring):
+    def put_a_b(self,rqform,handle,ring):
         # Update the ring schema
 
-        p = self.subtract_request_parameters(request,handle,ring=ring)
+        p = self.subtract_request_parameters(rqform,handle,ring=ring)
 
                 
         if p['RingName'] and ('FieldName_1' in p):
