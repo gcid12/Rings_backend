@@ -87,7 +87,7 @@ class AvispaModel:
                 r1 = self.ring_data_from_user_doc(handle,ringobj)
                 r2 = self.ring_data_from_schema(schema)
                 r = dict(r1,**r2)
-                data.append(newringobj)
+                data.append(r)
 
         return data
 

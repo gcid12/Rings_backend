@@ -12,29 +12,29 @@ class CollectionBuilder:
         self.collectionprotocols['defaults'] = {'CollectionVersion':'0.1.0'}
         self.ACM = AvispaCollectionsModel()
    
-    def post_a_x(self,request,handle):
+    def post_a_x(self,rqform,handle):
                
-        if 'CollectionName' in request.form:
+        if 'CollectionName' in rqform:
             collectiond = {}
-            collectiond['name'] = request.form.get('CollectionName').lower() # I dont like this here
+            collectiond['name'] = rqform.get('CollectionName').lower() # I dont like this here
             collectiond['handle'] = handle.lower()
 
-            if 'CollectionDescription' in request.form:
-                collectiond['description'] = request.form.get('CollectionDescription').lower()
+            if 'CollectionDescription' in rqform:
+                collectiond['description'] = rqform.get('CollectionDescription').lower()
             else:
                 collectiond['description'] = ''     
-            if request.form.get('CollectionVersion'):
-                collectiond['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
+            if rqform.get('CollectionVersion'):
+                collectiond['version'] = rqform.get('CollectionVersion').replace('.','-') # I dont like this here
             else:
                 collectiond['version'] = self.collectionprotocols['defaults']['CollectionVersion'].replace('.','-')
             
             ringlist = []
           
-            for p in request.form:
+            for p in rqform:
                 pparts = p.split('_')
                 ring = {}
                 if pparts[0] == 'ring' and pparts[1]:
-                    value = request.form.get(p)
+                    value = rqform.get(p)
                     vparts = value.split('_')
                     ring['handle'] = vparts[0]
                     ring['ringname'] = '_'.join(vparts[1:-1])
@@ -54,27 +54,27 @@ class CollectionBuilder:
                 current_app.logger.debug('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 
-    def put_a_x_y(self,request,handle,collection):
+    def put_a_x_y(self,rqform,handle,collection):
 
         #Same as collectiongenerator
-        if request.form.get('CollectionName'):
+        if rqform.get('CollectionName'):
 
             collectiond = {}
 
-            collectiond['name'] = request.form.get('CollectionName').lower() # I dont like this here
-            collectiond['description'] = request.form.get('CollectionDescription').lower()
+            collectiond['name'] = rqform.get('CollectionName').lower() # I dont like this here
+            collectiond['description'] = rqform.get('CollectionDescription').lower()
             collectiond['handle'] = handle.lower()
-            if request.form.get('CollectionVersion'):
-                collectiond['version'] = request.form.get('CollectionVersion').replace('.','-') # I dont like this here
+            if rqform.get('CollectionVersion'):
+                collectiond['version'] = rqform.get('CollectionVersion').replace('.','-') # I dont like this here
             
             
             ringlist = []
           
-            for p in request.form:
+            for p in rqform:
                 pparts = p.split('_')
                 ring = {}
                 if pparts[0] == 'ring' and pparts[1]:
-                    value = request.form.get(p)
+                    value = rqform.get(p)
                     vparts = value.split('_')
                     ring['handle'] = vparts[0]
                     ring['ringname'] = vparts[1]
@@ -93,10 +93,4 @@ class CollectionBuilder:
             else:
                 current_app.logger.debug('The Collection '+ collectiond['name'] +' database already exists')
                 return False
-
-
-
-        
-
-    
 

@@ -165,13 +165,17 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         #current_app.logger.debug("host_url")
         #current_app.logger.debug(data['host_url'])
 
-    rqargs = request.args
-    rqform = request.form
-    rqurl = request.url
-
-
     lggr.info('START RESTFUL FUNCTION')
-    data.update(getattr(ARF, m.lower())(handle,ring,idx,api=api,collection=collection,url=rqurl,rqargs=rqargs,rqform=rqform))
+    data.update(getattr(ARF, m.lower())(
+                                        handle,
+                                        ring,
+                                        idx,
+                                        api=api,
+                                        collection=collection,
+                                        rqurl=request.url,
+                                        rqargs=request.args,
+                                        rqform=request.form))
+
     lggr.info('END RESTFUL FUNCTION')
 
     data['collection'] = collection
@@ -402,7 +406,12 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     if not api:
         MAM = MainModel()
-        authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,collection=collection)
+        authorization_result = MAM.user_is_authorized(
+                                                     current_user.id,
+                                                     m,
+                                                     depth,
+                                                     handle,
+                                                     collection=collection)
 
         if not authorization_result['authorized']:
             return render_template('avispa_rest/error_401.html', data=data),401
@@ -455,11 +464,18 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         #current_app.logger.debug("host_url")
         #current_app.logger.debug(data['host_url'])
 
+    rqargs = request.args
+    rqform = request.form
+    rqurl = request.url
 
-
-    data.update(getattr(ACF, m.lower())(request,handle,collection,idx,api=api))
-
-
+    data.update(getattr(ACF, m.lower())(
+                                        handle,
+                                        collection,
+                                        idx,
+                                        api=api,
+                                        rqurl=request.url,
+                                        rqargs=request.args,
+                                        rqform=request.form))
 
     if 'status' in data.keys():
         status = int(data['status'])
