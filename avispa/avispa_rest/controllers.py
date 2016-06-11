@@ -38,7 +38,7 @@ def setup_log_vars():
     g.tid = MAM.random_hash_generator(36)
 
 def setup_local_logger():
-    return AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    return AvispaLoggerAdapter(logger, {'tid': g.get('tid', False),'ip': g.get('ip', False)})
     
 
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
@@ -49,7 +49,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     lggr.info('START route_dispatcher')
 
     MAM = MainModel()
-    ARF = AvispaRestFunc()
+    ARF = AvispaRestFunc(tid=g.get('tid', None),ip=g.get('ip', None))
 
     
     if request.args.get("rq"):
@@ -507,12 +507,6 @@ def home_dispatcher(handle):
         collectionsd = getattr(ACF, m.lower())(request,handle,None,None) 
         print('collectionsd:')
         print(collectionsd) 
-
-        #ARF = AvispaRestFunc()
-        #m = 'get_a'
-        #rings = getattr(ARF, m.lower())(request,handle,None,None)
-
-
 
 
         data['handle'] = handle

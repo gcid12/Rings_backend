@@ -1,7 +1,7 @@
 import json, collections
 import logging
 import urlparse, time, datetime
-from flask import redirect, flash, current_app, g
+from flask import redirect, flash, g
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
 from ElasticSearchModel import ElasticSearchModel
@@ -12,20 +12,19 @@ from AvispaLogging import AvispaLoggerAdapter
 
 class AvispaRestFunc:
 
-    def __init__(self):
-        
-        self.AVM = AvispaModel(tid=g.get('tid', None),ip=g.get('ip', None))
+    def __init__(self,tid=None,ip=None):
+
+        self.AVM = AvispaModel(tid=tid,ip=ip)
 
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
-
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
     # /a
 
     # GET/a
     def get_a(self,handle,ring,idx,api=False,collection=None,*args,**kargs):
 
-        ringlist = self.AVM.user_get_rings(handle)
+        ringlist = self.AVM.user_get_rings(handle) # Active Collaboration
 
         collectionname = ''
         if collection:
