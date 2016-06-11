@@ -44,6 +44,27 @@ class AvispaRestFunc:
         d = {'message': 'Using get_rs_a for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
 
+    #TESTABLE
+    def form_args_to_string(self,rqform):
+        ''' This is to avoid the user to have to enter everything again
+        We capture all the form args and put them in a string for template to
+        repopulate them in ring modeler'''
+
+        param_list = []
+        unique = []
+        for p in rqform:
+            q =  p+'='+rqform.get(p)
+            param_list.append(q)
+            
+            parts = p.split('_')
+            if len(parts)>=2:
+                if parts[1] not in unique:
+                    print('FLAG1:',parts)
+                    unique.append(parts[1])
+
+        lpl = str(len(param_list))
+        return '&'.join(param_list)
+
     # POST/a
     
     def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,request=None,*args,**kargs):
@@ -56,6 +77,8 @@ class AvispaRestFunc:
         if result:
             # New Schema has been created
             flash(" Your new Ring has been created. ",'UI')
+
+            #Attach ring to a collection (if collection is provided)
             if collection:
 
                 # Add this new ring to the collection ring list
@@ -89,30 +112,18 @@ class AvispaRestFunc:
                     status = 200
             
         else:
+            #Error. Something went wrong
 
             if not api:
 
                 flash(" There has been an issue, please check your parameters and try again. ",'UI')
-                param_list = []
-                unique = []
-                for p in rqform:
-                    q =  p+'='+rqform.get(p)
-                    param_list.append(q)
-                    
-                    parts = p.split('_')
-                    if len(parts)>=2:
-                        if parts[1] not in unique:
-                            print('FLAG1:',parts)
-                            unique.append(parts[1])
 
-
-                lpl = str(len(param_list))
-                recovery_string = '&'.join(param_list)
+                recovery_string = self.form_args_to_string(rqform)
 
                 if collection:
                     redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n='+str(len(unique))+'&'+str(recovery_string)
                 else:
-                    redirect = '/'+handle+'/'+collection+'?rq=post&n=10&'+str(recovery_string)
+                    redirect = '/'+handle+'/'+ring+'?rq=post&n=10&'+str(recovery_string)
 
             else:
                 out['Success'] = False
