@@ -71,7 +71,7 @@ class AvispaRestFunc:
         ''' Creates a new ring '''
        
         RB = RingBuilder()
-        result = RB.post_a(request,handle)
+        result = RB.post_a(rqurl,rqform,handle)
         out = {} 
             
         if result:
@@ -210,7 +210,7 @@ class AvispaRestFunc:
     # /a/b
     
     #GET /a/b
-    def get_a_b(self,handle,ring,idx,api=False,collection=None,rqargs=None,url=None,*args,**kargs):
+    def get_a_b(self,handle,ring,idx,api=False,collection=None,rqargs=None,rqurl=None,*args,**kargs):
         '''List of items in the ring '''
 
         d = {}
@@ -316,7 +316,7 @@ class AvispaRestFunc:
         #Output
         if api:
             out = {}
-            o = urlparse.urlparse(url)
+            o = urlparse.urlparse(rqurl)
             host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
             out['_source'] = host_url+"/"+str(handle)+"/"+str(ring)
             if 'schema' in rqargs:
@@ -612,7 +612,7 @@ class AvispaRestFunc:
 
     #POST /a/b
     
-    def post_a_b(self,handle,ring,idx=False,api=False,rqargs=None,rqform=None,url=None,request=None,collection=None,*args,**kargs):
+    def post_a_b(self,handle,ring,idx=False,api=False,rqargs=None,rqform=None,rqurl=None,request=None,collection=None,*args,**kargs):
         '''
         Creates new item
         '''
@@ -624,7 +624,7 @@ class AvispaRestFunc:
 
             #Index new item in the search engine
             ESM = ElasticSearchModel()
-            ESM.indexer(url,handle,ring,idx)
+            ESM.indexer(rqurl,handle,ring,idx)
 
             if not api:
                 self.lggr.info('Item saved with id: '+idx)
@@ -858,12 +858,12 @@ class AvispaRestFunc:
     
     #DELETE /a/b
     
-    def delete_a_b(self,handle,ring,idx=False,api=False,rqargs=None,url=None,collection=None,*args,**kargs):
+    def delete_a_b(self,handle,ring,idx=False,api=False,rqargs=None,rqurl=None,collection=None,*args,**kargs):
         
         if self.AVM.user_delete_ring(handle,ring):
 
             ESM = ElasticSearchModel()
-            ESM.unindexer(url,handle,ring)
+            ESM.unindexer(rqurl,handle,ring)
             flash('Ring '+ring+' deleted','UI')
         else:
             flash('Could not delete the Ring','ER')
@@ -902,7 +902,7 @@ class AvispaRestFunc:
     # a/b/c
     #GET /a/b/c
     
-    def get_a_b_c(self,handle,ring,idx,api=False,rqargs=None,url=None,collection=None,request=None,*args,**kargs):
+    def get_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,request=None,*args,**kargs):
         '''
         Gets existing item
         ''' 
@@ -945,7 +945,7 @@ class AvispaRestFunc:
             # Awesome , you just retrieved the item from the DB
             if api:              
                 out = collections.OrderedDict()
-                o = urlparse.urlparse(url)
+                o = urlparse.urlparse(rqurl)
                 host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
                 out['source'] = host_url+"/"+str(handle)+"/"+str(ring)               
                 if 'schema' in rqargs:
@@ -1009,7 +1009,7 @@ class AvispaRestFunc:
 
     #PUT /a/b/c
     
-    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,url=None,collection=None,request=None,*args,**kargs):
+    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,request=None,*args,**kargs):
         '''
         Puts changes in the item
         '''        
@@ -1019,7 +1019,7 @@ class AvispaRestFunc:
 
             #Index new item in the search engine
             ESM = ElasticSearchModel()
-            ESM.indexer(url,handle,ring,idx)
+            ESM.indexer(rqurl,handle,ring,idx)
 
             # Awesome , you just put the changes in the Item
             flash("Changes saved",'UI')
