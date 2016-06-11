@@ -282,7 +282,7 @@ class MainModel:
         db = self.select_db(USER_DB)
         return MyRingUser.load(db, username)
 
-    def post_user_doc(doc):
+    def post_user_doc(self,doc):
 
         db = self.select_db(USER_DB)
         return doc.store(db)

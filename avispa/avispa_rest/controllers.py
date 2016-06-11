@@ -171,10 +171,11 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     rqargs = request.args
     rqform = request.form
+    rqurl = request.url
 
 
     lggr.info('START RESTFUL FUNCTION')
-    data.update(getattr(ARF, m.lower())(handle,ring,idx,api=api,collection=collection,url=data['host_url'],rqargs=rqargs,rqform=rqform,request=request))
+    data.update(getattr(ARF, m.lower())(handle,ring,idx,api=api,collection=collection,url=rqurl,rqargs=rqargs,rqform=rqform,request=request))
     lggr.info('END RESTFUL FUNCTION')
 
     data['collection'] = collection

@@ -704,10 +704,10 @@ class AvispaModel:
             for ring in doc['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] += 1
-                    self.lggr.info('Item Count increased')
+                    
 
             if self.MAM.post_user_doc(doc):
-                
+                self.lggr.info('Item Count increased')
                 return True
             else:
                 self.lggr.error('Could not increase item count')
