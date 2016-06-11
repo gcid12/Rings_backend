@@ -937,59 +937,6 @@ def history_dispatcher(handle,ring=None):
     else:
         data['redirect'] = '/'+current_user.id+'/_home'
         return data
-
-
-def role_dispatcher(depth,handle,ring=None,idx=None,collection=None,api=False):
-
-    setup_log_vars()
-    lggr = setup_local_logger() 
-
-    ARR = AvispaRolesRestFunc()
-
-
-    if request.args.get("rq"):
-        method = request.args.get("rq")+'_rq'
-    elif request.args.get("rs"):
-        method = request.args.get("rq")+'_rs'
-    elif request.args.get("method"):
-        method = request.args.get("method")
-    else:
-        method = request.method
-
-    #method = request.method
-    m = method+depth
-    data = {}
-
-    data = getattr(ARR, m.lower())(request,depth,handle,ring,idx,collection,api=api)
-
-    data['handle']=handle
-    data['ring']=ring
-    data['idx']=idx
-    data['collection']=collection
-    data['current_user']=current_user
-
-    data['depth_a'] = ['get_a','post_a','put_a','delete_a']
-    data['depth_a_b'] = ['get_a_b','post_a_b','put_a_b','delete_a_b']
-    data['depth_a_b_c'] = ['get_a_b_c','post_a_b_c','put_a_b_c','delete_a_b_c']
-    
-
-    t = time.time()
-    data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
-
-    
-
-    if 'status' in data.keys():
-        status = int(data['status'])
-    else:
-        status = 200
-
-    if 'redirect' in data:
-        return data             
-    elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json':     
-        return render_template(data['template'], data=data), status     
-    else:
-        return render_template(data['template'], data=data)
-
     
 
 def people_dispatcher(depth,handle,person=None):
