@@ -617,7 +617,7 @@ class AvispaRestFunc:
         Creates new item
         '''
 
-        idx = self.AVM.post_a_b(handle,ring,rqurl,rqform)
+        idx = self.AVM.post_a_b(rqurl,rqform,handle,ring)
         out = {}
 
         if idx:

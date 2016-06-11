@@ -1230,7 +1230,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def post_a_b(self,handle,ringname,rqurl,rqform):
+    def post_a_b(self,rqurl,rqform,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.MAM.select_db(db_ringname)
@@ -1389,7 +1389,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def put_a_b_c(self,request,handle,ringname,idx):
+    def put_a_b_c(self,rqurl,rqform,handle,ringname,idx):
 
         self.lggr.info('START AVM.put_a_b_c')
 
@@ -1407,7 +1407,7 @@ class AvispaModel:
         rich_values = {}
         fields = schema['fields']
 
-        if request.form.get('_public'):
+        if rqform.get('_public'):
             item['public']=True
         else:
             item['public']=False
@@ -1449,14 +1449,14 @@ class AvispaModel:
                 old = item.items[0][field['FieldId']]
             
          
-            if field['FieldName'] in request.form:
-                if len(request.form.get(field['FieldName']))!=0:
-                    new_raw = request.form.get(field['FieldName'])
+            if field['FieldName'] in rqform:
+                if len(rqform.get(field['FieldName']))!=0:
+                    new_raw = rqform.get(field['FieldName'])
                 else:
                     new_raw = None                   
-            elif field['FieldId'] in request.form:
-                if len(request.form.get(field['FieldId']))!=0:
-                    new_raw = request.form.get(field['FieldId'])
+            elif field['FieldId'] in rqform:
+                if len(rqform.get(field['FieldId']))!=0:
+                    new_raw = rqform.get(field['FieldId'])
                 else:
                     new_raw = None
             else:
@@ -1518,12 +1518,12 @@ class AvispaModel:
 
             old_flag = unicode(item.flags[0][field['FieldId']])
 
-            if 'flag_'+field['FieldName'] in request.form:
-                if len(request.form.get('flag_'+field['FieldName']))!=0:
-                    new_flag = unicode(request.form.get('flag_'+field['FieldName']))
-            elif 'flag_'+field['FieldId'] in request.form:
-                if len(request.form.get('flag_'+field['FieldId']))!=0:
-                    new_flag = unicode(request.form.get('flag_'+field['FieldId']))
+            if 'flag_'+field['FieldName'] in rqform:
+                if len(rqform.get('flag_'+field['FieldName']))!=0:
+                    new_flag = unicode(rqform.get('flag_'+field['FieldName']))
+            elif 'flag_'+field['FieldId'] in rqform:
+                if len(rqform.get('flag_'+field['FieldId']))!=0:
+                    new_flag = unicode(rqform.get('flag_'+field['FieldId']))
             else:
                 new_flag = False
 
@@ -1557,18 +1557,18 @@ class AvispaModel:
                 external_uri_list = []
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
-                if field['FieldName'] in request.form:
-                    if len(request.form.get(field['FieldName']))!=0:
-                        external_uri_list = request.form.get(field['FieldName']).split(',')                     
-                elif field['FieldId'] in request.form:
-                    if len(request.form.get(field['FieldId']))!=0:
-                        external_uri_list = request.form.get(field['FieldId']).split(',')
+                if field['FieldName'] in rqform:
+                    if len(rqform.get(field['FieldName']))!=0:
+                        external_uri_list = rqform.get(field['FieldName']).split(',')                     
+                elif field['FieldId'] in rqform:
+                    if len(rqform.get(field['FieldId']))!=0:
+                        external_uri_list = rqform.get(field['FieldId']).split(',')
                 
                 if len(external_uri_list) > 0:
                     r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(
                                                                         field,
                                                                         external_uri_list,
-                                                                        request.url,
+                                                                        rqurl,
                                                                         current_user.id)
                     item_values.update(r_item_values)
                     rich_values.update(r_rich_values)
