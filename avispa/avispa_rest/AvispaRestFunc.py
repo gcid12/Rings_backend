@@ -23,44 +23,9 @@ class AvispaRestFunc:
 
     # GET/a
     def get_a(self,handle,ring,idx,api=False,collection=None,*args,**kargs):
-
-        ringlist = self.AVM.user_get_rings(handle) # Active Collaboration
-
-        collectionname = ''
-        if collection:
-
-            collectiond = self.validate_collection(handle,collection)  # Active Collaboration
-
-            if collectiond:
-                if collectiond['valid']:
-                    collectionname = collectiond['collectionname']                 
-                    ringd = {}
-                    for rc in collectiond['rings']:
-                        #Building dictionary of collection rings
-                        ringd[rc['handle']+'_'+rc['ringname']+'_'+rc['version'].replace('.','-')] = rc
-                    ringlistmod = []
-                    for ring in ringlist:
-                        # Trying to find a match
-                        if handle+'_'+ring['ringname']+'_'+ring['ringversion'] in ringd:
-                            # A match! One of the collection's ring. Add it to the list
-                            ringlistmod.append(ring) 
-                    del ringlist
-                    ringlist = ringlistmod
-                    invalid_collection = False
-                else:
-                    invalid_collection = True
-            else:
-                invalid_collection = True            
-            if invalid_collection:
-                flash('Invalid Collection','ER')
-                redirect = '/'+handle+'/_home'                
-                d = {'redirect': redirect, 'status':404}
-                return d
-
-        ringlistlen = len(ringlist)
-
-        
-        d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/get_a.html', 'ringlist':ringlist, 'ringlistlen':ringlistlen, 'collection':collectionname }
+        #NOT CURRENTLY USED. Look for get_a_x
+  
+        d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/index.html' }
     	return d
 
     
@@ -82,7 +47,7 @@ class AvispaRestFunc:
     # POST/a
     
     def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,request=None,*args,**kargs):
-
+        ''' Creates a new ring '''
        
         RB = RingBuilder()
         result = RB.post_a(request,handle)
