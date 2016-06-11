@@ -930,7 +930,7 @@ class AvispaRestFunc:
         print('TYPES:',types)
         #Subtract item from DB
         
-        preitem_result = self.AVM.get_a_b_c(request,handle,ring,idx)
+        preitem_result = self.AVM.get_a_b_c(handle,ring,idx)
         
 
         if preitem_result:
@@ -1062,7 +1062,7 @@ class AvispaRestFunc:
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
-        item = self.AVM.get_a_b_c(request,handle,ring,idx)
+        item = self.AVM.get_a_b_c(handle,ring,idx)
 
         print(labels)
 

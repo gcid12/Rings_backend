@@ -1351,7 +1351,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def get_a_b_c(self,request,handle,ringname,idx,human=False):
+    def get_a_b_c(self,handle,ringname,idx,human=False):
 
         self.lggr.debug('++ AVM.get_a_b_c')
 
