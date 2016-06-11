@@ -234,7 +234,7 @@ class AvispaRestFunc:
     # /a/b
     
     #GET /a/b
-    def get_a_b(self,request,handle,ring,idx,api=False,collection=None,*args,**kargs):
+    def get_a_b(self,request,handle,ring,idx,api=False,collection=None,rqargs=None,*args,**kargs):
         '''
         List of items in the ring
 
@@ -242,9 +242,9 @@ class AvispaRestFunc:
         d = {}
 
         #Validate Collection
-        if 'collection' in request.args:
+        if 'collection' in rqargs:
             #TOFIX Can we avid this collectioname validation somehow?
-            result = self.validate_collectioname(request.args.get('collection'))
+            result = self.validate_collectioname(handle,rqargs.get('collection'))
             if result:
                 d['collection'] = result
             else:
@@ -252,51 +252,51 @@ class AvispaRestFunc:
                 return {'redirect': redirect, 'status':404}
 
         #Query
-        if 'lastkey' in request.args:
-            lastkey = request.args.get('lastkey')
+        if 'lastkey' in rqargs:
+            lastkey = rqargs.get('lastkey')
         else:
             lastkey = None
 
-        if 'endkey' in request.args:
-            endkey = request.args.get('endkey')
+        if 'endkey' in rqargs:
+            endkey = rqargs.get('endkey')
         else:
             endkey = None
 
-        if 'limit' in request.args:
-            limit = request.args.get('limit')
+        if 'limit' in rqargs:
+            limit = rqargs.get('limit')
         else:
             limit = "25"
 
-        if 'sort' in request.args:
-            sort = request.args.get('sort')
+        if 'sort' in rqargs:
+            sort = rqargs.get('sort')
         else:
             sort = None
 
-        if 'noimages' in request.args:
-            noimages = request.args.get('noimages')
+        if 'noimages' in rqargs:
+            noimages = rqargs.get('noimages')
         else:
             noimages = None
 
-        if 'layer' in request.args:
-            layer = request.args.get('layer')
+        if 'layer' in rqargs:
+            layer = rqargs.get('layer')
         else:
             layer = PREVIEW_LAYER
 
-        if 'flag' in request.args:
-            flag = request.args.get('flag')
+        if 'flag' in rqargs:
+            flag = rqargs.get('flag')
         else:
             flag = None
 
-        if 'fieldid' in request.args:
-            if request.args.get('fieldid') == '1':
+        if 'fieldid' in rqargs:
+            if rqargs.get('fieldid') == '1':
                 idlabel = True
             else:
                 idlabel = False
         else:
             idlabel = True
 
-        if 'q' in request.args:
-            q = request.args.get('q')
+        if 'q' in rqargs:
+            q = rqargs.get('q')
         else:
             q = ''
 
@@ -345,7 +345,7 @@ class AvispaRestFunc:
             o = urlparse.urlparse(request.url)
             host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
             out['_source'] = host_url+"/"+str(handle)+"/"+str(ring)
-            if 'schema' in request.args:
+            if 'schema' in rqargs:
                 out['rings'] = schema['rings']
                 out['fields'] = schema['fields']
 
@@ -615,16 +615,19 @@ class AvispaRestFunc:
 
         return layers,widgets,sources,labels,names,types     
 
-    def validate_collectioname(self,precollectionname):
+    def validate_collectioname(self,handle,precollectionname):
 
         collectionname = ''
-        if 'collection' in request.args:
-            self.ACM = AvispaCollectionsModel()
-            collectiond = self.ACM.get_a_x_y(handle,precollectionname) #It comes with just one collection
-            if collectiond:     
-                return collectiond['collectionname'] 
-            else:          
-                return False   
+
+        self.ACM = AvispaCollectionsModel()
+        collectiond = self.ACM.get_a_x_y(handle,precollectionname) #It comes with just one collection
+        if collectiond:     
+            return collectiond['collectionname'] 
+        else:          
+            return False
+
+
+
 
 
     
@@ -930,10 +933,7 @@ class AvispaRestFunc:
         d = {'message': 'Using search_rq_a_b for handle '+handle+', ring:'+ring , 'template':'avispa_rest/search_rq_a_b.html'}
         return d
 
-
-
     # a/b/c
-
     #GET /a/b/c
     
     def get_a_b_c(self,request,handle,ring,idx,api=False,collection=None,*args):

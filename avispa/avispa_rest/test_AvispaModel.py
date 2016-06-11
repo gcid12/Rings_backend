@@ -20,6 +20,10 @@ class TC(unittest.TestCase):
         self.schema = {}
         self.schema['rings'] = []
         self.schema['rings'].append({'RingDescription':'test description','RingLabel':'test label'})
+
+        self.schemas = {}  #Creating a two member list of schemas
+        self.schemas['ring1'] = self.schema
+        self.schemas['ring2'] = self.schema
      
    
     def tearDown(self):
