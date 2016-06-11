@@ -769,12 +769,12 @@ class AvispaRestFunc:
 
     #PUT /a/b
     
-    def put_a_b(self,handle,ring,idx,api=False,collection=None,request=None,*args,**kargs):
+    def put_a_b(self,handle,ring,idx,api=False,collection=None,rqform=None,request=None,*args,**kargs):
 
         # Changing origin?
-        current_app.logger.debug(request.form.get('ringorigin'))
-        if request.form.get('ringorigin'):
-            originresult = self.AVM.set_ring_origin(handle,ring,request.form.get('ringorigin'))
+        current_app.logger.debug(rqform.get('ringorigin'))
+        if rqform.get('ringorigin'):
+            originresult = self.AVM.set_ring_origin(handle,ring,rqform.get('ringorigin'))
 
         RB = RingBuilder()
         result =  RB.put_a_b(request,handle,ring)
