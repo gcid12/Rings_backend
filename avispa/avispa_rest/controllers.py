@@ -974,7 +974,10 @@ def people_dispatcher(depth,handle,person=None):
     data['user_authorizations'] = authorization_result['user_authorizations']
     
     
-    data.update(getattr(APR, m.lower())(request,handle,person))
+    data.update(getattr(APR, m.lower())(
+                                        handle,
+                                        person,
+                                        rqform=request.form))
 
     
     data['handle'] = handle
