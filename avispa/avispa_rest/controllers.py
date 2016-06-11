@@ -516,7 +516,7 @@ def home_dispatcher(handle):
         ACF = AvispaCollectionsRestFunc()
         m = 'get_a_x'
            
-        collectionsd = getattr(ACF, m.lower())(request,handle,None,None) 
+        collectionsd = getattr(ACF, m.lower())(handle,None,None) 
         print('collectionsd:')
         print(collectionsd) 
 
