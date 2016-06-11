@@ -101,10 +101,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
         data['user_authorizations'] = authorization_result['user_authorizations']
 
-         
-        #data.update(getattr(ARF, m.lower())(request,handle,ring,idx,api=api,collection=collection))
-     
-
         cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
         data['cu_actualname'] = cu_user_doc['name']
         data['cu_profilepic'] = cu_user_doc['profilepic']
@@ -175,7 +171,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
 
     lggr.info('START RESTFUL FUNCTION')
-    data.update(getattr(ARF, m.lower())(handle,ring,idx,api=api,collection=collection,url=rqurl,rqargs=rqargs,rqform=rqform,request=request))
+    data.update(getattr(ARF, m.lower())(handle,ring,idx,api=api,collection=collection,url=rqurl,rqargs=rqargs,rqform=rqform))
     lggr.info('END RESTFUL FUNCTION')
 
     data['collection'] = collection

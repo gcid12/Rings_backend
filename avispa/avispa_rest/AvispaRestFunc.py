@@ -67,7 +67,7 @@ class AvispaRestFunc:
 
     # POST/a
     
-    def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,request=None,*args,**kargs):
+    def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,*args,**kargs):
         ''' Creates a new ring '''
        
         RB = RingBuilder()
@@ -612,7 +612,7 @@ class AvispaRestFunc:
 
     #POST /a/b
     
-    def post_a_b(self,handle,ring,idx=False,api=False,rqargs=None,rqform=None,rqurl=None,request=None,collection=None,*args,**kargs):
+    def post_a_b(self,handle,ring,idx=False,api=False,rqargs=None,rqform=None,rqurl=None,collection=None,*args,**kargs):
         '''
         Creates new item
         '''
@@ -739,7 +739,7 @@ class AvispaRestFunc:
 
     #PUT /a/b
     
-    def put_a_b(self,handle,ring,idx,api=False,collection=None,rqform=None,request=None,*args,**kargs):
+    def put_a_b(self,handle,ring,idx,api=False,collection=None,rqform=None,*args,**kargs):
 
         # Changing origin?
         if rqform.get('ringorigin'):
@@ -902,7 +902,7 @@ class AvispaRestFunc:
     # a/b/c
     #GET /a/b/c
     
-    def get_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,request=None,*args,**kargs):
+    def get_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,*args,**kargs):
         '''
         Gets existing item
         ''' 
@@ -1009,11 +1009,11 @@ class AvispaRestFunc:
 
     #PUT /a/b/c
     
-    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,request=None,*args,**kargs):
+    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,*args,**kargs):
         '''
         Puts changes in the item
         '''        
-        result = self.AVM.put_a_b_c(request,handle,ring,idx)
+        result = self.AVM.put_a_b_c(rqurl,rqform,handle,ring,idx)
 
         if result:
 
@@ -1043,7 +1043,7 @@ class AvispaRestFunc:
         return d
 
     
-    def put_rq_a_b_c(self,handle,ring,idx,api=False,collection=None,request=None,*args,**kargs):
+    def put_rq_a_b_c(self,handle,ring,idx,api=False,collection=None,*args,**kargs):
         '''
         Repopulates form to be sent for a put
         '''
