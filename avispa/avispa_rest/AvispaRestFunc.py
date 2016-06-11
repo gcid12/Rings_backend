@@ -13,6 +13,7 @@ from AvispaLogging import AvispaLoggerAdapter
 class AvispaRestFunc:
 
     def __init__(self):
+        
         self.AVM = AvispaModel(tid=g.get('tid', None),ip=g.get('ip', None))
 
         logger = logging.getLogger('Avispa')
@@ -308,7 +309,7 @@ class AvispaRestFunc:
         '''
         #Subtract items from DB
         preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
-        #current_app.logger.debug('PREITEMLIST:'+str(preitems))
+        #self.lggr.debug('PREITEMLIST:'+str(preitems))
         #print
         #print('PREITEMS:')
         #print(preitems)
@@ -496,7 +497,7 @@ class AvispaRestFunc:
                                     if fl in rich_item:
                                         ItemPart += rich_item[fl]+' '
                                     else:
-                                        current_app.logger.error(fl+': Field Not found. Source:')
+                                        self.lggr.error(fl+': Field Not found. Source:')
                             if no_field:
                                 for fl in rich_item:
                                     #This will only happen once with the first real field
@@ -772,7 +773,6 @@ class AvispaRestFunc:
     def put_a_b(self,handle,ring,idx,api=False,collection=None,rqform=None,request=None,*args,**kargs):
 
         # Changing origin?
-        current_app.logger.debug(rqform.get('ringorigin'))
         if rqform.get('ringorigin'):
             originresult = self.AVM.set_ring_origin(handle,ring,rqform.get('ringorigin'))
 
@@ -780,7 +780,7 @@ class AvispaRestFunc:
         result =  RB.put_a_b(request,handle,ring)
 
         if result:
-            current_app.logger.debug('Awesome , you just put the changes in the Ring Schema')
+            self.lggr.debug('Awesome , you just put the changes in the Ring Schema')
             #msg = 'Item put with id: '+idx
             flash("Changes saved in the Schema",'UI')
             if collection:
@@ -808,7 +808,7 @@ class AvispaRestFunc:
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
-        # current_app.logger.debug(schema) 
+        # self.lggr.debug(schema) 
 
         #####
         # We Need to check if all FieldOrders are unique. If not it will cause trouble
