@@ -81,7 +81,7 @@ class AvispaRestFunc:
 
     # POST/a
     
-    def post_a(self,handle,ring,idx,api=False,collection=None,request=None,*args):
+    def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,request=None,*args):
 
        
         RB = RingBuilder()
@@ -130,8 +130,8 @@ class AvispaRestFunc:
                 flash(" There has been an issue, please check your parameters and try again. ",'UI')
                 param_list = []
                 unique = []
-                for p in request.form:
-                    q =  p+'='+request.form.get(p)
+                for p in rqform:
+                    q =  p+'='+rqform.get(p)
                     param_list.append(q)
                     
                     parts = p.split('_')
