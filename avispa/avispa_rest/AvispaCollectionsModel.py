@@ -58,7 +58,7 @@ class AvispaCollectionsModel:
                     validring[ringname+'_'+ringversionh] = True
 
         
-            #self.lggr.debug('BEFORE COLLECTIONS',collections)
+            self.lggr.debug('BEFORE COLLECTIONS: %s'%collections)
             
             count_c = 0
             for coll in collections:
@@ -68,9 +68,9 @@ class AvispaCollectionsModel:
                     
                     if ring['ringname']+'_'+ring['version'] not in validring:
                         #InValid Collection, at least one of its rings is marked as deleted             
-                        #coll['valid'] = False
+                        coll['valid'] = False
                         self.lggr.debug('EXCLUDING RING:',ring['ringname']+'_'+ring['version'])
-                        #ring['invalid'] = True
+                        ring['invalid'] = True
                         del collections[count_c]['rings'][count_r]
 
                         #break
@@ -82,7 +82,7 @@ class AvispaCollectionsModel:
 
                 count_c += 1
 
-            #self.lggr.debug('AFTER COLLECTIONS',collections)
+            self.lggr.debug('AFTER COLLECTIONS: %s'%collections)
                     
                         
             return collections
@@ -147,7 +147,7 @@ class AvispaCollectionsModel:
                 #coll['valid'] = True
                 if coll['collectionname'] == collection:
                     
-                    coll['valid'] = True
+                    #coll['valid'] = True
                     for ring in coll['rings']:       
                         if ring['ringname']+'_'+ring['version'] not in validring:
                             #InValid Collection, at least one of its rings is marked as deleted             
@@ -157,8 +157,11 @@ class AvispaCollectionsModel:
                             ring['count'] = validring[ring['ringname']+'_'+ring['version']]
                                 
                     return coll
+
+                else:
+                    return False
                         
-            #self.lggr.debug('ValidatedCollections:', collections)
+            self.lggr.debug('ValidatedCollections:', collections)
                 
         except (ResourceNotFound, TypeError) as e:
             self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0],sys.exc_info()[1]))
