@@ -1625,7 +1625,7 @@ class AvispaModel:
         return False
 
 
-    def delete_a_b_c(self,request,handle,ringname,idx):
+    def delete_a_b_c(self,handle,ringname,idx):
 
 
         db_ringname=str(handle)+'_'+str(ringname)
