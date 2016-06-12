@@ -592,7 +592,7 @@ class AvispaRestFunc:
     def validate_collection(self,handle,collectionname=None):
 
         self.ACM = AvispaCollectionsModel()
-        collectiond = self.ACM.get_a_x_y(handle,precollectionname) #Active Collaboration
+        collectiond = self.ACM.get_a_x_y(handle,collectionname) #Active Collaboration
         if collectiond['collectionname'] == collectionname :     
             return collectiond
         else:          

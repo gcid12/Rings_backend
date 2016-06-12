@@ -1054,7 +1054,11 @@ def teams_dispatcher(depth,handle,team=None):
 
 
     try:
-        data.update(getattr(ATR, m.lower())(request,handle,team))
+        data.update(getattr(ATR, m.lower())(
+                                            handle,
+                                            team,
+                                            rqform=request.form,
+                                            rqargs=request.args))
     except(AttributeError):
         data['template'] = 'avispa_rest/error_404.html'
 
