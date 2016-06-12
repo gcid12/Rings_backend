@@ -15,7 +15,7 @@ class AvispaPeopleRestFunc:
         
 
     # GET/a
-    def get_a_p(self,request,handle,person,*args):
+    def get_a_p(self,handle,person,*args,**kargs):
 
         d = {}
 
@@ -44,10 +44,10 @@ class AvispaPeopleRestFunc:
 
 
         # POST/a
-    def post_a_p(self,request,handle,person,*args):
+    def post_a_p(self,handle,person,rqform=None,*args,**kargs):
 
         #We need to recover from request as it doesn't come via URL
-        person = request.form.get('newperson')
+        person = rqform.get('newperson')
 
         #Check if the user exists or not
         if self.MAM.user_exists(person):
@@ -73,7 +73,7 @@ class AvispaPeopleRestFunc:
 
 
         #DELETE /a/b
-    def delete_a_p_q(self,request,handle,person,*args):
+    def delete_a_p_q(self,handle,person,*args,**kargs):
         #Will delete an existing person
         current_app.logger.debug('Trying to delete the following person: '+person)
 

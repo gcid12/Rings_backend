@@ -14,7 +14,7 @@ import collections
 import logging
 import couchdb
 
-from flask import flash, current_app, g
+from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
@@ -24,104 +24,82 @@ from AvispaLogging import AvispaLoggerAdapter
 
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN
+from env_config import TEMP_ACCESS_TOKEN
 
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
 
-
 class AvispaModel:
 
-
-    def __init__(self):
+    def __init__(self,tid=False,ip=False):
 
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        self.MAM = MainModel(tid=tid,ip=ip)
 
-        #self.lggr.debug('__init__()')
+    #TESTED
+    def ring_data_from_user_doc(self,handle,ring): 
+        '''Subtracts relevant ring data from user doc'''      
+
+        r = {}
+
+        r['ringname'] = str(ring['ringname'])
+        r['ringversion'] = str(ring['version'])
+
+        if 'origin' in ring:
+            r['ringorigin'] = str(ring['origin'])
+        else:
+            r['ringorigin'] = str(handle)
+
+        r['ringversionh'] = str(ring['version']).replace('-','.')
+        r['count'] = ring['count']
+
+        return r
+
+    #TESTED
+    def ring_data_from_schema(self,schema):
+        '''Subtracts relevant ring data from schema'''
+
+        r = {}
+
+        if 'RingDescription' in schema['rings'][0]:
+            r['ringdescription'] = schema['rings'][0]['RingDescription'] 
+        else:
+            r['ringdescription'] = False
   
-        #self.lggr.debug('#couchdb_call')
-        self.couch = couchdb.Server(COUCHDB_SERVER)
-        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        ##self.lggr.debug('self.couch :AVM')
-        #self.lggr.debug(self.couch)
-        #self.lggr.debug('self.couch.resource.credentials :AVM')
-        #self.lggr.debug(self.couch.resource.credentials)
-        self.user_database = 'myring_users'
+        if 'RingLabel' in schema['rings'][0]:               
+            r['ringlabel'] = schema['rings'][0]['RingLabel'] 
+        else:
+            r['ringlabel'] = False 
 
-        self.MAM = MainModel()
-
-    #AVISPAMODEL
-    def user_get_rings(self,handle,user_database=None):
+        return r
 
 
-        if not user_database : 
-            user_database = self.user_database
 
+    def subtract_ring_data(self,handle,ringlist):
+        
+        data = []
 
-        data=[]
+        for ringobj in ringlist:
+            schema = self.ring_get_schema_from_view(handle,str(ringobj['ringname'])) # ACTIVE COLLABORATION
+           
+            if schema and 'deleted' not in ringobj:
+                r1 = self.ring_data_from_user_doc(handle,ringobj)
+                r2 = self.ring_data_from_schema(schema)
+                r = dict(r1,**r2)
+                data.append(r)
 
+        return data
+
+    
+    def user_get_rings(self,handle):
+        '''Subtract ring data given a handle'''
+  
         try:
-                   
-            db = self.MAM.select_db(user_database)            
-            user_doc = self.MAM.select_user(user_database,handle)
-            
-            rings = user_doc['rings']
-            
-            #self.lggr.debug(rings)
-         
+            doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION 
+            data = self.subtract_ring_data(handle,doc['rings']) # ACTIVE COLLABORATION
 
-            for ring in rings:
-                
-                if not 'deleted' in ring:
-                    
-                    ringname = str(ring['ringname'])
-                    ringversion = str(ring['version'])
-                    if 'origin' in ring:
-                        ringorigin = str(ring['origin'])
-                    else:
-                        ringorigin = str(handle)
-
-                    ringversionh = ringversion.replace('-','.')
-                    count = ring['count']
-                    #self.lggr.debug('flag5b:'+str(handle)+'_'+ringname+'_'+ringversion)
-                    #self.lggr.debug('flag5b:'+str(handle)+'_'+ringname)
-                    #ringnamedb=str(handle)+'_'+ringname+'_'+ringversion
-                    ringnamedb=str(handle)+'_'+ringname
-                    #self.lggr.debug('ringnamedb::'+ringnamedb) 
-                    try:
-                        db = self.MAM.select_db(ringnamedb)
-                        #self.lggr.debug('Get RingDescription:')
-                        try: 
-                            RingDescription = db['schema']['rings'][0]['RingDescription'] 
-                        except KeyError:
-                            RingDescription = False 
-                        
-                        #self.lggr.debug('Get RingLabel:')
-                        try:       
-                            RingLabel = db['schema']['rings'][0]['RingLabel'] 
-                        except KeyError:
-                            RingLabel = False 
-
-                        r = {
-                            'ringname':ringname,
-                            'ringversion':ringversion,
-                            'ringversionh':ringversionh,
-                            'ringorigin':ringorigin,
-                            'ringlabel':RingLabel,
-                            'ringdescription':RingDescription,
-                            'count':count}
-
-                        data.append(r)
-                    except ResourceNotFound:
-                        pass
-                        
-                        self.lggr.error('skipping ring '+ ringname + '. Schema does not exist')
-                        
-
-            #self.lggr.debug('flag6')
-
-            
+      
 
         except (ResourceNotFound, TypeError) as e:
 
@@ -129,13 +107,13 @@ class AvispaModel:
             #The problem has to do with pagination. It can't find it in the current page
 
             #flash("You have no rings yet, create one!")
-            self.lggr.error("Notice: Expected error:", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0] , sys.exc_info()[1]))
             #self.lggr.debug('Notice: No rings for this user.')
 
         return data
 
 
-    #AVISPAMODEL
+    
     def ring_set_db(self,handle,ringname,ringversion):
            
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
@@ -143,40 +121,25 @@ class AvispaModel:
         db_ringname = db_ringname.replace(" ","")
 
         try:            
-            #self.couch.create(db_ringname) #Creates this ring database
+            
             self.MAM.create_db(db_ringname)
-            self.ring_set_db_views(db_ringname) #Sets all the CouchDB Views needed for this new ring
+            self.ring_set_db_views(db_ringname) #Sets all the DB Views needed for this new ring
             self.user_add_ring(handle,ringname,ringversion) #Adds the ring to the user's list
             return True    
 
         except:
-            current_app.logger.error ("Unexpected error:"+str( sys.exc_info()[0] )+str( sys.exc_info()[1]))
+            self.lggr.error ("Unexpected error:"+str( sys.exc_info()[0] )+str( sys.exc_info()[1]))
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             raise
             return False
 
 
-    #AVISPAMODEL
-    def x_ring_set_db_views(self,db_ringname): 
-    #Implemented as indicated here: http://markhaase.com/2012/06/23/couchdb-views-in-python/
-    #Deprecated. Only useful if view function are in python. 
-    #Python + CouchDB very poor and complicated as of now. 
-    #I rather use JS in the meantime
-
-        
-        db = self.couch[db_ringname]
-
-        CVS = CouchViewSync()
-        return CVS.set_db_views(db)
-
-    #AVISPAMODEL
+    
     def ring_set_db_views(self,db_ringname,specific=False):
 
-        
-        db = self.couch[db_ringname]
-
-        
+        db = self.MAM.select_db(db_ringname)
+   
         if not specific or specific == 'ring/items':
             view = ViewDefinition('ring', 'items', 
                    '''
@@ -356,33 +319,23 @@ class AvispaModel:
         return True
 
 
-    #AVISPAMODEL
-    def user_add_ring(self,handle,ringname,ringversion,user_database=None):
+    def user_add_ring(self,handle,ringname,ringversion):
 
-        if not user_database : 
-            user_database = self.user_database
-
-        
-        db = self.couch[user_database]
-        
         self.lggr.info("handle:",handle)
-        doc =  MyRingUser.load(db, handle)
+
+        doc = self.MAM.select_user(handle)
+
         doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
-        doc.store(db)
+
+        self.MAM.post_user_doc(doc)
 
         return True
 
     #AVISPAMODEL
-    def user_delete_ring(self,handle,ringname,user_database=None):
+    def user_delete_ring(self,handle,ringname):
 
-        if not user_database : 
-            user_database = self.user_database
-
+        doc = self.MAM.select_user(handle)
         
-        db = self.couch[user_database]
-        doc =  MyRingUser.load(db, handle)
-        
-
         #Clean all the references to this ring in the user document
         # This is NOT a tombstone. The database and its data will be deleted. 
         # TO DO : Backup the data in a secondary database
@@ -420,37 +373,34 @@ class AvispaModel:
 
             j = j+1
                 
-        if doc.store(db):
+        if self.MAM.post_user_doc(doc):
             return True
 
-        #doc.rings.append(ringname=str(ringname),version=str(ringversion),added=datetime.now(),count=0)
-        #doc.store(db)
         
         return False
 
     #AVISPAMODEL
-    def user_hard_delete_ring(self,handle,ringname,ringversion,user_database=None):
+    def user_hard_delete_ring(self,handle,ringname,ringversion):
 
         #dbname = handle+'_'+ringname+'_'+ringversion
         dbname = handle+'_'+ringname
         if self.MAM.delete_db(dbname):
-            self.lggr.info('Deleted from COUCHDB')
+            self.lggr.info('Deleted from DB')
             del1 = True
 
-        db = self.couch[self.user_database]
-        user_doc =  MyRingUser.load(db, handle)
-        rings = user_doc['rings']
+        doc = self.MAM.select_user(handle)
+        rings = doc['rings']
         count = 0
         for ring in rings:
             if ring['ringname']==ringname and ring['version']==ringversion:
                 #Here you should also make a hard delete not only a tombstone
-                del user_doc['rings'][count]
+                del doc['rings'][count]
 
             count += 1
 
                 #ring['deleted']=True
                 
-        if user_doc.store(db):
+        if self.MAM.post_user_doc(doc):
             self.lggr.info('Deleted from USERDB')
             del2 = True
       
@@ -468,7 +418,7 @@ class AvispaModel:
         
         #self.lggr.debug(db_ringname+'->ring_get_schema()')
 
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
         schema = MyRingSchema.load(db,'schema')
 
         return schema
@@ -477,35 +427,25 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_get_item_document(self,handle,ringname,idx):
 
-        db_ringname=str(handle)+'_'+str(ringname)
-        
-        db = self.couch[db_ringname]
-
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
+
+        db_ringname=str(handle)+'_'+str(ringname)
+        db = self.MAM.select_db(db_ringname)
         item = RingClass.load(db,idx)
 
         return item
-
-        
-
 
 
     #AVISPAMODEL
     def ring_set_schema(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
 
-        #self.lggr.info('ring_set_schema('+str(handle)+','+str(ringname)+','+str(ringversion)+','+str(pinput)+','+str(ringprotocol)+','+str(fieldprotocol))
-
         if ringversion == 'None' or ringversion == None:
-            self.lggr.error('ringversion none')
             ringversion = ''
 
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname=str(handle)+'_'+str(ringname)
-        
-        #self.lggr.debug('db_ringname:'+str(db_ringname))
-        
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
         numfields = len(pinput['fields'])
         schema = MyRingSchema.load(db,'schema')
 
@@ -641,62 +581,52 @@ class AvispaModel:
 
         return schemaclass
 
-    
+    #AVISPAMODEL
+    def ring_class_field_type(self,fieldtype):
+        '''Maps ring datatype with db type'''
+
+        #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
+        if fieldtype == 'INTEGER':
+            return IntegerField()
+        elif fieldtype == 'OBJECT':
+            return DictField()
+        elif fieldtype == 'ARRAY':
+            return ListField()
+        elif fieldtype == 'BOOLEAN':
+            return BooleanField()
+        else:
+            return TextField()
+
+    def ring_class_field_history(self):
+        '''Creates object that contains field history'''
+
+        d = {}
+        d['date']=DateTimeField()
+        d['author']=TextField()
+        d['before']=TextField()
+        d['after']=TextField()
+        d['action']=TextField()
+        d['doc']=DictField()
+        return ListField(DictField(Mapping.build(**d)))
+
+    def ring_class_prepare_class_arguments(self,schema):
+        '''Prepares argument objects for Ring Class '''
+
+        args = {'type':{},'rich':{},'history':{},'meta':{},'flags':{}}
+
+        for field in schema['fields']:
+            args['type'][field['FieldId']] = self.ring_class_field_type(field['FieldType'])
+            args['rich'][field['FieldId']] = ListField(DictField())
+            args['history'][field['FieldId']] = self.ring_class_field_history()
+            args['meta'][field['FieldId']] = DictField()
+            args['flags'][field['FieldId']] = TextField()
+
+        return args
+
     #AVISPAMODEL
     def ring_create_class(self,schema):
 
-        args_i = {}
-        args_rich = {}
-        args_history = {}
-        args_meta = {}
-        args_flags = {}
-
-        fields = schema['fields']
-        for field in fields:
-
-            #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
-            if field['FieldType'] == 'INTEGER':
-                args_i[field['FieldId']] = IntegerField()
-            elif field['FieldType'] == 'OBJECT':
-                args_i[field['FieldId']] = DictField()
-            elif field['FieldType'] == 'ARRAY':
-                args_i[field['FieldId']] = ListField()
-            elif field['FieldType'] == 'BOOLEAN':
-                args_i[field['FieldId']] = BooleanField()
-            else:
-                args_i[field['FieldId']] = TextField()
-
-            #d1={'source':TextField()}
-            d1 = {}
-            d1['_id']=TextField()
-            d1['_source']=TextField()
-            self.lggr.debug('len:'+str(len(d1)))
-            args_rich[field['FieldId']] = ListField(DictField())
-            
-
-            d2 = {}
-            d2['date']=DateTimeField()
-            d2['author']=TextField()
-            d2['before']=TextField()
-            d2['after']=TextField()
-            d2['action']=TextField()
-            d2['doc']=DictField()
-            args_history[field['FieldId']] = ListField(DictField(Mapping.build(**d2)))
-
-            args_flags[field['FieldId']] = TextField()
-
-            args_meta[field['FieldId']] = DictField()
-
-
-            
-
-
-        self.lggr.debug('args_i'+str(args_i))
-        self.lggr.debug('args_rich'+str(args_rich))
-        self.lggr.debug('args_history'+str(args_history))
-        self.lggr.debug('args_flags'+str(args_flags))
-        self.lggr.debug('args_meta'+str(args_meta))
-
+        args = self.ring_class_prepare_class_arguments(schema)
 
         RingClass = type('RingClass',
                          (Document,),
@@ -707,37 +637,31 @@ class AvispaModel:
                             'public' : BooleanField(default=False),
                             'deleted' : BooleanField(default=False),
                             'items': ListField(DictField(Mapping.build(
-                                                    **args_i
+                                                    **args['type']
                                                 ))),
                             'rich': ListField(DictField(Mapping.build(
-                                                    **args_rich
+                                                    **args['rich']
                                                 ))),
                             'history': ListField(DictField(Mapping.build(
-                                                    **args_history
+                                                    **args['history']
                                                 ))),
                             'flags': ListField(DictField(Mapping.build(
-                                                    **args_flags
+                                                    **args['flags']
                                                 ))),
                             'meta': ListField(DictField(Mapping.build(
-                                                    **args_meta
+                                                    **args['meta']
                                                 )))
                                                }) 
 
-        self.lggr.info('RingClass:'+str(RingClass))
-
+        #self.lggr.info('RingClass:'+str(RingClass))
         return RingClass
 
-
     #AVISPAMODEL
-    def get_item_count(self,handle,ringname,user_database=None):
+    def get_item_count(self,handle,ringname):
 
-
-        if not user_database : 
-            user_database = self.user_database
-
-        user_doc = self.MAM.select_user(user_database,handle)
-        self.lggr.info('user rings:'+str(user_doc['rings']))
-        for user_ring in user_doc['rings']:
+        doc = self.MAM.select_user(handle)
+        self.lggr.info('user rings:'+str(doc['rings']))
+        for user_ring in doc['rings']:
             if user_ring['ringname']==ringname:
                 return user_ring['count']
 
@@ -753,17 +677,16 @@ class AvispaModel:
          {'name':'ok', 'color':'#00f'},
          {'name':'ready', 'color':'#0f0'}]
        
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
+        doc = self.MAM.select_user(handle)
 
-        if user:
+        if doc:
 
-            for ring in user['rings']:
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
                     ring['labels'] = json.dumps(labels)
                     self.lggr.info('Labels added to the ring')
 
-            if user.store(self.db):
+            if self.MAM.post_user_doc(doc):
                 
                 return True
             else:
@@ -773,19 +696,18 @@ class AvispaModel:
 
     #AVISPAMODEL
     def increase_item_count(self,handle,ringname):
-       
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
 
-        if user:
+        doc = self.MAM.select_user(handle)
 
-            for ring in user['rings']:
+        if doc:
+
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] += 1
-                    self.lggr.info('Item Count increased')
+                    
 
-            if user.store(self.db):
-                
+            if self.MAM.post_user_doc(doc):
+                self.lggr.info('Item Count increased')
                 return True
             else:
                 self.lggr.error('Could not increase item count')
@@ -794,16 +716,15 @@ class AvispaModel:
         #AVISPAMODEL
     def decrease_item_count(self,handle,ringname):
 
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
+        doc = self.MAM.select_user(handle)
 
-        if user:
-            for ring in user['rings']:
+        if doc:
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
                     ring['count'] -= 1
                     self.lggr.info('Item Count decreased')
 
-            if user.store(self.db):       
+            if self.MAM.post_user_doc(doc):       
                 return True
             else:
                 self.lggr.error('Could not decrease item count')
@@ -811,18 +732,17 @@ class AvispaModel:
 
     def set_ring_origin(self,handle,ringname,origin):
 
-        self.db = self.couch[self.user_database]
-        user =  MyRingUser.load(self.db, handle)
+        doc = self.MAM.select_user(handle)
 
         if user:
 
-            for ring in user['rings']:
+            for ring in doc['rings']:
                 if ring['ringname'] == ringname:
 
                     ring['origin'] = origin
                     self.lggr.info('Ring origin set to '+origin)
 
-            if user.store(self.db):
+            if self.MAM.post_user_doc(doc):
                 
                 return True
             else:
@@ -835,14 +755,9 @@ class AvispaModel:
     #AVISPAMODEL
     def ring_get_schema_from_view(self,handle,ringname):
 
-        self.lggr.debug('++ AVM.ring_get_schema_from_view() ')
-
-        db_ringname=str(handle)+'_'+str(ringname)
-
-        self.lggr.debug('++@ AVM.select_db')
-        db = self.couch[db_ringname]
-        self.lggr.debug('--@ AVM.select_db')
-
+        db_ringname=str(handle)+'_'+str(ringname) 
+        db = self.MAM.select_db(db_ringname)       
+       
         options = {}
         self.lggr.debug('++@ db.iterview(ring/schema)')
         result  = db.iterview('ring/schema',1,**options)
@@ -851,26 +766,14 @@ class AvispaModel:
         schema = {}
 
         for row in result:  
-            #self.lggr.debug('row.value.fields:')
-            #self.lggr.debug(row.value['fields'])    
+ 
             schema = {}
-            #schema['rings']=row.value
-
             schema['fields']=row.value['fields']
             schema['rings']=row.value['rings']
 
             schema = self.schema_health_check(schema)
             
-            #schema['rings']=row.rings
-            #schema['fields']=row.fields
-
-        #self.lggr.debug('schema:')
-        #self.lggr.debug(schema)
-        self.lggr.debug('-- AVM.ring_get_schema_from_view() ')
-
         return schema
-
-        #return False
 
     #AVISPAMODEL
     def schema_health_check(self,schema):
@@ -968,17 +871,14 @@ class AvispaModel:
 
     
 
-    def get_a_b_parameters(self,handle,ringname,user_database=None):
+    def get_a_b_parameters(self,handle,ringname):
 
         self.lggr.debug('++ get_a_b_parameters')
-        
-        if not user_database : 
-            user_database = self.user_database
 
-        user_doc = self.MAM.select_user(user_database,handle)
+        doc = self.MAM.select_user(handle)
 
         #self.lggr.info('user rings:',user_doc['rings'])
-        for user_ring in user_doc['rings']:
+        for user_ring in doc['rings']:
             if user_ring['ringname']==ringname:
               
                 if 'deleted' in user_ring:
@@ -1061,7 +961,8 @@ class AvispaModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         #self.lggr.debug('#couchdb_call')
-        db = self.couch[db_ringname] 
+        
+        db = self.MAM.select_db(db_ringname)
  
         if not batch : 
             batch = 500
@@ -1329,10 +1230,10 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def post_a_b(self,request,handle,ringname):
+    def post_a_b(self,rqurl,rqform,handle,ringname):
 
         db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
 
         schema = self.ring_get_schema(handle,ringname)
         
@@ -1342,7 +1243,7 @@ class AvispaModel:
         flag_values = {}
         fields = schema['fields']
 
-        self.lggr.info("post_a_b raw arguments sent:"+str(request.form))
+        self.lggr.info("post_a_b raw arguments sent:"+str(rqform))
 
         for field in fields:
        
@@ -1353,16 +1254,16 @@ class AvispaModel:
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
                 external_uri_list = []
 
-                if field['FieldName'] in request.form:
-                    if len(request.form.get(field['FieldName']))!=0:
-                        external_uri_list = request.form.get(field['FieldName']).split(',')                     
-                elif field['FieldId'] in request.form:
-                    if len(request.form.get(field['FieldId']))!=0:
-                        external_uri_list = request.form.get(field['FieldId']).split(',')
+                if field['FieldName'] in rqform:
+                    if len(rqform.get(field['FieldName']))!=0:
+                        external_uri_list = rqform.get(field['FieldName']).split(',')                     
+                elif field['FieldId'] in rqform:
+                    if len(rqform.get(field['FieldId']))!=0:
+                        external_uri_list = rqform.get(field['FieldId']).split(',')
                 
 
                 if len(external_uri_list) > 0:
-                    r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,request.url,current_user.id)
+                    r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(field,external_uri_list,rqurl,current_user.id)
                     item_values.update(r_item_values)
                     rich_values.update(r_rich_values)
                  
@@ -1375,12 +1276,12 @@ class AvispaModel:
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
                 new_raw = ''
-                if field['FieldName'] in request.form:
-                    if len(request.form.get(field['FieldName']))!=0:
-                        new_raw = request.form.get(field['FieldName'])
-                elif field['FieldId'] in request.form:
-                    if len(request.form.get(field['FieldId']))!=0:
-                        new_raw = request.form.get(field['FieldId'])
+                if field['FieldName'] in rqform:
+                    if len(rqform.get(field['FieldName']))!=0:
+                        new_raw = rqform.get(field['FieldName'])
+                elif field['FieldId'] in rqform:
+                    if len(rqform.get(field['FieldId']))!=0:
+                        new_raw = rqform.get(field['FieldId'])
 
 
 
@@ -1419,12 +1320,12 @@ class AvispaModel:
 
             #Subtract the Flag
 
-            if 'flag_'+field['FieldName'] in request.form:
-                if len(request.form.get('flag_'+field['FieldName']))!=0:
-                    flag_values[field['FieldId']] = request.form.get('flag_'+field['FieldName'])
-            elif 'flag_'+field['FieldId'] in request.form:
-                if len(request.form.get('flag_'+field['FieldId']))!=0:
-                    flag_values[field['FieldId']] = request.form.get('flag_'+field['FieldId'])
+            if 'flag_'+field['FieldName'] in rqform:
+                if len(rqform.get('flag_'+field['FieldName']))!=0:
+                    flag_values[field['FieldId']] = rqform.get('flag_'+field['FieldName'])
+            elif 'flag_'+field['FieldId'] in rqform:
+                if len(rqform.get('flag_'+field['FieldId']))!=0:
+                    flag_values[field['FieldId']] = rqform.get('flag_'+field['FieldId'])
 
 
 
@@ -1450,7 +1351,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def get_a_b_c(self,request,handle,ringname,idx,human=False):
+    def get_a_b_c(self,handle,ringname,idx,human=False):
 
         self.lggr.debug('++ AVM.get_a_b_c')
 
@@ -1488,13 +1389,12 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def put_a_b_c(self,request,handle,ringname,idx):
+    def put_a_b_c(self,rqurl,rqform,handle,ringname,idx):
 
         self.lggr.info('START AVM.put_a_b_c')
 
         db_ringname=str(handle)+'_'+str(ringname)
-        #self.lggr.debug('#couchdb_call')
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
 
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
@@ -1507,7 +1407,7 @@ class AvispaModel:
         rich_values = {}
         fields = schema['fields']
 
-        if request.form.get('_public'):
+        if rqform.get('_public'):
             item['public']=True
         else:
             item['public']=False
@@ -1549,14 +1449,14 @@ class AvispaModel:
                 old = item.items[0][field['FieldId']]
             
          
-            if field['FieldName'] in request.form:
-                if len(request.form.get(field['FieldName']))!=0:
-                    new_raw = request.form.get(field['FieldName'])
+            if field['FieldName'] in rqform:
+                if len(rqform.get(field['FieldName']))!=0:
+                    new_raw = rqform.get(field['FieldName'])
                 else:
                     new_raw = None                   
-            elif field['FieldId'] in request.form:
-                if len(request.form.get(field['FieldId']))!=0:
-                    new_raw = request.form.get(field['FieldId'])
+            elif field['FieldId'] in rqform:
+                if len(rqform.get(field['FieldId']))!=0:
+                    new_raw = rqform.get(field['FieldId'])
                 else:
                     new_raw = None
             else:
@@ -1618,12 +1518,12 @@ class AvispaModel:
 
             old_flag = unicode(item.flags[0][field['FieldId']])
 
-            if 'flag_'+field['FieldName'] in request.form:
-                if len(request.form.get('flag_'+field['FieldName']))!=0:
-                    new_flag = unicode(request.form.get('flag_'+field['FieldName']))
-            elif 'flag_'+field['FieldId'] in request.form:
-                if len(request.form.get('flag_'+field['FieldId']))!=0:
-                    new_flag = unicode(request.form.get('flag_'+field['FieldId']))
+            if 'flag_'+field['FieldName'] in rqform:
+                if len(rqform.get('flag_'+field['FieldName']))!=0:
+                    new_flag = unicode(rqform.get('flag_'+field['FieldName']))
+            elif 'flag_'+field['FieldId'] in rqform:
+                if len(rqform.get('flag_'+field['FieldId']))!=0:
+                    new_flag = unicode(rqform.get('flag_'+field['FieldId']))
             else:
                 new_flag = False
 
@@ -1657,18 +1557,18 @@ class AvispaModel:
                 external_uri_list = []
 
                 #Form values could be named after FieldName or FieldId, we accept both ways. (second one is more explicit)
-                if field['FieldName'] in request.form:
-                    if len(request.form.get(field['FieldName']))!=0:
-                        external_uri_list = request.form.get(field['FieldName']).split(',')                     
-                elif field['FieldId'] in request.form:
-                    if len(request.form.get(field['FieldId']))!=0:
-                        external_uri_list = request.form.get(field['FieldId']).split(',')
+                if field['FieldName'] in rqform:
+                    if len(rqform.get(field['FieldName']))!=0:
+                        external_uri_list = rqform.get(field['FieldName']).split(',')                     
+                elif field['FieldId'] in rqform:
+                    if len(rqform.get(field['FieldId']))!=0:
+                        external_uri_list = rqform.get(field['FieldId']).split(',')
                 
                 if len(external_uri_list) > 0:
                     r_item_values,r_rich_values,r_history_values = self.subtract_rich_data(
                                                                         field,
                                                                         external_uri_list,
-                                                                        request.url,
+                                                                        rqurl,
                                                                         current_user.id)
                     item_values.update(r_item_values)
                     rich_values.update(r_rich_values)
@@ -1725,12 +1625,11 @@ class AvispaModel:
         return False
 
 
-    def delete_a_b_c(self,request,handle,ringname,idx):
+    def delete_a_b_c(self,handle,ringname,idx):
 
 
         db_ringname=str(handle)+'_'+str(ringname)
-        #self.lggr.debug('#couchdb_call')
-        db = self.couch[db_ringname]
+        db = self.MAM.select_db(db_ringname)
 
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)

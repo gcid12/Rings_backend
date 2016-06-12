@@ -87,7 +87,7 @@ class RingBuilder:
             flash('The Ring '+ ringname+' already exists','ER')
             return False
 
-    def subtract_request_parameters(self,request,handle,ring=None):
+    def subtract_request_parameters(self,rqform,handle,ring=None):
 
         p = {}
 
@@ -95,40 +95,40 @@ class RingBuilder:
 
         if ring:
             p['RingName'] = ring 
-        elif 'RingName' in request.form:  
-            p['RingName'] = request.form.get('RingName').lower().replace(' ','')
+        elif 'RingName' in rqform:  
+            p['RingName'] = rqform.get('RingName').lower().replace(' ','')
             #There should be also a nonaplhanumeric character strip here
         else:
             self.lggr.info('No name for the ring')
             return False
             
 
-        if 'RingVersion' in request.form:
-            p['RingVersion'] = request.form.get('RingVersion').replace('.','-') # I dont like this here
+        if 'RingVersion' in rqform:
+            p['RingVersion'] = rqform.get('RingVersion').replace('.','-') # I dont like this here
         else:
             p['RingVersion'] = self.ringprotocols['defaults']['RingVersion'].replace('.','-')
 
-        if 'RingParent' in request.form:
-            p['RingParent'] = request.form.get('RingParent')
+        if 'RingParent' in rqform:
+            p['RingParent'] = rqform.get('RingParent')
         else:
             p['RingParent'] = p['RingName']
         
-        if 'RingLabel' in request.form:
-            p['RingLabel'] = request.form.get('RingLabel')
+        if 'RingLabel' in rqform:
+            p['RingLabel'] = rqform.get('RingLabel')
         else:
             p['RingLabel'] = p['RingName'] 
 
-        for parameter in request.form:
+        for parameter in rqform:
             if parameter not in p:
-                p[parameter] = request.form.get(parameter)
-                self.lggr.info((parameter)+':'+str(request.form.get(parameter)))
+                p[parameter] = rqform.get(parameter)
+                self.lggr.info((parameter)+':'+str(rqform.get(parameter)))
 
         return p
 
 
-    def post_a(self,request,handle):
+    def post_a(self,rqurl,rqform,handle):
 
-        p = self.subtract_request_parameters(request,handle)
+        p = self.subtract_request_parameters(rqform,handle)
              
         if p['RingName'] and ('FieldName_1' in p):
             # Minumum requirements ok, create a ring
@@ -140,20 +140,20 @@ class RingBuilder:
             # 2. Add fields and extra parameters
             return self.update_ring_schema(p)
 
-        elif 'ringurl' in request.form:
+        elif 'ringurl' in rqform:
             # We are cloning a Ring
 
             pinput = collections.OrderedDict()              
             
             # ORIGIN
             # Base URL
-            o1 = urlparse.urlparse(request.url)
+            o1 = urlparse.urlparse(rqurl)
             host_url=urlparse.urlunparse((o1.scheme, o1.netloc, '', '', '', ''))
             self.lggr.debug(host_url)
             
             # TARGET 
             # Base URL
-            o2 = urlparse.urlparse(request.form.get('ringurl'))
+            o2 = urlparse.urlparse(rqform.get('ringurl'))
             host_ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, '', '', '', ''))
             self.lggr.info(host_ring_url)
 
@@ -165,8 +165,6 @@ class RingBuilder:
                 corrected_path = o2.path
             corrected_query = 'schema=1'+'&access_token=%s'%TEMP_ACCESS_TOKEN
             ring_url=urlparse.urlunparse((o2.scheme, o2.netloc, corrected_path, '', corrected_query, ''))
-            
-            
 
             
             if host_url==host_ring_url:
@@ -318,10 +316,10 @@ class RingBuilder:
             self.lggr.info('There is not enough information to create a Ring')
             return False
 
-    def put_a_b(self,request,handle,ring):
+    def put_a_b(self,rqform,handle,ring):
         # Update the ring schema
 
-        p = self.subtract_request_parameters(request,handle,ring=ring)
+        p = self.subtract_request_parameters(rqform,handle,ring=ring)
 
                 
         if p['RingName'] and ('FieldName_1' in p):

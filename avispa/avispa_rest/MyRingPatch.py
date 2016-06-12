@@ -51,7 +51,7 @@ class MyRingPatch:
         #db = self.couch[self.user_database]
         #user =  MyRingUser.load(db,current_user)
 
-        user = self.MAM.select_user(self.user_database,current_user.username)
+        user = self.MAM.select_user(current_user.username)
 
         if user:
 

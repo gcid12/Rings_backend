@@ -5,26 +5,23 @@ import logging
 import random
 import inspect
 import pprint
-from flask import current_app, g
 from MyRingUser import MyRingUser
 from couchdb.http import PreconditionFailed, ResourceNotFound
 from datetime import datetime
 from AvispaLogging import AvispaLoggerAdapter
-
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, TEMP_ACCESS_TOKEN, USER_DB
 
 
 class MainModel:
 
-    def __init__(self):
-
-      
+    def __init__(self,tid=False,ip=False):
+    
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
-        #self.lggr.debug('__init__()')
-        
-        self.couch = couchdb.Server(current_app.config['COUCHDB_SERVER'])
-        self.couch.resource.credentials = (current_app.config['COUCHDB_USER'],current_app.config['COUCHDB_PASS'])
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+
+        self.couch = couchdb.Server(COUCHDB_SERVER)
+        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         self.user_database = 'myring_users'
 
         self.roles = {}
@@ -45,9 +42,6 @@ class MainModel:
         self.roles['capturist'] = ['get_a_b','get_a_b_c','post_a_b','put_a_b_c','delete_a_b_c']
         self.roles['fact_checker'] = ['get_a_b_c','put_a_b_c']
         
-
-
-        self.user_database = 'myring_users'
 
     #MAINMODEL
 
@@ -84,14 +78,7 @@ class MainModel:
     #MAINMODEL
     def select_db(self,dbname):
         
-        
-        #self.lggr.debug(self.stack_parser(inspect.stack()))
-        #self.lggr.debug(inspect.trace())
-        #self.lggr.debug(inspect.getouterframes(inspect.currentframe())) 
-             
-        self.lggr.debug('++@ MAM.select_db') 
         result = self.couch[dbname] 
-        self.lggr.debug('--@ MAM.select_db')
         return result
          
     #MAINMODEL
@@ -128,6 +115,9 @@ class MainModel:
         #self.lggr.debug('flag1')
         self.db = self.select_db(dbname)
         #self.lggr.debug('flag2')
+
+        if 'onLogin' not in userd:
+            userd['onlogin'] = ''
 
         #self.lggr.debug('Notice: Creating User ->'+userd['username'])
         auser = MyRingUser(
@@ -286,18 +276,20 @@ class MainModel:
         return result
 
     #MAINMODEL  
-    def select_user(self,dbname,username):
-        self.lggr.debug('++ select_user')
-        self.db = self.select_db(dbname)
-        #self.lggr.debug('Notice: Selecting User ->'+username)
-        self.lggr.debug('-- select_user')
-        return MyRingUser.load(self.db, username)
+    #TODO: Rename this method to get_user_doc()
+    def select_user(self,username):
+        
+        db = self.select_db(USER_DB)
+        return MyRingUser.load(db, username)
+
+    def post_user_doc(self,doc):
+
+        db = self.select_db(USER_DB)
+        return doc.store(db)
 
 
     def select_user_doc_view(self,dbview,key,batch=None,user_database=None):
 
-
- 
         if not user_database : 
             user_database = self.user_database
 
@@ -823,10 +815,7 @@ class MainModel:
                             if teamd['teamname'] == 'owner':
                                 rolelist.append('org_owner')
                             else:
-                                rolelist.append('team_generic')
-                   
-
-                            
+                                rolelist.append('team_generic')                          
                             
             return rolelist
                             

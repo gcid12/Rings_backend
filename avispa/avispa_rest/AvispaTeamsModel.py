@@ -1,45 +1,44 @@
 # AvispaTeamsModel.py
 import sys
+import logging
 
 from datetime import datetime 
 from couchdb.http import ResourceNotFound
+
+from AvispaLogging import AvispaLoggerAdapter
 
 import couchdb
 from MainModel import MainModel
 from env_config import COUCHDB_SERVER,COUCHDB_USER, COUCHDB_PASS
 from flask.ext.login import current_user 
-from flask import flash, current_app
+from flask import flash
 
 class AvispaTeamsModel:
 
-    def __init__(self):
+    def __init__(self,tid=None,ip=None):
 
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        self.user_database = 'myring_users'
-        self.MAM = MainModel()
+        self.MAM = MainModel(tid=tid,ip=ip)
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
     #TEAMSMODEL
-    def post_a_m_n_members(self,handle,team,member,user_database=None):
+    def post_a_m_n_members(self,handle,team,member):
         #Creates new member in the team
+ 
+        doc = self.MAM.select_user(handle) 
 
-        if not user_database : 
-            user_database = self.user_database
-                      
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        self.lggr.debug(doc['teams'])
 
-        current_app.logger.debug(user_doc['teams'])
-
-
-        for teamd in user_doc['teams']:
+        for teamd in doc['teams']:
             if teamd['teamname'] == team:
-                current_app.logger.debug('Members for team '+team,teamd['members'])
+                self.lggr.debug('Members for team %s: %s'%(team,teamd['members']))
                 memberlist = []
 
                 if 'members' not in teamd:
                     teamd['members'] = []
-
 
                 for memberd in teamd['members']:
                     memberlist.append(memberd['handle'])
@@ -54,55 +53,44 @@ class AvispaTeamsModel:
                     teamd['members'].append(newmember)
                     
                 break
+        
+        self.MAM.post_user_doc(doc)
 
-        user_doc.store(db)
         return True 
 
 
     #TEAMSMODEL
-    def delete_a_m_n_members(self,handle,team,member,user_database=None):
+    def delete_a_m_n_members(self,handle,team,member):
         #Deletes an existing member from the team
 
-        if not user_database : 
-            user_database = self.user_database
-                      
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
-
-        current_app.logger.debug(user_doc['teams'])
+        doc = self.MAM.select_user(handle) 
+        self.lggr.debug('%s'%doc['teams'])
 
         count1 = 0
-        for teamd in user_doc['teams']:
+        for teamd in doc['teams']:
             if teamd['teamname'] == team:
-                current_app.logger.debug('Members for team '+team,teamd['members'])
+                self.lggr.debug('Members for team %s: %s '%(team,teamd['members']))
                 memberlist = []
                 count2 = 0
                 for memberd in teamd['members']:
                     if member == memberd['handle']:
-                        del user_doc['teams'][count1]['members'][count2]
+                        del doc['teams'][count1]['members'][count2]
                     count2 += 1
             count1 += 1
                     
-        if user_doc.store(db):
+        if self.MAM.post_user_doc(doc):
             return True 
         else:
             return False
 
 
     #TEAMSMODEL
-    def post_a_m_n_rings(self,handle,team,ring,user_database=None):
+    def post_a_m_n_rings(self,handle,team,ring):
         #Creates new member in the team
 
-        if not user_database : 
-            user_database = self.user_database
-                      
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        doc = self.MAM.select_user(handle) 
 
-        current_app.logger.debug(user_doc['teams'])
-
-
-        for teamd in user_doc['teams']:
+        for teamd in doc['teams']:
             if teamd['teamname'] == team: 
                 ringlist = []
 
@@ -125,48 +113,40 @@ class AvispaTeamsModel:
                     
                 break
 
-        user_doc.store(db)
+        self.MAM.post_user_doc(doc)
         return True 
 
 
 
         #TEAMSMODEL
-    def delete_a_m_n_rings(self,handle,team,ring,user_database=None):
+    def delete_a_m_n_rings(self,handle,team,ring):
         #Deletes an existing member from the team
 
-        if not user_database : 
-            user_database = self.user_database
-                      
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
+        doc = self.MAM.select_user(handle) 
 
-        current_app.logger.debug(user_doc['teams'])
+        self.lggr.debug(doc['teams'])
 
         count1 = 0
-        for teamd in user_doc['teams']:
+        for teamd in doc['teams']:
             if teamd['teamname'] == team:
                 ringlist = []
                 count2 = 0
                 for ringd in teamd['rings']:
                     if ring == ringd['ringname']:
-                        del user_doc['teams'][count1]['rings'][count2]
+                        del doc['teams'][count1]['rings'][count2]
                     count2 += 1
             count1 += 1
                     
-        if user_doc.store(db):
+        if self.MAM.post_user_doc(doc):
             return True 
         else:
             return False
  
-    def put_a_m_n_settings(self,handle,team,parameters,user_database=None):
+    def put_a_m_n_settings(self,handle,team,parameters):
 
-        if not user_database : 
-            user_database = self.user_database
+        doc = self.MAM.select_user(handle) 
 
-        db = self.MAM.select_db(user_database)
-        user_doc = self.MAM.select_user(user_database,handle) 
-
-        for teamd in user_doc['teams']:
+        for teamd in doc['teams']:
             if teamd['teamname'] == team: 
                 if 'description' in parameters:
                     teamd['description'] = parameters['description']
@@ -196,7 +176,7 @@ class AvispaTeamsModel:
 
                 break;
 
-        if user_doc.store(db):
+        if self.MAM.post_user_doc(doc):
             return True 
         else:
             return False

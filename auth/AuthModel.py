@@ -20,9 +20,7 @@ class AuthModel:
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
-
-        self.lggr.debug('__init__()')
-
+        
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
         #self.lggr.info('self.couch :ATM')
@@ -151,13 +149,13 @@ class AuthModel:
 
         except(PreconditionFailed):  
 
-            current_app.logger.info("Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1])
+            self.lggr.info("Notice: Expected error :", sys.exc_info()[0] , sys.exc_info()[1])
             #flash(u'Unexpected error:'+ str(sys.exc_info()[0]) + str(sys.exc_info()[1]),'error')
             self.rs_status='500'
             #raise
 
             # Will not get here because of 'raise'
-            current_app.logger.info("Notice: Since it already existed, selecting existing one")
+            self.lggr.info("Notice: Since it already existed, selecting existing one")
             self.MAM.select_db(user_database)
             
             self.lggr.info('Notice: '+user_database+' database exists already')
@@ -172,7 +170,7 @@ class AuthModel:
         
         db = self.couch[user_database]
 
-        auser = self.MAM.select_user(user_database, data['username'])
+        auser = self.MAM.select_user(data['username'])
 
         self.lggr.info('Notice: User subtracted from DB ')
 
