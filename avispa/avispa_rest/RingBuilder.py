@@ -15,13 +15,12 @@ from AvispaModel import AvispaModel
 
 class RingBuilder:
 
-    def __init__(self):
+    def __init__(self,tid=None,ip=None):
 
-        
-
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
         self.ringprotocols = {}
-
         self.ringprotocols['ringprotocol'] = ['RingName','RingLabel','RingDescription','RingVersion','RingURI','RingBuild','RingParent']
         self.ringprotocols['mandatory'] = ['RingName']
         self.ringprotocols['defaults'] = {'RingVersion':'0.1.0','RingBuild':'1'}

@@ -1,19 +1,24 @@
-# AvispaCollectionsRestFunc.py
-from flask import redirect, flash , current_app
+# AvispaPeopleRestFunc.py
+import logging
+from flask import redirect, flash
 
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from AvispaPeopleModel import AvispaPeopleModel
+from AvispaLogging import AvispaLoggerAdapter
 
 
 class AvispaPeopleRestFunc:
 
-    def __init__(self):
-        self.AVM = AvispaModel()
-        self.MAM = MainModel()
-        self.APM = AvispaPeopleModel()
+    def __init__(self,tid=None,ip=None):
         
-
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        
+        self.AVM = AvispaModel(tid=tid,ip=ip)
+        self.MAM = MainModel(tid=tid,ip=ip)
+        self.APM = AvispaPeopleModel(tid=tid,ip=ip)
+        
     # GET/a
     def get_a_p(self,handle,person,*args,**kargs):
 
@@ -55,18 +60,19 @@ class AvispaPeopleRestFunc:
             result = self.APM.post_a_p(handle,person)
                 
             if result:
-                current_app.logger.debug('Awesome , you just added '+ person +' to the organization')
+                self.lggr.debug('Awesome , you just added %s to the organization'%person)
                 #msg = 'Item put with id: '+idx
-                flash('Awesome , you just added '+ person +' to the organization','UI')
+                flash('Awesome , you just added %s to the organization'%person,'UI')
 
             else:
-                flash('There was an error adding '+ person +' to the organization.','ER')
+                self.lggr.error('Awesome , you just added %s to the organization'%person)
+                flash('There was an error adding %s to the organization.'%s,'ER')
 
         else:
-            flash(person+' is not a MyRing user. Please create it first.','ER')
+            self.lggr.debug('%s is not a MyRing user. Please create it first.'%person)
+            flash('%s is not a MyRing user. Please create it first.'%person,'ER')
 
-
-        
+  
         redirect = '/'+handle+'/_people'
         d = {'redirect': redirect, 'status':200}
         return d
@@ -75,7 +81,7 @@ class AvispaPeopleRestFunc:
         #DELETE /a/b
     def delete_a_p_q(self,handle,person,*args,**kargs):
         #Will delete an existing person
-        current_app.logger.debug('Trying to delete the following person: '+person)
+        self.lggr.debug('Trying to delete the following person: %s'%person)
 
         #Check if the user exists or not
         if self.MAM.user_exists(person):
@@ -83,15 +89,16 @@ class AvispaPeopleRestFunc:
             result = self.APM.delete_a_p_q(handle,person)
                 
             if result:
-                current_app.logger.debug('You just deleted '+ person +' from the organization')
-                #msg = 'Item put with id: '+idx
-                flash('You just deleted '+ person +' from the organization','UI')
+                self.lggr.debug('You just deleted %s from the organization'%person)
+                flash('You just deleted %s from the organization'%person,'UI')
 
             else:
-                flash('There was an error deleting '+ person +' from the organization.','ER')
+                self.lggr.error('There was an error deleting %s from the organization.'%person)
+                flash('There was an error deleting %s from the organization.'%person,'ER')
 
         else:
-            flash(person+' is not a MyRing user.','ER')
+            self.lggr.debug('%s is not a MyRing user.'%person)
+            flash('%s is not a MyRing user.'%person,'ER')
 
 
         

@@ -3,7 +3,7 @@ import urlparse, time, datetime, collections, json, csv, types, cStringIO
 import logging
 from AvispaLogging import AvispaLoggerAdapter
 
-from flask import Blueprint, render_template, request, redirect, current_app , g , make_response, Response
+from flask import Blueprint,render_template,request,redirect,g,make_response,Response
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
@@ -31,25 +31,26 @@ def setup_log_vars():
     MAM = MainModel()
     
     if 'X-Forwarded-For' in request.headers:
-        g.ip = request.headers.get('X-Forwarded-For')
+        ip = request.headers.get('X-Forwarded-For')
     else:
-        g.ip = request.remote_addr
+        ip = request.remote_addr
 
-    g.tid = MAM.random_hash_generator(36)
+    tid = MAM.random_hash_generator(36)
 
-def setup_local_logger():
-    return AvispaLoggerAdapter(logger, {'tid': g.get('tid', False),'ip': g.get('ip', False)})
+    return tid,ip
+
+def setup_local_logger(tid,ip):
+    return AvispaLoggerAdapter(logger, {'tid':tid,'ip':ip})
     
 
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
-     
-    setup_log_vars()
-    lggr = setup_local_logger()
-
+      
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
     lggr.info('START route_dispatcher')
 
-    MAM = MainModel()
-    ARF = AvispaRestFunc(tid=g.get('tid', None),ip=g.get('ip', None))
+    MAM = MainModel(tid=tid,ip=ip)
+    ARF = AvispaRestFunc(tid=tid,ip=ip)
 
     
     if request.args.get("rq"):
@@ -162,8 +163,6 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         t = time.time()
         data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 
-        #current_app.logger.debug("host_url")
-        #current_app.logger.debug(data['host_url'])
 
     lggr.info('START RESTFUL FUNCTION')
     data.update(getattr(ARF, m.lower())(
@@ -317,13 +316,12 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         
 def tool_dispatcher(tool):
 
-    setup_log_vars()
-    lggr = setup_local_logger() 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
     
     MRT = MyRingTool()
 
     data = getattr(MRT, tool.lower())(request)
-    #current_app.logger.debug('Tool executed:',data)
     
     if  hasattr(current_user,'id'):
         data['handle']=current_user.id
@@ -343,8 +341,8 @@ def tool_dispatcher(tool):
 
 def patch_dispatcher(patchnumber):
 
-    setup_log_vars()
-    lggr = setup_local_logger() 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
 
     MRP = MyRingPatch()
     patch = str(patchnumber)
@@ -358,8 +356,8 @@ def patch_dispatcher(patchnumber):
 
 def index_dispatcher(handle,ring=None,idx=None,unindex=False):
 
-    setup_log_vars()
-    lggr = setup_local_logger()    
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)    
 
     ESM = ElasticSearchModel()
 
@@ -379,12 +377,11 @@ def index_dispatcher(handle,ring=None,idx=None,unindex=False):
 
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
-    MAM = MainModel()
-    
-    setup_log_vars()
-    lggr = setup_local_logger() 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
 
-    ACF = AvispaCollectionsRestFunc()
+    MAM = MainModel(tid=tid,ip=ip)
+    ACF = AvispaCollectionsRestFunc(tid=tid,ip=ip)
 
     if request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
@@ -461,9 +458,6 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         t = time.time()
         data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
 
-        #current_app.logger.debug("host_url")
-        #current_app.logger.debug(data['host_url'])
-
     rqargs = request.args
     rqform = request.form
     rqurl = request.url
@@ -491,15 +485,15 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
 
 def home_dispatcher(handle):
-
-    MAM = MainModel()
     
-    setup_log_vars()
-    lggr = setup_local_logger() 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip) 
+
+    MAM = MainModel(tid=tid,ip=ip)
+    ACF = AvispaCollectionsRestFunc(tid=tid,ip=ip)
 
     data = {}
     
-
     if MAM.user_exists(handle):
 
         method= 'GET_a_home'
@@ -511,9 +505,7 @@ def home_dispatcher(handle):
             return render_template('avispa_rest/error_401.html', data=data),401
 
         data['user_authorizations'] = authorization_result['user_authorizations']
-
-    
-        ACF = AvispaCollectionsRestFunc()
+ 
         m = 'get_a_x'
            
         collectionsd = getattr(ACF, m.lower())(handle,None,None) 
@@ -553,13 +545,13 @@ def home_dispatcher(handle):
         needle = today
         for d in range(93):
             
-            ##current_app.logger.debug('NEEDLE:',needle)
+            ##self.lggr.debug('NEEDLE:',needle)
             h_new[str(needle)] = 0
             h_update[str(needle)] = 0
             h_generic[str(needle)] = 0
             needle = needle - one_day
 
-        ##current_app.logger.debug('h_new:',h_new)
+        ##self.lggr.debug('h_new:',h_new)
 
             
         for ringx in ringcounts:
@@ -569,7 +561,7 @@ def home_dispatcher(handle):
                 for n in item_dac['new']:
                     if n == str(today):
                         pass
-                        #current_app.logger.debug('NEW TODAY:',item_dac['new'][n])
+                        #self.lggr.debug('NEW TODAY:',item_dac['new'][n])
 
                     if n in h_generic:
                         h_generic[n] += item_dac['new'][n]
@@ -584,7 +576,7 @@ def home_dispatcher(handle):
                 for n in item_dac['update']:
                     if n == str(today):
                         pass
-                        #current_app.logger.debug('UPDATED TODAY:',item_dac['update'][n])
+                        #self.lggr.debug('UPDATED TODAY:',item_dac['update'][n])
 
                     if n in h_generic:
                         h_generic[n] += item_dac['update'][n]
@@ -712,14 +704,13 @@ def home_dispatcher(handle):
 
 def history_dispatcher(handle,ring=None):
 
-    MAM = MainModel()
-    
-    setup_log_vars()
-    lggr = setup_local_logger() 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip) 
+
+    MAM = MainModel(tid=tid,ip=ip) 
 
     data = {}
     
-
     if MAM.user_exists(handle):
 
         method= 'GET_a_home'
@@ -759,14 +750,11 @@ def history_dispatcher(handle,ring=None):
         one_day = datetime.timedelta(days=1)
         needle = today
         for d in range(93):
-            
-            ##current_app.logger.debug('NEEDLE:',needle)
+
             h_new[str(needle)] = 0
             h_update[str(needle)] = 0
             h_generic[str(needle)] = 0
             needle = needle - one_day
-
-        ##current_app.logger.debug('h_new:',h_new)
         
         timeline = {}
             
@@ -775,12 +763,10 @@ def history_dispatcher(handle,ring=None):
             ring_dac = MAM.select_ring_doc_view(ringdb,'ring/dailyactivity',batch=5000,showall=True)
 
 
-            #All the for loops below are very short. Should not cause an O(n^4)
+            #All the for loops below are very short. Should not cause lag
 
             for item_dac in ring_dac:
-
-                
-                
+ 
                 for t in item_dac['value']:
 
                     # t is the history type. It could be 'new', 'update', etc
@@ -809,7 +795,6 @@ def history_dispatcher(handle,ring=None):
                 for n in item_dac['value']['new']:
                     if n == str(today):
                         pass
-                        #current_app.logger.debug('NEW TODAY:',item_dac['new'][n])
 
                     date = n[:10]
 
@@ -827,7 +812,7 @@ def history_dispatcher(handle,ring=None):
 
                     if n == str(today):
                         pass
-                        #current_app.logger.debug('UPDATED TODAY:',item_dac['update'][n])
+                        #self.lggr.debug('UPDATED TODAY:',item_dac['update'][n])
 
                     date = n[:10]
 
@@ -941,14 +926,13 @@ def history_dispatcher(handle,ring=None):
 
 def people_dispatcher(depth,handle,person=None):
 
-    MAM = MainModel()
-    
-    setup_log_vars()
-    lggr = setup_local_logger() 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
 
-    APR = AvispaPeopleRestFunc()
+    MAM = MainModel(tid=tid,ip=ip)
+    APR = AvispaPeopleRestFunc(tid=tid,ip=ip)
+
     data = {}
-
     data['section'] = '_people'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
@@ -1021,15 +1005,13 @@ def people_dispatcher(depth,handle,person=None):
 
 def teams_dispatcher(depth,handle,team=None):
 
-    MAM = MainModel()
-    
-    setup_log_vars()
-    lggr = setup_local_logger() 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
 
-    ATR = AvispaTeamsRestFunc()
+    MAM = MainModel(tid=tid,ip=ip)
+    ATR = AvispaTeamsRestFunc(tid=tid,ip=ip)
+
     data = {}
-
-
     data['section'] = '_teams'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
@@ -1105,15 +1087,13 @@ def teams_dispatcher(depth,handle,team=None):
 
 def labels_dispatcher(depth,handle,ring):
 
-    MAM = MainModel()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
 
-    setup_log_vars()
-    lggr = setup_local_logger() 
-    
-    ALR = AvispaLabelsRestFunc()
+    MAM = MainModel(tid=tid,ip=ip)
+    ALR = AvispaLabelsRestFunc(tid=tid,ip=ip)
+
     data = {}
-
-
     data['section'] = '_teams'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
@@ -1198,7 +1178,7 @@ def index():
 @avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
 def imageserver(filename,depth1,depth2):
 
-    #current_app.logger.debug('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
+    #self.lggr.debug('IMAGE SERVED using Flask: /_images/'+depth1+'/'+depth2+'/'+filename)
 
     avispa_rest.static_folder=IMAGE_FOLDER_NAME+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
@@ -1566,36 +1546,28 @@ def collections_route_a_x(handle):
 def api_collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
-        #current_app.logger.debug('FLAGx1')
         result = route_dispatcher('_a',handle,api=True,collection=collection)       
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
-                #current_app.logger.debug('FLAGx2')
                 result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection) 
             elif request.args.get('method').lower()=='post':
-                #current_app.logger.debug('FLAGx3')
                 result = route_dispatcher('_a',handle,api=True,collection=collection)
         else:
-            #current_app.logger.debug('FLAGx4')
             result = route_dispatcher('_a',handle,api=True,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
-            #current_app.logger.debug('FLAGx5')
             result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection)
         if request.args.get('rq').lower() == 'post':
-            #current_app.logger.debug('FLAGx6')
             result = route_dispatcher('_a',handle,api=True,collection=collection)
 
 
     else:
-        #current_app.logger.debug('FLAGx7')
         #Every collection specific GET
         result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection)
  
     if 'redirect' in result:
-        #pass
         return redirect(result['redirect'])    
     else:
         return result
@@ -1606,36 +1578,28 @@ def api_collections_route_a_x_y(handle,collection):
 def collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
-        #current_app.logger.debug('FLAGx1')
         result = route_dispatcher('_a',handle,collection=collection)       
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
-                #current_app.logger.debug('FLAGx2')
                 result = collection_dispatcher('_a_x_y',handle,collection) 
             elif request.args.get('method').lower()=='post':
-                #current_app.logger.debug('FLAGx3')
                 result = route_dispatcher('_a',handle,collection=collection)
         else:
-            #current_app.logger.debug('FLAGx4')
             result = route_dispatcher('_a',handle,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
-            #current_app.logger.debug('FLAGx5')
             result = collection_dispatcher('_a_x_y',handle,collection)
         if request.args.get('rq').lower() == 'post':
-            #current_app.logger.debug('FLAGx6')
             result = route_dispatcher('_a',handle,collection=collection)
 
 
     else:
-        #current_app.logger.debug('FLAGx7')
         #Every collection specific GET
         result = collection_dispatcher('_a_x_y',handle,collection)
  
     if 'redirect' in result:
-        #pass
         return redirect(result['redirect'])        
     else:
         return result

@@ -1,31 +1,27 @@
 # AvispaPeopleModel.py
+import logging
 import sys
-
 from datetime import datetime 
 from couchdb.http import ResourceNotFound
-from flask import flash, current_app
-
-
-import couchdb
+from flask import flash
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 from flask.ext.login import current_user
+from AvispaLogging import AvispaLoggerAdapter
 
 class AvispaPeopleModel:
 
-    def __init__(self):
+    def __init__(self,tid=None,ip=None):
 
-        self.couch = couchdb.Server(COUCHDB_SERVER)
-        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        self.MAM = MainModel()
-
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        
+        self.MAM = MainModel(tid=tid,ip=ip)
 
     #PEOPLEMODEL
     def get_a_p(self,handle,person):
         pass
 
         # Returns list of people
-
         #Not being used. Using self.MAM.is_org(handle) instead. #FUTURE: Maybe we will have to use this in the future to optimize
 
     #PEOPLEMODEL
@@ -34,7 +30,7 @@ class AvispaPeopleModel:
                       
         doc = self.MAM.select_user(handle) 
 
-        current_app.logger.debug('user_doc[people]:',doc['people'])
+        self.lggr.debug('user_doc[people]:%s'%doc['people'])
 
         newperson = {'handle': person,
                      'addedby': current_user.id,

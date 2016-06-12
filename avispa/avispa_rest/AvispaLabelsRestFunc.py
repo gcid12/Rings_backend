@@ -5,10 +5,14 @@ from AvispaLabelsModel import AvispaLabelsModel
 
 class AvispaTeamsRestFunc:
 
-    def __init__(self):
-        self.AVM = AvispaModel()
-        self.MAM = MainModel()
-        self.ATM = AvispaLabelsModel()
+    def __init__(self,tid=None,ip=None):
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+
+        self.AVM = AvispaModel(tid=tid,ip=ip)
+        self.MAM = MainModel(tid=tid,ip=ip)
+        #self.ATM = AvispaLabelsModel(tid=tid,ip=ip)
 
     def get_a_l(self,request,handle,ring,*args):
         #Shows list of labels for this ring

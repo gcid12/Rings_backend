@@ -22,9 +22,10 @@ from flask import g
 
 class ElasticSearchModel:
 
-    def __init__(self):
+    def __init__(self,tid=None,ip=None):
+        
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
 
     def get_a_b(self,handle,ring,q=None):

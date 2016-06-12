@@ -1,21 +1,28 @@
 # AvispaCollectionsRestFunc.py
 import json
-from flask import redirect, flash, current_app
+import logging
+from flask import redirect, flash
 from AvispaModel import AvispaModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from CollectionBuilder import CollectionBuilder
+from AvispaLogging import AvispaLoggerAdapter
 
 class AvispaCollectionsRestFunc:
 
-    def __init__(self):
-        self.AVM = AvispaModel()
-        self.ACM = AvispaCollectionsModel()
+    def __init__(self,tid=None,ip=None):
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+
+        self.AVM = AvispaModel(tid=tid,ip=ip)
+        self.ACM = AvispaCollectionsModel(tid=tid,ip=ip)
+        self.CB = CollectionBuilder(tid=tid,ip=ip)
 
     # GET/a
     def get_a_x(self,handle,collection,idx,api=False,*args,**kargs):
      
         collectionlist = self.ACM.get_a_x(handle)
-        #current_app.logger.debug('collectionlist:',collectionlist)
+        #self.lggr.debug('collectionlist:%s'%collectionlist)
 
         count = 0
         if collectionlist:          
@@ -47,11 +54,11 @@ class AvispaCollectionsRestFunc:
     def post_a_x(self,handle,collection,idx,api=False,rqform=None,*args,**kargs):
 
         #Build the actual collection
-        CB = CollectionBuilder()
-        result = CB.post_a_x(rqform,handle)
+        
+        result = self.CB.post_a_x(rqform,handle)
             
         if result:
-            current_app.logger.debug('Awesome , you just created a new Collection')
+            self.lggr.debug('Awesome , you just created a new Collection')
             #msg = 'Item put with id: '+idx
 
             if api:
@@ -189,7 +196,7 @@ class AvispaCollectionsRestFunc:
         result = CB.put_a_x_y(rqform,handle,collection)
 
         if result:
-            current_app.logger.debug('Awesome , you just updated a Collection')
+            self.lggr.debug('Awesome , you just updated a Collection')
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been updated",'UI')
             redirect = '/'+handle+'/_collections/'+collection
@@ -205,7 +212,7 @@ class AvispaCollectionsRestFunc:
         ringlist = self.AVM.user_get_rings(handle)
         collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection
 
-        current_app.logger.debug('collectiond:',collectiond)
+        self.lggr.debug('collectiond:%s'%collectiond)
 
         collectionrings = []
         for ring in collectiond['rings']:
@@ -218,7 +225,7 @@ class AvispaCollectionsRestFunc:
              'collectionlist': collectiond,
              'collectionrings': collectionrings}
 
-        current_app.logger.debug("d:",d)
+        self.lggr.debug("d:%s"%d)
 
         return d
 
@@ -249,7 +256,7 @@ class AvispaCollectionsRestFunc:
         result = self.ACM.delete_a_x_y(handle,collection)
 
         if result:
-            current_app.logger.debug('Awesome , you just deleted a Collection')
+            self.lggr.debug('Awesome , you just deleted a Collection')
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been deleted",'UI')
             redirect = '/'+handle

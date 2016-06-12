@@ -14,10 +14,12 @@ class AvispaRestFunc:
 
     def __init__(self,tid=None,ip=None):
 
-        self.AVM = AvispaModel(tid=tid,ip=ip)
-
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        self.tid = tid
+        self.ip = ip
+
+        self.AVM = AvispaModel(tid=tid,ip=ip)
 
     # /a
 
@@ -70,7 +72,7 @@ class AvispaRestFunc:
     def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,*args,**kargs):
         ''' Creates a new ring '''
        
-        RB = RingBuilder()
+        RB = RingBuilder(tid=self.tid,ip=self.ip)
         result = RB.post_a(rqurl,rqform,handle)
         out = {} 
             
@@ -82,10 +84,10 @@ class AvispaRestFunc:
             if collection:
 
                 # Add this new ring to the collection ring list
-                self.ACM = AvispaCollectionsModel()
+                ACM = AvispaCollectionsModel(tid=self.tid,ip=self.ip)
 
                 try:
-                    if self.ACM.add_ring_to_collection(handle, collection,result):
+                    if ACM.add_ring_to_collection(handle, collection,result):
                         flash(" The ring has been added to the collection.",'UI')
                         if not api:
                             redirect = '/'+handle+'/_collections/'+collection
@@ -294,7 +296,7 @@ class AvispaRestFunc:
         #Search ElasticSearch
         if q != '' :
 
-            ESM = ElasticSearchModel()
+            ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
             preitems = ESM.get_a_b(handle,ring,q=q)
         else:
             preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
@@ -350,8 +352,6 @@ class AvispaRestFunc:
                 for w in widgets:
                     if widgets[w] == 'images':
                         d['imagesui'] = True
-
-            
 
              #Pagination
             if len(itemlist)>0 and len(itemlist) == limit:
@@ -545,8 +545,6 @@ class AvispaRestFunc:
 
         return Item
 
-
-
     def ring_parameters(self,handle,ring):
 
         self.lggr.debug('++ ring_parameters()')
@@ -591,7 +589,7 @@ class AvispaRestFunc:
 
     def validate_collection(self,handle,collectionname=None):
 
-        self.ACM = AvispaCollectionsModel()
+        self.ACM = AvispaCollectionsModel(tid=self.tid,ip=self.ip)
         collectiond = self.ACM.get_a_x_y(handle,collectionname) #Active Collaboration
         if collectiond['collectionname'] == collectionname :     
             return collectiond
@@ -623,7 +621,7 @@ class AvispaRestFunc:
         if idx:
 
             #Index new item in the search engine
-            ESM = ElasticSearchModel()
+            ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
             ESM.indexer(rqurl,handle,ring,idx)
 
             if not api:
@@ -745,7 +743,7 @@ class AvispaRestFunc:
         if rqform.get('ringorigin'):
             originresult = self.AVM.set_ring_origin(handle,ring,rqform.get('ringorigin'))
 
-        RB = RingBuilder()
+        RB = RingBuilder(tid=self.tid,ip=self.ip)
         result =  RB.put_a_b(rqform,handle,ring)
 
         if result:
@@ -862,7 +860,7 @@ class AvispaRestFunc:
         
         if self.AVM.user_delete_ring(handle,ring):
 
-            ESM = ElasticSearchModel()
+            ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
             ESM.unindexer(rqurl,handle,ring)
             flash('Ring '+ring+' deleted','UI')
         else:
@@ -1018,7 +1016,7 @@ class AvispaRestFunc:
         if result:
 
             #Index new item in the search engine
-            ESM = ElasticSearchModel()
+            ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
             ESM.indexer(rqurl,handle,ring,idx)
 
             # Awesome , you just put the changes in the Item
@@ -1159,7 +1157,7 @@ class AvispaRestFunc:
 
         if result:
 
-            ESM = ElasticSearchModel()
+            ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
             ESM.unindexer(handle,ring,idx)
             
             # Item deleted..
