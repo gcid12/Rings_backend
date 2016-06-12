@@ -1038,12 +1038,14 @@
               <span class="hidden-xs hidden-sm">Data collections</span>
           </a>
       </li>
+    
       <li role="presentation" class="{{ b2 }}">
           <a href="{{ b1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
           <i class="fa fa-user m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">People</span>
           </a>
       </li>
+      
 
       <li role="presentation" class="{{ c2 }}">
           <a href="{{ c1 }}" aria-controls="profile" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
@@ -1129,8 +1131,7 @@
                 <!-- ACTIONS -->
 
                 <span class=" pull-right">
-                    <a href="/{{handle}}" >go to<b> mainpage</b> </a> &nbsp;&nbsp;<br/>
-
+                    
                   {% if data.section == '_teams' %}
                     {% if 'get_a_p' in data.user_authorizations %}     
                     <a href="/{{handle}}/_people" >go to <b> People</b> </a> &nbsp;&nbsp;
