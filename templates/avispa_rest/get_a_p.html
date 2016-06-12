@@ -26,19 +26,23 @@
         <div class="bord-bottom bc-8 pad-y-20">  
             <div class="row">
                 <div class="col-xs-11 fs-0-8 text-right">
-                    <a href="/{{data.handle}}/_people" type="button" class="fc-n"> 
-                        <span class="pad-x-8">Add People</span>
-                        <i class="fa fa-plus pad-x-4"></i>
-                        <i class="fa fa-user"></i>
-                    </a> 
+                    
 
                     <!-- Put this on a modal -->
                     {% if 'post_a_p' in data.user_authorizations %}
                     <div class="">
                        <form action="" method="POST">
                        <div class="pull-right">
-                          &nbsp; ADD NEW PERSON <input name="newperson" type="text"/>&nbsp;
-                          <input  type="submit" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;" value="+"/>
+
+                            <span class="pad-x-8">Add People</span>
+                            
+
+                        <input name="newperson" type="text"/> &nbsp;
+                        
+                        <button type="submit" class="btn btn-success btn-xs pull-right">
+                            <i class="fa fa-plus pad-x-4"></i>
+                            <i class="fa fa-user"></i>
+                        </button>
                           
                        </div> 
                        </form>    
