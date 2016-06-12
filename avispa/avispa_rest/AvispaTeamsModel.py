@@ -1,15 +1,9 @@
 # AvispaTeamsModel.py
 import sys
 import logging
-
 from datetime import datetime 
-from couchdb.http import ResourceNotFound
-
 from AvispaLogging import AvispaLoggerAdapter
-
-import couchdb
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER,COUCHDB_USER, COUCHDB_PASS
 from flask.ext.login import current_user 
 from flask import flash
 
@@ -17,12 +11,9 @@ class AvispaTeamsModel:
 
     def __init__(self,tid=None,ip=None):
 
-        self.couch = couchdb.Server(COUCHDB_SERVER)
-        self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        self.MAM = MainModel(tid=tid,ip=ip)
-
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        self.MAM = MainModel(tid=tid,ip=ip)
 
     #TEAMSMODEL
     def post_a_m_n_members(self,handle,team,member):
