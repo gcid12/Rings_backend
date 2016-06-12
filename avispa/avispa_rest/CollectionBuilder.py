@@ -1,10 +1,15 @@
 #CollectionBuilder.py
-from flask import flash , current_app
+import logging
+from flask import flash
 from AvispaCollectionsModel import AvispaCollectionsModel
+from AvispaLogging import AvispaLoggerAdapter
 
 class CollectionBuilder:
 
     def __init__(self,tid=None,ip=None):
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
         self.collectionprotocols = {}
         self.collectionprotocols['collectionprotocol'] = ['CollectioNname','CollectionDescription','CollectionVersion']
@@ -48,10 +53,10 @@ class CollectionBuilder:
             #Here you write to the user.collection document
                      
             if self.ACM.post_a_x(handle,collectiond):
-                current_app.logger.debug('New Collection created: '+collectiond['name'])
+                self.lggr.debug('New Collection created: '+collectiond['name'])
                 return True
             else:
-                current_app.logger.debug('The Collection '+ collectiond['name'] +' database already exists')
+                self.lggr.debug('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 
     def put_a_x_y(self,rqform,handle,collection):
@@ -88,9 +93,9 @@ class CollectionBuilder:
             #Here you write to the user.collection document
                      
             if self.ACM.put_a_x_y(handle,collectiond):
-                current_app.logger.debug('Collection updated: '+collectiond['name'])
+                self.lggr.debug('Collection updated: '+collectiond['name'])
                 return True
             else:
-                current_app.logger.debug('The Collection '+ collectiond['name'] +' database already exists')
+                self.lggr.debug('The Collection '+ collectiond['name'] +' database already exists')
                 return False
 

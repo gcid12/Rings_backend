@@ -11,12 +11,13 @@ from AvispaLogging import AvispaLoggerAdapter
 class AvispaPeopleRestFunc:
 
     def __init__(self,tid=None,ip=None):
+        
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        
         self.AVM = AvispaModel(tid=tid,ip=ip)
         self.MAM = MainModel(tid=tid,ip=ip)
         self.APM = AvispaPeopleModel(tid=tid,ip=ip)
-
-        logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
         
     # GET/a
     def get_a_p(self,handle,person,*args,**kargs):

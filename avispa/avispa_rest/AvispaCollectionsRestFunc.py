@@ -11,12 +11,12 @@ class AvispaCollectionsRestFunc:
 
     def __init__(self,tid=None,ip=None):
 
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+
         self.AVM = AvispaModel(tid=tid,ip=ip)
         self.ACM = AvispaCollectionsModel(tid=tid,ip=ip)
         self.CB = CollectionBuilder(tid=tid,ip=ip)
-
-        logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
     # GET/a
     def get_a_x(self,handle,collection,idx,api=False,*args,**kargs):

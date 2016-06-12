@@ -12,6 +12,7 @@ class AvispaCollectionsModel:
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        
         self.MAM = MainModel(tid=tid,ip=ip)
 
     #COLLECTIONSMODEL

@@ -17,12 +17,12 @@ class AvispaTeamsRestFunc:
 
     def __init__(self,tid=None,ip=None):
 
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+        
         self.AVM = AvispaModel(tid=tid,ip=ip)
         self.MAM = MainModel(tid=tid,ip=ip)
         self.ATM = AvispaTeamsModel(tid=tid,ip=ip)
-
-        logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
     # GET/a
     def get_a_m(self,handle,team,*args,**kargs):

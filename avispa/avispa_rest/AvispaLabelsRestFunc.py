@@ -6,6 +6,10 @@ from AvispaLabelsModel import AvispaLabelsModel
 class AvispaTeamsRestFunc:
 
     def __init__(self,tid=None,ip=None):
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
+
         self.AVM = AvispaModel(tid=tid,ip=ip)
         self.MAM = MainModel(tid=tid,ip=ip)
         #self.ATM = AvispaLabelsModel(tid=tid,ip=ip)
