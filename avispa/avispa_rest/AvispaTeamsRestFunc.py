@@ -1,4 +1,4 @@
-# AvispaCollectionsRestFunc.py
+# AvispaTeamsRestFunc.py
 import urlparse, random
 import logging
 from flask import redirect, flash
