@@ -1,22 +1,28 @@
 # AvispaTeamsModel.py
 import sys
+import logging
 
 from datetime import datetime 
 from couchdb.http import ResourceNotFound
+
+from AvispaLogging import AvispaLoggerAdapter
 
 import couchdb
 from MainModel import MainModel
 from env_config import COUCHDB_SERVER,COUCHDB_USER, COUCHDB_PASS
 from flask.ext.login import current_user 
-from flask import flash, current_app
+from flask import flash
 
 class AvispaTeamsModel:
 
-    def __init__(self):
+    def __init__(self,tid=None,ip=None):
 
         self.couch = couchdb.Server(COUCHDB_SERVER)
         self.couch.resource.credentials = (COUCHDB_USER,COUCHDB_PASS)
-        self.MAM = MainModel()
+        self.MAM = MainModel(tid=tid,ip=ip)
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
     #TEAMSMODEL
     def post_a_m_n_members(self,handle,team,member):
@@ -24,16 +30,15 @@ class AvispaTeamsModel:
  
         doc = self.MAM.select_user(handle) 
 
-        current_app.logger.debug(doc['teams'])
+        self.lggr.debug(doc['teams'])
 
         for teamd in doc['teams']:
             if teamd['teamname'] == team:
-                current_app.logger.debug('Members for team '+team,teamd['members'])
+                self.lggr.debug('Members for team %s: %s'%(team,teamd['members']))
                 memberlist = []
 
                 if 'members' not in teamd:
                     teamd['members'] = []
-
 
                 for memberd in teamd['members']:
                     memberlist.append(memberd['handle'])
@@ -59,12 +64,12 @@ class AvispaTeamsModel:
         #Deletes an existing member from the team
 
         doc = self.MAM.select_user(handle) 
-        current_app.logger.debug(doc['teams'])
+        self.lggr.debug('%s'%doc['teams'])
 
         count1 = 0
         for teamd in doc['teams']:
             if teamd['teamname'] == team:
-                current_app.logger.debug('Members for team '+team,teamd['members'])
+                self.lggr.debug('Members for team %s: %s '%(team,teamd['members']))
                 memberlist = []
                 count2 = 0
                 for memberd in teamd['members']:
@@ -119,7 +124,7 @@ class AvispaTeamsModel:
 
         doc = self.MAM.select_user(handle) 
 
-        current_app.logger.debug(doc['teams'])
+        self.lggr.debug(doc['teams'])
 
         count1 = 0
         for teamd in doc['teams']:

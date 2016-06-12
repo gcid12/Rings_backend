@@ -53,7 +53,7 @@
                     </td>
                     <td> 
                       {%if 'get_a_m_n' in data.user_authorizations %}
-                        <a class="rn-b1" href="/{{ data.handle }}/eams/{{ team.teamname }}">
+                        <a class="rn-b1" href="/{{ data.handle }}/_teams/{{ team.teamname }}">
                             {{ team.teamname }}
                         </a>
                       {%else%}
@@ -74,7 +74,7 @@
                       <div class="pull-right">
                         {%if 'get_a_m_n' in data.user_authorizations %}
                         <div class="btn-group"> 
-                          <a href="/{{ data.handle }}/eams/{{ team.teamname }}" >Show</a>
+                          <a href="/{{ data.handle }}/_teams/{{ team.teamname }}" >Show</a>
                         </div>
                         {%endif%}
                         {%if 'delete_a_m_n' in data.user_authorizations %}

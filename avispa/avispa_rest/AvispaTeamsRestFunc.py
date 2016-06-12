@@ -1,6 +1,7 @@
 # AvispaCollectionsRestFunc.py
 import urlparse, random
-from flask import redirect, flash, current_app
+import logging
+from flask import redirect, flash
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from flask.ext.login import current_user
@@ -9,24 +10,24 @@ from flanker.addresslib import address
 from datetime import datetime
 from app import flask_bcrypt
 from EmailModel import EmailModel
+from AvispaLogging import AvispaLoggerAdapter
 
 
 class AvispaTeamsRestFunc:
 
-    def __init__(self):
-        self.AVM = AvispaModel()
-        self.MAM = MainModel()
-        self.ATM = AvispaTeamsModel()
+    def __init__(self,tid=None,ip=None):
 
-        
-        
+        self.AVM = AvispaModel(tid=tid,ip=ip)
+        self.MAM = MainModel(tid=tid,ip=ip)
+        self.ATM = AvispaTeamsModel(tid=tid,ip=ip)
+
+        logger = logging.getLogger('Avispa')
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
     # GET/a
     def get_a_m(self,handle,team,*args,**kargs):
 
         d = {}
-
-        current_app.logger.debug('flag232x')
 
         peopleteams = self.MAM.is_org(handle) 
         if peopleteams: 
@@ -37,49 +38,36 @@ class AvispaTeamsRestFunc:
             allteams = {}         
             for teamd in peopleteams['teams']:
                 #get the profilepic for this person
-                current_app.logger.debug('teamname:'+teamd['teamname'])
+                self.lggr.debug('teamname:%s'%teamd['teamname'])
 
                 for member in teamd['members']:
 
-                    current_app.logger.debug('member:'+member['handle'])
-
-                    
+                    self.lggr.debug('member:%s'%member['handle'])
 
                     person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',member['handle'])
                     if person_user_doc:
                         member['thumbnail'] = person_user_doc['profilepic']
 
                     if current_user.id == member['handle']:
-                        current_app.logger.debug(member['handle']+' is member')
-                        #current_app.logger.debug('T writing'+teamd['roles'][-1]['role'])
+                        self.lggr.debug('%s is member'%member['handle']) 
                         if teamd['teamname'] == 'owner':
                             d['teammembership'][teamd['teamname']] = 'org_owner'
                         else:
                             if len(teamd['roles']) >= 1:
                                 d['teammembership'][teamd['teamname']] = teamd['roles'][-1]['role']
 
-
                 allteams[teamd['teamname']] = 'org_owner'
-                #current_app.logger.debug('allteams:',allteams)
-
 
             if 'owner' in d['teammembership']:
                 d['teammembership'] = allteams
-
-
-
-           
-                    #d['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
-
+       
             d['teamlist'] = peopleteams['teams']            
             d['template'] = 'avispa_rest/get_a_m.html'
         else:
             #This is a regular user
-         
             d['redirect'] = '/'+handle+'/_home'
      
         return d
-
 
         # POST/a
     def post_a_m(self,handle,team,rqform=None,*args,**kargs):
@@ -105,12 +93,12 @@ class AvispaTeamsRestFunc:
                     return d 
 
             if self.MAM.add_team(handle,team,current_user.id):
-                current_app.logger.debug('Awesome , you just created team '+ team +'.')
+                self.lggr.debug('Awesome , you just created team %s '%team)
                 #msg = 'Item put with id: '+idx
-                flash('Awesome , you just created team '+ team +'.','UI')
+                flash('Awesome , you just created team %s '%team,'UI')
                 redirect = '/'+handle+'/_teams'
             else:
-                flash('There was an error adding team: '+ team +'.','UI')
+                flash('There was an error adding team %s '%team,'UI')
                 redirect = '/'+handle+'/_teams'
 
         else:
@@ -180,40 +168,39 @@ class AvispaTeamsRestFunc:
         if 'newmember' in rqform: 
             member = rqform.get('newmember')
             if self.ATM.post_a_m_n_members(handle,team,member):
-                current_app.logger.debug(member + ' has been added to the team.')
-                flash(member + ' has been added to the team.','UI')
+                self.lggr.debug('%s has been added to the team.'%member)
+                flash('%s has been added to the team.'%member,'UI')
             else:
-                current_app.logger.debug(member + ' is already part of this team.')
-                flash(member + ' is already part of this team.','UI')
+                self.lggr.debug('%s is already part of this team.'%member)
+                flash('%s is already part of this team.'%member,'UI')
 
         if 'delmember' in rqargs: 
             member = rqargs.get('delmember')
             if self.ATM.delete_a_m_n_members(handle,team,member):
-                current_app.logger.debug(member + ' has been deleted from the team.')
-                flash(member + ' has been deleted from the team.','UI')
+                self.lggr.debug('%s has been deleted from the team.'%member)
+                flash('%s has been deleted from the team.'%member,'UI')
             else:
-                current_app.logger.debug('There was an issue deleting: ' + member + '.')
-                flash('There was an issue deleting: ' + member + '.','UI')
+                self.lggr.error('There was an issue deleting: %s'%member)
+                flash('There was an issue deleting: %s'%member,'UI')
             
         if 'newring' in rqform:
             ring = rqform.get('newring')
             if self.ATM.post_a_m_n_rings(handle,team,ring):
-                current_app.logger.debug(ring + ' has been added to the team.')
-                flash(ring + ' has been added to the team.','UI')
+                self.lggr.debug('%s has been added to the team.'%ring)
+                flash('%s has been added to the team.'%ring,'UI')
             else:
-                current_app.logger.debug(ring + ' already  exists in this team.')
-                flash(ring + ' already  exists in this team.','UI')           
+                self.lggr.error('%s already  exists in this team.'%ring)
+                flash('%s already  exists in this team.'%ring,'UI')           
 
         if 'delring' in rqargs:
             ring = rqargs.get('delring')
             if self.ATM.delete_a_m_n_rings(handle,team,ring):
-                current_app.logger.debug(ring + ' has been deleted from the team.')
-                flash(ring + ' has been deleted from the team.','UI')
+                self.lggr.debug('%s has been deleted from the team.'%ring)
+                flash('%s has been deleted from the team.'%ring,'UI')
             else:
-                current_app.logger.debug('There was an issue deleting: ' + ring + '.')
-                flash('There was an issue deleting: ' + ring + '.','UI')
-            
-            
+                self.lggr.error('There was an issue deleting: %s'%ring)
+                flash('There was an issue deleting: %s'%ring,'UI')
+                
         d['redirect'] = '/'+handle+'/_teams/'+team
 
         return d
@@ -222,7 +209,7 @@ class AvispaTeamsRestFunc:
         #DELETE /a/b
     def delete_a_m_n(self,handle,team,*args,**kargs):
         #Will delete an existing person
-        current_app.logger.debug('Trying to delete the following team: '+team)
+        self.lggr.debug('Trying to delete the following team: %s'%team)
 
         d = {}
 
@@ -235,12 +222,12 @@ class AvispaTeamsRestFunc:
                 if teamd['teamname'] == team:
                     
                     if self.MAM.delete_team(handle,team):
-                        current_app.logger.debug('You just deleted team '+ team +'.')
-                        #msg = 'Item put with id: '+idx
-                        flash('You just deleted team '+ team +'.','UI')
+                        self.lggr.debug('You just deleted team %s'%team)
+                        flash('You just deleted team %s'%team,'UI')
                         redirect = '/'+handle+'/_teams'
                     else:
-                        flash('There was an error deleting team: '+ team +'.','ER')
+                        self.lggr.error('There was an error deleting team: %s'%team)
+                        flash('There was an error deleting team: %s'%team,'ER')
                         redirect = '/'+handle+'/_teams'
 
         else:
@@ -299,20 +286,19 @@ class AvispaTeamsRestFunc:
 
 
 
-    def put_a_m_n_settings(self,handle,team,rqform=rqform,*args,**kargs):
+    def put_a_m_n_settings(self,handle,team,rqform=None,*args,**kargs):
         d = {}
         p = {}     
 
         if ('description' in rqform) or ('teamauth' in rqform): 
-            current_app.logger.debug('xx')
             p['description'] = rqform.get('description')
             p['teamauth'] = rqform.get('teamauth')
             if self.ATM.put_a_m_n_settings(handle,team,p):
-                current_app.logger.debug(team + ' has been updated.')
-                flash(team + ' has been updated.','UI')
+                self.lggr.debug('%s has been updated.'%team)
+                flash('%s has been updated.'%team,'UI')
             else:
-                current_app.logger.debug(' There was a problem updating '+team+'.')
-                flash(' There was a problem updating '+team+'.','ER')  
+                self.lggr.error('There was a problem updating team %s'%team)
+                flash('There was a problem updating team %s'%team,'ER')  
 
         d['redirect'] = '/'+handle+'/_teams/'+team
 
@@ -353,14 +339,11 @@ class AvispaTeamsRestFunc:
         d = {}
 
         self.EMM = EmailModel()
-
-
         collabraw = rqform.get('emails')
-
         valid_emails, invalid_emails = address.validate_list(collabraw, as_tuple=True)
 
-        current_app.logger.debug('valid_emails:',valid_emails)
-        current_app.logger.debug('invalid_emails:',invalid_emails)
+        self.lggr.debug('valid_emails:%s'%valid_emails)
+        self.lggr.debug('invalid_emails:%s'%invalid_emails)
 
         #2. If it is an email, send ring subscription url/token 
 
@@ -388,8 +371,6 @@ class AvispaTeamsRestFunc:
             # teamd carries the team object
         #Try to convert invalid_emails (myringIDs) into valid_emails
 
-        current_app.logger.debug("flag1")
-
         for invite_handle in invalid_emails:
             user_doc = self.MAM.select_user_doc_view('auth/userbyhandle',invite_handle)                   
             if user_doc:
@@ -398,11 +379,8 @@ class AvispaTeamsRestFunc:
 
         for email in valid_emails:
 
-            current_app.logger.debug("flag2")
-
             email = str(email)
               
-
             invite={}
             invite['email'] = email
             invite['count'] = 1
@@ -422,16 +400,12 @@ class AvispaTeamsRestFunc:
                 #You are inviting a soon to be myRing user
                 existinguser = False
 
-            current_app.logger.debug("flag3")
-
-            #host_url = "https://avispa.myring.io"
-                
             token = invite['token'] 
             to = email
             subject = handle+" has invited you to collaborate in the following team : "+team
             # https://avispa.myring.io/_register?h=cdmit&t=staff&k=11111&e=invi@tado.com
             content = "Click here to start working with this team: "+host_url+"/_register?h="+handle+"&t="+team+"&k="+token+"&e="+email
-            current_app.logger.debug(to,subject,content)
+            self.lggr.debug('%s,%s,%s'%(to,subject,content))
 
             if self.EMM.send_one_email(to,subject,content):
                 flash("Invitation email sent.",'UI') 
