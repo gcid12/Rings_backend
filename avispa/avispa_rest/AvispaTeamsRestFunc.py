@@ -22,7 +22,7 @@ class AvispaTeamsRestFunc:
         
 
     # GET/a
-    def get_a_m(self,request,handle,team,*args):
+    def get_a_m(self,handle,team,*args,**kargs):
 
         d = {}
 
@@ -82,12 +82,12 @@ class AvispaTeamsRestFunc:
 
 
         # POST/a
-    def post_a_m(self,request,handle,team,*args):
+    def post_a_m(self,handle,team,rqform=None,*args,**kargs):
         '''
         Creates a new team
         '''
         #We need to recover from request as it doesn't come via URL
-        team = request.form.get('newteam')
+        team = rqform.get('newteam')
 
         #Check if the team exists or not
         d = {}
@@ -121,7 +121,7 @@ class AvispaTeamsRestFunc:
         return d
 
 
-    def get_a_m_n(self,request,handle,team,*args):
+    def get_a_m_n(self,handle,team,*args,**kargs):
 
         d = {}
 
@@ -170,15 +170,15 @@ class AvispaTeamsRestFunc:
      
         return d
 
-    def put_a_m_n(self,request,handle,team,*args):
+    def put_a_m_n(self,handle,team,rqform=None,rqargs=None,*args,**kargs):
 
         #This function should be refactored into multiple functions that obey RESTFUL:
         # post_a_m_n_members , delete_a_m_n_members , post_a_m_n_rings, delete_a_m_n_rings
 
         d = {}
 
-        if 'newmember' in request.form: 
-            member = request.form.get('newmember')
+        if 'newmember' in rqform: 
+            member = rqform.get('newmember')
             if self.ATM.post_a_m_n_members(handle,team,member):
                 current_app.logger.debug(member + ' has been added to the team.')
                 flash(member + ' has been added to the team.','UI')
@@ -186,8 +186,8 @@ class AvispaTeamsRestFunc:
                 current_app.logger.debug(member + ' is already part of this team.')
                 flash(member + ' is already part of this team.','UI')
 
-        if 'delmember' in request.args: 
-            member = request.args.get('delmember')
+        if 'delmember' in rqargs: 
+            member = rqargs.get('delmember')
             if self.ATM.delete_a_m_n_members(handle,team,member):
                 current_app.logger.debug(member + ' has been deleted from the team.')
                 flash(member + ' has been deleted from the team.','UI')
@@ -195,8 +195,8 @@ class AvispaTeamsRestFunc:
                 current_app.logger.debug('There was an issue deleting: ' + member + '.')
                 flash('There was an issue deleting: ' + member + '.','UI')
             
-        if 'newring' in request.form:
-            ring = request.form.get('newring')
+        if 'newring' in rqform:
+            ring = rqform.get('newring')
             if self.ATM.post_a_m_n_rings(handle,team,ring):
                 current_app.logger.debug(ring + ' has been added to the team.')
                 flash(ring + ' has been added to the team.','UI')
@@ -204,8 +204,8 @@ class AvispaTeamsRestFunc:
                 current_app.logger.debug(ring + ' already  exists in this team.')
                 flash(ring + ' already  exists in this team.','UI')           
 
-        if 'delring' in request.args:
-            ring = request.args.get('delring')
+        if 'delring' in rqargs:
+            ring = rqargs.get('delring')
             if self.ATM.delete_a_m_n_rings(handle,team,ring):
                 current_app.logger.debug(ring + ' has been deleted from the team.')
                 flash(ring + ' has been deleted from the team.','UI')
@@ -220,7 +220,7 @@ class AvispaTeamsRestFunc:
 
 
         #DELETE /a/b
-    def delete_a_m_n(self,request,handle,team,*args):
+    def delete_a_m_n(self,handle,team,*args,**kargs):
         #Will delete an existing person
         current_app.logger.debug('Trying to delete the following team: '+team)
 
@@ -250,7 +250,7 @@ class AvispaTeamsRestFunc:
         d = {'redirect': redirect, 'status':200}
         return d
 
-    def get_a_m_n_settings(self,request,handle,team,*args):
+    def get_a_m_n_settings(self,handle,team,*args,**kargs):
 
         redirect = '/'+handle+'/_teams/'+team        
 
@@ -258,7 +258,7 @@ class AvispaTeamsRestFunc:
         return d
 
 
-    def put_rq_a_m_n_settings(self,request,handle,team,*args):
+    def put_rq_a_m_n_settings(self,handle,team,*args,**kargs):
         
         d = {}
 
@@ -299,14 +299,14 @@ class AvispaTeamsRestFunc:
 
 
 
-    def put_a_m_n_settings(self,request,handle,team,*args):
+    def put_a_m_n_settings(self,handle,team,rqform=rqform,*args,**kargs):
         d = {}
         p = {}     
 
-        if ('description' in request.form) or ('teamauth' in request.form): 
+        if ('description' in rqform) or ('teamauth' in rqform): 
             current_app.logger.debug('xx')
-            p['description'] = request.form.get('description')
-            p['teamauth'] = request.form.get('teamauth')
+            p['description'] = rqform.get('description')
+            p['teamauth'] = rqform.get('teamauth')
             if self.ATM.put_a_m_n_settings(handle,team,p):
                 current_app.logger.debug(team + ' has been updated.')
                 flash(team + ' has been updated.','UI')
@@ -318,7 +318,7 @@ class AvispaTeamsRestFunc:
 
         return d 
 
-    def get_a_m_n_invite(self,request,handle,team,*args):
+    def get_a_m_n_invite(self,handle,team,*args,**kargs):
 
         redirect = '/'+handle+'/_teams/'+team        
 
@@ -326,7 +326,7 @@ class AvispaTeamsRestFunc:
         return d
 
 
-    def put_rq_a_m_n_invite(self,request,handle,team,*args):
+    def put_rq_a_m_n_invite(self,handle,team,*args,**kargs):
         
         d = {}
 
@@ -349,13 +349,13 @@ class AvispaTeamsRestFunc:
 
 
 
-    def put_a_m_n_invite(self,request,handle,team,*args):
+    def put_a_m_n_invite(self,handle,team,rqurl=None,rqform=None,*args,**kargs):
         d = {}
 
         self.EMM = EmailModel()
 
 
-        collabraw = request.form.get('emails')
+        collabraw = rqform.get('emails')
 
         valid_emails, invalid_emails = address.validate_list(collabraw, as_tuple=True)
 
@@ -364,7 +364,7 @@ class AvispaTeamsRestFunc:
 
         #2. If it is an email, send ring subscription url/token 
 
-        o = urlparse.urlparse(request.url)
+        o = urlparse.urlparse(rqurl)
         host_url=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
 
         #2a PENDING
