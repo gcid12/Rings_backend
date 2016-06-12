@@ -1,9 +1,7 @@
 # CollectionsModel.py
 import sys
 import logging
-
 from datetime import datetime 
-
 from MainModel import MainModel
 from flask import flash
 from AvispaLogging import AvispaLoggerAdapter
