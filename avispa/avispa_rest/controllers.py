@@ -44,10 +44,10 @@ def setup_local_logger(tid,ip):
     
 
 def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
-    lggr.info('START route_dispatcher')
-    
+      
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
+    lggr.info('START route_dispatcher')
 
     MAM = MainModel(tid=tid,ip=ip)
     ARF = AvispaRestFunc(tid=tid,ip=ip)

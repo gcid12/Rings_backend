@@ -4,7 +4,7 @@ from AvispaCollectionsModel import AvispaCollectionsModel
 
 class CollectionBuilder:
 
-    def __init__(self):
+    def __init__(self,tid=None,ip=None):
 
         self.collectionprotocols = {}
         self.collectionprotocols['collectionprotocol'] = ['CollectioNname','CollectionDescription','CollectionVersion']

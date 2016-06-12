@@ -13,6 +13,7 @@ class AvispaCollectionsRestFunc:
 
         self.AVM = AvispaModel(tid=tid,ip=ip)
         self.ACM = AvispaCollectionsModel(tid=tid,ip=ip)
+        self.CB = CollectionBuilder(tid=tid,ip=ip)
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
@@ -53,8 +54,8 @@ class AvispaCollectionsRestFunc:
     def post_a_x(self,handle,collection,idx,api=False,rqform=None,*args,**kargs):
 
         #Build the actual collection
-        CB = CollectionBuilder()
-        result = CB.post_a_x(rqform,handle)
+        
+        result = self.CB.post_a_x(rqform,handle)
             
         if result:
             self.lggr.debug('Awesome , you just created a new Collection')
