@@ -763,12 +763,10 @@ def history_dispatcher(handle,ring=None):
             ring_dac = MAM.select_ring_doc_view(ringdb,'ring/dailyactivity',batch=5000,showall=True)
 
 
-            #All the for loops below are very short. Should not cause an O(n^4)
+            #All the for loops below are very short. Should not cause lag
 
             for item_dac in ring_dac:
-
-                
-                
+ 
                 for t in item_dac['value']:
 
                     # t is the history type. It could be 'new', 'update', etc
