@@ -1031,33 +1031,136 @@
 
 
 
-{% macro org_header(data,handle) %}
+{% macro org_tabs(data,handle) %}
+  <ul class="nav nav-tabs" role="tablist">
 
-        <a href="/{{handle}}"><img class="img-responsive center-block user-big" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{handle}}/t150/{{data.handle_profilepic}}.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="float:left; margin-right:10px;" alt=""></a>
+      <li role="presentation" class="active">
+          <a href="#data" aria-controls="home" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <i class="fa fa-cube m-y-5"></i> &nbsp;
+              <span class="hidden-xs hidden-sm">Data collections</span>
+          </a>
+      </li>
+      <li role="presentation" class="">
+          <a href="#people" aria-controls="home" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <i class="fa fa-user m-y-5"></i> &nbsp;
+              <span class="hidden-xs hidden-sm">Collabs</span>
+          </a>
+      </li>
 
-        {% if data.handle_actualname %} 
-         <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{data.handle_actualname}}</span></a><br/><span class="text-lgray pull-left fs-0-6">{{handle}}</span></h3><br/>
-        {% else %}
-         <h3 class="text-lead fw-300 pull-left"><a href="/{{handle}}"><span class="text-gray">{{handle}}</span></a><br/><span class="text-lgray pull-left fs-0-6"></span></h3><br/>
-        {% endif %}
+      <li role="presentation">
+          <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <i class="fa fa-shield m-y-5"></i> &nbsp;
+              <span class="hidden-xs hidden-sm">Teams</span>
+          </a>
+      </li>
+      <li role="presentation">
+          <a href="#campaigns" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <i class="fa fa-flash m-y-5"></i> &nbsp;
+              <span class="hidden-xs hidden-sm">Campaigns </span><span class="badge bg-gray fs-0-8">14</span>
+          </a>
+      </li>
+      <li role="presentation">
+          <a href="#badges" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <i class="fa fa-bookmark-o m-y-5"></i> &nbsp;
+              <span class="hidden-xs hidden-sm">Badges </span><span class="badge fs-0-8">2</span>
+          </a>
+      </li>
+      
+      <!-- <li role="presentation">
+          <a href="#campaign" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <i class="fa fa-gear m-y-5"></i> &nbsp;
+              <span class="hidden-xs hidden-sm">Settings </span><span class="badge fs-0-8" style="background-color:orange;"><i class="fa fa-exclamation"></i></span>
+          </a>
+      </li> -->
+      
+  </ul>  
+        
 
-        <span class=" pull-right">
-            <a href="/{{handle}}" >go to<b> mainpage</b> </a> &nbsp;&nbsp;<br/>
-
-          {% if data.section == '_teams' %}
-            {% if 'get_a_p' in data.user_authorizations %}     
-            <a href="/{{handle}}/_people" >go to <b> People</b> </a> &nbsp;&nbsp;
-            {% endif %}
-          {%endif%}
-
-          {% if data.section == '_people' %}
-            {% if 'get_a_m' in data.user_authorizations %}     
-            <a href="/{{handle}}/_teams" > go to <b>Teams</b> </a> &nbsp;&nbsp;
-            {% endif %}
-          {%endif%}
-        </span>
 
 {% endmacro %}
+
+{% macro org_header(data,handle) %}
+        <div class="row gcard">
+            <div class="col-sm-2 spa20">
+
+                <!-- ORG ICON -->
+                <div class="pad-x-16">
+                {% if data.handle_profilepic %}
+                    <img class="img-responsive center-block user-big" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg" style="float:left; margin-right:10px;" alt="">
+                {% else %}
+
+                    <a href="/{{data.handle}}/_orgprofile" class="pull-left fs-0-8">
+                        <img class="img-responsive center-block user-big" src="/static/images/ph/ph_org2.gif">
+                    </a>
+
+                {% endif %}
+                </div>
+            </div>
+            <div class="col-sm-10 spa20">
+                <div class="label label-info label-xs pull-right">
+                Organization
+                </div>
+
+                <!--ORG NAME -->
+
+                {% if data.handle_actualname %} 
+                <div class="">
+                    <span class="fc-b fs-2">{{data.handle_actualname}}</span>
+                    {% if 'put_a' in data.user_authorizations %}
+                        <a href="/{{data.handle}}/_orgprofile" data-toggle="tooltip" title="Settings" class="fc-g"> 
+                            <span class="pl-20"> <i class="fa fa-gear"></i> </span>
+                        </a> 
+                    {%endif%}
+
+                    <div class="text-s1 fc-g  fs-1">@{{data.handle}}</div>
+                    
+                </div>
+
+                {% else %}
+                <div class="text-lead fw-300">
+                    {% if 'get_a_p' in data.user_authorizations %}
+                    <span class="text-s1 text-lgray fs-2">Organization full name</span>
+                 
+                    <a href="/{{data.handle}}/_orgprofile"> 
+                      <span class="pl-20"> <i class="fa fa-pencil"></i> Edit Name</span>
+                    </a> 
+              
+                    <br/>
+                    <span class="text-s2 fc-a fs-1">{{data.handle}}</span>
+                    {%else%}
+                      <a href="/{{data.handle}}/_orgprofile">
+                        <span class="text-s1 text-lgray  fs-2">{{data.handle}}</span>
+                      </a>
+                    {%endif%}
+                </div>
+                {% endif %}  
+
+
+                <!-- ACTIONS -->
+
+                <span class=" pull-right">
+                    <a href="/{{handle}}" >go to<b> mainpage</b> </a> &nbsp;&nbsp;<br/>
+
+                  {% if data.section == '_teams' %}
+                    {% if 'get_a_p' in data.user_authorizations %}     
+                    <a href="/{{handle}}/_people" >go to <b> People</b> </a> &nbsp;&nbsp;
+                    {% endif %}
+                  {%endif%}
+
+                  {% if data.section == '_people' %}
+                    {% if 'get_a_m' in data.user_authorizations %}     
+                    <a href="/{{handle}}/_teams" > go to <b>Teams</b> </a> &nbsp;&nbsp;
+                    {% endif %}
+                  {%endif%}
+                </span>
+        
+            </div>
+        </div>
+
+
+{% endmacro %}
+
+
 
 {% macro org_header2(handle,realname,pic,cdn) %}
 

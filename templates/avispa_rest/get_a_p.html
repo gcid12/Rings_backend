@@ -1,14 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'avispa_rest/orghome.html' %}
 
-{% block title %} Avispa {% endblock %}
+{% block title %}  {% endblock %}
 {% block findme %} get_a_p{% endblock %}
 
 
+{% block org_datarings %}
+    + get_a_p
+{% endblock %}
+{% block org_teams%}
+    + get_a_p
+{% endblock %}
 
-{% block content %}
 
 
-<!-- START NEW CONTENT --> 
+{% block org_people%}
 
 
 <section class="bp-20 p-50">
@@ -16,7 +21,6 @@
     <div class="row">
             
       <div class="col-md-9">  
-        {{ ui.org_header(data,data.handle) }}
 
         <div class="row">
           <div class="col-sm-12">

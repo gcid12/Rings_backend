@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}
-	My Ring - {{ title }}
-{% endblock %}
+{% block title %} My Ring - {{ title }}{% endblock %}
 {% block findme %} orghome {% endblock %}
 
 
@@ -13,170 +11,26 @@
     
 
 <section>
-    <div class="spa10"></div>
     <div class="container">
-        <div class="row gcard">
-            <div class="col-sm-2 spa20">
-
-                <!-- PHOTO  -->
-                <div class="pad-x-16">
-                {% if data.handle_profilepic %}
-                    <img class="img-responsive center-block user-big" src="{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg" style="float:left; margin-right:10px;" alt="">
-                {% else %}
-
-                    <a href="/{{data.handle}}/_orgprofile" class="pull-left fs-0-8">
-                        <img class="img-responsive center-block user-big" src="/static/images/ph/ph_org2.gif">
-                    </a>
-
-                {% endif %}
-                </div>
-            </div>
-            <div class="col-sm-10 spa20">
-                <div class="label label-info label-xs pull-right">Organization</div>
-
-                <!-- NAME -->
-
-                {% if data.handle_actualname %} 
-                <div class="">
-                    <span class="fc-b fs-2">{{data.handle_actualname}}</span>
-                    {% if 'put_a' in data.user_authorizations %}
-                        <a href="/{{data.handle}}/_orgprofile" data-toggle="tooltip" title="Settings" class="fc-g"> 
-                            <span class="pl-20"> <i class="fa fa-gear"></i> </span>
-                        </a> 
-                    {%endif%}
-
-                    <div class="text-s1 fc-g  fs-1">@{{data.handle}}</div>
-                    
-                </div>
-
-                {% else %}
-                <div class="text-lead fw-300">
-                    {% if 'get_a_p' in data.user_authorizations %}
-                    <span class="text-s1 text-lgray fs-2">Organization full name</span>
-                 
-                    <a href="/{{data.handle}}/_orgprofile"> 
-                      <span class="pl-20"> <i class="fa fa-pencil"></i> Edit Name</span>
-                    </a> 
-              
-                    <br/>
-                    <span class="text-s2 fc-a fs-1">{{data.handle}}</span>
-                    {%else%}
-                      <a href="/{{data.handle}}/_orgprofile">
-                        <span class="text-s1 text-lgray  fs-2">{{data.handle}}</span>
-                      </a>
-                    {%endif%}
-                </div>
-                {% endif %}  
-            </div>
-        </div>
+        {{ ui.org_header(data,data.handle) }}
     </div>  
 </section>
 
 
-
+<!-- TABS START -->
 <section>
     <div class="container">
-        <div class="row spa15">
+        <div class="row">
 
             {% if 'get_a_m' in data.user_authorizations %}
             <div class="col-sm-12 omega">
-                <div class="gcardx">
-
-
-                    <ul class="nav nav-tabs" role="tablist">
-
-                        <li role="presentation" class="active">
-                            <a href="#data" aria-controls="home" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
-                            <i class="fa fa-cube m-y-5"></i> &nbsp;
-                                <span class="hidden-xs hidden-sm">Data collections</span>
-                            </a>
-                        </li>
-                        <li role="presentation" class="">
-                            <a href="#collabs2" aria-controls="home" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
-                            <i class="fa fa-user m-y-5"></i> &nbsp;
-                                <span class="hidden-xs hidden-sm">Collabs</span>
-                            </a>
-                        </li>
-
-                        <li role="presentation">
-                            <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
-                            <i class="fa fa-shield m-y-5"></i> &nbsp;
-                                <span class="hidden-xs hidden-sm">Teams</span>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#campaign" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
-                            <i class="fa fa-flash m-y-5"></i> &nbsp;
-                                <span class="hidden-xs hidden-sm">Campaigns </span><span class="badge bg-gray fs-0-8">14</span>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#badges" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
-                            <i class="fa fa-bookmark-o m-y-5"></i> &nbsp;
-                                <span class="hidden-xs hidden-sm">Badges </span><span class="badge fs-0-8">2</span>
-                            </a>
-                        </li>
-                        <!-- <li role="presentation">
-                            <a href="#campaign" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
-                            <i class="fa fa-gear m-y-5"></i> &nbsp;
-                                <span class="hidden-xs hidden-sm">Settings </span><span class="badge fs-0-8" style="background-color:orange;"><i class="fa fa-exclamation"></i></span>
-                            </a>
-                        </li> -->
-                        
-                    </ul>   
-
-                <!-- Tab panes -->
-                    <div class="tab-content gcard">
-                        <!-- <div role="tabpanel" class="tab-pane active p-10 " id="home">
-
-                                {% for person in data.people %}
-
-                                        <div class="row bord-bottom bc-8 p-10">
-                                            <div class="col-sm-1">
-                                                
-                                                    <img class="user-xsmall user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}"/>
-                                               
-                                                
-                                            </div>
-                                            <div class="col-sm-offset-1 col-sm-8 fs-0-8">
-                                                <a href="/{{person.handle}}/_home" class="nounder fc-m">
-                                                {{ person.handle }}
-                                                </a>      
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <a href="/{{person.handle}}/_home" class="nounder fc-m">
-                                                    <i class="fa fa-angle-right"></i>
-                                                </a> 
-                                                
-                                            </div>
-                                        </div>
                 
-                                {% endfor %}
+                {{ ui.org_tabs() }}  
 
-                        
-                            {% if 'get_a_p' in data.user_authorizations %}
-                            
-                                
+                    <!-- Tab panes -->
+                    <div class="tab-content gcard">
 
-                            <div class="row pad-y-20">
-                                
-                                <a href="/{{data.handle}}/_people" type="button" class="pull-right discretelink ">
-                                    <div class="col-sm-10 fs-0-8 ">
-                                                    
-                                        <a href="" type="button" class="pull-right fc-n"> Add new collab</a> 
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <i class="fa fa-plus fc-n"></i>
-                                    </div>
-                                </a> 
-                            </div>
-
-                            
-                            {%endif%}
-
-                        </div> -->
-
-                        <!-- DATA ::::::::::::::::::::::::::::::::::::::: -->
+                        <!-- ORG DATA RINGS::::::::::::::::::::::::::::::::::::::: -->
                         <div role="tabpanel" class="tab-pane active" id="data">
 
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -188,90 +42,242 @@
                                                 <span class="pad-x-5">Create new collection</span>
                                                 <i class="fa fa-plus pad-x-4"></i><i class="fa fa-cube"></i>
                                             </a> 
-
-
-
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
-                            {% for collection in data.collections.collectionlist %}  
-                                {% if collection.valid %}
+                            {% block org_datarings %}
 
-                                    <div class="gcard-subtitle" >
+                                {% for collection in data.collections.collectionlist %}  
+                                    {% if collection.valid %}
 
-                                    {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                        
-                                   <!--  <h4>{{ collection.collectionname }}</h4> -->
-                                    </div>
-                                    <div class="gcard-body" style="padding:20px 20px 0 0px; margin:0 0 10px 0; min-height:110px;">
-                                    <div class="row">
-                                        <!-- START COLLECTION TITLE -->
-                                        
-                                        <!-- END COLLECTION TITLE -->
+                                        <div class="gcard-subtitle" >
 
-                                        <!-- START RING LIST -->
-                                        <div class="col-sm-offset-1 col-sm-11">
-                                           
-                                                  
-                                                    <table class="table  table-condensed">
-
-                                                    {% for ring in collection.rings %}  
-
-
-                                                        {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
-
-
-
-                                                    {% endfor %}
-          
-
-                                                    </table>
-                                                 
-                                                
+                                        {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                            
+                                       <!--  <h4>{{ collection.collectionname }}</h4> -->
                                         </div>
-                                        <!-- FINISH RING LIST -->
-                                    </div>
-                                    </div>             
+                                        <div class="gcard-body" style="padding:20px 20px 0 0px; margin:0 0 10px 0; min-height:110px;">
+                                        <div class="row">
+                                            <!-- START COLLECTION TITLE -->
+                                            
+                                            <!-- END COLLECTION TITLE -->
 
-                                {% endif %}
-                            {% endfor %}
+                                            <!-- START RING LIST -->
+                                            <div class="col-sm-offset-1 col-sm-11">
+                                               
+                                                      
+                                                        <table class="table  table-condensed">
 
-                            {% if 'post_a_x' in data.user_authorizations %}
-                                {% if data.collections.collectionlist|length ==0  %}
-                                
-                                      <div class="box box-help">
-                                      
-                                        <p class="fs-1-3"><i class="fa fa-arrow-up"></i> &nbsp; This Organization has no collections yet. </p>
-                                        <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
-                                          <i class="fa fa-plus"></i> &nbsp; Create first collection
-                                        </a>
-                                        <!-- <a data-toggle="modal" data-target="#intro-collection" class="btn-help btn-info" style="margin:0 5px;">
-                                          <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Collection?
-                                        </a> -->
-                                      </div> 
+                                                        {% for ring in collection.rings %}  
+
+
+                                                            {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
+
+
+
+                                                        {% endfor %}
+              
+
+                                                        </table>
+                                                     
+                                                    
+                                            </div>
+                                            <!-- FINISH RING LIST -->
+                                        </div>
+                                        </div>             
+
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if 'post_a_x' in data.user_authorizations %}
+                                    {% if data.collections.collectionlist|length ==0  %}
                                     
-                                {% else %}
-                                    
-                                {% endif %}
-                            {%endif%}
-
-
-                            
-
-
+                                          <div class="box box-help">
+                                          
+                                            <p class="fs-1-3"><i class="fa fa-arrow-up"></i> &nbsp; This Organization has no collections yet. </p>
+                                            <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
+                                              <i class="fa fa-plus"></i> &nbsp; Create first collection
+                                            </a>
+                                            <!-- <a data-toggle="modal" data-target="#intro-collection" class="btn-help btn-info" style="margin:0 5px;">
+                                              <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Collection?
+                                            </a> -->
+                                          </div> 
+                                        
+                                    {% else %}
+                                        
+                                    {% endif %}
+                                {%endif%}
+                            {% endblock %}
 
                         </div>
 
 
-                        <!-- COLLABORATORS ::::::::::::::::::::::::::::::::::::::: -->
+                        <!-- ORG PEOPLE ::::::::::::::::::::::::::::::::::::::: -->
 
-                        <div role="tabpanel" class="tab-pane" id="collabs2">
+                        <div role="tabpanel" class="tab-pane" id="people">
 
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
                                 <div class="bord-bottom bc-8 pad-y-20">  
+                                    <div class="row">
+                                        <div class="col-xs-11 fs-0-8 text-right">
+                                            <a href="/{{data.handle}}/_people" type="button" class="fc-n"> 
+                                                <span class="pad-x-8">Add People</span>
+                                                <i class="fa fa-plus pad-x-4"></i>
+                                                <i class="fa fa-user"></i>
+                                            </a> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% block org_people %}
+                                    {% set openthis= 1 %}
+
+                                    <!-- EACH PERSON IN THE ORG-->
+                                    {% for person in data.people %}
+                                        
+
+                                    <div class="bord-bottom bc-8">
+
+                                            
+                                        
+                                        <div class="row bord-bottom bc-8 p-5">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#{{person.handle}}" aria-expanded="true" class="fc-m">
+                                               
+                                                <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
+                                                    
+                                                        <img class="user-xsmall user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}"/>
+                                                    
+                                                </div>
+                                                <div class="col-xs-7 col-sm-8 fs-0-7 pt-5 fw-c">
+                                                    {{ person.handle }}
+                                                </div>
+                                               
+                                                <div class="col-xs-1 col-sm-1">
+                                                    
+                                                    <i class="fa fa-angle-right"></i>
+
+                                                </div>
+                                            </a>
+                                        </div>
+                                        
+                            
+                                        <div id="{{person.handle}}" class="panel-collapse collapse" role="tabpanel">
+                                            <div class="row">
+                                                
+                                                <div class="col-sm-offset-1 col-sm-3 bord-left p-20">
+                                                    
+                                                    
+                                                    <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
+
+                                                    <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Badges:</div><br/>
+                                                    <div class="fc-b">
+
+                                                        <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                          <i class="fa fa-bookmark fs-0-7"></i>
+                                                        
+                                                            <span class="fs-0-7">OAS General</span>
+                                                        </a>
+                                                        <br/>
+                                                        <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                          <i class="fa fa-bookmark fs-0-7"></i>
+                                                        
+                                                            <span class="fs-0-7">OAS Restaurants</span>
+                                                        </a>
+                                                        <br/>
+                                                       
+
+                                                        <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                          <i class="fa fa-bookmark fs-0-7"></i>
+                                                        
+                                                        <span class="fs-0-7">Native Spanish</span>
+                                                        </a>
+                                                        <br/>
+
+                                                    </div>
+                                                    
+     
+                                                </div>
+                                                <div class="col-sm-3 p-20">
+                                                    
+                                                    
+                                                    <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
+
+                                                    <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Teams:</div><br/>
+
+                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                      <i class="fa fa-shield fs-0-7"></i>
+                                                    
+                                                        <span class="fs-0-7">Sella F.C.</span>
+                                                    </a>
+                                                    <br/>
+
+                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                      <i class="fa fa-shield fs-0-7"></i>
+                                                    
+                                                    <span class="fs-0-7">Brooklyn Ducks</span>
+                                                    </a>
+                                                    <br/>
+                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                      <i class="fa fa-shield fs-0-7"></i>
+                                                    
+                                                    <span class="fs-0-7">Mexas</span>
+                                                    </a>
+                                                    <br/>
+      
+                                                </div>
+                                                <div class="col-sm-4 p-20">
+                                                    
+                                                    
+                                                    <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
+
+                                                    <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Experience:</div><br/>
+
+                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                      <i class="fa fa-flash fs-0-7"></i>
+                                                    
+                                                        <span class="fs-0-7">OAS Collect Summer 15' (06.2015)</span>
+                                                    </a>
+                                                    <br/>
+
+                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                      <i class="fa fa-flash fs-0-7"></i>
+                                                    
+                                                        <span class="fs-0-7">Hotel Translations (04.2015)</span>
+                                                    </a>
+                                                    <br/>
+
+                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
+                                                      <i class="fa fa-flash fs-0-7"></i>
+                                                    
+                                                        <span class="fs-0-7">A.I. Trainig (03.2015)</span>
+                                                    </a>
+                                                    <br/>
+
+                                                    
+                                                    <br/>
+      
+                                                </div>
+
+
+                                                <!-- <a href="/{{person.handle}}" data-toggle="tooltip" title="" class="fc-n">
+                                                        
+                                                        <span class="fs-0-7">Go to Profile</span>
+                                                        <i class="fa fa-arrow-right fc-g"></i>
+                                                    </a> -->
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                        
+                                    {% endfor %} 
+                                {% endblock %}   
+
+                                <div class="bord-bottom bc-8 pad-y-20">
                                     <div class="row">
                                         <div class="col-xs-11 fs-0-8 text-right">
                                             <a href="/{{data.handle}}/_people" type="button" class="fc-n"> 
@@ -283,173 +289,12 @@
                                     </div>
                                 </div>
 
-
-                                {% set openthis= 1 %}
-
-                                {% for person in data.people %}
-                                    
-
-                                <div class="bord-bottom bc-8">
-
-                                        
-                                    
-                                    <div class="row bord-bottom bc-8 p-5">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#{{person.handle}}" aria-expanded="true" class="fc-m">
-                                           
-                                                <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
-                                                    
-                                                        <img class="user-xsmall user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}"/>
-                                                    
-                                                </div>
-                                                <div class="col-xs-7 col-sm-8 fs-0-7 pt-5 fw-c">
-                                                    {{ person.handle }}
-                                                </div>
-                                           
-
-
-                                            <div class="col-xs-1 col-sm-1">
-                                                
-                                                <i class="fa fa-angle-right"></i>
-
-                                            </div>
-                                        </a>
-                                    </div>
-                                    
-                        
-                                    <div id="{{person.handle}}" class="panel-collapse collapse" role="tabpanel">
-                                        <div class="row">
-                                            
-                                            <div class="col-sm-offset-1 col-sm-3 bord-left p-20">
-                                                
-                                                
-                                                <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
-
-                                                <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Badges:</div><br/>
-                                                <div class="fc-b">
-
-                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                      <i class="fa fa-bookmark fs-0-7"></i>
-                                                    
-                                                        <span class="fs-0-7">OAS General</span>
-                                                    </a>
-                                                    <br/>
-                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                      <i class="fa fa-bookmark fs-0-7"></i>
-                                                    
-                                                        <span class="fs-0-7">OAS Restaurants</span>
-                                                    </a>
-                                                    <br/>
-                                                   
-
-                                                    <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                      <i class="fa fa-bookmark fs-0-7"></i>
-                                                    
-                                                    <span class="fs-0-7">Native Spanish</span>
-                                                    </a>
-                                                    <br/>
-
-                                                </div>
-                                                
- 
-                                            </div>
-                                            <div class="col-sm-3 p-20">
-                                                
-                                                
-                                                <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
-
-                                                <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Teams:</div><br/>
-
-                                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                  <i class="fa fa-shield fs-0-7"></i>
-                                                
-                                                    <span class="fs-0-7">Sella F.C.</span>
-                                                </a>
-                                                <br/>
-
-                                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                  <i class="fa fa-shield fs-0-7"></i>
-                                                
-                                                <span class="fs-0-7">Brooklyn Ducks</span>
-                                                </a>
-                                                <br/>
-                                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                  <i class="fa fa-shield fs-0-7"></i>
-                                                
-                                                <span class="fs-0-7">Mexas</span>
-                                                </a>
-                                                <br/>
-  
-                                            </div>
-                                            <div class="col-sm-4 p-20">
-                                                
-                                                
-                                                <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
-
-                                                <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Experience:</div><br/>
-
-                                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                  <i class="fa fa-flash fs-0-7"></i>
-                                                
-                                                    <span class="fs-0-7">OAS Collect Summer 15' (06.2015)</span>
-                                                </a>
-                                                <br/>
-
-                                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                  <i class="fa fa-flash fs-0-7"></i>
-                                                
-                                                    <span class="fs-0-7">Hotel Translations (04.2015)</span>
-                                                </a>
-                                                <br/>
-
-                                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                                  <i class="fa fa-flash fs-0-7"></i>
-                                                
-                                                    <span class="fs-0-7">A.I. Trainig (03.2015)</span>
-                                                </a>
-                                                <br/>
-
-                                                
-                                                <br/>
-  
-                                            </div>
-
-
-                                            <!-- <a href="/{{person.handle}}" data-toggle="tooltip" title="" class="fc-n">
-                                                    
-                                                    <span class="fs-0-7">Go to Profile</span>
-                                                    <i class="fa fa-arrow-right fc-g"></i>
-                                                </a> -->
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-
-                                    
-                                {% endfor %}    
-
-                                    <div class="bord-bottom bc-8 pad-y-20">
-                                        
-                                           
-                                            <div class="row">
-                                                <div class="col-xs-11 fs-0-8 text-right">
-                                                    <a href="/{{data.handle}}/_people" type="button" class="fc-n"> 
-                                                        <span class="pad-x-8">Add Collaborator</span>
-                                                        <i class="fa fa-plus pad-x-4"></i>
-                                                        <i class="fa fa-user"></i>
-                                                    </a> 
-                                                </div>
-                                            </div>
-                                       
-                            
-                                        
-                                    </div>
-
                             </div> 
                             
 
                         </div>
 
-                        <!-- TEAMS ::::::::::::::::::::::::::::::::::::::: -->
+                        <!-- ORG TEAMS ::::::::::::::::::::::::::::::::::::::: -->
                         <div role="tabpanel" class="tab-pane" id="profile">
 
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -465,79 +310,80 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% set openthis= 1 %}
 
-                                {% for team in data.teams %}
-                                    {% if team.teamname in data.teammembership %}
+                         
+                                {% block org_teams %}
 
-                                    <div class="bord-bottom bc-8">
-                                        
-                                        <!-- ITEM HEAD :::::: -->
-                                        <div class="row bord-bottom bc-8 p-5">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class="darklink">
-                                                <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
-                                                    <i class="fa fa-shield fs-1-7"></i>
-                                                </div>
-                                                <div class="col-xs-7 col-sm-8 fs-0-7 pt-5 fw-c">
-                                                    
-                                                    Team: {{team.teamname}} 
-                                                </div>
-                                                <div class="col-xs-1 col-sm-1">
-                                                    
-                                                    <i class="fa fa-angle-down"></i>
-  
-                                                </div>
-                                             </a>
-                                        </div>
-                                       
-                                        <!-- ITEM BODY :::::: -->
-                                        <div id="{{team.teamname}}" class="panel-collapse collapse" role="tabpanel">
+                                    {% set openthis= 1 %}
+
+                                    {% for team in data.teams %}
+                                        {% if team.teamname in data.teammembership %}
+
+                                        <div class="bord-bottom bc-8">
                                             
-                                            <div class="row">
-                                                <div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-5 p-20 row bord-left">
-
-                                                    {%for member in team.members%}
-
-                                                    <a href="/{{member.handle}}" class="fc-n">
-                                                      <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
-                                                      <span class="fs-0-7"> {{member.handle}}</span>
-                                                    </a>
-                                                    
-                                                    <br/>
-                                                    
-
-                                                    {%endfor%}
-                                                </div>
-                                                <div class="col-sm-5 pt-20 align-right">
-
-                                                    <!-- <div class="row">
-                                                        <div class="col-sm-11 fs-0-7 text-right">
-                                                            <a href="" type="button" class="fc-n"> 
-                                                                <span class="pad-x-8 hidden-sm">Campaigns</span>
-                                                                <i class="fa fa-flash"></i>
-                                                            </a> 
-                                                        </div>
+                                            <!-- ITEM HEAD :::::: -->
+                                            <div class="row bord-bottom bc-8 p-5">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class="darklink">
+                                                    <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
+                                                        <i class="fa fa-shield fs-1-7"></i>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-11 fs-0-7 text-right">
-                                                            <a href="" type="button" class="fc-n"> 
-                                                                <span class="pad-x-8 hidden-sm">Messages</span>
-                                                                <i class="fa fa-comment-o"></i>
-                                                            </a> 
-                                                            
+                                                    <div class="col-xs-7 col-sm-8 fs-0-7 pt-5 fw-c">
+                                                        
+                                                        Team: {{team.teamname}} 
+                                                    </div>
+                                                    <div class="col-xs-1 col-sm-1">
+                                                        
+                                                        <i class="fa fa-angle-down"></i>
+      
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                           
+                                            <!-- ITEM BODY :::::: -->
+                                            <div id="{{team.teamname}}" class="panel-collapse collapse" role="tabpanel">
+                                                
+                                                <div class="row">
+                                                    <div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-5 p-20 row bord-left">
+
+                                                        {%for member in team.members%}
+
+                                                        <a href="/{{member.handle}}" class="fc-n">
+                                                          <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
+                                                          <span class="fs-0-7"> {{member.handle}}</span>
+                                                        </a>
+                                                        
+                                                        <br/>
+                                                        
+                                                        {%endfor%}
+                                                    </div>
+                                                    <div class="col-sm-5 pt-20 align-right">
+
+                                                        <!-- <div class="row">
+                                                            <div class="col-sm-11 fs-0-7 text-right">
+                                                                <a href="" type="button" class="fc-n"> 
+                                                                    <span class="pad-x-8 hidden-sm">Campaigns</span>
+                                                                    <i class="fa fa-flash"></i>
+                                                                </a> 
+                                                            </div>
                                                         </div>
-                                                    </div> -->
+                                                        <div class="row">
+                                                            <div class="col-sm-11 fs-0-7 text-right">
+                                                                <a href="" type="button" class="fc-n"> 
+                                                                    <span class="pad-x-8 hidden-sm">Messages</span>
+                                                                    <i class="fa fa-comment-o"></i>
+                                                                </a> 
+                                                                
+                                                            </div>
+                                                        </div> -->
 
-
-
-                                                   
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    {%endif%}
-                                {% endfor %}    
+                                        {%endif%}
+                                    {% endfor %}   
+                                {% endblock %} 
 
                                     <div class="bord-bottom bc-8 pad-y-20">
                                         <div class="row">
@@ -556,10 +402,11 @@
 
                         </div>
 
-                        <!-- CAMPAIGNS -->
-                        <div role="tabpanel" class="tab-pane" id="campaign">
+                        <!-- CAMPAIGNS  :::::::::::::::::::::::::::::::::::::::::::: -->
+                        <div role="tabpanel" class="tab-pane" id="campaigns">
 
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
 
                                 <div class="bord-bottom bc-8 pad-y-20">  
                                     <div class="row">
@@ -572,7 +419,8 @@
                                     </div>
                                 </div>
                                 
-
+                                {% block org_campaigns %}
+                                
                                 <!-- START FOREACH -->
 
                                     <div class="bord-bottom bc-8">
@@ -702,21 +550,9 @@
 
                                 <!-- END FOREACH -->
 
-                                    <div class="bord-bottom bc-8 pad-y-20">
-                                        
-                                            <div class="row">
-                                                <div class="col-xs-11 fs-0-8 text-right">
-                                                    <a href="" type="button" class="fc-n"> 
-                                                        <span class="pad-x-8">Create Campaign</span>
-                                                        <i class="fa fa-plus pad-x-4"></i>
-                                                        <i class="fa fa-flash"></i>
-                                                    </a> 
-                                                </div>
-                                            </div>
-                                            
-                                    </div>
+                                {% endblock %}
 
-                            </div> 
+                             </div> 
                             
 
                         </div>
@@ -727,6 +563,9 @@
 
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
+                                {% block org_badges %}
+
+                                
                                 <div class="bord-bottom bc-8 pad-y-20">  
                                     <div class="row">
                                         <div class="col-xs-11 fs-0-8 text-right">
@@ -858,11 +697,6 @@
                                         </div>
                                     </div>
 
-
-
-
-
-
                                     <div class="bord-bottom bc-8">
                                         
                                         <!-- ITEM HEAD :::::: -->
@@ -984,19 +818,7 @@
 
                                 <!-- END FOREACH -->
 
-                                    <div class="bord-bottom bc-8 pad-y-20">
-                                        
-                                            <div class="row">
-                                                <div class="col-xs-11 fs-0-8 text-right">
-                                                    <a href="" type="button" class="fc-n"> 
-                                                        <span class="pad-x-8">Create Campaign</span>
-                                                        <i class="fa fa-plus pad-x-4"></i>
-                                                        <i class="fa fa-flash"></i>
-                                                    </a> 
-                                                </div>
-                                            </div>
-                                            
-                                    </div>
+                                {% endblock %}
 
                             </div> 
                             
@@ -1007,7 +829,7 @@
                         
                     </div>
 
-                </div>
+                
                   
 
             </div><!-- close second column --> 
