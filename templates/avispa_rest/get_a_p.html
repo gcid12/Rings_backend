@@ -11,82 +11,107 @@
     + get_a_p
 {% endblock %}
 
+{% block tabs %}
+                
+    {{ ui.org_tabs('_home','','_people','active','_teams','','#campaigns','','#badges','','#settings','') }}
+
+{% endblock %}
+
 
 
 {% block org_people%}
 
+<div role="tabpanel" class="tab-pane active" id="people">
 
-<section class="bp-20 p-50">
-  <div class="container">
-    <div class="row">
-            
-      <div class="col-md-9">  
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-        <div class="row">
-          <div class="col-sm-12">
+        <div class="bord-bottom bc-8 pad-y-20">  
+            <div class="row">
+                <div class="col-xs-11 fs-0-8 text-right">
+                    <a href="/{{data.handle}}/_people" type="button" class="fc-n"> 
+                        <span class="pad-x-8">Add People</span>
+                        <i class="fa fa-plus pad-x-4"></i>
+                        <i class="fa fa-user"></i>
+                    </a> 
+                </div>
+            </div>
+        </div>
 
-            {% if 'post_a_p' in data.user_authorizations %}
-            <div class="">
-               <form action="" method="POST">
-               <div class="pull-right">
-                  &nbsp; ADD NEW PERSON <input name="newperson" type="text"/>&nbsp;
-                  <input  type="submit" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;" value="+"/>
-                  
-               </div> 
-               </form>    
+        <section class="bp-20 p-50">
+          <div class="container">
+            <div class="row">
+                    
+              <div class="col-md-9">  
+
+                <div class="row">
+                  <div class="col-sm-12">
+
+                    {% if 'post_a_p' in data.user_authorizations %}
+                    <div class="">
+                       <form action="" method="POST">
+                       <div class="pull-right">
+                          &nbsp; ADD NEW PERSON <input name="newperson" type="text"/>&nbsp;
+                          <input  type="submit" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;" value="+"/>
+                          
+                       </div> 
+                       </form>    
+
+                    </div>
+                    {%endif%}
+
+                    <br/><br/>
+
+                    <div class="rn-box-content">
+                    <h2>PEOPLE</h2>
+                      <table class="table table-striped"> <!-- inner row -->
+
+
+
+
+                      {% for person in data.peoplelist %}
+                        {% if person.handle %}
+                          <tr>
+                            <td>
+                              
+                            </td>
+                            <td> 
+                            </td>
+                            <td> 
+                              <a class="rn-b1" href="/{{ person.handle }}">
+                                  <img class="img-responsive center-block user-small" src="{% if person.thumbnail %}{{data.image_cdn_root}}/{{person.handle}}/t150/{{person.thumbnail}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
+                                  {{ person.handle }}
+                              </a>
+
+                              <hr/>
+                              <p class="rn-t3 rn-gray">Added on: {{ person.added }}</p>
+                            </td>
+                            <td style="min-width:200px;"> 
+                              <div class="pull-right">
+                                
+                                {% if 'delete_a_p_q' in data.user_authorizations %}
+                                <div class="btn-group"> 
+                                  <a href="/{{ data.handle }}/_people/{{ person.handle }}?method=delete" >Delete</a>
+                                </div>
+                                {%endif%}
+                                <br/><br/>
+                                
+                              </div>
+                            </td>
+                          </tr>
+                        {% endif %}
+                      {% endfor %}
+
+                      </table>
+                    </div><!-- //close box -->
+                  </div><!-- close 12 -->   
+                </div> <!-- close row -->
 
             </div>
-            {%endif%}
-
-            <br/><br/>
-
-            <div class="rn-box-content">
-            <h2>PEOPLE</h2>
-              <table class="table table-striped"> <!-- inner row -->
+        </section>
 
 
-
-
-              {% for person in data.peoplelist %}
-                {% if person.handle %}
-                  <tr>
-                    <td>
-                      
-                    </td>
-                    <td> 
-                    </td>
-                    <td> 
-                      <a class="rn-b1" href="/{{ person.handle }}">
-                          <img class="img-responsive center-block user-small" src="{% if person.thumbnail %}{{data.image_cdn_root}}/{{person.handle}}/t150/{{person.thumbnail}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
-                          {{ person.handle }}
-                      </a>
-
-                      <hr/>
-                      <p class="rn-t3 rn-gray">Added on: {{ person.added }}</p>
-                    </td>
-                    <td style="min-width:200px;"> 
-                      <div class="pull-right">
-                        
-                        {% if 'delete_a_p_q' in data.user_authorizations %}
-                        <div class="btn-group"> 
-                          <a href="/{{ data.handle }}/_people/{{ person.handle }}?method=delete" >Delete</a>
-                        </div>
-                        {%endif%}
-                        <br/><br/>
-                        
-                      </div>
-                    </td>
-                  </tr>
-                {% endif %}
-              {% endfor %}
-
-              </table>
-            </div><!-- //close box -->
-          </div><!-- close 12 -->   
-        </div> <!-- close row -->
-
-    </div>
-</section>
+    </div> <!-- CLOSE PANEL GROUP -->
+</div><!-- CLOSE TABPANEL -->
 
 
 

@@ -1029,54 +1029,44 @@
 {% endmacro %}
 
 
-
-
-{% macro org_tabs(data,handle) %}
+{% macro org_tabs(a1,a2,b1,b2,c1,c2,d1,d2,e1,e2,f1,f2) %}
   <ul class="nav nav-tabs" role="tablist">
 
-      <li role="presentation" class="active">
-          <a href="#data" aria-controls="home" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+      <li role="presentation" class="{{ a2 }}">
+          <a href="{{ a1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
           <i class="fa fa-cube m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Data collections</span>
           </a>
       </li>
-      <li role="presentation" class="">
-          <a href="#people" aria-controls="home" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+      <li role="presentation" class="{{ b2 }}">
+          <a href="{{ b1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
           <i class="fa fa-user m-y-5"></i> &nbsp;
-              <span class="hidden-xs hidden-sm">Collabs</span>
+              <span class="hidden-xs hidden-sm">People</span>
           </a>
       </li>
 
-      <li role="presentation">
-          <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+      <li role="presentation" class="{{ c2 }}">
+          <a href="{{ c1 }}" aria-controls="profile" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
           <i class="fa fa-shield m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Teams</span>
           </a>
       </li>
-      <li role="presentation">
-          <a href="#campaigns" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+      <li role="presentation" class="{{ d2 }}">
+          <a href="{{ d1 }}" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
           <i class="fa fa-flash m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Campaigns </span><span class="badge bg-gray fs-0-8">14</span>
           </a>
       </li>
-      <li role="presentation">
-          <a href="#badges" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+      <li role="presentation" class="{{ e2 }}">
+          <a href="{{ e1 }}" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
           <i class="fa fa-bookmark-o m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Badges </span><span class="badge fs-0-8">2</span>
           </a>
       </li>
       
-      <!-- <li role="presentation">
-          <a href="#campaign" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
-          <i class="fa fa-gear m-y-5"></i> &nbsp;
-              <span class="hidden-xs hidden-sm">Settings </span><span class="badge fs-0-8" style="background-color:orange;"><i class="fa fa-exclamation"></i></span>
-          </a>
-      </li> -->
       
   </ul>  
         
-
-
 {% endmacro %}
 
 {% macro org_header(data,handle) %}

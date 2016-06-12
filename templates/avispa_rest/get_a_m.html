@@ -13,12 +13,34 @@
 {% endblock %}
 
 
+{% block tabs %}
+                
+    {{ ui.org_tabs('_home','','_people','','_teams','active','#campaigns','','#badges','','#settings','') }}
+
+{% endblock %}
+
 
 <!-- START NEW CONTENT --> 
 
 {% block org_teams %}
   
+<div role="tabpanel" class="tab-pane active" id="profile">
 
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="bord-bottom bc-8 pad-y-20">  
+            <div class="row">
+                <div class="col-sm-11 fs-0-8 text-right">
+                    <a href="" type="button" class="fc-n"> 
+                        <span class="pad-x-8">Action here</span>
+                        <i class="fa fa-plus pad-x-4"></i>
+                        <i class="fa fa-user"></i>
+                    </a> 
+                </div>
+            </div>
+        </div>
+
+        <!-- OLDER -->
           <div class="row">
             <div class="col-sm-12">
               {%if 'post_a_m' in data.user_authorizations %}
@@ -93,6 +115,9 @@
               </div><!-- //close box -->
             </div><!-- close 12 -->   
           </div> <!-- close row -->
+
+    </div>
+</div>
 
 {% endblock %}
 
