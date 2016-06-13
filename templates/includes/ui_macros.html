@@ -1029,18 +1029,18 @@
 {% endmacro %}
 
 
-{% macro org_tabs(a1,a2,b1,b2,c1,c2,d1,d2,e1,e2,f1,f2) %}
+{% macro org_tabs(handle,a1,a2,b1,b2,c1,c2,d1,d2,e1,e2,f1,f2) %}
   <ul class="nav nav-tabs" role="tablist">
 
       <li role="presentation" class="{{ a2 }}">
-          <a href="{{ a1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
+          <a href="/{{handle}}/{{ a1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
           <i class="fa fa-cube m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Data collections</span>
           </a>
       </li>
     
       <li role="presentation" class="{{ b2 }}">
-          <a href="{{ b1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
+          <a href="/{{handle}}/{{ b1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
           <i class="fa fa-user m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">People</span>
           </a>
@@ -1048,19 +1048,19 @@
       
 
       <li role="presentation" class="{{ c2 }}">
-          <a href="{{ c1 }}" aria-controls="profile" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
+          <a href="/{{handle}}/{{ c1 }}" aria-controls="profile" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
           <i class="fa fa-shield m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Teams</span>
           </a>
       </li>
       <li role="presentation" class="{{ d2 }}">
-          <a href="{{ d1 }}" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <a href="/{{handle}}/{{ d1 }}" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
           <i class="fa fa-flash m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Campaigns </span><span class="badge bg-gray fs-0-8">14</span>
           </a>
       </li>
       <li role="presentation" class="{{ e2 }}">
-          <a href="{{ e1 }}" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
+          <a href="/{{handle}}/{{ e1 }}" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
           <i class="fa fa-bookmark-o m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Badges </span><span class="badge fs-0-8">2</span>
           </a>

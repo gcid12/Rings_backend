@@ -25,7 +25,7 @@
 
                 {% block tabs %}
                 
-                    {{ ui.org_tabs('_home','active','_people','','_teams','','#campaigns','','#badges','','#settings','') }}
+                    {{ ui.org_tabs(data.handle,'_home','active','_people','','_teams','','#campaigns','','#badges','','#settings','') }}
 
 
                 {% endblock %}
@@ -296,7 +296,6 @@
                     {% block org_teams %}
 
                     <div role="tabpanel" class="tab-pane" id="profile">
-
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
                             <div class="bord-bottom bc-8 pad-y-20">  
@@ -311,91 +310,75 @@
                                 </div>
                             </div>
 
-                     
-                            
+                            {% set openthis= 1 %}
 
-                                {% set openthis= 1 %}
+                            {% for team in data.teams %}
+                                {% if team.teamname in data.teammembership %}
 
-                                {% for team in data.teams %}
-                                    {% if team.teamname in data.teammembership %}
-
-                                    <div class="bord-bottom bc-8">
-                                        
-                                        <!-- ITEM HEAD :::::: -->
-                                        <div class="row bord-bottom bc-8 p-5">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class="darklink">
-                                                <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
-                                                    <i class="fa fa-shield fs-1-7"></i>
-                                                </div>
-                                                <div class="col-xs-7 col-sm-8 fs-0-7 pt-5 fw-c">
-                                                    
-                                                    Team: {{team.teamname}} 
-                                                </div>
-                                                <div class="col-xs-1 col-sm-1">
-                                                    
-                                                    <i class="fa fa-angle-down"></i>
-  
-                                                </div>
-                                             </a>
-                                        </div>
-                                       
-                                        <!-- ITEM BODY :::::: -->
-                                        <div id="{{team.teamname}}" class="panel-collapse collapse" role="tabpanel">
-                                            
-                                            <div class="row">
-                                                <div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-5 p-20 row bord-left">
-
-                                                    {%for member in team.members%}
-
-                                                    <a href="/{{member.handle}}" class="fc-n">
-                                                      <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
-                                                      <span class="fs-0-7"> {{member.handle}}</span>
-                                                    </a>
-                                                    
-                                                    <br/>
-                                                    
-                                                    {%endfor%}
-                                                </div>
-                                                <div class="col-sm-5 pt-20 align-right">
-
-                                                    <!-- <div class="row">
-                                                        <div class="col-sm-11 fs-0-7 text-right">
-                                                            <a href="" type="button" class="fc-n"> 
-                                                                <span class="pad-x-8 hidden-sm">Campaigns</span>
-                                                                <i class="fa fa-flash"></i>
-                                                            </a> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-11 fs-0-7 text-right">
-                                                            <a href="" type="button" class="fc-n"> 
-                                                                <span class="pad-x-8 hidden-sm">Messages</span>
-                                                                <i class="fa fa-comment-o"></i>
-                                                            </a> 
-                                                            
-                                                        </div>
-                                                    </div> -->
-
-                                                </div>
+                                <div class="bord-bottom bc-8">
+                                    
+                                    <!-- ITEM HEAD :::::: -->
+                                    <div class="row bord-bottom bc-8 p-5">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class="darklink">
+                                            <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
+                                                <i class="fa fa-shield fs-1-7"></i>
                                             </div>
-                                        </div>
+                                            <div class="col-xs-7 col-sm-8 fs-0-7 pt-5 fw-c">
+                                                
+                                                Team: {{team.teamname}} 
+                                            </div>
+                                            <div class="col-xs-1 col-sm-1">
+                                                
+                                                <i class="fa fa-angle-down"></i>
+
+                                            </div>
+                                         </a>
                                     </div>
+                                   
+                                    <!-- ITEM BODY :::::: -->
+                                    <div id="{{team.teamname}}" class="panel-collapse collapse" role="tabpanel">
+                                        
+                                        <div class="row">
+                                            <div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-5 p-20 row bord-left">
 
-                                    {%endif%}
-                                {% endfor %}   
+                                                {%for member in team.members%}
 
-                                <div class="bord-bottom bc-8 pad-y-20">
-                                    <div class="row">
-                                        <div class="col-xs-11 fs-0-8 text-right">
-                                            <a href="" type="button" class="fc-n"> 
-                                                <span class="pad-x-8">Create Team</span>
-                                                <i class="fa fa-plus pad-x-4"></i>
-                                                <i class="fa fa-shield"></i>
-                                            </a> 
+                                                <a href="/{{member.handle}}" class="fc-n">
+                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
+                                                  <span class="fs-0-7"> {{member.handle}}</span>
+                                                </a>
+                                                
+                                                <br/>
+                                                
+                                                {%endfor%}
+                                            </div>
+                                            <div class="col-sm-5 pt-20 align-right">
+
+                                                <!-- <div class="row">
+                                                    <div class="col-sm-11 fs-0-7 text-right">
+                                                        <a href="" type="button" class="fc-n"> 
+                                                            <span class="pad-x-8 hidden-sm">Campaigns</span>
+                                                            <i class="fa fa-flash"></i>
+                                                        </a> 
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-11 fs-0-7 text-right">
+                                                        <a href="" type="button" class="fc-n"> 
+                                                            <span class="pad-x-8 hidden-sm">Messages</span>
+                                                            <i class="fa fa-comment-o"></i>
+                                                        </a> 
+                                                        
+                                                    </div>
+                                                </div> -->
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
+                                {%endif%}
+                            {% endfor %}   
                         </div> 
                         
 

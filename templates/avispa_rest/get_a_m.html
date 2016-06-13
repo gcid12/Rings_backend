@@ -6,120 +6,157 @@
 
 <!-- EMPTY OTHER BLOCKS -->
 {% block org_datarings %}
-    + get_a_m
 {% endblock %}
 {% block org_people %}
-    + get_a_m
 {% endblock %}
 
 
 {% block tabs %}
                 
-    {{ ui.org_tabs('_home','','_people','','_teams','active','#campaigns','','#badges','','#settings','') }}
+    {{ ui.org_tabs(data.handle,'_home','','_people','','_teams','active','#campaigns','','#badges','','#settings','') }}
 
 {% endblock %}
 
 
 <!-- START NEW CONTENT --> 
 
+
 {% block org_teams %}
-  
-<div role="tabpanel" class="tab-pane active" id="profile">
+    <div role="tabpanel" class="tab-pane active" id="profile">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="bord-bottom bc-8 pad-y-20">  
+                <div class="row">
+                    <div class="col-sm-11 fs-0-8 text-right">
 
-        <div class="bord-bottom bc-8 pad-y-20">  
-            <div class="row">
-                <div class="col-sm-11 fs-0-8 text-right">
-                    <a href="" type="button" class="fc-n"> 
-                        <span class="pad-x-8">Action here</span>
-                        <i class="fa fa-plus pad-x-4"></i>
-                        <i class="fa fa-user"></i>
-                    </a> 
+                        {%if 'post_a_m' in data.user_authorizations %}
+                            <div class="">
+                                <form action="" method="POST">
+                                     <div class="pull-right">
+
+                                        <input name="newteam" type="text" placeholder="Create Team"/>&nbsp;
+                                        <button type="submit" class="btn btn-success btn-xs pull-right">
+                                            <i class="fa fa-plus pad-x-4"></i>
+                                            <i class="fa fa-shield"></i>
+                                        </button>
+
+                                     </div> 
+                                </form>    
+                            </div>
+                        {%endif%}
+                        
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- OLDER -->
-          <div class="row">
-            <div class="col-sm-12">
-              {%if 'post_a_m' in data.user_authorizations %}
-              <div class="">
-                 <form action="" method="POST">
-                 <div class="pull-right">
-                    &nbsp; ADD NEW TEAM <input name="newteam" type="text"/>&nbsp;
-                    <input  type="submit" class="btn btn-warning btn-xs pull-right" style="margin:0 5px;" value="+"/>
+            {% set openthis= 1 %}
+
+            {% for team in data.teamlist %}
+                {% if team.teamname in data.teammembership%}
+            
+
+                <div class="bord-bottom bc-8">
                     
-                 </div> 
-                 </form>    
+                    <!-- ITEM HEAD :::::: -->
+                    <div class="row bord-bottom bc-8 p-5">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class="darklink">
+                            <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
+                                <i class="fa fa-shield fs-1-7"></i>
+                            </div>
+                            <div class="col-xs-7 col-sm-4 fs-0-8 pt-5 fw-c">
+                               
+                                {%if 'get_a_m_n' in data.user_authorizations %}
+                                  
+                                      {{ team.teamname }}
+                                  
+                                {%else%}
+                                  {{ team.teamname }}
+                                {%endif%}
 
-              </div>
-              {%endif%}
+                            </div>
+                            <div class="hidden-xs col-sm-4 fs-0-8">
+                                <p class="">{{ team.added }}</p>
+                            </div>
 
-              <br/><br/>
-
-              <div class="rn-box-content">
-              <h2>TEAMS</h2>
-                <table class="table table-striped"> <!-- inner row -->
-
-
-                {% for team in data.teamlist %}
-                  {% if team.teamname in data.teammembership%}
-                    <tr>
-                      <td>                     
-                      </td>
-                      <td> 
-                      </td>
-                      <td> 
-                        {%if 'get_a_m_n' in data.user_authorizations %}
-                          <a class="rn-b1" href="/{{ data.handle }}/_teams/{{ team.teamname }}">
-                              {{ team.teamname }}
-                          </a>
-                        {%else%}
-                          {{ team.teamname }}
-                        {%endif%}
-                          <hr/>
-                          <p class="rn-t3 rn-gray">Added on: {{ team.added }}</p>
-                      </td>
-                      <td>
-                      {% for member in team.members%}
-                          <a class="rn-b1" href="/{{ member.handle }}">
-                            <img class="img-responsive center-block user-small" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t150/{{member.thumbnail}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
-                            {#{ member.handle }#}
+                            <div class="col-xs-1 col-sm-1">
+                                <i class="fa fa-angle-down"></i>
+                            </div>
                          </a>
-                      {% endfor%}
-                      </td>
-                      <td style="min-width:200px;"> 
-                        <div class="pull-right">
-                          {%if 'get_a_m_n' in data.user_authorizations %}
-                          <div class="btn-group"> 
-                            <a href="/{{ data.handle }}/_teams/{{ team.teamname }}" >Show</a>
-                          </div>
-                          {%endif%}
-                          {%if 'delete_a_m_n' in data.user_authorizations %}
-                          {%if team.teamname!='owner' %}
-                          <div class="btn-group">                       
-                            <a href="/{{ data.handle }}/_teams/{{ team.teamname }}?method=delete" >Delete</a>
-                          </div>
-                          {%endif%}
-                          {%endif%}
-                          <br/><br/>
-                          <!--span class="label label-discrete pull-right">Yesterday</span-->
-                        </div>
-                      </td>
-                    </tr>
-                  {% endif %}
-                {% endfor %}
+                    </div>
+                   
+                    <!-- ITEM BODY :::::: -->
+                    <div id="{{team.teamname}}" class="panel-collapse collapse" role="tabpanel">
+                        
+                        <div class="row">
+                            <div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-5 p-20 row bord-left">
 
-                </table>
-              </div><!-- //close box -->
-            </div><!-- close 12 -->   
-          </div> <!-- close row -->
+                                {%for member in team.members%}
+
+                                <a href="/{{member.handle}}" class="fc-n">
+                                  <img class="user-team" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{member.thumbnail}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
+                                  <span class="fs-0-8"> {{member.handle}}</span>
+                                </a>
+                                
+                                <br/>
+                                
+                                {%endfor%}
+
+                          
+
+                                
+
+                            </div>
+                            <div class="col-sm-5 pt-20 align-right">
+
+                                {%if 'get_a_m_n' in data.user_authorizations %}
+
+                                    <a class="btn btn-xs btn-primary fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
+                                        <i class="fa fa-eye"></i> Show Details
+                                    </a>
+
+                                {%endif%}
+                                {%if 'delete_a_m_n' in data.user_authorizations %}
+                                      {%if team.teamname!='owner' %}
+                                      
+                                        <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}?method=delete" >
+                                            <i class="fa fa-trash"></i> Delete
+                                        </a>
+
+
+                                      {%endif%}
+                                {%endif%}
+
+                                <!-- <div class="row">
+                                    <div class="col-sm-11 fs-0-7 text-right">
+                                        <a href="" type="button" class="fc-n"> 
+                                            <span class="pad-x-8 hidden-sm">Campaigns</span>
+                                            <i class="fa fa-flash"></i>
+                                        </a> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-11 fs-0-7 text-right">
+                                        <a href="" type="button" class="fc-n"> 
+                                            <span class="pad-x-8 hidden-sm">Messages</span>
+                                            <i class="fa fa-comment-o"></i>
+                                        </a> 
+                                        
+                                    </div>
+                                </div> -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {%endif%}
+            {% endfor %}   
+        </div> 
+        
 
     </div>
-</div>
+{% endblock %} 
 
-{% endblock %}
 
 
 

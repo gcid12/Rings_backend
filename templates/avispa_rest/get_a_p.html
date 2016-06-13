@@ -11,7 +11,7 @@
 
 {% block tabs %}
                 
-    {{ ui.org_tabs('_home','','_people','active','_teams','','#campaigns','','#badges','','#settings','') }}
+    {{ ui.org_tabs(data.handle,'_home','','_people','active','_teams','','#campaigns','','#badges','','#settings','') }}
 
 {% endblock %}
 
@@ -34,15 +34,12 @@
                        <form action="" method="POST">
                        <div class="pull-right">
 
-                            <span class="pad-x-8">Add People</span>
+                            <input name="newperson" type="text" placeholder="Add people"/> &nbsp;
                             
-
-                        <input name="newperson" type="text"/> &nbsp;
-                        
-                        <button type="submit" class="btn btn-success btn-xs pull-right">
-                            <i class="fa fa-plus pad-x-4"></i>
-                            <i class="fa fa-user"></i>
-                        </button>
+                            <button type="submit" class="btn btn-success btn-xs pull-right">
+                                <i class="fa fa-plus pad-x-4"></i>
+                                <i class="fa fa-user"></i>
+                            </button>
                           
                        </div> 
                        </form>    
@@ -187,7 +184,7 @@
                         <div class="col-sm-1 p-20">
                             {% if 'delete_a_p_q' in data.user_authorizations %}
                             
-                              <a class="btn btn-xs btn-warning fs-0-7" href="/{{ data.handle }}/_people/{{ person.handle }}?method=delete" >
+                              <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_people/{{ person.handle }}?method=delete" >
                               <i class="fa fa-trash"></i> Delete
                               </a>
                             
