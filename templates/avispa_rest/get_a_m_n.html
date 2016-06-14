@@ -246,25 +246,42 @@
 <!-- Modal -->
 <div class="modal fade" id="invitenew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content p-20">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Invite to this team</h4>
+        <div class="fc-g fs-2">
+            <i class="fa fa-shield fa-2x"></i>
+            <span>{{data.team.teamname}}</span>
+            
+        </div>
+
+        <h4 class="fc-b" id="myModalLabel">Invite collaborators to the <strong>{{data.team.teamname}} </strong> team</h4>
       </div>
-      <div class="modal-body p-20">
+      <div class="modal-body p-x-20">
              {%if 'put_a_m_n' in data.user_authorizations %}
 
                     <div class="panel panel-default">
-                        <div class="panel-heading">Invite to this team: </div>
+                        <div class="panel-heading">Option 1 </div>
                         <div class="panel-body">
                             <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
                        
-                                <p class="fs-0-9 fc-g">
-                                <strong>Option 1: </strong> 
-                                Add a member from {{data.handle}}
+                                <p class="fs-0-9">
+                                     Add an existing 
+                                     <strong>{{data.handle}} </strong>
+                                     collaborator :
                                 </p>
                                 <div class="row">
-                                    <div class="col-xs-9 align-rightX">
+                                    <div class="col-sm-1">
+                                        {% if data.handle_profilepic %}
+                                        <img class=" user-big" src="{{data.image_cdn_root}}/{{data.handle}}/t75/{{data.handle_profilepic}}.jpg" style="float:left; margin-right:10px; width:45px;" alt="">
+                                        {% else %}
+
+                                        <i class="fc-g fa fa-globe fa-2x"></i>
+
+                                        {% endif %}
+
+                                    </div>
+                                    <div class=" col-sm-7">
                                         
                                         <select name="newmember" style="width:100%;">
                                           {% for member in data.people%}
@@ -273,10 +290,12 @@
                                         </select>
                                         
                                     </div>
-                                    <div class="col-xs-3">
-                                        <button type="submit" class="btn btn-success btn-xs fs-0-8" style="margin:0 5px;"/>
+                                    <div class="col-sm-3 align-right">
+                                        <button type="submit" class="btn btn-success btn-sm " style="margin:0 5px;"/>
                                             <i class="fa fa-plus"></i>
                                             <i class="fa fa-user"></i>
+                                            &nbsp; &nbsp;
+                                            invite
                                         </button>
                                         
                                     </div>
@@ -291,24 +310,27 @@
                 {%if 'put_a_m_n_invite' in data.user_authorizations %}
                     
                     <div class="panel panel-default">
-                        
+                        <div class="panel-heading">Option 2 </div>
                         <div class="panel-body">
-                  
-                           <p class="fc-g fs-0-9">
-                                <strong>Option 2: </strong> 
-                                Send an email invitation
-                            </p>
 
                             <form action="/{{data.handle}}/_teams/{{data.team.teamname}}/_invite?method=put" method="POST" role="form">
 
+                                <p class="fs-0-9">
+                                    Send an email invitation (to anyone in the world)
+                                </p>
                                 <div class="row">
-                                    <div class="col-xs-9 align-rightX">
+                                    <div class="col-sm-1">
+                                        <i class="fc-g fa fa-globe fa-2x"></i>
+                                    </div>
+                                    <div class="col-sm-7 ">
                                         <input name="emails" type="text" style="width:100%;" placeholder="name@email.com"/> 
                                     </div>
-                                    <div class="col-xs-3">
-                                        <button type="submit" class="btn btn-xs btn-default fs-0-8">
+                                    <div class="col-sm-3 align-right">
+                                        <button type="submit" class="btn btn-sm btn-default ">
                                             <i class="fa fa-arrow-right"></i>
                                             <i class="fa fa-envelope"></i>
+                                            &nbsp; &nbsp;
+                                            invite
                                         </button>
                                     </div>
                                 </div>
@@ -320,7 +342,7 @@
                 {%endif%}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
         
       </div>
     </div>
