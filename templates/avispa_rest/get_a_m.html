@@ -34,7 +34,7 @@
                                 <form action="" method="POST">
                                      <div class="pull-right">
 
-                                        <input name="newteam" type="text" placeholder="Create Team"/>&nbsp;
+                                        <input name="newteam" type="text" placeholder="Create new team"/>&nbsp;
                                         <button type="submit" class="btn btn-success btn-xs pull-right">
                                             <i class="fa fa-plus pad-x-4"></i>
                                             <i class="fa fa-shield"></i>
@@ -79,7 +79,14 @@
                             </div>
 
                             <div class="col-xs-1 col-sm-1">
-                                <i class="fa fa-angle-down"></i>
+                                
+                                {%if 'get_a_m_n' in data.user_authorizations %}
+
+                                    <a class="btn btn-xs btn-default fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
+                                        <i class="fa fa-arrow-right"></i>
+                                    </a>
+
+                                {%endif%}
                             </div>
                          </a>
                     </div>
@@ -106,12 +113,12 @@
                                 
 
                             </div>
-                            <div class="col-sm-5 pt-20 align-right">
+                            <div class="col-xs-10 col-sm-5 pt-20 align-right">
 
                                 {%if 'get_a_m_n' in data.user_authorizations %}
 
-                                    <a class="btn btn-xs btn-primary fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
-                                        <i class="fa fa-eye"></i> Show Details
+                                    <a class="btn btn-xs btn-default fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
+                                        more info 
                                     </a>
 
                                 {%endif%}
@@ -125,6 +132,8 @@
 
                                       {%endif%}
                                 {%endif%}
+
+                                <div class="spa20 visible-xs"></div>
 
                                 <!-- <div class="row">
                                     <div class="col-sm-11 fs-0-7 text-right">

@@ -76,10 +76,16 @@
                             <p class="sm-text">Added on: {{ person.added }}</p>
                         </div>
                        
+                        
                         <div class="col-xs-1 col-sm-1">
-                            
-                            <i class="fa fa-angle-right"></i>
+                                
+                                {%if 'get_a_m_n' in data.user_authorizations %}
 
+                                    <a class="btn btn-xs btn-default fs-0-7" href="/{{ person.handle }}" >
+                                        <i class="fa fa-arrow-right"></i>
+                                    </a>
+
+                                {%endif%}
                         </div>
                       
                     </a>  
@@ -182,6 +188,14 @@
 
                         </div>
                         <div class="col-sm-1 p-20">
+
+                            {%if 'get_a_m_n' in data.user_authorizations %}
+
+                                    <a class="btn btn-xs btn-default fs-0-7" href="/{{ person.handle }}" >
+                                        more info
+                                    </a>
+
+                            {%endif%}
                             {% if 'delete_a_p_q' in data.user_authorizations %}
                             
                               <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_people/{{ person.handle }}?method=delete" >
