@@ -38,28 +38,82 @@ class AvispaModel:
         
         self.MAM = MainModel(tid=tid,ip=ip)
 
-    #TESTED
-    def ring_data_from_user_doc(self,handle,ring): 
-        '''Subtracts relevant ring data from user doc'''      
+    def ring_data_from_user_doc(self,handle,ringd): 
+        '''
+        Subtracts relevant ring data from user doc
+
+        @UNITTEST: True
+
+        @MONGOQUERY:
+
+          
+
+        @IN:
+          handle = (string)
+
+          ringd =
+          {
+            "ringname":(string),
+            "version":(string),
+            "origin":(string),
+            "count":(string)
+          }
+
+
+        @OUT:
+          {
+            "ringname":(string),
+            "ringversion":(string),
+            "ringorigin":(string),
+            "ringversionh":(string),
+            "count":(string)
+          }
+        '''  
+
 
         r = {}
 
-        r['ringname'] = str(ring['ringname'])
-        r['ringversion'] = str(ring['version'])
+        r['ringname'] = str(ringd['ringname'])
+        r['ringversion'] = str(ringd['version'])
 
-        if 'origin' in ring:
-            r['ringorigin'] = str(ring['origin'])
+        if 'origin' in ringd:
+            r['ringorigin'] = str(ringd['origin'])
         else:
             r['ringorigin'] = str(handle)
 
-        r['ringversionh'] = str(ring['version']).replace('-','.')
-        r['count'] = ring['count']
+        r['ringversionh'] = str(ringd['version']).replace('-','.')
+        r['count'] = ringd['count']
 
         return r
 
-    #TESTED
+
     def ring_data_from_schema(self,schema):
-        '''Subtracts relevant ring data from schema'''
+        '''
+        Subtracts relevant ring data from schema
+
+        @UNITTEST: True
+
+        @IN:
+          schema = 
+          {
+            "rings":[
+              {
+                 "RingDescription":(string),
+                 "RingLabel":(string),
+                 ...
+              }
+            ],
+            "fields":[]
+          }
+
+        @OUT:
+          {
+            "ringdescription":(string),
+            "ringlabel":(string),
+            "fields":[],
+            "rings":[]
+          }
+        '''
 
         r = {}
 
@@ -73,11 +127,44 @@ class AvispaModel:
         else:
             r['ringlabel'] = False 
 
+        r['fields'] = schema['fields']
+        r['rings'] = schema['rings']
+
         return r
 
 
 
     def subtract_ring_data(self,handle,ringlist):
+        ''' 
+        Joins data coming from the user doc and the schemas
+
+        @IN:
+          handle = (string)
+          ringlist = 
+          [
+            {
+              "ringname":(string),
+              "version":(string),
+              "origin":(string),
+              "count":(string)
+            },
+          ]
+
+        @OUT:
+          {
+            "ringname":(string),
+            "ringversion":(string),
+            "ringorigin":(string),
+            "ringversionh":(string),
+            "count":(string),
+            "ringdescription":(string),
+            "ringlabel":(string),
+            "fields":[],
+            "rings":[]
+          }
+
+        '''
+
         
         data = []
 
@@ -85,22 +172,47 @@ class AvispaModel:
             schema = self.ring_get_schema_from_view(handle,str(ringobj['ringname'])) # ACTIVE COLLABORATION
            
             if schema and 'deleted' not in ringobj:
-                r1 = self.ring_data_from_user_doc(handle,ringobj)
-                r2 = self.ring_data_from_schema(schema)
+                r1 = self.ring_data_from_user_doc(handle,ringobj) # ACTIVE COLLABORATION
+                r2 = self.ring_data_from_schema(schema) # ACTIVE COLLABORATION
                 r = dict(r1,**r2)
                 data.append(r)
 
         return data
 
-    
+    #MONGOREFACTOR
     def user_get_rings(self,handle):
-        '''Subtract ring data given a handle'''
+        '''
+        Subtract ring data given a handle
+
+        @NOTES:
+          -Refactoring this function around MongoDB aggregation will eliminate the need of all
+           downstream functions
+
+        @IN: 
+          handle = (string)
+
+        @OUT:
+          {
+            "ringname":(string),
+            "ringversion":(string),
+            "ringorigin":(string),
+            "ringversionh":(string),
+            "count":(string),
+            "ringdescription":(string),
+            "ringlabel":(string),
+            "fields":[],
+            "rings":[]
+          }
+
+        @EXCEPTION:
+          -No rings for this user
+
+        '''
+
   
         try:
             doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION 
             data = self.subtract_ring_data(handle,doc['rings']) # ACTIVE COLLABORATION
-
-      
 
         except (ResourceNotFound, TypeError) as e:
 
@@ -116,6 +228,27 @@ class AvispaModel:
 
     
     def ring_set_db(self,handle,ringname,ringversion):
+        '''
+        Creates new ring DB, its views and add it to the userdoc
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+          ringversion = (string)
+
+        @OUT:
+          (boolean)
+
+        @EXCEPTION:
+          - Can't create DB
+
+        @COLLATERAL:
+          - Creates DB
+          - Creates DB Views
+          - Adds ring to userdoc
+
+        '''
+
            
         #db_ringname=str(handle)+'_'+str(ringname)+'_'+str(ringversion)
         db_ringname=str(handle)+'_'+str(ringname)
@@ -138,6 +271,19 @@ class AvispaModel:
 
     
     def ring_set_db_views(self,db_ringname,specific=False):
+        '''
+        Creates DB Views
+
+        @IN
+          db_ringname = (string)
+          specific = (string)
+
+        @OUT
+          True (fixed)
+
+        @COLLATERAL
+          -Creates DB Views
+        '''
 
         db = self.MAM.select_db(db_ringname)
    
@@ -321,6 +467,20 @@ class AvispaModel:
 
 
     def user_add_ring(self,handle,ringname,ringversion):
+        '''
+        Adds ring to userdoc
+
+        @IN: 
+          handle = (string)
+          ringname = (string)
+          ringversion = (string)
+
+        @OUT:
+          True (fixed)
+
+        @COLLATERAL
+          -Adds ring to userdoc
+        '''
 
         self.lggr.info("handle:",handle)
 
@@ -332,8 +492,28 @@ class AvispaModel:
 
         return True
 
-    #AVISPAMODEL
+
     def user_delete_ring(self,handle,ringname):
+        '''
+        Deletes ring and its references (no tombstones)
+        It won't delete ringdb if it is not in the userdoc
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+
+        @OUT:
+          (boolean)
+
+        @EXCEPTION:
+          -Ring doesn't exist in userdoc
+          -Ring doesn't exist in DB
+
+        @COLLATERAL
+          - Delete ring from userdoc
+          - Delete ring DB
+          - Delete ring from collections
+        '''
 
         doc = self.MAM.select_user(handle)
         
@@ -380,8 +560,30 @@ class AvispaModel:
         
         return False
 
-    #AVISPAMODEL
+
     def user_hard_delete_ring(self,handle,ringname,ringversion):
+        '''
+        Delete ring from DB 
+
+        @NOTES
+          - user_delete_ring() does the same but it deletes first the db 
+            and then cleanses the userdoc
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+          ringversion = (string)
+
+        @OUT:
+          (boolean)
+
+        @COLLATERAL:
+          - Delete ring DB
+          - Delete ring from userdoc
+          
+
+
+        '''
 
         #dbname = handle+'_'+ringname+'_'+ringversion
         dbname = handle+'_'+ringname
@@ -411,22 +613,53 @@ class AvispaModel:
         else:
             return False
 
-    #AVISPAMODEL
+
     def ring_get_schema(self,handle,ringname):
-        #Consider deprecating this function for ring_get_schema_from_view
+        '''
+        Returns ring schema
+
+        @NOTES:
+          -Considering deprecating this function for ring_get_schema_from_view
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+
+        @OUT:
+          {(ring schema)}
+
+        
+        '''
 
         db_ringname=str(handle)+'_'+str(ringname)
-        
-        #self.lggr.debug(db_ringname+'->ring_get_schema()')
-
         db = self.MAM.select_db(db_ringname)
         schema = MyRingSchema.load(db,'schema')
 
         return schema
 
 
-    #AVISPAMODEL
+    #DEPRECATED
     def ring_get_item_document(self,handle,ringname,idx):
+        ''' 
+        Retrieve one ring document from its db
+
+        @DEPRECATED
+         -Nobody is using it but old patches
+
+        @NOTES:
+         - Is any function currently using this? 
+         - 3 calls to the DB to subtract one document?
+
+        @IN:
+          handle:(string)
+          ringname:(string)
+          idx:(string)
+
+        @OUT:
+          {(ring_item)}
+
+
+        '''
 
         schema = self.ring_get_schema(handle,ringname)
         RingClass = self.ring_create_class(schema)
@@ -438,8 +671,25 @@ class AvispaModel:
         return item
 
 
-    #AVISPAMODEL
+    
     def ring_set_schema(self,handle,ringname,ringversion,pinput,ringprotocol,fieldprotocol):
+        '''
+        Creates Ring Schema doc if it doesn't exist. Updates current one if it does
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+          ringversion = (string)
+          pinput = {}
+          ringprotocol = []
+          fieldprotocol = []
+
+        @OUT:
+          "ok" (fixed)
+
+        @COLLATERAL
+          - create/update schema doc
+        '''
 
         if ringversion == 'None' or ringversion == None:
             ringversion = ''
@@ -480,9 +730,7 @@ class AvispaModel:
                                 '  New: "'+ str(pinput['rings'][0][r]) + '" ('+ str(type(pinput['rings'][0][r])) +')' )
                         args_r[r] = pinput['rings'][0][r]
 
-                  
-
-        
+       
         if action == 'new':
             schema.rings.append(**args_r)
         
@@ -490,7 +738,6 @@ class AvispaModel:
             for x in args_r:
                 schema.rings[0][x] = args_r[x]
             
-
         # Creates or updates Field parameters
 
         args_f = {}
@@ -547,10 +794,21 @@ class AvispaModel:
         return 'ok'
 
     
-    #AVISPAMODEL
+    # DEPRECATED
     def _schema_create_class(self,numfields,ringprotocol,fieldprotocol):
         '''
-        This function is deprecated. Now we just instantiate MyRingSchema class
+        Create schema class
+        
+        @NOTES: 
+          -This function is deprecated. Now we just instantiate MyRingSchema class
+
+        @IN:
+          numfields = (integer)
+          ringprotocol = []
+          fieldprotocol = []
+
+        @OUT:
+          (schema_class)
         '''
 
         args_r = {}
@@ -582,9 +840,21 @@ class AvispaModel:
 
         return schemaclass
 
-    #AVISPAMODEL
+
     def ring_class_field_type(self,fieldtype):
-        '''Maps ring datatype with db type'''
+        '''
+        Maps ring datatype with db type
+
+        @NOTES:
+          -Needed to create couchdb specific mapping.
+          
+        @IN:
+          fieldtype = (string)
+
+        @OUT:
+          (function)
+
+        '''
 
         #Types : TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField
         if fieldtype == 'INTEGER':
@@ -599,7 +869,13 @@ class AvispaModel:
             return TextField()
 
     def ring_class_field_history(self):
-        '''Creates object that contains field history'''
+        '''
+        Creates object that contains field history
+
+        @OUT:
+          (Object)
+
+        '''
 
         d = {}
         d['date']=DateTimeField()
@@ -611,7 +887,23 @@ class AvispaModel:
         return ListField(DictField(Mapping.build(**d)))
 
     def ring_class_prepare_class_arguments(self,schema):
-        '''Prepares argument objects for Ring Class '''
+        '''
+        Prepares argument objects for Ring Class 
+
+        @IN:
+          schema = (ring_schema)
+
+        @OUT:
+
+          {
+            'type':{(fieldid):(object)},
+            'rich':{(fieldid):(object)},
+            'history':{(fieldid):(object)},
+            'meta':{(fieldid):(object)},
+            'flags':{(fieldid):(object)}
+          }
+
+        '''
 
         args = {'type':{},'rich':{},'history':{},'meta':{},'flags':{}}
 
@@ -624,8 +916,21 @@ class AvispaModel:
 
         return args
 
-    #AVISPAMODEL
+   
     def ring_create_class(self,schema):
+        '''
+        Creates the Ring Class 
+
+        @NOTES:
+          - This class maps the item document that contains the data (not the schema).
+
+        @INPUT:
+          schema = (object)
+
+        @OUTPUT:
+          (class)
+           
+        '''
 
         args = self.ring_class_prepare_class_arguments(schema)
 
@@ -654,11 +959,21 @@ class AvispaModel:
                                                 )))
                                                }) 
 
-        #self.lggr.info('RingClass:'+str(RingClass))
         return RingClass
 
-    #AVISPAMODEL
+    
     def get_item_count(self,handle,ringname):
+        '''
+        Ring item count from the userdoc
+
+        @IN: 
+          handle = (string)
+          ringname = (string)
+
+        @OUT:
+          ok:(integer)
+          ko: False
+        '''
 
         doc = self.MAM.select_user(handle)
         self.lggr.info('user rings:'+str(doc['rings']))
@@ -666,13 +981,31 @@ class AvispaModel:
             if user_ring['ringname']==ringname:
                 return user_ring['count']
 
-
         return False
 
-        #AVISPAMODEL
+    
     def put_labels(self,handle,ringname,labels):
+        '''
+        Writes labels into the userdoc
 
-        # "labels" is a list of dictionaries  i.e : {'name':'urgent', 'color':'#f00'}
+        @NOTES:
+          - This function is in development.
+          -"labels" is a list of dictionaries 
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+          labels = [{}]
+
+        @OUT:
+          ok:True
+          ko:False
+
+        @COLLATERAL:
+          - Write labels to userdoc
+        '''
+
+        # 
 
         labels = [{'name':'urgent', 'color':'#f00'},
          {'name':'ok', 'color':'#00f'},
@@ -695,8 +1028,23 @@ class AvispaModel:
                 return False
 
 
-    #AVISPAMODEL
+    
     def increase_item_count(self,handle,ringname):
+        '''
+        Increase ring item count in userdoc
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+
+        @OUT:
+          ok:True
+          ko:False
+
+        @COLLATERAL
+          -Write new count to userdoc
+
+        '''
 
         doc = self.MAM.select_user(handle)
 
@@ -716,6 +1064,21 @@ class AvispaModel:
 
         #AVISPAMODEL
     def decrease_item_count(self,handle,ringname):
+        '''
+        Decrease ring item count in userdoc
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+
+        @OUT:
+          ok:True
+          ko:False
+
+        @COLLATERAL
+          -Write new count to userdoc
+          
+        '''
 
         doc = self.MAM.select_user(handle)
 
@@ -732,6 +1095,24 @@ class AvispaModel:
                 return False
 
     def set_ring_origin(self,handle,ringname,origin):
+        '''
+        Set ring origin parameter in userdoc
+
+        @NOTES:
+          - Same as: UPDATE origin=<origin> in USERDOC where handle=<handle> and ring=<ring> 
+
+        @IN: 
+          handle = (string)
+          ringname = (string)
+          origin = (string)
+
+        @OUT:
+          ok:True
+          ko:False
+
+        @COLLATERAL
+          -Write origin parameter to userdoc ring
+        '''
 
         doc = self.MAM.select_user(handle)
 
@@ -752,9 +1133,21 @@ class AvispaModel:
                 return False
 
 
-
-    #AVISPAMODEL
     def ring_get_schema_from_view(self,handle,ringname):
+        '''
+        Get ring schema from the schemas db view
+
+        @NOTES:
+          - Same footprint as ring_get_schema() but faster as this involves only one call
+          - The schema is retrieved directly from a dedicated view not from the ring db
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+
+        @OUT:
+          {(ring_schema)}
+        '''
 
         db_ringname=str(handle)+'_'+str(ringname) 
         db = self.MAM.select_db(db_ringname)       
@@ -776,9 +1169,18 @@ class AvispaModel:
             
         return schema
 
-    #AVISPAMODEL
-    def schema_health_check(self,schema):
-        self.lggr.debug('++ AVM.schema_health_check')
+    
+    def schema_health_check(self,schema):     
+        '''
+        Checks that the schema has all required parameters
+
+        @IN:
+          schema = {(ring_schema)}
+
+        @OUT:
+          {(ring_schema)}
+        '''
+
         # 1. Check if the FieldOrders are unique. If they aren't reassign
         l = len(schema['fields'])
         orderd= []
@@ -808,37 +1210,48 @@ class AvispaModel:
             pass
             #self.lggr.info('No need for repair')
 
-        self.lggr.debug('-- AVM.schema_health_check')
         return schema
             
 
-        
 
-
-        #if len(needsrepair)>0:
-
-           # for order[]
-           # for(r in needsrepair):
-
-
-
-    #AVISPAMODEL
     def couchdb_pager(db, view_name='_all_docs',
                   startkey=None, startkey_docid=None,
                   endkey=None, endkey_docid=None, bulk=5000):
 
         '''
-        import couchdb
-        couch = couchdb.Server()
-        db = couch['mydatabase']
+        Returns a page of documents
 
-        # This is dangerous.
-        for doc in db:
-            pass
+        @NOTES:
+          -This function is a generator
 
-        # This is always safe.
-        for doc in couchdb_pager(db):
-            pass
+        @DEPRECATED:
+          -Not used anywhere
+
+        @IN:
+          db = (db reference)
+          view_name = (string)
+          startkey = (string)
+          startkey_docid = (string)
+          endkey = (string)
+          endkey_docid = (string)
+          bulk = (integer)
+
+        @OUT:
+          yields a page or results
+
+
+        @USAGE: 
+          import couchdb
+          couch = couchdb.Server()
+          db = couch['mydatabase']
+
+          # This is dangerous.
+          for doc in db:
+              pass
+
+          # This is always safe.
+          for doc in couchdb_pager(db):
+              pass
 
         '''
         # Request one extra row to resume the listing there later.
@@ -873,44 +1286,71 @@ class AvispaModel:
     
 
     def get_a_b_parameters(self,handle,ringname):
+        '''
+        Get the count and source from one ring
 
-        self.lggr.debug('++ get_a_b_parameters')
+        @NOTES:
+        - Similar to SELECT * from USERDOC where ringname=ringname and deleted!=True
 
-        doc = self.MAM.select_user(handle)
+        @IN: 
+          handle = (string)
+          ringname = (string)
 
-        #self.lggr.info('user rings:',user_doc['rings'])
-        for user_ring in doc['rings']:
-            if user_ring['ringname']==ringname:
-              
-                if 'deleted' in user_ring:
-                    if user_ring:
-                        self.lggr.debug('-- get_a_b_parameters')
+        @OUT:
+          ok:{
+            "count":(string),
+            "ringorigin":(string)
+          }
+          ko:False
+
+        '''
+
+        doc = self.MAM.select_user(handle) #ACTIVE COLLABORATION
+        ringlist = doc['rings']
+
+        for ringobj in ringlist:
+
+            if ringobj['ringname']==ringname:            
+                if 'deleted' in ringobj:
+                    if ringobj:    
                         return False
 
-                parameters = {}
-                parameters['count'] = user_ring['count']
-                if 'origin' in user_ring:
-                    parameters['ringorigin'] = user_ring['origin']
+                r = {}
+                r['count'] = ringobj['count']
+                if 'origin' in ringobj:
+                    r['ringorigin'] = ringobj['origin']
                 else:
-                    parameters['ringorigin'] = handle
-
-                
-                self.lggr.debug('-- get_a_b_parameters')
-                return parameters
-
+                    r['ringorigin'] = handle
+                return r
 
         return False
 
     def get_a_b_search(handle,ring,limit=None,querystring=None):
         
-        ESModel
+        pass
 
-
-
-  
-
-    #AVISPAMODEL
+    
     def get_a_b(self,handle,ringname,limit=25,lastkey=None,endkey=None,sort=None,human=False):
+        '''
+        Get page of items
+
+        @NOTES:
+          - The "human" parameter determines whether ids or labels are returned as keys
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+          limit = (integer)
+          lastkey = (string)
+          endkey = (string)
+          sort = (string)
+          human = (boolean)
+
+        @OUT:
+          [{(item)}]
+
+
+        '''
        
         items = []
         i = 0
@@ -950,6 +1390,7 @@ class AvispaModel:
                 items.append(item)
                 
         if len(items)>1 and sort:
+
             self.sort = sort
             items = sorted(items, key=self.sort_item_list, reverse=sort_reverse)
 
@@ -957,8 +1398,29 @@ class AvispaModel:
 
 
     def select_ring_doc_view(self,dbview,handle,ringname,limit=25,key=None,batch=None,lastkey=None,endkey=None):
+        '''
+        Generic function to retrieve documents from any view
 
-        # https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
+        @NOTES:
+          -There is a function with same name in MainModel.py 
+          -Both of them are used.
+          -https://pythonhosted.org/CouchDB/client.html#couchdb.client.Database.iterview
+
+        @IN:
+          dbview = (string)
+          handle = (string)
+          ringname = (string)
+          limit = (integer)
+          key = (string)
+          batch = (integer)
+          lastkey = (string)
+          endkey = (string)
+
+        @OUT:
+          [{(item)}]
+
+        '''
+        
 
         db_ringname=str(handle)+'_'+str(ringname)
         #self.lggr.debug('#couchdb_call')
@@ -988,53 +1450,89 @@ class AvispaModel:
         
         #options['startkey_docid']='4393588627'
         #options['endkey']='4393588626'
-        #options['endkey_docid']=4
-
-
-        
+        #options['endkey_docid']=4   
         # result carries all the items in that page
-
 
         return result
 
 
-    def populate_item(self,OrderedFields,row,OFH=False):
+    def populate_item(self,OrderedFields,preitem,OFH=False):
+        '''
+        Cleans, orders and complements every item before the output
+
+        @NOTES:
+          - Items are not output in the API as they are stored in the DB. 
+          - Every item that goes out passes through this function
+
+        @IN:
+          OrderedFields = []
+          preitem = {
+                      "id":(string)
+                      "value":{
+                        "<fieldid_1>":(string),
+                        "<fieldid_1>_flag":(string),
+                        "<fieldid_1>_rich":(string),
+                        ...
+                        "<fieldid_n>":(string),
+                        "<fieldid_n>_flag":(string),
+                        "<fieldid_n>_rich":(string),
+                      },
+                    }
+          OFH = {
+             <fieldid_1> : (string),
+             ...
+             <fieldid_n> : (string),
+          }
+
+
+        @OUT:
+          {
+            "_id" : (string),
+            "<fieldid_1>":(string),
+            "<fieldid_1>_flag":(string),
+            "<fieldid_1>_rich":(string),
+            ...
+            "<fieldid_n>":(string),
+            "<fieldid_n>_flag":(string),
+            "<fieldid_n>_rich":(string)
+          }
+
+
+        '''
         item = collections.OrderedDict()
         if not OFH:
             #OFH Returns results with Human readable keys instead of fieldids
             OFH={}
 
-        if 'id' in row:        
-            item[u'_id'] = row['id']
+        if 'id' in preitem:        
+            item[u'_id'] = preitem['id']
 
             for fieldid in OrderedFields:
-                if fieldid in row['value']: 
+                if fieldid in preitem['value']: 
 
-
-
-                    #self.lggr.debug(fieldid+' has type:'+type(row['value']))
+                    #self.lggr.debug(fieldid+' has type:'+type(preitem['value']))
 
                     if fieldid in OFH:
 
                         #Add Value
-                        item[OFH[fieldid]] = row['value'][fieldid]
+                        item[OFH[fieldid]] = preitem['value'][fieldid]
                         #Add Flag
-                        if fieldid+'_flag' in row['value']:
-                            item[OFH[fieldid]+'_flag'] = row['value'][fieldid+'_flag']
+                        if fieldid+'_flag' in preitem['value']:
+                            item[OFH[fieldid]+'_flag'] = preitem['value'][fieldid+'_flag']
                         #Add Rich 
-                        if fieldid+'_rich' in row['value']:
-                            item[OFH[fieldid]+'_rich'] = row['value'][fieldid+'_rich']
+                        if fieldid+'_rich' in preitem['value']:
+                            item[OFH[fieldid]+'_rich'] = preitem['value'][fieldid+'_rich']
 
                     else:
 
                         #Add Value
-                        item[fieldid] = row['value'][fieldid]
+                        item[fieldid] = preitem['value'][fieldid]
                         #Add Flag
-                        if fieldid+'_flag' in row['value']:
-                            item[fieldid+'_flag'] = row['value'][fieldid+'_flag']
+                        if fieldid+'_flag' in preitem['value']:
+                            item[fieldid+'_flag'] = preitem['value'][fieldid+'_flag']
                         #Add Rich
-                        if fieldid+'_rich' in row['value']:
-                            item[fieldid+'_rich'] = row['value'][fieldid+'_rich']
+                        if fieldid+'_rich' in preitem['value']:
+                            item[fieldid+'_rich'] = preitem['value'][fieldid+'_rich']
 
 
             return item
@@ -1044,6 +1542,21 @@ class AvispaModel:
 
 
     def sort_item_list(self,items):
+        '''
+        Sorts an item list respect a certain parameter
+
+        @NOTES:
+          -This function is coupled to get_a_b #REFACTOR
+
+        @IN
+          items = {}
+          self.sort = (string)
+
+        @OUT
+          [(items)]
+
+        '''
+
         if self.sort:
             if self.sort in items:
                 return items[self.sort]
@@ -1052,10 +1565,36 @@ class AvispaModel:
         else:
             return items[1:]
 
-
-    
     
     def subtract_rich_data(self, field, external_uri_list,request_url,author):
+        '''
+        Expand references for one particular field and writes changes in history
+
+        @NOTES:
+          -The "field" objects comes directly from the schema
+          -The "external_uri_list" string is a comma separated string of URLs. 
+          -They are URIs that refer to one or multiple items from other rings (i.e: Multiple countries)
+          -The "request_url" string is the url from where the request was made.
+          -If the "request_url" matches with one of the referred URIs it is queried internally (hack for speed)
+          -"author" is for history to have a reference on who triggered the subtraction (happens during put or post)
+          -This function needs to be split in small pieces #REFACTOR
+
+        @IN:
+          field = {
+            'FieldId':(string),
+            'FieldName':(string),
+            'FieldCardinality':(string),
+            'FieldSource':(string),
+            'author':(string)
+          }
+          external_uri_list = [(string)]
+          request_url = (string)
+          author = (string)
+
+        @OUT:
+          ({(r_item_values)},{(r_rich_values)},{(r_history_values)})
+
+        '''
 
         r_item_values = {}
         r_rich_values = {}
@@ -1232,6 +1771,29 @@ class AvispaModel:
 
     #AVISPAMODEL
     def post_a_b(self,rqurl,rqform,handle,ringname):
+        '''
+        Creates a new item in the ring
+
+        @NOTES:
+          - "rqurl" are the arguments that come via url
+          - "rqform" are the arguments that come via form
+
+
+        @IN:
+          rqurl = {(string):(string),}
+          rqform = {(string):(string),}
+          handle = (string)
+          ringname = (string)
+
+        @OUT:
+          ok:(item_id)
+          ko:False
+
+        @COLLATERAL:
+          - Create new document in DB
+          - Increase item count in userdoc
+
+        '''
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.MAM.select_db(db_ringname)
@@ -1353,6 +1915,23 @@ class AvispaModel:
 
     #AVISPAMODEL
     def get_a_b_c(self,handle,ringname,idx,human=False):
+        '''
+        Gets a specific ring document from DB
+
+        @NOTES: 
+          - "human" converts id keys to label keys
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+          idx = (string)
+          human = (boolean)
+
+        @OUT:
+          ok:(item_doc)
+          ko:False
+
+        '''
 
         self.lggr.debug('++ AVM.get_a_b_c')
 
@@ -1391,6 +1970,25 @@ class AvispaModel:
 
     #AVISPAMODEL
     def put_a_b_c(self,rqurl,rqform,handle,ringname,idx):
+        '''
+        Modifies existing document
+
+        @IN:
+          rqurl = {(string):(string),}
+          rqform = {(string):(string),}
+          handle = (string)
+          ringname = (string)
+          idx = (string)
+
+        @OUT:
+          ok:(item_id)
+          ko:False
+
+        @COLLATERAL:
+          -Overwrites document in DB with modified one
+
+
+        '''
 
         self.lggr.info('START AVM.put_a_b_c')
 
@@ -1627,6 +2225,25 @@ class AvispaModel:
 
 
     def delete_a_b_c(self,handle,ringname,idx):
+        '''
+        Tombstones item
+
+        @NOTE:
+           -It doesn't actually deletes the item from DB it just places a tombstone on it
+
+        @IN:
+          handle = (string)
+          ringname = (string)
+          idx = (string)
+
+        @OUT:
+          ok:(item_id)
+          ko:False
+
+        @COLLATERAL:
+          - Modifies the item in DB
+
+        '''
 
 
         db_ringname=str(handle)+'_'+str(ringname)
