@@ -25,8 +25,7 @@ class AvispaRestFunc:
 
     # GET/a
     def get_a(self,handle,ring,idx,api=False,collection=None,*args,**kargs):
-        #NOT CURRENTLY USED. Look for get_a_x
-  
+        #NOT CURRENTLY USED. Look for get_a_x  
         d = {'message': 'Using get_a for handle '+handle , 'template':'avispa_rest/index.html' }
     	return d
 
@@ -142,6 +141,7 @@ class AvispaRestFunc:
 
     
     def post_rq_a(self,handle,ring,idx,api=False,collection=None,*args,**kargs):
+        '''Shows Ring Modeler for new ring'''
         d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/post_rq_a.html'}
         return d
 
@@ -210,7 +210,64 @@ class AvispaRestFunc:
         return d
 
     # /a/b
-    
+
+    def subtract_page_parameters(self,rqargs):
+        '''Subtract page related parameters'''
+
+        page = {}
+
+        #Query
+
+        if 'lastkey' in rqargs:
+            page['lastkey'] = rqargs.get('lastkey')
+        else:
+            page['lastkey'] = None
+        
+        if 'endkey' in rqargs:
+            page['endkey'] = rqargs.get('endkey')
+        else:
+            page['endkey'] = None
+
+        if 'limit' in rqargs:
+            page['limit'] = rqargs.get('limit')
+        else:
+            page['limit'] = "25"
+
+        if 'sort' in rqargs:
+            page['sort'] = rqargs.get('sort')
+        else:
+            page['sort'] = None
+
+        if 'noimages' in rqargs:
+            page['noimages'] = rqargs.get('noimages')
+        else:
+            page['noimages'] = None
+
+        if 'layer' in rqargs:
+            page['layer'] = rqargs.get('layer')
+        else:
+            page['layer'] = PREVIEW_LAYER
+
+        if 'flag' in rqargs:
+            page['flag'] = rqargs.get('flag')
+        else:
+            page['flag'] = None
+
+        if 'fieldid' in rqargs:
+            if rqargs.get('fieldid') == '1':
+                page['idlabel'] = True
+            else:
+                page['idlabel'] = False
+        else:
+            page['idlabel'] = True
+
+        if 'q' in rqargs:
+            page['q'] = rqargs.get('q')
+        else:
+            page['q'] = ''
+
+        return page
+
     #GET /a/b
     def get_a_b(self,handle,ring,idx,api=False,collection=None,rqargs=None,rqurl=None,*args,**kargs):
         '''List of items in the ring '''
@@ -227,93 +284,29 @@ class AvispaRestFunc:
                 redirect = '/'+handle+'/_home'
                 return {'redirect': redirect, 'status':404}
 
-        #Query
-        if 'lastkey' in rqargs:
-            lastkey = rqargs.get('lastkey')
-        else:
-            lastkey = None
+        page = self.subtract_page_parameters(rqargs)
 
-        if 'endkey' in rqargs:
-            endkey = rqargs.get('endkey')
-        else:
-            endkey = None
-
-        if 'limit' in rqargs:
-            limit = rqargs.get('limit')
-        else:
-            limit = "25"
-
-        if 'sort' in rqargs:
-            sort = rqargs.get('sort')
-        else:
-            sort = None
-
-        if 'noimages' in rqargs:
-            noimages = rqargs.get('noimages')
-        else:
-            noimages = None
-
-        if 'layer' in rqargs:
-            layer = rqargs.get('layer')
-        else:
-            layer = PREVIEW_LAYER
-
-        if 'flag' in rqargs:
-            flag = rqargs.get('flag')
-        else:
-            flag = None
-
-        if 'fieldid' in rqargs:
-            if rqargs.get('fieldid') == '1':
-                idlabel = True
-            else:
-                idlabel = False
-        else:
-            idlabel = True
-
-        if 'q' in rqargs:
-            q = rqargs.get('q')
-        else:
-            q = ''
-
-
-        #Subtract Schema
+        #Subtract Ring info
         schema = self.AVM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
-        layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'],layer=layer)
 
-        '''
-        #Subtract items from DB
-        preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
-        #self.lggr.debug('PREITEMLIST:'+str(preitems))
-        #print
-        #print('PREITEMS:')
-        #print(preitems)
-        '''
+        layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'],layer=page['layer'])  
         
-        
-        #Search ElasticSearch
-        if q != '' :
-
+        if page['q'] != '' :
+            #Search ElasticSearch
             ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
             preitems = ESM.get_a_b(handle,ring,q=q)
         else:
-            preitems = self.AVM.get_a_b(handle,ring,limit=limit,lastkey=lastkey,endkey=endkey,sort=sort)
+            #Subtract from DB
+            preitems = self.AVM.get_a_b(handle,ring,limit=page['limit'],lastkey=page['lastkey'],endkey=page['endkey'],sort=page['sort'])
 
-        
-        #print
-        #print('ES PREITEMS:')
-        #print(preitems)
-        
-        
 
         #Prepare data
         itemlist = []
         for preitem in preitems:          
-            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,types,layer=layer,flag=flag,idlabel=idlabel)
+            Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,types,layer=page['layer'],flag=page['flag'],idlabel=page['idlabel'])
             itemlist.append(Item)
-
         
         #Output
         if api:
@@ -348,13 +341,13 @@ class AvispaRestFunc:
             #Determine if there will be images
 
             d['imagesui'] = False
-            if not noimages:
+            if not page['noimages']:
                 for w in widgets:
                     if widgets[w] == 'images':
                         d['imagesui'] = True
 
              #Pagination
-            if len(itemlist)>0 and len(itemlist) == limit:
+            if len(itemlist)>0 and len(itemlist) == page['limit']:
                 nextlastkey=itemlist[-1]['_id']
                 d['lastkey'] = nextlastkey
                 #Still, if the last page has exactly as many items as limit, 
@@ -362,7 +355,7 @@ class AvispaRestFunc:
 
             d['widget'] = widgets
             d['itemlist'] = itemlist
-            d['limit'] = limit
+            d['limit'] = page['limit']
             d['FieldLabel'] = labels
             d['rings'] = schema['rings']
             d['template'] = 'avispa_rest/get_a_b.html'
@@ -547,16 +540,14 @@ class AvispaRestFunc:
 
     def ring_parameters(self,handle,ring):
 
-        self.lggr.debug('++ ring_parameters()')
-
         ringparameters = self.AVM.get_a_b_parameters(handle,ring)
 
         if ringparameters:
-            self.lggr.debug('-- ring_parameters()')
+            
             return (ringparameters['count'],ringparameters['ringorigin'])
         else:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
-            self.lggr.debug('-- ring_parameters()')
+            
             return False
 
         
@@ -917,12 +908,11 @@ class AvispaRestFunc:
         else:
             idlabel = True
 
-        #Subtract Schema
-        
-        schema = self.AVM.ring_get_schema_from_view(handle,ring)
-        
+        #Subtract Ring info      
+        schema = self.AVM.ring_get_schema_from_view(handle,ring) 
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
+
         layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'])
         
         print('TYPES:',types)
