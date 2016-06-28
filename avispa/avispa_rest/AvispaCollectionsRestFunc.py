@@ -20,6 +20,7 @@ class AvispaCollectionsRestFunc:
 
     # GET/a
     def get_a_x(self,handle,collection,idx,api=False,*args,**kargs):
+        'Show list of collections'
      
         collectionlist = self.ACM.get_a_x(handle)
         #self.lggr.debug('collectionlist:%s'%collectionlist)
