@@ -16,8 +16,10 @@ class TC(unittest.TestCase):
         self.ring['version'] = '0-1-1'
         self.ring['count'] = 66
         self.ring['origin'] = 'testorigin'
+        self.ring['rings'] = []
 
         self.schema = {}
+        self.schema['fields'] = []
         self.schema['rings'] = []
         self.schema['rings'].append({'RingDescription':'test description','RingLabel':'test label'})
 
@@ -47,7 +49,7 @@ class TC(unittest.TestCase):
     def test__ring_data_from_schema__output_length(self):
 
         r = self.AVM.ring_data_from_schema(self.schema)
-        self.assertEqual(len(r),2)
+        self.assertEqual(len(r),4)
 
 
 
