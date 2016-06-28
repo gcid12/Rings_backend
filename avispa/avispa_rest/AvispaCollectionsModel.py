@@ -5,6 +5,7 @@ from datetime import datetime
 from MainModel import MainModel
 from flask import flash
 from AvispaLogging import AvispaLoggerAdapter
+from couchdb.http import ResourceNotFound
 
 class AvispaCollectionsModel:
 
@@ -113,7 +114,7 @@ class AvispaCollectionsModel:
 
     #COLLECTIONSMODEL
     def get_a_x_y(self,handle,collection):
-
+        # DEPRECATED
         #Returns just one collection
 
         try:               
@@ -131,8 +132,7 @@ class AvispaCollectionsModel:
                     ringname = str(ring['ringname'])
                     ringversion = str(ring['version'])
                     ringversionh = ringversion.replace('-','.')
-                    count = ring['count']
-                    validring[ringname+'_'+ringversionh] = count 
+                    validring[ringname+'_'+ringversionh] = ring['count']
 
             for coll in collections:
                 #coll['valid'] = True
@@ -140,19 +140,17 @@ class AvispaCollectionsModel:
                     
                     #coll['valid'] = True
                     for ring in coll['rings']:       
-                        if ring['ringname']+'_'+ring['version'] not in validring:
-                            #InValid Collection, at least one of its rings is marked as deleted             
-                            #coll['valid'] = False
-                            break
-                        else:
+                        if ring['ringname']+'_'+ring['version'] in validring:
                             ring['count'] = validring[ring['ringname']+'_'+ring['version']]
+                        else:
+                            pass
+                            #InValid Collection, at least one of its rings is marked as deleted             
+                            #coll['valid'] = False                             
                                 
                     return coll
 
-                else:
-                    return False
-                        
-            self.lggr.debug('ValidatedCollections:', collections)
+            return False
+                    
                 
         except (ResourceNotFound, TypeError) as e:
             self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0],sys.exc_info()[1]))
