@@ -47,6 +47,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
       
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
+
     lggr.info('START route_dispatcher')
 
     MAM = MainModel(tid=tid,ip=ip)
@@ -1578,7 +1579,9 @@ def api_collections_route_a_x_y(handle,collection):
 def collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
-        result = route_dispatcher('_a',handle,collection=collection)       
+        #result = route_dispatcher('_a',handle,collection=collection) 
+        #We are assuming that not having a collection specific page is ok?
+        result = home_dispatcher(handle)      
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
@@ -1593,7 +1596,6 @@ def collections_route_a_x_y(handle,collection):
             result = collection_dispatcher('_a_x_y',handle,collection)
         if request.args.get('rq').lower() == 'post':
             result = route_dispatcher('_a',handle,collection=collection)
-
 
     else:
         #Every collection specific GET
