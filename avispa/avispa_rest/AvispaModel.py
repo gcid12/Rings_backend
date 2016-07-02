@@ -38,15 +38,16 @@ class AvispaModel:
         
         self.MAM = MainModel(tid=tid,ip=ip)
 
+    #MONGODEPRECATED
     def ring_data_from_user_doc(self,handle,ringd): 
         '''
         Subtracts relevant ring data from user doc
 
         @UNITTEST: True
 
-        @MONGOQUERY:
-
-          
+        @MONGODB
+          -This function is being deprecated by MongoDB refactoring
+          -Refer to user_get_rings_mongodb()
 
         @IN:
           handle = (string)
@@ -86,12 +87,16 @@ class AvispaModel:
 
         return r
 
-
+    #MONGODEPRECATED
     def ring_data_from_schema(self,schema):
         '''
         Subtracts relevant ring data from schema
 
         @UNITTEST: True
+
+        @MONGODB
+          -This function is being deprecated by MongoDB refactoring
+          -Refer to user_get_rings_mongodb()
 
         @IN:
           schema = 
@@ -133,10 +138,14 @@ class AvispaModel:
         return r
 
 
-
+    #MONGODEPRECATED
     def subtract_ring_data(self,handle,ringlist):
         ''' 
         Joins data coming from the user doc and the schemas
+
+        @MONGODB
+          -This function is being deprecated by MongoDB refactoring
+          -Refer to user_get_rings_mongodb()
 
         @IN:
           handle = (string)
@@ -151,7 +160,7 @@ class AvispaModel:
           ]
 
         @OUT:
-          {
+          [{
             "ringname":(string),
             "ringversion":(string),
             "ringorigin":(string),
@@ -161,7 +170,11 @@ class AvispaModel:
             "ringlabel":(string),
             "fields":[],
             "rings":[]
-          }
+          },{}]
+
+        @MONGODB
+          -This function is being deprecated by MongoDB refactoring
+ 
 
         '''
 
@@ -179,7 +192,8 @@ class AvispaModel:
 
         return data
 
-    #MONGOREFACTOR
+
+    #MONGODEPRECATED
     def user_get_rings(self,handle):
         '''
         Subtract ring data given a handle
@@ -207,6 +221,9 @@ class AvispaModel:
         @EXCEPTION:
           -No rings for this user
 
+        @MONGODB
+          -This function is being deprecated by MongoDB refactoring
+
         '''
 
   
@@ -225,6 +242,95 @@ class AvispaModel:
 
         return data
 
+
+    #MONGO REFACTOR
+    def user_get_rings_mongodb(self,handle):
+        '''
+        @MONGODB:
+          - "ringversion" requires string substitution which the aggregation framework doesn't offer
+          - "rings" is a field that needs to be removed as same information is already available
+
+          db._ring.aggregate([
+            {
+              $lookup:
+                {
+                  from: "_field",
+                  localField: "_id",
+                  foreignField: "parent",
+                  as: "_field"
+                },
+              $project:
+                {
+                  "ringname":"$ringname",
+                  "ringversion":"$ringversion",
+                  "ringorigin":"$ringorigin",
+                  "ringversionh":"$ringversion",
+                  "count":"$count",
+                  "ringdescription":"$ringdescription",
+                  "ringlabel":"$ringlabel,
+                  "fields":"$_field",
+                  "rings": []
+                }
+            } 
+          ])
+        '''
+        from pymongo import MongoClient
+        from bson.son import SON
+
+        db = MongoClient().openringdb
+
+        # Aggregates rings for one user
+
+        handle_ring_agg = [
+            {"$match":{
+                "handle":handle
+            }},
+            {"$lookup":{
+                "from": "_ring",
+                "localField": "_id",
+                "foreignField": "_handle",
+                "as": "_ring"
+            }},
+            {"$project":{
+                "ringname":"$ringname"
+            }}
+        ]
+
+        ringlist = list(db._ring.aggregate(handle_ring_agg))
+
+        data = []
+        for k,v in ringlist:
+
+            # Aggregates fields for one ring
+            ring_field_agg = [
+                {"$match":{
+                    "ringname":v
+                }},
+                {"$lookup": {
+                    "from": "_field",
+                    "localField": "_id",
+                    "foreignField": "_ring",
+                    "as": "_field"
+                }},
+                {"$project": {
+                    "ringname":"$ringname",
+                    "ringversion":"$ringversion",
+                    "ringorigin":"$ringorigin",
+                    "ringversionh":"$ringversion",
+                    "count":"$count",
+                    "ringdescription":"$ringdescription",
+                    "ringlabel":"$ringlabel",
+                    "fields":"$_field",
+                    "rings": []
+                }}
+            ]
+
+            r = list(db._ring.aggregate(ring_field_agg))
+
+            
+            data.append(r)
+
+        return data
 
     
     def ring_set_db(self,handle,ringname,ringversion):
