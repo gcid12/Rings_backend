@@ -68,6 +68,16 @@ class MyRingUser(Document):
             users = ListField(Mapping.build())
             )))
         )))
+    badges = ListField(DictField(Mapping.build(
+        badgename = TextField(),
+        badgedescription = TextField(),
+        added = DateTimeField(default=datetime.now)
+        )))
+    campaigns = ListField(DictField(Mapping.build(
+        campaignname = TextField(),
+        campaigndescription = TextField(),
+        added = DateTimeField(default=datetime.now)
+        )))
     is_active = BooleanField(default=True)
     is_authenticated = BooleanField(default=False)
     new_password_key = TextField()
