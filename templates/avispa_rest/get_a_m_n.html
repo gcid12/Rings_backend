@@ -1,125 +1,155 @@
-{% extends 'base.html' %}
-
-{% block headscripts %}
-
-{% endblock %}
+{% extends 'avispa_rest/orghome.html' %}
 
 {% block title %} Avispa {% endblock %}
+{% block findme %} get_a_m_n{% endblock %}
 
-{% block crumbs %}
 
+<!-- EMPTY OTHER BLOCKS -->
+{% block org_datarings %}
+{% endblock %}
+{% block org_people %}
+{% endblock %}
+
+{% block tabs %}
+                
+    {{ ui.org_tabs(data.handle,'_home','','_people','','_teams','active','#campaigns','','#badges','','#settings','') }}
 
 {% endblock %}
 
-
-
-{% block content %}
-
-
-
+{% block org_teams %}
 
 <!-- START NEW CONTENT --> 
 
+<div role="tabpanel" class="tab-pane active" id="profile">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="bord-bottom bc-8 pad-y-20">  
+            <div class="row">
+               
+                <div class="col-sm-5">
 
-<section class="bp-20 p-50">
-  <div class="container">
-    <div class="row">
-            
-      <div class="col-md-9">  
+                    {%if 'get_a_m' in data.user_authorizations %}
+                        <a href="/{{data.handle}}/_people" type="button" class="fc-g p-x-20"> 
+                            <i class="fa fa-arrow-left"></i>
+                            <span class="pad-x-8">All teams</span>
+                        </a> 
+                    {% endif %}
+                </div>
+                <div class="col-sm-6 fs-0-8 text-right">
+                    
+                    {%if 'put_a_m_n' in data.user_authorizations %}
+                        
+                        <button type="button" class="btn btn-success btn-xs fs-0-9" data-toggle="modal" data-target="#invitenew">
+                            <span class="pad-x-8">Add Members</span>
+                            <i class="fa fa-plus pad-x-4"></i>
+                            <i class="fa fa-user"></i>
+                            <i class="fa fa-shield"></i>
+                        </button>
 
-        {{ ui.org_header(data,data.handle) }}
+                       
+                    {%endif%}
+
+                </div>
+            </div>
+        </div>
 
 
         <div class="row">
-          <div class="col-sm-12">
+            <div class="col-sm-offset-1 col-sm-4">
 
-            <div class="">
+                <h2>
+                    <i class="fa fa-shield fa-2x"></i>
+                    {{data.team.teamname}}
+                </h2>
 
-              {%if 'post_a_m' in data.user_authorizations %}
-              <a href="/{{data.handle}}/_teams" type="button" class="btn btn-success btn-xs pull-right">
-              + New Team</a> 
-              {%endif%}
-              {%if 'get_a_m' in data.user_authorizations %}
-              <a href="/{{data.handle}}/_teams" type="button" class="btn btn-info btn-xs pull-right">
-              Your teams</a>
-              {%endif%}
-              <br/><br/>
-              
-            </div> 
-          
 
-            <div class="rn-box-content"><br/>
-                <span class="rn-b2">{{data.team.teamname}}</span><span class="pull-right"> 
-                {%if 'put_a_m_n' in data.user_authorizations %}
-                <a href="/{{data.handle}}/_teams/{{data.team.teamname}}/_settings?rq=put">Settings</a>
+                <span class="fc-g fs-0-8">
+                {%if data.team.teamname!='owner' %}
+                    
+                    {% if data.team.teamauth == 'R' %}
+                        <span class="badge fs-0-8">R</span> 
+                        Read
+                    {%endif%}
+                    {% if data.team.teamauth == 'RW' %}
+                        <span class="badge fs-0-8">R</span>
+                        <span class="badge fs-0-8">W</span> 
+                        Collaborator
+                    {%endif%}
+                    {% if data.team.teamauth == 'RWX' %}
+                        <span class="badge fs-0-8">R</span>
+                        <span class="badge fs-0-8">W</span> 
+                        <span class="badge fs-0-8">X</span> 
+                        Admin
+                    Admin {%endif%}
+                    {% if not data.team.teamauth %}
+                        No Access
+                    {%endif%}
+                    
+                {%else%}
+                        <span class="badge fs-0-8">R</span>
+                        <span class="badge fs-0-8">W</span> 
+                        <span class="badge fs-0-8">X</span> 
+                        <span class="badge bg-h fs-0-8">owner</span> 
+                        
+
+                    <!-- Members of this team get full access to all the Rings and organization's settings. Please grant with precaution! -->
+
                 {%endif%}
-                </span>  <br/>
-                          {#{data.team}#}<br/>
-                          {{data.team.description}}
-                          
 
-                  <br/><br/>
-                  {%if data.team.teamname!='owner' %}
-                    This team grants <b>
-                    {% if data.team.teamauth == 'R' %}Read{%endif%}
-                    {% if data.team.teamauth == 'RW' %}Read and Write{%endif%}
-                    {% if data.team.teamauth == 'RWX' %}Admin {%endif%}
-                    {% if not data.team.teamauth %}no{%endif%}
-                    </b> permissions to its members
-                  {%else%}
-                    Members of this team get <b>full access </b> to all the Rings and organization's settings. Please grant with precaution!
-                  {%endif%}
-                  <br/><br/><br/>
-                <div class="rn-b1">Team members</div>
+
+                {%if data.team.description %}
+                    <hr/>
+                    <p class=" fs-1">About:</p>
+                    <p class="fs-0-9">
+                        {{data.team.description}}
+                    </p> 
+
+
+                {% endif %}   
+
+                </span>
+
+                <div class="spa20"></div>
+
+
+                    <a href="/{{data.handle}}/_teams/{{data.team.teamname}}/_settings?rq=put" class="btn btn-default btn-xs fs-0-8">
+                        <i class="fa fa-gear"></i> Team settings
+                    </a>
+
+                 <div class="spa20"></div>
+
+
                 
-                {%if 'put_a_m_n' in data.user_authorizations %}
-                <div class="">
-                   <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
-                   <div class="pull-right">
-                      &nbsp; Add a member from this organization to this team &nbsp;
-                      <select name="newmember">
-                          {% for member in data.people%}
-                          <option value="{{member.handle}}">{{member.handle}}</option>
-                          {% endfor %}
-                      </select>
-                      <input  type="submit" class="btn btn-success btn-xs pull-right" style="margin:0 5px;" value="+"/>
-                      
-                   </div> 
-                   </form>    
-                </div>
-                {%endif%}
 
-                <table class="table table"> <!-- inner row -->
+            </div>
+            
+            <div class="col-sm-6">
+                
+                
+               <div class="p-y-20"></div>
+                <table class="table table-condensed"> <!-- inner row -->
 
 
                   {% for person in data.team.members %}
                     {% if person.handle %}
                       <tr>
-                        <td>
-                          
-                        </td>
+                        
                         <td> 
-                        </td>
-                        <td> 
-                          <a class="rn-b1" href="/{{ person.handle }}">
+                          <a class="fs-0-8" href="/{{ person.handle }}">
                               <img class="img-responsive center-block user-small" src="{% if person.thumbnail %}{{data.image_cdn_root}}/{{person.handle}}/t150/{{person.thumbnail}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt="">
                               {{ person.handle }}
                           </a>
-
-                          <hr/>
-                          
                         </td>
                         <td style="min-width:200px;"> 
                           <div class="pull-right">
                             <!--input type="checkbox" value="public" name="public"/-->
                             {%if 'put_a_m_n' in data.user_authorizations %}
                             <div class="btn-group"> 
-                              <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delmember={{ person.handle }}" type="button" class="btn btn-warning btn-xs pull-right">
-                               REMOVE
+                              <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delmember={{ person.handle }}" type="button" class="btn btn-vader btn-xs pull-right">
+                                <i class="fa fa-trash"></i>
                               </a>
                             </div>
                             {%endif%}
-                            <br/><br/>
+                            
                             <!--span class="label label-discrete pull-right">Yesterday</span-->
                           </div>
                         </td>
@@ -129,68 +159,203 @@
 
                   </table>
 
-                {%if 'put_a_m_n_invite' in data.user_authorizations %}
-                <div class="pull-right">
-                
-                   Or invite somebody that doesn't belong to this organization yet: <a href="/{{data.handle}}/_teams/{{data.team.teamname}}/_invite?rq=put">Click here</a>
-                      
+
+
+            <div class="spa20"></div>
+            
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="fw-c">Rings </span>
+
+
+                    {%if 'put_a_m_n' in data.user_authorizations %}
+                        <div class="pull-right">
+                           <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
+                           <div class="pull-right fs-0-8">
+                              Add ring
+                              <select name="newring">
+                                  {% for ring in data.rings %}
+                                  <option value="{{ring}}">{{data.handle}}/{{ring}}</option>
+                                  {% endfor %}
+                              </select>
+                              <button  type="submit" class="btn btn-success btn-xs pull-right" style="margin:0 5px;"/>
+                                    Add
+                              </button>
+                              
+                           </div> 
+                           </form>    
+                        </div>
+                        {%endif%}
+
                 </div>
-                {%endif%}
+                <div class="panel-body">
+ 
+              
+                      {%if data.team.teamname=='owner' or data.team.teamname=='staff' %}
+                          <span>Members of this team have access to all the rings</span>
+                      {%else%}
+                        
+
+                        <table class="table table-condensed table-striped">
+
+
+                            {% for ring in data.team.rings %}
+
+
+                                <tr>
+                                    <td>
+                                        &nbsp; &nbsp;
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-circle-o " style="color:#fce121;"></i>
+
+                                    </td>
+                                    <td>
+                                        <span> {{ ring.ringname }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" class="pull-right"> 
+                                          <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delring={{ ring.ringname }}" type="button" class="btn btn-vader btn-xs fs-0-8">
+                                            <i class="fa fa-trash"></i>
+                                          </a>
+                                      </div> 
+                                    </td>
+                                </tr>
+
+
+                            {%endfor%}
+                            
+                        </table>
                 
-                <br/><br/>
-                <hr/>
+                        
+                      {%endif%}
 
-                  
+                </div> <!-- close panel body -->
+            </div> <!-- close panel -->
 
-
-               <div class="rn-b1">Rings</div>
-              {%if data.team.teamname=='owner' or data.team.teamname=='staff' %}
-                  <span>Members of this team have access to all the rings</span>
-              {%else%}
-                
-
-                {%if 'put_a_m_n' in data.user_authorizations %}
-                <div class="">
-                   <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
-                   <div class="pull-right">
-                      &nbsp; Add a new ring to this team &nbsp;
-                      <select name="newring">
-                          {% for ring in data.rings %}
-                          <option value="{{ring}}">{{data.handle}}/{{ring}}</option>
-                          {% endfor %}
-                      </select>
-                      <input  type="submit" class="btn btn-success btn-xs pull-right" style="margin:0 5px;" value="+"/>
-                      
-                   </div> 
-                   </form>    
-                </div>
-                {%endif%}
-                <br/>
-                {% for ring in data.team.rings %}
-                
-                  <div class="rn-box-white gad100">           
-
-                    {{ ui.panel(ring, data , '#fce121') }} 
-
-                  </div>
-                  <div class="btn-group" class="pull-right"> 
-                      <a href="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT&delring={{ ring.ringname }}" type="button" class="btn btn-warning btn-xs">
-                        REMOVE
-                      </a>
-                  </div> 
-
-                {%endfor%}
-              {%endif%}
-
-            </div><!-- //close box -->
+            <div class="spa20"></div>
 
           </div><!-- close 12 -->   
         </div> <!-- close row -->
 
     </div>
-</section>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="invitenew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content p-20">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="fc-g fs-2">
+            <i class="fa fa-shield fa-2x"></i>
+            <span>{{data.team.teamname}}</span>
+            
+        </div>
+
+        <h4 class="fc-b" id="myModalLabel">Invite collaborators to the <strong>{{data.team.teamname}} </strong> team</h4>
+      </div>
+      <div class="modal-body p-x-20">
+             {%if 'put_a_m_n' in data.user_authorizations %}
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Option 1 </div>
+                        <div class="panel-body">
+                            <form action="/{{data.handle}}/_teams/{{data.team.teamname}}?method=PUT" method="POST">
+                       
+                                <p class="fs-0-9">
+                                     Add an existing 
+                                     <strong>{{data.handle}} </strong>
+                                     collaborator :
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        {% if data.handle_profilepic %}
+                                        <img class=" user-big" src="{{data.image_cdn_root}}/{{data.handle}}/t75/{{data.handle_profilepic}}.jpg" style="float:left; margin-right:10px; width:45px;" alt="">
+                                        {% else %}
+
+                                        <i class="fc-g fa fa-globe fa-2x"></i>
+
+                                        {% endif %}
+
+                                    </div>
+                                    <div class=" col-sm-7">
+                                        
+                                        <select name="newmember" style="width:100%;">
+                                          {% for member in data.people%}
+                                          <option value="{{member.handle}}">{{member.handle}}</option>
+                                          {% endfor %}
+                                        </select>
+                                        
+                                    </div>
+                                    <div class="col-sm-3 align-right">
+                                        <button type="submit" class="btn btn-success btn-sm " style="margin:0 5px;"/>
+                                            <i class="fa fa-plus"></i>
+                                            <i class="fa fa-user"></i>
+                                            &nbsp; &nbsp;
+                                            invite
+                                        </button>
+                                        
+                                    </div>
+                                </div>
+ 
+                            </form>   
+                        </div>
+                    </div>
+ 
+                {%endif%}
+
+                {%if 'put_a_m_n_invite' in data.user_authorizations %}
+                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Option 2 </div>
+                        <div class="panel-body">
+
+                            <form action="/{{data.handle}}/_teams/{{data.team.teamname}}/_invite?method=put" method="POST" role="form">
+
+                                <p class="fs-0-9">
+                                    Send an email invitation (to anyone in the world)
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <i class="fc-g fa fa-globe fa-2x"></i>
+                                    </div>
+                                    <div class="col-sm-7 ">
+                                        <input name="emails" type="text" style="width:100%;" placeholder="name@email.com"/> 
+                                    </div>
+                                    <div class="col-sm-3 align-right">
+                                        <button type="submit" class="btn btn-sm btn-default ">
+                                            <i class="fa fa-arrow-right"></i>
+                                            <i class="fa fa-envelope"></i>
+                                            &nbsp; &nbsp;
+                                            invite
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>   
+                    
+                {%endif%}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 {% endblock %}
+
+
+
 
 {% block modals %}
 
