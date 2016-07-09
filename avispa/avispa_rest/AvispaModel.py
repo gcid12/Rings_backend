@@ -193,14 +193,19 @@ class AvispaModel:
         return data
 
 
-    #MONGODEPRECATED
+    #MONGO REPLACED
     def user_get_rings(self,handle):
         '''
         Subtract ring data given a handle
 
+        @REPLACEDBY:
+          user_get_rings_mongodb()
+
         @NOTES:
           -Refactoring this function around MongoDB aggregation will eliminate the need of all
            downstream functions
+
+
 
         @IN: 
           handle = (string)
@@ -327,7 +332,7 @@ class AvispaModel:
 
             r = list(db._ring.aggregate(ring_field_agg))
 
-            
+
             data.append(r)
 
         return data
