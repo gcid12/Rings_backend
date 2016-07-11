@@ -34,6 +34,7 @@ lggr = AvispaLoggerAdapter(logger, {'tid': '0','ip':'0'})
 # Log something
 lggr.info('Flask App defined!')
 lggr.debug('Debug log is ON')
+lggr.info('Klaun was here')
 
 
 if app.config['DEBUG']:
