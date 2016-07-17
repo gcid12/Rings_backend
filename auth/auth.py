@@ -12,16 +12,24 @@ from AvispaLogging import AvispaLoggerAdapter
 from User import User
 
 auth_flask_login = Blueprint('auth_flask_login', __name__, template_folder='templates',url_prefix='')
+logger = logging.getLogger('Avispa')
 
-def lggr_setup():
-
+def setup_log_vars():
     MAM = MainModel()
-    g.ip = request.remote_addr
-    g.tid = MAM.random_hash_generator(36)
-    logger = logging.getLogger('Avispa')
-    lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+    
+    if 'X-Forwarded-For' in request.headers:
+        ip = request.headers.get('X-Forwarded-For')
+    else:
+        ip = request.remote_addr
 
-    return lggr
+    tid = MAM.random_hash_generator(36)
+
+    return tid,ip
+
+def setup_local_logger(tid,ip):
+
+    return AvispaLoggerAdapter(logger, {'tid':tid,'ip':ip})
+
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
@@ -31,10 +39,8 @@ def unauthorized_callback():
 @login_manager.user_loader
 def load_user(id):
     # This is called every single time when you are logged in.
-
     #lggr.info('xload_user id is:',str(id))
     
-
     if id is None:
         redirect('/_login')
     user = User(username=id)
@@ -48,9 +54,11 @@ def load_user(id):
 @auth_flask_login.route("/_login", methods=["GET", "POST"])
 def login():
 
-    MAM = MainModel()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
 
-    lggr = lggr_setup()
+    MAM = MainModel(tid=tid,ip=ip)
+
     lggr.debug('current_user:'+str(current_user.is_authenticated))
 
     if current_user.is_authenticated :
@@ -159,9 +167,10 @@ def login():
 @auth_flask_login.route("/_api/_register", methods=["POST"])
 def api_register_post():
 
-    MAM = MainModel() 
-    lggr = lggr_setup()
-    lggr = lggr_info('_api/_register attempt')
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if request.args.get('token') != 'qwerty1234':
 
@@ -170,7 +179,7 @@ def api_register_post():
         out['Message'] = 'Wrong Token'
         data = {}
         data['api_out'] = json.dumps(out)
-        lggr = lggr_info('_api/_register attempt')
+        lggr.info('_api/_register attempt')
         return render_template("/base_json.html", data=data)
 
 
@@ -229,8 +238,10 @@ def api_register_post():
 @auth_flask_login.route("/_teaminvite", methods=["GET"])
 def register_teaminvite():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
    
     logout_user()
 
@@ -258,8 +269,10 @@ def register_teaminvite():
 @auth_flask_login.route("/_register", methods=["GET"])
 def register_get():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
@@ -271,8 +284,10 @@ def register_get():
 @auth_flask_login.route("/_register", methods=["POST"])
 def register_post():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     invite_organization = request.form.get('h') 
     invite_team = request.form.get('t') 
@@ -428,8 +443,10 @@ def register_post():
 @login_required
 def orgregister_get():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     #registerForm = forms.SignupForm(request.form)
     #current_app.logger.info(request.form)
@@ -459,8 +476,10 @@ def orgregister_get():
 @auth_flask_login.route("/_api/_orgregister", methods=["POST"])
 def api_orgregister_post():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if request.args.get('token') != 'qwerty1234':
         out = {} 
@@ -515,8 +534,10 @@ def api_orgregister_post():
 @login_required
 def orgregister_post():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     username = request.form.get('username')
     email = request.form.get('email')
@@ -556,9 +577,10 @@ def orgregister_post():
 @auth_flask_login.route("/_forgot", methods=["GET", "POST"])
 def forgot():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
-
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if request.method == 'POST' and request.form.get('email'):
 
@@ -705,8 +727,10 @@ def forgot():
 @login_required
 def profile_get(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -744,8 +768,10 @@ def profile_get(handle):
 @login_required
 def profile_post(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
     
     user = User(username=current_user.id)
     if user.update_user_profile(request):
@@ -767,9 +793,10 @@ def profile_post(handle):
 @login_required
 def orgprofile_get(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
-
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
     
     if MAM.user_belongs_org_team(current_user.id,handle,'owner'):
 
@@ -803,8 +830,10 @@ def orgprofile_get(handle):
 @login_required
 def orgprofile_post(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
     
     user = User(username=handle)
     if user.update_user_profile(request):
@@ -828,8 +857,10 @@ def orgprofile_post(handle):
 @login_required
 def reauth():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     return render_template("/auth/reauth.html")
 
@@ -837,9 +868,10 @@ def reauth():
 @auth_flask_login.route("/_logout")
 def logout():
 
-    MAM = MainModel()
-    lggr = lggr_setup()
-
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     logout_user()
     flash("Logged out.",'UI') 
@@ -859,8 +891,10 @@ def logout():
 @login_required
 def access_get(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -897,8 +931,10 @@ def access_get(handle):
 @login_required
 def email_get(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -937,8 +973,10 @@ def email_get(handle):
 @login_required
 def billing_get(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -976,8 +1014,10 @@ def billing_get(handle):
 @login_required
 def licenses_get(handle):
 
-    MAM = MainModel()
-    lggr = lggr_setup()
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
 
     if handle == current_user.id:
         user = load_user(handle)
@@ -1008,16 +1048,4 @@ def licenses_get(handle):
         flash({'f':'track','v':'_profile','p':mpp},'MP')
         #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
         return redirect('/'+current_user.id+'/_profile')
-
-
-
-
-
-
-
-
-
-
-
-
 
