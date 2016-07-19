@@ -68,7 +68,7 @@ class AvispaRestFunc:
 
     # POST/a
     
-    def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,*args,**kargs):
+    def post_a(self,handle,ring,idx,api=False,collection=None,rqurl=None,rqform=None,*args,**kargs):
         ''' Creates a new ring '''
        
         RB = RingBuilder(tid=self.tid,ip=self.ip)
