@@ -1578,23 +1578,34 @@ def api_collections_route_a_x_y(handle,collection):
 @login_required
 def collections_route_a_x_y(handle,collection):
 
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    lggr.debug('flag1');
+
     if ('rq' not in request.args) and ('method' not in request.args): 
+
         #result = route_dispatcher('_a',handle,collection=collection) 
         #We are assuming that not having a collection specific page is ok?
-        result = home_dispatcher(handle)      
+        result = home_dispatcher(handle)  
+
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
+                # Put the Collection metadata
                 result = collection_dispatcher('_a_x_y',handle,collection) 
             elif request.args.get('method').lower()=='post':
+                # Post the Ring
                 result = route_dispatcher('_a',handle,collection=collection)
         else:
+            # Post the ring
             result = route_dispatcher('_a',handle,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
+            # Show the form to Edit the Collection metadata
             result = collection_dispatcher('_a_x_y',handle,collection)
         if request.args.get('rq').lower() == 'post':
+            # Get the Ring Modeler
             result = route_dispatcher('_a',handle,collection=collection)
 
     else:

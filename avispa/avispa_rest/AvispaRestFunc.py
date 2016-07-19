@@ -68,7 +68,7 @@ class AvispaRestFunc:
 
     # POST/a
     
-    def post_a(self,handle,ring,idx,api=False,collection=None,rqform=None,*args,**kargs):
+    def post_a(self,handle,ring,idx,api=False,collection=None,rqurl=None,rqform=None,*args,**kargs):
         ''' Creates a new ring '''
        
         RB = RingBuilder(tid=self.tid,ip=self.ip)
@@ -997,7 +997,7 @@ class AvispaRestFunc:
 
     #PUT /a/b/c
     
-    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,*args,**kargs):
+    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,rqform=None,collection=None,*args,**kargs):
         '''
         Puts changes in the item
         '''        

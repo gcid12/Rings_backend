@@ -127,9 +127,13 @@ class RingBuilder:
 
     def post_a(self,rqurl,rqform,handle):
 
+        self.lggr.debug('RingBuilder post_a starts')
+
         p = self.subtract_request_parameters(rqform,handle)
              
         if p['RingName'] and ('FieldName_1' in p):
+
+            self.lggr.debug('Creating new Ring')
             # Minumum requirements ok, create a ring
 
             # 1. Create empty schema document
@@ -141,6 +145,8 @@ class RingBuilder:
 
         elif 'ringurl' in rqform:
             # We are cloning a Ring
+
+            self.lggr.debug('Cloning a Ring')
 
             pinput = collections.OrderedDict()              
             
