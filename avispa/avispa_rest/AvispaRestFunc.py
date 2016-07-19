@@ -997,7 +997,7 @@ class AvispaRestFunc:
 
     #PUT /a/b/c
     
-    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,collection=None,*args,**kargs):
+    def put_a_b_c(self,handle,ring,idx,api=False,rqargs=None,rqurl=None,rqform=None,collection=None,*args,**kargs):
         '''
         Puts changes in the item
         '''        
