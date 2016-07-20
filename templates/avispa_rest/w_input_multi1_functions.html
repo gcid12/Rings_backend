@@ -78,7 +78,7 @@
         try{
           var jsonold = JSON.parse(oldvalue);        
         }
-        catch{
+        catch(err){
           //Invalid JSON. Reset it
           console.log('Invalid JSON. Reset it')
           var jsonold = {};
