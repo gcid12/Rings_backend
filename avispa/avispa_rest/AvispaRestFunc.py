@@ -64,11 +64,11 @@ class AvispaRestFunc:
                     unique.append(parts[1])
 
         lpl = str(len(param_list))
-        return '&'.join(param_list)
+        return '&'.join(param_list),unique
 
     # POST/a
     
-    def post_a(self,handle,ring,idx,api=False,collection=None,rqurl=None,rqform=None,*args,**kargs):
+    def post_a(self,handle,ring,idx,api=False,collection=None,rq=None,rqform=None,*args,**kargs):
         ''' Creates a new ring '''
        
         RB = RingBuilder(tid=self.tid,ip=self.ip)
@@ -119,7 +119,7 @@ class AvispaRestFunc:
 
                 flash(" There has been an issue, please check your parameters and try again. ",'UI')
 
-                recovery_string = self.form_args_to_string(rqform)
+                recovery_string,unique = self.form_args_to_string(rqform)
 
                 if collection:
                     redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n='+str(len(unique))+'&'+str(recovery_string)
