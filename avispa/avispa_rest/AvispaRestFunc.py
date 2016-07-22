@@ -508,7 +508,7 @@ class AvispaRestFunc:
                         #Using fieldname                         
                         if Item[names[fieldid]]:
                             if(isinstance(Item[names[fieldid]],str) or 
-                               isinstance(Item[fieldid],unicode)):
+                               isinstance(Item[names[fieldid]],unicode)):
                                 images=Item[names[fieldid]].split(',')                
                                 del images[0]
                                 Item[names[fieldid]] = images
