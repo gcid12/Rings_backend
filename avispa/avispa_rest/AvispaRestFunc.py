@@ -906,7 +906,7 @@ class AvispaRestFunc:
             else:
                 idlabel = False
         else:
-            idlabel = True
+            idlabel = False
 
         #Subtract Ring info      
         schema = self.AVM.ring_get_schema_from_view(handle,ring) 
@@ -916,7 +916,13 @@ class AvispaRestFunc:
         layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'])
         
         print('TYPES:',types)
+        print('NAMES:',names)
+        print('idlabel:',idlabel)
         #Subtract item from DB
+
+        self.lggr.debug(kargs)
+
+
         
         preitem_result = self.AVM.get_a_b_c(handle,ring,idx)
         
@@ -926,6 +932,8 @@ class AvispaRestFunc:
             Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,types,flag=1,idlabel=idlabel)
         else:
             Item = False
+
+        self.lggr.debug(Item);
         
         #Output               
         if Item:
