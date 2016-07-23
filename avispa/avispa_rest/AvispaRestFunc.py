@@ -900,13 +900,14 @@ class AvispaRestFunc:
 
         d = {}
 
-        if 'fieldid' in rqargs:
-            if rqargs.get('fieldid') == '1':
-                idlabel = True
+        if api:
+            if 'fieldid' in rqargs:
+                if rqargs.get('fieldid') == '1':
+                    idlabel = True   
             else:
                 idlabel = False
         else:
-            idlabel = False
+            idlabel = True
 
         #Subtract Ring info      
         schema = self.AVM.ring_get_schema_from_view(handle,ring) 

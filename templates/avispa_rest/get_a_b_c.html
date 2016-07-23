@@ -80,7 +80,7 @@
       <div class="{% if data.imagesui==True %}col-sm-5 col-md-4 col-lg-3 {% else %} col-sm-offset-1 col-sm-10{%endif%}">
         <div class="pad-x-20">
           <form class="form-horizontal" role="form">        
-            <table class="table table-condensed table-striped">                  
+            <table class="table table-condensed table-striped">                 
     {% for k in data['item'] %}
       {% if k in data.FieldLabel %}
           {% if data.widget[k] != 'images' %}
