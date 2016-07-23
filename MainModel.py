@@ -716,7 +716,8 @@ class MainModel:
             if role['role'] in self.roles:
 
                 if role['ring']:
-                    self.lggr.debug('Adding ring role:'+role['ring']+'_'+role['role'],self.roles[role['role']])
+                    self.lggr.debug('Adding ring role:'+role['ring']+'_'+role['role'])
+                    self.lggr.debug(self.roles[role['role']])
                     for r in self.roles[role['role']]:
                         user_authorizations.append(role['ring']+'_'+r)
 
