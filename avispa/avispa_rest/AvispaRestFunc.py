@@ -296,7 +296,7 @@ class AvispaRestFunc:
         if page['q'] != '' :
             #Search ElasticSearch
             ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
-            preitems = ESM.get_a_b(handle,ring,q=q)
+            preitems = ESM.get_a_b(handle,ring,q=page['q'])
         else:
             #Subtract from DB
             preitems = self.AVM.get_a_b(handle,ring,limit=page['limit'],lastkey=page['lastkey'],endkey=page['endkey'],sort=page['sort'])
