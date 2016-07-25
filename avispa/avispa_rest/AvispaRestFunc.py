@@ -296,7 +296,7 @@ class AvispaRestFunc:
         if page['q'] != '' :
             #Search ElasticSearch
             ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
-            preitems = ESM.get_a_b(handle,ring,q=q)
+            preitems = ESM.get_a_b(handle,ring,q=page['q'])
         else:
             #Subtract from DB
             preitems = self.AVM.get_a_b(handle,ring,limit=page['limit'],lastkey=page['lastkey'],endkey=page['endkey'],sort=page['sort'])
@@ -508,7 +508,7 @@ class AvispaRestFunc:
                         #Using fieldname                         
                         if Item[names[fieldid]]:
                             if(isinstance(Item[names[fieldid]],str) or 
-                               isinstance(Item[fieldid],unicode)):
+                               isinstance(Item[names[fieldid]],unicode)):
                                 images=Item[names[fieldid]].split(',')                
                                 del images[0]
                                 Item[names[fieldid]] = images
@@ -900,9 +900,10 @@ class AvispaRestFunc:
 
         d = {}
 
-        if 'fieldid' in rqargs:
-            if rqargs.get('fieldid') == '1':
-                idlabel = True
+        if api:
+            if 'fieldid' in rqargs:
+                if rqargs.get('fieldid') == '1':
+                    idlabel = True   
             else:
                 idlabel = False
         else:
@@ -916,7 +917,13 @@ class AvispaRestFunc:
         layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'])
         
         print('TYPES:',types)
+        print('NAMES:',names)
+        print('idlabel:',idlabel)
         #Subtract item from DB
+
+        self.lggr.debug(kargs)
+
+
         
         preitem_result = self.AVM.get_a_b_c(handle,ring,idx)
         
@@ -926,6 +933,8 @@ class AvispaRestFunc:
             Item = self.prepare_item(preitem,layers,widgets,sources,labels,names,types,flag=1,idlabel=idlabel)
         else:
             Item = False
+
+        self.lggr.debug(Item);
         
         #Output               
         if Item:

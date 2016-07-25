@@ -71,6 +71,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     if api:
 
+        
+
         lggr.debug('API call')       
         # PLEASE REMOVE TEMP_ACCESS_TOKEN with real OAuth access token  ASAP!
         lggr.debug('TEMP_ACCESS_TOKEN:'+str(TEMP_ACCESS_TOKEN))       
@@ -197,11 +199,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             accept = request.args.get("accept").lower()
         else:
             accept = 'json'
-
-        if 'human' in request.args:
-            human = True
-        else:
-            human = False
+  
 
         print('ACCEPT:',accept)
 
@@ -277,8 +275,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 #fl = data['fieldlabels']
                 fl = data['fieldids']
 
-
-            if human:
+            if 'human' in request.args:
                 csvout = generate(data['raw_out'],fl,data['fieldnames'])
             else:
                 csvout = generate(data['raw_out'],fl)

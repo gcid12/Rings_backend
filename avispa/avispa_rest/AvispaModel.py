@@ -1468,12 +1468,11 @@ class AvispaModel:
 
         schema = self.ring_get_schema_from_view(handle,ringname) 
         OrderedFields=[]
-        OFH = {}
+        
         for field in schema['fields']:
             OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
 
-            if human:
-                OFH[field['FieldId']] = field['FieldName']
+            
 
         # sort exists if it is sent in the url as ?sort=<name-of-field>_<desc|asc>
         sort_reverse=False
@@ -1495,7 +1494,7 @@ class AvispaModel:
                 #as it was the last item in the last page
                 continue
 
-            item = self.populate_item(OrderedFields,row,OFH=OFH)
+            item = self.populate_item(OrderedFields,row)
 
             if item:
                 items.append(item)
@@ -1567,7 +1566,7 @@ class AvispaModel:
         return result
 
 
-    def populate_item(self,OrderedFields,preitem,OFH=False):
+    def populate_item(self,OrderedFields,preitem):
         '''
         Cleans, orders and complements every item before the output
 
@@ -1589,10 +1588,6 @@ class AvispaModel:
                         "<fieldid_n>_rich":(string),
                       },
                     }
-          OFH = {
-             <fieldid_1> : (string),
-             ...
-             <fieldid_n> : (string),
           }
 
 
@@ -1611,9 +1606,6 @@ class AvispaModel:
 
         '''
         item = collections.OrderedDict()
-        if not OFH:
-            #OFH Returns results with Human readable keys instead of fieldids
-            OFH={}
 
         if 'id' in preitem:        
             item[u'_id'] = preitem['id']
@@ -1621,29 +1613,16 @@ class AvispaModel:
             for fieldid in OrderedFields:
                 if fieldid in preitem['value']: 
 
-                    #self.lggr.debug(fieldid+' has type:'+type(preitem['value']))
+                    self.lggr.debug(fieldid+' has type:'+str(type(preitem['value'])))
 
-                    if fieldid in OFH:
-
-                        #Add Value
-                        item[OFH[fieldid]] = preitem['value'][fieldid]
-                        #Add Flag
-                        if fieldid+'_flag' in preitem['value']:
-                            item[OFH[fieldid]+'_flag'] = preitem['value'][fieldid+'_flag']
-                        #Add Rich 
-                        if fieldid+'_rich' in preitem['value']:
-                            item[OFH[fieldid]+'_rich'] = preitem['value'][fieldid+'_rich']
-
-                    else:
-
-                        #Add Value
-                        item[fieldid] = preitem['value'][fieldid]
-                        #Add Flag
-                        if fieldid+'_flag' in preitem['value']:
-                            item[fieldid+'_flag'] = preitem['value'][fieldid+'_flag']
-                        #Add Rich
-                        if fieldid+'_rich' in preitem['value']:
-                            item[fieldid+'_rich'] = preitem['value'][fieldid+'_rich']
+                    #Add Value
+                    item[fieldid] = preitem['value'][fieldid]
+                    #Add Flag
+                    if fieldid+'_flag' in preitem['value']:
+                        item[fieldid+'_flag'] = preitem['value'][fieldid+'_flag']
+                    #Add Rich
+                    if fieldid+'_rich' in preitem['value']:
+                        item[fieldid+'_rich'] = preitem['value'][fieldid+'_rich']
 
 
             return item
@@ -2025,7 +2004,7 @@ class AvispaModel:
 
 
     #AVISPAMODEL
-    def get_a_b_c(self,handle,ringname,idx,human=False):
+    def get_a_b_c(self,handle,ringname,idx):
         '''
         Gets a specific ring document from DB
 
@@ -2045,16 +2024,15 @@ class AvispaModel:
         '''
 
         self.lggr.debug('++ AVM.get_a_b_c')
+        
 
         schema = self.ring_get_schema_from_view(handle,ringname)   
         OrderedFields=[]
-        OFH={}
+        
         for field in schema['fields']:
             OrderedFields.insert(int(field['FieldOrder']),field['FieldId'])
 
-            if human:
-                OFH[field['FieldId']] = field['FieldName']
-                
+  
 
         #self.lggr.debug('select_ring_doc_view(ring/items,'+str(handle)+','+str(ringname)+','+str(idx)+') ')            
         
@@ -2068,7 +2046,9 @@ class AvispaModel:
 
             #Here i need to convert row keys to Human
 
-            item = self.populate_item(OrderedFields,row,OFH=OFH)
+            item = self.populate_item(OrderedFields,row)
+
+            #self.lggr.debug(item)
 
             if item:
                 self.lggr.debug('-- AVM.get_a_b_c')
