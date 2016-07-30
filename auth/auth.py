@@ -122,28 +122,30 @@ def login():
                         flash("Logged in!",'UI')
 
                         if 'r' in request.form:
-                            #lggr.info('Redirecting to :'+'/'+request.form.get('r')) 
-                            #return redirect('/'+request.form.get('r'))
-                            rr = '/'+request.form.get('r')
+                            # Custom redirect sent in the form
+                            # Not using url_for as we don't know what URL they are going to request
+
+                            o = urlparse.urlparse(request.url)
+                            path = request.form.get('r')
+                            rr=urlparse.urlunparse((URL_SCHEME, o.netloc, path, '', '', ''))
+                            return redirect(rr)
 
                         elif user.onlogin != '':
-                            #lggr.info('Redirecting to :'+user.onlogin) 
-                            #return redirect(user.onlogin)
-                            rr = request.url_root+user.onlogin
+                            # Custom redirect from user onlogin hook
+                            # Not using url_for as we don't know what URL they are going to request
+
+                            o = urlparse.urlparse(request.url)
+                            path = user.onlogin
+                            rr=urlparse.urlunparse((URL_SCHEME, o.netloc, path, '', '', ''))
+                            return redirect(rr)
 
                         else:
-                            rr = request.url_root+user.id+'/_home'
-
-                             
-                        return redirect(rr)
-
-                        #lggr.info('Redirecting to :'+str(rr)) 
-
-                        
-                        #lggr.debug(request.environ['wsgi.url_scheme'])
-                        #route_a_b_c(handle,ring,idx)
-
-                        
+                            # Default redirect to user's home
+                            return redirect(url_for('avispa_rest.home',
+                                     handle=user.id,
+                                     _external=True,
+                                     _scheme=URL_SCHEME))
+                                                
 
                     else:
 
