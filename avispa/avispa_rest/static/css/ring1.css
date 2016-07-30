@@ -23,7 +23,7 @@ h5{ font-family: Helvetica,Arial,sans-serif; font-weight: 300; text-transform: n
 p{ font-family: Helvetica,Arial,sans-serif; font-weight: 300;}
 
 input:focus {
-    background-color: yellow;
+    background-color: #efefef;
 }
 
 .fw-a{font-weight:300;} /*light*/
