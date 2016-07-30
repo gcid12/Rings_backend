@@ -1014,12 +1014,19 @@ class AvispaRestFunc:
 
         if result:
 
+            flash("Changes saved",'UI')
+
             #Index new item in the search engine
-            ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
-            ESM.indexer(rqurl,handle,ring,idx)
+            try:
+                ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
+                index_result = ESM.indexer(rqurl,handle,ring,idx)
+                flash("Item indexed:%s"%index_result,'UI')
+            except Exception as e:
+                flash("Item was saved but could not be updated in the index. Error:%s"%e,'ER')
+
 
             # Awesome , you just put the changes in the Item
-            flash("Changes saved",'UI')
+            
             if collection:
                 redirect = '/'+handle+'/_collections/'+collection+'/'+ring     
             else:
