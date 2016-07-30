@@ -4,14 +4,14 @@ from flask import current_app, Blueprint, render_template, abort, request, flash
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required,login_url)
-from env_config import FROMEMAIL, FROMPASS, IMAGE_CDN_ROOT
+from env_config import FROMEMAIL, FROMPASS, IMAGE_CDN_ROOT, URL_SCHEME
 from MainModel import MainModel
 from EmailModel import EmailModel
 from AvispaLogging import AvispaLoggerAdapter
 
 from User import User
 
-auth_flask_login = Blueprint('auth_flask_login', __name__, template_folder='templates',url_prefix='')
+avispa_auth = Blueprint('avispa_auth', __name__, template_folder='templates',url_prefix='')
 logger = logging.getLogger('Avispa')
 
 def setup_log_vars():
@@ -34,7 +34,9 @@ def setup_local_logger(tid,ip):
 @login_manager.unauthorized_handler
 def unauthorized_callback():
 
-    return redirect('/_unauthorized_handler')
+    return redirect(url_for('avispa_auth.login',
+                            _external=True,
+                            _scheme=URL_SCHEME))
 
 @login_manager.user_loader
 def load_user(id):
@@ -42,7 +44,10 @@ def load_user(id):
     #lggr.info('xload_user id is:',str(id))
     
     if id is None:
-        redirect('/_login')
+        redirect(url_for('avispa_auth.login',
+                          _external=True,
+                          _scheme=URL_SCHEME))
+
     user = User(username=id)
     user.get_user()
     if user.is_active():
@@ -51,7 +56,7 @@ def load_user(id):
         return None
 
 
-@auth_flask_login.route("/_login", methods=["GET", "POST"])
+@avispa_auth.route("/_login", methods=["GET", "POST"])
 def login():
 
     tid,ip = setup_log_vars()
@@ -64,9 +69,15 @@ def login():
     if current_user.is_authenticated :
 
         if hasattr(current_user,'id'):
-            return redirect('/'+current_user.id+'/_home')
+            #return redirect(absolute_url('/'+current_user.id+'/_home'))
+            return redirect(url_for('avispa_rest.home',
+                                     handle=current_user.id,
+                                     _external=True,
+                                     _scheme=URL_SCHEME))
         else:
-            return redirect('/_login')
+            return redirect(url_for('avispa_auth.login',
+                                     _external=True,
+                                     _scheme=URL_SCHEME))
 
      
     if request.method == "POST" and "email" in request.form:
@@ -118,14 +129,22 @@ def login():
                         elif user.onlogin != '':
                             #lggr.info('Redirecting to :'+user.onlogin) 
                             #return redirect(user.onlogin)
-                            rr = user.onlogin
+                            rr = request.url_root+user.onlogin
 
                         else:
-                            rr = '/'+user.id+'/_home'
+                            rr = request.url_root+user.id+'/_home'
 
-                        lggr.info('Redirecting to :'+str(rr)) 
-
+                             
                         return redirect(rr)
+
+                        #lggr.info('Redirecting to :'+str(rr)) 
+
+                        
+                        #lggr.debug(request.environ['wsgi.url_scheme'])
+                        #route_a_b_c(handle,ring,idx)
+
+                        
+
                     else:
 
                         lggr.info('Something went wrong in the user object:'+request.form.get('email')) 
@@ -164,7 +183,7 @@ def login():
 
 
 # API
-@auth_flask_login.route("/_api/_register", methods=["POST"])
+@avispa_auth.route("/_api/_register", methods=["POST"])
 def api_register_post():
 
     tid,ip = setup_log_vars()
@@ -235,7 +254,7 @@ def api_register_post():
         return render_template("/base_json.html", data=data)
 
 #WEB
-@auth_flask_login.route("/_teaminvite", methods=["GET"])
+@avispa_auth.route("/_teaminvite", methods=["GET"])
 def register_teaminvite():
 
     tid,ip = setup_log_vars()
@@ -246,27 +265,48 @@ def register_teaminvite():
     logout_user()
 
     if current_user.is_authenticated:  
-        return redirect('/_teaminvite2?h='+request.args.get('h')+
-                            '&t='+request.args.get('t')+
-                            '&k='+request.args.get('k')+
-                            '&e='+request.args.get('e'))
+
+        # BUG: avispa_auth.teaminvite2 does not exist!!
+
+        return redirect(url_for('avispa_auth.teaminvite2',
+                        h=request.args.get('h'),
+                        t=request.args.get('t'),
+                        k=request.args.get('k'),
+                        e=request.args.get('e'),
+                        _external=True,
+                        _scheme=URL_SCHEME)
+                       )
 
     else:       
         result = MAM.select_user_doc_view('auth/userbyemail',request.args.get('e'))
         if result:
             flash(request.args.get('e')+" already exists. Please log in.",'UI') 
-            return redirect(login_url('/_login','/_teaminvite2?h='+request.args.get('h')+
-                            '&t='+request.args.get('t')+
-                            '&k='+request.args.get('k')+
-                            '&e='+request.args.get('e')))
+
+            a = url_for('avispa_auth.login',
+                         _external=True,
+                         _scheme=URL_SCHEME)
+            b = url_for('avispa_auth.teaminvite2',
+                    h=request.args.get('h'),
+                    t=request.args.get('t'),
+                    k=request.args.get('k'),
+                    e=request.args.get('e'),
+                    _external=True,
+                    _scheme=URL_SCHEME)
+            return redirect(login_url(a,b))
+
         else:
-            return redirect('/_register?h='+request.args.get('h')+
-                            '&t='+request.args.get('t')+
-                            '&k='+request.args.get('k')+
-                            '&e='+request.args.get('e'))
+            return redirect(url_for('avispa_auth.register_get',
+                                    h=request.args.get('h'),
+                                    t=request.args.get('t'),
+                                    k=request.args.get('k'),
+                                    e=request.args.get('e'),
+                                    _external=True,
+                                    _scheme=URL_SCHEME
+                                   ))
+                            
 
 #WEB
-@auth_flask_login.route("/_register", methods=["GET"])
+@avispa_auth.route("/_register", methods=["GET"])
 def register_get():
 
     tid,ip = setup_log_vars()
@@ -281,7 +321,7 @@ def register_get():
     return render_template("/auth/register.html", data=data)
 
 #WEB
-@auth_flask_login.route("/_register", methods=["POST"])
+@avispa_auth.route("/_register", methods=["POST"])
 def register_post():
 
     tid,ip = setup_log_vars()
@@ -323,7 +363,9 @@ def register_post():
         mpp = {'status':'KO','msg':'Unable to register with that email address'}
         flash({'f':'track','v':'_register','p':mpp},'MP')
         current_app.logger.error("Error on registration ")
-        return redirect('/_register') 
+        return redirect(url_for('avispa_auth.register_get',
+                                _external=True,
+                                _scheme=URL_SCHEME))
 
     if True:
     #try:
@@ -403,9 +445,17 @@ def register_post():
                     flash({'f':'track','v':'_login','p':mpp},'MP')
                     #flash({'track':'_login OK, Automatic'},'MP')
                     if invite_organization:
-                        return redirect('/'+invite_organization+'/_home')
+                        #return redirect(absolute_url('/'+invite_organization+'/_home'))
+                        return redirect(url_for('avispa_rest.home',
+                                                handle=invite_organization,
+                                                _external=True,
+                                                _scheme=URL_SCHEME))
                     else:
-                        return redirect('/'+userview.id+'/_home')      
+                        #return redirect(absolute_url('/'+userview.id+'/_home')) 
+                        return redirect(url_for('avispa_rest.home',
+                                                 handle=userview.id,
+                                                 _external=True,
+                                                 _scheme=URL_SCHEME))    
             else:
                 flash("Please enter your credentials ",'UI')
 
@@ -413,7 +463,10 @@ def register_post():
                 flash({'f':'track','v':'_login','p':mpp},'MP') 
                 #flash({'track':'_login KO, Automatic'},'MP')
 
-                return redirect('/_login')
+                #return redirect(absolute_url('/_login'))
+                return redirect(url_for('avispa_auth.login',
+                                         _external=True,
+                                         _scheme=URL_SCHEME))
 
 
 
@@ -423,7 +476,10 @@ def register_post():
             mpp = {'status':'KO','msg':'User could not be created'}
             flash({'f':'track','v':'_register','p':mpp},'MP')
             flash({'f':'alias','v':username},'MP')          
-            return redirect('/_register')
+            #return redirect(absolute_url('/_register'))
+            return redirect(url_for('avispa_auth.register_get',
+                                     _external=True,
+                                     _scheme=URL_SCHEME))
 
 
     else:
@@ -433,13 +489,14 @@ def register_post():
         mpp = {'status':'KO','msg':'Automatic'}
         flash({'f':'track','v':'_login','p':mpp},'MP') 
 
-        return redirect('/_login')
-
-        
+        #return redirect(absolute_url('/_login'))
+        return redirect(url_for('avispa_auth.login',
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 
 
 #WEB
-@auth_flask_login.route("/_orgregister", methods=["GET"])
+@avispa_auth.route("/_orgregister", methods=["GET"])
 @login_required
 def orgregister_get():
 
@@ -468,12 +525,10 @@ def orgregister_get():
         data['handle_profilepic'] = cu_user_doc['profilepic']
         data['handle_location'] = cu_user_doc['location']
 
-
-
     return render_template("/auth/orgregister.html", data=data)
 
 #API
-@auth_flask_login.route("/_api/_orgregister", methods=["POST"])
+@avispa_auth.route("/_api/_orgregister", methods=["POST"])
 def api_orgregister_post():
 
     tid,ip = setup_log_vars()
@@ -530,7 +585,7 @@ def api_orgregister_post():
         return render_template("/base_json.html", data=data)
         
 #WEB
-@auth_flask_login.route("/_orgregister", methods=["POST"])
+@avispa_auth.route("/_orgregister", methods=["POST"])
 @login_required
 def orgregister_post():
 
@@ -556,8 +611,11 @@ def orgregister_post():
         mpp = {'status':'OK'}
         flash({'f':'track','v':'_orgregister','p':mpp},'MP')
         
-
-        return redirect('/'+username+'/_home')
+        #return redirect(absolute_url('/'+username+'/_home'))
+        return redirect(url_for('avispa_rest.home',
+                                 handle=username,
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 
     except(TypeError):
 
@@ -570,11 +628,14 @@ def orgregister_post():
         mpp = {'status':'KO','msg':"Notice: Unexpected error:"+str(sys.exc_info()[0])+' '+str(sys.exc_info()[1])}
         flash({'f':'track','v':'_orgregister','p':mpp},'MP')
                
-        return redirect('/_orgregister')
+        #return redirect(absolute_url('/_orgregister'))
+        return redirect(url_for('avispa_auth.orgregister_get',
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 
 
 
-@auth_flask_login.route("/_forgot", methods=["GET", "POST"])
+@avispa_auth.route("/_forgot", methods=["GET", "POST"])
 def forgot():
 
     tid,ip = setup_log_vars()
@@ -700,20 +761,32 @@ def forgot():
                 mpp = {'status':'OK','msg':'Password changed'}
                 flash({'f':'track','v':'_forgot','p':mpp},'MP')
                 #flash({'track':'_forgot OK, Password changed'},'MP')
-                return redirect('_login')
+                #return redirect(absolute_url('_login'))
+                return redirect(url_for('avispa_auth.login',
+                                         _external=True,
+                                         _scheme=URL_SCHEME))
+
             else:
                 flash('Token Rejected','UI')
                 mpp = {'status':'KO','msg':'Token rejected'}
                 flash({'f':'track','v':'_forgot','p':mpp},'MP')
                 #flash({'track':'_forgot KO, Token rejected'},'MP')
-                return redirect('_login')
+                #return redirect(absolute_url('_login'))
+                return redirect(url_for('avispa_auth.login',
+                                         _external=True,
+                                         _scheme=URL_SCHEME))
         else:
             flash('Both passwords need to match','UI')
             mpp = {'status':'KO','msg':'Password do not match'}
             flash({'f':'track','v':'_forgot','p':mpp},'MP')
             #flash({'track':'_forgot KO, passwords do not match'},'MP')
-
-            return redirect('/_forgot?k='+request.form.get('k')+'&e='+request.form.get('e'))
+            q = 'k='+request.form.get('k')+'&e='+request.form.get('e')
+            #return redirect(absolute_url('/_forgot',query=q))
+            return redirect(url_for('avispa_auth.forgot',
+                                    k=request.form.get('k'),
+                                    e=request.form.get('e'),
+                                    _external=True,
+                                    _scheme=URL_SCHEME))
             
               
     data = {}
@@ -723,7 +796,7 @@ def forgot():
     return render_template("/auth/forgot.html", data=data)
 
 
-@auth_flask_login.route("/<handle>/_profile", methods=["GET"])
+@avispa_auth.route("/<handle>/_profile", methods=["GET"])
 @login_required
 def profile_get(handle):
 
@@ -760,11 +833,15 @@ def profile_get(handle):
         mpp = {'status':'KO','msg':'Redirecting users profile'}
         flash({'f':'track','v':'_profile','p':mpp},'MP')
         #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
-        return redirect('/'+current_user.id+'/_profile')
+        #return redirect('/'+current_user.id+'/_profile')
+        return redirect(url_for('avispa_auth.profile_get',
+                                 handle=current_user.id,
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 
 
 
-@auth_flask_login.route("/<handle>/_profile", methods=["POST"])
+@avispa_auth.route("/<handle>/_profile", methods=["POST"])
 @login_required
 def profile_post(handle):
 
@@ -786,10 +863,14 @@ def profile_post(handle):
         flash({'f':'track','v':'_profile','p':mpp},'MP')
         #flash({'track':'_profile KO, Profile not updated'},'MP')
 
-    return redirect('/'+current_user.id+'/_home')
+    #return redirect('/'+current_user.id+'/_home')
+    return redirect(url_for('avispa_rest.home',
+                             handle=current_user.id,
+                             _external=True,
+                             _scheme=URL_SCHEME))
 
 
-@auth_flask_login.route("/<handle>/_orgprofile", methods=["GET"])
+@avispa_auth.route("/<handle>/_orgprofile", methods=["GET"])
 @login_required
 def orgprofile_get(handle):
 
@@ -814,7 +895,11 @@ def orgprofile_get(handle):
         mpp = {'status':'KO','msg':'Not owner'}
         flash({'f':'track','v':'_orgprofile','p':mpp},'MP')
         #flash({'track':'_orgprofile KO, User does not belong to owner team'},'MP')
-        return redirect('/'+current_user.id+'/_profile')
+        #return redirect('/'+current_user.id+'/_profile')
+        return redirect(url_for('avispa_auth.profile_get',
+                                 handle=current_user.id,
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 
     #This is for the current user thumbnail in the upperbar only
     user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
@@ -826,7 +911,7 @@ def orgprofile_get(handle):
 
 
 
-@auth_flask_login.route("/<handle>/_orgprofile", methods=["POST"])
+@avispa_auth.route("/<handle>/_orgprofile", methods=["POST"])
 @login_required
 def orgprofile_post(handle):
 
@@ -849,11 +934,15 @@ def orgprofile_post(handle):
         flash({'f':'track','v':'_orgprofile','p':mpp},'MP')
         #flash({'track':'_orgprofile KO, Not Updated'},'MP')
 
-    return redirect('/'+handle+'/_home')
+    #return redirect('/'+handle+'/_home')
+    return redirect(url_for('avispa_rest.home',
+                             handle=handle,
+                             _external=True,
+                             _scheme=URL_SCHEME))
 
 
 
-@auth_flask_login.route("/_reauth", methods=["GET", "POST"])
+@avispa_auth.route("/_reauth", methods=["GET", "POST"])
 @login_required
 def reauth():
 
@@ -865,7 +954,7 @@ def reauth():
     return render_template("/auth/reauth.html")
 
 
-@auth_flask_login.route("/_logout")
+@avispa_auth.route("/_logout")
 def logout():
 
     tid,ip = setup_log_vars()
@@ -883,11 +972,15 @@ def logout():
     flash({'f':'cookie.clear'},'MP')
     #flash({'cookie.clear':None},'MP')
     
-    return redirect('/_login')
+    #return redirect('/_login')
+    return redirect(url_for('avispa_auth.login',
+                             _external=True,
+                             _scheme=URL_SCHEME))
 
 
 
-@auth_flask_login.route("/<handle>/_access", methods=["GET"])
+
+@avispa_auth.route("/<handle>/_access", methods=["GET"])
 @login_required
 def access_get(handle):
 
@@ -923,11 +1016,15 @@ def access_get(handle):
         mpp = {'status':'KO','msg':'Redirecting users profile'}
         flash({'f':'track','v':'_profile','p':mpp},'MP')
         #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
-        return redirect('/'+current_user.id+'/_profile')
+        #return redirect('/'+current_user.id+'/_profile')
+        return redirect(url_for('avispa_auth.profile_get',
+                                 handle=current_user.id,
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 
 
 
-@auth_flask_login.route("/<handle>/_email", methods=["GET"])
+@avispa_auth.route("/<handle>/_email", methods=["GET"])
 @login_required
 def email_get(handle):
 
@@ -964,12 +1061,16 @@ def email_get(handle):
         mpp = {'status':'KO','msg':'Redirecting users profile'}
         flash({'f':'track','v':'_profile','p':mpp},'MP')
         #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
-        return redirect('/'+current_user.id+'/_profile')
+        #return redirect('/'+current_user.id+'/_profile')
+        return redirect(url_for('avispa_auth.profile_get',
+                                handle=current_user.id,
+                                _external=True,
+                                _scheme=URL_SCHEME))
 
 
 
 
-@auth_flask_login.route("/<handle>/_billing", methods=["GET"])
+@avispa_auth.route("/<handle>/_billing", methods=["GET"])
 @login_required
 def billing_get(handle):
 
@@ -1006,11 +1107,14 @@ def billing_get(handle):
         mpp = {'status':'KO','msg':'Redirecting users profile'}
         flash({'f':'track','v':'_profile','p':mpp},'MP')
         #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
-        return redirect('/'+current_user.id+'/_profile')
+        #return redirect('/'+current_user.id+'/_profile')
+        return redirect(url_for('avispa_auth.profile_get',
+                                 handle=current_user.id,
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 
 
-
-@auth_flask_login.route("/<handle>/_licenses", methods=["GET"])
+@avispa_auth.route("/<handle>/_licenses", methods=["GET"])
 @login_required
 def licenses_get(handle):
 
@@ -1047,5 +1151,9 @@ def licenses_get(handle):
         mpp = {'status':'KO','msg':'Redirecting users profile'}
         flash({'f':'track','v':'_profile','p':mpp},'MP')
         #flash({'track':'_profile KO, redirecting to your own profile'},'MP')
-        return redirect('/'+current_user.id+'/_profile')
+        #return redirect('/'+current_user.id+'/_profile')
+        return redirect(url_for('avispa_auth.profile_get',
+                                 handle=current_user.id,
+                                 _external=True,
+                                 _scheme=URL_SCHEME))
 

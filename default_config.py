@@ -28,3 +28,5 @@ CSRF_SESSION_KEY = 'qwerty123'
 SECRET_KEY = 'poiuy0987'
 
 
+
+

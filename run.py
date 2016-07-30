@@ -7,11 +7,11 @@ from app import app
 # Import a module / component using its blueprint handler variable (mod_auth)
 from avispa.avispa_rest.controllers import avispa_rest
 import TemplateFilters
-from auth.auth import auth_flask_login
+from auth.auth import avispa_auth
 from sandbox.sandbox import sandbox
 # Register blueprint(s)
 app.register_blueprint(avispa_rest)
-app.register_blueprint(auth_flask_login)
+app.register_blueprint(avispa_auth)
 app.register_blueprint(sandbox)
 
 if __name__ == "__main__":
