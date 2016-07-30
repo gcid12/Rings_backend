@@ -14,7 +14,7 @@ from MyRingPatch import MyRingPatch
 from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from default_config import IMAGE_FOLDER_NAME
-from env_config import IMAGE_FOLDER_NAME, IMAGE_CDN_ROOT, TEMP_ACCESS_TOKEN
+from env_config import IMAGE_FOLDER_NAME, IMAGE_CDN_ROOT, TEMP_ACCESS_TOKEN,URL_SCHEME
 from MainModel import MainModel
 
 
@@ -148,8 +148,8 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         data['current_user']=current_user
 
         o = urlparse.urlparse(request.url)
-        data['host_url'] = urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
-        data['api_url'] = urlparse.urlunparse((o.scheme, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
+        data['host_url'] = urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
+        data['api_url'] = urlparse.urlunparse((URL_SCHEME, o.netloc, '_api'+o.path, o.params, o.query, o.fragment))
         
 
         #search_path = '/'.join(o.path.split('/')[:-1])
@@ -326,7 +326,7 @@ def tool_dispatcher(tool):
     data['current_user']=current_user
 
     o = urlparse.urlparse(request.url)
-    data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+    data['host_url']=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
 
     t = time.time()
     data['today']= time.strftime("%A %b %d, %Y ",time.gmtime(t))
@@ -449,7 +449,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         data['current_user']=current_user
 
         o = urlparse.urlparse(request.url)
-        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['host_url']=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
 
         data['image_cdn_root'] = IMAGE_CDN_ROOT
 

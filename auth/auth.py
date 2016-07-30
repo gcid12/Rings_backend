@@ -658,7 +658,7 @@ def forgot():
             try:
 
                 o = urlparse.urlparse(request.url)
-                host_url=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+                host_url=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
 
                 #save the token in the database
                 key = flask_bcrypt.generate_password_hash(request.form.get('email')+str(random.randint(0,9999)))
@@ -816,7 +816,7 @@ def profile_get(handle):
         data['menu'] = 's1'
 
         o = urlparse.urlparse(request.url)
-        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['host_url']=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
         data['image_cdn_root'] = IMAGE_CDN_ROOT
         data['method'] = '_profile'
 
@@ -1000,7 +1000,7 @@ def access_get(handle):
         data['menu'] = 's2'
 
         o = urlparse.urlparse(request.url)
-        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['host_url']=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
         data['image_cdn_root'] = IMAGE_CDN_ROOT
         data['method'] = '_profile'
 
@@ -1044,7 +1044,7 @@ def email_get(handle):
         data['menu'] = 's3'
 
         o = urlparse.urlparse(request.url)
-        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['host_url']=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
         data['image_cdn_root'] = IMAGE_CDN_ROOT
         data['method'] = '_profile'
 
@@ -1090,7 +1090,7 @@ def billing_get(handle):
         data['menu'] = 's4'
 
         o = urlparse.urlparse(request.url)
-        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['host_url']=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
         data['image_cdn_root'] = IMAGE_CDN_ROOT
         data['method'] = '_profile'
 
@@ -1134,7 +1134,7 @@ def licenses_get(handle):
         data['menu'] = 's5'
 
         o = urlparse.urlparse(request.url)
-        data['host_url']=urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+        data['host_url']=urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
         data['image_cdn_root'] = IMAGE_CDN_ROOT
         data['method'] = '_profile'
 
