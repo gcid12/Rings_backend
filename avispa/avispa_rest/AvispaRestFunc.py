@@ -1,12 +1,12 @@
 import json, collections
 import logging
 import urlparse, time, datetime
-from flask import redirect, flash
+from flask import redirect, flash,url_for
 from RingBuilder import RingBuilder
 from AvispaModel import AvispaModel
 from ElasticSearchModel import ElasticSearchModel
 from AvispaCollectionsModel import AvispaCollectionsModel
-from env_config import PREVIEW_LAYER
+from env_config import PREVIEW_LAYER,URL_SCHEME
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from AvispaLogging import AvispaLoggerAdapter
 
@@ -89,7 +89,12 @@ class AvispaRestFunc:
                     if ACM.add_ring_to_collection(handle, collection,result):
                         flash(" The ring has been added to the collection.",'UI')
                         if not api:
-                            redirect = '/'+handle+'/_collections/'+collection
+                            #redirect = '/'+handle+'/_collections/'+collection
+                            redirect = url_for('avispa_rest.collections_route_a_x_y',
+                                               handle=handle,
+                                               collection=collection,
+                                               _external=True,
+                                               _scheme=URL_SCHEME)
                         else:
                             out['Success'] = True
                             out['Message'] = 'The ring has been added to the collection'
@@ -98,7 +103,14 @@ class AvispaRestFunc:
 
                 except:
                     if not api:
-                        redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
+                        #Destroy defective ring
+                        #redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
+                        redirect = url_for('avispa_rest.route_a_b',
+                                           handle=handle,
+                                           ringname=ringname,
+                                           method='delete',
+                                           _external=True,
+                                           _scheme=URL_SCHEME)
                     else:
                         out['Success'] = False
                         out['Message'] = 'The ring could not be added to the collection'
@@ -106,7 +118,12 @@ class AvispaRestFunc:
              
             else: 
                 if not api:
-                    redirect = '/'+handle
+                    #redirect = '/'+handle
+                    redirect = url_for('avispa_rest.home',
+                                        handle=handle,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
+
                 else:
                     out['Success'] = True
                     out['Message'] = 'The ring has been added'
@@ -119,12 +136,26 @@ class AvispaRestFunc:
 
                 flash(" There has been an issue, please check your parameters and try again. ",'UI')
 
-                recovery_string,unique = self.form_args_to_string(rqform)
+                #recovery_string,unique = self.form_args_to_string(rqform)
 
                 if collection:
-                    redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n='+str(len(unique))+'&'+str(recovery_string)
+                    #redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n='+str(len(unique))+'&'+str(recovery_string)
+                    redirect = url_for('avispa_rest.collections_route_a_x_y',
+                                        handle=handle,
+                                        collection=collection,
+                                        rq='post',
+                                        n=str(len(unique)),
+                                        _external=True,
+                                        _scheme=URL_SCHEME,
+                                        rqform=rqform)
                 else:
-                    redirect = '/'+handle+'/'+ring+'?rq=post&n=10&'+str(recovery_string)
+                    #redirect = '/'+handle+'/'+ring+'?rq=post&n=10&'+str(recovery_string)
+                    redirect = url_for('avispa_rest.route_a_b',
+                                        handle=handle,
+                                        rq='post',
+                                        _external=True,
+                                        _scheme=URL_SCHEME,
+                                        rqform=rqform)
 
             else:
                 out['Success'] = False
@@ -281,7 +312,12 @@ class AvispaRestFunc:
             if result:
                 d['collection'] = result['collectionname'] 
             else:
-                redirect = '/'+handle+'/_home'
+                #redirect = '/'+handle+'/_home'
+                redirect = url_for('avispa_rest.home',
+                                    handle=handle,
+                                    _external=True,
+                                    _scheme=URL_SCHEME)
+
                 return {'redirect': redirect, 'status':404}
 
         page = self.subtract_page_parameters(rqargs)
@@ -640,14 +676,38 @@ class AvispaRestFunc:
 
             if collection:
                 if rqform.get('saveandnew'):
-                    redirect = '/'+handle+'/_collections/'+collection+'/'+ring+'?rq=post'
+                    #redirect = '/'+handle+'/_collections/'+collection+'/'+ring+'?rq=post'
+                    redirect = url_for('avispa_rest.collections_route_a_x_y_b',
+                                        handle=handle,
+                                        collection=collection,
+                                        ring=ring,
+                                        rq='post',
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
                 else:
-                    redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                    #redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                    redirect = url_for('avispa_rest.collections_route_a_x_y_b',
+                                        handle=handle,
+                                        collection=collection,
+                                        ring=ring,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
             else:
                 if rqform.get('saveandnew'):
-                    redirect = '/'+handle+'/'+ring+'?rq=post'
+                    #redirect = '/'+handle+'/'+ring+'?rq=post'
+                    redirect = url_for('avispa_rest.route_a_b',
+                                        handle=handle,
+                                        ring=ring,
+                                        rq='post',
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
                 else:
-                    redirect = '/'+handle+'/'+ring
+                    #redirect = '/'+handle+'/'+ring
+                    redirect = url_for('avispa_rest.route_a_b',
+                                        handle=handle,
+                                        ring=ring,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
 
             if 'raw' in rqargs:          
                 
@@ -710,7 +770,12 @@ class AvispaRestFunc:
 
         if not ringparameters:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
-            redirect = '/'+handle+'/_home'
+            #redirect = '/'+handle+'/_home'
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME)
+
             d = {'redirect': redirect, 'status':404}
             return d
 
@@ -742,9 +807,21 @@ class AvispaRestFunc:
             #msg = 'Item put with id: '+idx
             flash("Changes saved in the Schema",'UI')
             if collection:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
+                #redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                redirect = url_for('avispa_rest.collections_route_a_x_y_b',
+                                    handle=handle,
+                                    collection=collection,
+                                    ring=ring,
+                                    _external=True,
+                                    _scheme=URL_SCHEME)           
             else:
-                redirect = '/'+handle+'/'+ring
+                #redirect = '/'+handle+'/'+ring
+                redirect = url_for('avispa_rest.route_a_b',
+                                    handle=handle,
+                                    ring=ring,
+                                    _external=True,
+                                    _scheme=URL_SCHEME)  
+
                 
 
             d = {'redirect': redirect, 'status':200}
@@ -813,7 +890,12 @@ class AvispaRestFunc:
 
         if not ringparameters:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
-            redirect = '/'+handle+'/_home'
+            #redirect = '/'+handle+'/_home'
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME)  
+
             d = {'redirect': redirect, 'status':404}
             return d
 
@@ -857,10 +939,10 @@ class AvispaRestFunc:
         else:
             flash('Could not delete the Ring','ER')
         
-        if collection:
-            redirect = '/'+handle+'/_collections/'+collection       
-        else:
-            redirect = '/'+handle
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME)
             
 
         d = {'redirect': redirect, 'status':200}
@@ -972,7 +1054,13 @@ class AvispaRestFunc:
         else: 
           
             d['status'] = '404'
-            d['redirect'] = '/'+handle+'/'+ring
+            #d['redirect'] = '/'+handle+'/'+ring
+            redirect = url_for('avispa_rest.route_a_b',
+                                handle=handle,
+                                ring=ring,
+                                _external=True,
+                                _scheme=URL_SCHEME)
+
             self.lggr.info('This item does not exist')            
             flash('This item does not exist','ER')
         
@@ -1028,9 +1116,20 @@ class AvispaRestFunc:
             # Awesome , you just put the changes in the Item
             
             if collection:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring     
+                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
+                redirect = url_for('avispa_rest.collections_route_a_x_y_b',
+                                handle=handle,
+                                collection=collection,
+                                ring=ring,
+                                _external=True,
+                                _scheme=URL_SCHEME)    
             else:
-                redirect = '/'+handle+'/'+ring
+                #redirect = '/'+handle+'/'+ring
+                redirect = url_for('avispa_rest.route_a_b',
+                                handle=handle,
+                                ring=ring,
+                                _external=True,
+                                _scheme=URL_SCHEME)
 
             if 'raw' in rqargs:          
                 m = {}
@@ -1119,7 +1218,12 @@ class AvispaRestFunc:
 
         if not ringparameters:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
-            redirect = '/'+handle+'/_home'
+            #redirect = '/'+handle+'/_home'
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME)
+
             d = {'redirect': redirect, 'status':404}
             return d
 
@@ -1169,9 +1273,20 @@ class AvispaRestFunc:
             # Item deleted..
             flash('Item deleted..','UI')
             if collection:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring           
+                #redirect = '/'+handle+'/_collections/'+collection+'/'+ring 
+                redirect = url_for('avispa_rest.collections_route_a_x_y_b',
+                                handle=handle,
+                                collection=collection,
+                                ring=ring,
+                                _external=True,
+                                _scheme=URL_SCHEME)          
             else:
-                redirect = '/'+handle+'/'+ring
+                #redirect = '/'+handle+'/'+ring
+                redirect = url_for('avispa_rest.route_a_b',
+                                handle=handle,
+                                ring=ring,
+                                _external=True,
+                                _scheme=URL_SCHEME)
 
 
             if 'raw' in rqargs: 

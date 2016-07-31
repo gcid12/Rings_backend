@@ -1,6 +1,6 @@
 # AvispaPeopleRestFunc.py
 import logging
-from flask import redirect, flash
+from flask import redirect,flash,url_for
 
 from AvispaModel import AvispaModel
 from MainModel import MainModel
@@ -43,7 +43,11 @@ class AvispaPeopleRestFunc:
         else:
             #This is a regular user
          
-            d['redirect'] = '/'+handle+'/_home'
+            #d['redirect'] = '/'+handle+'/_home'
+            d['redirect'] = url_for('avispa_rest.home',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME) 
      
         return d
 
@@ -73,7 +77,12 @@ class AvispaPeopleRestFunc:
             flash('%s is not a MyRing user. Please create it first.'%person,'ER')
 
   
-        redirect = '/'+handle+'/_people'
+        #redirect = '/'+handle+'/_people'
+        redirect = url_for('avispa_rest.people_a_p',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME) 
+
         d = {'redirect': redirect, 'status':200}
         return d
 
@@ -102,7 +111,12 @@ class AvispaPeopleRestFunc:
 
 
         
-        redirect = '/'+handle+'/_people'
+        #redirect = '/'+handle+'/_people'
+        redirect = url_for('avispa_rest.people_a_p',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME) 
+
         d = {'redirect': redirect, 'status':200}
         return d
 

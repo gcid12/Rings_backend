@@ -3,7 +3,7 @@ import urlparse, time, datetime, collections, json, csv, types, cStringIO
 import logging
 from AvispaLogging import AvispaLoggerAdapter
 
-from flask import Blueprint,render_template,request,redirect,g,make_response,Response
+from flask import Blueprint,render_template,request,redirect,g,make_response,Response,url_for
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
@@ -695,8 +695,11 @@ def home_dispatcher(handle):
      
         return render_template(data['template'], data=data)
 
-    else:
-        data['redirect'] = '/'+current_user.id+'/_home'
+    else:        
+        data['redirect'] = url_for('avispa_rest.home',
+                         handle=current_user.id,
+                         _external=True,
+                         _scheme=URL_SCHEME)
         return data
 
 
@@ -918,7 +921,10 @@ def history_dispatcher(handle,ring=None):
         return render_template(data['template'], data=data)
 
     else:
-        data['redirect'] = '/'+current_user.id+'/_home'
+        data['redirect'] = url_for('avispa_rest.home',
+                         handle=current_user.id,
+                         _external=True,
+                         _scheme=URL_SCHEME)
         return data
     
 
@@ -1171,7 +1177,11 @@ def index():
     data = {}
     data['handle']='x' #you have to grab this from the session user
     #return render_template("avispa_rest/intro.html", data=data)
-    return redirect('/'+current_user.id+'/_home')
+
+    return redirect(url_for('avispa_rest.home',
+                                     handle=current_user.id,
+                                     _external=True,
+                                     _scheme=URL_SCHEME))
 
 @avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
 def imageserver(filename,depth1,depth2):
@@ -1689,10 +1699,11 @@ def route_a(handle):
 
     if request.method == 'GET':
         if ('rq' not in request.args) and ('method' not in request.args):         
-            return redirect('/'+handle+'/_home')
+            return redirect(url_for('avispa_rest.home',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME))
 
-    #if handle != current_user.id:
-     #   return redirect('/_logout') 
 
     result = route_dispatcher('_a',handle)
  
@@ -1711,6 +1722,8 @@ def route_a_b(handle,ring):
         return redirect(result['redirect'])        
     else:
         return result
+
+
 
 @avispa_rest.route('/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required

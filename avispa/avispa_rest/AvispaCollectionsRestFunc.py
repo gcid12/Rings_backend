@@ -72,7 +72,12 @@ class AvispaCollectionsRestFunc:
                 
             else:
                 flash("Your new Collection has been created",'UI')
-                redirect = '/'+handle
+                #redirect = '/'+handle
+                redirect = url_for('avispa_rest.home',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME) 
+
                 d = {'redirect': redirect, 'status':200}
 
         else:
@@ -200,7 +205,13 @@ class AvispaCollectionsRestFunc:
             self.lggr.debug('Awesome , you just updated a Collection')
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been updated",'UI')
-            redirect = '/'+handle+'/_collections/'+collection
+            #redirect = '/'+handle+'/_collections/'+collection
+            redirect = url_for('avispa_rest.collections_route_a_x_y',
+                                     handle=handle,
+                                     collection=collection,
+                                     _external=True,
+                                     _scheme=URL_SCHEME) 
+
             d = {'redirect': redirect, 'status':200}
 
         else:
@@ -260,7 +271,12 @@ class AvispaCollectionsRestFunc:
             self.lggr.debug('Awesome , you just deleted a Collection')
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been deleted",'UI')
-            redirect = '/'+handle
+            #redirect = '/'+handle
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME)           
+
             d = {'redirect': redirect, 'status':200}
 
         else:

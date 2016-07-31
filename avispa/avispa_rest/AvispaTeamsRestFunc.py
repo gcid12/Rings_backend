@@ -65,7 +65,11 @@ class AvispaTeamsRestFunc:
             d['template'] = 'avispa_rest/get_a_m.html'
         else:
             #This is a regular user
-            d['redirect'] = '/'+handle+'/_home'
+            #d['redirect'] = '/'+handle+'/_home'
+            d['redirect'] = url_for('avispa_rest.home',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME)
      
         return d
 
@@ -82,13 +86,20 @@ class AvispaTeamsRestFunc:
 
         peopleteams = self.MAM.is_org(handle) 
         if peopleteams: 
+
+            redirect = url_for('avispa_rest.teams_a_m',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME)
+
             #This is an organization                  
             for teamd in peopleteams['teams']:
                 
                 if teamd['teamname'] == team:
                     #This team exists in this handle!
                     flash('This team exists already. Use a different name','ER')
-                    redirect = '/'+handle+'/_teams' 
+                    #redirect = '/'+handle+'/_teams'
+
                     d = {'redirect': redirect, 'status':200}
                     return d 
 
@@ -96,14 +107,17 @@ class AvispaTeamsRestFunc:
                 self.lggr.debug('Awesome , you just created team %s '%team)
                 #msg = 'Item put with id: '+idx
                 flash('Awesome , you just created team %s '%team,'UI')
-                redirect = '/'+handle+'/_teams'
+                
             else:
-                flash('There was an error adding team %s '%team,'UI')
-                redirect = '/'+handle+'/_teams'
+                flash('There was an error adding team %s '%team,'UI') 
 
         else:
             #This is not an organization 
-            redirect = '/'+current_user.id        
+            #redirect = '/'+current_user.id 
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME)       
 
         d = {'redirect': redirect, 'status':200}
         return d
@@ -153,8 +167,11 @@ class AvispaTeamsRestFunc:
             d['template'] = 'avispa_rest/get_a_m_n.html'
         else:
             #This is a regular user
-         
-            d['redirect'] = '/'+handle+'/_home'
+            #d['redirect'] = '/'+handle+'/_home'
+            d['redirect'] = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME)         
      
         return d
 
@@ -201,7 +218,12 @@ class AvispaTeamsRestFunc:
                 self.lggr.error('There was an issue deleting: %s'%ring)
                 flash('There was an issue deleting: %s'%ring,'UI')
                 
-        d['redirect'] = '/'+handle+'/_teams/'+team
+        #d['redirect'] = '/'+handle+'/_teams/'+team
+        d['redirect'] = url_for('avispa_rest.teams_a_m_n',
+                                     handle=handle,
+                                     team=team,
+                                     _external=True,
+                                     _scheme=URL_SCHEME)
 
         return d
 
@@ -223,23 +245,37 @@ class AvispaTeamsRestFunc:
                     
                     if self.MAM.delete_team(handle,team):
                         self.lggr.debug('You just deleted team %s'%team)
-                        flash('You just deleted team %s'%team,'UI')
-                        redirect = '/'+handle+'/_teams'
+                        flash('You just deleted team %s'%team,'UI')                      
                     else:
                         self.lggr.error('There was an error deleting team: %s'%team)
-                        flash('There was an error deleting team: %s'%team,'ER')
-                        redirect = '/'+handle+'/_teams'
+                        flash('There was an error deleting team: %s'%team,'ER')                       
+
+                    redirect = url_for('avispa_rest.teams_a_m',
+                                        handle=handle,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
+
 
         else:
             #This is not an organization 
-            redirect = '/'+current_user.id        
+            #redirect = '/'+current_user.id
+            redirect = url_for('avispa_rest.home',
+                                        handle=handle,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)      
 
         d = {'redirect': redirect, 'status':200}
         return d
 
     def get_a_m_n_settings(self,handle,team,*args,**kargs):
 
-        redirect = '/'+handle+'/_teams/'+team        
+        #redirect = '/'+handle+'/_teams/'+team 
+        redirect = url_for('avispa_rest.teams_a_m_n',
+                            handle=handle,
+                            team=team,
+                            _external=True,
+                            _scheme=URL_SCHEME)
+
 
         d = {'redirect': redirect, 'status':200}
         return d
@@ -279,11 +315,13 @@ class AvispaTeamsRestFunc:
         else:
             #This is a regular user
          
-            d['redirect'] = '/'+handle+'/_home'
+            #d['redirect'] = '/'+handle+'/_home'
+            d['redirect'] = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME) 
      
         return d
-
-
 
 
     def put_a_m_n_settings(self,handle,team,rqform=None,*args,**kargs):
@@ -300,13 +338,23 @@ class AvispaTeamsRestFunc:
                 self.lggr.error('There was a problem updating team %s'%team)
                 flash('There was a problem updating team %s'%team,'ER')  
 
-        d['redirect'] = '/'+handle+'/_teams/'+team
+        #d['redirect'] = '/'+handle+'/_teams/'+team
+        d['redirect'] = url_for('avispa_rest.teams_a_m_n',
+                            handle=handle,
+                            team=team,
+                            _external=True,
+                            _scheme=URL_SCHEME)
 
         return d 
 
     def get_a_m_n_invite(self,handle,team,*args,**kargs):
 
-        redirect = '/'+handle+'/_teams/'+team        
+        #redirect = '/'+handle+'/_teams/'+team 
+        redirect = url_for('avispa_rest.teams_a_m_n',
+                            handle=handle,
+                            team=team,
+                            _external=True,
+                            _scheme=URL_SCHEME)       
 
         d = {'redirect': redirect, 'status':200}
         return d
@@ -365,7 +413,12 @@ class AvispaTeamsRestFunc:
 
             if not teamfound:
                 # This team doesnt exist. No invitation can be sent
-                d['redirect'] = '/'+handle+'/_teams/'+team
+                #d['redirect'] = '/'+handle+'/_teams/'+team
+                d['redirect'] = url_for('avispa_rest.teams_a_m_n',
+                                         handle=handle,
+                                         team=team,
+                                         _external=True,
+                                         _scheme=URL_SCHEME)
                 return d
 
             # teamd carries the team object
@@ -414,8 +467,17 @@ class AvispaTeamsRestFunc:
                 flash("Invitation email failed.",'UI') 
         
               
-        d['redirect'] = '/'+handle+'/_teams/'+team
+        #d['redirect'] = '/'+handle+'/_teams/'+team
+        d['redirect'] = url_for('avispa_rest.teams_a_m_n',
+                                 handle=handle,
+                                 team=team,
+                                 _external=True,
+                                 _scheme=URL_SCHEME)
+
+        
+
         return d 
+
 
 
 
