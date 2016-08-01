@@ -648,8 +648,14 @@ class AvispaRestFunc:
         if idx:
 
             #Index new item in the search engine
-            ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
-            ESM.indexer(rqurl,handle,ring,idx)
+            try:
+                ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
+                index_result = ESM.indexer(rqurl,handle,ring,idx)
+                flash("Item indexed:%s"%index_result,'UI')
+            except Exception as e:
+                flash("Item was saved but could not be updated in the index. Error:%s"%e,'ER')
+
+
 
             if not api:
                 self.lggr.info('Item saved with id: '+idx)
@@ -1104,7 +1110,7 @@ class AvispaRestFunc:
 
             flash("Changes saved",'UI')
 
-            #Index new item in the search engine
+            #Index new changes in the search engine
             try:
                 ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
                 index_result = ESM.indexer(rqurl,handle,ring,idx)
