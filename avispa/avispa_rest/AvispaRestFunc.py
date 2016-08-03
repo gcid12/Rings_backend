@@ -426,7 +426,7 @@ class AvispaRestFunc:
                     Item[names[fieldid]] = preitem[fieldid]
 
 
-                if fieldid+'_rich' in preitem and (sources[fieldid] is not None):
+                if fieldid+'_rich' in preitem and (not sources[fieldid]):
 
 
                     if idlabel:
@@ -439,35 +439,36 @@ class AvispaRestFunc:
                     field_sources = {}
                     list_sources = sources[fieldid].split(',')
                     for source in list_sources:
+
+                        if source:
                         
-                        if source == '':
-                            continue
-                        o = urlparse.urlparse(source.strip())
+                            o = urlparse.urlparse(source.strip())
 
-                        path_parts = o.path.split('/')
+                            path_parts = o.path.split('/')
 
-                        if path_parts[1] == '_api':
-                            del path_parts[1]
-                            path = '/'.join(path_parts)
-                        else:
-                            # Corrected path
-                            path = o.path   
+                            if path_parts[1] == '_api':
+                                del path_parts[1]
+                                path = '/'.join(path_parts)
+                            else:
+                                # Corrected path
+                                path = o.path   
+                                
+
+                            source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
+
+                            no_field = True
+                            queryparts = o.query.split('&')
+                            if len(queryparts) > 0:
+                                for querypart in queryparts:
+                                    qp = querypart.split('=')
+                                    if 'fl' in qp:
+                                        #No field was indicated. Assign the first one
+                                        qp_parts = qp[1].split('+')
+                                        field_sources[source_id] = qp_parts
+                                        no_field = False
+
+                        
                             
-
-                        source_id= urlparse.urlunparse((URL_SCHEME, o.netloc, path,'', '', ''))
-
-                        no_field = True
-                        queryparts = o.query.split('&')
-                        if len(queryparts) > 0:
-                            for querypart in queryparts:
-                                qp = querypart.split('=')
-                                if 'fl' in qp:
-                                    qp_parts = qp[1].split('+')
-                                    field_sources[source_id] = qp_parts
-                                    no_field = False
-
-                        
-                            #No field was indicated. Assign the first one
 
                     # Create representation based on field_sources
                     ItemL = []
@@ -1113,7 +1114,7 @@ class AvispaRestFunc:
                 index_result = ESM.indexer(rqurl,handle,ring,idx)
                 flash("Item indexed:%s"%index_result,'UI')
             except Exception as e:
-                flash("Item was saved but could not be updated in the index. Error:%s"%e,'ER')
+                flash("Item was saved but could not be indexed. Error:%s"%e,'ER')
 
 
             # Awesome , you just put the changes in the Item
