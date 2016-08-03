@@ -1,6 +1,6 @@
 import collections
 from elasticsearch_dsl.connections import connections
-from env_config import ES_NODE, TEMP_ACCESS_TOKEN
+from env_config import ES_NODE, TEMP_ACCESS_TOKEN,URL_SCHEME
 
 #SEARCHING
 from elasticsearch import Elasticsearch
@@ -146,7 +146,7 @@ class ElasticSearchModel:
             path = '_api/%s/%s/%s'%(handle,ring,idx)             
         else:
             path = '_api/%s/%s'%(handle,ring)  
-        origin_url = urlparse.urlunparse((o.scheme, o.netloc, path, '', '', ''))
+        origin_url = urlparse.urlunparse((URL_SCHEME, o.netloc, path, '', '', ''))
         schema,items = self.get_items(origin_url)
         #Preprare the ES Map (as a class)
         ring_class,ring_map = self.prepare_class(schema)
@@ -264,7 +264,7 @@ class ElasticSearchModel:
         else:
             path = o.path
 
-        return urlparse.urlunparse((o.scheme,o.netloc,path,'','schema=1&limit=_all',''))
+        return urlparse.urlunparse((URL_SCHEME,o.netloc,path,'','schema=1&limit=_all',''))
 
 
     def get_items(self,url):

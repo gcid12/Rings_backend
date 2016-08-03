@@ -348,7 +348,7 @@ class AvispaRestFunc:
         if api:
             out = {}
             o = urlparse.urlparse(rqurl)
-            host_url= urlparse.urlunparse((o.scheme, o.netloc, '', '', '', ''))
+            host_url= urlparse.urlunparse((URL_SCHEME, o.netloc, '', '', '', ''))
             out['_source'] = host_url+"/"+str(handle)+"/"+str(ring)
             if 'schema' in rqargs:
                 out['rings'] = schema['rings']
@@ -444,9 +444,6 @@ class AvispaRestFunc:
                             continue
                         o = urlparse.urlparse(source.strip())
 
-                        if not o.scheme:
-                            continue
-
                         path_parts = o.path.split('/')
 
                         if path_parts[1] == '_api':
@@ -457,7 +454,7 @@ class AvispaRestFunc:
                             path = o.path   
                             
 
-                        source_id= urlparse.urlunparse((o.scheme, o.netloc, path,'', '', ''))
+                        source_id= urlparse.urlunparse((URL_SCHEME, o.netloc, path,'', '', ''))
 
                         no_field = True
                         queryparts = o.query.split('&')
