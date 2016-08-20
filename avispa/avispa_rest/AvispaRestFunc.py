@@ -649,7 +649,7 @@ class AvispaRestFunc:
             try:
                 ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
                 index_result = ESM.indexer(rqurl,handle,ring,idx)
-                flash("Item indexed:%s"%index_result,'UI')
+                flash("Indexing result:%s"%index_result,'UI')
             except Exception as e:
                 flash("Item was saved but could not be updated in the index. Error:%s"%e,'ER')
 

@@ -152,7 +152,8 @@ class ElasticSearchModel:
         ring_class,ring_map = self.prepare_class(schema)
         #Create the index in the ES Cluster (indempotent action)
         self.create_index(ring_class,origin_url)
-        #Index the item 
+        #Index the item
+        d = {} 
         out = {}
         out['indexed']=[] 
             
@@ -169,15 +170,17 @@ class ElasticSearchModel:
 
             else:
             
+                #Here we store possible indexing errors
                 if 'not_indexed' not in out:
                     out['not_indexed']=[] 
-
-                
+ 
                 out['not_indexed'].append(item)
-                self.lggr.error('Not Indexed:%s'%item)
-        d = {}
+                self.lggr.error('Document invalid. Not Indexed:%s'%item)
+                
+        
         d['json_out'] = json.dumps(out)
         d['template']='base_json.html'
+
         self.lggr.info('END indexer')
         return d
 
@@ -268,7 +271,7 @@ class ElasticSearchModel:
 
 
     def get_items(self,url):
-        url = self.valid_api_url(url)+'&access_token=%s'%TEMP_ACCESS_TOKEN
+        url = self.valid_api_url(url)+'&access_token=%s&fieldid=1'%TEMP_ACCESS_TOKEN
         self.lggr.info('START get_items ->%s'%url)
         result = requests.get(url, verify=False)
         self.lggr.info('result ->%s'%result.text)
