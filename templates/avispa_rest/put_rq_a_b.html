@@ -4,14 +4,14 @@
 
 {% block crumb02 %}
 <i class="fa fa-arrow-right breadinter"></i>
-<a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
+<a href="/{{data.handle}}" class="nounder">
   <span class="fc-a fs-0-7">{{ data.collection }}</span> 
 </a>
 {% endblock %}
 
 {% block crumb03 %}
 <i class="fa fa-arrow-right breadinter"></i>
-<a href="/{{ data.handle }}/_collections/{{ data.collection}}/{{ data.ring }}" class="nounder">
+<a href="/{{ data.handle }}/{{ data.ring }}" class="nounder">
   <span class="fc-a fs-0-7">{{ data.ring }}</span>
 </a>
 {% endblock %}
@@ -28,7 +28,7 @@
     </span>
   </div>
   <!-- ROW NAME AND DESCRIPTION -->
-  <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}/{{ data.ring }}?method=PUT" method="POST">
+  <form class="form-horizontal" role="form" action="/{{ data.handle }}/{{ data.ring }}?method=PUT" method="POST">
     <div class="row rn-box-content">
       <div class="col-sm-2"> 
         <h2 class="fs-4">1</h2> 

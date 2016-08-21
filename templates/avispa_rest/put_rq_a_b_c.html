@@ -48,13 +48,13 @@
 {% block crumb02 %}
       <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
 
-      <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
+      <a href="/{{data.handle}}" class="nounder">
           <span class="fc-a fs-0-7">{{ data.collection }}</span> 
       </a>
 {% endblock %}
 {% block crumb03 %}
     <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-    <a href="/{{ data.handle }}/_collections/{{ data.collection}}/{{ data.ring }}" class="nounder">
+    <a href="/{{ data.handle }}/{{ data.ring }}" class="nounder">
         <span class="fc-a fs-0-7">{{ data.ring }}</span>
     </a>
 {% endblock %}
@@ -76,7 +76,7 @@
       </div>
   {%endif%}
   </div>
-  <form role="form" action="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ data.ring }}/{{ data.idx }}?method=put{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
+  <form role="form" action="/{{ data.handle }}/{{ data.ring }}/{{ data.idx }}?method=put{% if data.raw %}&raw=1{%endif%}" method="POST" autocomplete="off">
     <div class="box box-clear text-right">
       <div class="row">
         <div class="col-sm-12">
