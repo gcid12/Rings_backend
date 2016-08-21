@@ -1731,28 +1731,17 @@ class AvispaModel:
                     break
 
 
-
-
-
             #self.lggr.debug('urlparts '+ str(urlparts))
 
             pathparts = urlparts.path.split('/')
+            # Pathpart is a url entered during capture
             if pathparts[1]!='_api':
-                if pathparts[2]=='_collections':
-                    del pathparts[2] # /_collections
-                    del pathparts[3] # /<collection_name>
-                    sufix_corrected_path = '/'.join(pathparts)
-                    corrected_path = '/_api/'+sufix_corrected_path
-                    canonical_path = '/'+sufix_corrected_path
-                    external_handle = pathparts[1]
-                    external_ringname = pathparts[4]
-                    external_idx = pathparts[5]
-                else:
-                    corrected_path = '/_api'+urlparts.path
-                    canonical_path = urlparts.path
-                    external_handle = pathparts[1]
-                    external_ringname = pathparts[2]
-                    external_idx = pathparts[3]
+                # References MUST have an _api prefix . Repair if it doesn't  
+                corrected_path = '/_api'+urlparts.path
+                canonical_path = urlparts.path
+                external_handle = pathparts[1]
+                external_ringname = pathparts[2]
+                external_idx = pathparts[3]
             else:
                 corrected_path = urlparts.path   
                 external_handle = pathparts[2]

@@ -205,7 +205,7 @@ class AvispaCollectionsRestFunc:
             self.lggr.debug('Awesome , you just updated a Collection')
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been updated",'UI')
-            #redirect = '/'+handle+'/_collections/'+collection
+            
             redirect = url_for('avispa_rest.collections_route_a_x_y',
                                      handle=handle,
                                      collection=collection,
