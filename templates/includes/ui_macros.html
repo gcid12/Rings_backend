@@ -114,7 +114,7 @@
               <div class="fw-c fs-0-8">
                 <div class="spa5"></div>             
                 {% if ringname+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
-                  <a class="nounder" href="/{{handle}}/_collections/{{collection}}/{{ ringname }}"> {{ringname}}</a>
+                  <a class="nounder" href="/{{handle}}/{{ ringname }}?collection={{collection}}"> {{ringname}}</a>
                 {%else%}
                   {{ringname}}
                 {%endif%} 
@@ -131,14 +131,14 @@
                   {% if ringname+'_post_a_b' in user_authorizations or 'post_a_b' in user_authorizations %}
                  
 
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ringname}}?rq=post" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
+                  <a href="/{{handle}}/{{ringname}}?rq=post&collection={{collection}}" type="button" class="fc-b nounder" data-toggle="tooltip" title="Add item">
                     <span class="fa-stack fa-lg">
                       <i class="fa fa-circle fa-stack-1x fc-i fs-1-2"></i>
                       <i class="fa fa-plus fa-stack-1x fa-inverse fs-0-6"></i>
                     </span>
                   </a>
 
-                  <a href="/{{handle}}/_collections/{{collection}}/{{ ringname }}" type="button" class="fc-b nounder" data-toggle="tooltip" title="See Ring">
+                  <a href="/{{handle}}/{{ ringname }}?collection={{collection}}" type="button" class="fc-b nounder" data-toggle="tooltip" title="See Ring">
                         <span class="fa-stack fa-lg">
                           <i class="fa fa-circle fa-stack-1x fc-d fs-1"></i>
                           <i class="fa fa-eye fa-stack-1x fa-inverse fs-0-5"></i>
@@ -150,28 +150,25 @@
                     {% if extended=='1' %}
                       
 
-                      <a href="/{{ handle }}{% if collection %}/_collections/{{collection}}{% endif %}/{{ ringname }}?rq=put" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
+                      <a href="/{{ handle }}/{{ ringname }}?rq=put{% if collection %}&collection={{collection}}{% endif %}" type="button" class="nounder" data-toggle="tooltip" title="Edit Schema">
                         <span class="fa-stack fa-lg">
                           <i class="fa fa-circle fa-stack-1x fc-c fs-1"></i>
                           <i class="fa fa-gear fa-stack-1x fa-inverse fs-0-5"></i>
                         </span>
                       </a>
-                      <a href="/_api/{{ handle }}/{{ ringname }}" type="button" class="nounder" data-toggle="tooltip" title="See REST">
+                      <a href="/_api/{{ handle }}/{{ ringname }}" type="button" class="nounder" data-toggle="tooltip" title="See JSON">
                         <span class="fa-stack fa-lg">
                           <i class="fa fa-circle fa-stack-1x fc-m fs-1"></i>
                           <i class="fa fa-arrow-right fa-stack-1x fa-inverse fs-0-5"></i>
                         </span>
                       </a>
                     {% endif %}
-
+                    
                   {% endif %}
-
-                </div>
-                
+                </div>               
               </div>
             </td>
-            <td>
-              
+            <td>             
             </td>
           </tr>
           
@@ -184,8 +181,8 @@
           
           <tr class="bord-bottom bc-8 bw-2">
             
-            <td style="width:15%">{{ icon_sma(ring.count, color) }}
-            <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
+            <td style="width:15%">{#{ icon_sma(ring.count, color) }#}
+            <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->xxx
             
               {% if data.user_authorizations %}
                 {% if extended!='1' %}
@@ -195,8 +192,8 @@
                     <i class="fa fa-caret-down fs-0-8 fc-g"></i>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ ring.ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a></li>
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ data.handle }}/{{ ring.ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}{% if data.collection %}/_collections/{{data.collection}}{% endif %}/{{ ring.ringname }}?rq=put"><i class="fa fa-cog"></i> xEdit schema</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ data.handle }}/{{ ring.ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> xSee JSON</a></li>
                     
                   </ul>
                 </span>

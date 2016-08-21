@@ -374,6 +374,9 @@ def index_dispatcher(handle,ring=None,idx=None,unindex=False):
 
 
 def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
+    '''
+    This dispatcher takes care only for collection administrative functions
+    '''
 
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
@@ -421,7 +424,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
             data['cu_profilepic'] = cu_user_doc['profilepic']
             #data['cu_location'] = cu_user_doc['location']
 
-        #Thisi is the data from the handle we are visiting
+        #This is the data from the handle we are visiting
         if current_user.id == handle:
             data['handle_actualname'] = cu_user_doc['name']
             data['handle_profilepic'] = cu_user_doc['profilepic']
