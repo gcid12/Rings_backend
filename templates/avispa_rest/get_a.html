@@ -14,10 +14,7 @@
 
 {% block crumb02 %}
                 <i class="fa fa-caret-right breadinter"></i> <!-- caret right -->
-
-               <a href="/{{data.handle}}/_collections/{{ data.collection }}" class="nounder">
-          <span class="fc-a fs-0-7">{{ data.collection }}</span> 
-      </a>
+               <span class="fc-a fs-0-7">{{ data.collection }}</span>    
 {% endblock %}
 
 {% block tabcontent %}
@@ -75,12 +72,12 @@
 
             <p class="fs-1-3"><i class="fa fa-arrow-up"></i>You have no Rings in this collection. Create one here:</p>
             
-            <a href="/{{data.handle}}/_collections/{{data.collection}}?rq=post&n=10" type="button" class="btn-help btn-success" style="margin:5px;">
+            <a href="/{{data.handle}}?rq=post&n=10" type="button" class="btn-help btn-success" style="margin:5px;">
               <i class="fa fa-plus"></i> &nbsp; Create a Ring
               </a>
                 
               <br class="visible-xs" />
-              <a href="/{{data.handle}}/_collections/{{data.collection}}?rq=put" type="button" class="btn-help btn-warning" style="margin:5px;">
+              <a href="/{{data.handle}}?rq=put" type="button" class="btn-help btn-warning" style="margin:5px;">
                 <i class="fa fa-arrow-right"></i> &nbsp; Choose an existing one.
               </a>
               <br class="visible-xs" />
