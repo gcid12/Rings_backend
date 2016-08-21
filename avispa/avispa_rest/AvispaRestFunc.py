@@ -89,7 +89,6 @@ class AvispaRestFunc:
                     if ACM.add_ring_to_collection(handle, collection,result):
                         flash(" The ring has been added to the collection.",'UI')
                         if not api:
-                            #redirect = '/'+handle+'/_collections/'+collection
                             redirect = url_for('avispa_rest.collections_route_a_x_y',
                                                handle=handle,
                                                collection=collection,
@@ -677,41 +676,22 @@ class AvispaRestFunc:
 
 
         if not api:
-
-            if collection:
-                if rqform.get('saveandnew'):
-                    #redirect = '/'+handle+'/_collections/'+collection+'/'+ring+'?rq=post'
-                    redirect = url_for('avispa_rest.collections_route_a_x_y_b',
-                                        handle=handle,
-                                        collection=collection,
-                                        ring=ring,
-                                        rq='post',
-                                        _external=True,
-                                        _scheme=URL_SCHEME)
-                else:
-                    #redirect = '/'+handle+'/_collections/'+collection+'/'+ring
-                    redirect = url_for('avispa_rest.collections_route_a_x_y_b',
-                                        handle=handle,
-                                        collection=collection,
-                                        ring=ring,
-                                        _external=True,
-                                        _scheme=URL_SCHEME)
+ 
+            if rqform.get('saveandnew'):
+                #redirect = '/'+handle+'/'+ring+'?rq=post'
+                redirect = url_for('avispa_rest.route_a_b',
+                                    handle=handle,
+                                    ring=ring,
+                                    rq='post',
+                                    _external=True,
+                                    _scheme=URL_SCHEME)
             else:
-                if rqform.get('saveandnew'):
-                    #redirect = '/'+handle+'/'+ring+'?rq=post'
-                    redirect = url_for('avispa_rest.route_a_b',
-                                        handle=handle,
-                                        ring=ring,
-                                        rq='post',
-                                        _external=True,
-                                        _scheme=URL_SCHEME)
-                else:
-                    #redirect = '/'+handle+'/'+ring
-                    redirect = url_for('avispa_rest.route_a_b',
-                                        handle=handle,
-                                        ring=ring,
-                                        _external=True,
-                                        _scheme=URL_SCHEME)
+                #redirect = '/'+handle+'/'+ring
+                redirect = url_for('avispa_rest.route_a_b',
+                                    handle=handle,
+                                    ring=ring,
+                                    _external=True,
+                                    _scheme=URL_SCHEME)
 
             if 'raw' in rqargs:          
                 
@@ -810,21 +790,13 @@ class AvispaRestFunc:
             self.lggr.debug('Awesome , you just put the changes in the Ring Schema')
             #msg = 'Item put with id: '+idx
             flash("Changes saved in the Schema",'UI')
-            if collection:
-                #redirect = '/'+handle+'/_collections/'+collection+'/'+ring
-                redirect = url_for('avispa_rest.collections_route_a_x_y_b',
-                                    handle=handle,
-                                    collection=collection,
-                                    ring=ring,
-                                    _external=True,
-                                    _scheme=URL_SCHEME)           
-            else:
-                #redirect = '/'+handle+'/'+ring
-                redirect = url_for('avispa_rest.route_a_b',
-                                    handle=handle,
-                                    ring=ring,
-                                    _external=True,
-                                    _scheme=URL_SCHEME)  
+
+            #redirect = '/'+handle+'/'+ring
+            redirect = url_for('avispa_rest.route_a_b',
+                                handle=handle,
+                                ring=ring,
+                                _external=True,
+                                _scheme=URL_SCHEME)  
 
                 
 
@@ -1117,23 +1089,13 @@ class AvispaRestFunc:
                 flash("Item was saved but could not be indexed. Error:%s"%e,'ER')
 
 
-            # Awesome , you just put the changes in the Item
-            
-            if collection:
-                redirect = '/'+handle+'/_collections/'+collection+'/'+ring
-                redirect = url_for('avispa_rest.collections_route_a_x_y_b',
-                                handle=handle,
-                                collection=collection,
-                                ring=ring,
-                                _external=True,
-                                _scheme=URL_SCHEME)    
-            else:
-                #redirect = '/'+handle+'/'+ring
-                redirect = url_for('avispa_rest.route_a_b',
-                                handle=handle,
-                                ring=ring,
-                                _external=True,
-                                _scheme=URL_SCHEME)
+            # Awesome , you just put the changes in the Item        
+            #redirect = '/'+handle+'/'+ring
+            redirect = url_for('avispa_rest.route_a_b',
+                            handle=handle,
+                            ring=ring,
+                            _external=True,
+                            _scheme=URL_SCHEME)
 
             if 'raw' in rqargs:          
                 m = {}
@@ -1276,21 +1238,13 @@ class AvispaRestFunc:
             
             # Item deleted..
             flash('Item deleted..','UI')
-            if collection:
-                #redirect = '/'+handle+'/_collections/'+collection+'/'+ring 
-                redirect = url_for('avispa_rest.collections_route_a_x_y_b',
-                                handle=handle,
-                                collection=collection,
-                                ring=ring,
-                                _external=True,
-                                _scheme=URL_SCHEME)          
-            else:
-                #redirect = '/'+handle+'/'+ring
-                redirect = url_for('avispa_rest.route_a_b',
-                                handle=handle,
-                                ring=ring,
-                                _external=True,
-                                _scheme=URL_SCHEME)
+           
+            #redirect = '/'+handle+'/'+ring
+            redirect = url_for('avispa_rest.route_a_b',
+                            handle=handle,
+                            ring=ring,
+                            _external=True,
+                            _scheme=URL_SCHEME)
 
 
             if 'raw' in rqargs: 

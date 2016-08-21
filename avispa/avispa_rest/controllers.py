@@ -153,10 +153,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         
 
         #search_path = '/'.join(o.path.split('/')[:-1])
-        if collection:
-            search_path = "/%s/_collections/%s/%s"%(handle,collection,ring)
-        else:
-            search_path = "/%s/%s"%(handle,ring)            
+        search_path = "/%s/%s"%(handle,ring)            
 
         data['search_url'] = urlparse.urlunparse(('', '', search_path,'', '', ''))
 
