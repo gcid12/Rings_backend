@@ -1587,6 +1587,9 @@ def api_collections_route_a_x_y(handle,collection):
 @avispa_rest.route('/<handle>/_collections/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
 @login_required
 def collections_route_a_x_y(handle,collection):
+    '''
+    Administrative functions only. No data
+    '''
 
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
@@ -1626,41 +1629,6 @@ def collections_route_a_x_y(handle,collection):
         return redirect(result['redirect'])        
     else:
         return result
-
-
-@avispa_rest.route('/_api/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-def api_collections_route_a_x_y_b(handle,collection,ring):
-
-
-    result = route_dispatcher('_a_b',handle,ring,api=True,collection=collection)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])
-    else:
-        return result
-
-@avispa_rest.route('/<handle>/_collections/<collection>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-@login_required
-def collections_route_a_x_y_b(handle,collection,ring):
-
-    result = route_dispatcher('_a_b',handle,ring,collection=collection)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])
-    else:
-        return result
-
-@avispa_rest.route('/<handle>/_collections/<collection>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-@login_required
-def collections_route_a_x_y_b_c(handle,collection,ring,idx):
-
-    result = route_dispatcher('_a_b_c',handle,ring,idx,collection=collection)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])
-    else:
-        return result
-
 
 
 #API
@@ -1719,7 +1687,12 @@ def route_a(handle):
 @login_required
 def route_a_b(handle,ring):
 
-    result = route_dispatcher('_a_b',handle,ring)
+    if 'collection' in request.args:
+        collection = request.args.get('collection')
+    else:
+        collection = False
+
+    result = route_dispatcher('_a_b',handle,ring,collection=collection)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
@@ -1732,7 +1705,12 @@ def route_a_b(handle,ring):
 @login_required
 def route_a_b_c(handle,ring,idx):
 
-    result = route_dispatcher('_a_b_c',handle,ring,idx)
+    if 'collection' in request.args:
+        collection = request.args.get('collection')
+    else:
+        collection = False
+
+    result = route_dispatcher('_a_b_c',handle,ring,idx,collection=collection)
 
     if 'redirect' in result:
         return redirect(result['redirect'])
