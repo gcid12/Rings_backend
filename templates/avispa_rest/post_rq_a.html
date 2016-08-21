@@ -28,7 +28,7 @@
   </div>
 </div>         
 <div class="row bg-g">
-  <form class="form-horizontal" role="form" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}?method=post" method="POST">
+  <form class="form-horizontal" role="form" action="/{{ data.handle }}?method=post" method="POST">
     <div class="col-sm-3">
       <h2 class="fs-4 hidden-xs">1</h2> 
       <div class="spa20 visible-xs"></div>
@@ -122,7 +122,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><i class="fa fa-code-fork fa-2x"></i> Fork existing Ring</h4>
       </div>
-      <form id="post_rq_a" action="/{{ data.handle }}{%if data.collection %}/_collections/{{data.collection}}{%endif%}" method="POST">
+      <form id="post_rq_a" action="/{{ data.handle }}" method="POST">
         <div class="modal-body">       
           Load Parent Ring from this URL: 
           <input name="ringurl" class="form-control" type="text">
