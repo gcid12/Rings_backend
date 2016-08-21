@@ -1462,8 +1462,6 @@ def teams_a_m_n_invite(handle,team):
         return result
 
 
-
-
 #API
 
 @avispa_rest.route('/_api/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
