@@ -1464,67 +1464,6 @@ def teams_a_m_n_invite(handle,team):
 
 
 
-@avispa_rest.route('/_roles/<handle>', methods=['GET'])
-@login_required
-def roles_a(handle):
-    
-    result = role_dispatcher('_a',handle)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
-
-
-
-@avispa_rest.route('/_roles/<handle>/<ring>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-@login_required
-def roles_a_b(handle,ring):
-    
-    result = role_dispatcher('_a_b',handle,ring)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
-    
-
-@avispa_rest.route('/_roles/<handle>/<ring>/<idx>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-@login_required
-def roles_a_b_c(handle,ring,idx):
-    
-    result = role_dispatcher('_a_b_c',handle,ring,idx)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
-
-
-@avispa_rest.route('/_roles/<handle>/_collection', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-@login_required
-def roles_a_x(handle,collection):
-    
-    result = role_dispatcher('_a_x',handle)
-
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
-
-
-@avispa_rest.route('/_roles/<handle>/_collection/<collection>', methods=['GET', 'POST','PUT','PATCH','DELETE'])
-@login_required
-def roles_a_x_y(handle,collection):
-    
-    result = role_dispatcher('_a_x_y',handle,collection)
-    
-    if 'redirect' in result:
-        return redirect(result['redirect'])        
-    else:
-        return result
-
-
 #API
 
 @avispa_rest.route('/_api/<handle>/_collections', methods=['GET', 'POST','PUT','PATCH','DELETE'])
