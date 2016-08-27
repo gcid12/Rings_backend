@@ -3,7 +3,7 @@
 {% block title %} {% endblock %}
 
 {% block crumbs %}
-<li class="active">New Ring</li>
+<li class="active">New Type</li>
 {% endblock %}
 
 {% block tabcontent %}
@@ -12,14 +12,14 @@
     <div class="alert  alert-success alert-top" style="height:60px;">
       <span class="fs-1-5">
         <i class="fa fa-info-circle"></i> 
-        Create a New Ring  {%if data.collection %}in <strong>'{{data.collection|upper}}'</strong>{%endif%}
+        Create a New Type  {%if data.collection %}in <strong>'{{data.collection|upper}}'</strong>{%endif%}
       </span>
       <p>Please complete the following steps.</p>
     </div>
   </div>
   <div class="col-sm-4 alpha omega text-right">
     <div class="alert  bg-gray alert-top" style="height:60px;">
-      <p class="fs-1">or, use an existing Ring : 
+      <p class="fs-1">or, use an existing Type : 
         <button type="button" class="btn btn-vader btn-sm" data-toggle="modal" data-target="#forkModal">
           <i class="fa fa-code-fork fa-2x fc-a"></i>
         </button>
@@ -29,18 +29,19 @@
 </div>         
 <div class="row bg-g">
   <form class="form-horizontal" role="form" action="/{{ data.handle }}?method=post" method="POST">
-    <div class="col-sm-3">
+    <div class="col-sm-offset-1 col-sm-2">
       <h2 class="fs-4 hidden-xs">1</h2> 
       <div class="spa20 visible-xs"></div>
-      <p class=" text-s1 text-lgray fs-1-5">Ring Name and Description</p>
+      <p class=" text-s1 fs-1-4 text-gray">Type Name</p>
+      <p class="text-lgray"> Define name and description for this type </p>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-8">
       <div class="spa20 hidden-xs"></div>
       {%if data.collection %}
       <input type="hidden" name="collection" value="{{data.collection}}"/>
       {%endif%}  
       <div class="input-group input-group-sm">
-        <span class="input-group-addon" id="sizing-addon1">Ring Name</span>
+        <span class="input-group-addon" id="sizing-addon1">Type Name</span>
         <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring" value="{{request.args.get('RingName')}}">
       </div>
       <div class="input-group input-group-sm">
@@ -55,11 +56,12 @@
       </div>          
     </div>
     <div class="row bg-g">
-      <div class="col-sm-3">
+      <div class="col-sm-offset-1 col-sm-2">
         <h2 class="fs-4 hidden-xs">2</h2>
-        <p class="text-s1 text-lgray fs-1-5">Ring fields</p>   
+        <p class="text-s1 text-gray fs-1-4">Fields</p> 
+        <p class="text-lgray"> Add fields to this Type </p>  
       </div>
-    <div class="col-sm-9">
+    <div class="col-sm-8">
       {% set n = request.args.get('n')|int %}
       <div id="columnfields"> <!-- A. START DRAG AREA -->
       
@@ -102,11 +104,11 @@
       </div>          
     </div>
     <div class="row bg-g">
-      <div class="col-sm-3"> 
+      <div class="col-sm-offset-1 col-sm-2">
         <span class="fs-4">3</span>
-        <p class="text-s1 text-lgray fs-1-5">Save</p>
+        <p class="text-s1 text-gray fs-1-4">Save</p>
       </div>
-      <div class="col-sm-9">
+      <div class="col-sm-8">
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="/{{ data.handle }}" type="submit" class="btn btn-default">Leave without saving anything</a>
       </div>
@@ -120,11 +122,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-code-fork fa-2x"></i> Fork existing Ring</h4>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-code-fork fa-2x"></i> Fork existing Type</h4>
       </div>
       <form id="post_rq_a" action="/{{ data.handle }}" method="POST">
         <div class="modal-body">       
-          Load Parent Ring from this URL: 
+          Load Parent Type from this URL: 
           <input name="ringurl" class="form-control" type="text">
         </div>
         <div class="modal-footer">
