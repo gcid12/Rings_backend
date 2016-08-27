@@ -63,10 +63,12 @@
                             <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
                                 <i class="fa fa-shield fs-1-7"></i>
                             </div>
-                            <div class="col-xs-7 col-sm-4 fs-0-8 pt-5 fw-c">
+                            <div class="col-xs-7 col-sm-4 fs-0-9 pt-5 fw-c">
                                
+                                <span class="fw-a fs-0-9 fc-g">Team &nbsp;</span>
+
                                 {%if 'get_a_m_n' in data.user_authorizations %}
-                                  
+                                    
                                       {{ team.teamname }}
                                   
                                 {%else%}
@@ -78,24 +80,17 @@
                                 <p class="">{{ team.added }}</p>
                             </div>
 
-                            <div class="col-xs-1 col-sm-1">
-                                
-                                {%if 'get_a_m_n' in data.user_authorizations %}
-
-                                    <a class="btn btn-xs btn-default fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
-                                        <i class="fa fa-arrow-right"></i>
-                                    </a>
-
-                                {%endif%}
-                            </div>
+                           
                          </a>
                     </div>
                    
                     <!-- ITEM BODY :::::: -->
-                    <div id="{{team.teamname}}" class="panel-collapse collapse" role="tabpanel">
+                    <div id="{{team.teamname}}" class="panel-collapse collapse in" role="tabpanel">
                         
                         <div class="row">
+
                             <div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-5 p-20 row bord-left">
+
 
                                 {%for member in team.members%}
 
@@ -118,7 +113,7 @@
                                 {%if 'get_a_m_n' in data.user_authorizations %}
 
                                     <a class="btn btn-xs btn-default fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
-                                        more info 
+                                        Team information
                                     </a>
 
                                 {%endif%}
@@ -126,7 +121,7 @@
                                       {%if team.teamname!='owner' %}
                                       
                                         <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}?method=delete" >
-                                            <i class="fa fa-trash"></i> Delete
+                                            <i class="fa fa-trash"></i> Delete team
                                         </a>
 
 
