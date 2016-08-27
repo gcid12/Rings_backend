@@ -1,7 +1,7 @@
 # AvispaCollectionsRestFunc.py
 import json
 import logging
-from flask import redirect, flash
+from flask import redirect,flash,url_for
 from AvispaModel import AvispaModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from CollectionBuilder import CollectionBuilder
