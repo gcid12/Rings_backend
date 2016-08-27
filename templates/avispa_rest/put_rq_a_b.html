@@ -24,7 +24,7 @@
   <div class="alert  alert-warning alert-dismissible alert-top" role="alert">
     <span class="fs-1-2">
       <i class="fa fa-pencil pad-x-10"></i>
-      <strong> Modifying</strong> the ring schema for "{{ data.handle }}/{{ data.ring }}"
+      <strong> Modifying</strong> Type schema for "{{ data.handle }}/{{ data.ring }}"
     </span>
   </div>
   <!-- ROW NAME AND DESCRIPTION -->
@@ -32,7 +32,7 @@
     <div class="row rn-box-content">
       <div class="col-sm-2"> 
         <h2 class="fs-4">1</h2> 
-        <p class=" text-s1">Ring Name and Description</p>
+        <p class=" text-s1">Type Name and Description</p>
       </div>
       <div class="col-sm-10">
         <div class="spa20">
@@ -42,16 +42,16 @@
   {%endif%}  
         <div class="input-group input-group-sm">
           <span class="input-group-addon" id="sizing-addon1">
-            Ring Name
+            Type Name
           </span>
-          <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the ring" value="{{ data.ringschema.RingName }}" disabled>
+          <input name="RingNameDisabled" type="text" class="form-control" id="RingNameDisabled" placeholder="The name of the Type" value="{{ data.ringschema.RingName }}" disabled>
           <input name="RingName" type="hidden" class="form-control" id="RingName" placeholder="The name of the ring" value="{{ data.ringschema.RingName | nonone }}">
         </div>
         <div class="input-group input-group-sm">
           <span class="input-group-addon" id="sizing-addon1">
             Description
           </span>
-          <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this ring unique?" style="height:100px;" >{{ data.ringschema.RingDescription | nonone }}</textarea>
+          <textarea name="RingDescription" class="form-control" rows="10" placeholder="What makes this Type unique?" style="height:100px;" >{{ data.ringschema.RingDescription | nonone }}</textarea>
         </div>
         <div class="text-right spa10">
           <a class="clearlink" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -67,7 +67,7 @@
               <span class="input-group-addon" id="sizing-addon1">
                 Label
               </span>
-              <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the ring" value="{{ data.ringschema.RingLabel | nonone }}"/>
+              <input name="RingLabel" type="text" class="form-control" id="RingLabel" placeholder="The Label of the Type" value="{{ data.ringschema.RingLabel | nonone }}"/>
             </div>
             <div class="input-group input-group-sm">
               <span class="input-group-addon" id="sizing-addon1">
@@ -103,7 +103,7 @@
     <div class="row rn-box-content">
       <div class="col-sm-2">
         <h2 class="fs-4 ">2</h2>
-        <p class="text-s1">Ring fields</p>     
+        <p class="text-s1">Type fields</p>     
       </div>
       <div class="col-sm-10">
         <div id="columnfields">
@@ -133,7 +133,7 @@
           </div>
           <a style="float:right; padding:25px;" href="/{{ data.handle }}/{{ data.ring }}?method=delete" >
             <p>
-              <i class="fa fa-trash-o"></i> &nbsp; Delete this Ring
+              <i class="fa fa-trash-o"></i> &nbsp; Delete this Type
             </p>
           </a>
         </div>

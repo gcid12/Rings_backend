@@ -661,10 +661,10 @@
                               <input name="FieldRequired_{{ FieldOrder }}" value="1" {% if FieldRequired %} checked {% endif %} type="checkbox">
                             </span>
 
-                            <span class="lfc-g fs-0-8 margin-x-7">
+                            <!-- <span class="lfc-g fs-0-8 margin-x-7">
                               multilingual
                               <input name="FieldMultilingual_{{ FieldOrder }}" value="1" {% if FieldMultilingual %} checked {% endif %} type="checkbox">  
-                            </span> 
+                            </span>  -->
                             <span class="fc-g fs-0-8 margin-x-7">
                               Cardinality
                               <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
@@ -684,8 +684,10 @@
                             </span>
                           </div>
                           <div class="col-sm-4">
+                            
                             <table>
                               <tr>
+                                <td><span class="fc-g fs-0-8 margin-x-7"> Level </span></td>
                                 <td><div layer="1" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-1"></div></td>
                                 <td><div layer="2" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-2"></div></td>
                                 <td><div layer="3" order="{{ FieldOrder }}" class="treset r-tag bt-0 bc-3"></div></td>

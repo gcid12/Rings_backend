@@ -1584,7 +1584,7 @@ border-radius: 10px 0px 10px 10px;
 .ui-widget-header {
     /*border: 1px solid #AAA;*/
     color: #222;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 10px 10px 10px;
     padding-left: 10px;
     /*box-shadow: 3px 3px 5px #CCC;*/
 }
