@@ -20,9 +20,8 @@
                             <i class="fa fa-cog fc-g"></i>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="menu_{{collection}}">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}?rq=put"><i class="fa fa-cog"></i> Settings </a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}?rq=post&n=10"><i class="fa fa-plus"></i> New Ring</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}?rq=put"> <i class="fa fa-link"></i> Link Ring</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}/_collections/{{collection}}?rq=put"><i class="fa fa-cog"></i> Settings </a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/{{handle}}?rq=post&n=10&collection={{collection}}"><i class="fa fa-plus"></i> New Type</a></li>
                             
                         </ul>
                     </div>
@@ -61,9 +60,9 @@
                     <span class="caret"></span><span class="hidden-xs">Actions</span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}?rq=post&n=1"><i class="fa fa-plus-circle"></i> New Ring</a></li>
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}"><i class="fa fa-circle-o"></i> Show all Rings</a></li>
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{data.handle}}?rq=post&n=1&collection={{data.collection}}"><i class="fa fa-plus-circle"></i> New Type</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{data.collection}}"><i class="fa fa-circle-o"></i> Show all Types</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/_collections/{{data.collection}}?rq=put"> <i class="fa fa-wrench"></i>Collection Settings</a></li>
                   </ul>
                 </span>
             </div>
@@ -193,7 +192,7 @@
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
                     <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/{{ ring.ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a></li>
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ data.handle }}/{{ ring.ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> xSee JSON</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ data.handle }}/{{ ring.ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
                     
                   </ul>
                 </span>

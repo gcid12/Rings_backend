@@ -6,6 +6,7 @@ from AvispaModel import AvispaModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from CollectionBuilder import CollectionBuilder
 from AvispaLogging import AvispaLoggerAdapter
+from env_config import URL_SCHEME
 
 class AvispaCollectionsRestFunc:
 
