@@ -1,7 +1,7 @@
 # AvispaTeamsRestFunc.py
 import urlparse, random
 import logging
-from flask import redirect, flash
+from flask import redirect, flash, url_for
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from flask.ext.login import current_user
