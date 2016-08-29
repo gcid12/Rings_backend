@@ -106,7 +106,7 @@ class AvispaRestFunc:
                         #redirect = '/'+result['handle']+'/'+result['ringname']+'?method=delete'
                         redirect = url_for('avispa_rest.route_a_b',
                                            handle=handle,
-                                           ringname=ringname,
+                                           ringname=result['ringname'],
                                            method='delete',
                                            _external=True,
                                            _scheme=URL_SCHEME)
@@ -149,7 +149,7 @@ class AvispaRestFunc:
                                         rqform=rqform)
                 else:
                     #redirect = '/'+handle+'/'+ring+'?rq=post&n=10&'+str(recovery_string)
-                    redirect = url_for('avispa_rest.route_a_b',
+                    redirect = url_for('avispa_rest.route_a',
                                         handle=handle,
                                         rq='post',
                                         _external=True,
@@ -905,20 +905,20 @@ class AvispaRestFunc:
     
     #DELETE /a/b
     
-    def delete_a_b(self,handle,ring,idx=False,api=False,rqargs=None,rqurl=None,collection=None,*args,**kargs):
+    def delete_a_b(self,handle,ring,idx=None,api=None,rqargs=None,rqurl=None,collection=None,*args,**kargs):
         
         if self.AVM.user_delete_ring(handle,ring):
 
             ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
-            ESM.unindexer(rqurl,handle,ring)
+            ESM.unindexer(handle,ring)
             flash('Ring '+ring+' deleted','UI')
         else:
             flash('Could not delete the Ring','ER')
         
-            redirect = url_for('avispa_rest.home',
-                                handle=handle,
-                                _external=True,
-                                _scheme=URL_SCHEME)
+        redirect = url_for('avispa_rest.home',
+                            handle=handle,
+                            _external=True,
+                            _scheme=URL_SCHEME)
             
 
         d = {'redirect': redirect, 'status':200}
