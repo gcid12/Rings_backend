@@ -11,6 +11,7 @@ from datetime import datetime
 from app import flask_bcrypt
 from EmailModel import EmailModel
 from AvispaLogging import AvispaLoggerAdapter
+from env_config import URL_SCHEME
 
 
 class AvispaTeamsRestFunc:

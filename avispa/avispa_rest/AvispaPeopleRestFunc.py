@@ -6,6 +6,7 @@ from AvispaModel import AvispaModel
 from MainModel import MainModel
 from AvispaPeopleModel import AvispaPeopleModel
 from AvispaLogging import AvispaLoggerAdapter
+from env_config import URL_SCHEME
 
 
 class AvispaPeopleRestFunc:
