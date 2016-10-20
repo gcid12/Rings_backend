@@ -18,50 +18,63 @@
 <!-- START NEW CONTENT --> 
 
 
-<section class="bp-20 p-50">
+<section class="bp-20">
   <div class="container">
     <div class="row">
-            
-      <div class="col-md-9">  
-
-      {{ ui.org_header(data,current_user.id) }}
-
-
-        <div class="row">
-          <div class="col-sm-12">
-
-            
-            <br/>
-            <div class="rn-b1">Creating a new Organization</div>
-            <br/>
-
-
           
+        
+        <div class="col-xs-12 col-sm-offset-1 col-sm-8">
 
-            <div class="rn-box-content">
-              <form action="" method="POST" role="form">
-                
-                
-              
-                <div class="form-group">
-                  <label for="">Organization name:</label>
-                  <input type="text" id="username" name="username" required="required" class="form-control" placeholder="This is the handle of the organization">
-                </div>
+          {{ ui.org_header(data,current_user.id) }}
 
-                <div class="form-group">
+          <br/>
+          <br/>
+        
+          <div class="rn-b1">Creating a new Organization</div>
+          <br/>
+          <hr/>
+          <form action="" method="POST" role="form">
+
+            <label for="">Company / Organization name:</label> 
+            <p class="fs-0-8 fc-g">(Can be changed later)</p>
+            <div class="input-group input-group-md">
+              <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-book"></i></span>
+              <input type="text" id="username" name="username"  required="required" class="form-control" placeholder="e.g. The Candy Company" aria-describedby="sizing-addon1">
+            </div>
+
+            <br/>
+
+            <label for="">Handle:</label> 
+            <p class="fs-0-8 fc-g">No spaces ,max 20 characters <span class="fc-c">(Can't be changed later)</span></p>
+            <div class="input-group input-group-md">
+              <span class="input-group-addon" id="sizing-addon1">@</span>
+              <input type="text" id="username" name="username"  required="required" class="form-control" placeholder="companyname" aria-describedby="sizing-addon1">
+            </div>
+
+            <br/>
+
+            <label for="">Logo:</label> 
+            <div class="input-group input-group-lg">
+                <p class="fs-0-8 fc-g">Upload an image/icon for this organization(can be done later)</p>
+
+                <button class="btn btn-primary btn-sm "><i class="fa fa-camera"></i> Click here to Upload</button>
+            </div>
+
+            <br/><br/>
+               <!--  <div class="form-group">
                   <label for="">Billing email:</label>
-                  <input type="email" id="email" name="email" required="required" class="form-control" placeholder="Receipts will be sent here">
+                  <input type="email" id="email" name="email" required="required" class="form-control" placeholder="Receipts will be sent herex">
                   
-                </div>
-         
-                <button type="submit" class="btn btn-primary">Create organization</button>
-              </form>
-            </div><!-- //close box -->
+                </div> -->
+     
+            <button type="submit" class="btn btn-success" style="width:100%">Create organization </button>
+          </form>
 
-          </div><!-- close 12 -->   
-        </div> <!-- close row -->
+        </div>   
+
 
     </div>
+  </div>
 </section>
 
 
