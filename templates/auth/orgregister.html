@@ -21,60 +21,141 @@
 <section class="bp-20">
   <div class="container">
     <div class="row">
-          
-        
-        <div class="col-xs-12 col-sm-offset-1 col-sm-8">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-9">
 
-          {{ ui.org_header(data,current_user.id) }}
-
-          <br/>
-          <br/>
-        
-          <div class="rn-b1">Creating a new Organization</div>
-          <br/>
           <hr/>
-          <form action="" method="POST" role="form">
 
-            <label for="">Company / Organization name:</label> 
-            <p class="fs-0-8 fc-g">(Can be changed later)</p>
+          <h2>
+            New Organization
+          </h2>
+          
+          <span>by: <span class="label label-primary right">specialist</span> {{data.handle_actualname}} <span class="fc-g">( @{{ current_user.id }} )</span></span>
+
+          <div class="alert alert-warning alert-dismissible mt-20" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p class="fs-0-8">
+              <i class="fa fa-exclamation-triangle"></i>
+              Note: You can create organization profiles in behalf of other companies, but only as a 'specialist' <a href="/">[learn more]</a>. Primary Source profiles are only granted to confirmed owners. If you are the owner or Admin of an Organization or Company please go <a href="">here</a>.
+            </p>
+          </div>
+          
+          <hr/>
+
+        </div>
+        
+
+        
+    </div>
+
+    <form action="" method="POST" role="form">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-5">
+          
+          
+
+            <label for="">Organization / Company name: <span class="fc-h">*</span> </label> 
+
+            <p class="fs-0-8 fc-g">Can be changed later</p>
+            
             <div class="input-group input-group-md">
-              <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-book"></i></span>
-              <input type="text" id="username" name="username"  required="required" class="form-control" placeholder="e.g. The Candy Company" aria-describedby="sizing-addon1">
+              <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-flag" aria-hidden="true"></i></span>
+              <input type="text" id="xxx" name="xxx" class="form-control" placeholder="e.g. The Candy Company" aria-describedby="sizing-addon1">
             </div>
 
             <br/>
+        </div>
+        <div class="col-xs-12 col-sm-4">
 
-            <label for="">Handle:</label> 
-            <p class="fs-0-8 fc-g">No spaces ,max 20 characters <span class="fc-c">(Can't be changed later)</span></p>
+            <label for="">Handle: <span class="fc-h">*</span> </label> 
+            <p class="fs-0-8 fc-g">No spaces ,max 20 characters </p>
+
             <div class="input-group input-group-md">
               <span class="input-group-addon" id="sizing-addon1">@</span>
-              <input type="text" id="username" name="username"  required="required" class="form-control" placeholder="companyname" aria-describedby="sizing-addon1">
+              <input type="text" id="username" name="username"  required="required" class="form-control" placeholder="e.g. candycompany" aria-describedby="sizing-addon1">
             </div>
-
+            <p class="fs-0-8">
+              <span class="fc-c">(Cannot be changed later)</span> 
+              <a class="" data-toggle="popover" title="Handle" data-content="The handle, or username, you choose will identify you to other members of our website. It is used when you upload photos, blog, and send messages. You cannot change it because all references pointing to you would automatically break." data-placement="bottom"> why?</a>
+            </p>
+          
             <br/>
-
-            <label for="">Logo:</label> 
-            <div class="input-group input-group-lg">
-                <p class="fs-0-8 fc-g">Upload an image/icon for this organization(can be done later)</p>
-
-                <button class="btn btn-primary btn-sm "><i class="fa fa-camera"></i> Click here to Upload</button>
-            </div>
-
-            <br/><br/>
-               <!--  <div class="form-group">
-                  <label for="">Billing email:</label>
-                  <input type="email" id="email" name="email" required="required" class="form-control" placeholder="Receipts will be sent herex">
-                  
-                </div> -->
-     
-            <button type="submit" class="btn btn-success" style="width:100%">Create organization </button>
-          </form>
-
-        </div>   
-
+        </div>  
 
     </div>
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-offset-1 col-sm-5">
+          <label for="">Website:</label> 
+            <p class="fs-0-8 fc-g">Organization / Company website</p>
+            <div class="input-group input-group-md">
+              <span class="input-group-addon" id="sizing-addon1"> <i class="fa fa-external-link"></i> </span>
+              <input type="text" id="yyy" name="yyy"  class="form-control" placeholder="www.website.com" aria-describedby="sizing-addon1">
+            </div>
+          <br/>
+
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <label for="">Location:</label> 
+            <p class="fs-0-8 fc-g">City, town or community name</p>
+            <div class="input-group input-group-md">
+              <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+              <input type="text" id="zzz" name="zzz" class="form-control" placeholder="e.g. Paris" aria-describedby="sizing-addon1">
+            </div>
+            <br/>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-5">
+
+            <label for="">Logo:</label> 
+            <p class="fs-0-8 fc-g">An image to identify the company</p>
+            <div class="input-group input-group-md">
+              <span class="input-group-addon" id="sizing-addon1"> <i class="fa fa-camera"></i> </span>
+              <button class="btn btn-vader btn-sm ">  Click here to Upload</button>
+            </div>
+
+        </div>
+        <input type="hidden" id="email" name="email" required="required" value="gcid@myring.io">
+
+        <!-- <div class="col-xs-12 col-sm-4">
+            <label for="">Contact email</label> 
+            <p class="fs-0-8 fc-g">Organization / Compay contact </p>
+            <div class="input-group input-group-md">
+                <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-mail" aria-hidden="true"></i></span>
+                <input type="email" id="email" name="email" required="required" class="form-control" placeholder="name@company.com"> 
+            </div>
+            <br/>
+        </div> -->
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-9">
+            <label for="">Tags:</label> 
+            <p class="fs-0-8 fc-g">keywords that define the organization (separate words by coma)</p>
+            <div class="input-group input-group-md">
+              <span class="input-group-addon" id="sizing-addon1"> <i class="fa fa-tags" aria-hidden="true"></i></span>
+              <input type="text" id="vvv" name="vvv" class="form-control" placeholder="e.g. candy, sweet, lollypop" aria-describedby="sizing-addon1">
+            </div>
+            <br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-9">  
+        
+            <br/><br/>
+              
+            <div class="fc-h fs-0-9">* Mandatory fields</div>
+
+            <button type="submit" class="btn btn-success" style="width:100%">Create organization </button>
+        </div> 
+    </div>
+
+    </form>
+
+
   </div>
+
 </section>
 
 
