@@ -163,7 +163,7 @@ class MainModel:
         people2['added'] = datetime.now()
 
 
-        self.lggr.debug('Notice: Creating User ->'+data['username'])
+        self.lggr.debug('Notice: Creating User ->%s'%data['username'])
         auser = MyRingUser(
             email= data['username']+'@id.myring.io',
             billingemail = data['email'],  
@@ -176,10 +176,10 @@ class MainModel:
         auser.teams.append(teamname='staff',addedby=data['owner'],added=datetime.now())
 
         for team in auser.teams:
-            self.lggr.debug("Teamowner:",team)
-            self.lggr.debug("team.teamname:",team.teamname)
-            self.lggr.debug("team.members:",team.members, type(team.members))
-            self.lggr.debug("team.added:",team.added)
+            self.lggr.debug("Teamowner:%s"%team)
+            self.lggr.debug("team.teamname:%s"%team.teamname)
+            self.lggr.debug("team.members:%s - %s"%(team.members, type(team.members)))
+            self.lggr.debug("team.added:%s"%team.added)
             if team.teamname == 'owner':
                 team.members.append(handle=data['owner'],addedby=data['owner'],added=datetime.now())
             elif team.teamname == 'staff':
@@ -200,8 +200,8 @@ class MainModel:
         db = self.select_db(dbname)
         user_doc = MyRingUser.load(db, username)
 
-        self.lggr.debug('user_doc:',user_doc,type(user_doc))
-        self.lggr.debug('element:',element,type(element))
+        self.lggr.debug('user_doc: %s (%s)'%(user_doc,type(user_doc)))
+        self.lggr.debug('element: %s (%s)'%(element,type(element)))
 
     
         #if not hasattr(user_doc,str(element)): 
@@ -448,17 +448,12 @@ class MainModel:
 
         else:
 
-            self.lggr.debug('No user:'+handle)
+            self.lggr.debug('No user:%s'%handle)
             return False
 
 
     #MAINMODEL 
     def update_user(self,data,user_database=None):
-
-        #self.lggr.debug("update user data:")
-        #self.lggr.debug(data)
-
-        #self.lggr.debug("update_user 1:")
 
         if not user_database : 
             user_database = self.user_database
@@ -475,8 +470,8 @@ class MainModel:
 
             for field in data:
                 if field!='id':
-                    self.lggr.debug("Old Value:"+str(user[field]))
-                    self.lggr.debug("New Value:"+str(data[field]))
+                    self.lggr.debug("Old Value:%s"%str(user[field]))
+                    self.lggr.debug("New Value:%s"%str(data[field]))
                     user[field]=data[field]
 
             if user.store(self.db):  
@@ -487,7 +482,7 @@ class MainModel:
                 return False
 
         else:
-            self.lggr.debug('No user'+data['_id'])
+            self.lggr.debug('No user %s'%data['_id'])
 
 
     #ROLEMODEL
@@ -501,8 +496,8 @@ class MainModel:
         user_authorizations = []
         rolelist = []
 
-        self.lggr.debug('Method:'+ method)
-        self.lggr.debug('depth:'+ depth)
+        self.lggr.debug('Method:%s'%method)
+        self.lggr.debug('depth:%s'%depth)
 
         if api:
             user_authorizations = self.sum_role_auth(user_authorizations,'api_user')
@@ -524,7 +519,7 @@ class MainModel:
                  
                     if rolelist:
 
-                        self.lggr.debug('rolelist1:'+str(rolelist))
+                        self.lggr.debug('rolelist1:%s'%str(rolelist))
                         self.lggr.debug('This user is a member of a team') 
 
                         for role in rolelist:
@@ -550,8 +545,8 @@ class MainModel:
                 rolelist = self.user_belongs_org_team(current_user,handle,ring=ring)
 
                 if rolelist:
-                    self.lggr.debug('rolelist2:'+str(rolelist))
-                    self.lggr.debug('This user can act on this ring:'+ring) 
+                    self.lggr.debug('rolelist2:%s'%str(rolelist))
+                    self.lggr.debug('This user can act on this ring:%s'%ring) 
 
                     for role in rolelist:
                             user_authorizations = self.sum_role_auth(user_authorizations,role)
@@ -560,22 +555,22 @@ class MainModel:
                 if depth == '_a_b_c':
 
                     db_ringname=str(handle)+'_'+str(ring) 
-                    #self.lggr.debug('db_ringname:',db_ringname)
+                    #self.lggr.debug('db_ringname:%s'%db_ringname)
                     db = self.select_db(db_ringname)
-                    #self.lggr.debug('db:',db)
+                    #self.lggr.debug('db:%s'%db)
 
                     options = {}
                     options['key']=str(idx)
 
                     #Retrieving from ring/items view
                     result = db.iterview('item/roles',1,**options)
-                    self.lggr.debug('item/roles:'+str(result))
+                    self.lggr.debug('item/roles:%s'%str(result))
 
                     
 
                     try:
                         for roles in result:
-                            self.lggr.debug('roles for item:',roles['value'])
+                            self.lggr.debug('roles for item:%s'%roles['value'])
                             #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
 
                             for role in roles['value']:
@@ -584,9 +579,9 @@ class MainModel:
 
 
                                 if type(roles['value'][role]) is list and current_user in roles['value'][role]:
-                                    self.lggr.debug('This user is an Item '+role+':'+ring) 
+                                    self.lggr.debug('This user is an Item %s:%s'%(role,ring)) 
                                     if role in self.roles:
-                                        self.lggr.debug('Adding:'+role+'.')
+                                        self.lggr.debug('Adding:%s.'%role)
                                         user_authorizations = self.sum_role_auth(user_authorizations,role)
                             
                     except(ResourceNotFound):
@@ -602,7 +597,7 @@ class MainModel:
 
 
                         for roles in result:
-                            self.lggr.debug('roles for item:',roles['value'])
+                            self.lggr.debug('roles for item:%s'%roles['value'])
                             #{u'fact_checker': [u'blalab', u'camaradediputados'], u'_public': False}
 
                             for role in roles['value']:
@@ -611,7 +606,7 @@ class MainModel:
 
 
                                 if type(roles['value'][role]) is list and current_user in roles['value'][role]:
-                                    self.lggr.debug('This user is an Item '+role+':'+ring) 
+                                    self.lggr.debug('This user is an Item %s:%s '%(role,ring))
                                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
 
@@ -621,8 +616,8 @@ class MainModel:
             team = 'owner'
             rolelist = self.user_belongs_org_team(current_user,handle,team)
             if rolelist:
-                self.lggr.debug('rolelist3:',rolelist)
-                self.lggr.debug('This user is a member of team:'+team)
+                self.lggr.debug('rolelist3:%s'%rolelist)
+                self.lggr.debug('This user is a member of team:%s'%team)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
@@ -638,12 +633,12 @@ class MainModel:
                 self.lggr.debug('Testing authorizations for /_teams section')
                 rolelist = self.user_belongs_org_team(current_user,handle)
             else:
-                self.lggr.debug('Testing authorizations for /_teams/'+team)
+                self.lggr.debug('Testing authorizations for /_teams/%s'%team)
                 rolelist = self.user_belongs_org_team(current_user,handle,team)
                       
             
             if rolelist:
-                self.lggr.debug('rolelist4:',rolelist)
+                self.lggr.debug('rolelist4:%s'%rolelist)
                 for role in rolelist:
                     user_authorizations = self.sum_role_auth(user_authorizations,role)
                     
@@ -663,7 +658,7 @@ class MainModel:
             else:
                 rolelist = self.user_belongs_org_team(current_user,handle)
                 if rolelist:
-                    self.lggr.debug('rolelist5:',rolelist)
+                    self.lggr.debug('rolelist5:%s'%rolelist)
                     self.lggr.debug('This user is a member of a team accesing a collection') 
                          
                     for role in rolelist:
@@ -679,7 +674,7 @@ class MainModel:
 
 
         #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
-        self.lggr.debug('Final user_authorizations:'+str(user_authorizations))
+        self.lggr.debug('Final user_authorizations:%s'%str(user_authorizations))
 
         method_parts = method.split('_')
 
@@ -698,7 +693,7 @@ class MainModel:
         out={}
         out['user_authorizations'] = user_authorizations
 
-        self.lggr.debug('Method for this screen:'+method)
+        self.lggr.debug('Method for this screen:%s'%method)
 
         if method.lower() in user_authorizations:
             out['authorized'] = True
@@ -716,19 +711,19 @@ class MainModel:
             if role['role'] in self.roles:
 
                 if role['ring']:
-                    self.lggr.debug('Adding ring role:'+role['ring']+'_'+role['role'])
+                    self.lggr.debug('Adding ring role:%s_%s'%(role['ring'],role['role']))
                     self.lggr.debug(self.roles[role['role']])
                     for r in self.roles[role['role']]:
                         user_authorizations.append(role['ring']+'_'+r)
 
             else:
-                self.lggr.debug(role+' was not found')
+                self.lggr.debug('%s was not found'%role)
 
 
         else:
 
             if role in self.roles:
-                self.lggr.debug('Adding role:'+role+':'+str(self.roles[role]))
+                self.lggr.debug('Adding role:%s:%s'%(role,str(self.roles[role])))
                 user_authorizations += self.roles[role]
             else:
                 self.lggr.debug(role+' was not found')

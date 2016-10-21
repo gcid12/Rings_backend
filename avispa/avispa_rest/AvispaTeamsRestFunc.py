@@ -1,7 +1,7 @@
 # AvispaTeamsRestFunc.py
 import urlparse, random
 import logging
-from flask import redirect, flash
+from flask import redirect, flash, url_for
 from AvispaModel import AvispaModel
 from MainModel import MainModel
 from flask.ext.login import current_user
@@ -11,6 +11,7 @@ from datetime import datetime
 from app import flask_bcrypt
 from EmailModel import EmailModel
 from AvispaLogging import AvispaLoggerAdapter
+from env_config import URL_SCHEME
 
 
 class AvispaTeamsRestFunc:
