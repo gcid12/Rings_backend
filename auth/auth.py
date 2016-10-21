@@ -598,12 +598,13 @@ def orgregister_post():
 
     username = request.form.get('username')
     email = request.form.get('email')
+    location = request.form.get('location')
 
     # Organizations use no passwords
     password_hash = ''
 
     # prepare User
-    user = User(username,email,password_hash,current_user.id,True)
+    user = User(username,email,location,password_hash,current_user.id,True)
     lggr.info(user)
 
     try:

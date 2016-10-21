@@ -13,7 +13,7 @@ from AvispaLogging import AvispaLoggerAdapter
 
 
 class User(UserMixin):
-    def __init__(self, username=None, email=None, passhash=None, owner=None, isOrg=False, active=True, id=None, onlogin=False):
+    def __init__(self, username=None, email=None, location=None, passhash=None, owner=None, isOrg=False, active=True, id=None, onlogin=False):
         
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
@@ -22,6 +22,7 @@ class User(UserMixin):
 
         self.username = username
         self.email = email
+        self.location = location
         self.passhash = passhash
         self.isOrg = isOrg
         self.active = active
@@ -46,6 +47,7 @@ class User(UserMixin):
 
         user['username'] = self.username.lower()
         user['email'] = self.email.lower()  
+        user['location'] = self.location.lower()  
         user['owner'] = self.owner 
         user['passhash'] = self.passhash
         user['onlogin'] = self.onlogin
@@ -94,6 +96,7 @@ class User(UserMixin):
             self.lggr.info(dbUser)
             if dbUser:
                 self.email = dbUser['value']['email']
+                self.location = dbUser['value']['location']
                 self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
                 self.id = dbUser['value']['_id']
