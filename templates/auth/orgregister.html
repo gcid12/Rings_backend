@@ -4,13 +4,17 @@
 {% block title %} Avispa {% endblock %}
 {% block findme %} auth/orgregister {% endblock %}
 
+{% block headscripts %}
+
+    {{ dz.headscripts() }}
+
+{% endblock %}
+
 
 {% block crumbs %}
 
 
 {% endblock %}
-
-
 
 {% block content %}
 
@@ -109,6 +113,16 @@
     <div class="row">
         <div class="col-xs-12 col-sm-offset-1 col-sm-5">
 
+            <div class="form-group">
+                                        
+              <div class="col-sm-10">
+
+                  <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="">
+
+              <div id='dropzone1' class="dropzone" style="min-height:0px; padding:10px 10px;"><span class="dz-message" ><i class="fa fa-camera fa-1x"> </i> Upload Photo</span></div>
+
+            </div>
+
             <label for="">Logo:</label> 
             <p class="fs-0-8 fc-g">An image to identify the company</p>
             <div class="input-group input-group-md">
@@ -162,15 +176,30 @@
 </section>
 
 
+{% endblock %}
 
+{% block footscripts %}
 
-
+  {{ dz.footscripts() }}
 
 {% endblock %}
 
 {% block modals %}
 
   {% include 'avispa_rest/helpmodal.html' %}
+
+{% endblock %}
+
+{% block footfunctions %}
+
+  {{ dz.footfunctions(handle=current_user.id,image_cdn_root=data.image_cdn_root) }}
+ 
+{% endblock %}
+
+
+{% block footafterfunctions %}
+
+  {{ dz.footafterfunctions() }}
 
 {% endblock %}
 
