@@ -623,6 +623,12 @@ def orgregister_post():
     #if True:
         user.set_user()
 
+        # Because org bucket didn't exist before creating the org,
+        # the profilepic was stored in the current_user's bucket, and it won't be found
+        # You need to put it in the new org bucket
+
+        
+
         mpp = {'status':'OK'}
         flash({'f':'track','v':'_orgregister','p':mpp},'MP')
         
