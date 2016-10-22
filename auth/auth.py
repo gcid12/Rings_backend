@@ -212,7 +212,7 @@ def api_register_post():
     password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
 
     # prepare User
-    user = User(username,email,password_hash)
+    user = User(username=username,email=email,passhash=password_hash)
     lggr.debug(user)
 
 
@@ -345,7 +345,7 @@ def register_post():
     password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
 
     # prepare User
-    user = User(username,email,password_hash)
+    user = User(username=username,email=email,passhash=password_hash)
     lggr.info(user)
 
     try:
@@ -550,9 +550,10 @@ def api_orgregister_post():
     owner = request.form.get('owner')
     username = request.form.get('username')
     email = request.form.get('email')
+    
 
     # prepare User
-    user = User(username,email,'',owner,isOrg=True)
+    user = User(username=username,email=email,passhash='',owner=owner,isOrg=True)
     lggr.info(user)
 
     try:
@@ -597,13 +598,25 @@ def orgregister_post():
     MAM = MainModel(tid=tid,ip=ip)
 
     username = request.form.get('username')
+    name = request.form.get('name','')
     email = request.form.get('email')
+    location = request.form.get('location','')
+    url = request.form.get('url','')
+    profilepic = request.form.get('profilepic','')
 
     # Organizations use no passwords
     password_hash = ''
 
     # prepare User
-    user = User(username,email,password_hash,current_user.id,True)
+    user = User(username=username,
+                email=email,
+                passhash=password_hash,
+                owner=current_user.id,
+                location=location,
+                url=url,
+                profilepic=profilepic,
+                name=name,
+                isOrg=True)
     lggr.info(user)
 
     try:
