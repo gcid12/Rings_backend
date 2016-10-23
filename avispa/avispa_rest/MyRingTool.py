@@ -155,7 +155,7 @@ class MyRingTool:
         from wand.image import Image 
         from wand.display import display
 
-        image_folder = '/Users/ricardocid/Code/avispa/imagestest/'
+        image_folder = ''
 
         with Image(filename=image_folder+'cover1b.png') as img:
             print(img.size)
@@ -173,7 +173,7 @@ class MyRingTool:
         from werkzeug import secure_filename
 
 
-        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispapics/'
+        UPLOAD_FOLDER = ''
 
         if request.method == 'POST':
             file = request.files['file']
@@ -208,7 +208,7 @@ class MyRingTool:
         from wand.display import display
 
 
-        UPLOAD_FOLDER = '/Users/ricardocid/Code/avispapics/'
+        UPLOAD_FOLDER = ''
         out = ''
 
         if request.method == 'POST':
