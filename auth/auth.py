@@ -1160,3 +1160,27 @@ def licenses_get(handle):
                                  _external=True,
                                  _scheme=URL_SCHEME))
 
+
+
+
+#WEB
+@avispa_auth.route("/_sand", methods=["GET"])
+def sand():
+
+    tid,ip = setup_log_vars()
+    lggr = setup_local_logger(tid,ip)
+    
+    MAM = MainModel(tid=tid,ip=ip)
+
+    data = {}
+    data['image_cdn_root'] = IMAGE_CDN_ROOT
+    data['listview'] = ''
+    data['handle_actualname'] = 'John Doeherty'
+    data['handle'] = 'Jhohndoe'
+    data['organizations'] = {'uno','dos','tres','cuatro'}
+
+
+    return render_template("/auth/sand.html", data=data)
+
+
+

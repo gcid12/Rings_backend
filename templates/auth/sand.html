@@ -17,7 +17,7 @@
                         <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xxs">
                             
                             {% if data.handle_profilepic %}
-                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle img-responsive"> 
+                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle"> 
                             {%else%}
                             <img src="/static/images/ph/ph_user.gif" class="img-circle img-responsive">
                             <br/> 
@@ -99,20 +99,18 @@
                 <div class="row spa50">
                     
                     <!-- ROW A -->
-                    <div class="col-xs-6 col-sm-8 col-md-8">
+                    <div class="col-xs-7 col-sm-8 col-md-8">
 
                         <span class="fw-c fs-fs-0-8 p-x-20 hidden-xs">Contributions</span>
                     
                         <span class="fs-0-8 p-x-20">
-                            <span class="hidden-xs">Total: </span>
-                            <span class="badge bg-m fs-0-8">1,325</span>
+                            Total: <span class="badge bg-m fs-0-8">1,325</span>
                         </span>
                         <span class="fs-0-8 bord-left p-x-20">
-                            <span class="hidden-xs">Score : </span>
-                            <strong>89% </strong> 
+                            Score :  <strong>89% </strong> 
                         </span>
                     </div>
-                    <div class="col-xs-6 col-sm-3 col-md-3 cornerfilter pr-20">
+                    <div class="col-xs-5 col-sm-3 col-md-3 cornerfilter pr-20">
                         <ul class="nav nav-tabs navbar-right float-right" role="tablist">
                             <li role="presentation" class="active"><a href="#icons" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-list"></i></a></li>
                             <li role="presentation"><a href="#list" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-th"></i></a></li>
@@ -124,30 +122,25 @@
                       <!-- Tab panes -->
                       <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active pt-20" id="icons">
-                            <table class="table table-condensed table-hover table-clearhover">
+                            <table class="table">
 
                                   <tr class=" fs-0-6 fc-m">
                                     <th>Name</th>
-                                    <th class="hidden-xs">Location</th>
+                                    <th>Location</th>
                                     <th>Role</th>
                                     <th>Points</th>
-                                    <th class="hidden-xs"></th>
+                                    <th></th>
 
                                     
                                   </tr>
                                 {% for organization in data.organizations %}
                                   <tr class=" fs-0-8">
                                     <td>
-                                        <a href="/{{organization['handle']}}/_home"> 
-
-                                          <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-2">
-                                        
-                                            {{ organization['handle'] }}
-                                            <span class="fc-g hidden-xs">( @{{ organization['handle'] }} ) </span>
-                                        </a>
+                                      <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-2">
+                                    Cooper Hewitt Museum
                                     </td>
-                                    <td class="hidden-xs">
-                                        New York
+                                    <td>
+                                      Paris
                                     </td>
                                     <td>
                                       <span class="badge bg-d fs-0-7 ">Specialist</span>
@@ -155,14 +148,9 @@
                                     <td>
                                       239
                                     </td>
-                                    <td class="text-right hidden-xs">
-
-                                        <a href="/{{organization['handle']}}/_home" type="button" class="fc-b nounder" data-toggle="tooltip" title="{%if organization['handle'] %}{{organization['handle']}}{%else%}Handlemissing{%endif%}">
-   
-                                           <i class="fc-g fa fa-plus"></i>
-                                           
-                                        </a>
-
+                                    <td class="text-right">
+                                      <i class="fa fa-info-circle"></i>
+                                      <i class="fa fa-plus-circle"></i>
                                     </td>
 
                                   </tr>
