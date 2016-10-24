@@ -30,40 +30,109 @@ class AvispaUpload:
     def __init__(self,handle):
 
         self.handle = handle
-        self.filename = ''
+        
         self.rs_status = ''
-        self.image_sizes = []
-
         self.officialsizes = {'r100':100,'r240':240,'r320':320,'r500':500,'r640':640,'r800':800,'r1024':1024}
         self.thumbnailsizes = {'t75':75,'t150':150}
+        self.allowed_formats = set(['txt','pdf','png','jpg','JPG','jpeg','gif'])
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
 
+    #DRIVER FUNCTION
     def do_upload(self,request,*args):
 
-        response={}
+        response = {}
+        image_sizes = []
 
+        #Validate request
         if not self._request_complete(request):
             response['status']=self.rs_status
             return response
 
-        if not self._request_allowed(request):
+        #Pull file from request
+        f = self._pull_file_from_request(request)
+
+        #Check its name
+        if not self._filename_extension_check(f.filename):
             response['status']=self.rs_status
             return response
 
-        if self._upload_file(request):
-            self._multi_size()
-            response['imgid']=self.imgid
-            response['imgsizes']=self.image_sizes
-        else:
-            response['status']=self.rs_status
+        #Load the image blob
+        print(f)
+        f.seek(0)       
+        image_binary = f.read()
+        
+        #Load the image
+        with Image(blob=image_binary) as img:
+
+            #Prepare image components       
+            imgid = self._generate_imgid()
+            filename = imgid+'.jpg'
+
+            #Image analysis
+            longside, shortside, orientation = self._img_orientation(img.width,img.height)
+
+            #Constrain original if needed
+            if longside > 2000:
+                img = self._img_resize(img,2000,orientation)
+
+            path = '%s/%s'%(self.handle,'o')
+            self._s3_save(img,path,filename)
+            m = self._generate_metadata(img.width,img.height,'o')
+            image_sizes.append(m)
+
+            #Save scaled down versions and thumbnail
+            #Plan of action
+            regular_wo,thumb_wo = self._image_workorder(longside,shortside)
+
+            #Scaled down versions
+            for wo in regular_wo:
+                with img.clone() as i:
+                    ii = self._img_resize(i,regular_wo[wo],orientation)
+                    path = '%s/%s'%(self.handle,wo)
+                    self._file_save(i,path,filename)
+                    m = self._generate_metadata(ii.width,ii.height,wo)
+                    image_sizes.append(m)
+
+
+
+            #Thumbnail versions
+            for wo in thumb_wo:
+                with img.clone() as i:
+                    ii = self._img_resize(i,thumb_wo[wo],orientation)
+                    iii = self._img_thumbcrop(ii,orientation)
+                    path = '%s/%s'%(self.handle,wo)
+                    self._file_save(i,path,filename)
+                    m = self._generate_metadata(iii.width,iii.height,wo)
+                    image_sizes.append(m)
+
+
+        response['status']=self.rs_status
+        response['imgid']=imgid
+        response['imgsizes']=image_sizes
 
         return response
-            
-  
-        
+
+    def do_copy(self,from_handle,to_handle,imgid):
+
+        pass
+
+        return response
+
+    def _generate_metadata(self,width,height,sizename):
+
+        multiplied={}
+        multiplied['mime-type']='image/jpeg'
+        multiplied['extension']='jpg'
+        multiplied['width']=width
+        multiplied['height']=height
+        multiplied['sizename']=sizename
+        multiplied['unit']='pixel'
+        #self.lggr.debug(multiplied)
+
+        return multiplied
 
     def _request_complete(self,request):
 
@@ -82,158 +151,112 @@ class AvispaUpload:
 
         return True
 
-    def _request_allowed(self,request):
+    def _filename_extension_check(self,filename):
 
-        file = request.files['file']
-        if not self.__allowed_file(file.filename):
-            self.lggr.error('Error: This file is not allowed: '+str(file.filename))
-            flash(u'This file is not allowed: '+str(file.filename),'ER')
+        #TO-DO This a very soft check. Please implement Real Format Check
+  
+        if not '.' in filename and filename.rsplit('.',1)[1] in self.allowed_formats:       
+            self.lggr.error('Error: This file format is not allowed: '+str(filename))
+            flash(u'This file format is not allowed: '+str(filename),'ER')
             self.rs_status='415'
             return False
 
         return True
 
 
-    def _upload_file(self,request):
-
-        self.f = request.files['file']
-        path = '%s/%s'%(self.handle,'o')
-        self.imgid = str(random.randrange(1000000000,9999999999)) 
-        filename = self.imgid+'.jpg'
-        
-        self.lggr.debug('path:%s'%path)
-        self.lggr.debug('filename:%s'%filename)
+    def _pull_file_from_request(self,request):
 
         try:
-            # OLD : file.save(os.path.join(originalversionpath, filename)) 
-            self._file_save(self.f,path,filename)
-            self.lggr.debug('Original File uploaded successfully')
-            
-            return True
+            f = request.files['file']
         except:
             self.lggr.debug("Unexpected error:"+str(sys.exc_info()[0]))
             flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
             self.rs_status='500'
             raise
 
-
-    def _multi_size(self):
-
-        #### REFACTOR TO CALL S3 or LOCAL depeding on config
-
+        return f
         
 
-        #f = request.files['file']
-        print('FILE')
-        print(self.f)
-        self.f.seek(0)
+    def _pull_file_from_s3(self,handle,imgid):
+
+        pass
+
+        #1. Subtract image from S3
+
+        #2. Put it in self.f
+
+    def _generate_imgid(self):
+ 
+        return str(random.randrange(1000000000,9999999999))
+
+
+    def _image_workorder(self,longside,shortside):
+
+        regular_wo = {}
+        thumb_wo = {}
+
+        for r in self.officialsizes:
+            if longside>=self.officialsizes[r]:
+                regular_wo[r] = self.officialsizes[r]
+
+        for t in self.thumbnailsizes:
+            if shortside>=self.thumbnailsizes[t]:
+                thumb_wo[t] = self.thumbnailsizes[t]
+
+        return (regular_wo,thumb_wo)
+
+
+    
+
+    def _img_orientation(self,width,height):
         
-        image_binary = self.f.read()
-
-        #with open(self.f) as f:
-         #   image_binary = f.read()
-
-        print('IMAGE_BINARY:')
-        print(image_binary)
-
-        # OLD with Image(filename=self.IMAGE_FOLDER+'/o/'+self.imgid+'.jpg') as img:
-        with Image(blob=image_binary) as img:
-
-            orientation = self._img_orientation(img)
-            if orientation == 'portrait' or orientation == 'square':
-                longside = img.height
-                shortside = img.width
-            elif orientation == 'landscape':
-                longside = img.width
-                shortside = img.height
-
-            for r in self.officialsizes:
-                with img.clone() as i:
-                    if longside>=self.officialsizes[r]:
-                        self._img_resize_and_save(i,self.officialsizes[r],r,orientation,False)
-
-            for t in self.thumbnailsizes:
-                with img.clone() as j:
-                    if shortside>=self.thumbnailsizes[t]:
-                        self._img_resize_and_save(j,self.thumbnailsizes[t],t,orientation,True)
-
-            multiplied={}
-            multiplied['mime-type']='image/jpeg'
-            multiplied['extension']='jpg'
-            multiplied['width']=img.width
-            multiplied['height']=img.height
-            multiplied['sizename']='o'
-            multiplied['unit']='pixel'
-            self.lggr.debug(multiplied)
-            self.image_sizes.append(multiplied)
-
-        
-        return True
-
-    def _img_orientation(self,img):
-        
-        if img.width > img.height:
-            return 'landscape'
-        if img.width < img.height:
-            return 'portrait'
-        if img.width == img.height:
-            return 'square'
-
-    def _img_resize_and_save(self,img,mainside,sizename,orientation,thumbnail):
-
-        if thumbnail:
-
-            if orientation=='portrait':
-                img.transform(resize=str(mainside))
-            elif orientation=='landscape':
-                img.transform(resize='x'+str(mainside))
-            elif orientation=='square':
-                img.transform(resize=str(mainside))
-
-
-            offset = abs(img.width-img.height)/2  #This centers the crop
-            if orientation=='portrait':
-                img.crop(0,offset,width=img.width,height=img.width) 
-            if orientation=='landscape':
-                img.crop(offset,0,width=img.height,height=img.height)
-
-        else:
-
-            if orientation=='portrait':
-                img.transform(resize='x'+str(mainside))
-            elif orientation=='landscape':
-                img.transform(resize=str(mainside))
-            elif orientation=='square':
-                img.transform(resize=str(mainside))
+        if width > height:
             
+            longside = width
+            shortside = height
+            orientation = "landscape"
 
-        path = '%s/%s'%(self.handle,sizename)
-        filename = self.imgid+'.jpg'
+        if width < height:
 
-        self.lggr.debug('path:%s'%path)
-        self.lggr.debug('filename:%s'%filename)
+            longside = height
+            shortside = width
+            orientation = "portrait"
+            
+        if width == height:
+            
+            longside = height
+            shortside = width
+            orientation = "square"
+
+        return longside, shortside, orientation
 
 
-        try:     
-            #OLD VERSION: img.save(filename=self.IMAGE_FOLDER+'/'+sizename+'/'+self.imgid+'_'+sizename+'.jpg')  
-            self._file_save(img,path,filename)
-            self.lggr.debug('File multiplied successfully ')
-            multiplied={}
-            multiplied['mime-type']='image/jpeg'
-            multiplied['extension']='jpg'
-            multiplied['width']=img.width
-            multiplied['height']=img.height
-            multiplied['sizename']=sizename
-            multiplied['unit']='pixel'
-            self.lggr.debug(multiplied)
-            self.image_sizes.append(multiplied)
-            return True
-        except:
-            self.lggr.debug("Unexpected error:"+str(sys.exc_info()[0]))
-            flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
-            self.rs_status='500'
-            raise
+    def _img_resize(self,img,mainside,orientation):
 
+        if orientation=='portrait':
+            img.transform(resize='x'+str(mainside)) #Height based
+            #img.resize(height=int(mainside))
+        elif orientation=='landscape':
+            img.transform(resize=str(mainside)) #Width based
+            #img.resize(width=int(mainside))
+            #img.transform(resize=str(mainside)) 
+        elif orientation=='square':
+            img.transform(resize=str(mainside)) #Width based
+            #img.resize(width=int(mainside))
+
+        return img
+
+
+    def _img_thumbcrop(self,img,orientation):
+        offset = abs(img.width-img.height)/2  #This centers the crop
+        if orientation=='portrait':
+            img.crop(0,offset,width=img.width,height=img.width) 
+        if orientation=='landscape':
+            img.crop(offset,0,width=img.height,height=img.height)
+
+        return img
+
+    #DEPRECATED
     def _file_save(self,file,path,filename):
       
         if STORE_MODE == 'LOCAL':
@@ -243,7 +266,11 @@ class AvispaUpload:
             self.lggr.info("Storing image in S3: %s/%s"%(path,filename))
             self._s3_save(file,path,filename)
 
-    def _s3_save(self,f,path,filename):
+    def _local_save(self,file,path,filename):
+        self.lggr.info("Storing image in LOCAL: %s/%s"%(path,filename))
+        file.save(filename=('%s/%s/%s'%(IMAGE_FOLDER_NAME,path,filename)))
+
+    def _s3_save(self,file,path,filename):
 
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket(IMAGE_BUCKET_NAME)       
@@ -252,10 +279,10 @@ class AvispaUpload:
         k.key = '%s/%s'%(path,filename)
         print(k)
         print(k.key)
-        print(f)
+        print(file)
 
         fl = cStringIO.StringIO()
-        f.save(fl)
+        file.save(fl)
 
         #print fl
         fl.seek(0)
@@ -280,16 +307,6 @@ class AvispaUpload:
         '''
         
         return True
-
-    def __allowed_file(self,filename):
-
-        ALLOWED_EXTENSIONS = set(['txt','pdf','png','jpg','JPG','jpeg','gif'])
-
-        return '.' in filename and \
-                filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
-
-
-
 
     
     def check_upload_path(self,path):

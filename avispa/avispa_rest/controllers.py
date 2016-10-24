@@ -615,7 +615,7 @@ def home_dispatcher(handle):
             #data['cu_location'] = cu_user_doc['location']
             #data['cu_handle'] = current_user.id
 
-        #Thisi is the data from the handle we are visiting
+        #This is the data from the handle we are visiting
         if current_user.id == handle:
             data['handle_actualname'] = cu_user_doc['name']
             data['handle_profilepic'] = cu_user_doc['profilepic']

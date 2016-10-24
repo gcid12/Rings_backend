@@ -13,7 +13,9 @@ from AvispaLogging import AvispaLoggerAdapter
 
 
 class User(UserMixin):
-    def __init__(self, username=None, email=None, location=None, passhash=None, owner=None, isOrg=False, active=True, id=None, onlogin=False):
+
+    def __init__(self, username=None, email=None, passhash=None, owner=None, location=None, url=None, profilepic=None, name=None, isOrg=False, active=True, id=None, onlogin=False):
+
         
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
@@ -24,6 +26,10 @@ class User(UserMixin):
         self.email = email
         self.location = location
         self.passhash = passhash
+        self.location = location
+        self.url = url
+        self.profilepic = profilepic
+        self.name = name
         self.isOrg = isOrg
         self.active = active
         self.isAdmin = False
@@ -49,6 +55,10 @@ class User(UserMixin):
         user['email'] = self.email.lower()  
         user['location'] = self.location.lower()  
         user['owner'] = self.owner 
+        user['location'] = self.location
+        user['url'] = self.url
+        user['profilepic'] = self.profilepic
+        user['name'] = self.name
         user['passhash'] = self.passhash
         user['onlogin'] = self.onlogin
 
@@ -126,7 +136,7 @@ class User(UserMixin):
             
             if dbUser:
 
-                self.lggr.info('END AUTHENTICATION:'+dbUser['value']['name'])
+                self.lggr.info("END AUTHENTICATION:%s"%dbUser['value']['name'])
                 
                 self.name = dbUser['value']['name']
                 self.email = dbUser['value']['email']

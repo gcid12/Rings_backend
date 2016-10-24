@@ -168,7 +168,11 @@ class MainModel:
             email= data['username']+'@id.myring.io',
             billingemail = data['email'],  
             is_org = True,
-            passhash= data['passhash'])
+            passhash= data['passhash'],
+            location = data['location'],
+            url = data['url'],
+            profilepic = data['profilepic'],
+            name = data['name'])
 
         #auser.people[data['username']] = {}
         auser.people.append(handle=data['owner'],addedby=data['owner'],added=datetime.now()) 

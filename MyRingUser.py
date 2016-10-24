@@ -4,11 +4,15 @@ from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, Li
 
 class MyRingUser(Document):
     _id = TextField()
-    firstname = TextField()
+    #firstname = TextField()  DEPRECATED! Use "name" for firstname if needed
+    name = TextField()
     lastname = TextField()
     email = TextField()
     billingemail = TextField()
     is_org = BooleanField()
+    location = TextField()
+    url = TextField()
+    profilepic = TextField()
     #people = DictField()
     onlogin = TextField()
     people = ListField(DictField(Mapping.build(
