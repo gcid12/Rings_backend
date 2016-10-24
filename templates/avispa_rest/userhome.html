@@ -14,14 +14,14 @@
 
                     <div class="row p-20">
                         <!-- USER ::::::::::::::::::::::   -->
-                        <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xxs">
+                        <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xs">
                             
                             {% if data.handle_profilepic %}
                             <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle img-responsive"> 
                             {%else%}
                             <img src="/static/images/ph/ph_user.gif" class="img-circle img-responsive">
                             <br/> 
-                                {% if  'put_a'  in data.user_authorizations %}
+                             {% if  'put_a'  in data.user_authorizations %}
                                     <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
                                 {%endif%}
 
@@ -29,61 +29,73 @@
 
                             <br/>
                         </div>
-                        <div class="col-xs-8 col-sm-12">
-                            {% if data.handle_actualname %}     
-                                <p class="fc-b fs-1-5 lh-1">
-                                    {{data.handle_actualname}} 
-                                    <br/>
+                        <div class="col-xs-10 col-sm-12">
+                               
+                                <span class="fc-b fs-1-5 lh-1">
+
+
+                                    {% if data.handle_profilepic %}
+                                    <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="user-team float-left visible-xs"> 
+                                    {%else%}
+                                    <img src="/static/images/ph/ph_user.gif" class="user-team float-left visible-xs">
+                                    {% endif %}
+
+                                    {% if data.handle_actualname %}  
+                                        {{data.handle_actualname}} 
+                                        <br/>
+                                    {% endif %}
+
                                     <span class="fc-g fs-0-7">@{{data.handle}}</span>
-                                </p>                         
-                            {% else %}
-                                <span class="fc-b pull-left fs-2 fw-z">@{{data.handle}}
-                                </span>
+
+                                </span>                         
+                           
                                 
-                            {% endif %}
+                            
 
                            
                             <div class="row">
-                                <div class="col-sm-12 col-md-8 col-lg-6">
+                                <div class="col-sm-11">
                                     <p class="fs-0-7 fc-m"><em>Branding specialist, UX lead for Rampantzine, Co-Founder Myring</em></p>    
                                     
                                 </div>
                             </div>
+                            <div class="spa20 hidden-xs">
+                                &nbsp;
+                            </div>
                             
                         </div>
-                        <div class="spa20 hidden-xs">
-                          &nbsp;
-                        </div>
+                        
                     
                         <!-- USER ORGS ::::::::::::::::::::::   -->
-                        <div class="col-xs-3 col-sm-offset-1 col-sm-11 hidden-xxs">
+                        <div class="col-xs-1 col-sm-offset-1 col-sm-11 hidden-xxs">
                             <div class="">
                                 
                                 <div class="fs-0-8 lh-1-5">
 
                                     <i class="fa fa-binoculars p-x-10"></i> 
-                                    Find entity
+                                    <span class="hidden-xs">Find entity</span>
                                     <br/>
                                     <i class="fa fa-plus p-x-10"></i> 
-                                    Add entity
+                                    <span class="hidden-xs">Add entity</span>
                                     <br/>
                                     <a class="dropdown-toggle" href="/{{data.handle}}/_profile">
-                                        <i class="fa fa-gear p-x-10"></i> Settings
+                                        <i class="fa fa-gear p-x-10"></i> 
+                                        <span class="hidden-xs">Settings</span>
                                     </a>
                                     <br/>
                                     <i class="fa fa-sign-out p-x-10"></i> 
-                                    Log out
+                                    <span class="hidden-xs">Log out</span>
 
                                 </div>
                                 
                                 
                             </div>
-
+                            <div class="spa20 hidden-xs">
+                                &nbsp;
+                            </div>
                         </div>
 
-                        <div class="spa20 hidden-xs">
-                          &nbsp;
-                        </div>
+                        
 
                     </div>
                 </div>
@@ -101,7 +113,8 @@
                     <!-- ROW A -->
                     <div class="col-xs-6 col-sm-8 col-md-8">
 
-                        <span class="fw-c fs-fs-0-8 p-x-20 hidden-xs">Contributions</span>
+                        <i class="fa fa-check-circle "></i>
+                        <span class="fw-c fs-0-8 p-x-20 hidden-xs">Contributions</span>
                     
                         <span class="fs-0-8 p-x-20">
                             <span class="hidden-xs">Total: </span>
@@ -167,6 +180,17 @@
 
                                   </tr>
                                 {% endfor %}
+
+                                {% if 'post_a' in data.user_authorizations %}
+                                    <tr>
+                                        <td colspan="5" >
+                                            <a class="btn btn-primary btn-xs" href="/_orgregister" class="hidden-xs pad-x-10 spa20" style="width:100%">
+                                                <i class="fa fa-plus"></i> Add new Entity
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {%endif%}
+
                                 
                             </table>
                         </div>
