@@ -4,20 +4,21 @@
 
 {% block content %}
 
+
 <section>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-12 col-sm-3 col-md-2">
+            <div class="col-xs-12 col-sm-3 col-md-3">
 
                 <div class="gcard">
 
 
                     <div class="row p-20">
                         <!-- USER ::::::::::::::::::::::   -->
-                        <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xs">
+                        <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xs text-center">
                             
                             {% if data.handle_profilepic %}
-                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle img-responsive"> 
+                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle img-responsive p-20"> 
                             {%else%}
                             <img src="/static/images/ph/ph_user.gif" class="img-circle img-responsive">
                             <br/> 
@@ -31,13 +32,13 @@
                         </div>
                         <div class="col-xs-10 col-sm-12">
                                
-                                <span class="fc-b fs-1-5 lh-1">
+                                <span class="fc-b fs-1-5 lh-1 m-y-10">
 
 
                                     {% if data.handle_profilepic %}
-                                    <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="user-team float-left visible-xs"> 
+                                    <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="user-xsmall float-left visible-xs"> 
                                     {%else%}
-                                    <img src="/static/images/ph/ph_user.gif" class="user-team float-left visible-xs">
+                                    <img src="/static/images/ph/ph_user.gif" class="user-xsmall float-left visible-xs">
                                     {% endif %}
 
                                     {% if data.handle_actualname %}  
@@ -45,20 +46,26 @@
                                         <br/>
                                     {% endif %}
 
-                                    <span class="fc-g fs-0-7">@{{data.handle}}</span>
-
-                                </span>                         
-                           
-                                
-                            
-
-                           
-                            <div class="row">
-                                <div class="col-sm-11">
-                                    <p class="fs-0-7 fc-m"><em>Branding specialist, UX lead for Rampantzine, Co-Founder Myring</em></p>    
                                     
-                                </div>
-                            </div>
+
+                                </span> 
+                                               
+                                <span class="fc-g fs-0-9">@{{data.handle}}</span>
+
+                                <!-- <p class="fs-0-7 fc-m"><em>
+                                Branding specialist, UX lead for Rampantzine, Co-Founder Myring
+                                </em></p>  -->
+                                
+                                <p class="fs-0-7 fc-m"><em>COO, Co-founder @PeerStreet Director of Product Marketing @GoogleFounder of @XAnalytics Founder of Urchin Software, marketing lead on Adenco</em></p> 
+
+                                <!-- <p class="fs-0-7 fc-m"><em>Techstars, Managing Director MATH Venture Partners. Managing Director Serial Entrepreneur: @SurePayroll, Amacai , Systemetrics</em></p> 
+
+                                <p class="fs-0-7 fc-m"><em>Kurt Guntheroth, Software engineer, for 35+ years, Windows, Linux, embedded, distributed</em></p>    
+                                    
+
+                                <p class="fs-0-7 fc-m"><em>Dina Fayed, Journalist & Scientific Writer lives in Canada</em></p>  -->
+
+                                
                             <div class="spa20 hidden-xs">
                                 &nbsp;
                             </div>
@@ -67,24 +74,28 @@
                         
                     
                         <!-- USER ORGS ::::::::::::::::::::::   -->
-                        <div class="col-xs-1 col-sm-offset-1 col-sm-11 hidden-xxs">
+                        <div class="col-xs-1 col-sm-offset-1 col-sm-11 col-md-12 hidden-xxs">
                             <div class="">
                                 
                                 <div class="fs-0-8 lh-1-5">
-
-                                    <i class="fa fa-binoculars p-x-10"></i> 
-                                    <span class="hidden-xs">Find entity</span>
-                                    <br/>
-                                    <i class="fa fa-plus p-x-10"></i> 
-                                    <span class="hidden-xs">Add entity</span>
+                                    <div class="fc-g">
+                                        <i class="fa fa-binoculars p-x-10"></i> 
+                                        <span class="hidden-xs">Find entity</span>
+                                    </div>
+                                    <a class="dropdown-toggle" href="/_orgregister">
+                                        <i class="fa fa-plus p-x-10"></i> 
+                                        <span class="hidden-xs">Add entity</span>
+                                    </a>
                                     <br/>
                                     <a class="dropdown-toggle" href="/{{data.handle}}/_profile">
                                         <i class="fa fa-gear p-x-10"></i> 
                                         <span class="hidden-xs">Settings</span>
                                     </a>
                                     <br/>
-                                    <i class="fa fa-sign-out p-x-10"></i> 
-                                    <span class="hidden-xs">Log out</span>
+                                    <a class="dropdown-toggle" href="/_logout">
+                                        <i class="fa fa-sign-out p-x-10"></i> 
+                                        <span class="hidden-xs">Log out</span>
+                                    </a>
 
                                 </div>
                                 
@@ -106,7 +117,7 @@
 
 
 
-            <div class="col-xs-12 col-sm-9 col-md-10 ">
+            <div class="col-xs-12 col-sm-9 col-md-9 ">
 
                 <div class="row spa50">
                     
@@ -140,10 +151,12 @@
                             <table class="table table-condensed table-hover table-clearhover">
 
                                   <tr class=" fs-0-6 fc-m">
-                                    <th>Name</th>
+                                    
+                                    <th>Entity</th>
+                                    <th class="hidden-xs">Handle</th>
                                     <th class="hidden-xs">Location</th>
-                                    <th>Role</th>
-                                    <th>Points</th>
+                                    <th>Contributor</th>
+                                    <th>Score</th>
                                     <th class="hidden-xs"></th>
 
                                     
@@ -152,11 +165,14 @@
                                   <tr class=" fs-0-8">
                                     <td>
                                         <a href="/{{organization['handle']}}/_home"> 
+                                          <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-2">  
 
-                                          <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-2">
-                                        
+                                          <span class="p-x-10">{{ organization['handle'] }}</span>
+                                        </a>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <a href="/{{organization['handle']}}/_home" class="fc-g"> 
                                             {{ organization['handle'] }}
-                                            <span class="fc-g hidden-xs">( @{{ organization['handle'] }} ) </span>
                                         </a>
                                     </td>
                                     <td class="hidden-xs">
@@ -170,9 +186,9 @@
                                     </td>
                                     <td class="text-right hidden-xs">
 
-                                        <a href="/{{organization['handle']}}/_home" type="button" class="fc-b nounder" data-toggle="tooltip" title="{%if organization['handle'] %}{{organization['handle']}}{%else%}Handlemissing{%endif%}">
+                                        <a href="/{{organization['handle']}}/_orgprofile" type="button" class="fc-b nounder" data-toggle="tooltip" title="{%if organization['handle'] %}{{organization['handle']}}{%else%}Handlemissing{%endif%}">
    
-                                           <i class="fc-g fa fa-plus"></i>
+                                           <i class="fc-g fa fa-info-circle"></i>
                                            
                                         </a>
 
@@ -208,6 +224,11 @@
                             
                             </div>
 
+                        </div>
+
+                        <div>
+                            
+                           
                         </div>
                         
                       </div>
