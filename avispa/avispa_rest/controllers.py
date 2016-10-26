@@ -616,24 +616,20 @@ def home_dispatcher(handle):
             #data['cu_handle'] = current_user.id
 
         #This is the data from the handle we are visiting
-        if current_user.id == handle:
-            data['handle_actualname'] = cu_user_doc['name']
-            data['handle_profilepic'] = cu_user_doc['profilepic']
-            data['handle_location'] = cu_user_doc['location']
-            data['is_org'] = False
+        handle_user_doc = MAM.select_user_doc_view('auth/userbyhandle',handle)
+        if handle_user_doc:
+            data['handle_actualname'] = handle_user_doc['name']
+            data['handle_profilepic'] = handle_user_doc['profilepic']
+            data['handle_location'] = handle_user_doc['location']
+            data['handle_about'] = handle_user_doc['about']
 
-        else:
-            handle_user_doc = MAM.select_user_doc_view('auth/userbasic',handle)
-            if handle_user_doc:
-                data['handle_actualname'] = handle_user_doc['name']
-                data['handle_profilepic'] = handle_user_doc['profilepic']
-                data['handle_location'] = handle_user_doc['location']
-
-                if 'is_org' in handle_user_doc:
-                    if handle_user_doc['is_org']:
-                        data['is_org'] = True
-                    else:
-                        data['is_org'] = False
+            if 'is_org' in handle_user_doc:
+                if handle_user_doc['is_org']:
+                    data['is_org'] = True
+                else:
+                    data['is_org'] = False
+            else:
+                data['is_org'] = False
 
 
         

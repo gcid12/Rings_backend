@@ -603,6 +603,7 @@ def orgregister_post():
     location = request.form.get('location','')
     url = request.form.get('url','')
     profilepic = request.form.get('profilepic','')
+    about = request.form.get('about','')
 
 
     # Organizations use no passwords
@@ -617,6 +618,7 @@ def orgregister_post():
                 location=location,
                 url=url,
                 profilepic=profilepic,
+                about = about,
                 name=name,
                 isOrg=True)
     lggr.info(user)

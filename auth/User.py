@@ -14,7 +14,7 @@ from AvispaLogging import AvispaLoggerAdapter
 
 class User(UserMixin):
 
-    def __init__(self, username=None, email=None, passhash=None, owner=None, location=None, url=None, profilepic=None, name=None, isOrg=False, active=True, id=None, onlogin=False):
+    def __init__(self, username=None, email=None, passhash=None, owner=None, location=None, url=None, profilepic=None, name=None, isOrg=False, active=True, id=None, onlogin=False, about=None):
 
         
         logger = logging.getLogger('Avispa')
@@ -26,7 +26,7 @@ class User(UserMixin):
         self.email = email
         self.location = location
         self.passhash = passhash
-        self.location = location
+        self.about = about
         self.url = url
         self.profilepic = profilepic
         self.name = name
@@ -61,6 +61,7 @@ class User(UserMixin):
         user['name'] = self.name
         user['passhash'] = self.passhash
         user['onlogin'] = self.onlogin
+        user['about'] = self.about
 
         self.lggr.info(user)
 
@@ -143,6 +144,7 @@ class User(UserMixin):
                 self.url = dbUser['value']['url']
                 self.profilepic = dbUser['value']['profilepic']
                 self.location = dbUser['value']['location']
+                self.about = dbUser['value']['about']
                 self.onlogin = dbUser['value']['onlogin']
                 self.active = dbUser['value']['is_active'] 
                 self.password = dbUser['value']['passhash']
@@ -155,7 +157,7 @@ class User(UserMixin):
             self.lggr.error("Notice: UnExpected error :", sys.exc_info()[0] , sys.exc_info()[1])
             self.lggr.error("there was an error, we need to repair the user_document")
 
-            preconditions = ['name','email','url','profilepic','location','onlogin']
+            preconditions = ['name','email','url','profilepic','location','about','onlogin']
             repaired = False
             for element_to_add in preconditions:
                 MAM = MainModel()
@@ -181,6 +183,7 @@ class User(UserMixin):
                     self.url = dbUser['value']['url']
                     self.profilepic = dbUser['value']['profilepic']
                     self.location = dbUser['value']['location']
+                    self.about = dbUser['value']['about']
                     self.active = dbUser['value']['is_active'] 
                     self.password = dbUser['value']['passhash']
                     self.id = dbUser['value']['_id']
@@ -215,9 +218,15 @@ class User(UserMixin):
                 self.lggr.info('location changed!')
                 changes['location'] = request.form.get('location')
 
+            if request.form.get('about') != dbUser['value']['about']:
+                self.lggr.info('about changed!')
+                changes['about'] = request.form.get('about')
+
             if request.form.get('onlogin') != dbUser['value']['onlogin']:
                 self.lggr.info('onlogin changed!')
                 changes['onlogin'] = request.form.get('onlogin')
+
+            
 
 
 
