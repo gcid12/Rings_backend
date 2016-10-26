@@ -14,14 +14,14 @@
 
                     <div class="row p-20">
                         <!-- USER ::::::::::::::::::::::   -->
-                        <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xs">
+                        <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xxs">
                             
                             {% if data.handle_profilepic %}
-                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle img-responsive"> 
+                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle"> 
                             {%else%}
                             <img src="/static/images/ph/ph_user.gif" class="img-circle img-responsive">
                             <br/> 
-                             {% if  'put_a'  in data.user_authorizations %}
+                                {% if  'put_a'  in data.user_authorizations %}
                                     <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
                                 {%endif%}
 
@@ -29,73 +29,61 @@
 
                             <br/>
                         </div>
-                        <div class="col-xs-10 col-sm-12">
-                               
-                                <span class="fc-b fs-1-5 lh-1">
-
-
-                                    {% if data.handle_profilepic %}
-                                    <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="user-team float-left visible-xs"> 
-                                    {%else%}
-                                    <img src="/static/images/ph/ph_user.gif" class="user-team float-left visible-xs">
-                                    {% endif %}
-
-                                    {% if data.handle_actualname %}  
-                                        {{data.handle_actualname}} 
-                                        <br/>
-                                    {% endif %}
-
+                        <div class="col-xs-8 col-sm-12">
+                            {% if data.handle_actualname %}     
+                                <p class="fc-b fs-1-5 lh-1">
+                                    {{data.handle_actualname}} 
+                                    <br/>
                                     <span class="fc-g fs-0-7">@{{data.handle}}</span>
-
-                                </span>                         
-                           
+                                </p>                         
+                            {% else %}
+                                <span class="fc-b pull-left fs-2 fw-z">@{{data.handle}}
+                                </span>
                                 
-                            
+                            {% endif %}
 
                            
                             <div class="row">
-                                <div class="col-sm-11">
+                                <div class="col-sm-12 col-md-8 col-lg-6">
                                     <p class="fs-0-7 fc-m"><em>Branding specialist, UX lead for Rampantzine, Co-Founder Myring</em></p>    
                                     
                                 </div>
                             </div>
-                            <div class="spa20 hidden-xs">
-                                &nbsp;
-                            </div>
                             
                         </div>
-                        
+                        <div class="spa20 hidden-xs">
+                          &nbsp;
+                        </div>
                     
                         <!-- USER ORGS ::::::::::::::::::::::   -->
-                        <div class="col-xs-1 col-sm-offset-1 col-sm-11 hidden-xxs">
+                        <div class="col-xs-3 col-sm-offset-1 col-sm-11 hidden-xxs">
                             <div class="">
                                 
                                 <div class="fs-0-8 lh-1-5">
 
                                     <i class="fa fa-binoculars p-x-10"></i> 
-                                    <span class="hidden-xs">Find entity</span>
+                                    Find entity
                                     <br/>
                                     <i class="fa fa-plus p-x-10"></i> 
-                                    <span class="hidden-xs">Add entity</span>
+                                    Add entity
                                     <br/>
                                     <a class="dropdown-toggle" href="/{{data.handle}}/_profile">
-                                        <i class="fa fa-gear p-x-10"></i> 
-                                        <span class="hidden-xs">Settings</span>
+                                        <i class="fa fa-gear p-x-10"></i> Settings
                                     </a>
                                     <br/>
                                     <i class="fa fa-sign-out p-x-10"></i> 
-                                    <span class="hidden-xs">Log out</span>
+                                    Log out
 
                                 </div>
                                 
                                 
                             </div>
-                            <div class="spa20 hidden-xs">
-                                &nbsp;
-                            </div>
+
                         </div>
 
-                        
+                        <div class="spa20 hidden-xs">
+                          &nbsp;
+                        </div>
 
                     </div>
                 </div>
@@ -111,21 +99,18 @@
                 <div class="row spa50">
                     
                     <!-- ROW A -->
-                    <div class="col-xs-6 col-sm-8 col-md-8">
+                    <div class="col-xs-7 col-sm-8 col-md-8">
 
-                        <i class="fa fa-check-circle "></i>
-                        <span class="fw-c fs-0-8 p-x-20 hidden-xs">Contributions</span>
+                        <span class="fw-c fs-fs-0-8 p-x-20 hidden-xs">Contributions</span>
                     
                         <span class="fs-0-8 p-x-20">
-                            <span class="hidden-xs">Total: </span>
-                            <span class="badge bg-m fs-0-8">1,325</span>
+                            Total: <span class="badge bg-m fs-0-8">1,325</span>
                         </span>
                         <span class="fs-0-8 bord-left p-x-20">
-                            <span class="hidden-xs">Score : </span>
-                            <strong>89% </strong> 
+                            Score :  <strong>89% </strong> 
                         </span>
                     </div>
-                    <div class="col-xs-6 col-sm-3 col-md-3 cornerfilter pr-20">
+                    <div class="col-xs-5 col-sm-3 col-md-3 cornerfilter pr-20">
                         <ul class="nav nav-tabs navbar-right float-right" role="tablist">
                             <li role="presentation" class="active"><a href="#icons" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-list"></i></a></li>
                             <li role="presentation"><a href="#list" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-th"></i></a></li>
@@ -137,30 +122,25 @@
                       <!-- Tab panes -->
                       <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active pt-20" id="icons">
-                            <table class="table table-condensed table-hover table-clearhover">
+                            <table class="table">
 
                                   <tr class=" fs-0-6 fc-m">
                                     <th>Name</th>
-                                    <th class="hidden-xs">Location</th>
+                                    <th>Location</th>
                                     <th>Role</th>
                                     <th>Points</th>
-                                    <th class="hidden-xs"></th>
+                                    <th></th>
 
                                     
                                   </tr>
                                 {% for organization in data.organizations %}
                                   <tr class=" fs-0-8">
                                     <td>
-                                        <a href="/{{organization['handle']}}/_home"> 
-
-                                          <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-2">
-                                        
-                                            {{ organization['handle'] }}
-                                            <span class="fc-g hidden-xs">( @{{ organization['handle'] }} ) </span>
-                                        </a>
+                                      <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-2">
+                                    Cooper Hewitt Museum
                                     </td>
-                                    <td class="hidden-xs">
-                                        New York
+                                    <td>
+                                      Paris
                                     </td>
                                     <td>
                                       <span class="badge bg-d fs-0-7 ">Specialist</span>
@@ -168,29 +148,13 @@
                                     <td>
                                       239
                                     </td>
-                                    <td class="text-right hidden-xs">
-
-                                        <a href="/{{organization['handle']}}/_home" type="button" class="fc-b nounder" data-toggle="tooltip" title="{%if organization['handle'] %}{{organization['handle']}}{%else%}Handlemissing{%endif%}">
-   
-                                           <i class="fc-g fa fa-plus"></i>
-                                           
-                                        </a>
-
+                                    <td class="text-right">
+                                      <i class="fa fa-info-circle"></i>
+                                      <i class="fa fa-plus-circle"></i>
                                     </td>
 
                                   </tr>
                                 {% endfor %}
-
-                                {% if 'post_a' in data.user_authorizations %}
-                                    <tr>
-                                        <td colspan="5" >
-                                            <a class="btn btn-primary btn-xs" href="/_orgregister" class="hidden-xs pad-x-10 spa20" style="width:100%">
-                                                <i class="fa fa-plus"></i> Add new Entity
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {%endif%}
-
                                 
                             </table>
                         </div>

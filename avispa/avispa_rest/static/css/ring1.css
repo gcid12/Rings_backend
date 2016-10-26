@@ -102,12 +102,6 @@ filter: grayscale(100%);
 /*COPIED FROM ring-home.css*/
 
 
-
-.lw-1em{line-height:1em;}
-.lw-1-5em{line-height:1.5em;}
-.lw-2em{line-height:2em;}
-.lw-3em{line-height:3em;}
-
 .lh-0-5{line-height:0.5em;}
 .lh-1{line-height:1em;}
 .lh-1-5{line-height:1.5em;}
@@ -247,6 +241,7 @@ filter: grayscale(100%);
 .mb-30{margin-bottom:30px !important;}
 .mt-10{margin-top:10px !important;}
 .mt-20{margin-top:20px !important;}
+.mt-50{margin-top:50px !important;}
 .mr-10{margin-right:10px !important;}
 .mr-15{margin-right:15px !important;}
 .mr-20{margin-right:20px !important;}
@@ -1507,6 +1502,15 @@ border-radius: 50px;  }
     border-radius: 5px; 
 }
 
+.pic-org-2{
+    width:20px; 
+    height:20px; 
+    border:1px solid #f2f2f2;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px; 
+}
+
 
 
 .pic-org-new{
@@ -1992,6 +1996,17 @@ and (orientation : landscape) {
 
 }
 
+/*extra-xs*/
+@media (max-width: 550px) {
+  .modal-dialog {
+    width: 750px;
+    margin: 1px auto;
+  }
+  .hidden-xxs{
+   visibility: hidden; 
+   display: none;
+  }
+  }
 
 
 @media (min-width: 768px) {
@@ -2037,7 +2052,27 @@ and (orientation : landscape) {
 }
 
 
+.cornerfilter .nav-tabs>li>a{
+    margin-right: 0px; 
+    line-height: 1; 
+    border: 1px solid #CCC; 
+    border-radius: 2px; 
+    padding:10px;
 
+}
+
+.cornerfilter .nav-tabs>li>a:hover {
+   border-color: #999;
+}
+
+
+.cornerfilter .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    border: 1px solid #CCC;
+}
+
+.table-clearhover>tbody>tr:hover {
+    background-color: #FFFFFF;
+}
 
 
 
