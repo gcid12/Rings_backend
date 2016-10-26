@@ -647,6 +647,8 @@ def home_dispatcher(handle):
                 person_user_doc = MAM.select_user_doc_view('auth/userbasic',person['handle'])
                 if person_user_doc:
                     data['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
+                    data['name'] = person_user_doc['name']
+                    data['location'] = person_user_doc['location']
 
             data['teammembership'] = {}
             allteams = {}
