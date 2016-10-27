@@ -136,8 +136,7 @@ class AvispaUpload:
         #self.lggr.debug(multiplied)
 
         return multiplied
-
-    
+   
 
     def check_extension(self,filename):
 

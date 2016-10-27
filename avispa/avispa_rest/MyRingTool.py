@@ -244,24 +244,6 @@ class MyRingTool:
         d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
         return d 
 
-    def blob_from_request(self,request):
-
-        
-
-        #Pull file from request
-        f = self._pull_file_from_request(request)
-
-        #Check its name
-        if not self._filename_extension_check(f.filename):
-            response['status']=self.rs_status
-            return response
-
-        #Load the image blob
-        print(f)
-        f.seek(0)       
-        image_binary = f.read()
-
-        return image_binary
 
     def assert_rq_method(self,request,method):
 
@@ -310,8 +292,6 @@ class MyRingTool:
             return False
 
         blob = AUD.blob_from_file(f)
-
-        #blob = AUD.blob_from_request(request)
 
         response = AUD.do_upload(blob)
         response['handle'] = handle
