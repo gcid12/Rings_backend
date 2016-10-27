@@ -40,37 +40,20 @@ class AvispaUpload:
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
 
-    
-    def blob_from_request(self,request):
-
-        #Validate request
-        if not self._request_complete(request):
-            response['status']=self.rs_status
-            return response
-
-        #Pull file from request
-        f = self._pull_file_from_request(request)
-
-        #Check its name
-        if not self._filename_extension_check(f.filename):
-            response['status']=self.rs_status
-            return response
-
-        #Load the image blob
-        print(f)
-        f.seek(0)       
-        image_binary = f.read()
-
-        return image_binary
-
     def blob_from_s3(self,bucket,id):
 
         #Subtract original from s3 and put it in memory
         image_binary = ''
 
         return image_binary
-        
-       
+
+    def blob_from_file(self,file):
+       #Load the image blob
+        print(file)
+        file.seek(0)       
+        image_binary = file.read()
+
+        return image_binary
 
 
     #DRIVER FUNCTION
@@ -107,11 +90,14 @@ class AvispaUpload:
                 with img.clone() as i:
                     ii = self._img_resize(i,regular_wo[wo],orientation)
                     path = '%s/%s'%(self.handle,wo)
-                    self._file_save(i,path,filename)
+                    
+                    if STORE_MODE == 'LOCAL':   
+                        self._local_save(i,path,filename)        
+                    elif STORE_MODE == 'S3':          
+                        self._s3_save(i,path,filename)
+
                     m = self._generate_metadata(ii.width,ii.height,wo)
                     image_sizes.append(m)
-
-
 
             #Thumbnail versions
             for wo in thumb_wo:
@@ -130,6 +116,7 @@ class AvispaUpload:
 
         return response
 
+    #DRIVER FUNCTION
     def do_copy(self,from_handle,to_handle,imgid):
 
         #Pull file from S3 bucket
@@ -150,24 +137,9 @@ class AvispaUpload:
 
         return multiplied
 
-    def _request_complete(self,request):
+    
 
-        if not request.method == 'POST':
-
-            self.lggr.error('Error: You can only use upload via POST')
-            flash(u'You can only use upload via POST','ER')
-            self.rs_status='405'
-            return False
-
-        if not request.files['file']:
-            self.lggr.error('Error: There are no files in the request')
-            flash(u'There are no files in the request','ER')
-            self.rs_status='400'
-            return False
-
-        return True
-
-    def _filename_extension_check(self,filename):
+    def check_extension(self,filename):
 
         #TO-DO This a very soft check. Please implement Real Format Check
   
@@ -178,19 +150,6 @@ class AvispaUpload:
             return False
 
         return True
-
-
-    def _pull_file_from_request(self,request):
-
-        try:
-            f = request.files['file']
-        except:
-            self.lggr.debug("Unexpected error:"+str(sys.exc_info()[0]))
-            flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
-            self.rs_status='500'
-            raise
-
-        return f
         
 
     def _pull_file_from_s3(self,handle,imgid):
@@ -272,22 +231,21 @@ class AvispaUpload:
 
         return img
 
-    #DEPRECATED
+    
     def _file_save(self,file,path,filename):
       
-        if STORE_MODE == 'LOCAL':
-            self.lggr.info("Storing image in LOCAL: %s/%s"%(path,filename))
-            file.save(filename=('%s/%s/%s'%(IMAGE_FOLDER_NAME,path,filename)))          
-        elif STORE_MODE == 'S3':
-            self.lggr.info("Storing image in S3: %s/%s"%(path,filename))
+        if STORE_MODE == 'LOCAL':   
+            self._local_save(file,path,filename)        
+        elif STORE_MODE == 'S3':          
             self._s3_save(file,path,filename)
 
     def _local_save(self,file,path,filename):
         self.lggr.info("Storing image in LOCAL: %s/%s"%(path,filename))
         file.save(filename=('%s/%s/%s'%(IMAGE_FOLDER_NAME,path,filename)))
+        return True
 
     def _s3_save(self,file,path,filename):
-
+        self.lggr.info("Storing image in S3: %s/%s"%(path,filename))
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket(IMAGE_BUCKET_NAME)       
         #k = Key(bucket)
@@ -302,8 +260,6 @@ class AvispaUpload:
 
         #print fl
         fl.seek(0)
-
-
         
         k.set_contents_from_file(fl)
         k.set_acl('public-read')

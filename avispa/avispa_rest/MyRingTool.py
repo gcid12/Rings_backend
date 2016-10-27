@@ -243,15 +243,76 @@ class MyRingTool:
 
         d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
         return d 
+
+    def blob_from_request(self,request):
+
+        
+
+        #Pull file from request
+        f = self._pull_file_from_request(request)
+
+        #Check its name
+        if not self._filename_extension_check(f.filename):
+            response['status']=self.rs_status
+            return response
+
+        #Load the image blob
+        print(f)
+        f.seek(0)       
+        image_binary = f.read()
+
+        return image_binary
+
+    def assert_rq_method(self,request,method):
+
+        if not request.method == method:
+
+            self.lggr.error('Error: You can only use upload via POST')
+            flash(u'You can only use upload via POST','ER')
+            self.rs_status='405'
+            return False
+
+        if not request.files['file']:
+            self.lggr.error('Error: There are no files in the request')
+            flash(u'There are no files in the request','ER')
+            self.rs_status='400'
+            return False
+
+        return True
+
+    def pull_file_from_request(self,request):
+
+        try:
+            f = request.files['file']
+        except:
+            self.lggr.debug("Unexpected error:"+str(sys.exc_info()[0]))
+            flash(u'Unexpected error:'+str(sys.exc_info()[0]),'ER')
+            self.rs_status='500'
+            raise
+
+        return f
     
     def upload_via_aud(self,request,*args):
 
         #Check if the handle exists and the token is correct
         handle = request.args.get('handle')
 
+        #Validate that method is POST
+        if not self.assert_rq_method(request,'POST'):
+            response['status']=self.rs_status
+            return response
+
+        f = self.pull_file_from_request(request)
+
         AUD = AvispaUpload(handle)
 
-        blob = AUD.blob_from_request(request)
+        if not AUD.check_extension(f.filename):
+            return False
+
+        blob = AUD.blob_from_file(f)
+
+        #blob = AUD.blob_from_request(request)
+
         response = AUD.do_upload(blob)
         response['handle'] = handle
         response['imgbase']= '/_images/{handle}/{sizename}/{imgid}_{sizename}.{extension}'
