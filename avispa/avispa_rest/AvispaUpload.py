@@ -40,11 +40,8 @@ class AvispaUpload:
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
 
 
-    #DRIVER FUNCTION
-    def do_upload(self,request,*args):
-
-        response = {}
-        image_sizes = []
+    
+    def blob_from_request(self,request):
 
         #Validate request
         if not self._request_complete(request):
@@ -63,6 +60,24 @@ class AvispaUpload:
         print(f)
         f.seek(0)       
         image_binary = f.read()
+
+        return image_binary
+
+    def blob_from_s3(self,bucket,id):
+
+        #Subtract original from s3 and put it in memory
+        image_binary = ''
+
+        return image_binary
+        
+       
+
+
+    #DRIVER FUNCTION
+    def do_upload(self,image_binary):
+
+        response = {}
+        image_sizes = []
         
         #Load the image
         with Image(blob=image_binary) as img:
@@ -117,7 +132,8 @@ class AvispaUpload:
 
     def do_copy(self,from_handle,to_handle,imgid):
 
-        pass
+        #Pull file from S3 bucket
+        f = self._pull_file_from_s3(origin,targetimgid)
 
         return response
 

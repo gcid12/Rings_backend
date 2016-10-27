@@ -251,7 +251,8 @@ class MyRingTool:
 
         AUD = AvispaUpload(handle)
 
-        response = AUD.do_upload(request)
+        blob = AUD.blob_from_request(request)
+        response = AUD.do_upload(blob)
         response['handle'] = handle
         response['imgbase']= '/_images/{handle}/{sizename}/{imgid}_{sizename}.{extension}'
 
