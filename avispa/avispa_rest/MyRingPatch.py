@@ -1099,6 +1099,29 @@ class MyRingPatch:
         d = {'rq': current_user,'template':'avispa_rest/tools/flashresponsejson.html'}
         return d
 
+    def p20161028(self,request,*args):
+        '''
+        Will repair user docs if needed (usually old ones that need an
+        extra field implemented afterwards)
+        http://127.0.0.1/_patch/p20161028
+        '''
+        from auth.User import User
+
+        users = self.MAM.select_multiple_users_doc_view('auth/userbasic',1000)
+
+        for user in users:
+
+            print('Checking '+user['id'])
+            
+
+            user = User(username=user['id'])
+            user.get_user()
+
+            
+
+        d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
+        return d
+
         
     
 
