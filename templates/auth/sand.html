@@ -1,266 +1,95 @@
 {% extends 'base.html' %}
 
-
+{% block title %} My Ring - {{ title }}{% endblock %}
+{% block findme %} orghome {% endblock %}
 
 {% block content %}
 
+<!-- CONTENT HERE -->
+
 <section>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 col-sm-3 col-md-2">
+    <div class="container pt-10">
+       
+    </div>  
+</section>
+<!-- WEAR OUT OR RUST OUT -->
 
-                <div class="gcard">
-
-
-                    <div class="row p-20">
-                        <!-- USER ::::::::::::::::::::::   -->
-                        <div class="col-xs-1 col-sm-12 text-left pt-20 hidden-xxs">
-                            
-                            {% if data.handle_profilepic %}
-                            <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle"> 
-                            {%else%}
-                            <img src="/static/images/ph/ph_user.gif" class="img-circle img-responsive">
-                            <br/> 
-                                {% if  'put_a'  in data.user_authorizations %}
-                                    <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
-                                {%endif%}
-
-                            {%endif%}
-
-                            <br/>
-                        </div>
-                        <div class="col-xs-8 col-sm-12">
-                            {% if data.handle_actualname %}     
-                                <p class="fc-b fs-1-5 lh-1">
-                                    {{data.handle_actualname}} 
-                                    <br/>
-                                    <span class="fc-g fs-0-7">@{{data.handle}}</span>
-                                </p>                         
-                            {% else %}
-                                <span class="fc-b pull-left fs-2 fw-z">@{{data.handle}}
-                                </span>
-                                
-                            {% endif %}
-
-                           
-                            <div class="row">
-                                <div class="col-sm-12 col-md-8 col-lg-6">
-                                    <p class="fs-0-7 fc-m"><em>Branding specialist, UX lead for Rampantzine, Co-Founder Myring</em></p>    
-                                    
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="spa20 hidden-xs">
-                          &nbsp;
-                        </div>
-                    
-                        <!-- USER ORGS ::::::::::::::::::::::   -->
-                        <div class="col-xs-3 col-sm-offset-1 col-sm-11 hidden-xxs">
-                            <div class="">
-                                
-                                <div class="fs-0-8 lh-1-5">
-
-                                    <i class="fa fa-binoculars p-x-10"></i> 
-                                    Find entity
-                                    <br/>
-                                    <i class="fa fa-plus p-x-10"></i> 
-                                    Add entity
-                                    <br/>
-                                    <a class="dropdown-toggle" href="/{{data.handle}}/_profile">
-                                        <i class="fa fa-gear p-x-10"></i> Settings
-                                    </a>
-                                    <br/>
-                                    <i class="fa fa-sign-out p-x-10"></i> 
-                                    Log out
-
-                                </div>
-                                
-                                
-                            </div>
-
-                        </div>
-
-                        <div class="spa20 hidden-xs">
-                          &nbsp;
-                        </div>
-
-                    </div>
+<!-- TABS START -->
+<section>
+    <div class="container">
+        <div class="row gcard bord-all">
+            <div class="col-xs-12">
+                <div class="alert  alert-success alert-dismissible alert-top" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                    <i class="fa fa-info-circle "></i> 
+                        <span class="fs-1-2">Load a collection for <strong>Museum of Modern Art</strong></span>
                 </div>
 
             </div>
 
-            <!-- SECOND COLUMN :::::::::::::::::::::::::::::::::::::::::-->
-
-
-
-            <div class="col-xs-12 col-sm-9 col-md-10 ">
-
-                <div class="row spa50">
-                    
-                    <!-- ROW A -->
-                    <div class="col-xs-7 col-sm-8 col-md-8">
-
-                        <span class="fw-c fs-fs-0-8 p-x-20 hidden-xs">Contributions</span>
-                    
-                        <span class="fs-0-8 p-x-20">
-                            Total: <span class="badge bg-m fs-0-8">1,325</span>
-                        </span>
-                        <span class="fs-0-8 bord-left p-x-20">
-                            Score :  <strong>89% </strong> 
-                        </span>
-                    </div>
-                    <div class="col-xs-5 col-sm-3 col-md-3 cornerfilter pr-20">
-                        <ul class="nav nav-tabs navbar-right float-right" role="tablist">
-                            <li role="presentation" class="active"><a href="#icons" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-list"></i></a></li>
-                            <li role="presentation"><a href="#list" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-th"></i></a></li>
-                        </ul>
-                    </div>
-
-                    <!-- ROW B -->
-                    <div class=" col-sm-11">
-                      <!-- Tab panes -->
-                      <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active pt-20" id="icons">
-                            <table class="table">
-
-                                  <tr class=" fs-0-6 fc-m">
-                                    <th>Name</th>
-                                    <th>Location</th>
-                                    <th>Role</th>
-                                    <th>Points</th>
-                                    <th></th>
-
-                                    
-                                  </tr>
-                                {% for organization in data.organizations %}
-                                  <tr class=" fs-0-8">
-                                    <td>
-                                      <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-2">
-                                    Cooper Hewitt Museum
-                                    </td>
-                                    <td>
-                                      Paris
-                                    </td>
-                                    <td>
-                                      <span class="badge bg-d fs-0-7 ">Specialist</span>
-                                    </td>
-                                    <td>
-                                      239
-                                    </td>
-                                    <td class="text-right">
-                                      <i class="fa fa-info-circle"></i>
-                                      <i class="fa fa-plus-circle"></i>
-                                    </td>
-
-                                  </tr>
-                                {% endfor %}
-                                
-                            </table>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="list">
-                            <div class="fs-0-8 ">
-                                {% for organization in data.organizations %}
-                                    <a href="/{{organization['handle']}}/_home" data-toggle="tooltip" title="{%if organization['handle'] %}{{organization['handle']}}{%else%}Handlemissing{%endif%}"> 
-                                        <img src="{%if organization['profilepic'] %}{{data.image_cdn_root}}/{{organization['handle']}}/t75/{{organization['profilepic']}}.jpg{%else%}/static/images/ph/ph_org2.gif{%endif%}" class="pic-org-1 mt-10">
-                                    </a>
-                                {% endfor %}
-                                
-                                {% if 'post_a' in data.user_authorizations %}
-                                    <a href="/_orgregister" data-toggle="tooltip" title="Create an organization" class="hidden-xs pad-x-10"><i class="fa fa-plus-circle fc-d"></i></a>
-                                {%endif%}
-                            
-                            </div>
-
-                        </div>
-                        
-                      </div>
-
-                        
-                    </div>
-                    
-                </div>
-                <!-- <div class="row">
-                    
-                    <div class="col-xs-6 col-sm-offset-1 fs-0-8 col-sm-3 fw-c bord-left">
-                        Badges
-                        <br/><br/>
-
-                        {{ ui.c_item('fa-bookmark-o','OAS - Hotels','') }}
-                        {{ ui.c_item('fa-bookmark-o','OAS - Restaurant','') }}
-                    
-
-                    </div>
-                    
-                    
-                    
-                    <div class="col-xs-6 col-sm-4 fs-0-8 fw-c bord-left ">
-                        Teams
-                        <br/><br/>
-
-                        {{ ui.c_item('fa-shield','Sella FC','http://yahoo.com') }}
-                        {{ ui.c_item('fa-shield','Capture busters','http://yahoo.com') }}
-                        {{ ui.c_item('fa-shield','Team Mravilla','http://yahoo.com') }}
-                       
-
-                    </div>
-                </div> -->
-
-                <!-- <div class="row">
-                    <div class="col-sm-12"><hr/></div>
-                    <div class="col-sm-offset-1 col-sm-7 bord-left fs-0-8">
-                        <span class="fw-c">Previous</span>
-                        <br/><br/>
-
-                        <table class="table table-condensed table-striped">
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','OAS Capturethon 2016 ','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','OAS Capturethon 2015','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','Translation Hotels New York ','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','Open Accessinility Times Square Capture','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','Portraits of NewYork','') }}</td>
-                            </tr>
-                            
-                        </table>
-                        
-                    </div>
-                   
-                    <div class="col-sm-12"> <hr/></div> 
-                </div> -->
-
-
-                
-                
-            </div><!-- close -->  
-        </div>
             
+            <div class="col-xs-12">
+                
+                <!-- <a class="btn btn-xs btn-default float-right fs-0-9 m-10"><i class="fa fa-arrow-right fc-g"></i> See all</a> -->
+                <h5 class="p-x-20 fs-0-9 fc-g"><em>Popular Collections:</em></h5>
 
-        
+                
+                {{ ui.collec_item('co_wine.png', 'Winery', '/') }}
+                {{ ui.collec_item('co_museum.png', 'Museum', '/') }}
+                {{ ui.collec_item('co_generic.png', 'School', '/') }}
+                {{ ui.collec_item('co_generic.png', 'Hotel', '/') }}
+                {{ ui.collec_item('co_generic.png', 'Restaurant', '/') }}
+                {{ ui.collec_item('co_generic.png', 'Travel service', '/') }}
+                {{ ui.collec_item('co_generic.png', 'School', '/') }}
+                
+                
+                {{ ui.collec_item('co_generic.png', 'Restaurant', '/') }}
+                {{ ui.collec_item('co_basic.png', 'Load Basic', '/') }} 
+                {{ ui.collec_item('co_more.png', 'More', '/') }} 
 
-        
+            </div>
+            <div class="col-xs-12">
+                <hr/>
+
+                
+                {{ ui.collec_item('co_empty.png', 'Empty', '/') }}
+                {{ ui.collec_item('co_add.png', 'Create New', '/') }}
+
+                <div class="spa20">&nbsp;</div>
+            </div>
 
 
-        </div><!-- close ROW--> 
-
-
-                <!-- COLUMN 1 -->
-        <!-- COLUMN 1 -->           
-    </div> <!-- CLOSE CONTAINER -->
+        </div>
+    </div>
+  </div>
 </section>
+
+
+<!-- MODAL WHAT IS A COLLECTION -->
+
+<div class="modal fade" id="intro-collection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <!-- <h4 class="modal-title" id="myModalLabel">The User Graph</h4> -->
+        <p class="fs-2">What is a Data Collection?</p>
+        
+      </div>
+      <div class="modal-body">
+          
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    
 {% endblock %}
-
-{% block footafterfunctions %}
-
-
-
-{% endblock %}
-
 

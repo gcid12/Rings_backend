@@ -1703,4 +1703,25 @@
 
 
 
+{% macro collec_item(image, text, link) %}
+  
+  
+    <a href="{{ link }}" class="bp-container">
+      <div>
+        <img src="/static/images/ph/{{ image }}" class="blueprint"/>
+      </div>
+      <div >
+         {{ text }}
+      </div>  
+    </a>
+  
+  
+
+{% endmacro %}
+
+
+
+
+
+
 
