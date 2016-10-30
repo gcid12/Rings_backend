@@ -177,7 +177,7 @@
                                            
                                             <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
                                                 
-                                                    <img class="user-xsmall user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}"/>
+                                                    <img class="user-xsmall user-round" src="{% if data.peoplethumbnails[person.handle] %}{{data.image_cdn_root}}/{{person.handle}}/t75/{{data.peoplethumbnails[person.handle]}}.jpg{% else %}/_static/images/ph/ph_user2.gif{% endif %}"/>
                                                 
                                             </div>
                                             <div class="col-xs-7 col-sm-8 fs-0-7 pt-5 fw-c">
@@ -363,7 +363,7 @@
                                                 {%for member in team.members%}
 
                                                 <a href="/{{member.handle}}" class="fc-n">
-                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
+                                                  <img class="user-team" src="{% if data.peoplethumbnails[member.handle] %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{data.peoplethumbnails[member.handle]}}.jpg{% else %}/_static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
                                                   <span class="fs-0-7"> {{member.handle}}</span>
                                                 </a>
                                                 
@@ -858,7 +858,7 @@
             <p class="fs-1-2">
             A collection of digital content about your business. It can be any text, photograph, video or audio.  <!-- <a href="" class="clearlink fs-0-8">(long answer here)</a> -->
             </p>
-            <img class="img-responsive" src="/static/images/graphics/wcollection.gif">
+            <img class="img-responsive" src="/_static/images/graphics/wcollection.gif">
 
       </div>
       <div class="modal-footer">

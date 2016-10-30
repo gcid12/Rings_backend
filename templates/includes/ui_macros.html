@@ -71,7 +71,7 @@
 
             <div class="fs-1-7 text-s1">
               <a class="nounder" href="/{{data.handle}}">
-                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}.jpg{% else %} /static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
+                  <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}.jpg{% else %} /_static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
                 
                 <span class="fc-a">{{ data.handle|lower() }}</span>   
                 <span class="fc-a">/</span>
@@ -101,7 +101,7 @@
           <tr class="bord-bottom bc-8 bw-2">
             
             <td style="width:15%">{{ icon_sma(count, color) }}
-            <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
+            <!-- <img src="/_static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
             
             
              
@@ -109,7 +109,7 @@
             </td>
             <td>
 
-              <!--img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
+              <!--img src="/_static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
               <div class="fw-c fs-0-8">
                 <div class="spa5"></div>             
                 {% if ringname+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
@@ -181,7 +181,7 @@
           <tr class="bord-bottom bc-8 bw-2">
             
             <td style="width:15%">{#{ icon_sma(ring.count, color) }#}
-            <!-- <img src="/static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->xxx
+            <!-- <img src="/_static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->xxx
             
               {% if data.user_authorizations %}
                 {% if extended!='1' %}
@@ -192,7 +192,7 @@
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu_{{data.collection}}">
                     <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/{{ data.handle }}/{{ ring.ringname }}?rq=put"><i class="fa fa-cog"></i> Edit schema</a></li>
-                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ data.handle }}/{{ ring.ringname }}"><img src="/static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
+                    <li role="presentation"><a role="menuitem" class="nounder" tabindex="-1" href="/_api/{{ data.handle }}/{{ ring.ringname }}"><img src="/_static/images/icons/json.png" style="opacity:0.5; width:15px;"> See JSON</a></li>
                     
                   </ul>
                 </span>
@@ -201,7 +201,7 @@
             </td>
             <td>
 
-              <!--img src="/static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
+              <!--img src="/_static/images/icons/ico_schema.png" style="width:15px; opacity:0.5;"-->
               <div class="fw-c">
                 <div class="spa5"></div>
 
@@ -337,7 +337,7 @@
               {% if 'put_a_b' in data.user_authorizations %}
               
               <a href="/{{ data.handle }}/{{ ring.ringname }}?rq=put" type="button" class="btn btn-warning btn-xs"><i class="fa fa-cog fa-1x"></i></a>
-              <a href="/_api/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn  btn-xs"><img src="/static/images/icons/json.png"></a>
+              <a href="/_api/{{ data.handle }}/{{ ring.ringname }}" type="button" class="btn  btn-xs"><img src="/_static/images/icons/json.png"></a>
               {% endif %}
 
             </div> 
@@ -428,7 +428,7 @@
                 <i class="fa fa-cog fa-1x"></i>
               </a>
               <a href="/_api/{{ data.handle }}/{{ data.ring }}{%if data.idx%}/{{data.idx}}{%endif%}" type="button" class="btn  btn-xs">
-                <img src="/static/images/icons/json.png">
+                <img src="/_static/images/icons/json.png">
               </a>
   {% endif %}
             </div>   
@@ -920,7 +920,7 @@
     
     <td><i class="fa fa-toggle-{{ active }} fa-1x"></i></td>
     <td><p class="fs-0-8"><a href="/campaigns/w1">{{ name }}</a></p></td>
-    <td><img class=" user-med" src="/static/images/{{ by }}" style="width:20px;"></td>
+    <td><img class=" user-med" src="/_static/images/{{ by }}" style="width:20px;"></td>
     <td><p class="fs-0-8">{{ type }}</p></td>
     
     <td><span class="badge">{{ da }} </span></td>
@@ -1080,7 +1080,7 @@
                 {% else %}
 
                     <a href="/{{data.handle}}/_orgprofile" class="pull-left fs-0-8">
-                        <img class="img-responsive center-block user-big" src="/static/images/ph/ph_org2.gif">
+                        <img class="img-responsive center-block user-big" src="/_static/images/ph/ph_org2.gif">
                     </a>
 
                 {% endif %}
@@ -1155,7 +1155,7 @@
         <div class="row">
                 {% if pic %} 
                   <div class="col-sm-1 col-xs-2">
-                    <a href="/{{handle}}"><img class="img-responsive center-block user-small" src="{% if pic %}{{cdn}}/_images/{{handle}}/t150/{{pic}}.jpg{% else %}/static/images/ph_org.gif{% endif %}" style="margin-right:10px;" alt=""></a>
+                    <a href="/{{handle}}"><img class="img-responsive center-block user-small" src="{% if pic %}{{cdn}}/_images/{{handle}}/t150/{{pic}}.jpg{% else %}/_static/images/ph_org.gif{% endif %}" style="margin-right:10px;" alt=""></a>
                   </div>
                 {% endif %}
 
@@ -1201,7 +1201,7 @@
       </tr>
       <tr>
         <td style="width:20px;">
-          <img src="/static/images/box.png" class="img-responsive block-center" style="width:80px;"> 
+          <img src="/_static/images/box.png" class="img-responsive block-center" style="width:80px;"> 
         </td>
       
         <td>
@@ -1301,7 +1301,7 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-2">
-          <img class=" user-med" src="/static/images/ph/users/{{ avatar }}">
+          <img class=" user-med" src="/_static/images/ph/users/{{ avatar }}">
 
 
           {{ label(role) }}
@@ -1317,7 +1317,7 @@
 
         </div>
         <div class="col-sm-10">
-          <img class="img-responsive center-block" src="/static/images/graphics{{ graph }}" >
+          <img class="img-responsive center-block" src="/_static/images/graphics{{ graph }}" >
           <div class="pull-left fs-0-8 text-gray"><strong>{{ assets }}</strong>  Data Resources | {{ percent }}%</div>
           <div class="pull-right fs-0-8 text-gray"><a href="/campaigns"><strong>4 </strong>Active Campaigns &nbsp; <i class="fa fa-flag fa-1x"></i></a> </div>
         <div class="spa10 visible-xs"></div>
@@ -1347,7 +1347,7 @@
 {% macro friend(name, avatar) %}
 
 <div>
-  <img class=" user-med pull-left" src="/static/images/{{ avatar }}" width="40px">  
+  <img class=" user-med pull-left" src="/_static/images/{{ avatar }}" width="40px">  
   <div class="btn-group pull-right" role="group" aria-label="123">
             <a class="btn btn-default btn-xs"><i class="fa fa-line-chart fa-1x"></i></a>
             <a class="btn btn-default btn-xs"><i class="fa fa-plus fa-1x"></i></a>
@@ -1370,7 +1370,7 @@
                     
             >
           <!-- Image placeholder -->
-            <img style="width:90px; margin:1px;" src="/static/images/image01.jpg"  class="img-thumbnail">
+            <img style="width:90px; margin:1px;" src="/_static/images/image01.jpg"  class="img-thumbnail">
 
           </a>
         </td>
@@ -1407,7 +1407,7 @@
                     <table> 
                       <tr>
                         <td>
-                          <img style="width:70px;" src="/static/images/image01.jpg" class="img-thumbnail" >
+                          <img style="width:70px;" src="/_static/images/image01.jpg" class="img-thumbnail" >
                         </td>
                       </tr> 
                       <tr>
@@ -1708,7 +1708,7 @@
   
     <a href="{{ link }}" class="bp-container">
       <div>
-        <img src="/static/images/ph/{{ image }}" class="blueprint"/>
+        <img src="/_static/images/ph/{{ image }}" class="blueprint"/>
       </div>
       <div >
          {{ text }}
