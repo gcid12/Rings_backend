@@ -1,10 +1,10 @@
 
 @font-face{
     font-family:FontAwesome;
-    src:url(/static/assets/font-awesome/fonts/fontawesome-webfont.eot?#iefix) format('eot'),
-    url(/static/assets/font-awesome/fonts/fontawesome-webfont.woff) format('woff'),
-    url(/static/assets/font-awesome/fonts/fontawesome-webfont.ttf) format('truetype'),
-    url(/static/assets/font-awesome/fonts/fontawesome-webfont.svg#FontAwesome) format('svg');
+    src:url(/_static/assets/font-awesome/fonts/fontawesome-webfont.eot?#iefix) format('eot'),
+    url(/_static/assets/font-awesome/fonts/fontawesome-webfont.woff) format('woff'),
+    url(/_static/assets/font-awesome/fonts/fontawesome-webfont.ttf) format('truetype'),
+    url(/_static/assets/font-awesome/fonts/fontawesome-webfont.svg#FontAwesome) format('svg');
     font-weight:400;font-style:normal;}
 /*#f2f0ed*/
 
@@ -366,20 +366,20 @@ color:#f9e8c0 !important;
 }
 
   .bg-connect{  
-  background: url(/static/images/mbf/handphone.jpg), -webkit-linear-gradient(60deg, #2891cc, #184f89);
-  background: url(/static/images/mbf/handphone.jpg), -o-linear-gradient(60deg, #2891cc, #184f89);
-  background: url(/static/images/mbf/handphone.jpg), -moz-linear-gradient(60deg, #2891cc, #184f89);
-  background: url(/static/images/mbf/handphone.jpg), linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/_static/images/mbf/handphone.jpg), -webkit-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/_static/images/mbf/handphone.jpg), -o-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/_static/images/mbf/handphone.jpg), -moz-linear-gradient(60deg, #2891cc, #184f89);
+  background: url(/_static/images/mbf/handphone.jpg), linear-gradient(60deg, #2891cc, #184f89);
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
 
 /*  .bg-pedro{  
-  background: url(/static/images/mbf/pedro02.gif), -webkit-linear-gradient(60deg, #8fcb1e, #8fcb1e);
-  background: url(/static/images/mbf/pedro02.gif), -o-linear-gradient(60deg, #8fcb1e, #8fcb1e);
-  background: url(/static/images/mbf/pedro02.gif), -moz-linear-gradient(60deg, #8fcb1e, #8fcb1e);
-  background: url(/static/images/mbf/pedro02.gif), linear-gradient(60deg, #8fcb1e, #8fcb1e);
+  background: url(/_static/images/mbf/pedro02.gif), -webkit-linear-gradient(60deg, #8fcb1e, #8fcb1e);
+  background: url(/_static/images/mbf/pedro02.gif), -o-linear-gradient(60deg, #8fcb1e, #8fcb1e);
+  background: url(/_static/images/mbf/pedro02.gif), -moz-linear-gradient(60deg, #8fcb1e, #8fcb1e);
+  background: url(/_static/images/mbf/pedro02.gif), linear-gradient(60deg, #8fcb1e, #8fcb1e);
     
     background-position: 0px 0px; 
     background-repeat: no-repeat;
@@ -392,7 +392,7 @@ color:#f9e8c0 !important;
 
 
 .bg-ai{  
-  background: url(/static/images/back03.jpg) no-repeat center center fixed; 
+  background: url(/_static/images/back03.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -400,7 +400,7 @@ color:#f9e8c0 !important;
 }
 
 .bg-bits{  
-  background: url(/static/images/back01.jpg) no-repeat center center fixed; 
+  background: url(/_static/images/back01.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -408,7 +408,7 @@ color:#f9e8c0 !important;
 }
 
 .bg-bits2{  
-  background: url(/static/images/back03.jpg) no-repeat center center fixed; 
+  background: url(/_static/images/back03.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -419,7 +419,7 @@ color:#f9e8c0 !important;
 
 
 .bg-grass{  
-  background: url(/static/images/grass.jpg) no-repeat center center fixed; 
+  background: url(/_static/images/grass.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -428,7 +428,7 @@ color:#f9e8c0 !important;
 
 .bg-hand{  
   
-  background: url(/static/images/csiri.png) no-repeat center center fixed; 
+  background: url(/_static/images/csiri.png) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -437,7 +437,7 @@ color:#f9e8c0 !important;
 }
 
 .bg-yellow{  
-  background: url(/static/images/back02.gif) no-repeat center center fixed; 
+  background: url(/_static/images/back02.gif) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -448,7 +448,7 @@ color:#f9e8c0 !important;
 
 .bg-people{  
   
-  background: url(/static/images/back02.gif) no-repeat center center fixed; 
+  background: url(/_static/images/back02.gif) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -458,7 +458,7 @@ color:#f9e8c0 !important;
 
 .bg-people2{  
   
-  background: url(/static/images/back04.gif) no-repeat center center fixed; 
+  background: url(/_static/images/back04.gif) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
