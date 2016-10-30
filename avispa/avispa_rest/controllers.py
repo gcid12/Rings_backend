@@ -1181,6 +1181,7 @@ def index():
                                      _external=True,
                                      _scheme=URL_SCHEME))
 
+
 @avispa_rest.route('/_images/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
 def imageserver(filename,depth1,depth2):
 
@@ -1189,40 +1190,6 @@ def imageserver(filename,depth1,depth2):
     avispa_rest.static_folder=IMAGE_FOLDER_NAME+'/'+depth1+'/'+depth2
     return avispa_rest.send_static_file(filename)
 
-
-@avispa_rest.route('/static/<filename>', methods=['GET', 'POST'])
-def static(filename):
-
-    avispa_rest.static_folder='static'
-    return avispa_rest.send_static_file(filename)
-
-
-@avispa_rest.route('/static/<depth1>/<filename>', methods=['GET', 'POST'])
-def static2(filename,depth1):
-
-    avispa_rest.static_folder='static/'+depth1
-    return avispa_rest.send_static_file(filename)
-
-
-@avispa_rest.route('/static/<depth1>/<depth2>/<filename>', methods=['GET', 'POST'])
-def static3(filename,depth1,depth2):
-
-    avispa_rest.static_folder='static/'+depth1+'/'+depth2
-    return avispa_rest.send_static_file(filename)
-
-
-@avispa_rest.route('/static/<depth1>/<depth2>/<depth3>/<filename>', methods=['GET', 'POST'])
-def static4(filename,depth1,depth2,depth3):
-
-    avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3
-    return avispa_rest.send_static_file(filename)
-
-
-@avispa_rest.route('/static/<depth1>/<depth2>/<depth3>/<depth4>/<filename>/', methods=['GET', 'POST'])
-def static5(filename,depth1,depth2,depth3,depth4):
-
-    avispa_rest.static_folder='static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
-    return avispa_rest.send_static_file(filename)
 
 
 @avispa_rest.route('/<handle>/_history', methods=['GET'])
