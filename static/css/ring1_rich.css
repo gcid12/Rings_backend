@@ -4,10 +4,10 @@
 
 @font-face{
     font-family:FontAwesome;
-    src:url(/static/assets/font-awesome/fonts/fontawesome-webfont.eot?#iefix) format('eot'),
-    url(/static/assets/font-awesome/fonts/fontawesome-webfont.woff) format('woff'),
-    url(/static/assets/font-awesome/fonts/fontawesome-webfont.ttf) format('truetype'),
-    url(/static/assets/font-awesome/fonts/fontawesome-webfont.svg#FontAwesome) format('svg');
+    src:url(/_static/assets/font-awesome/fonts/fontawesome-webfont.eot?#iefix) format('eot'),
+    url(/_static/assets/font-awesome/fonts/fontawesome-webfont.woff) format('woff'),
+    url(/_static/assets/font-awesome/fonts/fontawesome-webfont.ttf) format('truetype'),
+    url(/_static/assets/font-awesome/fonts/fontawesome-webfont.svg#FontAwesome) format('svg');
     font-weight:400;font-style:normal;}
 /*#f2f0ed*/
 
