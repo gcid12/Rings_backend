@@ -95,7 +95,7 @@
                                 {%for member in team.members%}
 
                                 <a href="/{{member.handle}}" class="fc-n">
-                                  <img class="user-team" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{member.thumbnail}}.jpg{% else %}/static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
+                                  <img class="user-team" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{member.thumbnail}}.jpg{% else %}/_static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
                                   <span class="fs-0-8"> {{member.handle}}</span>
                                 </a>
                                 
