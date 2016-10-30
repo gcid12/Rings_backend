@@ -612,14 +612,24 @@ def home_dispatcher(handle):
 
             #data['cu_actualname'] = cu_user_doc['name']
             data['cu_profilepic'] = cu_user_doc['profilepic']
+
+
             #data['cu_location'] = cu_user_doc['location']
             #data['cu_handle'] = current_user.id
 
         #This is the data from the handle we are visiting
         handle_user_doc = MAM.select_user_doc_view('auth/userbyhandle',handle)
         if handle_user_doc:
+
             data['handle_actualname'] = handle_user_doc['name']
-            data['handle_profilepic'] = handle_user_doc['profilepic']
+
+            #Grab the last reference only
+            if 'profilepic' in handle_user_doc:
+                parts = handle_user_doc['profilepic'].split(',')
+                data['handle_profilepic'] = parts[-1]
+            else:
+                data['handle_profilepic'] = ''
+
             data['handle_location'] = handle_user_doc['location']
             data['handle_about'] = handle_user_doc['about']
 
