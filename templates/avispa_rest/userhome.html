@@ -49,17 +49,23 @@
                                         <br/>
                                     {% endif %}
 
+                                    {% if data.handle_location %}  
+
+                                        <span class="fc-g fs-0-9">{{data.handle_location}}</span>
+                                        <br/>
+                                    {% endif %}
+
                                     
 
                                 </span> 
                                                
                                 <span class="fc-g fs-0-9">@{{data.handle}}</span>
 
-                                <!-- <p class="fs-0-7 fc-m"><em>
-                                Branding specialist, UX lead for Rampantzine, Co-Founder Myring
-                                </em></p>  -->
+                                {% if data.handle_about %}  
+                                        <p class="fs-0-7 fc-m"><em>{{data.handle_about}}</em></p> 
+                                {% endif %}
                                 
-                                <p class="fs-0-7 fc-m"><em>COO, Co-founder @PeerStreet Director of Product Marketing @GoogleFounder of @XAnalytics Founder of Urchin Software, marketing lead on Adenco</em></p> 
+                                
 
                                 
                             <div class="spa20 hidden-xs">
