@@ -28,9 +28,7 @@ class MyRingTool:
         self.ATM = AuthModel()  
         self.user_database = 'myring_users'  
 
-    def checkuno(self,request,*args):
-        self.MAM.create_db('python-test39')    
-
+    #BOOTSTRAP INSTALLATION
     def install(self,request,*args):
 
         data = {}
@@ -63,188 +61,7 @@ class MyRingTool:
         return d
 
 
-    def create_user(self,request,*args):
-
-        
-
-        if 'rs' in request.args:
-
-
-            data = {}
-
-            if request.form.get('username'):
-                data['username'] = request.form.get('username')
-            else:
-                data['username'] = 'defaultusername'
-
-            if request.form.get('email'):
-                data['email'] = request.form.get('email')
-            else:
-                data['email'] = 'defaultemail'
-
-            if request.form.get('firstname'):
-                data['firstname'] = request.form.get('firstname')
-            else:
-                data['firstname'] = 'defaultfirstname'
-
-            if request.form.get('lastname'):
-                data['lastname'] = request.form.get('lastname')
-            else:
-                data['lastname'] = 'defaultlastname'
-
-            if request.form.get('passw'):
-                if request.form.get('passw') == request.form.get('passwrepeat'):
-                    data['salt'] = self.generate_salt()
-                    data['passhash'] = self.get_hashed_password(request.form.get('passw'),data['salt'])
-                else:
-                    print(request.form.get('passw'))
-                    print(request.form.get('passwrepeat'))
-                    raise ValueError('Both passwords need to be exactly the same')
-            else:
-                #implement hash here!
-                raise ValueError('You need a password!')      
-
-            data['guid'] = hex(uuid.getnode())
-
-
-            msg = ''
-
-            if self.ATM.admin_user_create(data):
-                msg += ' just Created. '
-
-                AUD = AvispaUpload(data['username'])
-                AUD.create_user_imagefolder()
-                
-            else:
-                msg += ' user already existed. '
-                
-
-            d = {'message': 'using install tool:'+msg , 'template':'avispa_rest/index.html'}
-
-
-        else:  # Show form to formulate request
-
-            d = {'message': 'Create_user tool RQ ', 'template':'avispa_rest/tools/create_user_rq.html'}
-
-        return d
-
-    def generate_salt(self):
-        return bcrypt.gensalt(10) 
-        # The integer is the number the dictates the 'slowness'
-        #Slow is desirable because if a malicious party gets their hands on the table containing hashed passwords, 
-        #then it is much more difficult to de-encrypt them. 
-
-    def get_hashed_password(self,plain_text_password,salt):
-        # Hash a password for the first time
-        #   (Using bcrypt, the salt is saved into the hash itself)
-        return bcrypt.hashpw(plain_text_password, salt)
-
-    def check_password(self,plain_text_password, hashed_password):
-        # Check hased password. Useing bcrypt, the salt is saved into the hash itself
-        return bcrypt.checkpw(plain_text_password, hashed_password)
-
-
-    def dropzonedemo(self,request,*args):
-
-        d = {'message': 'using dropzone tool', 'template':'avispa_rest/tools/dropzonedemo.html'}
-
-        return d
-
-    def wanddemo(self,request,*args):
-
-        from wand.image import Image 
-        from wand.display import display
-
-        image_folder = ''
-
-        with Image(filename=image_folder+'cover1b.png') as img:
-            print(img.size)
-            for r in 1,2,3:
-                with img.clone() as i:
-                    i.resize(int(i.width * r * 0.25), int(i.height * r * 0.25))
-                    i.rotate(90 * r)
-                    i.save(filename=image_folder+'cover1b-{0}.png'.format(r))
-                    display(i)
-
-
-    def fileupload(self,request,*args):
-
-        import os
-        from werkzeug import secure_filename
-
-
-        UPLOAD_FOLDER = ''
-
-        if request.method == 'POST':
-            file = request.files['file']
-            if file and self.__allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(UPLOAD_FOLDER, filename))
-                out = 'File uploaded successfully here:' + os.path.join(UPLOAD_FOLDER, filename)
-            else:
-                out = 'Format not allowed'
-        else:
-            out = 'Upload something'
-        
-        
-
-        d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
-        return d 
-
-
-    def __allowed_file(self,filename):
-
-        ALLOWED_EXTENSIONS = set(['txt','pdf','png','jpg','JPG','jpeg','gif'])
-
-        return '.' in filename and \
-                filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
-
-
-    def uploadmultiply(self,request,*args):
-
-        import os
-        from werkzeug import secure_filename
-        from wand.image import Image 
-        from wand.display import display
-
-
-        UPLOAD_FOLDER = ''
-        out = ''
-
-        if request.method == 'POST':
-            file = request.files['file']
-            if file and self.__allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(UPLOAD_FOLDER, filename))
-
-                print('File uploaded here:' + os.path.join(UPLOAD_FOLDER, filename))
-         
-
-                with Image(filename=os.path.join(UPLOAD_FOLDER, filename)) as img:
-                    print(img.size)
-                    for r in 1,2,3:
-                        with img.clone() as i:
-                            #i.resize(int(i.width * r * 0.25), int(i.height * r * 0.25))
-                            i.transform(resize=str(100 * r))
-                            #i.rotate(90 * r)
-                            i.save(filename=UPLOAD_FOLDER+filename+'{0}.jpg'.format(r))
-                            #display(i)
-                            print('File multiplied:'+UPLOAD_FOLDER+filename+'{0}.jpg'.format(r))
-
-
-
-                out = 'File uploaded'
-
-
-            else:
-                out = 'Format not allowed'
-        else:
-            out = 'Upload something'
-
-        d = {'out': out , 'template':'avispa_rest/tools/uploadfiledemo.html'} 
-        return d 
-
-
+    #IMAGE SERVER
     def assert_rq_method(self,request,method):
 
         if not request.method == method:
@@ -261,7 +78,8 @@ class MyRingTool:
             return False
 
         return True
-
+    
+    #IMAGE SERVER
     def pull_file_from_request(self,request):
 
         try:
@@ -274,6 +92,7 @@ class MyRingTool:
 
         return f
     
+    #IMAGE SERVER UPLOAD DRIVER
     def upload_via_aud(self,request,*args):
 
         #Check if the handle exists and the token is correct
@@ -322,7 +141,7 @@ class MyRingTool:
 
         return d
 
-
+    #IMAGE SERVER DELETE DRIVER
     def delete_via_aud(self,request,*args):
 
         
@@ -372,17 +191,7 @@ class MyRingTool:
 
         return d
 
-    def update_gerardo(self,request,*args):
 
-        self.ATM.userdb_set_db_views()
-
-        flash(u'DB Views updated')
-
-        rq = ''
-
-        d = {'rq': rq,'template':'avispa_rest/tools/flashresponsejson.html'}
-
-        return d
 
     def test_urllib2(self,request,*args):
 
