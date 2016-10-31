@@ -1,35 +1,18 @@
 {% extends 'avispa_rest/settings_base.html' %}
-
-
-
             {% block settings %}
-
-
                 <div class="gcard">
-                    <div class="gcard-title bg-d">
-              
-                        
+                    <div class="gcard-title bg-d">                       
                         <span class="fc-b fs-1-2"> {{ data.user['name'] }}</span>
-                        <span class="fc-b fs-1-2 fw-c"> Licenses</span>
-              
+                        <span class="fc-b fs-1-2 fw-c"> Licenses</span>            
                     </div> 
-                   
-
-                    
-
-                    <div class="gcard-body p-20">
-              
+                    <div class="gcard-body p-20">              
                         <form class="form-horizontal" action="" method="POST" role="form">
-
                             <div class="row">
                                 <div class=" col-sm-offset-1 col-sm-9 spa10"> 
                                     <p class="fc-m fs-0-8">A Creative Commons (CC) license is one of several public copyright licenses that enable the free distribution of an otherwise copyrighted work. A CC license is used when an author wants to give people the right to share, use, and build upon a work that they have created.</p>
                                     <hr/>
                                 </div>
                             </div>
-
-
-
                             <!-- REPEAT -->
                             <div class="row">
                                 <div class="col-sm-offset-1 col-sm-7">
@@ -40,9 +23,7 @@
                                           </td>
                                           <td>
                                               <a tabindex="0" class="nounder">ringhandle/ringname</a>
-                                              
- 
-                                            <a tabindex="0" class="btn btn-xs btn-text pull-right" role="button" data-toggle="popover" data-trigger="focusx" title="Attribution License" data-content="You let others copy, distribute, display, and perform your copyrighted work - and derivative works based upon it - but only if they give you credit. "><img class="pull-right" src="/_static/images/icons/cc/cc_icon_attribution.gif" style="width:20px;"/></a>
+                                              <a tabindex="0" class="btn btn-xs btn-text pull-right" role="button" data-toggle="popover" data-trigger="focusx" title="Attribution License" data-content="You let others copy, distribute, display, and perform your copyrighted work - and derivative works based upon it - but only if they give you credit. "><img class="pull-right" src="/_static/images/icons/cc/cc_icon_attribution.gif" style="width:20px;"/></a>
                                           </td>
                                         </tr>
                                     </table>
@@ -58,7 +39,6 @@
                                   </select>
                                 </div>
                             </div>
-
                             <!-- REPEAT -->
                             <div class="row">
                                 <div class="col-sm-offset-1 col-sm-7">
@@ -69,13 +49,10 @@
                                           </td>
                                           <td>
                                               <a tabindex="0" class="nounder">ringhandle/ringname</a>
-
-                                            <a tabindex="0" class="btn btn-xs btn-text pull-right" role="button" data-toggle="popover" data-trigger="focusx" title="Attribution-NonCommercial License" data-content="You let others copy, distribute, display, and perform your work - and derivative works based upon it - but for noncommercial purposes only. ">
+                                              <a tabindex="0" class="btn btn-xs btn-text pull-right" role="button" data-toggle="popover" data-trigger="focusx" title="Attribution-NonCommercial License" data-content="You let others copy, distribute, display, and perform your work - and derivative works based upon it - but for noncommercial purposes only. ">
                                                 <img class="pull-right" src="/_static/images/icons/cc/cc_icon_noncomm.gif" style="width:20px;"/>
                                                 <img class="pull-right" src="/_static/images/icons/cc/cc_icon_attribution.gif" style="width:20px;"/>
-                                                
-                                            </a>
-
+                                              </a>
                                           </td>
                                         </tr>
                                     </table>
@@ -91,7 +68,6 @@
                                   </select>
                                 </div>
                             </div>
-
                             <!-- REPEAT -->
                             <div class="row">
                                 <div class="col-sm-offset-1 col-sm-7">
@@ -106,10 +82,7 @@
                                               <a tabindex="0" class="btn btn-xs btn-text pull-right" role="button" data-toggle="popover" data-trigger="focusx" title="Attribution-NonCommercial License" data-content="You let others copy, distribute, display, and perform your work - and derivative works based upon it - but for noncommercial purposes only. ">
                                                 <img class="pull-right" src="/_static/images/icons/cc/cc_icon_noderivs.gif" style="width:20px;"/>
                                                 <img class="pull-right" src="/_static/images/icons/cc/cc_icon_attribution.gif" style="width:20px;"/>
-                                                
-                                            </a>
-
-
+                                              </a>
                                           </td>
                                         </tr>
                                     </table>
@@ -125,12 +98,10 @@
                                   </select>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-sm-12">
                                     <hr/>
-                                </div>
-                                
+                                </div>                               
                             </div>
                             <div class="row">
                                 <div class="col-sm-offset-1 col-sm-5">
@@ -143,10 +114,8 @@
                                         <a href="/{{ data.handle }}/_home" class="btn btn-default btn-sm">Cancel</a>
                                     </div>
                                 </div>
-                            </div>
-                            
+                            </div>                           
                         </form>
                     </div><!-- //close box -->
                 </div>
-
             {% endblock %}

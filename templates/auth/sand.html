@@ -1,19 +1,13 @@
 {% extends 'base.html' %}
-
 {% block title %} My Ring - {{ title }}{% endblock %}
 {% block findme %} orghome {% endblock %}
-
 {% block content %}
-
 <!-- CONTENT HERE -->
-
 <section>
-    <div class="container pt-10">
-       
+    <div class="container pt-10">      
     </div>  
 </section>
 <!-- WEAR OUT OR RUST OUT -->
-
 <!-- TABS START -->
 <section>
     <div class="container">
@@ -26,70 +20,46 @@
                     <i class="fa fa-info-circle "></i> 
                         <span class="fs-1-2">Load a collection for <strong>Museum of Modern Art</strong></span>
                 </div>
-
-            </div>
-
-            
-            <div class="col-xs-12">
-                
+            </div>           
+            <div class="col-xs-12">               
                 <!-- <a class="btn btn-xs btn-default float-right fs-0-9 m-10"><i class="fa fa-arrow-right fc-g"></i> See all</a> -->
-                <h5 class="p-x-20 fs-0-9 fc-g"><em>Popular Collections:</em></h5>
-
-                
+                <h5 class="p-x-20 fs-0-9 fc-g"><em>Popular Collections:</em></h5>              
                 {{ ui.collec_item('co_wine.png', 'Winery', '/') }}
                 {{ ui.collec_item('co_museum.png', 'Museum', '/') }}
                 {{ ui.collec_item('co_generic.png', 'School', '/') }}
                 {{ ui.collec_item('co_generic.png', 'Hotel', '/') }}
                 {{ ui.collec_item('co_generic.png', 'Restaurant', '/') }}
                 {{ ui.collec_item('co_generic.png', 'Travel service', '/') }}
-                {{ ui.collec_item('co_generic.png', 'School', '/') }}
-                
-                
+                {{ ui.collec_item('co_generic.png', 'School', '/') }}              
                 {{ ui.collec_item('co_generic.png', 'Restaurant', '/') }}
                 {{ ui.collec_item('co_basic.png', 'Load Basic', '/') }} 
                 {{ ui.collec_item('co_more.png', 'More', '/') }} 
-
             </div>
             <div class="col-xs-12">
-                <hr/>
-
-                
+                <hr/>              
                 {{ ui.collec_item('co_empty.png', 'Empty', '/') }}
                 {{ ui.collec_item('co_add.png', 'Create New', '/') }}
-
                 <div class="spa20">&nbsp;</div>
             </div>
-
-
         </div>
     </div>
   </div>
 </section>
-
-
 <!-- MODAL WHAT IS A COLLECTION -->
-
 <div class="modal fade" id="intro-collection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <!-- <h4 class="modal-title" id="myModalLabel">The User Graph</h4> -->
-        <p class="fs-2">What is a Data Collection?</p>
-        
+        <p class="fs-2">What is a Data Collection?</p>       
       </div>
-      <div class="modal-body">
-          
-      
+      <div class="modal-body">     
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>       
       </div>
     </div>
   </div>
-</div>
-
-    
+</div>   
 {% endblock %}
-

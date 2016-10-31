@@ -1,30 +1,14 @@
 {% extends 'avispa_rest/settings_base.html' %}
-
-
-
             {% block settings %}
-
-
                 <div class="gcard">
-                    <div class="gcard-title bg-d">
-              
-                        
+                    <div class="gcard-title bg-d">                      
                         <span class="fc-b fs-1-2"> {{ data.user['name'] }}</span>
-                        <span class="fc-b fs-1-2 fw-c"> Billing</span>
-              
+                        <span class="fc-b fs-1-2 fw-c"> Billing</span>            
                     </div> 
-                   
-
-                    
-
-                    <div class="gcard-body p-20">
-              
+                    <div class="gcard-body p-20">             
                         <form class="form-horizontal" action="" method="POST" role="form">
-
-                            <div class="row">
-       
+                            <div class="row">     
                                 <div class="col-sm-offset-1 col-sm-9 spa30">
-
                                     <div class="form-group">
                                         <div class="col-sm-2 fc-n fs-0-9 fw-c text-right">Plan:</div>
                                         <div class="col-sm-6 fc-m fs-0-9">
@@ -46,7 +30,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-sm-offset-1 col-sm-11">
                                     <div class="rn-box-content text-right">
@@ -55,12 +38,8 @@
                                         <a href="/{{ data.handle }}/_home" class="btn btn-default btn-sm">Cancel</a>
                                     </div>
                                 </div>
-                            </div>
-
-
-                            
+                            </div>                          
                         </form>
                     </div><!-- //close box -->
                 </div>
-
             {% endblock %}

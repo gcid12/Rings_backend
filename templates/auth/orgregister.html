@@ -1,38 +1,21 @@
 {% extends 'base.html' %}
-
-
 {% block title %} Avispa {% endblock %}
 {% block findme %} auth/orgregister {% endblock %}
-
 {% block headscripts %}
-
     {{ dz.headscripts() }}
-
 {% endblock %}
-
-
 {% block crumbs %}
-
-
 {% endblock %}
-
 {% block content %}
-
-
 <!-- START NEW CONTENT --> 
-
-
 <section class="bp-20">
   <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-offset-1 col-sm-9">
-
           <hr/>
-
           <h2>
             New Organization
-          </h2>
-          
+          </h2>         
           <span>by: <span class="label label-primary right">specialist</span> {{data.handle_actualname}} <span class="fc-g">( @{{ current_user.id }} )</span></span>
 
           <div class="alert alert-warning alert-dismissible mt-20" role="alert">
@@ -41,39 +24,24 @@
               <i class="fa fa-exclamation-triangle"></i>
               Note: You can create organization profiles in behalf of other companies, but only as a 'specialist' <a href="/">[learn more]</a>. Primary Source profiles are only granted to confirmed owners. If you are the owner or Admin of an Organization or Company please go <a href="">here</a>.
             </p>
-          </div>
-          
+          </div>          
           <hr/>
-
-        </div>
-        
-
-        
+        </div>       
     </div>
-
     <form action="" method="POST" role="form">
-
     <div class="row">
         <div class="col-xs-12 col-sm-offset-1 col-sm-5">
-          
-          
-
             <label for="">Organization / Company name: <span class="fc-h">*</span> </label> 
-
-            <p class="fs-0-8 fc-g">Can be changed later</p>
-            
+            <p class="fs-0-8 fc-g">Can be changed later</p>          
             <div class="input-group input-group-md">
               <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-flag" aria-hidden="true"></i></span>
               <input type="text" id="name" name="name" class="form-control" placeholder="e.g. The Candy Company" aria-describedby="sizing-addon1">
             </div>
-
             <br/>
         </div>
         <div class="col-xs-12 col-sm-4">
-
             <label for="">Handle: <span class="fc-h">*</span> </label> 
             <p class="fs-0-8 fc-g">No spaces ,max 20 characters </p>
-
             <div class="input-group input-group-md">
               <span class="input-group-addon" id="sizing-addon1">@</span>
               <input type="text" id="username" name="username"  required="required" class="form-control" placeholder="e.g. candycompany" aria-describedby="sizing-addon1">
@@ -81,14 +49,11 @@
             <p class="fs-0-8">
               <span class="fc-c">(Cannot be changed later)</span> 
               <a class="" data-toggle="popover" title="Handle" data-content="The handle, or username, you choose will identify you to other members of our website. It is used when you upload photos, blog, and send messages. You cannot change it because all references pointing to you would automatically break." data-placement="bottom"> why?</a>
-            </p>
-          
+            </p>         
             <br/>
         </div>  
-
     </div>
     <div class="row">
-
         <div class="col-xs-12 col-sm-offset-1 col-sm-5">
           <label for="">Website:</label> 
             <p class="fs-0-8 fc-g">Organization / Company website</p>
@@ -97,7 +62,6 @@
               <input type="text" id="url" name="url"  class="form-control" placeholder="www.website.com" aria-describedby="sizing-addon1">
             </div>
           <br/>
-
         </div>
         <div class="col-xs-12 col-sm-4">
             <label for="">Location:</label> 
@@ -107,35 +71,24 @@
               <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Paris" aria-describedby="sizing-addon1">
             </div>
             <br/>
-
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-offset-1 col-sm-5">
-
             <label for="">Logo:</label> 
             <p class="fs-0-8 fc-g">An image to identify the company</p>                         
-            
-
             <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="">
-
             <div id='dropzone1' class="dropzone" style="min-height:0px; padding:10px 10px;">
               <span class="dz-message" >
                 <span class="btn btn-vader btn-sm ">  Click here to Upload</span>
               </span>
             </div>
-
-
             <div class="input-group input-group-md">
               <span class="input-group-addon" id="sizing-addon1"> <i class="fa fa-camera"></i> </span>
               <span class="btn btn-vader btn-sm ">  Click here to Upload</span>
             </div>
-
         </div>
-        
-
         <!-- for now we are not asking email, Ring team is inputing everything -->
-
         <input type="hidden" id="email" name="email" required="required" value="gcid@myring.io">
         <!-- <div class="col-xs-12 col-sm-4">
             <label for="">Contact email</label> 
@@ -159,54 +112,25 @@
         </div>
     </div> -->
     <div class="row">
-        <div class="col-xs-12 col-sm-offset-1 col-sm-9">  
-        
-            <br/><br/>
-              
+        <div class="col-xs-12 col-sm-offset-1 col-sm-9">       
+            <br/><br/>             
             <div class="fc-h fs-0-9">* Mandatory fields</div>
-
             <button type="submit" class="btn btn-success" style="width:100%">Create organization </button>
         </div> 
     </div>
-
     </form>
-
-
   </div>
-
 </section>
-
-
 {% endblock %}
-
 {% block footscripts %}
-
   {{ dz.footscripts() }}
-
 {% endblock %}
-
 {% block modals %}
-
   {% include 'avispa_rest/helpmodal.html' %}
-
 {% endblock %}
-
 {% block footfunctions %}
-
   {{ dz.footfunctions(handle=current_user.id,image_cdn_root=data.image_cdn_root) }}
- 
 {% endblock %}
-
-
 {% block footafterfunctions %}
-
   {{ dz.footafterfunctions() }}
-
 {% endblock %}
-
-
-
-
-
-
-  

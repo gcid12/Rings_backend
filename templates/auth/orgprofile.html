@@ -1,77 +1,48 @@
 {% extends 'avispa_rest/settings_base.html' %}
-
-
-
                 {% block settings %}
-
                 <div class="gcard">
                     <div class="gcard-title bg-c2">
-                    
-                        
-
-
-                        {{ ui.org_header2(data.handle , data.user['name'], '', '') }}
-
-
-                      
-              
+                        {{ ui.org_header2(data.handle , data.user['name'], '', '') }}             
                     </div> 
                     <div class="gcard-subtitle ">
                         <span class="fc-b fs-1-2"> Organization Profile</span>
                     </div>
-
-                    <div class="gcard-body p-20">
-              
+                    <div class="gcard-body p-20">             
                         <form class="form-horizontal" action="" method="POST" role="form">
-
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="form-group">
-                                        
+                                    <div class="form-group">                                      
                                         <div class="col-sm-10">
-
                                           <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="{{ data.user['profilepic'] }}">
-
                                           <div id='dropzone1' class="dropzone" style="min-height:0px; padding:10px 10px;"><span class="dz-message" ><i class="fa fa-camera fa-1x"> </i> Upload Photo</span></div>
-
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-7 spa30">
-
                                     <div class="form-group">
-
                                         <label class="col-sm-2 control-label fc-g fs-0-9">Name</label>
                                         <div class="col-sm-10">
-                                          <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="Your Name" value="{{ data.user['name'] }}" >
-                                          
+                                          <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="Your Name" value="{{ data.user['name'] }}" >                                         
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                       <label class="col-sm-2 control-label fc-g fs-0-9">Website</label>
-                                      <div class="col-sm-10">
-                                          
+                                      <div class="col-sm-10">                                         
                                           <input type="text" id="url" name="url"  class="form-control input-sm" placeholder="" value="{{ data.user['url'] }}">
                                        </div>
                                     </div>
-
                                     <div class="form-group">
                                       <label class="col-sm-2 control-label fc-g fs-0-9">Location</label>
                                       <div class="col-sm-10">
                                         <input type="text" id="location" name="location"  class="form-control input-sm" placeholder="" value="{{ data.user['location'] }}">
                                       </div>
                                     </div>
-
                                     <div class="form-group">
                                       <label class="col-sm-2 control-label fc-g fs-0-9">OnLogin</label>
                                       <div class="col-sm-4">
                                         <input type="text" id="onlogin" name="onlogin"  class="form-control input-sm" placeholder="" value="{{ data.user['onlogin'] }}">
                                       </div>
                                     </div>
-
-                                
-
                                     <div class="rn-box-content text-right">
                                         <br/>
                                         <div class="form-group">
@@ -82,21 +53,9 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                </div>
-
-
-                                
-                            </div>
-                            
-
-                  
-                            
-
-             
-                            
+                                </div>                               
+                            </div>                           
                         </form>
                     </div><!-- //close box -->
                 </div>
-
                 {% endblock %}

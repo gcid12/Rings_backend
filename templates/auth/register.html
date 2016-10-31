@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
-
-
-
 {% block content %}
-
 <div class="container-fluid bg-people2" style="padding:0 0 300px 0;">
   <div class="row text-center">
     <div class="col-sm-12 spa30">     
@@ -56,12 +52,9 @@
           <p class="fs-0-8 text-lgray pad-x-20">Creating an account means you’re okay with MyRing's <a href="_sandbox/terms">Terms of Service and Privacy Policy.</a> </p>
         </div>
       </div>
-
       {% if 'h' not in request.args %}
       <div class="col-sm-4">     
-        <div class="pad-x-20">
-
-  
+        <div class="pad-x-20"> 
           <div class="spa50"></div>
           <h4 class="fc-b">Optional: </h4>
           <p class="text-gray fs-0-8">
@@ -92,18 +85,13 @@
   </div>
 </div>
 {% endblock %}
-
 {% block footafterfunctions %}
         <script type="text/javascript">
           $(window).load(function(){
               mixpanel.track_forms("#register", "_register RQ sent");
             });  
         </script>
-
-
-
 <!-- REGISTER SCRIPTS -->
-
         <script type="text/javascript">
               $(document).ready(function() {
                   $('#username').keyup(function() {
@@ -111,23 +99,17 @@
                    $('#myDIVTag').html("<i class='fa fa-user'></i><span class='text-dgray fw-c'> " + $(this).val() + " </span> will be the admin.");
                   });
               });    
-          </script>
-
+        </script>
         <script type="text/javascript">
-
         $(document).ready(function(){
           $("#op2").hide();
           $("#op3").hide();
-
           $("#rad1").click(function(){
-
-              if ($("#rad1").is(":checked")) {
-                   
+              if ($("#rad1").is(":checked")) {                  
                   //show the hidden div
                    $("#op1").show("slide");
                    $("#op2").hide("fade");
-                   $("#op3").hide("fade");
-                  
+                   $("#op3").hide("fade");                  
               }
           });
 
@@ -150,21 +132,10 @@
                   //show the hidden div
                    $("#op3").show("slide");
                    $("#op2").hide("fade");
-                   $("#op1").hide("fade");
-                  
+                   $("#op1").hide("fade");      
               } 
           });
-
-
         });
-
         </script>
-
 <!-- END REGISTER SCRIPTS -->
-
- 
-
-
 {% endblock %}
-
-
