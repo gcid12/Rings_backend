@@ -264,19 +264,11 @@ class AvispaUpload:
         k.set_acl('public-read')
         #AttributeError: 'Image' object has no attribute 'tell'
         
-        
-        
+              
         #b = fl.read()
         #print(b)
         #k.set_contents_from_string(b)
-        '''
-        File "/Users/ricardocid/Code/avispa/avispa/avispa_rest/AvispaUpload.py", line 257, in _s3_save
-        k.set_contents_from_string(f.read())
-        File "/usr/local/lib/python2.7/site-packages/boto/s3/key.py", line 1422, in set_contents_from_string
-        string_data = string_data.encode("utf-8")
-        AttributeError: 'NoneType' object has no attribute 'encode'
-        '''
-        
+
         return True
 
     

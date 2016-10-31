@@ -593,7 +593,7 @@ class MainModel:
 
                         self.lggr.debug('item/roles db view does not exist. Will regenerate')
 
-                        from avispa.avispa_rest.AvispaModel import AvispaModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
+                        from avispa_rest.AvispaModel import AvispaModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
                         AVM = AvispaModel()
                         AVM.ring_set_db_views(db_ringname,'item/roles')
 

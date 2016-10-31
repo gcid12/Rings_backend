@@ -1,6 +1,6 @@
 # Unit Testing for AvispaModel.py
 
-from avispa.avispa_rest.AvispaModel import AvispaModel
+from avispa_rest.AvispaModel import AvispaModel
 import unittest
 
 class TC(unittest.TestCase):
