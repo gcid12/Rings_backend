@@ -6,7 +6,6 @@ from AvispaLogging import AvispaLoggerAdapter
 from flask import Blueprint,render_template,request,redirect,g,make_response,Response,url_for
 from AvispaRestFunc import AvispaRestFunc
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
-from AvispaRolesRestFunc import AvispaRolesRestFunc
 from AvispaPeopleRestFunc import AvispaPeopleRestFunc
 from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
