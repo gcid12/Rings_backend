@@ -5,12 +5,12 @@ from flask import redirect, flash,url_for
 from RingBuilder import RingBuilder
 from TypesModel import TypesModel
 from ElasticSearchModel import ElasticSearchModel
-from AvispaCollectionsModel import AvispaCollectionsModel
+from CollectionsModel import CollectionsModel
 from env_config import PREVIEW_LAYER,URL_SCHEME
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from AvispaLogging import AvispaLoggerAdapter
 
-class AvispaRestFunc:
+class TypesController:
 
     def __init__(self,tid=None,ip=None):
 
@@ -83,10 +83,10 @@ class AvispaRestFunc:
             if collection:
 
                 # Add this new ring to the collection ring list
-                ACM = AvispaCollectionsModel(tid=self.tid,ip=self.ip)
+                COM = CollectionsModel(tid=self.tid,ip=self.ip)
 
                 try:
-                    if ACM.add_ring_to_collection(handle, collection,result):
+                    if COM.add_ring_to_collection(handle, collection,result):
                         flash(" The ring has been added to the collection.",'UI')
                         if not api:
                             redirect = url_for('avispa_rest.collections_route_a_x_y',
@@ -613,8 +613,8 @@ class AvispaRestFunc:
 
     def validate_collection(self,handle,collectionname=None):
 
-        self.ACM = AvispaCollectionsModel(tid=self.tid,ip=self.ip)
-        collectiond = self.ACM.get_a_x_y(handle,collectionname) #Active Collaboration
+        self.COM = CollectionsModel(tid=self.tid,ip=self.ip)
+        collectiond = self.COM.get_a_x_y(handle,collectionname) #Active Collaboration
         if collectiond['collectionname'] == collectionname :     
             return collectiond
         else:          

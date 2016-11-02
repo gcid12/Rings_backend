@@ -1,7 +1,7 @@
 #CollectionBuilder.py
 import logging
 from flask import flash
-from AvispaCollectionsModel import AvispaCollectionsModel
+from CollectionsModel import CollectionsModel
 from AvispaLogging import AvispaLoggerAdapter
 
 class CollectionBuilder:
@@ -15,7 +15,7 @@ class CollectionBuilder:
         self.collectionprotocols['collectionprotocol'] = ['CollectioNname','CollectionDescription','CollectionVersion']
         self.collectionprotocols['mandatory'] = ['CollectionName']
         self.collectionprotocols['defaults'] = {'CollectionVersion':'0.1.0'}
-        self.ACM = AvispaCollectionsModel()
+        self.COM = CollectionsModel()
    
     def post_a_x(self,rqform,handle):
                
@@ -52,7 +52,7 @@ class CollectionBuilder:
                
             #Here you write to the user.collection document
                      
-            if self.ACM.post_a_x(handle,collectiond):
+            if self.COM.post_a_x(handle,collectiond):
                 self.lggr.debug('New Collection created: '+collectiond['name'])
                 return True
             else:
@@ -92,7 +92,7 @@ class CollectionBuilder:
                
             #Here you write to the user.collection document
                      
-            if self.ACM.put_a_x_y(handle,collectiond):
+            if self.COM.put_a_x_y(handle,collectiond):
                 self.lggr.debug('Collection updated: '+collectiond['name'])
                 return True
             else:

@@ -3,7 +3,7 @@ import urlparse, time, datetime, collections, json, csv, types, cStringIO
 import logging
 from AvispaLogging import AvispaLoggerAdapter
 from flask import render_template,request,make_response,url_for
-from AvispaRestFunc import AvispaRestFunc
+from TypesController import TypesController
 from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
 from AvispaRolesRestFunc import AvispaRolesRestFunc
 from AvispaPeopleRestFunc import AvispaPeopleRestFunc
@@ -42,7 +42,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     lggr.info('START route_dispatcher')
 
     MAM = MainModel(tid=tid,ip=ip)
-    ARF = AvispaRestFunc(tid=tid,ip=ip)
+    TYC = TypesController(tid=tid,ip=ip)
 
     
     if request.args.get("rq"):
@@ -156,7 +156,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
 
     lggr.info('START RESTFUL FUNCTION')
-    data.update(getattr(ARF, m.lower())(
+    data.update(getattr(TYC, m.lower())(
                                         handle,
                                         ring,
                                         idx,

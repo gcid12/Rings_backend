@@ -3,7 +3,7 @@ import json
 import logging
 from flask import redirect,flash,url_for
 from TypesModel import TypesModel
-from AvispaCollectionsModel import AvispaCollectionsModel
+from CollectionsModel import CollectionsModel
 from CollectionBuilder import CollectionBuilder
 from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
@@ -16,7 +16,7 @@ class AvispaCollectionsRestFunc:
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
         self.TYM = TypesModel(tid=tid,ip=ip)
-        self.ACM = AvispaCollectionsModel(tid=tid,ip=ip)
+        self.COM = CollectionsModel(tid=tid,ip=ip)
         self.CB = CollectionBuilder(tid=tid,ip=ip)
 
     # GET/a
@@ -166,7 +166,7 @@ class AvispaCollectionsRestFunc:
     
     #GET /a/b
     def get_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
-        #THIS IS NOT USED . SEE AvispaRestFunc.get_a() instead 
+        #THIS IS NOT USED . SEE TypesController.get_a() instead 
 
         d = {'message': 'Using Collection get_a_x_y for handle '+handle , 'template':'avispa_rest/get_a.html'}
         return d
@@ -302,7 +302,3 @@ class AvispaCollectionsRestFunc:
     def search_rq_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
         d = {'message': 'Using Collection search_rq_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/search_rq_a_b.html'}
         return d
-
-
-
-    # a/x/y/b and a/x/y/b/c are served by the regular AvispaRestFunc.py

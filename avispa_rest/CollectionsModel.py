@@ -7,7 +7,7 @@ from flask import flash
 from AvispaLogging import AvispaLoggerAdapter
 from couchdb.http import ResourceNotFound
 
-class AvispaCollectionsModel:
+class CollectionsModel:
 
     def __init__(self,tid=None,ip=None):
 
