@@ -9,27 +9,22 @@ import json
 from flask import flash , current_app
 
 from MainModel import MainModel
-from AvispaModel import AvispaModel
-
+from TypesModel import TypesModel
 from auth.AuthModel import AuthModel
-
 from AvispaUpload import AvispaUpload
 from MyRingSchema import MyRingSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from couchdb.http import PreconditionFailed, ResourceNotFound
 
-
-
 class MyRingPatch:
 
     def __init__(self):
 
-        self.AVM = AvispaModel() 
+        self.TYM = TypesModel() 
         self.MAM = MainModel() 
         self.ATM = AuthModel()  
         self.user_database = 'myring_users'  
 
-  
 
     def p20141208(self,request,*args):
 
@@ -103,7 +98,7 @@ class MyRingPatch:
         print('ringname:',ringname)
 
         if handle and ringname:
-            schema = self.AVM.ring_get_schema_from_view(handle,ringname)
+            schema = self.TYM.ring_get_schema_from_view(handle,ringname)
             #print('schema:',schema['fields'])
 
             #Pre: Obtain the fields
@@ -116,7 +111,7 @@ class MyRingPatch:
 
             
             #Pre: Obtain the items
-            items = self.AVM.get_a_b(handle,ringname,limit=1000000)
+            items = self.TYM.get_a_b(handle,ringname,limit=1000000)
             itemlist = []
             for i in items:
                 itemlist.append(i['_id'])
@@ -129,9 +124,9 @@ class MyRingPatch:
             
             for idx in itemlist:
                
-                #item = self.AVM.get_a_b_c(None,handle,ringname,idx)
+                #item = self.TYM.get_a_b_c(None,handle,ringname,idx)
 
-                #item_x = self.AVM.ring_get_item_document(handle,ringname,idx)
+                #item_x = self.TYM.ring_get_item_document(handle,ringname,idx)
 
                 from MyRingCouchDB import MyRingCouchDB
                 from env_config import COUCHDB_USER, COUCHDB_PASS
@@ -145,8 +140,8 @@ class MyRingPatch:
 
                 db = self.couch[db_ringname]
 
-                schema = self.AVM.ring_get_schema(handle,ringname)
-                RingClass = self.AVM.ring_create_class(schema)
+                schema = self.TYM.ring_get_schema(handle,ringname)
+                RingClass = self.TYM.ring_create_class(schema)
                 item_x = RingClass.load(db,idx)
 
                 #print('item_x:',item_x)
@@ -340,12 +335,12 @@ class MyRingPatch:
         print('ringname:',ringname)
 
         if handle and ringname:
-            schema = self.AVM.ring_get_schema_from_view(handle,ringname)
+            schema = self.TYM.ring_get_schema_from_view(handle,ringname)
             #print('schema:',schema['fields'])
 
             
             #Pre: Obtain the items
-            items = self.AVM.get_a_b(handle,ringname,limit=1000000)
+            items = self.TYM.get_a_b(handle,ringname,limit=1000000)
             itemlist = []
             for i in items:
                 itemlist.append(i['_id'])
@@ -353,8 +348,8 @@ class MyRingPatch:
             print('itemlist:',itemlist)
 
 
-            #schema = self.AVM.ring_get_schema(handle,ringname)
-            RingClass = self.AVM.ring_create_class(schema)
+            #schema = self.TYM.ring_get_schema(handle,ringname)
+            RingClass = self.TYM.ring_create_class(schema)
             db_ringname=str(handle)+'_'+str(ringname)
             db = self.couch[db_ringname]
 
@@ -412,9 +407,9 @@ class MyRingPatch:
                                 if local_host==external_host:
                                     print('Data source is in the same server')
 
-                                    rich_item = self.AVM.get_a_b_c(None,external_handle,external_ringname,external_id)
+                                    rich_item = self.TYM.get_a_b_c(None,external_handle,external_ringname,external_id)
 
-                                    rs = self.AVM.ring_get_schema_from_view(external_handle,external_ringname)
+                                    rs = self.TYM.ring_get_schema_from_view(external_handle,external_ringname)
 
                                     print('rich_rs:',rs)
                                     print('rich_item:',rich_item)
@@ -558,7 +553,7 @@ class MyRingPatch:
             try:
                 db_ringname=str(handle)+'_'+str(ring)
                 db_ringname = db_ringname.replace(" ","")
-                self.AVM.ring_set_db_views(db_ringname)
+                self.TYM.ring_set_db_views(db_ringname)
             except(ResourceNotFound):
                 print(db_ringname+' not found. Going to the next one')
 
@@ -599,7 +594,7 @@ class MyRingPatch:
             try:
 
                 if handle and ringname:
-                    schema = self.AVM.ring_get_schema_from_view(handle,ringname)
+                    schema = self.TYM.ring_get_schema_from_view(handle,ringname)
                     #print('schema:',schema['fields'])
 
                     #Pre: Obtain the fields
@@ -610,7 +605,7 @@ class MyRingPatch:
                     print('fieldlist:',fieldlist)
 
                     #Pre: Obtain the items
-                    items = self.AVM.get_a_b(handle,ringname,limit=1000000)
+                    items = self.TYM.get_a_b(handle,ringname,limit=1000000)
                     itemlist = []
                     for i in items:
                         itemlist.append(i['_id'])
@@ -623,9 +618,9 @@ class MyRingPatch:
                     
                     for idx in itemlist:
                        
-                        #item = self.AVM.get_a_b_c(None,handle,ringname,idx)
+                        #item = self.TYM.get_a_b_c(None,handle,ringname,idx)
 
-                        #item_x = self.AVM.ring_get_item_document(handle,ringname,idx)
+                        #item_x = self.TYM.ring_get_item_document(handle,ringname,idx)
 
                         from MyRingCouchDB import MyRingCouchDB
                         from env_config import COUCHDB_USER, COUCHDB_PASS
@@ -639,8 +634,8 @@ class MyRingPatch:
 
                         db = self.couch[db_ringname]
 
-                        schema = self.AVM.ring_get_schema(handle,ringname)
-                        RingClass = self.AVM.ring_create_class(schema)
+                        schema = self.TYM.ring_get_schema(handle,ringname)
+                        RingClass = self.TYM.ring_create_class(schema)
                         item_x = RingClass.load(db,idx)
 
                         #print('item_x:',item_x)
@@ -751,7 +746,7 @@ class MyRingPatch:
             try:
                 db_ringname=str(handle)+'_'+str(ring)
                 db_ringname = db_ringname.replace(" ","")
-                self.AVM.ring_set_db_views(db_ringname)
+                self.TYM.ring_set_db_views(db_ringname)
             except(ResourceNotFound):
                 print(db_ringname+' not found. Going to the next one')
 
@@ -790,7 +785,7 @@ class MyRingPatch:
             try:
 
                 if handle and ringname:
-                    schema = self.AVM.ring_get_schema_from_view(handle,ringname)
+                    schema = self.TYM.ring_get_schema_from_view(handle,ringname)
                     #print('schema:',schema['fields'])
 
                     #Pre: Obtain the fields
@@ -801,7 +796,7 @@ class MyRingPatch:
                     print('fieldlist:',fieldlist)
 
                     #Pre: Obtain the items
-                    items = self.AVM.get_a_b(handle,ringname,limit=1000000)
+                    items = self.TYM.get_a_b(handle,ringname,limit=1000000)
                     itemlist = []
                     for i in items:
                         itemlist.append(i['_id'])
@@ -814,9 +809,9 @@ class MyRingPatch:
                     
                     for idx in itemlist:
                        
-                        #item = self.AVM.get_a_b_c(None,handle,ringname,idx)
+                        #item = self.TYM.get_a_b_c(None,handle,ringname,idx)
 
-                        #item_x = self.AVM.ring_get_item_document(handle,ringname,idx)
+                        #item_x = self.TYM.ring_get_item_document(handle,ringname,idx)
 
                         from MyRingCouchDB import MyRingCouchDB
                         from env_config import COUCHDB_USER, COUCHDB_PASS
@@ -830,8 +825,8 @@ class MyRingPatch:
 
                         db = self.couch[db_ringname]
 
-                        schema = self.AVM.ring_get_schema(handle,ringname)
-                        RingClass = self.AVM.ring_create_class(schema)
+                        schema = self.TYM.ring_get_schema(handle,ringname)
+                        RingClass = self.TYM.ring_create_class(schema)
                         item_x = RingClass.load(db,idx)
 
                         #print('item_x:',item_x)
@@ -898,7 +893,7 @@ class MyRingPatch:
             try:
                 db_ringname=str(handle)+'_'+str(ring)
                 db_ringname = db_ringname.replace(" ","")
-                self.AVM.ring_set_db_views(db_ringname)
+                self.TYM.ring_set_db_views(db_ringname)
             except(ResourceNotFound):
                 print(db_ringname+' not found. Going to the next one')
 
@@ -923,7 +918,7 @@ class MyRingPatch:
                 try:
                     db_ringname=str(handle)+'_'+str(ring)
                     db_ringname = db_ringname.replace(" ","")
-                    self.AVM.ring_set_db_views(db_ringname)
+                    self.TYM.ring_set_db_views(db_ringname)
                 except(ResourceNotFound):
                     print(db_ringname+' not found. Going to the next one')
 

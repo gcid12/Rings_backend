@@ -2,7 +2,6 @@
 import logging
 from flask import redirect,flash,url_for
 
-from AvispaModel import AvispaModel
 from MainModel import MainModel
 from AvispaPeopleModel import AvispaPeopleModel
 from AvispaLogging import AvispaLoggerAdapter
@@ -16,7 +15,7 @@ class AvispaPeopleRestFunc:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
         
-        self.AVM = AvispaModel(tid=tid,ip=ip)
+        
         self.MAM = MainModel(tid=tid,ip=ip)
         self.APM = AvispaPeopleModel(tid=tid,ip=ip)
         

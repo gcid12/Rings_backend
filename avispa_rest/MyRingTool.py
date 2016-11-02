@@ -7,7 +7,7 @@ import json
 
 from flask import flash, current_app
 from MainModel import MainModel
-from AvispaModel import AvispaModel
+from TypesModel import TypesModel
 from auth.AuthModel import AuthModel
 from AvispaUpload import AvispaUpload
 from MyRingSchema import MyRingSchema
@@ -18,7 +18,7 @@ class MyRingTool:
 
     def __init__(self):
 
-        self.AVM = AvispaModel() 
+        self.TYM = TypesModel() 
         self.MAM = MainModel() 
         self.ATM = AuthModel()  
         self.user_database = 'myring_users'  
@@ -162,7 +162,7 @@ class MyRingTool:
 
         db_ringname =  request.args.get('dbringname')
 
-        self.AVM.ring_set_db_views(db_ringname)
+        self.TYM.ring_set_db_views(db_ringname)
 
         flash(u'Views synced to ring :'+db_ringname,'UI')
         rq='Loading the Views into CouchDB via python'
@@ -177,7 +177,7 @@ class MyRingTool:
         ringname = 'services_0-1-0'
         startkey = '3468686347'
         resultsperpage = 3
-        self.AVM.get_a_b(handle,ringname,resultsperpage,startkey)
+        self.TYM.get_a_b(handle,ringname,resultsperpage,startkey)
 
         flash(u'ok')
         rq='run_view'
@@ -225,7 +225,7 @@ class MyRingTool:
             pathparts=o2.path.split('/')
             handle = pathparts[2]
             ringname = pathparts[3]
-            schema = self.AVM.ring_get_schema_from_view(handle,ringname)
+            schema = self.TYM.ring_get_schema_from_view(handle,ringname)
             print('Cloning local ring2')
             print(schema)
             #You are cloning a ring from your localhost
@@ -302,30 +302,3 @@ class MyRingTool:
         
         d = {'rq': current_user,'template':'avispa_rest/'+template+'.html'}
         return d
-
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

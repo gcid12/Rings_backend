@@ -2,7 +2,7 @@
 import json
 import logging
 from flask import redirect,flash,url_for
-from AvispaModel import AvispaModel
+from TypesModel import TypesModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from CollectionBuilder import CollectionBuilder
 from AvispaLogging import AvispaLoggerAdapter
@@ -15,7 +15,7 @@ class AvispaCollectionsRestFunc:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
-        self.AVM = AvispaModel(tid=tid,ip=ip)
+        self.TYM = TypesModel(tid=tid,ip=ip)
         self.ACM = AvispaCollectionsModel(tid=tid,ip=ip)
         self.CB = CollectionBuilder(tid=tid,ip=ip)
 
@@ -102,7 +102,7 @@ class AvispaCollectionsRestFunc:
 
         #Generates de form to create the collection
 
-        ringlist = self.AVM.user_get_rings(handle)
+        ringlist = self.TYM.user_get_rings(handle)
 
 
         d = {'message': 'Using Collection post_rq_a_x for handle '+handle , 
@@ -222,7 +222,7 @@ class AvispaCollectionsRestFunc:
 
     def put_rq_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
         #Form to edit a collection
-        ringlist = self.AVM.user_get_rings(handle)
+        ringlist = self.TYM.user_get_rings(handle)
         collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection
 
         self.lggr.debug('collectiond:%s'%collectiond)

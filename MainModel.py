@@ -96,16 +96,6 @@ class MainModel:
         #doc.store(db)
         return True 
 
-    def select_item_doc(self,handle,ringname,idx):
-           
-        db_ringname=str(handle)+'_'+str(ringname)
-        db = self.couch[db_ringname]
-        AVM = AvispaModel()
-        schema = AVM.ring_get_schema_from_view(handle,ringname) 
-        RingClass = AVMring_create_class(schema)
-        item_doc = RingClass.load(db,idx)
-        return item_doc
-
     #MAINMODEL
     def create_user(self,userd,dbname=None):
         
@@ -593,9 +583,9 @@ class MainModel:
 
                         self.lggr.debug('item/roles db view does not exist. Will regenerate')
 
-                        from avispa_rest.AvispaModel import AvispaModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
-                        AVM = AvispaModel()
-                        AVM.ring_set_db_views(db_ringname,'item/roles')
+                        from avispa_rest.TypesModel import TypesModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
+                        TYM = TypesModel()
+                        TYM.ring_set_db_views(db_ringname,'item/roles')
 
                         #Now issue the same request before the exception was thrown
 

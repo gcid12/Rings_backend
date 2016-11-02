@@ -3,7 +3,7 @@ import logging
 import urlparse, time, datetime
 from flask import redirect, flash,url_for
 from RingBuilder import RingBuilder
-from AvispaModel import AvispaModel
+from TypesModel import TypesModel
 from ElasticSearchModel import ElasticSearchModel
 from AvispaCollectionsModel import AvispaCollectionsModel
 from env_config import PREVIEW_LAYER,URL_SCHEME
@@ -19,7 +19,7 @@ class AvispaRestFunc:
         self.tid = tid
         self.ip = ip
 
-        self.AVM = AvispaModel(tid=tid,ip=ip)
+        self.TYM = TypesModel(tid=tid,ip=ip)
 
     # /a
 
@@ -322,7 +322,7 @@ class AvispaRestFunc:
         page = self.subtract_page_parameters(rqargs)
 
         #Subtract Ring info
-        schema = self.AVM.ring_get_schema_from_view(handle,ring)
+        schema = self.TYM.ring_get_schema_from_view(handle,ring)
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
 
@@ -334,7 +334,7 @@ class AvispaRestFunc:
             preitems = ESM.get_a_b(handle,ring,q=page['q'])
         else:
             #Subtract from DB
-            preitems = self.AVM.get_a_b(handle,ring,limit=page['limit'],lastkey=page['lastkey'],endkey=page['endkey'],sort=page['sort'])
+            preitems = self.TYM.get_a_b(handle,ring,limit=page['limit'],lastkey=page['lastkey'],endkey=page['endkey'],sort=page['sort'])
 
 
         #Prepare data
@@ -573,7 +573,7 @@ class AvispaRestFunc:
 
     def ring_parameters(self,handle,ring):
 
-        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        ringparameters = self.TYM.get_a_b_parameters(handle,ring)
 
         if ringparameters:
             
@@ -639,7 +639,7 @@ class AvispaRestFunc:
         Creates new item
         '''
 
-        idx = self.AVM.post_a_b(rqurl,rqform,handle,ring)
+        idx = self.TYM.post_a_b(rqurl,rqform,handle,ring)
         out = {}
 
         if idx:
@@ -717,7 +717,7 @@ class AvispaRestFunc:
         '''
         Form to create new item
         '''
-        schema = self.AVM.ring_get_schema_from_view(handle,ring)
+        schema = self.TYM.ring_get_schema_from_view(handle,ring)
 
         d = {}
         d['ringdescription'] = schema['rings'][0]['RingDescription']
@@ -750,7 +750,7 @@ class AvispaRestFunc:
         d['item'] = {}
 
         
-        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        ringparameters = self.TYM.get_a_b_parameters(handle,ring)
 
         if not ringparameters:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
@@ -781,7 +781,7 @@ class AvispaRestFunc:
 
         # Changing origin?
         if rqform.get('ringorigin'):
-            originresult = self.AVM.set_ring_origin(handle,ring,rqform.get('ringorigin'))
+            originresult = self.TYM.set_ring_origin(handle,ring,rqform.get('ringorigin'))
 
         RB = RingBuilder(tid=self.tid,ip=self.ip)
         result =  RB.put_a_b(rqform,handle,ring)
@@ -814,7 +814,7 @@ class AvispaRestFunc:
         Edits the Schema
         '''
 
-        schema = self.AVM.ring_get_schema_from_view(handle,ring)
+        schema = self.TYM.ring_get_schema_from_view(handle,ring)
         print('SCHEMA',schema)
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
@@ -862,7 +862,7 @@ class AvispaRestFunc:
         d['fieldsschema'] = fieldsschema
         d['numfields'] = numfields
         
-        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        ringparameters = self.TYM.get_a_b_parameters(handle,ring)
 
         if not ringparameters:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
@@ -907,7 +907,7 @@ class AvispaRestFunc:
     
     def delete_a_b(self,handle,ring,idx=None,api=None,rqargs=None,rqurl=None,collection=None,*args,**kargs):
         
-        if self.AVM.user_delete_ring(handle,ring):
+        if self.TYM.user_delete_ring(handle,ring):
 
             ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
             ESM.unindexer(handle,ring)
@@ -968,7 +968,7 @@ class AvispaRestFunc:
             idlabel = True
 
         #Subtract Ring info      
-        schema = self.AVM.ring_get_schema_from_view(handle,ring) 
+        schema = self.TYM.ring_get_schema_from_view(handle,ring) 
         d['ringdescription'] = schema['rings'][0]['RingDescription']
         d['ringcount'],d['ringorigin'] = self.ring_parameters(handle,ring)
 
@@ -983,7 +983,7 @@ class AvispaRestFunc:
 
 
         
-        preitem_result = self.AVM.get_a_b_c(handle,ring,idx)
+        preitem_result = self.TYM.get_a_b_c(handle,ring,idx)
         
 
         if preitem_result:
@@ -1074,7 +1074,7 @@ class AvispaRestFunc:
         '''
         Puts changes in the item
         '''        
-        result = self.AVM.put_a_b_c(rqurl,rqform,handle,ring,idx)
+        result = self.TYM.put_a_b_c(rqurl,rqform,handle,ring,idx)
 
         if result:
 
@@ -1116,7 +1116,7 @@ class AvispaRestFunc:
         '''
         Repopulates form to be sent for a put
         '''
-        schema = self.AVM.ring_get_schema(handle,ring)
+        schema = self.TYM.ring_get_schema(handle,ring)
 
         d = {}
 
@@ -1131,7 +1131,7 @@ class AvispaRestFunc:
         ringschema = schema['rings'][0]
         fieldsschema = schema['fields']
         numfields = len(fieldsschema)
-        item = self.AVM.get_a_b_c(handle,ring,idx)
+        item = self.TYM.get_a_b_c(handle,ring,idx)
 
         print(labels)
 
@@ -1180,7 +1180,7 @@ class AvispaRestFunc:
         d['labels'] = labels 
 
 
-        ringparameters = self.AVM.get_a_b_parameters(handle,ring)
+        ringparameters = self.TYM.get_a_b_parameters(handle,ring)
 
         if not ringparameters:
             flash(str(ring)+" does not exist or it has been deleted",'UI')
@@ -1229,7 +1229,7 @@ class AvispaRestFunc:
     #DELETE /a/b/c
     
     def delete_a_b_c(self,handle,ring,idx,api=False,collection=None,*args,**kargs):
-        result = self.AVM.delete_a_b_c(handle,ring,idx)
+        result = self.TYM.delete_a_b_c(handle,ring,idx)
 
         if result:
 

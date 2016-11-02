@@ -10,7 +10,7 @@ from flask import flash, g
 from AvispaLogging import AvispaLoggerAdapter
 from env_config import TEMP_ACCESS_TOKEN
 
-from AvispaModel import AvispaModel
+from TypesModel import TypesModel
 
 
 class RingBuilder:
@@ -35,7 +35,7 @@ class RingBuilder:
                                   'FieldMultilingual':'FALSE', 'FieldRequired':'FALSE', 'FieldLayer':'2', 'FieldOrder':'1' }
 
 
-        self.AVM = AvispaModel()
+        self.TYM = TypesModel()
 
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
@@ -57,7 +57,7 @@ class RingBuilder:
 
         pinput = self.generate_blocks(p,self.fieldprotocols['fieldprotocol'])
 
-        if self.AVM.ring_set_schema(p['handle'],
+        if self.TYM.ring_set_schema(p['handle'],
                                     p['RingName'],
                                     p['RingVersion'],
                                     pinput,
@@ -77,7 +77,7 @@ class RingBuilder:
     def create_ring_db(self,handle,ringname,ringversion):
         
         try:
-            self.AVM.ring_set_db(handle,ringname,ringversion)
+            self.TYM.ring_set_db(handle,ringname,ringversion)
             self.lggr.info('New Ring database created: '+ str(ringname))
             return True
 
@@ -185,7 +185,7 @@ class RingBuilder:
                 ringdbname = ringname
                 
                 #original schema
-                schema = self.AVM.ring_get_schema_from_view(origin_handle,ringdbname)
+                schema = self.TYM.ring_get_schema_from_view(origin_handle,ringdbname)
                 self.lggr.debug(schema) 
                 #Generate pinput from schema
                 
@@ -289,7 +289,7 @@ class RingBuilder:
  
 
             try: 
-                self.AVM.ring_set_db(handle,ringname,ringversion)
+                self.TYM.ring_set_db(handle,ringname,ringversion)
                 self.lggr.info('New Ring database created:'+str(handle)+'_'+str(ringname))
             except(PreconditionFailed):
                 self.lggr.info('The Ring '+ str(ringname)+' database already exists')
@@ -297,7 +297,7 @@ class RingBuilder:
                 return False
 
             try:
-                self.AVM.ring_set_schema(handle,
+                self.TYM.ring_set_schema(handle,
                                         ringname,
                                         ringversion,
                                         pinput,
@@ -310,7 +310,7 @@ class RingBuilder:
                 return ringd
             except(ValueError,KeyError):
                 #Delete db you just created
-                self.AVM.user_hard_delete_ring(handle,ringname,ringversion)
+                self.TYM.user_hard_delete_ring(handle,ringname,ringversion)
                 self.lggr.info('Schema could not be inserted, Delete all trace.')
                 return False
                 

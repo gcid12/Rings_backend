@@ -2,7 +2,6 @@
 import urlparse, random
 import logging
 from flask import redirect, flash, url_for
-from AvispaModel import AvispaModel
 from MainModel import MainModel
 from flask.ext.login import current_user
 from AvispaTeamsModel import AvispaTeamsModel
@@ -21,7 +20,6 @@ class AvispaTeamsRestFunc:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
         
-        self.AVM = AvispaModel(tid=tid,ip=ip)
         self.MAM = MainModel(tid=tid,ip=ip)
         self.ATM = AvispaTeamsModel(tid=tid,ip=ip)
 

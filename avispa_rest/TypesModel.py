@@ -1,4 +1,4 @@
-# AvispaModel.py
+# TypesModel.py
 from couchdb.http import PreconditionFailed, ResourceNotFound
 
 from datetime import datetime 
@@ -29,7 +29,7 @@ from env_config import TEMP_ACCESS_TOKEN
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
 
-class AvispaModel:
+class TypesModel:
 
     def __init__(self,tid=False,ip=False):
 
