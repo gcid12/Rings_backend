@@ -6,9 +6,7 @@ from dispatchers import route_dispatcher,tool_dispatcher,patch_dispatcher,\
                         history_dispatcher,people_dispatcher,teams_dispatcher,\
                         labels_dispatcher
 
-
 avispa_rest = Blueprint('avispa_rest', __name__, url_prefix='')
-
 
 # Set the route and accepted methods
 @avispa_rest.route('/')
@@ -22,8 +20,6 @@ def index():
                                      handle=current_user.id,
                                      _external=True,
                                      _scheme=URL_SCHEME))
-
-
 
 
 @avispa_rest.route('/<handle>/_history', methods=['GET'])
