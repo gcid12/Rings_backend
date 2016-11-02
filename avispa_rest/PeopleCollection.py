@@ -3,7 +3,7 @@ import logging
 from flask import redirect,flash,url_for
 
 from MainModel import MainModel
-from AvispaPeopleModel import AvispaPeopleModel
+from PeopleModel import PeopleModel
 from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
@@ -17,7 +17,7 @@ class AvispaPeopleRestFunc:
         
         
         self.MAM = MainModel(tid=tid,ip=ip)
-        self.APM = AvispaPeopleModel(tid=tid,ip=ip)
+        self.PEM = PeopleModel(tid=tid,ip=ip)
         
     # GET/a
     def get_a_p(self,handle,person,*args,**kargs):
@@ -61,7 +61,7 @@ class AvispaPeopleRestFunc:
         #Check if the user exists or not
         if self.MAM.user_exists(person):
 
-            result = self.APM.post_a_p(handle,person)
+            result = self.PEM.post_a_p(handle,person)
                 
             if result:
                 self.lggr.debug('Awesome , you just added %s to the organization'%person)
@@ -95,7 +95,7 @@ class AvispaPeopleRestFunc:
         #Check if the user exists or not
         if self.MAM.user_exists(person):
 
-            result = self.APM.delete_a_p_q(handle,person)
+            result = self.PEM.delete_a_p_q(handle,person)
                 
             if result:
                 self.lggr.debug('You just deleted %s from the organization'%person)

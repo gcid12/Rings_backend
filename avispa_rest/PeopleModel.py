@@ -1,4 +1,4 @@
-# AvispaPeopleModel.py
+# PeopleModel.py
 import logging
 import sys
 from datetime import datetime 
@@ -8,7 +8,7 @@ from MainModel import MainModel
 from flask.ext.login import current_user
 from AvispaLogging import AvispaLoggerAdapter
 
-class AvispaPeopleModel:
+class PeopleModel:
 
     def __init__(self,tid=None,ip=None):
 

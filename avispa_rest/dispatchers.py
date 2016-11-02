@@ -6,7 +6,7 @@ from flask import render_template,request,make_response,url_for
 from TypesController import TypesController
 from CollectionsController import CollectionsController
 from AvispaRolesRestFunc import AvispaRolesRestFunc
-from AvispaPeopleRestFunc import AvispaPeopleRestFunc
+from PeopleCollection import PeopleCollection
 from AvispaTeamsRestFunc import AvispaTeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
@@ -931,7 +931,7 @@ def people_dispatcher(depth,handle,person=None):
     lggr = setup_local_logger(tid,ip)
 
     MAM = MainModel(tid=tid,ip=ip)
-    APR = AvispaPeopleRestFunc(tid=tid,ip=ip)
+    PEC = PeopleCollection(tid=tid,ip=ip)
 
     data = {}
     data['section'] = '_people'
@@ -959,7 +959,7 @@ def people_dispatcher(depth,handle,person=None):
     data['user_authorizations'] = authorization_result['user_authorizations']
     
     
-    data.update(getattr(APR, m.lower())(
+    data.update(getattr(PEC, m.lower())(
                                         handle,
                                         person,
                                         rqform=request.form))
