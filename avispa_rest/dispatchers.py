@@ -4,7 +4,7 @@ import logging
 from AvispaLogging import AvispaLoggerAdapter
 from flask import render_template,request,make_response,url_for
 from TypesController import TypesController
-from AvispaCollectionsRestFunc import AvispaCollectionsRestFunc
+from CollectionsController import CollectionsController
 from AvispaRolesRestFunc import AvispaRolesRestFunc
 from AvispaPeopleRestFunc import AvispaPeopleRestFunc
 from AvispaTeamsRestFunc import AvispaTeamsRestFunc
@@ -368,7 +368,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     lggr = setup_local_logger(tid,ip)
 
     MAM = MainModel(tid=tid,ip=ip)
-    ACF = AvispaCollectionsRestFunc(tid=tid,ip=ip)
+    COC = CollectionsController(tid=tid,ip=ip)
 
     if request.args.get("rq"):
         method = request.args.get("rq")+'_rq'
@@ -449,7 +449,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     rqform = request.form
     rqurl = request.url
 
-    data.update(getattr(ACF, m.lower())(
+    data.update(getattr(COC, m.lower())(
                                         handle,
                                         collection,
                                         idx,
@@ -477,7 +477,7 @@ def home_dispatcher(handle):
     lggr = setup_local_logger(tid,ip) 
 
     MAM = MainModel(tid=tid,ip=ip)
-    ACF = AvispaCollectionsRestFunc(tid=tid,ip=ip)
+    COC = CollectionsController(tid=tid,ip=ip)
 
     data = {}
     
@@ -495,7 +495,7 @@ def home_dispatcher(handle):
  
         m = 'get_a_x'
            
-        collectionsd = getattr(ACF, m.lower())(handle,None,None) 
+        collectionsd = getattr(COC, m.lower())(handle,None,None) 
         print('collectionsd:')
         print(collectionsd) 
 

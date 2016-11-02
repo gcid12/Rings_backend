@@ -1,4 +1,4 @@
-# AvispaCollectionsRestFunc.py
+# CollectionsController.py
 import json
 import logging
 from flask import redirect,flash,url_for
@@ -8,7 +8,7 @@ from CollectionBuilder import CollectionBuilder
 from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
-class AvispaCollectionsRestFunc:
+class CollectionsController:
 
     def __init__(self,tid=None,ip=None):
 
@@ -23,7 +23,7 @@ class AvispaCollectionsRestFunc:
     def get_a_x(self,handle,collection,idx,api=False,*args,**kargs):
         'Show list of collections'
      
-        collectionlist = self.ACM.get_a_x(handle)
+        collectionlist = self.COM.get_a_x(handle)
         #self.lggr.debug('collectionlist:%s'%collectionlist)
 
         count = 0
@@ -223,7 +223,7 @@ class AvispaCollectionsRestFunc:
     def put_rq_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
         #Form to edit a collection
         ringlist = self.TYM.user_get_rings(handle)
-        collectiond = self.ACM.get_a_x_y(handle,collection) #It comes with just one collection
+        collectiond = self.COM.get_a_x_y(handle,collection) #It comes with just one collection
 
         self.lggr.debug('collectiond:%s'%collectiond)
 
@@ -266,7 +266,7 @@ class AvispaCollectionsRestFunc:
     def delete_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
         #Will delete an existing collection
 
-        result = self.ACM.delete_a_x_y(handle,collection)
+        result = self.COM.delete_a_x_y(handle,collection)
 
         if result:
             self.lggr.debug('Awesome , you just deleted a Collection')
