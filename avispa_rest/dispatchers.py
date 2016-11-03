@@ -7,7 +7,7 @@ from TypesController import TypesController
 from CollectionsController import CollectionsController
 from AvispaRolesRestFunc import AvispaRolesRestFunc
 from PeopleCollection import PeopleCollection
-from TeamsRestFunc import TeamsRestFunc
+from TeamsCollection import TeamsCollection
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from ElasticSearchModel import ElasticSearchModel
