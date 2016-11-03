@@ -1,4 +1,4 @@
-# AvispaPeopleRestFunc.py
+# PeopleCollection.py
 import logging
 from flask import redirect,flash,url_for
 
@@ -8,7 +8,7 @@ from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
 
-class AvispaPeopleRestFunc:
+class PeopleCollection:
 
     def __init__(self,tid=None,ip=None):
         
