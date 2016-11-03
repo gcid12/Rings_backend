@@ -1,4 +1,4 @@
-# MyRingTool.py
+#Tool.py
 
 import uuid
 import random
@@ -13,8 +13,7 @@ from Upload import Upload
 from MyRingSchema import MyRingSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
-
-class MyRingTool:
+class Tool:
 
     def __init__(self):
 

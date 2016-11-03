@@ -8,7 +8,7 @@ from CollectionsController import CollectionsController
 from AvispaRolesRestFunc import AvispaRolesRestFunc
 from PeopleCollection import PeopleCollection
 from TeamsCollection import TeamsCollection
-from MyRingTool import MyRingTool
+from Tool import Tool
 from Patch import Patch
 from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import current_user
@@ -303,9 +303,9 @@ def tool_dispatcher(tool):
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
     
-    MRT = MyRingTool()
+    TOL = Tool()
 
-    data = getattr(MRT, tool.lower())(request)
+    data = getattr(TOL, tool.lower())(request)
     
     if  hasattr(current_user,'id'):
         data['handle']=current_user.id
