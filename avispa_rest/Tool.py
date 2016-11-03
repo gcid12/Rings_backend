@@ -10,7 +10,7 @@ from MainModel import MainModel
 from TypesModel import TypesModel
 from auth.AuthModel import AuthModel
 from Upload import Upload
-from MyRingSchema import MyRingSchema
+from TypesSchema import TypesSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
 class Tool:
@@ -252,9 +252,9 @@ class Tool:
 
     def analyze_schema(self,request,*args):
 
-        ring = MyRingSchema()
+        ring = TypeSchema()
 
-        print(MyRingSchema.fields['FieldName'])
+        print(TypeSchema.fields['FieldName'])
 
         d = {'rq': 'ok','template':'avispa_rest/tools/flashresponsejson.html'}
         return d

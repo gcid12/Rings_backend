@@ -18,7 +18,7 @@ from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
-from MyRingSchema import MyRingSchema
+from TypesSchema import TypesSchema
 #from ElasticSearchModel import ElasticSearchModel
 from AvispaLogging import AvispaLoggerAdapter
 
@@ -744,7 +744,7 @@ class TypesModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.MAM.select_db(db_ringname)
-        schema = MyRingSchema.load(db,'schema')
+        schema = TypesSchema.load(db,'schema')
 
         return schema
 
@@ -809,13 +809,13 @@ class TypesModel:
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.MAM.select_db(db_ringname)
         numfields = len(pinput['fields'])
-        schema = MyRingSchema.load(db,'schema')
+        schema = TypesSchema.load(db,'schema')
 
         # Creates Ring Schema if it doesn't exist. Uses current one if it exists.
         if schema:
             action = 'edit'
         else:       
-            schema = MyRingSchema()
+            schema = TypesSchema()
             #ring = RingClass()
             schema._id= 'schema'
 
@@ -911,7 +911,7 @@ class TypesModel:
         Create schema class
         
         @NOTES: 
-          -This function is deprecated. Now we just instantiate MyRingSchema class
+          -This function is deprecated. Now we just instantiate TypesSchema class
 
         @IN:
           numfields = (integer)
