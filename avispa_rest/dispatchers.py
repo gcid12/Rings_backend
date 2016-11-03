@@ -5,7 +5,6 @@ from AvispaLogging import AvispaLoggerAdapter
 from flask import render_template,request,make_response,url_for
 from TypesController import TypesController
 from CollectionsController import CollectionsController
-from AvispaRolesRestFunc import AvispaRolesRestFunc
 from PeopleCollection import PeopleCollection
 from TeamsCollection import TeamsCollection
 from Tool import Tool
