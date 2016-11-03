@@ -1,10 +1,10 @@
-# AvispaTeamsRestFunc.py
+#TeamsRestFunc.py
 import urlparse, random
 import logging
 from flask import redirect, flash, url_for
 from MainModel import MainModel
 from flask.ext.login import current_user
-from AvispaTeamsModel import AvispaTeamsModel
+from TeamsModel import TeamsModel
 from flanker.addresslib import address
 from datetime import datetime
 from app import flask_bcrypt
@@ -13,7 +13,7 @@ from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
 
-class AvispaTeamsRestFunc:
+class TeamsRestFunc:
 
     def __init__(self,tid=None,ip=None):
 
@@ -21,7 +21,7 @@ class AvispaTeamsRestFunc:
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
         
         self.MAM = MainModel(tid=tid,ip=ip)
-        self.ATM = AvispaTeamsModel(tid=tid,ip=ip)
+        self.TEM = TeamsModel(tid=tid,ip=ip)
 
     # GET/a
     def get_a_m(self,handle,team,*args,**kargs):
@@ -183,7 +183,7 @@ class AvispaTeamsRestFunc:
 
         if 'newmember' in rqform: 
             member = rqform.get('newmember')
-            if self.ATM.post_a_m_n_members(handle,team,member):
+            if self.TEM.post_a_m_n_members(handle,team,member):
                 self.lggr.debug('%s has been added to the team.'%member)
                 flash('%s has been added to the team.'%member,'UI')
             else:
@@ -192,7 +192,7 @@ class AvispaTeamsRestFunc:
 
         if 'delmember' in rqargs: 
             member = rqargs.get('delmember')
-            if self.ATM.delete_a_m_n_members(handle,team,member):
+            if self.TEM.delete_a_m_n_members(handle,team,member):
                 self.lggr.debug('%s has been deleted from the team.'%member)
                 flash('%s has been deleted from the team.'%member,'UI')
             else:
@@ -201,7 +201,7 @@ class AvispaTeamsRestFunc:
             
         if 'newring' in rqform:
             ring = rqform.get('newring')
-            if self.ATM.post_a_m_n_rings(handle,team,ring):
+            if self.TEM.post_a_m_n_rings(handle,team,ring):
                 self.lggr.debug('%s has been added to the team.'%ring)
                 flash('%s has been added to the team.'%ring,'UI')
             else:
@@ -210,7 +210,7 @@ class AvispaTeamsRestFunc:
 
         if 'delring' in rqargs:
             ring = rqargs.get('delring')
-            if self.ATM.delete_a_m_n_rings(handle,team,ring):
+            if self.TEM.delete_a_m_n_rings(handle,team,ring):
                 self.lggr.debug('%s has been deleted from the team.'%ring)
                 flash('%s has been deleted from the team.'%ring,'UI')
             else:
@@ -330,7 +330,7 @@ class AvispaTeamsRestFunc:
         if ('description' in rqform) or ('teamauth' in rqform): 
             p['description'] = rqform.get('description')
             p['teamauth'] = rqform.get('teamauth')
-            if self.ATM.put_a_m_n_settings(handle,team,p):
+            if self.TEM.put_a_m_n_settings(handle,team,p):
                 self.lggr.debug('%s has been updated.'%team)
                 flash('%s has been updated.'%team,'UI')
             else:

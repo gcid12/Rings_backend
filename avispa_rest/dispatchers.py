@@ -7,7 +7,7 @@ from TypesController import TypesController
 from CollectionsController import CollectionsController
 from AvispaRolesRestFunc import AvispaRolesRestFunc
 from PeopleCollection import PeopleCollection
-from AvispaTeamsRestFunc import AvispaTeamsRestFunc
+from TeamsRestFunc import TeamsRestFunc
 from MyRingTool import MyRingTool
 from MyRingPatch import MyRingPatch
 from ElasticSearchModel import ElasticSearchModel
@@ -1010,7 +1010,7 @@ def teams_dispatcher(depth,handle,team=None):
     lggr = setup_local_logger(tid,ip)
 
     MAM = MainModel(tid=tid,ip=ip)
-    ATR = AvispaTeamsRestFunc(tid=tid,ip=ip)
+    TER = TeamsRestFunc(tid=tid,ip=ip)
 
     data = {}
     data['section'] = '_teams'
@@ -1037,7 +1037,7 @@ def teams_dispatcher(depth,handle,team=None):
 
 
     try:
-        data.update(getattr(ATR, m.lower())(
+        data.update(getattr(TER, m.lower())(
                                             handle,
                                             team,
                                             rqform=request.form,

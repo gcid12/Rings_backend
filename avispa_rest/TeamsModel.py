@@ -1,4 +1,4 @@
-# AvispaTeamsModel.py
+#TeamsModel.py
 import sys
 import logging
 from datetime import datetime 
@@ -7,7 +7,7 @@ from MainModel import MainModel
 from flask.ext.login import current_user 
 from flask import flash
 
-class AvispaTeamsModel:
+class TeamsModel:
 
     def __init__(self,tid=None,ip=None):
 
