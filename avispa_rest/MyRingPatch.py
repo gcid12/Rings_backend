@@ -11,7 +11,6 @@ from flask import flash , current_app
 from MainModel import MainModel
 from TypesModel import TypesModel
 from auth.AuthModel import AuthModel
-from AvispaUpload import AvispaUpload
 from MyRingSchema import MyRingSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from couchdb.http import PreconditionFailed, ResourceNotFound

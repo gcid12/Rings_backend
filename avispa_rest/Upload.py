@@ -1,4 +1,4 @@
-# AvispaUpload.py
+#Upload.py
 import os
 import sys
 import errno
@@ -25,7 +25,7 @@ if STORE_MODE == 'S3':
 from AvispaLogging import AvispaLoggerAdapter
 
 
-class AvispaUpload:
+class Upload:
 
     def __init__(self,handle):
 

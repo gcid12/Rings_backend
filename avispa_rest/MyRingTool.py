@@ -9,7 +9,7 @@ from flask import flash, current_app
 from MainModel import MainModel
 from TypesModel import TypesModel
 from auth.AuthModel import AuthModel
-from AvispaUpload import AvispaUpload
+from Upload import Upload
 from MyRingSchema import MyRingSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
@@ -100,14 +100,14 @@ class MyRingTool:
 
         f = self.pull_file_from_request(request)
 
-        AUD = AvispaUpload(handle)
+        UPL = Upload(handle)
 
-        if not AUD.check_extension(f.filename):
+        if not UPL.check_extension(f.filename):
             return False
 
-        blob = AUD.blob_from_file(f)
+        blob = UPL.blob_from_file(f)
 
-        response = AUD.do_upload(blob)
+        response = UPL.do_upload(blob)
         response['handle'] = handle
         response['imgbase']= '/_images/{handle}/{sizename}/{imgid}_{sizename}.{extension}'
 
