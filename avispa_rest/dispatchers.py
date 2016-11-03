@@ -9,7 +9,7 @@ from AvispaRolesRestFunc import AvispaRolesRestFunc
 from PeopleCollection import PeopleCollection
 from TeamsCollection import TeamsCollection
 from MyRingTool import MyRingTool
-from MyRingPatch import MyRingPatch
+from Patch import Patch
 from ElasticSearchModel import ElasticSearchModel
 from flask.ext.login import current_user
 from env_config import IMAGE_CDN_ROOT,TEMP_ACCESS_TOKEN,URL_SCHEME
@@ -328,9 +328,9 @@ def patch_dispatcher(patchnumber):
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
 
-    MRP = MyRingPatch()
+    PAT = Patch()
     patch = str(patchnumber)
-    data = getattr(MRP, patch.lower())(request)
+    data = getattr(PAT, patch.lower())(request)
     
     if 'redirect' in data:
         return data              
