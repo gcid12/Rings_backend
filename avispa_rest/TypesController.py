@@ -135,7 +135,7 @@ class TypesController:
 
                 flash(" There has been an issue, please check your parameters and try again. ",'UI')
 
-                #recovery_string,unique = self.form_args_to_string(rqform)
+                recovery_string,unique = self.form_args_to_string(rqform)
 
                 if collection:
                     #redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n='+str(len(unique))+'&'+str(recovery_string)
@@ -146,7 +146,7 @@ class TypesController:
                                         n=str(len(unique)),
                                         _external=True,
                                         _scheme=URL_SCHEME,
-                                        rqform=rqform)
+                                        recovery_string=recovery_string)
                 else:
                     #redirect = '/'+handle+'/'+ring+'?rq=post&n=10&'+str(recovery_string)
                     redirect = url_for('avispa_rest.route_a',
@@ -154,7 +154,7 @@ class TypesController:
                                         rq='post',
                                         _external=True,
                                         _scheme=URL_SCHEME,
-                                        rqform=rqform)
+                                        recovery_string=recovery_string)
 
             else:
                 out['Success'] = False

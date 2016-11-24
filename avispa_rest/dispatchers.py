@@ -1009,7 +1009,7 @@ def teams_dispatcher(depth,handle,team=None):
     lggr = setup_local_logger(tid,ip)
 
     MAM = MainModel(tid=tid,ip=ip)
-    TER = TeamsRestFunc(tid=tid,ip=ip)
+    TEC = TeamsCollection(tid=tid,ip=ip)
 
     data = {}
     data['section'] = '_teams'
@@ -1036,7 +1036,7 @@ def teams_dispatcher(depth,handle,team=None):
 
 
     try:
-        data.update(getattr(TER, m.lower())(
+        data.update(getattr(TEC, m.lower())(
                                             handle,
                                             team,
                                             rqform=request.form,

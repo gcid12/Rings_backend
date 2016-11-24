@@ -324,7 +324,10 @@ def collections_route_a_x_y(handle,collection):
 
         #result = route_dispatcher('_a',handle,collection=collection) 
         #We are assuming that not having a collection specific page is ok?
-        result = home_dispatcher(handle)  
+        return redirect(url_for('avispa_rest.home',
+                                     handle=handle,
+                                     _external=True,
+                                     _scheme=URL_SCHEME))  
 
     elif request.method == 'POST':
         if 'method' in request.args:

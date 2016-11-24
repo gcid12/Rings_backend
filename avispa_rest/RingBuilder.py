@@ -83,7 +83,7 @@ class RingBuilder:
 
         except(PreconditionFailed):
             self.lggr.info('The Ring '+ str(ringname) +' database already exists')
-            flash('The Ring '+ ringname+' already exists','ER')
+            flash('The type '+ ringname+' already exists in @'+handle ,'ER')
             return False
 
     def subtract_request_parameters(self,rqform,handle,ring=None):
@@ -99,7 +99,7 @@ class RingBuilder:
             #There should be also a nonaplhanumeric character strip here
         else:
             self.lggr.info('No name for the ring')
-            return False
+            return p
             
 
         if 'RingVersion' in rqform:
@@ -131,7 +131,7 @@ class RingBuilder:
 
         p = self.subtract_request_parameters(rqform,handle)
              
-        if p['RingName'] and ('FieldName_1' in p):
+        if ('RingName' in p) and ('FieldName_1' in p):
 
             self.lggr.debug('Creating new Ring')
             # Minumum requirements ok, create a ring
@@ -145,6 +145,10 @@ class RingBuilder:
 
         elif 'ringurl' in rqform:
             # We are cloning a Ring
+
+            new_clone_ring_name = None
+            if 'RingName' in rqform:
+                new_clone_ring_name = rqform['RingName']
 
             self.lggr.debug('Cloning a Ring')
 
@@ -181,8 +185,13 @@ class RingBuilder:
                 origin_handle = pathparts[2] #BUG! This will set origin database as handle for new ring 
                 handle = handle.lower()
                 ringnameparts = pathparts[3].split('_')
-                ringname = ringnameparts[0]
-                ringdbname = ringname
+
+                if new_clone_ring_name:
+                    ringname = new_clone_ring_name
+                else:
+                    ringname = ringnameparts[0]
+
+                ringdbname = ringnameparts[0]
                 
                 #original schema
                 schema = self.TYM.ring_get_schema_from_view(origin_handle,ringdbname)
@@ -250,7 +259,12 @@ class RingBuilder:
 
 
                 handle = handle.lower()
-                ringname = schema['rings'][0]['RingName'].lower().replace(' ','')
+
+                if new_clone_ring_name:
+                    ringname = new_clone_ring_name
+                else:
+                    ringname = schema['rings'][0]['RingName'].lower().replace(' ','')
+
                 ringversion = schema['rings'][0]['RingVersion'].replace('.','-')
                 
                 requestparameters = {}
@@ -290,10 +304,10 @@ class RingBuilder:
 
             try: 
                 self.TYM.ring_set_db(handle,ringname,ringversion)
-                self.lggr.info('New Ring database created:'+str(handle)+'_'+str(ringname))
+                self.lggr.info('New Type database created:'+str(handle)+'_'+str(ringname))
             except(PreconditionFailed):
-                self.lggr.info('The Ring '+ str(ringname)+' database already exists')
-                flash('The Ring '+ ringname+'_'+ringversion +' already exists','ER')
+                self.lggr.info('The Type '+ str(ringname)+' database already exists')
+                flash('The type '+ ringname +' already exists in @'+handle,'ER')
                 return False
 
             try:
@@ -326,14 +340,12 @@ class RingBuilder:
 
         p = self.subtract_request_parameters(rqform,handle,ring=ring)
 
-                
         if p['RingName'] and ('FieldName_1' in p):
 
             return self.update_ring_schema(p)
 
         else:
             return False
-
 
     def _generate_ring_block(self, requestparameters):
 
@@ -344,14 +356,8 @@ class RingBuilder:
         for k in self.ringprotocols['ringprotocol']:
             self.lggr.info('generate_ring_block iteration:'+str(k))
             if k in requestparameters:
-                self.lggr.debug('in')
-            #if request.form.get(k):
-                #ringsbuffer[k] = request.form[k]
-                ringsbuffer[k] = requestparameters[k].strip()
-                #self.lggr.info(k)
-                
 
-                if ringsbuffer[k]=='':
+                if requestparameters[k]=='' or (requestparameters[k] is None) :
 
                     if k in self.ringprotocols['mandatory']:
                         raise Exception('Field in Ring Protocol missing : '+k)
@@ -361,6 +367,9 @@ class RingBuilder:
                             ringsbuffer[k] = self.ringprotocols['defaults'][k]
                         else:
                             ringsbuffer[k] = ''
+
+                else:
+                    ringsbuffer[k] = str(requestparameters[k]).strip()
 
         self.lggr.debug('ringsbuffer:'+str(ringsbuffer))
 

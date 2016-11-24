@@ -164,7 +164,7 @@ class CollectionsController:
 
     # /a/b
     
-    #GET /a/b
+    #GET /a/x/y
     def get_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
         #THIS IS NOT USED . SEE TypesController.get_a() instead 
 
@@ -180,7 +180,7 @@ class CollectionsController:
         return d
 
 
-    #POST /a/b
+    #POST /a/x/y
     def post_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
         d = {'message': 'Using Collection post_a_x_y for handle '+handle , 'template':'avispa_rest/index.html'}
         return d
@@ -194,7 +194,7 @@ class CollectionsController:
         return d
 
 
-    #PUT /a/b
+    #PUT /a/x/y
     def put_a_x_y(self,handle,collection,idx,api=False,rqform=None,*args,**kargs):
         # Introduce the changes to the existing collection
 
@@ -207,9 +207,8 @@ class CollectionsController:
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been updated",'UI')
             
-            redirect = url_for('avispa_rest.collections_route_a_x_y',
+            redirect = url_for('avispa_rest.route_a',
                                      handle=handle,
-                                     collection=collection,
                                      _external=True,
                                      _scheme=URL_SCHEME) 
 
@@ -248,7 +247,7 @@ class CollectionsController:
         return d
 
 
-    #PATCH /a/b
+    #PATCH /a/x/y
     def patch_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
     	d = {'message': 'Using Collection patch_a_x_y for handle '+handle+', collection:'+collection , 'template':'avispa_rest/index.html'}
         return d
@@ -262,7 +261,7 @@ class CollectionsController:
         return d
 
     
-    #DELETE /a/b
+    #DELETE /a/x/y
     def delete_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
         #Will delete an existing collection
 
