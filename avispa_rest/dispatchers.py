@@ -33,12 +33,12 @@ def setup_log_vars():
 def setup_local_logger(tid,ip):
     return AvispaLoggerAdapter(logger, {'tid':tid,'ip':ip})
 
-def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
+def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
       
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
 
-    lggr.info('START route_dispatcher')
+    lggr.info('START types_dispatcher')
 
     MAM = MainModel(tid=tid,ip=ip)
     TYC = TypesController(tid=tid,ip=ip)
@@ -78,7 +78,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             user_handle = '_api_anonymous' #Please change this to the actual username that is using this token
         
         else:
-            lggr.info('END route_dispatcher')
+            lggr.info('END types_dispatcher')
             return render_template('avispa_rest/error_401.html', data=data),401
  
         authorization_result = MAM.user_is_authorized(user_handle,m,depth,handle,ring=ring,idx=idx,api=api)
@@ -90,7 +90,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
         
         if not authorization_result['authorized']:
-            lggr.info('END route_dispatcher')
+            lggr.info('END types_dispatcher')
             return render_template('avispa_rest/error_401.html', data=data),401
 
         data['user_authorizations'] = authorization_result['user_authorizations']
@@ -177,7 +177,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     if 'redirect' in data:
         
-        lggr.info('END route_dispatcher')     
+        lggr.info('END types_dispatcher')     
         return data 
 
     elif api: 
@@ -252,7 +252,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 csvdoc = cvsdocIO.getvalue()
                 cvsdocIO.close()
  
-                lggr.info('END route_dispatcher')
+                lggr.info('END types_dispatcher')
                 return csvdoc
             
             if 'fl' in request.args:
@@ -277,7 +277,7 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             else:
                 response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+".csv"
 
-            lggr.info('END route_dispatcher')
+            lggr.info('END types_dispatcher')
             return response
 
 
@@ -286,15 +286,15 @@ def route_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             data['json_out'] = json.dumps(data['raw_out'])
             print('JSONOUT',data['json_out'])
             
-            lggr.info('END route_dispatcher')
+            lggr.info('END types_dispatcher')
             return render_template(data['template'], data=data), status
      
 
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-        lggr.info('END route_dispatcher')   
+        lggr.info('END types_dispatcher')   
         return render_template(data['template'], data=data), status     
     else:
-        lggr.info('END route_dispatcher')
+        lggr.info('END types_dispatcher')
         return render_template(data['template'], data=data)
         
 def tool_dispatcher(tool):
