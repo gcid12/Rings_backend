@@ -1,7 +1,7 @@
 from flask import Blueprint,request,redirect,url_for
 from flask.ext.login import current_user, login_required
 from env_config import  URL_SCHEME
-from dispatchers import types_dispatcher,tool_dispatcher,patch_dispatcher,\
+from dispatchers import rings_dispatcher,tool_dispatcher,patch_dispatcher,\
                         index_dispatcher,collection_dispatcher,home_dispatcher,\
                         history_dispatcher,people_dispatcher,teams_dispatcher,\
                         labels_dispatcher
@@ -51,7 +51,7 @@ def history_h_r(handle,ring):
 #This is needed because in a Vanilla install there are no users so /_tools/install would redirect me to /_login
 def first_install():
 
-    #result = types_dispatcher('_a_b','_tools','install')
+    #result = rings_dispatcher('_a_b','_tools','install')
     result = tool_dispatcher('install')
  
     if 'redirect' in result:
@@ -286,21 +286,21 @@ def collections_route_a_x(handle):
 def api_collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
-        result = types_dispatcher('_a',handle,api=True,collection=collection)       
+        result = rings_dispatcher('_a',handle,api=True,collection=collection)       
     elif request.method == 'POST':
         if 'method' in request.args:
             if request.args.get('method').lower()=='put':
                 result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection) 
             elif request.args.get('method').lower()=='post':
-                result = types_dispatcher('_a',handle,api=True,collection=collection)
+                result = rings_dispatcher('_a',handle,api=True,collection=collection)
         else:
-            result = types_dispatcher('_a',handle,api=True,collection=collection)
+            result = rings_dispatcher('_a',handle,api=True,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
             result = collection_dispatcher('_a_x_y',handle,api=True,collection=collection)
         if request.args.get('rq').lower() == 'post':
-            result = types_dispatcher('_a',handle,api=True,collection=collection)
+            result = rings_dispatcher('_a',handle,api=True,collection=collection)
 
 
     else:
@@ -322,7 +322,7 @@ def collections_route_a_x_y(handle,collection):
 
     if ('rq' not in request.args) and ('method' not in request.args): 
 
-        #result = types_dispatcher('_a',handle,collection=collection) 
+        #result = rings_dispatcher('_a',handle,collection=collection) 
         #We are assuming that not having a collection specific page is ok?
         return redirect(url_for('avispa_rest.home',
                                      handle=handle,
@@ -336,10 +336,10 @@ def collections_route_a_x_y(handle,collection):
                 result = collection_dispatcher('_a_x_y',handle,collection) 
             elif request.args.get('method').lower()=='post':
                 # Post the Ring
-                result = types_dispatcher('_a',handle,collection=collection)
+                result = rings_dispatcher('_a',handle,collection=collection)
         else:
             # Post the ring
-            result = types_dispatcher('_a',handle,collection=collection)
+            result = rings_dispatcher('_a',handle,collection=collection)
 
     elif 'rq' in request.args:
         if request.args.get('rq').lower() == 'put':
@@ -347,7 +347,7 @@ def collections_route_a_x_y(handle,collection):
             result = collection_dispatcher('_a_x_y',handle,collection)
         if request.args.get('rq').lower() == 'post':
             # Get the Ring Modeler
-            result = types_dispatcher('_a',handle,collection=collection)
+            result = rings_dispatcher('_a',handle,collection=collection)
 
     else:
         #Every collection specific GET
@@ -363,7 +363,7 @@ def collections_route_a_x_y(handle,collection):
 @avispa_rest.route('/_api/<handle>', methods=['GET','POST'])
 def api_route_a(handle):
 
-    result = types_dispatcher('_a',handle,api=True)
+    result = rings_dispatcher('_a',handle,api=True)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
@@ -374,7 +374,7 @@ def api_route_a(handle):
 @avispa_rest.route('/_api/<handle>/<ring>', methods=['GET','POST'])
 def api_route_a_b(handle,ring):
 
-    result = types_dispatcher('_a_b',handle,ring,api=True)
+    result = rings_dispatcher('_a_b',handle,ring,api=True)
  
     #if 'redirect' in result:
      #   return redirect(result['redirect'])        
@@ -387,7 +387,7 @@ def api_route_a_b(handle,ring):
 @avispa_rest.route('/_api/<handle>/<ring>/<idx>', methods=['GET','POST'])
 def api_route_a_b_c(handle,ring,idx):
 
-    result = types_dispatcher('_a_b_c',handle,ring,idx,api=True)
+    result = rings_dispatcher('_a_b_c',handle,ring,idx,api=True)
 
     return result
 
@@ -404,7 +404,7 @@ def route_a(handle):
                                      _scheme=URL_SCHEME))
 
 
-    result = types_dispatcher('_a',handle)
+    result = rings_dispatcher('_a',handle)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
@@ -420,7 +420,7 @@ def route_a_b(handle,ring):
     else:
         collection = False
 
-    result = types_dispatcher('_a_b',handle,ring,collection=collection)
+    result = rings_dispatcher('_a_b',handle,ring,collection=collection)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
@@ -438,7 +438,7 @@ def route_a_b_c(handle,ring,idx):
     else:
         collection = False
 
-    result = types_dispatcher('_a_b_c',handle,ring,idx,collection=collection)
+    result = rings_dispatcher('_a_b_c',handle,ring,idx,collection=collection)
 
     if 'redirect' in result:
         return redirect(result['redirect'])

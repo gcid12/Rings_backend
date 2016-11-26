@@ -33,25 +33,30 @@ def setup_log_vars():
 def setup_local_logger(tid,ip):
     return AvispaLoggerAdapter(logger, {'tid':tid,'ip':ip})
 
-def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
+def infer_method(rqargs,rqmethod=None):
+
+    if request.args.get("rq"):
+        method = rqargs.get("rq")+'_rq'
+    elif rqargs.get("rs"):
+        method = rqargs.get("rq")+'_rs'
+    elif rqargs.get("method"):
+        method = rqargs.get("method")
+    else:
+        method = rqmethod
+
+    return method
+
+def rings_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
       
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
 
-    lggr.info('START types_dispatcher')
+    lggr.info('START rings_dispatcher')
 
     MAM = MainModel(tid=tid,ip=ip)
     TYC = TypesController(tid=tid,ip=ip)
 
-    
-    if request.args.get("rq"):
-        method = request.args.get("rq")+'_rq'
-    elif request.args.get("rs"):
-        method = request.args.get("rq")+'_rs'
-    elif request.args.get("method"):
-        method = request.args.get("method")
-    else:
-        method = request.method
+    method = infer_method(request.args,request.method)
 
     data = {}
 
@@ -60,8 +65,6 @@ def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     lggr.info('Route:%s',m)
 
     if api:
-
-        
 
         lggr.debug('API call')       
         # PLEASE REMOVE TEMP_ACCESS_TOKEN with real OAuth access token  ASAP!
@@ -78,7 +81,7 @@ def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             user_handle = '_api_anonymous' #Please change this to the actual username that is using this token
         
         else:
-            lggr.info('END types_dispatcher')
+            lggr.info('END rings_dispatcher')
             return render_template('avispa_rest/error_401.html', data=data),401
  
         authorization_result = MAM.user_is_authorized(user_handle,m,depth,handle,ring=ring,idx=idx,api=api)
@@ -90,7 +93,7 @@ def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
         authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
         
         if not authorization_result['authorized']:
-            lggr.info('END types_dispatcher')
+            lggr.info('END rings_dispatcher')
             return render_template('avispa_rest/error_401.html', data=data),401
 
         data['user_authorizations'] = authorization_result['user_authorizations']
@@ -177,7 +180,7 @@ def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     if 'redirect' in data:
         
-        lggr.info('END types_dispatcher')     
+        lggr.info('END rings_dispatcher')     
         return data 
 
     elif api: 
@@ -252,7 +255,7 @@ def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
                 csvdoc = cvsdocIO.getvalue()
                 cvsdocIO.close()
  
-                lggr.info('END types_dispatcher')
+                lggr.info('END rings_dispatcher')
                 return csvdoc
             
             if 'fl' in request.args:
@@ -277,7 +280,7 @@ def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             else:
                 response.headers["Content-Disposition"] = "attachment; filename="+str(handle)+"_"+str(ring)+".csv"
 
-            lggr.info('END types_dispatcher')
+            lggr.info('END rings_dispatcher')
             return response
 
 
@@ -286,15 +289,15 @@ def types_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             data['json_out'] = json.dumps(data['raw_out'])
             print('JSONOUT',data['json_out'])
             
-            lggr.info('END types_dispatcher')
+            lggr.info('END rings_dispatcher')
             return render_template(data['template'], data=data), status
      
 
     elif request.headers.get('Accept') and request.headers.get('Accept').lower() == 'application/json': 
-        lggr.info('END types_dispatcher')   
+        lggr.info('END rings_dispatcher')   
         return render_template(data['template'], data=data), status     
     else:
-        lggr.info('END types_dispatcher')
+        lggr.info('END rings_dispatcher')
         return render_template(data['template'], data=data)
         
 def tool_dispatcher(tool):
@@ -369,16 +372,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
     MAM = MainModel(tid=tid,ip=ip)
     COC = CollectionsController(tid=tid,ip=ip)
 
-    if request.args.get("rq"):
-        method = request.args.get("rq")+'_rq'
-    elif request.args.get("rs"):
-        method = request.args.get("rq")+'_rs'
-    elif request.args.get("method"):
-        method = request.args.get("method")
-    else:
-        method = request.method
-
-    #method = request.method
+    method = infer_method(request.args,request.method)
 
     data = {}
 
@@ -401,7 +395,6 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
         data['user_authorizations'] = authorization_result['user_authorizations']
 
-        MAM = MainModel()
         cu_user_doc = MAM.select_user_doc_view('auth/userbasic',current_user.id)
 
         if cu_user_doc:
@@ -936,16 +929,8 @@ def people_dispatcher(depth,handle,person=None):
     data['section'] = '_people'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
-    if request.args.get("rq"):
-        method = request.args.get("rq")+'_rq'
-    elif request.args.get("rs"):
-        method = request.args.get("rq")+'_rs'
-    elif request.args.get("method"):
-        method = request.args.get("method")
-    else:
-        method = request.method
+    method = infer_method(request.args,request.method)
 
-    #method = request.method
     m = method+depth
 
     data['method'] = m
@@ -1015,16 +1000,8 @@ def teams_dispatcher(depth,handle,team=None):
     data['section'] = '_teams'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
-    if request.args.get("rq"):
-        method = request.args.get("rq")+'_rq'
-    elif request.args.get("rs"):
-        method = request.args.get("rq")+'_rs'
-    elif request.args.get("method"):
-        method = request.args.get("method")
-    else:
-        method = request.method
-
-    #method = request.method
+    method = infer_method(request.args,request.method)
+    
     m = method+depth
     data['method'] = m
 
@@ -1097,16 +1074,8 @@ def labels_dispatcher(depth,handle,ring):
     data['section'] = '_teams'
     data['image_cdn_root'] = IMAGE_CDN_ROOT
 
-    if request.args.get("rq"):
-        method = request.args.get("rq")+'_rq'
-    elif request.args.get("rs"):
-        method = request.args.get("rq")+'_rs'
-    elif request.args.get("method"):
-        method = request.args.get("method")
-    else:
-        method = request.method
+    method = infer_method(request.args,request.method)
 
-    #method = request.method
     m = method+depth
     data['method'] = m
 
