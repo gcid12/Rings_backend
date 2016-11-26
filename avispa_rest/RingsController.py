@@ -10,7 +10,7 @@ from env_config import PREVIEW_LAYER,URL_SCHEME
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from AvispaLogging import AvispaLoggerAdapter
 
-class TypesController:
+class RingsController:
 
     def __init__(self,tid=None,ip=None):
 

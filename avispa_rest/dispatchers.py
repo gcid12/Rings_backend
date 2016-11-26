@@ -3,7 +3,7 @@ import urlparse, time, datetime, collections, json, csv, types, cStringIO
 import logging
 from AvispaLogging import AvispaLoggerAdapter
 from flask import render_template,request,make_response,url_for
-from TypesController import TypesController
+from RingsController import RingsController
 from CollectionsController import CollectionsController
 from PeopleCollection import PeopleCollection
 from TeamsCollection import TeamsCollection
@@ -33,6 +33,7 @@ def setup_log_vars():
 def setup_local_logger(tid,ip):
     return AvispaLoggerAdapter(logger, {'tid':tid,'ip':ip})
 
+#TESTABLE
 def infer_method(rqargs,rqmethod=None):
 
     if request.args.get("rq"):
@@ -51,10 +52,8 @@ def rings_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
 
-    lggr.info('START rings_dispatcher')
-
     MAM = MainModel(tid=tid,ip=ip)
-    TYC = TypesController(tid=tid,ip=ip)
+    RIC = RingsController(tid=tid,ip=ip)
 
     method = infer_method(request.args,request.method)
 
@@ -158,7 +157,7 @@ def rings_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
 
     lggr.info('START RESTFUL FUNCTION')
-    data.update(getattr(TYC, m.lower())(
+    data.update(getattr(RIC, m.lower())(
                                         handle,
                                         ring,
                                         idx,
