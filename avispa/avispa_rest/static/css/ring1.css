@@ -1523,27 +1523,47 @@ border-radius: 50px;  }
 }
 
 
-
-.blueprint{
-    border:1px dashed #33ccff;
+.pic-org-1{
+    width:40px; 
+    height:40px; 
+    border:1px solid #f2f2f2;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px; 
-    border-color:#33ccff;; 
+}
+
+.bp-container{
+  border:3px solid #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 2px; 
+  display: inline-block;
+  text-align:center;
+  width:100px;
+  padding-top:10px;
+  font-size: 10px;
+  font-weight: 300; 
+  height: 100px;
+  color:#999;
+}
+
+.blueprint{
     color:#33ccff;
     /*background-color: white; */
-    font-weight: 100; 
+    
     padding:2px; 
+    width:60px; 
+    height:60px; 
 
 }
 
 
 
-.blueprint:link{text-decoration:none !important; outline:0 !important;}
-.blueprint:active{text-decoration:none !important; outline:0 !important;}
-.blueprint:focus{text-decoration:none !important; outline:0 !important;}
-.blueprint:hover{color:#FFF; background-color:#33ccff; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
-.blueprint:focus{color:#CCC; text-decoration:none !important; outline:0 !important;}
+.bp-container:link{text-decoration:none !important; outline:0 !important;}
+.bp-container:active{text-decoration:none !important; outline:0 !important;}
+.bp-container:focus{text-decoration:none !important; outline:0 !important;}
+.bp-container:hover{color:#FFF; background-color:#33ccff; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
+.bp-container:focus{color:#CCC; text-decoration:none !important; outline:0 !important;}
 
 
 
@@ -2074,5 +2094,8 @@ and (orientation : landscape) {
     background-color: #FFFFFF;
 }
 
+.popover{
+  font-size: 10px;
+}
 
 

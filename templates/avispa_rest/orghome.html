@@ -37,88 +37,112 @@
                     <!-- ORG DATA RINGS::::::::::::::::::::::::::::::::::::::: -->
 
                     {% block org_datarings %}
+
                     <div role="tabpanel" class="tab-pane active" id="data">
 
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        {% if 'post_a_x' in data.user_authorizations %}
+                            {% if data.collections.collectionlist|length ==0  %}
+                            
+                                <div style="padding:20px 40px">
 
-                            <div class="bord-bottom bc-8 pad-y-20">  
-                                <div class="row">
-                                    <div class="col-xs-11 col-sm-11 fs-0-8 text-right">
-                                        <a href="/{{data.handle}}/_collections?rq=post" type="button" class="fc-n"> 
-                                            <span class="pad-x-5">Create new collection</span>
-                                            <i class="fa fa-plus pad-x-4"></i><i class="fa fa-cube"></i>
-                                        </a> 
+                                    
+                                    <div class="row gcard bord-all">
+                                        <div class="col-xs-12">
+                                            <div class="alert  alert-success alert-top" role="alert">
+                                                
+                                                <i class="fa fa-info-circle "></i> 
+                                                <span class="fs-1-2">Load a Collection for {%if data.handle_actualname %}<strong>{{ data.handle_actualname }}</strong>{%else%} this Organization {%endif%}</span>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12">
+                                            
+                                            <a class="float-right fs-0-8 p-y-10" data-toggle="popover" title="Collection" data-content="Choosing a category define what customer questions will be sent to you. Complex organizations can have one or multiple collections. Additional categories can be added at any time"
+                                             data-placement="left">  What is this <i class="fa fa-question-circle-o fa-x2"></i></a>
+
+                                            <h5 class="p-x-20 fs-0-9 fc-g"><em>Popular Collections:</em></h5>
+
+                                            {{ ui.collec_item('co_wine.png', 'Winery', '/') }}
+                                            {{ ui.collec_item('co_museum.png', 'Museum', '/') }}
+                                            {{ ui.collec_item('co_generic.png', 'School', '/') }}
+                                            {{ ui.collec_item('co_generic.png', 'Hotel', '/') }}
+                                            {{ ui.collec_item('co_generic.png', 'Restaurant', '/') }}
+                                            {{ ui.collec_item('co_generic.png', 'Travel service', '/') }}
+                                            
+                                            
+                                            {{ ui.collec_item('co_basic.png', 'Load Basic', '/') }} 
+                                            {{ ui.collec_item('co_more.png', 'More', '/') }} 
+
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <hr/>
+
+                                            
+                                            {{ ui.collec_item('co_empty.png', 'Empty', '/') }}
+                                            {{ ui.collec_item('co_add.png', 'Create New', '/{{data.handle}}/_collections?rq=post') }}
+
+                                            <div class="spa20">&nbsp;</div>
+                                        </div>
+
+
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
+                                <!-- <div class="box box-help">
+                                    <p class="fs-1-3"><i class="fa fa-arrow-up"></i> &nbsp; This Organization has no collections yet. </p>
+                                    <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
+                                      <i class="fa fa-plus"></i> &nbsp; Create first collection
+                                    </a>
+                                  </div>  -->
+                               
+                            {% else %}
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-                        
-
-                            {% for collection in data.collections.collectionlist %}  
-                                {% if collection.valid %}
-
-                                    <div class="gcard-subtitle" >
-
-                                    {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                        
-                                   <!--  <h4>{{ collection.collectionname }}</h4> -->
-                                    </div>
-                                    <div class="gcard-body" style="padding:20px 20px 0 0px; margin:0 0 10px 0; min-height:110px;">
-                                    <div class="row">
-                                        <!-- START COLLECTION TITLE -->
-                                        
-                                        <!-- END COLLECTION TITLE -->
-
-                                        <!-- START RING LIST -->
-                                        <div class="col-sm-offset-1 col-sm-11">
-                                           
-                                                  
-                                                    <table class="table  table-condensed">
-
-                                                    {% for ring in collection.rings %}  
-
-
-                                                        {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
-
-
-
-                                                    {% endfor %}
-          
-
-                                                    </table>
-                                                 
-                                                
+                                    <div class="bord-bottom bc-8 pad-y-20">  
+                                        <div class="row">
+                                            <div class="col-xs-11 col-sm-11 fs-0-8 text-right">
+                                                <a href="/{{data.handle}}/_collections?rq=post" type="button" class="fc-n"> 
+                                                    <span class="pad-x-5">Create new collection</span>
+                                                    <i class="fa fa-plus pad-x-4"></i><i class="fa fa-cube"></i>
+                                                </a> 
+                                            </div>
                                         </div>
-                                        <!-- FINISH RING LIST -->
                                     </div>
-                                    </div>             
 
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if 'post_a_x' in data.user_authorizations %}
-                                {% if data.collections.collectionlist|length ==0  %}
+                                </div>
                                 
-                                      <div class="box box-help">
-                                      
-                                        <p class="fs-1-3"><i class="fa fa-arrow-up"></i> &nbsp; This Organization has no collections yet. </p>
-                                        <a href="/{{data.handle}}/_collections?rq=post" type="button" class="btn-help btn-success" style="margin:0 5px;">
-                                          <i class="fa fa-plus"></i> &nbsp; Create first collection
-                                        </a>
-                                        <!-- <a data-toggle="modal" data-target="#intro-collection" class="btn-help btn-info" style="margin:0 5px;">
-                                          <i class="fa fa-lightbulb-o"></i> &nbsp; What is a Collection?
-                                        </a> -->
-                                      </div> 
-                                    
-                                {% else %}
-                                    
-                                {% endif %}
-                            {%endif%}
-                        
+                            {% endif %}
+                        {%endif%}
 
+                        {% for collection in data.collections.collectionlist %}  
+                            {% if collection.valid %}
+
+                                <div class="gcard-subtitle" >
+
+                                {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                    
+                               <!--  <h4>{{ collection.collectionname }}</h4> -->
+                                </div>
+                                <div class="gcard-body" style="padding:20px 20px 0 0px; margin:0 0 10px 0; min-height:110px;">
+                                <div class="row">
+                                    <!-- START RING LIST -->
+                                    <div class="col-sm-offset-1 col-sm-11">   
+                                        <table class="table  table-condensed">
+
+                                        {% for ring in collection.rings %}  
+                                            {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
+                                        {% endfor %}
+                                        </table>     
+                                    </div>
+                                    <!-- FINISH RING LIST -->
+                                </div>
+                                </div>             
+
+                            {% endif %}
+                        {% endfor %}
                     </div>
+
                     {% endblock %}
 
 
@@ -142,17 +166,12 @@
                                 </div>
                             </div>
 
-                            
                                 {% set openthis= 1 %}
-
                                 <!-- EACH PERSON IN THE ORG-->
                                 {% for person in data.people %}
                                     
-
                                 <div class="bord-bottom bc-8">
 
-                                        
-                                    
                                     <div class="row bord-bottom bc-8 p-5">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#{{person.handle}}" aria-expanded="true" class="fc-m">
                                            
