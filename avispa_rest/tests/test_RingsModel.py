@@ -1,13 +1,13 @@
-# Unit Testing for TypesModel.py
+# Unit Testing for RingsModel.py
 
-from avispa_rest.TypesModel import TypesModel
+from avispa_rest.RingsModel import RingsModel
 import unittest
 
 class TC(unittest.TestCase):
 
     def setUp(self):
 
-        self.TYM = TypesModel() 
+        self.RIM = RingsModel() 
 
         self.handle = 'testhandle'
 
@@ -33,22 +33,22 @@ class TC(unittest.TestCase):
 
     def test__ring_data_from_user_doc__output_check(self):
 
-        r = self.TYM.ring_data_from_user_doc(self.handle,self.ring)
+        r = self.RIM.ring_data_from_user_doc(self.handle,self.ring)
         self.assertEqual(r['ringversionh'],'0.1.1')
 
     def test__ring_data_from_user_doc__output_length(self):
 
-        r = self.TYM.ring_data_from_user_doc(self.handle,self.ring)
+        r = self.RIM.ring_data_from_user_doc(self.handle,self.ring)
         self.assertEqual(len(r),5)
 
     def test__ring_data_from_schema__output_check(self):
 
-        r = self.TYM.ring_data_from_schema(self.schema)
+        r = self.RIM.ring_data_from_schema(self.schema)
         self.assertEqual(r['ringdescription'],'test description')
 
     def test__ring_data_from_schema__output_length(self):
 
-        r = self.TYM.ring_data_from_schema(self.schema)
+        r = self.RIM.ring_data_from_schema(self.schema)
         self.assertEqual(len(r),4)
 
 

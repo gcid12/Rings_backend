@@ -7,17 +7,17 @@ import json
 
 from flask import flash, current_app
 from MainModel import MainModel
-from TypesModel import TypesModel
+from RingsModel import RingsModel
 from auth.AuthModel import AuthModel
 from Upload import Upload
-from TypesSchema import TypesSchema
+from RingsSchema import RingsSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
 class Tool:
 
     def __init__(self):
 
-        self.TYM = TypesModel() 
+        self.RIM = RingsModel() 
         self.MAM = MainModel() 
         self.ATM = AuthModel()  
         self.user_database = 'myring_users'  
@@ -161,7 +161,7 @@ class Tool:
 
         db_ringname =  request.args.get('dbringname')
 
-        self.TYM.ring_set_db_views(db_ringname)
+        self.RIM.ring_set_db_views(db_ringname)
 
         flash(u'Views synced to ring :'+db_ringname,'UI')
         rq='Loading the Views into CouchDB via python'
@@ -176,7 +176,7 @@ class Tool:
         ringname = 'services_0-1-0'
         startkey = '3468686347'
         resultsperpage = 3
-        self.TYM.get_a_b(handle,ringname,resultsperpage,startkey)
+        self.RIM.get_a_b(handle,ringname,resultsperpage,startkey)
 
         flash(u'ok')
         rq='run_view'
@@ -224,7 +224,7 @@ class Tool:
             pathparts=o2.path.split('/')
             handle = pathparts[2]
             ringname = pathparts[3]
-            schema = self.TYM.ring_get_schema_from_view(handle,ringname)
+            schema = self.RIM.ring_get_schema_from_view(handle,ringname)
             print('Cloning local ring2')
             print(schema)
             #You are cloning a ring from your localhost

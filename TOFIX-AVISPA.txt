@@ -1,0 +1,33 @@
+TOFIX  July 2016
+
+#FIXED  When interface links to
+https://avispa.openring.com/blacklabelrobot
+it redirects to an unsafe
+http://avispa.openring.com/blacklabelrobot/_home
+and it shows UNABLE TO CONNECT
+
+Solution: Make redirect to https explicit
+
+
+In the Ringmodeler
+"None" string appears by default in all fields. Remove it or make it go
+when somebody clicks on it
+
+In the Ringmodeler
+Create a better way to link rings. 
+You should be able to write the name of the ring and fields of interest
+Also a ring finder for me not to have to obtain the API url from another window and have to copy and paste it. Have it be automatically validated 
+
+
+Estos son los problemillas que encontre:
+-#FIXED Cuando quieres salvar un item en cualquier Rings te manda un ‘Internal Server Error’
+-Ring modeler no te permite guardar cambios al esquema (Unable to connect)
+-Ring modeler no puede crear nuevos Rings 
+-#FIXED El Photo widget no puede subir fotos
+
+
+TOFIX Oct 2016
+
+- In Ring Modeler the "FieldDefault" is not being saved put_a
+- In Ring Modeler the "FieldRequired" is not being saved on put_a
+- In Ring Modeler the "FieldOrder" is not being saved on put_a

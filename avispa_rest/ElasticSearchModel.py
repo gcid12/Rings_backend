@@ -10,7 +10,7 @@ from elasticsearch_dsl import Search, Q
 import json
 import requests
 import urlparse
-from TypesModel import TypesModel
+from RingsModel import RingsModel
 from datetime import datetime
 from elasticsearch_dsl import DocType, String, Date, Integer, Object
 
@@ -106,8 +106,8 @@ class ElasticSearchModel:
     def handle_indexer(self,url,handle):
 
         #1. Get all the active rings for this handle
-        self.TYM = TypesModel()
-        ringlist = self.TYM.user_get_rings(handle)
+        self.RIM = RingsModel()
+        ringlist = self.RIM.user_get_rings(handle)
         print('RINGLIST:',ringlist)
 
         #2. Index one by one

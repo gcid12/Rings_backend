@@ -1,4 +1,4 @@
-# TypesModel.py
+# RingsModel.py
 from couchdb.http import PreconditionFailed, ResourceNotFound
 
 from datetime import datetime 
@@ -18,7 +18,7 @@ from flask import flash
 from couchdb.mapping import Document, TextField, IntegerField, DateTimeField, ListField, DictField, BooleanField, Mapping 
 from couchdb.design import ViewDefinition
 from couchdb.http import ResourceNotFound
-from TypesSchema import TypesSchema
+from RingsSchema import RingsSchema
 #from ElasticSearchModel import ElasticSearchModel
 from AvispaLogging import AvispaLoggerAdapter
 
@@ -29,7 +29,7 @@ from env_config import TEMP_ACCESS_TOKEN
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 
 
-class TypesModel:
+class RingsModel:
 
     def __init__(self,tid=False,ip=False):
 
@@ -744,7 +744,7 @@ class TypesModel:
 
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.MAM.select_db(db_ringname)
-        schema = TypesSchema.load(db,'schema')
+        schema = RingsSchema.load(db,'schema')
 
         return schema
 
@@ -809,13 +809,13 @@ class TypesModel:
         db_ringname=str(handle)+'_'+str(ringname)
         db = self.MAM.select_db(db_ringname)
         numfields = len(pinput['fields'])
-        schema = TypesSchema.load(db,'schema')
+        schema = RingsSchema.load(db,'schema')
 
         # Creates Ring Schema if it doesn't exist. Uses current one if it exists.
         if schema:
             action = 'edit'
         else:       
-            schema = TypesSchema()
+            schema = RingsSchema()
             #ring = RingClass()
             schema._id= 'schema'
 
@@ -911,7 +911,7 @@ class TypesModel:
         Create schema class
         
         @NOTES: 
-          -This function is deprecated. Now we just instantiate TypesSchema class
+          -This function is deprecated. Now we just instantiate RingsSchema class
 
         @IN:
           numfields = (integer)

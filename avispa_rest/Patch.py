@@ -8,9 +8,9 @@ import json
 from flask import flash , current_app
 
 from MainModel import MainModel
-from TypesModel import TypesModel
+from RingsModel import RingsModel
 from auth.AuthModel import AuthModel
-from TypesSchema import TypesSchema
+from RingsSchema import RingsSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from couchdb.http import PreconditionFailed, ResourceNotFound
 
@@ -18,7 +18,7 @@ class Patch:
 
     def __init__(self):
 
-        self.TYM = TypesModel() 
+        self.RIM = RingsModel() 
         self.MAM = MainModel() 
         self.ATM = AuthModel()  
         self.user_database = 'myring_users'  
@@ -53,8 +53,8 @@ class Patch:
                 db_ringname=current_user.username+'_'+str(ring['ringname'])
                 print(db_ringname)
                 db2 = self.couch[db_ringname]
-                if not TypesSchema.load(db2,'schema'):
-                    schema = TypesSchema.load(db2,'blueprint')
+                if not RingsSchema.load(db2,'schema'):
+                    schema = RingsSchema.load(db2,'blueprint')
                     print('Schema:',schema)
                     schema._id= 'schema' 
                     schema.store(db2)
@@ -956,7 +956,7 @@ class Patch:
         from env_config import COUCHDB_USER, COUCHDB_PASS
         from datetime import datetime
 
-        from TypesSchema import TypesSchema
+        from RingsSchema import RingsSchema
 
         import urlparse
         import requests
@@ -993,7 +993,7 @@ class Patch:
                         print(db_ringname)
                         db = self.couch[db_ringname]
                         
-                        schema = TypesSchema.load(db,'schema')
+                        schema = RingsSchema.load(db,'schema')
 
                         
                         if schema:                      
@@ -1034,7 +1034,7 @@ class Patch:
         from env_config import COUCHDB_USER, COUCHDB_PASS
         from datetime import datetime
 
-        from TypesSchema import TypesSchema
+        from RingsSchema import RingsSchema
 
         import urlparse
         import requests
@@ -1067,7 +1067,7 @@ class Patch:
                     
                     db = self.couch[db_ringname]
                     
-                    schema = TypesSchema.load(db,'schema')
+                    schema = RingsSchema.load(db,'schema')
 
                     
                     if schema:                      

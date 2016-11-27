@@ -583,9 +583,9 @@ class MainModel:
 
                         self.lggr.debug('item/roles db view does not exist. Will regenerate')
 
-                        from avispa_rest.TypesModel import TypesModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
-                        TYM = TypesModel()
-                        TYM.ring_set_db_views(db_ringname,'item/roles')
+                        from avispa_rest.RingsModel import RingsModel  #Loading here because I don't want to load for all MainModel.py   #TO_REFACTOR
+                        RIM = RingsModel()
+                        RIM.ring_set_db_views(db_ringname,'item/roles')
 
                         #Now issue the same request before the exception was thrown
 
