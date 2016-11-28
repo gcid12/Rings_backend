@@ -20,13 +20,16 @@
                             {% if data.handle_profilepic %}
                             <img src="{%if data.cu_profilepic%}{{data.image_cdn_root}}/{{data.handle}}/t150/{{data.handle_profilepic}}.jpg{%else%}/static/images/ph/ph_user.gif{%endif%}" class="img-circle img-responsive p-20"> 
                             {%else%}
+
                             <img src="/static/images/ph/ph_user.gif" class="img-circle img-responsive">
                             <br/> 
-                             {% if  'put_a'  in data.user_authorizations %}
-                                    <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
-                                {%endif%}
+                             {%endif%}
 
+                            {% if  'put_a' in data.user_authorizations %}
+                                    <a href="/{{data.handle}}/_profile" type="button" class=""><i class="fa fa-pencil"></i> add photo</a> <br/>
                             {%endif%}
+
+                            
 
                             <br/>
                         </div>
@@ -57,13 +60,6 @@
                                 </em></p>  -->
                                 
                                 <p class="fs-0-7 fc-m"><em>COO, Co-founder @PeerStreet Director of Product Marketing @GoogleFounder of @XAnalytics Founder of Urchin Software, marketing lead on Adenco</em></p> 
-
-                                <!-- <p class="fs-0-7 fc-m"><em>Techstars, Managing Director MATH Venture Partners. Managing Director Serial Entrepreneur: @SurePayroll, Amacai , Systemetrics</em></p> 
-
-                                <p class="fs-0-7 fc-m"><em>Kurt Guntheroth, Software engineer, for 35+ years, Windows, Linux, embedded, distributed</em></p>    
-                                    
-
-                                <p class="fs-0-7 fc-m"><em>Dina Fayed, Journalist & Scientific Writer lives in Canada</em></p>  -->
 
                                 
                             <div class="spa20 hidden-xs">
@@ -208,7 +204,7 @@
                                 {%endif%}
 
                                 
-                            </table>
+                            </table>12
                         </div>
                         <div role="tabpanel" class="tab-pane" id="list">
                             <div class="fs-0-8 ">
@@ -237,72 +233,12 @@
                     </div>
                     
                 </div>
-                <!-- <div class="row">
-                    
-                    <div class="col-xs-6 col-sm-offset-1 fs-0-8 col-sm-3 fw-c bord-left">
-                        Badges
-                        <br/><br/>
-
-                        {{ ui.c_item('fa-bookmark-o','OAS - Hotels','') }}
-                        {{ ui.c_item('fa-bookmark-o','OAS - Restaurant','') }}
-                    
-
-                    </div>
-                    
-                    
-                    
-                    <div class="col-xs-6 col-sm-4 fs-0-8 fw-c bord-left ">
-                        Teams
-                        <br/><br/>
-
-                        {{ ui.c_item('fa-shield','Sella FC','http://yahoo.com') }}
-                        {{ ui.c_item('fa-shield','Capture busters','http://yahoo.com') }}
-                        {{ ui.c_item('fa-shield','Team Mravilla','http://yahoo.com') }}
-                       
-
-                    </div>
-                </div> -->
-
-                <!-- <div class="row">
-                    <div class="col-sm-12"><hr/></div>
-                    <div class="col-sm-offset-1 col-sm-7 bord-left fs-0-8">
-                        <span class="fw-c">Previous</span>
-                        <br/><br/>
-
-                        <table class="table table-condensed table-striped">
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','OAS Capturethon 2016 ','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','OAS Capturethon 2015','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','Translation Hotels New York ','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','Open Accessinility Times Square Capture','') }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ui.c_item('fa-flash','Portraits of NewYork','') }}</td>
-                            </tr>
-                            
-                        </table>
-                        
-                    </div>
-                   
-                    <div class="col-sm-12"> <hr/></div> 
-                </div> -->
-
+            
 
                 
                 
             </div><!-- close -->  
         </div>
-            
-
-        
-
-        
 
 
         </div><!-- close ROW--> 

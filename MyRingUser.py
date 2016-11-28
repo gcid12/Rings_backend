@@ -13,6 +13,7 @@ class MyRingUser(Document):
     location = TextField()
     url = TextField()
     profilepic = TextField()
+    about = TextField()
     #people = DictField()
     onlogin = TextField()
     people = ListField(DictField(Mapping.build(
