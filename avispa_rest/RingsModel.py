@@ -232,8 +232,13 @@ class RingsModel:
 
   
         try:
+            self.lggr.info('flag1:'+handle)
             doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION 
+            self.lggr.info('flag2')
+            self.lggr.info(doc)
             data = self.subtract_ring_data(handle,doc['rings']) # ACTIVE COLLABORATION
+            self.lggr.info('flag3')
+            self.lggr.info(data)
 
         except (ResourceNotFound, TypeError) as e:
 
