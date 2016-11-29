@@ -180,11 +180,16 @@ class RingsModel:
 
         
         data = []
+        self.lggr.info('flag4')
+        self.lggr.info(ringlist)
 
         for ringobj in ringlist:
+            self.lggr.info('flag5')
+            self.lggr.info(ringobj)
             schema = self.ring_get_schema_from_view(handle,str(ringobj['ringname'])) # ACTIVE COLLABORATION
-           
+            self.lggr.info(schema)
             if schema and 'deleted' not in ringobj:
+                self.lggr.info('flag6')
                 r1 = self.ring_data_from_user_doc(handle,ringobj) # ACTIVE COLLABORATION
                 r2 = self.ring_data_from_schema(schema) # ACTIVE COLLABORATION
                 r = dict(r1,**r2)
@@ -746,8 +751,9 @@ class RingsModel:
 
         
         '''
-
+        self.lggr.info('flag7:'+ringname)
         db_ringname=str(handle)+'_'+str(ringname)
+        self.lggr.info('flag7b:'+db_ringname)
         db = self.MAM.select_db(db_ringname)
         schema = RingsSchema.load(db,'schema')
 
