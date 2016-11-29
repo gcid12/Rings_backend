@@ -180,16 +180,17 @@ class RingsModel:
 
         
         data = []
-        self.lggr.info('flag4')
-        self.lggr.info(ringlist)
 
         for ringobj in ringlist:
-            self.lggr.info('flag5')
-            self.lggr.info(ringobj)
-            schema = self.ring_get_schema_from_view(handle,str(ringobj['ringname'])) # ACTIVE COLLABORATION
-            self.lggr.info(schema)
+            self.lggr.debug(ringobj['ringname'])
+            try:
+                schema = self.ring_get_schema_from_view(handle,str(ringobj['ringname'])) # ACTIVE COLLABORATION
+            except (ResourceNotFound, TypeError) as e:
+                self.lggr.error('User ring list corrupt: The following ring is missing:'+ringobj['ringname'])
+                self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0] , sys.exc_info()[1]))
+                continue
+
             if schema and 'deleted' not in ringobj:
-                self.lggr.info('flag6')
                 r1 = self.ring_data_from_user_doc(handle,ringobj) # ACTIVE COLLABORATION
                 r2 = self.ring_data_from_schema(schema) # ACTIVE COLLABORATION
                 r = dict(r1,**r2)
@@ -235,25 +236,8 @@ class RingsModel:
 
         '''
 
-  
-        try:
-            self.lggr.info('flag1:'+handle)
-            doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION 
-            self.lggr.info('flag2')
-            self.lggr.info(doc)
-            data = self.subtract_ring_data(handle,doc['rings']) # ACTIVE COLLABORATION
-            self.lggr.info('flag3')
-            self.lggr.info(data)
-
-        except (ResourceNotFound, TypeError) as e:
-
-            #BUG: This exception gets triggered even if the ring does exist
-            #The problem has to do with pagination. It can't find it in the current page
-
-            #flash("You have no rings yet, create one!")
-            self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0] , sys.exc_info()[1]))
-            #self.lggr.debug('Notice: No rings for this user.')
-            data = []
+        doc = self.MAM.select_user(handle) # ACTIVE COLLABORATION 
+        data = self.subtract_ring_data(handle,doc['rings']) # ACTIVE COLLABORATION
 
         return data
 
