@@ -38,7 +38,7 @@ class RingsModel:
         
         self.MAM = MainModel(tid=tid,ip=ip)
 
-    #MONGODEPRECATED
+    #DEPRECATED
     def ring_data_from_user_doc(self,handle,ringd): 
         '''
         Subtracts relevant ring data from user doc
@@ -87,7 +87,7 @@ class RingsModel:
 
         return r
 
-    #MONGODEPRECATED
+    #DEPRECATED
     def ring_data_from_schema(self,schema):
         '''
         Subtracts relevant ring data from schema
@@ -138,7 +138,7 @@ class RingsModel:
         return r
 
 
-    #MONGODEPRECATED
+    #DEPRECATED
     def subtract_ring_data(self,handle,ringlist):
         ''' 
         Joins data coming from the user doc and the schemas
@@ -193,10 +193,10 @@ class RingsModel:
         return data
 
 
-    #MONGO REPLACED
+    #REFACTOR REPLACED
     def user_get_rings(self,handle):
         '''
-        Subtract ring data given a handle
+        Output ring data given a handle
 
         @REPLACEDBY:
           user_get_rings_mongodb()
@@ -204,7 +204,6 @@ class RingsModel:
         @NOTES:
           -Refactoring this function around MongoDB aggregation will eliminate the need of all
            downstream functions
-
 
 
         @IN: 
@@ -244,11 +243,12 @@ class RingsModel:
             #flash("You have no rings yet, create one!")
             self.lggr.error("Notice: Expected error:%s,%s"%(sys.exc_info()[0] , sys.exc_info()[1]))
             #self.lggr.debug('Notice: No rings for this user.')
+            data = []
 
         return data
 
 
-    #MONGO REFACTOR
+    #REFACTORED
     def user_get_rings_mongodb(self,handle):
         '''
         @MONGODB:
@@ -1259,6 +1259,7 @@ class RingsModel:
         @OUT:
           {(ring_schema)}
         '''
+        self.lggr.debug('Trying to get:'+handle+'/'+ringname)
 
         db_ringname=str(handle)+'_'+str(ringname) 
         db = self.MAM.select_db(db_ringname)       
