@@ -480,10 +480,10 @@ class MainModel:
 
 
     #ROLEMODEL
-    def user_is_authorized(self,current_user,method,depth,handle,ring=None,idx=None,collection=None,team=None,api=False):
+    def user_is_authorized(self,current_user,method,route,handle,ring=None,idx=None,collection=None,team=None,api=False):
 
         # @method : is what is going to be checked against the user_authorization list
-        # @depth : how deep to dig in the user_authorizations
+        # @route : how deep to dig in the user_authorizations
 
         self.lggr.info('START AUTHORIZATION')
         
@@ -491,13 +491,13 @@ class MainModel:
         rolelist = []
 
         self.lggr.debug('Method:%s'%method)
-        self.lggr.debug('depth:%s'%depth)
+        self.lggr.debug('route:%s'%route)
 
         if api:
             user_authorizations = self.sum_role_auth(user_authorizations,'api_user')
 
         
-        if depth == '_a' or depth == '_a_b' or depth == '_a_b_c':
+        if route == '_a' or route == '_a_b' or route == '_a_b_c':
 
             if current_user == handle: 
                 #This user is a Handle Owner
@@ -505,7 +505,7 @@ class MainModel:
                 user_authorizations = self.sum_role_auth(user_authorizations,'handle_owner')
             else:
 
-                if depth != '_a_b' or depth != '_a_b_c':
+                if route != '_a_b' or route != '_a_b_c':
                     #This is only important if you are not going to go deeper than _a
                 
                     rolelist = self.user_belongs_org_team(current_user,handle,ring='*')
@@ -534,7 +534,7 @@ class MainModel:
 
 
 
-            if depth == '_a_b' or depth == '_a_b_c':
+            if route == '_a_b' or route == '_a_b_c':
 
                 rolelist = self.user_belongs_org_team(current_user,handle,ring=ring)
 
@@ -546,7 +546,7 @@ class MainModel:
                             user_authorizations = self.sum_role_auth(user_authorizations,role)
 
      
-                if depth == '_a_b_c':
+                if route == '_a_b_c':
 
                     db_ringname=str(handle)+'_'+str(ring) 
                     #self.lggr.debug('db_ringname:%s'%db_ringname)
@@ -604,7 +604,7 @@ class MainModel:
                                     user_authorizations = self.sum_role_auth(user_authorizations,role)
 
 
-        elif depth == '_a_p' or depth == '_a_p_q':
+        elif route == '_a_p' or route == '_a_p_q':
             self.lggr.debug('Testing authorizations for /_people section')
 
             team = 'owner'
@@ -621,7 +621,7 @@ class MainModel:
                 rolelist.append('anonymous')
 
 
-        elif depth == '_a_m' or depth == '_a_m_n' or depth == '_a_m_n_settings' or depth == '_a_m_n_invite':
+        elif route == '_a_m' or route == '_a_m_n' or route == '_a_m_n_settings' or route == '_a_m_n_invite':
 
             if not team:
                 self.lggr.debug('Testing authorizations for /_teams section')
@@ -641,7 +641,7 @@ class MainModel:
                 user_authorizations = self.sum_role_auth(user_authorizations,'anonymous')
                 rolelist.append('anonymous')
 
-        elif depth == '_a_x' or depth == '_a_x_y':
+        elif route == '_a_x' or route == '_a_x_y':
 
             if current_user == handle: 
                 #This user is a Handle Owner
@@ -667,7 +667,7 @@ class MainModel:
 
 
 
-        #Here, add the retrieve of authorizations in deeper levels (just if required by depth)
+        #Here, add the retrieve of authorizations in deeper levels (just if required by route)
         self.lggr.debug('Final user_authorizations:%s'%str(user_authorizations))
 
         method_parts = method.split('_')
