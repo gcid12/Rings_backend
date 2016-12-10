@@ -14,34 +14,34 @@ def static(filename):
 
 
 
-@static_dev_server.route('/_static/<depth1>/<filename>', methods=['GET'])
-def static2(filename,depth1):
+@static_dev_server.route('/_static/<part1>/<filename>', methods=['GET'])
+def static2(filename,part1):
 
-    print('/_static/%s/%s'%(depth1,filename))
+    print('/_static/%s/%s'%(part1,filename))
     
 
-    static_dev_server.static_folder='_static/'+depth1
+    static_dev_server.static_folder='_static/'+part1
     return static_dev_server.send_static_file(filename)
 
 
-@static_dev_server.route('/_static/<depth1>/<depth2>/<filename>', methods=['GET'])
-def static3(filename,depth1,depth2):
+@static_dev_server.route('/_static/<part1>/<part2>/<filename>', methods=['GET'])
+def static3(filename,part1,part2):
 
-    static_dev_server.static_folder='_static/'+depth1+'/'+depth2
+    static_dev_server.static_folder='_static/'+part1+'/'+part2
     return static_dev_server.send_static_file(filename)
 
 
-@static_dev_server.route('/_static/<depth1>/<depth2>/<depth3>/<filename>', methods=['GET'])
-def static4(filename,depth1,depth2,depth3):
+@static_dev_server.route('/_static/<part1>/<part2>/<part3>/<filename>', methods=['GET'])
+def static4(filename,part1,part2,part3):
 
-    static_dev_server.static_folder='_static/'+depth1+'/'+depth2+'/'+depth3
+    static_dev_server.static_folder='_static/'+part1+'/'+part2+'/'+part3
     return static_dev_server.send_static_file(filename)
 
 
-@static_dev_server.route('/_static/<depth1>/<depth2>/<depth3>/<depth4>/<filename>/', methods=['GET'])
-def static5(filename,depth1,depth2,depth3,depth4):
+@static_dev_server.route('/_static/<part1>/<part2>/<part3>/<part4>/<filename>/', methods=['GET'])
+def static5(filename,part1,part2,part3,part4):
 
-    static_dev_server.static_folder='_static/'+depth1+'/'+depth2+'/'+depth3+'/'+depth4
+    static_dev_server.static_folder='_static/'+part1+'/'+part2+'/'+part3+'/'+part4
     return static_dev_server.send_static_file(filename)
 
 
