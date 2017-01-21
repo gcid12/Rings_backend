@@ -18,7 +18,7 @@
   
     <div class="row">
       <div class="col-sm-12">
-        <div class="gcard-title">
+        <div class="gcard-title breadcrumb-link">
 
         {% if data.collection %} 
           {% if not data.raw %} 
@@ -44,7 +44,7 @@
           
               <a class="nounder" href="/{{data.handle}}" class="nounder">
                 <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}.jpg{% else %} /_static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
-                  <span class="fc-a fs-0-7">{{ data.handle|lower() }}</span>
+                  <span class="fs-0-7">{{ data.handle|lower() }}</span>
               </a>
             {% endblock %}
 
