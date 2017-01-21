@@ -36,8 +36,12 @@
 {% block crumb02 %}
     <i class="fa fa-angle-right breadinter"></i> <!-- caret right -->
     <a href="/{{ data.handle }}/{{ data.ring }}" class="nounder">
-        <span class="fc-a fs-0-7">{{ data.ring }}</span>
+        <span class="fs-0-7">{{ data.ring }}</span>
     </a>
+{% endblock %}
+{% block crumb03 %}
+    <i class="fa fa-angle-right breadinter"></i> <!-- caret right -->
+        <span class="fs-0-7">New item</span>
 {% endblock %}
 
 {% block tabcontent %}
