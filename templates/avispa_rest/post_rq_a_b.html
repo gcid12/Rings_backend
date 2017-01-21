@@ -32,23 +32,15 @@
 
 {% endblock %}
 
+{% block tabcontent %}
 
 
 {% block crumb02 %}
       <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-
-      <a href="/{{data.handle}}" class="nounder">
-          <span class="fc-a fs-0-7">{{ data.collection }}</span> 
-      </a>
-{% endblock %}
-{% block crumb03 %}
-    <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-    <a href="/{{ data.handle }}/{{ data.ring }}" class="nounder">
-        <span class="fc-a fs-0-7">{{ data.ring }}</span>
-    </a>
+      <span class="fc-m fs-0-7">{{ data.ring }}</span>
 {% endblock %}
 
-{% block tabcontent %}
+
 <!-- START NEW CONTENT --> 
     <div class="rn-curtain">                      
     {% if not data.raw %}

@@ -15,11 +15,13 @@
   <div class="gcard">   
       <!-- BOX CONTENT --> 
       <!-- TABS WILL SHOW -->
-  {% if data.collection %} 
-      {% if not data.raw %} 
+  
     <div class="row">
       <div class="col-sm-12">
         <div class="gcard-title">
+
+        {% if data.collection %} 
+          {% if not data.raw %} 
           <div class="pull-right text-right spa10">
             <span class="dropdown">
               <a class="dropdown-toggle nounder" id="menu_{{data.collection}}" data-toggle="dropdown" aria-expanded="false">
@@ -33,18 +35,24 @@
               </ul>
             </span>
           </div>
+          {%endif%}
+        {%endif%}
+
+
           <div class="fs-1-7 text-s1">
             {% block crumb01 %}
+          
               <a class="nounder" href="/{{data.handle}}" class="nounder">
                 <img class="user-bar bord-all bg-1 desaturate" src="{% if data.handle_profilepic %}{{data.image_cdn_root}}/{{data.handle}}/t75/{{ data.handle_profilepic}}.jpg{% else %} /_static/images/ph/ph_user2.gif{% endif %}" style="width:28px;">
                   <span class="fc-a fs-0-7">{{ data.handle|lower() }}</span>
               </a>
             {% endblock %}
 
-            {% block crumb02 %}                            
+            {% block crumb02 %}                         
             {% endblock %}
                     
-            {% block crumb03 %}                              
+            {% block crumb03 %}   
+                                    
             {% endblock %}
             
             {% block crumb04 %}
@@ -54,8 +62,7 @@
         </div>
       </div>
     </div> 
-      {%endif%}
-    {%endif%}
+      
     <div class="row">
       {% if data.collection %}
         {% if not data.raw %}         

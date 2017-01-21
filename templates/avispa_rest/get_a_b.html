@@ -2,25 +2,6 @@
 
 {% block title %} myRing {% endblock %}
 
-
-{% block crumbs %}
-  <li class="active">˚{{ data.ring}} </li>
-{% endblock %}
-
-{% block crumb02 %}
-  <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-  <a href="/{{data.handle}}" class="nounder">
-    <span class="fc-a fs-0-7">{{ data.collection }}</span> 
-  </a>
-{% endblock %}
-
-{% block crumb03 %}
-  <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-  <a href="/{{ data.handle }}/{{ data.ring }}{% if collection %}?collection={{collection}}{% endif %}" class="nounder">
-    <span class="fc-a fs-0-7">{{ data.ring }}</span>
-  </a>
-{% endblock %}
-
 {% block tabcontent %}
 
   <!-- COLUMN 1 -->
