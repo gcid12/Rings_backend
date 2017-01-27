@@ -16,13 +16,13 @@
           <h2>
             New Organization
           </h2>         
-          <span>by: <span class="label label-primary right">specialist</span> {{data.handle_actualname}} <span class="fc-g">( @{{ current_user.id }} )</span></span>
+          <span>by: <span class="label label-primary right">2nd degree</span> {{data.handle_actualname}} <span class="fc-g">( @{{ current_user.id }} )</span></span>
 
           <div class="alert alert-warning alert-dismissible mt-20" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p class="fs-0-8">
               <i class="fa fa-exclamation-triangle"></i>
-              Note: You can create organization profiles in behalf of other companies, but only as a 'specialist' <a href="/">[learn more]</a>. Primary Source profiles are only granted to confirmed owners. If you are the owner or Admin of an Organization or Company please go <a href="">here</a>.
+              Note: You can create organization profiles in behalf of other companies, but organizations can claim them at any time. If this happens the data you gather will become an external reference source (2nd degree).
             </p>
           </div>          
           <hr/>
@@ -74,20 +74,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-offset-1 col-sm-5">
-            <label for="">Logo:</label> 
-            <p class="fs-0-8 fc-g">An image to identify the company</p>                         
-            <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="">
-            <div id='dropzone1' class="dropzone" style="min-height:0px; padding:10px 10px;">
-              <span class="dz-message" >
-                <span class="btn btn-vader btn-sm ">  Click here to Upload</span>
-              </span>
-            </div>
-            <div class="input-group input-group-md">
-              <span class="input-group-addon" id="sizing-addon1"> <i class="fa fa-camera"></i> </span>
-              <span class="btn btn-vader btn-sm ">  Click here to Upload</span>
-            </div>
-        </div>
+        
         <!-- for now we are not asking email, Ring team is inputing everything -->
         <input type="hidden" id="email" name="email" required="required" value="gcid@myring.io">
         <!-- <div class="col-xs-12 col-sm-4">
