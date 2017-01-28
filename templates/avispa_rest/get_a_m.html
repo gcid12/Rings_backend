@@ -27,7 +27,7 @@
 
             <div class="bord-bottom bc-8 pad-y-20">  
                 <div class="row">
-                    <div class="col-sm-11 fs-0-8 text-right">
+                    <div class="col-sm-offset-1 col-sm-10 fs-0-8">
 
                         {%if 'post_a_m' in data.user_authorizations %}
                             <div class="">
@@ -41,7 +41,9 @@
                                         </button>
 
                                      </div> 
-                                </form>    
+                                </form>   
+
+                                 <h4 class="fc-g">Teams</h4>   
                             </div>
                         {%endif%}
                         
@@ -49,113 +51,66 @@
                 </div>
             </div>
 
-            {% set openthis= 1 %}
+            <div class="row">
+                <div class="col-sm-offset-1 col-sm-10">
 
-            {% for team in data.teamlist %}
-                {% if team.teamname in data.teammembership%}
-            
+                    <table class="table table-striped">
 
-                <div class="bord-bottom bc-8">
-                    
-                    <!-- ITEM HEAD :::::: -->
-                    <div class="row bord-bottom bc-8 p-5">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#{{team.teamname}}" aria-expanded="true" class="darklink">
-                            <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
-                                <i class="fa fa-shield fs-1-7"></i>
-                            </div>
-                            <div class="col-xs-7 col-sm-4 fs-0-9 pt-5 fw-c">
-                               
-                                <span class="fw-a fs-0-9 fc-g">Team &nbsp;</span>
+                        <tr class=" fs-0-6">  
+                            <th>Team Name</th>
+                            <th>Members</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% for team in data.teamlist %}
+                            {% if team.teamname in data.teammembership%}
 
-                                {%if 'get_a_m_n' in data.user_authorizations %}
-                                    
-                                      {{ team.teamname }}
-                                  
-                                {%else%}
-                                  {{ team.teamname }}
-                                {%endif%}
-
-                            </div>
-                            <div class="hidden-xs col-sm-4 fs-0-8">
-                                <p class="">{{ team.added }}</p>
-                            </div>
-
-                           
-                         </a>
-                    </div>
-                   
-                    <!-- ITEM BODY :::::: -->
-                    <div id="{{team.teamname}}" class="panel-collapse collapse in" role="tabpanel">
-                        
-                        <div class="row">
-
-                            <div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-5 p-20 row bord-left">
-
-
-                                {%for member in team.members%}
-
-                                <a href="/{{member.handle}}" class="fc-n">
-                                  <img class="user-team" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{member.thumbnail}}.jpg{% else %}/_static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:12px;" alt=""/>
-                                  <span class="fs-0-8"> {{member.handle}}</span>
-                                </a>
+                            <tr>
+                                <td class="fs-0-9 pt-5 fw-a">
+                                    <a href="/{{ data.handle }}/_teams/{{ team.teamname }}">
+                                        <i class="fa fa-shield fs-1-5 p-x-10"></i>
+                                        {{ team.teamname }}
+                                    </a>    
+                                </td>
+                                 
+                                <td>
+                                    {%for member in team.members%}
                                 
-                                <br/>
-                                
-                                {%endfor%}
+                                        <a href="/{{member.handle}}" class="fc-n" data-toggle="tooltip" data-original-title="{{member.handle}}">
+                                          <img class="user-team" src="{% if member.thumbnail %}{{data.image_cdn_root}}/{{member.handle}}/t75/{{member.thumbnail}}.jpg{% else %}/_static/images/ph/ph_user2.gif{% endif %}" style="margin-right:8px; width:16px;" alt=""/>
+                                          
+                                        </a>
+                                    {%endfor%}
+                                </td>
+                                <td>
+                                    {%if 'get_a_m_n' in data.user_authorizations %}
 
-                          
-
-                                
-
-                            </div>
-                            <div class="col-xs-10 col-sm-5 pt-20 align-right">
-
-                                {%if 'get_a_m_n' in data.user_authorizations %}
-
-                                    <a class="btn btn-xs btn-default fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
-                                        Team information
-                                    </a>
-
-                                {%endif%}
-                                {%if 'delete_a_m_n' in data.user_authorizations %}
-                                      {%if team.teamname!='owner' %}
-                                      
-                                        <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}?method=delete" >
-                                            <i class="fa fa-trash"></i> Delete team
+                                        <a class="btn btn-xs btn-default fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}" >
+                                            <i class="fa fa-eye"></i>
                                         </a>
 
+                                    {%endif%}
+                                    {%if 'delete_a_m_n' in data.user_authorizations %}
+                                        {%if team.teamname!='owner' %}
+                                          
+                                            <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_teams/{{ team.teamname }}?method=delete" >
+                                                <i class="fa fa-trash"></i>
+                                            </a>
 
-                                      {%endif%}
-                                {%endif%}
-
-                                <div class="spa20 visible-xs"></div>
-
-                                <!-- <div class="row">
-                                    <div class="col-sm-11 fs-0-7 text-right">
-                                        <a href="" type="button" class="fc-n"> 
-                                            <span class="pad-x-8 hidden-sm">Campaigns</span>
-                                            <i class="fa fa-flash"></i>
-                                        </a> 
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-11 fs-0-7 text-right">
-                                        <a href="" type="button" class="fc-n"> 
-                                            <span class="pad-x-8 hidden-sm">Messages</span>
-                                            <i class="fa fa-comment-o"></i>
-                                        </a> 
-                                        
-                                    </div>
-                                </div> -->
-
-                            </div>
-                        </div>
-                    </div>
+                                        {%endif%}
+                                    {%endif%}
+                                </td>
+                            </tr>
+                            {%endif%}
+                        {% endfor %}   
+                    </table>
                 </div>
+            </div>    
 
-                {%endif%}
-            {% endfor %}   
+            
+                
         </div> 
+
+         
         
 
     </div>

@@ -25,198 +25,85 @@
 
         <div class="bord-bottom bc-8 pad-y-20">  
             <div class="row">
-                <div class="col-xs-11 fs-0-8 text-right">
-                    
-
+                <div class="col-sm-offset-1 col-sm-10 fs-0-8">
+                
+                      
                     <!-- Put this on a modal -->
                     {% if 'post_a_p' in data.user_authorizations %}
-                    <div class="">
-                       <form action="" method="POST">
-                       <div class="pull-right">
+                        <div class="">
+                           <form action="" method="POST">
+                               <div class="pull-right">
 
-                            <input name="newperson" type="text" placeholder="Add people"/> &nbsp;
-                            
-                            <button type="submit" class="btn btn-success btn-xs pull-right">
-                                <i class="fa fa-plus pad-x-4"></i>
-                                <i class="fa fa-user"></i>
-                            </button>
-                          
-                       </div> 
-                       </form>    
+                                    <input name="newperson" type="text" placeholder="Add people"/> &nbsp;
+                                    <button type="submit" class="btn btn-success btn-xs pull-right">
+                                        <i class="fa fa-plus pad-x-4"></i>
+                                        <i class="fa fa-user"></i>
+                                    </button>
+                                  
+                               </div> 
+                           </form>   
 
-                    </div>
+                           <h4 class="fc-g">Collaborators</h4>   
+
+                        </div>
                     {%endif%}
 
                 </div>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-offset-1 col-sm-10">
 
-        {% set openthis= 1 %}
+                <table class="table table-striped">
 
+                    <tr class=" fs-0-6">        
+                        <th>Name</th>
+                        <th>Role @{{ data.handle|lower() }}</th>
+                        <th class="hidden-xs">Added </th>
+                        <th>Actions</th>
+                    </tr>
 
-        {% for person in data.peoplelist %}
-            {% if person.handle %}
-
-            <div class="bord-bottom bc-8">
-                <div class="row bord-bottom bc-8 p-5">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#{{person.handle}}" aria-expanded="true" class="fc-m">
-                   
-                        <div class="col-xs-offset-1 col-xs-2 col-sm-offset-1 col-sm-1">
-                            
-                            <img class="user-xsmall user-round" src="{% if person.thumbnail %}{{data.image_cdn_root}}/{{person.handle}}/t150/{{person.thumbnail}}.jpg{% else %}/_static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt=""/>
-                            
-                        </div>
-                        <div class="col-xs-7 col-sm-5 fs-0-7 pt-5 fw-c">
-                            {{ person.handle }}
-                                                    </div>
-
-                        <div class="hidden-xs col-sm-4 fs-0-6 pt-5 fw-c">
-                           
-                            <p class="sm-text">Added on: {{ person.added }}</p>
-                        </div>
-                       
+                    {% for person in data.peoplelist %}
+                        {% if person.handle %}
                         
-                        <div class="col-xs-1 col-sm-1">
+                        <tr class=" fs-0-9">
+                            
+                            <td>
+                                <a href="/{{ person.handle }}">
+                                    <img class="user-xsmall user-round" src="{% if person.thumbnail %}{{data.image_cdn_root}}/{{person.handle}}/t150/{{person.thumbnail}}.jpg{% else %}/_static/images/ph/ph_user2.gif{% endif %}" style="float:left; margin-right:10px;" alt=""/>
                                 
+                                    {{ person.handle }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge bg-d fs-0-6 ">collaborator</span>
+                                
+                            </td>
+                            <td class="hidden-xs">
+                                 <p class="fc-g fs-0-7"><em>{{ person.added }} by: <strong>{{ person.addedby }}</strong></em></p>
+                            </td>
+                            
+                            <td>
                                 {%if 'get_a_m_n' in data.user_authorizations %}
-
                                     <a class="btn btn-xs btn-default fs-0-7" href="/{{ person.handle }}" >
-                                        <i class="fa fa-arrow-right"></i>
+                                        <i class="fa fa-eye"></i>
                                     </a>
-
                                 {%endif%}
-                        </div>
-                      
-                    </a>  
-
-                </div>
-                <div id="{{person.handle}}" class="panel-collapse collapse" role="tabpanel">
-                    <div class="row">
-                        
-                        <div class="col-sm-offset-1 col-sm-3 bord-left p-20">
-                            
-                            
-                            <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
-
-                            <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Badges:</div><br/>
-                            <div class="fc-b">
-
-                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                  <i class="fa fa-bookmark fs-0-7"></i>
-                                
-                                    <span class="fs-0-7">OAS General</span>
-                                </a>
-                                <br/>
-                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                  <i class="fa fa-bookmark fs-0-7"></i>
-                                
-                                    <span class="fs-0-7">OAS Restaurants</span>
-                                </a>
-                                <br/>
-                               
-
-                                <a href="" data-toggle="tooltip" title="" class="fc-m">
-                                  <i class="fa fa-bookmark fs-0-7"></i>
-                                
-                                <span class="fs-0-7">Native Spanish</span>
-                                </a>
-                                <br/>
-
-                            </div>
-                            
-
-                        </div>
-                        <div class="col-sm-3 p-20">
-                            
-                            
-                            <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
-
-                            <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Teams:</div><br/>
-
-                            <a href="" data-toggle="tooltip" title="" class="fc-m">
-                              <i class="fa fa-shield fs-0-7"></i>
-                            
-                                <span class="fs-0-7">Sella F.C.</span>
-                            </a>
-                            <br/>
-
-                            <a href="" data-toggle="tooltip" title="" class="fc-m">
-                              <i class="fa fa-shield fs-0-7"></i>
-                            
-                            <span class="fs-0-7">Brooklyn Ducks</span>
-                            </a>
-                            <br/>
-                            <a href="" data-toggle="tooltip" title="" class="fc-m">
-                              <i class="fa fa-shield fs-0-7"></i>
-                            
-                            <span class="fs-0-7">Mexas</span>
-                            </a>
-                            <br/>
-
-                        </div>
-                        <div class="col-sm-3 p-20">
-                            
-                            
-                            <!-- <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-5px;">Teams:</div><br/> -->
-
-                            <div class="fs-0-6 label bg-white bord-all fc-g" style="margin-left:-10px;">Experience:</div><br/>
-
-                            <a href="" data-toggle="tooltip" title="" class="fc-m">
-                              <i class="fa fa-flash fs-0-7"></i>
-                            
-                                <span class="fs-0-7">OAS Collect Summer 15' (06.2015)</span>
-                            </a>
-                            <br/>
-
-                            <a href="" data-toggle="tooltip" title="" class="fc-m">
-                              <i class="fa fa-flash fs-0-7"></i>
-                            
-                                <span class="fs-0-7">Hotel Translations (04.2015)</span>
-                            </a>
-                            <br/>
-
-                            <a href="" data-toggle="tooltip" title="" class="fc-m">
-                              <i class="fa fa-flash fs-0-7"></i>
-                            
-                                <span class="fs-0-7">A.I. Trainig (03.2015)</span>
-                            </a>
-                            <br/>
-
-                            
-                            <br/>
-
-                        </div>
-                        <div class="col-sm-1 p-20">
-
-                            {%if 'get_a_m_n' in data.user_authorizations %}
-
-                                    <a class="btn btn-xs btn-default fs-0-7" href="/{{ person.handle }}" >
-                                        more info
+                                {% if 'delete_a_p_q' in data.user_authorizations %}
+                                    <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_people/{{ person.handle }}?method=delete" >
+                                        <i class="fa fa-trash"></i>
                                     </a>
+                                {%endif%}
+                            </td>
+                        </tr>
+                        
+                        {% endif %}
+                    {% endfor %}
 
-                            {%endif%}
-                            {% if 'delete_a_p_q' in data.user_authorizations %}
-                            
-                              <a class="btn btn-xs btn-vader fs-0-7" href="/{{ data.handle }}/_people/{{ person.handle }}?method=delete" >
-                              <i class="fa fa-trash"></i> Delete
-                              </a>
-                            
-                            {%endif%}
-                        </div>
-
-
-                        <!-- <a href="/{{person.handle}}" data-toggle="tooltip" title="" class="fc-n">
-                                
-                                <span class="fs-0-7">Go to Profile</span>
-                                <i class="fa fa-arrow-right fc-g"></i>
-                            </a> -->
-                    </div>
-                </div>
+                </table>
             </div>
-
-            {% endif %}
-        {% endfor %}
+        </div>
 
 
 
