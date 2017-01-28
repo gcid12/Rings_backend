@@ -122,15 +122,15 @@
                     <div class="col-xs-6 col-sm-8 col-md-8">
 
                         <i class="fa fa-check-circle "></i>
-                        <span class="fw-c fs-0-8 p-x-20 hidden-xs">Contributions</span>
+                        <span class="fw-c fs-0-8 p-x-20 hidden-xs">Contributor</span>
                     
                         <span class="fs-0-8 p-x-20">
-                            <span class="hidden-xs">Total: </span>
-                            <span class="badge bg-m fs-0-8">1,325</span>
+                            <span class="hidden-xs">Status: </span>
+                            <span class="badge bg-j fs-0-8">Active</span>
                         </span>
                         <span class="fs-0-8 bord-left p-x-20">
-                            <span class="hidden-xs">Score : </span>
-                            <strong>89% </strong> 
+                            <span class="hidden-xs">Organizations: </span>
+                            <strong>{{data.organizations|length}}</strong> 
                         </span>
                     </div>
                     <div class="col-xs-6 col-sm-3 col-md-3 cornerfilter pr-20">
@@ -153,7 +153,6 @@
                                     <th class="hidden-xs">Handle</th>
                                     <th class="hidden-xs">Location</th>
                                     <th>Contributor</th>
-                                    <th>Score</th>
                                     <th class="hidden-xs"></th>
 
                                     
@@ -175,12 +174,10 @@
                                     <td class="hidden-xs">
                                         New York
                                     </td>
-                                    <td>
-                                      <span class="badge bg-d fs-0-7 ">Specialist</span>
+                                    <td colspan="2">
+                                      <span class="badge bg-d fs-0-7 ">2° degree</span>
                                     </td>
-                                    <td>
-                                      239
-                                    </td>
+                                    
                                     <td class="text-right hidden-xs">
 
                                         <a href="/{{organization['handle']}}/_orgprofile" type="button" class="fc-b nounder" data-toggle="tooltip" title="{%if organization['handle'] %}{{organization['handle']}}{%else%}Handlemissing{%endif%}">
@@ -196,7 +193,7 @@
 
                                 {% if 'post_a' in data.user_authorizations %}
                                     <tr>
-                                        <td colspan="5" >
+                                        <td colspan="4" >
                                             <a class="btn btn-primary btn-xs" href="/_orgregister" class="hidden-xs pad-x-10 spa20" style="width:100%">
                                                 <i class="fa fa-plus"></i> Add new Entity
                                             </a>
