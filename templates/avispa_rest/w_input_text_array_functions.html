@@ -1,0 +1,21 @@
+<script src="/_static/assets/tagsinputs/bootstrap-tagsinput.min.js"></script>
+
+<script>
+
+$(function() {
+  $('#input_{{ field.FieldId }}, select').on('change', function(event) {
+    var $element = $(event.target),
+      $container = $element.closest('.example');
+
+    if (!$element.data('tagsinput'))
+      return;
+
+    var val = $element.val();
+    if (val === null)
+      val = "null";
+    $('#code_{{ field.FieldId }}', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
+    $('#code_{{ field.FieldId }}', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+  }).trigger('change');
+});
+
+</script>

@@ -29,23 +29,16 @@
 
 
 {% block crumb02 %}
-    <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-    <a href="/{{data.handle}}" class="nounder">
-        <span class="fc-a fs-0-7">{{ data.collection }}</span> 
-    </a>
-{% endblock %}
-{% block crumb03 %}
-    <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
+    <i class="fa fa-angle-right breadinter"></i> <!-- caret right -->
     <a href="/{{ data.handle }}/{{ data.ring }}" class="nounder">
-        <span class="fc-a fs-0-7">{{ data.ring }}</span>
+        <span class=" fs-0-7">{{ data.ring }}</span>
     </a>
 {% endblock %}
 
-{% block crumb04 %}
-    <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-    <a href="/{{data.handle}}/{{data.item['_id']}}" class="nounder">
-        <span class="fc-a fs-0-7">{{data.item['_id']}}</span> 
-    </a>
+{% block crumb03 %}
+    <i class="fa fa-angle-right breadinter"></i> <!-- caret right -->
+    <span class=" fs-0-7">item: {{data.item['_id']}}</span> 
+    
 {% endblock %}
 
 {% block tabcontent %}
@@ -57,7 +50,7 @@
       </table>
     {% endif %}
     {% if data.item %} 
-      <div class="alert  alert-info alert-dismissible alert-top" role="alert">
+      <div class="alert alert-info alert-dismissible alert-top" role="alert">
         <span class="fs-1-2"><i class="fa fa-eye pad-x-10"></i><strong>viewing</strong> {{data.ring}} </span>
       </div>       
     {% endif %}          

@@ -75,6 +75,10 @@ a:hover{color:#000; text-decoration:none !important;  -o-transition:.3s; -ms-tra
 .discretelink:hover{color:#CCC; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
 .discretelink:focus{color:#CCC; text-decoration:none !important; outline:0 !important;}
 
+.breadcrumb-link{color:#8a8a8a !important;}
+.breadcrumb-link a{color:#FFF; text-decoration:none !important; outline:0 !important;}
+.breadcrumb-link a:active{color:#FFF; text-decoration:none !important; outline:0 !important;}
+.breadcrumb-link a:hover{color:#0680e8; text-decoration:none !important;  -o-transition:.3s; -ms-transition:.3s; -moz-transition:.3s; -webkit-transition:.3s; transition:.35s;}
 
 
 .align-right{
@@ -316,8 +320,6 @@ filter: grayscale(100%);
 }
 
 .op-0-5{opacity:0.5;}
-
-
 
 .medal-icon{
   text-shadow: 2px 2px #f8b500;
@@ -1081,7 +1083,6 @@ background-color:white;
 .gcard-title{
 background-color:#D0D0D0;
 border-radius: 4px 4px 0px 0px;
-color:white;
 padding:10px 20px;
 font-size:12px;
 }
@@ -1186,7 +1187,7 @@ padding:20px;
 
 }
 
-.breadinter{ color:gray; font-size:0.6em; padding:0 10px;}
+.breadinter{ font-size:0.6em; padding:0 5px;}
 
 .rn-curtain-out{margin:0 30px 50px 30px;
 

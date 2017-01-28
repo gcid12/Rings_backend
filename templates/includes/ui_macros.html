@@ -98,7 +98,8 @@
 {% macro panel_collections2(handle, collection, ringname, color, count, percent, active, user_authorizations,extended) %} 
 
           
-          <tr class="bord-bottom bc-8 bw-2">
+          
+          <tr class="bord-bottom bc-8 bw-2" onclick="getElementById('{{ ringname }}').click()" style="cursor: pointer">
             
             <td style="width:15%">{{ icon_sma(count, color) }}
             <!-- <img src="/_static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
@@ -113,7 +114,7 @@
               <div class="fw-c fs-0-8">
                 <div class="spa5"></div>             
                 {% if ringname+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
-                  <a class="nounder" href="/{{handle}}/{{ ringname }}?collection={{collection}}"> {{ringname}}</a>
+                  <a id="{{ ringname }}" class="nounder" href="/{{handle}}/{{ ringname }}?collection={{collection}}"> {{ringname}}</a>
                 {%else%}
                   {{ringname}}
                 {%endif%} 
@@ -627,6 +628,7 @@
                                 <option value="textarea" {% if FieldWidget == "textarea" %}selected=""{% endif %}>textarea</option>
                                 <option value="textarea_multilang" {% if FieldWidget == "textarea_multilang" %}selected=""{% endif %}>textarea (multi-language)</option>
                                 <option value="url" {% if FieldWidget == "url" %}selected=""{% endif %}>url</option>
+                                <option value="text_array" {% if FieldWidget == "text_array" %}selected=""{% endif %}>text_array</option>
                                 <!--option value="url_flickr" {% if FieldWidget == "url_flickr" %}selected=""{% endif %}>url_flickr</option-->
                                 <!--option value="url_video" {% if FieldWidget == "url_video" %}selected=""{% endif %}>url_video</option-->
                               </select>
@@ -1039,7 +1041,7 @@
     
       <li role="presentation" class="{{ b2 }}">
           <a href="/{{handle}}/{{ b1 }}" aria-controls="home" role="tab" data-toggle="tabx" class="nostroke p-10 fs-0-8">
-          <i class="fa fa-user m-y-5"></i> &nbsp;
+          <i class="fa fa-users m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">People</span>
           </a>
       </li>
@@ -1051,7 +1053,7 @@
               <span class="hidden-xs hidden-sm">Teams</span>
           </a>
       </li>
-      <li role="presentation" class="{{ d2 }}">
+      <!-- <li role="presentation" class="{{ d2 }}">
           <a href="/{{handle}}/{{ d1 }}" aria-controls="profile" role="tab" data-toggle="tab" class="nostroke p-10 fs-0-8">
           <i class="fa fa-flash m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Campaigns </span><span class="badge bg-gray fs-0-8">14</span>
@@ -1062,7 +1064,7 @@
           <i class="fa fa-bookmark-o m-y-5"></i> &nbsp;
               <span class="hidden-xs hidden-sm">Badges </span><span class="badge fs-0-8">2</span>
           </a>
-      </li>
+      </li> -->
       
       
   </ul>  
@@ -1128,7 +1130,7 @@
 
                 <!-- ACTIONS -->
 
-                <span class=" pull-right">
+                <!-- <span class=" pull-right">
                     
                   {% if data.section == '_teams' %}
                     {% if 'get_a_p' in data.user_authorizations %}     
@@ -1141,7 +1143,7 @@
                     <a href="/{{handle}}/_teams" > go to <b>Teams</b> </a> &nbsp;&nbsp;
                     {% endif %}
                   {%endif%}
-                </span>
+                </span> -->
         
             </div>
         </div>

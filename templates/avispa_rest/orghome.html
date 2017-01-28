@@ -97,15 +97,17 @@
                                   </div>  -->
                                
                             {% else %}
-                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div role="tablist" aria-multiselectable="true">
 
-                                    <div class="bord-bottom bc-8 pad-y-20">  
+                                    <div class="bord-bottom bc-8 pad-y-10">  
                                         <div class="row">
-                                            <div class="col-xs-11 col-sm-11 fs-0-8 text-right">
-                                                <a href="/{{data.handle}}/_collections?rq=post" type="button" class="fc-n"> 
+                                            
+                                            <div class="col-sm-offset-1 col-sm-10 fs-0-8">
+                                                <a href="/{{data.handle}}/_collections?rq=post" type="button" class="fc-n float-right"> 
                                                     <span class="pad-x-5">Create new collection</span>
                                                     <i class="fa fa-plus pad-x-4"></i><i class="fa fa-cube"></i>
                                                 </a> 
+                                                <h4 class="fc-g">Rings</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -118,25 +120,25 @@
                         {% for collection in data.collections.collectionlist %}  
                             {% if collection.valid %}
 
-                                <div class="gcard-subtitle" >
+                                
+                                <div class="gcard-body" style="min-height:110px;">
+                                    <div class="row">
+                                        <!-- START RING LIST -->
+                                        <div class="col-sm-offset-1 col-sm-10">   
 
-                                {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
-                                    
-                               <!--  <h4>{{ collection.collectionname }}</h4> -->
-                                </div>
-                                <div class="gcard-body" style="padding:20px 20px 0 0px; margin:0 0 10px 0; min-height:110px;">
-                                <div class="row">
-                                    <!-- START RING LIST -->
-                                    <div class="col-sm-offset-1 col-sm-11">   
-                                        <table class="table  table-condensed">
+                                            <div class="gcard-subtitle" >
 
-                                        {% for ring in collection.rings %}  
-                                            {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
-                                        {% endfor %}
-                                        </table>     
+                                                {{ ui.collection(data.handle,collection.collectionname,6,1,'1 day ago',data.user_authorizations) }}
+                                            </div>
+                                            <table class="table table-condensed table-hover">
+
+                                            {% for ring in collection.rings %}  
+                                                {{ ui.panel_collections2(ring.handle,collection.collectionname,ring.ringname, '#fce121', ring.count , '85', '',data.user_authorizations,'1') }}
+                                            {% endfor %}
+                                            </table>     
+                                        </div>
+                                        <!-- FINISH RING LIST -->
                                     </div>
-                                    <!-- FINISH RING LIST -->
-                                </div>
                                 </div>             
 
                             {% endif %}

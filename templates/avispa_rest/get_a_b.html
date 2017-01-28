@@ -7,18 +7,19 @@
   <li class="active">˚{{ data.ring}} </li>
 {% endblock %}
 
-{% block crumb02 %}
-  <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-  <a href="/{{data.handle}}" class="nounder">
-    <span class="fc-a fs-0-7">{{ data.collection }}</span> 
-  </a>
-{% endblock %}
+
+  {#% block crumb02 %#}
+    <i class="fa fa-angle-right breadinter"></i> <!-- caret right -->
+    <a href="/{{data.handle}}" class="nounder">
+      <i class="fa fa-cube breadinter"></i>
+      <span class="fs-0-7">{{ data.collection }}</span> 
+    </a>
+  {#% endblock %#}
+
 
 {% block crumb03 %}
-  <i class="fa fa-arrow-right breadinter"></i> <!-- caret right -->
-  <a href="/{{ data.handle }}/{{ data.ring }}{% if collection %}?collection={{collection}}{% endif %}" class="nounder">
-    <span class="fc-a fs-0-7">{{ data.ring }}</span>
-  </a>
+  <i class="fa fa-angle-right breadinter"></i> <!-- caret right -->
+    <span class="fs-0-7">{{ data.ring }}</span>
 {% endblock %}
 
 {% block tabcontent %}
