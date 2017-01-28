@@ -98,7 +98,8 @@
 {% macro panel_collections2(handle, collection, ringname, color, count, percent, active, user_authorizations,extended) %} 
 
           
-          <tr class="bord-bottom bc-8 bw-2">
+          
+          <tr class="bord-bottom bc-8 bw-2" onclick="getElementById('{{ ringname }}').click()" style="cursor: pointer">
             
             <td style="width:15%">{{ icon_sma(count, color) }}
             <!-- <img src="/_static/images/icons/ico_schema.png" style="width:10px; opacity:0.2;"> -->
@@ -113,7 +114,7 @@
               <div class="fw-c fs-0-8">
                 <div class="spa5"></div>             
                 {% if ringname+'_get_a_b' in user_authorizations or 'get_a_b' in user_authorizations %}
-                  <a class="nounder" href="/{{handle}}/{{ ringname }}?collection={{collection}}"> {{ringname}}</a>
+                  <a id="{{ ringname }}" class="nounder" href="/{{handle}}/{{ ringname }}?collection={{collection}}"> {{ringname}}</a>
                 {%else%}
                   {{ringname}}
                 {%endif%} 

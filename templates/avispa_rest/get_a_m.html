@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col-sm-offset-1 col-sm-10">
 
-                    <table class="table table-striped">
+                    <table class="table table-hover">
 
                         <tr class=" fs-0-6">  
                             <th>Team Name</th>
@@ -64,9 +64,9 @@
                         {% for team in data.teamlist %}
                             {% if team.teamname in data.teammembership%}
 
-                            <tr>
+                            <tr onclick="getElementById('{{ team.teamname }}').click()" style="cursor: pointer">
                                 <td class="fs-0-9 pt-5 fw-a">
-                                    <a href="/{{ data.handle }}/_teams/{{ team.teamname }}">
+                                    <a id="{{ team.teamname }}" href="/{{ data.handle }}/_teams/{{ team.teamname }}">
                                         <i class="fa fa-shield fs-1-5 p-x-10"></i>
                                         {{ team.teamname }}
                                     </a>    
