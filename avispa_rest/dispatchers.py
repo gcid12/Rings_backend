@@ -47,7 +47,7 @@ def infer_method(rqargs,rqmethod=None):
 
     return method
 
-def rings_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
+def rings_dispatcher(route,handle,ring=None,idx=None,api=False,collection=None):
       
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
@@ -59,7 +59,7 @@ def rings_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
 
     data = {}
 
-    m = method+depth
+    m = method+route
     data['method'] = m
     lggr.info('Route:%s',m)
 
@@ -83,13 +83,13 @@ def rings_dispatcher(depth,handle,ring=None,idx=None,api=False,collection=None):
             lggr.info('END rings_dispatcher')
             return render_template('avispa_rest/error_401.html', data=data),401
  
-        authorization_result = MAM.user_is_authorized(user_handle,m,depth,handle,ring=ring,idx=idx,api=api)
+        authorization_result = MAM.user_is_authorized(user_handle,m,route,handle,ring=ring,idx=idx,api=api)
 
     if not api:
 
         lggr.info('Not an API call')
   
-        authorization_result = MAM.user_is_authorized(current_user.id,m,depth,handle,ring=ring,idx=idx,api=api)
+        authorization_result = MAM.user_is_authorized(current_user.id,m,route,handle,ring=ring,idx=idx,api=api)
         
         if not authorization_result['authorized']:
             lggr.info('END rings_dispatcher')
@@ -360,7 +360,7 @@ def index_dispatcher(handle,ring=None,idx=None,unindex=False):
         return render_template(data['template'], data=data)
 
 
-def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
+def collection_dispatcher(route,handle,collection=None,idx=None,api=False):
     '''
     This dispatcher takes care only for collection administrative functions
     '''
@@ -375,7 +375,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
 
     data = {}
 
-    m = method+depth
+    m = method+route
     
 
     data['method'] = m
@@ -385,7 +385,7 @@ def collection_dispatcher(depth,handle,collection=None,idx=None,api=False):
         authorization_result = MAM.user_is_authorized(
                                                      current_user.id,
                                                      m,
-                                                     depth,
+                                                     route,
                                                      handle,
                                                      collection=collection)
 
@@ -476,8 +476,8 @@ def home_dispatcher(handle):
 
         method= 'GET_a_home'
         data['method'] = method
-        depth = '_a'  
-        authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle)
+        route = '_a'  
+        authorization_result = MAM.user_is_authorized(current_user.id,method,route,handle)
 
         if 'authorized' not in authorization_result:
             return render_template('avispa_rest/error_401.html', data=data),401
@@ -704,8 +704,8 @@ def history_dispatcher(handle,ring=None):
 
         method= 'GET_a_home'
         data['method'] = method
-        depth = '_a'  
-        authorization_result = MAM.user_is_authorized(current_user.id,method,depth,handle)
+        route = '_a'  
+        authorization_result = MAM.user_is_authorized(current_user.id,method,route,handle)
 
         if 'authorized' not in authorization_result:
             return render_template('avispa_rest/error_401.html', data=data),401
@@ -916,7 +916,7 @@ def history_dispatcher(handle,ring=None):
         return data
     
 
-def people_dispatcher(depth,handle,person=None):
+def people_dispatcher(route,handle,person=None):
 
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
@@ -930,13 +930,13 @@ def people_dispatcher(depth,handle,person=None):
 
     method = infer_method(request.args,request.method)
 
-    m = method+depth
+    m = method+route
 
     data['method'] = m
 
 
-    #depth = '_a_p'
-    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle)
+    #route = '_a_p'
+    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),route,handle)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
     data['user_authorizations'] = authorization_result['user_authorizations']
@@ -987,7 +987,7 @@ def people_dispatcher(depth,handle,person=None):
 
 
 
-def teams_dispatcher(depth,handle,team=None):
+def teams_dispatcher(route,handle,team=None):
 
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
@@ -1001,11 +1001,11 @@ def teams_dispatcher(depth,handle,team=None):
 
     method = infer_method(request.args,request.method)
     
-    m = method+depth
+    m = method+route
     data['method'] = m
 
-    #depth = '_a_n'
-    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle,team=team)
+    #route = '_a_n'
+    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),route,handle,team=team)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
     data['user_authorizations'] = authorization_result['user_authorizations']
@@ -1061,7 +1061,7 @@ def teams_dispatcher(depth,handle,team=None):
 
 
 
-def labels_dispatcher(depth,handle,ring):
+def labels_dispatcher(route,handle,ring):
 
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
@@ -1075,11 +1075,11 @@ def labels_dispatcher(depth,handle,ring):
 
     method = infer_method(request.args,request.method)
 
-    m = method+depth
+    m = method+route
     data['method'] = m
 
-    #depth = '_a_n'
-    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),depth,handle,team=team)
+    #route = '_a_n'
+    authorization_result = MAM.user_is_authorized(current_user.id,m.lower(),route,handle,team=team)
     if not authorization_result['authorized']:
         return render_template('avispa_rest/error_401.html', data=data),401
     data['user_authorizations'] = authorization_result['user_authorizations']
