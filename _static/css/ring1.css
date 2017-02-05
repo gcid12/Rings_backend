@@ -1859,6 +1859,10 @@ ul.affix-bottom {
   margin-top:20px;
 }
 
+.btn-group-vertical>.btn.active {
+    z-index: 2;
+    background-color: #87dc88 !important;
+}
 
 
 
@@ -2013,8 +2017,6 @@ and (min-device-width : 375px)
 and (max-device-width : 667px)
 and (orientation : landscape) {
 
-
-
 }
 
 /*extra-xs*/
@@ -2027,7 +2029,8 @@ and (orientation : landscape) {
    visibility: hidden; 
    display: none;
   }
-  }
+
+}
 
 
 @media (min-width: 768px) {

@@ -1,6 +1,6 @@
                                 <div class="form-group">
-                                    <label for="{{ field.FieldId }}" class="col-xs-3 col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
-                                    <div class="col-xs-9 col-sm-10">
+                                    <label for="{{ field.FieldId }}" class="col-xs-12 col-sm-3 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+                                    <div class="col-xs-12 col-sm-9">
 
                                       <input type="text" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="date{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value=" {{ data.item[field.FieldId] }}">
 

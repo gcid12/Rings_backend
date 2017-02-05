@@ -1,0 +1,29 @@
+    <div class="form-group">
+      
+      <div class="col-xs-12 col-sm-9">
+
+      <!-- <input id="input_{{ field.FieldId }}" type="text" name="{{ field.FieldId }}" value="{{ data.item[field.FieldId]|nonone }}" /> -->
+        
+        <!-- <div class="btn-group confirm-active" data-toggle="buttons">
+          <label class="btn btn-default active">
+            <input type="radio" name="radio_{{ field.FieldId }}" id="option1"
+             value="unknown"> Unknown
+          </label>
+          <label class="btn btn-default">
+            <input type="radio" name="radio_{{ field.FieldId }}" id="option2"
+            value="true"> True
+          </label>
+          <label class="btn btn-default">
+            <input type="radio" name="radio_{{ field.FieldId }}" id="option3"
+            value="false"> False
+          </label>
+          this is : {{ request.form['radio_{{ field.FieldId }}'] }}
+        </div> -->
+
+        <input id="input_{{ field.FieldId }}" type="radio" name="{{ field.FieldId }}" value="male" checked> Male<br>
+        <input id="input_{{ field.FieldId }}" type="radio" name="{{ field.FieldId }}" value="female"> Female<br>
+        <input id="input_{{ field.FieldId }}" type="radio" name="{{ field.FieldId }}" value="other"> Other 
+
+
+      </div>
+    </div>

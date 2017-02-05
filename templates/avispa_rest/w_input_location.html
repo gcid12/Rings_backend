@@ -1,8 +1,8 @@
 
 <div class="form-group">
-	<label for="{{ field.FieldId }}" class="col-xs-3 col-sm-2 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+	<label for="{{ field.FieldId }}" class="col-xs-12 col-sm-3 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
 
-   <div class="col-xs-9 col-sm-10">
+   <div class="col-xs-12 col-sm-9">
 
         <input id="input_location_{{ field.FieldOrder }}" name="{{ field.FieldId }}" class="form-control flag-aware" order="{{ field.FieldOrder }}" type="text" placeholder="Type in an address" {% if field.FieldRequired %}required{% endif %} value='{{ data.item[field.FieldId] }}' />
         <input id="input_location_{{ field.FieldOrder }}_rich" name="{{ field.FieldId }}_rich" type="hidden" value='{{ field.Rich }}' />

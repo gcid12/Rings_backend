@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5ee77c8b-706c-43cd-9372-c6112307c76e" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_static/css/ring1.css" afterPath="$PROJECT_DIR$/_static/css/ring1.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/post_rq_a_b.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/post_rq_a_b.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_address.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_address.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_date.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_date.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_file.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_file.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_hours.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_hours.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_images.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_images.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_items.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_items.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_location.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_location.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_mail.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_mail.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_text.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_text.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_text_array.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_text_array.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_text_multilang.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_text_multilang.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_textarea.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_textarea.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/avispa_rest/w_input_url.html" afterPath="$PROJECT_DIR$/templates/avispa_rest/w_input_url.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/includes/ui_macros.html" afterPath="$PROJECT_DIR$/templates/includes/ui_macros.html" />
+    </list>
+    <ignored path="avispa.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="avispa" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="414" />
+    <option name="y" value="23" />
+    <option name="width" value="868" />
+    <option name="height" value="749" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avispa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avispa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avispa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5ee77c8b-706c-43cd-9372-c6112307c76e" name="Default" comment="" />
+      <created>1486276119282</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1486276119282</updated>
+      <workItem from="1486276120866" duration="421000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="421000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="414" y="23" width="868" height="749" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24911453" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4307458" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+</project>
