@@ -1,0 +1,32 @@
+    <div class="form-group">
+
+      <label for="{{ field.FieldId }}" class="col-xs-12 col-sm-3 control-label">{% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}</label>
+
+      <div class="col-xs-12 col-sm-9">
+
+      <!-- <input id="input_{{ field.FieldId }}" type="text" name="{{ field.FieldId }}" value="{{ data.item[field.FieldId]|nonone }}" /> -->
+        
+         <div class="btn-group confirm-active" data-toggle="buttons">
+          <label class="btn btn-default active">
+              <!--<input type="radio" name="radio_{{ field.FieldId }}" id="option1" value="unknown"> Unknown-->
+              <input id="input_{{ field.FieldId }}" type="radio" name="{{ field.FieldId }}"
+                     value="unknown" > Unknown
+          </label>
+          <label class="btn btn-default">
+              <!--<input type="radio" name="radio_{{ field.FieldId }}" id="option2" value="true"> True-->
+              <input id="input_{{ field.FieldId }}" type="radio" name="{{ field.FieldId }}"
+                     value="true" {% if data.item[field.FieldId] == true  %} checked {% endif %} > True
+          </label>
+          <label class="btn btn-default">
+              <!--<input type="radio" name="radio_{{ field.FieldId }}" id="option3" value="false"> False-->
+              <input id="input_{{ field.FieldId }}" type="radio" name="{{ field.FieldId }}"
+                     value="false" {% if data.item[field.FieldId] == false  %} checked {% endif %} > False
+          </label>
+
+        </div>
+
+
+
+      </div>
+    </div>
+
