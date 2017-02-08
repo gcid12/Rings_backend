@@ -1,0 +1,44 @@
+# Statement for enabling the development environment
+DEBUG = True
+
+URL_SCHEME = 'http'
+
+STORE_MODE = 'S3'
+IMAGE_BUCKET_NAME = '<s3 bucket with all the images>'
+AWS_ACCESS_KEY_ID='<obtain from valid dev config file>'
+AWS_SECRET_ACCESS_KEY='<obtain from valid dev config file>'
+
+LOGFILE_PATH = '<root>/log/avispa'
+LOG_CONFIG = 'logging.json'
+
+IMAGE_CDN_ROOT = '<obtain from valid dev config file>'
+STATIC_CDN_ROOT = ''
+
+#API TEMP TOKEN
+TEMP_ACCESS_TOKEN = '<obtain from valid dev config file>'
+
+#NUMBER OF PROCESSES RUNNING PER INSTANCE
+# 0 : One Process per available processor
+NUMBER_OF_PROCESSES = 4
+
+COUCHDB_USER = u'<obtain from valid dev config file>'
+COUCHDB_PASS = u'<obtain from valid dev config file>'
+COUCHDB_SERVER = '<obtain from valid dev config file>'
+
+# DATABASE WHERE USER PROFILES ARE STORED
+USER_DB = '<obtain from valid dev config file>'
+
+SMTPSERVER = u'<obtain from valid dev config file>'
+SMTPPORT = 587
+FROMEMAIL = u'<obtain from valid dev config file>'
+FROMPASS = u'<obtain from valid dev config file>'
+PREVIEW_LAYER = 2
+
+# ELASTICSEARCH:
+ES_NODE = '<obtain from valid dev config file>'
+
+# ALGOLIA
+ALGOLIA_APPLICATION_ID = '<obtain from valid dev config file>'
+ALGOLIA_ADMIN_API_KEY = '<obtain from valid dev config file>'
+ALGOLIA_SEARCH_ONLY_API_KEY = '<obtain from valid dev config file>'
+ALGOLIA_MONITORING_API_KEY = '<obtain from valid dev config file>'
