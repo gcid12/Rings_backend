@@ -12,7 +12,7 @@ from AvispaLogging import AvispaLoggerAdapter
 import couchdb
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, IMAGE_FOLDER_NAME
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 
 class AuthModel:
 
@@ -55,7 +55,7 @@ class AuthModel:
 
         if self.MAM.create_user(user):
             self.lggr.info("User created in DB. Attempting to create image folders...")
-            self.create_user_imagefolder(user['username'])
+            
             return True
 
         #AUTHMODEL
@@ -70,8 +70,7 @@ class AuthModel:
             return False
 
         if self.MAM.create_orguser(user):
-            self.lggr.info("Organization created in DB. Attempting to create image folders...")
-            self.create_user_imagefolder(user['username'])
+        
             return True
 
     def saas_create_password_key(self,user,key):
@@ -103,29 +102,6 @@ class AuthModel:
         changes['id']=user
         
         return self.MAM.update_user(changes)
-
-    def create_user_imagefolder(self,username):         
-        self.safe_create_dir(IMAGE_FOLDER_NAME+'/'+username+'/o') #Original folder
-
-        for r in self.officialsizes:
-            self.safe_create_dir(IMAGE_FOLDER_NAME+'/'+username+'/'+r)  # Scale-down version folders
-
-
-        for t in self.thumbnailsizes:
-            self.safe_create_dir(IMAGE_FOLDER_NAME+'/'+username+'/'+t)  # Thumbnail folders
-
-        return True
-
-    def safe_create_dir(self,path): 
-        self.lggr.info(path)
-        try:
-            os.makedirs(path)
-        except OSError as exception:
-            if exception.errno != errno.EEXIST:
-                raise
-
-        self.lggr.info('Folder created:'+path)
-        return True
 
 
     #AUTHMODEL
