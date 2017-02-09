@@ -2,7 +2,7 @@
 
 {% block headscripts %}
 
-    {{ dz.headscripts() }}
+{{ dz.headscripts() }}
 
 {% endblock %}
 
@@ -16,87 +16,73 @@
 {% endblock %}
 
 
-
 {% block content %}
 
 
-               
-
-<!-- START NEW CONTENT --> 
+<!-- START NEW CONTENT -->
 
 
 <section class="p-20">
     <div class="container-fluid">
         <div class="row">
-            
+
             <div class="col-sm-3">
                 <div class="gcard">
                     <div class="gcard-title">
-                        
+
 
                         <i class="fa fa-user"></i> Personal Settings
 
-                      
 
                     </div>
                     <div class="gcard bg-n">
                         <table class="table fs-0-9">
-                            
-                            <tr>
-                                <td class="p-0">
-                                  <div class="{% if data.menu =='s1' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8 {%endif%}">
-                                    <a href="/{{ current_user.id }}/_profile" class="pad-x-10 nounder {% if data.menu =='s1' %} fc-b{%endif%}">  Profile</a>
-                                  </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-0">
-
-                                  <div class="{% if data.menu =='s2' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
-                                  
-                                    <a href="/{{ current_user.id }}/_access" class="pad-x-10 nounder "> Access</a>
-                                  </div>
-                                  
-                                </td>
-                            </tr>
 
                             <tr>
                                 <td class="p-0">
-
-                                  <div class="{% if data.menu =='s3' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
-                                  
-                                    <a href="/{{ current_user.id }}/_email" class="pad-x-10 nounder "> Email</a>
-                                  </div>
-                                  
+                                    <div class="{% if data.menu =='s1' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8 {%endif%}">
+                                        <a href="/{{ current_user.id }}/_profile"
+                                           class="pad-x-10 nounder {% if data.menu =='s1' %} fc-b{%endif%}"> Profile</a>
+                                    </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="p-0">
+                            <!--<tr>-->
+                            <!--<td class="p-0">-->
+                            <!--<div class="{% if data.menu =='s2' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">-->
+                            <!--<a href="/{{ current_user.id }}/_access" class="pad-x-10 nounder "> Access</a>-->
+                            <!--</div>-->
+                            <!---->
+                            <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td class="p-0">-->
+                            <!--<div class="{% if data.menu =='s3' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">-->
+                            <!--<a href="/{{ current_user.id }}/_email" class="pad-x-10 nounder "> Email</a>-->
+                            <!--</div>-->
+                            <!---->
+                            <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td class="p-0">-->
+                            <!--<div class="{% if data.menu =='s4' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">-->
+                            <!--<a href="/{{ current_user.id }}/_billing" class="pad-x-10 nounder "> Billing</a>-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td class="p-0">-->
+                            <!--<div class="{% if data.menu =='s5' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">-->
+                            <!--<a href="/{{ current_user.id }}/_licenses" class="pad-x-10 nounder "> Licenses</a>-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--</tr>-->
 
-                                  <div class="{% if data.menu =='s4' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
-                                  
-                                    <a href="/{{ current_user.id }}/_billing" class="pad-x-10 nounder "> Billing</a>
-                                  </div>
-                                  
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-0">
-
-                                  <div class="{% if data.menu =='s5' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
-                                  
-                                    <a href="/{{ current_user.id }}/_licenses" class="pad-x-10 nounder "> Licenses</a>
-                                  </div>
-                                  
-                                </td>
-                            </tr>
-                            
                         </table>
-                        
+
                     </div>
                 </div>
 
-                
+                {% if data.menu =='org' %}
                 <div class="gcard">
                     <div class="gcard-title">
                         <i class="fa fa-shield"></i> Organization Settings
@@ -104,70 +90,53 @@
                     <div class="gcard bg-n">
                         <table class="table fs-0-9 bc-15">
 
-                          {% if data.menu =='org' %}
                             <tr>
                                 <td class="p-0">
-
-                                  <div class="{% if data.menu =='org' %} set_active_org bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
-                                  
-                                    <a href="/{{ current_user.id }}/_orgprofile" class="pad-x-10 nounder fc-b"> {{ data.user['name'] }}</a>
-                                  </div>
-
-
-                                
-                                    
+                                    <div class="{% if data.menu =='org' %} set_active_org bg-white{% else %}bc-10 bord-bottom bw-2 p-8{%endif%}">
+                                        <a href="/{{ current_user.id }}/_orgprofile" class="pad-x-10 nounder fc-b"> {{
+                                            data.user['name'] }}</a>
+                                    </div>
                                 </td>
                             </tr>
-                          {% else %}
-                            <tr>
-                                <td class="p-0">
-                                  <div class="bc-10 bord-bottom bw-2 p-8">
-                                  
-                                    
-                                  </div>
-                                </td>
-                            </tr>
-                          {% endif %}
-
-                            
-                            
                         </table>
-                        
                     </div>
                 </div>
+                {% endif %}
+
 
             </div>
-            <div class="col-sm-9 alpha">  
+            <div class="col-sm-9 alpha">
 
                 {% block settings %}
 
                 <div class="gcard">
                     <div class="gcard-title bg-d">
-              
+
                         <span class="fc-a fs-1-2"> <i class="fa fa-user"></i> Personal Settings: </span>
-                        
-              
-                    </div> 
+
+
+                    </div>
                     <div class="gcard-subtitle ">
                         <span class="fc-b"><strong>{{ data.user['name'] }}</strong> Profile</span>
                     </div>
 
 
-                    
-
                     <div class="gcard-body p-20">
-              
+
                         <form class="form-horizontal" action="" method="POST" role="form">
 
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        
+
                                         <div class="col-sm-10">
 
-                                          <input type="hidden" class="form-control" id="input_images_1"  name="profilepic" value="{{ data.user['profilepic'] }}">
+                                            <input type="hidden" class="form-control" id="input_images_1"
+                                                   name="profilepic" value="{{ data.user['profilepic'] }}">
 
-                                          <div id='dropzone1' class="dropzone" style="min-height:0px; padding:10px 10px;"><span class="dz-message" ><i class="fa fa-camera fa-1x"> </i> Upload Photo</span></div>
+                                            <div id='dropzone1' class="dropzone"
+                                                 style="min-height:0px; padding:10px 10px;"><span class="dz-message"><i
+                                                    class="fa fa-camera fa-1x"> </i> Upload Photo</span></div>
 
                                         </div>
                                     </div>
@@ -177,29 +146,34 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label fc-g fs-0-9">Name</label>
                                         <div class="col-sm-10">
-                                          <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="Your Name" value="{{ data.user['name'] }}" >
+                                            <input type="text" id="name" name="name" class="form-control input-sm"
+                                                   placeholder="Your Name" value="{{ data.user['name'] }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-g fs-0-9">Website</label>
-                                      <div class="col-sm-10">
-                                          <input type="text" id="url" name="url"  class="form-control input-sm" placeholder="Homepage, personal blog" value="{{ data.user['url'] }}">
-                                       </div>
+                                        <label class="col-sm-2 control-label fc-g fs-0-9">Website</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="url" name="url" class="form-control input-sm"
+                                                   placeholder="Homepage, personal blog" value="{{ data.user['url'] }}">
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-g fs-0-9">Location</label>
-                                      <div class="col-sm-10">
-                                        <input type="text" id="location" name="location"  class="form-control input-sm" placeholder="Where do you live" value="{{ data.user['location'] }}">
-                                      </div>
+                                        <label class="col-sm-2 control-label fc-g fs-0-9">Location</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="location" name="location"
+                                                   class="form-control input-sm" placeholder="Where do you live"
+                                                   value="{{ data.user['location'] }}">
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-g fs-0-9">OnLogin</label>
-                                      <div class="col-sm-4">
-                                        <input type="text" id="onlogin" name="onlogin"  class="form-control input-sm" placeholder="" value="{{ data.user['onlogin'] }}">
-                                      </div>
+                                        <label class="col-sm-2 control-label fc-g fs-0-9">OnLogin</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id="onlogin" name="onlogin" class="form-control input-sm"
+                                                   placeholder="" value="{{ data.user['onlogin'] }}">
+                                        </div>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary pull-right">Update profile</button>
@@ -208,7 +182,7 @@
 
 
                             </div>
-                            
+
                         </form>
                     </div><!-- //close box -->
                 </div>
@@ -223,32 +197,30 @@
 {% endblock %}
 
 
-
 {% block footscripts %}
 
-  {{ dz.footscripts() }}
+{{ dz.footscripts() }}
 
 {% endblock %}
 
 
 {% block modals %}
 
-  {% include 'avispa_rest/helpmodal.html' %}
+{% include 'avispa_rest/helpmodal.html' %}
 
 {% endblock %}
 
 
-
 {% block footfunctions %}
 
-  {{ dz.footfunctions(handle=data.handle,image_cdn_root=data.image_cdn_root,profilepic=data.user['profilepic']) }}
- 
+{{ dz.footfunctions(handle=data.handle,image_cdn_root=data.image_cdn_root,profilepic=data.user['profilepic']) }}
+
 {% endblock %}
 
 
 {% block footafterfunctions %}
 
-  {{ dz.footafterfunctions() }}
+{{ dz.footafterfunctions() }}
 
 {% endblock %}
 
@@ -257,4 +229,4 @@
 
 
 
-  
+
