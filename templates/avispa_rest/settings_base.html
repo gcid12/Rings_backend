@@ -28,7 +28,7 @@
 
             <div class="col-sm-3">
                 <div class="gcard">
-                    <div class="gcard-title">
+                    <div class="gcard-title text-white">
 
 
                         <i class="fa fa-user"></i> Personal Settings
@@ -42,7 +42,7 @@
                                 <td class="p-0">
                                     <div class="{% if data.menu =='s1' %} set_active bg-white{% else %}bc-10 bord-bottom bw-2 p-8 {%endif%}">
                                         <a href="/{{ current_user.id }}/_profile"
-                                           class="pad-x-10 nounder {% if data.menu =='s1' %} fc-b{%endif%}"> Profile</a>
+                                           class="pad-x-10 nounder {% if data.menu =='s1' %} fc-b{%endif%}"> {{ current_user.id }} Profile</a>
                                     </div>
                                 </td>
                             </tr>
