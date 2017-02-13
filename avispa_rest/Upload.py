@@ -14,7 +14,7 @@ from flask import flash, g
 from wand.image import Image 
 from wand.display import display
 
-from env_config import IMAGE_FOLDER_NAME, STORE_MODE
+from env_config import STORE_MODE
 
 if STORE_MODE == 'S3':
     import boto
@@ -232,16 +232,10 @@ class Upload:
 
     
     def _file_save(self,file,path,filename):
-      
-        if STORE_MODE == 'LOCAL':   
-            self._local_save(file,path,filename)        
-        elif STORE_MODE == 'S3':          
-            self._s3_save(file,path,filename)
+         
+        self._s3_save(file,path,filename)
 
-    def _local_save(self,file,path,filename):
-        self.lggr.info("Storing image in LOCAL: %s/%s"%(path,filename))
-        file.save(filename=('%s/%s/%s'%(IMAGE_FOLDER_NAME,path,filename)))
-        return True
+
 
     def _s3_save(self,file,path,filename):
         self.lggr.info("Storing image in S3: %s/%s"%(path,filename))
