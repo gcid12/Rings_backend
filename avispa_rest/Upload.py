@@ -14,7 +14,7 @@ from flask import flash, g
 from wand.image import Image 
 from wand.display import display
 
-from env_config import IMAGE_FOLDER_NAME, STORE_MODE
+from env_config import STORE_MODE
 
 if STORE_MODE == 'S3':
     import boto
