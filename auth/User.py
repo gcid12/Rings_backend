@@ -6,7 +6,7 @@ from AuthModel import AuthModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from MainModel import MainModel
-from flask import flash, current_app, g
+from flask import flash,g
 from AvispaLogging import AvispaLoggerAdapter
 
 
@@ -14,11 +14,26 @@ from AvispaLogging import AvispaLoggerAdapter
 
 class User(UserMixin):
 
-    def __init__(self, username=None, email=None, passhash=None, owner=None, location=None, url=None, profilepic=None, name=None, isOrg=False, active=True, id=None, onlogin=False, about=None):
+    def __init__(self, 
+                 username=None, 
+                 email=None, 
+                 passhash=None, 
+                 owner=None, 
+                 location=None, 
+                 url=None, 
+                 profilepic=None, 
+                 name=None, 
+                 isOrg=False, 
+                 active=True, 
+                 id=None, 
+                 onlogin=False, 
+                 about=None,
+                 tid=None,
+                 ip=None):
 
         
         logger = logging.getLogger('Avispa')
-        self.lggr = AvispaLoggerAdapter(logger, {'tid': g.get('tid', None),'ip': g.get('ip', None)})
+        self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
         self.lggr.debug('__init__()')
 
@@ -40,6 +55,16 @@ class User(UserMixin):
             self.owner = owner
         else:
             self.owner = username
+
+        
+        if isinstance(self.location, basestring):
+            self.location = self.location.lower()
+
+        if isinstance(self.meail, basestring):
+            self.email = self.email.lower()
+
+        if isinstance(self.username, basestring):
+            self.usernme = self.username.lower()
         
 
         self.ATM = AuthModel()
@@ -51,9 +76,9 @@ class User(UserMixin):
         user = {}
         # Defaults coming via self
 
-        user['username'] = self.username.lower()
-        user['email'] = self.email.lower()  
-        user['location'] = self.location.lower()  
+        user['username'] = self.username
+        user['email'] = self.email 
+        user['location'] = self.location  
         user['owner'] = self.owner 
         user['location'] = self.location
         user['url'] = self.url
@@ -163,7 +188,7 @@ class User(UserMixin):
                 MAM = MainModel()
                 if MAM.repair_user_doc(element_to_add,dbUser['value']['_id']):
                     repaired = True
-                    current_app.logger.info('Repaired '+element_to_add+'. ')
+                    self.lggr.info('Repaired '+element_to_add+'. ')
                     #flash('Repaired '+element_to_add+'. ')
 
             #Let's try again
