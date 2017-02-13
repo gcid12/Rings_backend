@@ -12,7 +12,7 @@ from AvispaLogging import AvispaLoggerAdapter
 import couchdb
 from MyRingUser import MyRingUser
 from MainModel import MainModel
-from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS, IMAGE_FOLDER_NAME
+from env_config import COUCHDB_SERVER, COUCHDB_USER, COUCHDB_PASS
 
 class AuthModel:
 
