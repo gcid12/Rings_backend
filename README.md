@@ -29,15 +29,22 @@ Tool to manually capture data into a local ring
 
 1. Clone repository
 
-2. Place env_config.py (development version) in the root. 
-   ***This config file is not included in the repository ***
+2. Install AWSCLI in your computer. 
+http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html
 
-3. from the project root, run :
+3. Configure your AWSCLI
+   - Obtain your AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from your Cloud admin.
+   - Configure your AWSCLI. Enter the access key, secret key and region (us-east-1)
+   ```
+   $ aws configure
+   ```
+
+4. from the project root, run :
 ```
 $ source life/app_dependencies_dev.sh
 ```
 
-4. Run the dev flask version 
+5. Run the dev flask version 
 ```
 $ python run.sh
 ```
