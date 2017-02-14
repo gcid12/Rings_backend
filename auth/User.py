@@ -60,7 +60,7 @@ class User(UserMixin):
         if isinstance(self.location, basestring):
             self.location = self.location.lower()
 
-        if isinstance(self.meail, basestring):
+        if isinstance(self.email, basestring):
             self.email = self.email.lower()
 
         if isinstance(self.username, basestring):
