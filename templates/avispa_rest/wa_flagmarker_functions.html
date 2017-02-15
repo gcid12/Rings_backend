@@ -5,29 +5,91 @@
         console.log(order+' '+status)
 
         var statusd = {};
-        statusd['0000'] = 'Empty'; //RED
-        statusd['1000'] = 'WIP';  //ORANGE
-        statusd['2000'] = 'OnRevision'; // YELLOW
-        statusd['3000'] = 'Returned'; // RETURNED
-        statusd['4000'] = 'Live'; // GREEN
+        statusd['0000'] = 'empty'; //EMPTY
+        statusd['0500'] = 'on hold'; //IN HOLD
+        statusd['1000'] = 'Working on this'; //WORK IN PROGRESS
+        statusd['2000'] = 'Ready for Review';
+        statusd['2500'] = 'Under Revision';
+        statusd['3000'] = 'Need work';
+        statusd['4000'] = 'Approved';
+        statusd['4500'] = 'Need update'; // FOR UPDATE AFTER APPROVE
 
 
         if(status=='0000'){
-            $('#flagmenu_'+order+'_1000').css('display','none')
-            $('#flagmenu_'+order+'_2000').css('display','none')
-            $('#flagmenu_'+order+'_3000').css('display','none')
-            $('#flagmenu_'+order+'_4000').css('display','none')
+            $('#flagmenu_'+order+'_0000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','none').removeClass('bg-flag-selected')
+        }else if(status=='0500'){
+            $('#flagmenu_'+order+'_0000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','inline').addClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','inline').removeClass('bg-flag-selected')
         }else if(status=='1000'){
-            $('#flagmenu_'+order+'_1000').css('display','none')
-            $('#flagmenu_'+order+'_2000').css('display','inline')
-            $('#flagmenu_'+order+'_3000').css('display','none')
-            $('#flagmenu_'+order+'_4000').css('display','none')
+            $('#flagmenu_'+order+'_0000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','inline').addClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','none').removeClass('bg-flag-selected')
         }else if(status=='2000'){
-            $('#flagmenu_'+order+'_1000').css('display','inline')
-            $('#flagmenu_'+order+'_2000').css('display','none')
-            $('#flagmenu_'+order+'_3000').css('display','inline')
-            $('#flagmenu_'+order+'_4000').css('display','inline')
+            $('#flagmenu_'+order+'_0000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','inline').addClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','none').removeClass('bg-flag-selected')
+        }else if(status=='2500'){
+            $('#flagmenu_'+order+'_0000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','inline').addClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','none').removeClass('bg-flag-selected')
+        }else if(status=='3000'){
+            $('#flagmenu_'+order+'_0000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','inline').addClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','none').removeClass('bg-flag-selected')
+        }else if(status=='4000'){
+            $('#flagmenu_'+order+'_0000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','inline').addClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','inline').removeClass('bg-flag-selected')
+        }else if(status=='4500'){
+            $('#flagmenu_'+order+'_0000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_0500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_1000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2000').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_2500').css('display','none').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_3000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4000').css('display','inline').removeClass('bg-flag-selected')
+            $('#flagmenu_'+order+'_4500').css('display','inline').addClass('bg-flag-selected')
         }
+
+
 
         $('#flag_'+order).val(status);  
         $('#flagmarker_'+order).removeClass().addClass('fc-'+status); 

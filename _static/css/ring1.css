@@ -157,18 +157,21 @@ filter: grayscale(100%);
 
 
 /*TAGS COLORS:*/
-.fc-0000{color: #CCC;} 
-.fc-1000{color: #f7901d;} 
-.fc-2000{color: #ffd200;} 
-.fc-3000{color: #cc0000;} 
-.fc-4000{color: #009933;} 
+.fc-0000{color: #f2f2f2;}/* Empty */
+.fc-0500{color: #666;}/* Blocked */
+.fc-1000{color: #f7901d;} /* WIP */
+.fc-2000{color: #47d1ff;} /* Ready for Revision */
+.fc-2500{color: #8a32ff;}/* Under Revision */
+.fc-3000{color: #ffe212;}/* Need Work */
+.fc-4000{color: #009933;} /* Approved */
+.fc-4500{color: #ff2791;} /* Update Needed */
 .fc-5000{color: #ccc;}
 .fc-6000{color: #ccc;}
 
 /*TAGS BACKGROUND COLORS:*/
 .bg-0000{background-color: #CCC;} 
 .bg-1000{background-color: #f26d21;} 
-.bg-2000{background-color: #ffd200;} 
+.bg-2000{background-color: #ffd200;}
 .bg-3000{background-color: #cc0000;} 
 .bg-4000{background-color: #009933;} 
 .bg-5000{background-color: #ccc;}
@@ -507,8 +510,13 @@ color:#f9e8c0 !important;
   background:linear-gradient(-60deg, #b1b2bc, #bcbcbc);
 }
 
+.bg-flag-selected{
+    background: -o-linear-gradient(-90deg, #fff, #f2f2f2);
+    background: -moz-linear-gradient(-90deg, #fff, #f2f2f2);
+    background:linear-gradient(-90deg, #fff, #f2f2f2);
+    padding: 5px 0 5px 0;
 
-
+}
 
 .bg-white{background-color: #FFF !important;}
 .bg-black{background-color: #000;}
