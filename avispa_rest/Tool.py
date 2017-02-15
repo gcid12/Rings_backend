@@ -5,7 +5,7 @@ import random
 import bcrypt
 import json
 
-from flask import flash, current_app
+from flask import flash
 from MainModel import MainModel
 from RingsModel import RingsModel
 from auth.AuthModel import AuthModel
