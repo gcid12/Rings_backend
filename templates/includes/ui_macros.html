@@ -1725,10 +1725,10 @@
 
 
 
-{% macro collec_item(image, text, link) %}
+{% macro collec_item(handle, image, text, link) %}
   
   
-    <a href="{{ link }}" class="bp-container">
+    <a href="/{{handle}}/{{ link }}" class="bp-container">
       <div>
         <img src="/_static/images/ph/{{ image }}" class="blueprint"/>
       </div>
