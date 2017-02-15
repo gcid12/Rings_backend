@@ -131,7 +131,7 @@ def login():
                             rr=urlparse.urlunparse((URL_SCHEME, o.netloc, path, '', '', ''))
                             return redirect(rr)
 
-                        elif (user.onlogin != '') or (user.onlogin is None):
+                        elif (user.onlogin != '') and (user.onlogin is not None):
                             # Custom redirect from user onlogin hook
                             # Not using url_for as we don't know what URL they are going to request
 
