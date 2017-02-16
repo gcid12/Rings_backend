@@ -1704,7 +1704,7 @@ header .navbar-ring{padding:0px; margin-top:50px; border:1px solid transparent; 
 
 
 
-.bird{background-color: yellow; color:black;}
+.bird{color:grey; font-weight: 200;}
 
 @media (max-width:768px){
 
