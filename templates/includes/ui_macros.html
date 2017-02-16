@@ -379,28 +379,18 @@
       <div class="row">
         <div class="col-xs-8 col-sm-7">
           <div class="spa10 text-left ">
-            <div class="fs-1-5">
-              <div class="spa10"></div>
-  {% if data.item %} 
-              <span class="fw-c">
-    {% for i in data.item%}  
-      {%if i[:1] != '_' and i[5:] != '_rich' %} 
-        {%if not x%}
-          {{data.item[i]|nonone}}                    
-          {%set x = True%}
-        {%endif%}
-      {%endif%}
-    {%endfor%}
-              </span>
-              <div class="fc-g fs-0-7">{{data.ring|nonone}}</div>  
-  {% else %}
-              <span class="fw-c">{{data.ring|nonone}}</span>
-  {% endif %} 
-            </div>
-  {% if data.item %} 
-  {% else%}
-            <p class="fc-m fs-0-7">{{ data.ringdescription}}</p>
-  {% endif %}     
+
+             <div class="fs-1-5">
+                <div class="spa10"></div>
+                {% if data.item %}
+                <span class="fw-a">{{data.ring|nonone}} </span>
+                <span class="fw-c">: {{data.item['_id']}}</span>
+                {% else %}
+                <span class="fw-c">{{data.ring|nonone}}</span>
+                {% endif %}
+             </div>
+             <p class="fc-m fs-0-7">{{ data.ringdescription}}</p>
+
           </div>
         </div> 
         <div class="col-xs-4 col-sm-5">
