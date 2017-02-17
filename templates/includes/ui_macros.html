@@ -595,98 +595,97 @@
         <table>
             <tr>
                 <td>
-                              <span class="handler m-10" >
-                                <i class="fa fa-bars fa-1x text-white"></i>
-                              </span>
-<<<<<<< HEAD
-                            </td>
-                            <td>
-                              <span class="label label-danger m-10 order-label-{{ FieldOrder }}">{{ FieldOrder }}</span>   
-                            </td>
-                            <td>
+                    <span class="handler m-10" >
+                        <i class="fa fa-bars fa-1x text-white"></i>
+                    </span>
+                </td>
+                <td>
+                   <span class="label label-danger m-10 order-label-{{ FieldOrder }}">{{ FieldOrder }}</span>
+                </td>
+                <td>
                   
-                            </td>
-                            <td>
-                              <select name="FieldWidget_{{ FieldOrder }}" class="form-control input-sm" style="background-color:#666; color:white;">
-                                <option value="">SELECT ONE</option>
-                                <option value="address" {% if FieldWidget == "address" %}selected=""{% endif %}>address</option>
-                                <option value="checkbox" {% if FieldWidget == "checkbox" %}selected=""{% endif %}>checkbox</option>
-                                <option value="date" {% if FieldWidget == "date" %}selected=""{% endif %}>date</option>
-                                <option value="hours" {% if FieldWidget == "hours" %}selected=""{% endif %}>hours</option>
-                                <!--option value="file" {% if FieldWidget == "file" %}selected=""{% endif %}>file</option-->
-                                <option value="images" {% if FieldWidget == "images" %}selected=""{% endif %}>images</option>
-                                <option value="items" {% if FieldWidget == "items" %}selected=""{% endif %}>items</option>
-                                <option value="location" {% if FieldWidget == "location" %}selected=""{% endif %}>location</option>
-                                <!--option value="mail" {% if FieldWidget == "mail" %}selected=""{% endif %}>mail</option-->
-                                <option value="password" {% if FieldWidget == "password" %}selected=""{% endif %}>password</option>
-                                <!--option value="phone" {% if FieldWidget == "phone" %}selected=""{% endif %}>phone</option-->
-                                <!--option value="pcode" {% if FieldWidget == "pcode" %}selected=""{% endif %}>productCode</option-->
-                                <option value="radio" {% if FieldWidget == "radio" %}selected=""{% endif %}>radio</option>
-                                <option value="select" {% if FieldWidget == "select" %}selected=""{% endif %}>select</option>
-                                <option value="social" {% if FieldWidget == "social" %}selected=""{% endif %}>social</option>
-                                <option value="text" {% if FieldWidget == "text" %}selected=""{% endif %}>text</option>
-                                <option value="text_multilang" {% if FieldWidget == "text_multilang" %}selected=""{% endif %}>text (multi-language)</option>
-                                <option value="textarea" {% if FieldWidget == "textarea" %}selected=""{% endif %}>textarea</option>
-                                <option value="textarea_multilang" {% if FieldWidget == "textarea_multilang" %}selected=""{% endif %}>textarea (multi-language)</option>
-                                <option value="url" {% if FieldWidget == "url" %}selected=""{% endif %}>url</option>
-                                <option value="text_array" {% if FieldWidget == "text_array" %}selected=""{% endif %}>text_array</option>
-                                <option value="boolean" {% if FieldWidget == "boolean" %}selected=""{% endif %}>boolean</option>
-                                <!--option value="url_flickr" {% if FieldWidget == "url_flickr" %}selected=""{% endif %}>url_flickr</option-->
-                                <!--option value="url_video" {% if FieldWidget == "url_video" %}selected=""{% endif %}>url_video</option-->
-                              </select>
-                            </td>
-                            <td>
+                </td>
+                <td>
+                      <select name="FieldWidget_{{ FieldOrder }}" class="form-control input-sm" style="background-color:#666; color:white;">
+                        <option value="">SELECT ONE</option>
+                        <option value="address" {% if FieldWidget == "address" %}selected=""{% endif %}>address</option>
+                        <option value="checkbox" {% if FieldWidget == "checkbox" %}selected=""{% endif %}>checkbox</option>
+                        <option value="date" {% if FieldWidget == "date" %}selected=""{% endif %}>date</option>
+                        <option value="hours" {% if FieldWidget == "hours" %}selected=""{% endif %}>hours</option>
+                        <!--option value="file" {% if FieldWidget == "file" %}selected=""{% endif %}>file</option-->
+                        <option value="images" {% if FieldWidget == "images" %}selected=""{% endif %}>images</option>
+                        <option value="items" {% if FieldWidget == "items" %}selected=""{% endif %}>items</option>
+                        <option value="location" {% if FieldWidget == "location" %}selected=""{% endif %}>location</option>
+                        <!--option value="mail" {% if FieldWidget == "mail" %}selected=""{% endif %}>mail</option-->
+                        <option value="password" {% if FieldWidget == "password" %}selected=""{% endif %}>password</option>
+                        <!--option value="phone" {% if FieldWidget == "phone" %}selected=""{% endif %}>phone</option-->
+                        <!--option value="pcode" {% if FieldWidget == "pcode" %}selected=""{% endif %}>productCode</option-->
+                        <option value="radio" {% if FieldWidget == "radio" %}selected=""{% endif %}>radio</option>
+                        <option value="select" {% if FieldWidget == "select" %}selected=""{% endif %}>select</option>
+                        <option value="social" {% if FieldWidget == "social" %}selected=""{% endif %}>social</option>
+                        <option value="text" {% if FieldWidget == "text" %}selected=""{% endif %}>text</option>
+                        <option value="text_multilang" {% if FieldWidget == "text_multilang" %}selected=""{% endif %}>text (multi-language)</option>
+                        <option value="textarea" {% if FieldWidget == "textarea" %}selected=""{% endif %}>textarea</option>
+                        <option value="textarea_multilang" {% if FieldWidget == "textarea_multilang" %}selected=""{% endif %}>textarea (multi-language)</option>
+                        <option value="url" {% if FieldWidget == "url" %}selected=""{% endif %}>url</option>
+                        <option value="text_array" {% if FieldWidget == "text_array" %}selected=""{% endif %}>text_array</option>
+                        <option value="boolean" {% if FieldWidget == "boolean" %}selected=""{% endif %}>boolean</option>
+                        <!--option value="url_flickr" {% if FieldWidget == "url_flickr" %}selected=""{% endif %}>url_flickr</option-->
+                        <!--option value="url_video" {% if FieldWidget == "url_video" %}selected=""{% endif %}>url_video</option-->
+                      </select>
+                </td>
+                <td>
                               <!--  <span class="fs-0-8">({{ FieldLabel }})</span> -->
-                              <input type="text" name="FieldLabel_{{ FieldOrder }}" order="{{ FieldOrder }}" name="FieldLabel_{{ FieldOrder }}" class="form-control input-sm fs-0-6 fieldlabel" value="{{ FieldLabel|nonone }}" placeholder="label"/>
+                    <input type="text" name="FieldLabel_{{ FieldOrder }}" order="{{ FieldOrder }}" name="FieldLabel_{{ FieldOrder }}" class="form-control input-sm fs-0-6 fieldlabel" value="{{ FieldLabel|nonone }}" placeholder="label"/>
                               <!-- <div class="input-group input-group-sm m-10">
                               <span class="input-group-addon" id="sizing-addon1">*Source</span>
                               <input type="text" name="FieldSource_{{ f }}" class="form-control" placeholder="source"/>
                               </div> -->
-                            </td>
-                            <td>
-                              &nbsp;
-                            </td>
-                            <td class="" style="width:40%;">
-                              <input type="text" name="FieldHint_{{ FieldOrder }}" class="form-control input-sm fs-0-6 " value="{{ FieldHint|nonone }}" placeholder="placeholder"/> 
-                            </td>
-                            <td>
-                              <span class="tog"><i class='fa fa-plus-circle portlet-toggle'></i></span>
-                            </td>
-                          </tr>
-                        </table>
-                      </div>
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td class="" style="width:40%;">
+                    <input type="text" name="FieldHint_{{ FieldOrder }}" class="form-control input-sm fs-0-6 " value="{{ FieldHint|nonone }}" placeholder="placeholder"/>
+                </td>
+                <td>
+                    <span class="tog"><i class='fa fa-plus-circle portlet-toggle'></i></span>
+                </td>
+            </tr>
+        </table>
+    </div>
                       <!-- C1 -->
-                      <div class="portlet-content">
-                        <!-- C2. DETAILS -->
-                        <div class="row">
-                          <div class="col-sm-8">
+    <div class="portlet-content">
+        <!-- C2. DETAILS -->
+        <div class="row">
+            <div class="col-sm-8">
 
-                            <span class="fc-g fs-0-8 margin-x-7">    
-                              required
-                              <input name="FieldRequired_{{ FieldOrder }}" value="1" {% if FieldRequired %} checked {% endif %} type="checkbox">
-                            </span>
+                <span class="fc-g fs-0-8 margin-x-7">
+                  required
+                  <input name="FieldRequired_{{ FieldOrder }}" value="1" {% if FieldRequired %} checked {% endif %} type="checkbox">
+                </span>
 
                 <!-- <span class="lfc-g fs-0-8 margin-x-7">
                   multilingual
                   <input name="FieldMultilingual_{{ FieldOrder }}" value="1" {% if FieldMultilingual %} checked {% endif %} type="checkbox">
                 </span>  -->
                 <span class="fc-g fs-0-8 margin-x-7">
-                              Cardinality
-                              <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
-                                <option value="Single" {% if FieldCardinality == "Single" %} selected {% endif %} >Single</option>
-                                  <option value="Multiple" {% if FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
-                              </select>   
-                            </span>
+                      Cardinality
+                      <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
+                            <option value="Single" {% if FieldCardinality == "Single" %} selected {% endif %} >Single</option>
+                            <option value="Multiple" {% if FieldCardinality == "Multiple" %} selected {% endif %} >Multiple</option>
+                      </select>
+                </span>
                 <span class="fc-g fs-0-8 margin-x-7">
                               Type 
-                              <select name="FieldType_{{ FieldOrder }}" class="fc-b">
-                                <option value="STRING" {% if FieldType == "STRING" or FieldType=="TEXT" %} selected {% endif %}>String</option>
-                                  <option value="INTEGER" {% if FieldType == "INTEGER" %} selected {% endif %}>Integer</option>
-                                  <option value="OBJECT" {% if FieldType == "OBJECT" %} selected {% endif %}>Object</option>
-                                  <option value="ARRAY" {% if FieldType == "ARRAY" %} selected {% endif %}>Array</option>
-                                  <option value="BOOLEAN" {% if FieldType == "BOOLEAN" %} selected {% endif %}>Boolean</option>
-                              </select>   
-                            </span>
+                      <select name="FieldType_{{ FieldOrder }}" class="fc-b">
+                            <option value="STRING" {% if FieldType == "STRING" or FieldType=="TEXT" %} selected {% endif %}>String</option>
+                            <option value="INTEGER" {% if FieldType == "INTEGER" %} selected {% endif %}>Integer</option>
+                            <option value="OBJECT" {% if FieldType == "OBJECT" %} selected {% endif %}>Object</option>
+                            <option value="ARRAY" {% if FieldType == "ARRAY" %} selected {% endif %}>Array</option>
+                            <option value="BOOLEAN" {% if FieldType == "BOOLEAN" %} selected {% endif %}>Boolean</option>
+                      </select>
+                </span>
             </div>
             <div class="col-sm-4">
 
@@ -760,9 +759,9 @@
         <table>
             <tr>
                 <td>
-                              <span class="handler m-10" >
-                                <i class="fa fa-bars fa-1x text-white"></i>
-                              </span>
+                      <span class="handler m-10" >
+                        <i class="fa fa-bars fa-1x text-white"></i>
+                      </span>
                 </td>
                 <td>
                     <span class="label label-danger m-10 order-label-{{ FieldOrder }}">{{ FieldOrder }}</span>
@@ -808,21 +807,21 @@
         <!-- C2. DETAILS -->
         <div class="row">
             <div class="col-sm-8">
-                            <span class="fc-g fs-0-8 margin-x-7">    
+                <span class="fc-g fs-0-8 margin-x-7">
                               required
-                              <input name="FieldRequired_{{ FieldOrder }}" value="1" type="checkbox">
-                            </span>
+                    <input name="FieldRequired_{{ FieldOrder }}" value="1" type="checkbox">
+                </span>
                 <span class="label bg-gray margin-x-7">
                               <input name="FieldMultilingual_{{ FieldOrder }}" value="TRUE" type="checkbox">
                               multilingual
-                            </span>
+                </span>
                 <span class="fc-g fs-0-8 margin-x-7">
                               Cardinality
                               <select name="FieldCardinality_{{ FieldOrder }}" class="fc-b">
                                 <option value="Single">Single</option>
                                 <option value="Multiple">Multiple</option>
                               </select>   
-                            </span>
+                </span>
                 <span class="fc-g fs-0-8 margin-x-7">
                               Type
                               <select name="FieldType_{{ FieldOrder }}" class="fc-b">
@@ -833,7 +832,7 @@
                                 <option value="BOOLEAN">Boolean</option>
                               </select> 
 
-                            </span>
+                </span>
             </div>
             <div class="col-sm-4">
                 <table>
