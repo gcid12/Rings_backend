@@ -1,39 +1,32 @@
-    <div class="form-group">
-      <label for="{{ field.FieldId }}" class="col-xs-3 col-sm-2 control-label" id="{{ field.FieldId}}">
-        {% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}
-      </label>
-      <div class="col-xs-9 col-sm-10">
-        <!-- TTTTTTTTTTT -->
-        <div id="wt_1_{{ field.FieldId}}"></div>
-        <div id="wt_2_{{ field.FieldId}}"></div>
-        <div id="wt_3_{{ field.FieldId}}"></div>
-        <div id="wt_4_{{ field.FieldId}}"></div>
-        <div id="wt_5_{{ field.FieldId}}"></div>
-        <div id="wt_6_{{ field.FieldId}}"></div>
-        <div id="wt_7_{{ field.FieldId}}"></div>
-        <div id="wt_8_{{ field.FieldId}}"></div>
-        <div id="wt_9_{{ field.FieldId}}"></div>
-        <!-- BBBBBBBBBBBBBBB -->
-        <div class="dropdown pull-right">
-          <a class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-plus"></i>&nbsp;
-            <span class="fs-0-8">Add Social</span>
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li id="wb_1_{{ field.FieldId}}"></li>
-            <li id="wb_2_{{ field.FieldId}}"></li>
-            <li id="wb_3_{{ field.FieldId}}"></li>
-            <li id="wb_4_{{ field.FieldId}}"></li>
-            <li id="wb_5_{{ field.FieldId}}"></li>
-            <li id="wb_6_{{ field.FieldId}}"></li>
-            <li id="wb_7_{{ field.FieldId}}"></li>
-            <li id="wb_8_{{ field.FieldId}}"></li>
-            <li id="wb_9_{{ field.FieldId}}"></li>
-          </ul>
-        </div>
-        <hr/>
-        <!-- HHHHHHHHHH -->
-        <input type="hidden" class="form-control input-sm flag-aware" order="{{ field.FieldOrder }}" id="hidden{{ field.FieldOrder }}" placeholder="{{ field.Hint }}" name="{{ field.FieldId }}" value='{{ data.item[field.FieldId] }}'>          
-      </div>
-    </div>
+<div class="form-group">
+  <label for="{{ field.FieldId }}" class="col-xs-3 col-sm-3 control-label" id="{{ field.FieldId}}">
+    {% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}
+  </label>
+  <div class="col-xs-9 col-sm-9" id="hidden{{ field.FieldOrder }}" name="{{ field.FieldId }}">
+    <select class="form-control flag-aware" order="{{ field.FieldOrder }}">
+      <option value="" >Please select one </option>
+      <option value="twitter" {% if data.item[field.FieldId] == 'twitter'  %} selected {% endif %} >Twitter</option>
+      <option value="facebook" {% if data.item[field.FieldId] == 'facebook' %} selected {% endif %} >Facebook</option>
+      <option value="linkedin" {% if data.item[field.FieldId] == 'linkedin' %} selected {% endif %} >Linkedin</option>
+      <option value="github" {% if data.item[field.FieldId] == 'github' %} selected {% endif %} >Github</option>
+      <option value="crunchbase" {% if data.item[field.FieldId] == 'crunchbase' %} selected {% endif %} >CrunchBase</option>
+      <option value="googleplus" {% if data.item[field.FieldId] == 'googleplus' %} selected {% endif %} >Google +</option>
+      <option value="slack" {% if data.item[field.FieldId] == 'slack' %} selected {% endif %} >Slack</option>
+      <option value="instagram" {% if data.item[field.FieldId] == 'instagram' %} selected {% endif %} >Instagram</option>
+      <option value="snapchat" {% if data.item[field.FieldId] == 'snapchat' %} selected {% endif %} >Snapchat</option>
+      <option value="youtube" {% if data.item[field.FieldId] == 'youtube' %} selected {% endif %} >YouTube</option>
+      <option value="stackoverflow" {% if data.item[field.FieldId] == 'stackoverflow' %} selected {% endif %} >StackOverflow</option>
+      <option value="producthunt" {% if data.item[field.FieldId] == 'producthunt' %} selected {% endif %} >ProductHunt</option>
+      <option value="medium" {% if data.item[field.FieldId] == 'medium' %} selected {% endif %} >Medium</option>
+      <option value="pinterest" {% if data.item[field.FieldId] == 'pinterest' %} selected {% endif %} >Pinterest</option>
+      <option value="reddit" {% if data.item[field.FieldId] == 'reddit' %} selected {% endif %} >Reddit</option>
+      <option value="souncloud" {% if data.item[field.FieldId] == 'soundcloud' %} selected {% endif %} >SoundCloud</option>
+      <option value="tumblr" {% if data.item[field.FieldId] == 'tumblr' %} selected {% endif %} >Tumblr</option>
+      <option value="flickr" {% if data.item[field.FieldId] == 'flickr' %} selected {% endif %} >Flickr</option>
+      <option value="foursquare" {% if data.item[field.FieldId] == 'foursquare' %} selected {% endif %} >Foursquare</option>
+      <option value="meetup" {% if data.item[field.FieldId] == 'meetup' %} selected {% endif %} >Meetup</option>
+      <option value="douban" {% if data.item[field.FieldId] == 'douban' %} selected {% endif %} >Douban</option>
+    </select>
+
+  </div>
+</div>
