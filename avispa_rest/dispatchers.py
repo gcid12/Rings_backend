@@ -604,9 +604,10 @@ def home_dispatcher(handle):
             data['handle_actualname'] = handle_user_doc['name']
 
             #Grab the last reference only
-            if 'profilepic' in handle_user_doc:
-                parts = handle_user_doc['profilepic'].split(',')
-                data['handle_profilepic'] = parts[-1]
+            if 'profilepic' in handle_user_doc: 
+                if handle_user_doc['profilepic']:  #Not None
+                    parts = handle_user_doc['profilepic'].split(',')
+                    data['handle_profilepic'] = parts[-1]
             else:
                 data['handle_profilepic'] = ''
 
