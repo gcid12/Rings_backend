@@ -9,10 +9,10 @@
   </div>
   <div class="row">
     <form action="" method="POST" role="form" id="register">
-      <input type="hidden" name="h" value="{{request.args.get('h')}}">
-      <input type="hidden" name="t" value="{{request.args.get('t')}}">
-      <input type="hidden" name="k" value="{{request.args.get('k')}}"> 
-      <input type="hidden" name="e" value="{{request.args.get('e')}}"> 
+      <input type="hidden" name="h" value="{{request.args.get('h','')}}">
+      <input type="hidden" name="t" value="{{request.args.get('t','')}}">
+      <input type="hidden" name="k" value="{{request.args.get('k','')}}"> 
+      <input type="hidden" name="e" value="{{request.args.get('e','')}}"> 
       <div class="col-sm-offset-1 col-sm-6">   
         <div class="box box-clear text-center" style="padding:0 50px 20px 50px;">
           <div class="alert alert-success" role="alert">
