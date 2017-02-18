@@ -383,19 +383,14 @@
                     <div class="fs-1-5">
                         <div class="spa10"></div>
                         {% if data.item %}
+                        <span class="fw-a">{{data.ring|nonone}} |  </span>
                         <span class="fw-c">
-                            {% for i in data.item%}
-                              {%if i[:1] != '_' and i[5:] != '_rich' %}
-                                {%if not x%}
-                                  {{data.item[i]|nonone}}
-                                  {%set x = True%}
-                                {%endif%}
-                              {%endif%}
-                            {%endfor%}
+                             item : {{data.item['_id']}}
                         </span>
-                        <div class="fc-g fs-0-7">{{data.ring|nonone}}</div>
+
                         {% else %}
                         <span class="fw-c">{{data.ring|nonone}}</span>
+
                         {% endif %}
                     </div>
                     {% if data.item %}
@@ -1166,22 +1161,22 @@
     {% endif %}
 
     <div class="col-sm-11 ">
-                    <span class="fc-b fs-1-2"> 
+        <span class="fc-b fs-1-2">
 
-                        {% if realname %} 
-                         <span class="text-lead fw-300 pull-left"><a href="/{{handle}}">
-                            <span class="fc-b fs-1-2 fw-c">{{ realname }}</span></a>
-                            <br/>
-                            <span class="fc-a pull-left fs-0-9">@ {{handle}}</span>
-                         </span>
+            {% if realname %}
+             <span class="text-lead fw-300 pull-left"><a href="/{{handle}}">
+                <span class="fc-b fs-1-2 fw-c">{{ realname }}</span></a>
+                <br/>
+                <span class="fc-a pull-left fs-0-9">@ {{handle}}</span>
+             </span>
 
-                        {% else %}
-                         <a href="/{{ handle }}/_orgprofile" class="nounder fc-b"> @{{ handle }}</a>
-                          
-                        {% endif %}
-                          
-                          
-                    </span>
+            {% else %}
+             <a href="/{{ handle }}/_orgprofile" class="nounder fc-b"> @{{ handle }}</a>
+
+            {% endif %}
+
+
+        </span>
     </div>
 
 </div>
