@@ -15,35 +15,33 @@ class AlgoliaSearchModel:
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
 
+        self.handle = handle
+        self.ring = ring
+
         client = algoliasearch.Client(ALGOLIA_APPLICATION_ID, ALGOLIA_ADMIN_API_KEY)
         indexname = '%-%'%(handle,ring)
         self.index = client.init_index(indexname)
 
-
-    def post_item(self,content):
-
-        r = self.index.add_object(content) 
-        return check_status(r.status_code)
-
         
-    def put_item(self,content,idx):
-
-        object_id = '<idx>'
-        r = self.index.add_object(content, object_id=idx)
-        return check_status(r.status_code)
+    def indexer(self,content,idx):
+       
+        return self.index.add_object(content, object_id=idx)
+        #return check_response_status(r.status_code)
         
 
-    def delete_item(self,idx):
+    def unindexer(self,idx):
 
         r = self.index.delete_object(self, idx)
-        return check_status(r.status_code)
+        return check_response_status(r.status_code)
 
-    def check_status(self,status)
+
+    def check_response_status(self,status)
 
         if r.status_code[0]=='2': 
             return True
         else:
             return False
+
         
 
 

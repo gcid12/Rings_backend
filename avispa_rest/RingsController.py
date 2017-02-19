@@ -644,13 +644,22 @@ class RingsController:
 
         if idx:
 
-            #Index new item in the search engine
+            #ElasticSearch : Index new item in the search engine
             try:
                 ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
                 index_result = ESM.indexer(rqurl,handle,ring,idx)
                 flash("Indexing result:%s"%index_result,'UI')
             except Exception as e:
                 flash("Item was saved but could not be updated in the index. Error:%s"%e,'ER')
+
+            #AlgoliaSearch : Index new item in the search engine
+            try: 
+                ASM = AlgoliaSearchModel(handle,ring,tid=self.tid,ip=self.ip)
+                content = self.get_a_b_c(handle,ring,idx)
+                index_result = ASM.indexer(content,idx)
+                flash("(AS) Indexing result:%s"%index_result,'UI')
+            except Exception as e:
+                flash("(AS) Item was saved but could not be updated in the index. Error:%s"%e,'ER')
 
 
 
@@ -974,17 +983,14 @@ class RingsController:
 
         layers,widgets,sources,labels,names,types = self.field_dictionaries_init(schema['fields'])
         
-        print('TYPES:',types)
-        print('NAMES:',names)
-        print('idlabel:',idlabel)
+        #print('TYPES:',types)
+        #print('NAMES:',names)
+        #print('idlabel:',idlabel)
         #Subtract item from DB
 
-        self.lggr.debug(kargs)
-
-
-        
-        preitem_result = self.RIM.get_a_b_c(handle,ring,idx)
-        
+        #self.lggr.debug(kargs)
+ 
+        preitem_result = self.RIM.get_a_b_c(handle,ring,idx)       
 
         if preitem_result:
             preitem = preitem_result  
@@ -1080,13 +1086,22 @@ class RingsController:
 
             flash("Changes saved",'UI')
 
-            #Index new changes in the search engine
+            #ElasticSearch : Index new changes in the search engine
             try:
                 ESM = ElasticSearchModel(tid=self.tid,ip=self.ip)
                 index_result = ESM.indexer(rqurl,handle,ring,idx)
                 flash("Item indexed:%s"%index_result,'UI')
             except Exception as e:
                 flash("Item was saved but could not be indexed. Error:%s"%e,'ER')
+
+            #AlgoliaSearch : Index new changes in the search engine
+            try: 
+                ASM = AlgoliaSearchModel(handle,ring,tid=self.tid,ip=self.ip)
+                content = self.get_a_b_c(handle,ring,idx)
+                index_result = ASM.indexer(content,idx)
+                flash("(AS) Indexing result:%s"%index_result,'UI')
+            except Exception as e:
+                flash("(AS) Item was saved but could not be updated in the index. Error:%s"%e,'ER')
 
 
             # Awesome , you just put the changes in the Item        
