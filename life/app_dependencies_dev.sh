@@ -25,7 +25,7 @@ pip install flask_debugtoolbar
 
 
 #echo 'Installing Avispa configuration'
-#aws s3 cp s3://myring-infra/avispa/20160730/env_config.py env_config.py
+#aws s3 cp s3://myring-infra/avispa/20170218/env_config.py env_config.py
 
 echo 'Creating avispa log folder'
 
