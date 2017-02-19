@@ -1,6 +1,6 @@
 import sys, os, time, smtplib, urlparse, random, json,logging,traceback
 from datetime import datetime
-from flask import current_app, Blueprint, render_template, abort, request, flash, redirect, url_for, g
+from flask import Blueprint, render_template, abort, request, flash, redirect, url_for
 from jinja2 import TemplateNotFound
 from app import login_manager, flask_bcrypt
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required,login_url)
@@ -42,13 +42,14 @@ def unauthorized_callback():
 def load_user(id):
     # This is called every single time when you are logged in.
     #lggr.info('xload_user id is:',str(id))
+    tid,ip = setup_log_vars()
     
     if id is None:
         redirect(url_for('avispa_auth.login',
                           _external=True,
                           _scheme=URL_SCHEME))
 
-    user = User(username=id)
+    user = User(username=id,tid=tid,ip=ip)
     user.get_user()
     if user.is_active():
         return user
@@ -87,7 +88,7 @@ def login():
 
         
         if email.strip() != '':
-            userObj = User(email=email)
+            userObj = User(email=email,tid=tid,ip=ip)
             user = userObj.get_user()
             #print("user:")
             #print(user.password)
@@ -130,7 +131,7 @@ def login():
                             rr=urlparse.urlunparse((URL_SCHEME, o.netloc, path, '', '', ''))
                             return redirect(rr)
 
-                        elif user.onlogin != '':
+                        elif (user.onlogin != '') and (user.onlogin is not None):
                             # Custom redirect from user onlogin hook
                             # Not using url_for as we don't know what URL they are going to request
 
@@ -212,7 +213,7 @@ def api_register_post():
     password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
 
     # prepare User
-    user = User(username=username,email=email,passhash=password_hash)
+    user = User(username=username,email=email,passhash=password_hash,tid=tid,ip=ip)
     lggr.debug(user)
 
 
@@ -222,7 +223,7 @@ def api_register_post():
             lggr.info('Now log in the user')
 
             #Go through regular login process
-            userObj = User(email=email)
+            userObj = User(email=email,tid=tid,ip=ip)
             userview = userObj.get_user()
             lggr.info(userObj)
     
@@ -345,7 +346,7 @@ def register_post():
     password_hash = flask_bcrypt.generate_password_hash(request.form.get('password'))
 
     # prepare User
-    user = User(username=username,email=email,passhash=password_hash)
+    user = User(username=username,email=email,passhash=password_hash,tid=tid,ip=ip)
     lggr.info(user)
 
     try:
@@ -364,7 +365,7 @@ def register_post():
         flash("unable to register with that email address",'UI')
         mpp = {'status':'KO','msg':'Unable to register with that email address'}
         flash({'f':'track','v':'_register','p':mpp},'MP')
-        current_app.logger.error("Error on registration ")
+        lggr.error("Error on registration ")
         return redirect(url_for('avispa_auth.register_get',
                                 _external=True,
                                 _scheme=URL_SCHEME))
@@ -432,7 +433,7 @@ def register_post():
 
             lggr.info('User created, now log in the user')
             #Go through regular login process
-            userObj = User(email=email)
+            userObj = User(email=email,tid=tid,ip=ip)
             userview = userObj.get_user()
             lggr.info(userObj)
 
@@ -506,9 +507,6 @@ def orgregister_get():
     lggr = setup_local_logger(tid,ip)
     
     MAM = MainModel(tid=tid,ip=ip)
-
-    #registerForm = forms.SignupForm(request.form)
-    #current_app.logger.info(request.form)
         
     data = {}
     data['image_cdn_root'] = IMAGE_CDN_ROOT
@@ -553,7 +551,7 @@ def api_orgregister_post():
     
 
     # prepare User
-    user = User(username=username,email=email,passhash='',owner=owner,isOrg=True)
+    user = User(username=username,email=email,passhash='',owner=owner,isOrg=True,tid=tid,ip=ip)
     lggr.info(user)
 
     try:
@@ -620,7 +618,9 @@ def orgregister_post():
                 profilepic=profilepic,
                 about = about,
                 name=name,
-                isOrg=True)
+                isOrg=True,
+                tid=tid,
+                ip=ip)
     lggr.info(user)
 
     try:
@@ -671,7 +671,7 @@ def forgot():
     if request.method == 'POST' and request.form.get('email'):
 
         email = request.form.get('email')
-        userObj = User(email=email)
+        userObj = User(email=email,tid=tid,ip=ip)
         user = userObj.get_user()
         lggr.info(user)
 
@@ -753,7 +753,7 @@ def forgot():
         data = {}
         data['key'] = request.args.get('k')
         data['email'] = request.args.get('e')
-        userObj = User()
+        userObj = User(tid=tid,ip=ip)
         if userObj.is_valid_password_key(data['email'],data['key']):
             lggr.info('Token authorized')
             mpp = {'status':'OK','msg':'Token authorized'}
@@ -773,7 +773,7 @@ def forgot():
          request.form.get('password') and 
          request.form.get('confirm')):
 
-        userObj = User(email=request.form.get('e'))
+        userObj = User(email=request.form.get('e'),tid=tid,ip=ip)
         user = userObj.get_user()
 
         if request.form.get('password') == request.form.get('confirm'):
@@ -875,7 +875,7 @@ def profile_post(handle):
     
     MAM = MainModel(tid=tid,ip=ip)
     
-    user = User(username=current_user.id)
+    user = User(username=current_user.id,tid=tid,ip=ip)
     if user.update_user_profile(request):
         flash('Profile updated','UI')
         mpp = {'status':'OK','msg':'Profile updated'}
@@ -945,7 +945,7 @@ def orgprofile_post(handle):
     
     MAM = MainModel(tid=tid,ip=ip)
     
-    user = User(username=handle)
+    user = User(username=handle,tid=tid,ip=ip)
     if user.update_user_profile(request):
         flash('Organization information updated','UI')
 

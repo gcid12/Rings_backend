@@ -51,36 +51,37 @@
                                             <div class="alert  alert-success alert-top" role="alert">
                                                 
                                                 <i class="fa fa-info-circle "></i> 
-                                                <span class="fs-1-2">Load a Collection for {%if data.handle_actualname %}<strong>{{ data.handle_actualname }}</strong>{%else%} this Organization {%endif%}</span>
+                                                <span class="fs-1-2">Load or create a new Collection for {%if data.handle_actualname %}<strong>{{ data.handle_actualname }}</strong>{%else%} this Organization {%endif%}</span>
 
                                             </div>
                                         </div>
 
                                         <div class="col-xs-12">
-                                            
+
                                             <a class="float-right fs-0-8 p-y-10" data-toggle="popover" title="Collection" data-content="Choosing a category define what customer questions will be sent to you. Complex organizations can have one or multiple collections. Additional categories can be added at any time"
                                              data-placement="left">  What is this <i class="fa fa-question-circle-o fa-x2"></i></a>
 
-                                            <h5 class="p-x-20 fs-0-9 fc-g"><em>Popular Collections:</em></h5>
+                                            <h5 class="p-x-20 fs-0-9 fc-g"><em>Load popular collections:</em></h5>
 
-                                            {{ ui.collec_item('co_wine.png', 'Winery', '/') }}
-                                            {{ ui.collec_item('co_museum.png', 'Museum', '/') }}
-                                            {{ ui.collec_item('co_generic.png', 'School', '/') }}
-                                            {{ ui.collec_item('co_generic.png', 'Hotel', '/') }}
-                                            {{ ui.collec_item('co_generic.png', 'Restaurant', '/') }}
-                                            {{ ui.collec_item('co_generic.png', 'Travel service', '/') }}
-                                            
-                                            
-                                            {{ ui.collec_item('co_basic.png', 'Load Basic', '/') }} 
-                                            {{ ui.collec_item('co_more.png', 'More', '/') }} 
+                                            <!--{{ ui.collec_item(data.handle,'co_wine.png', 'Winery', '/') }}-->
+                                            {{ ui.collec_item(data.handle,'co_generic.png', 'Company', '/') }}
+                                            {{ ui.collec_item(data.handle,'co_generic.png', 'Museum', '/') }}
+                                            {{ ui.collec_item(data.handle,'co_generic.png', 'School', '/') }}
+                                            {{ ui.collec_item(data.handle,'co_generic.png', 'NonProfit', '/') }}
+                                            <!--{{ ui.collec_item(data.handle,'co_generic.png', 'Restaurant', '/') }}-->
+                                            {{ ui.collec_item(data.handle,'co_generic.png', 'Travel service', '/') }}
+
+
+                                            {{ ui.collec_item(data.handle,'co_basic.png', 'Generic', '/') }}
+                                            <!--{{ ui.collec_item(data.handle,'co_more.png', 'More', '/') }}-->
 
                                         </div>
                                         <div class="col-xs-12">
                                             <hr/>
+                                            <h5 class="p-x-20 fs-0-9 fc-g"><em>Or create a new one:</em></h5>
 
-                                            
-                                            {{ ui.collec_item('co_empty.png', 'Empty', '/') }}
-                                            {{ ui.collec_item('co_add.png', 'Create New', '/{{data.handle}}/_collections?rq=post') }}
+                                            <!--{{ ui.collec_item(data.handle, 'co_empty.png', 'Empty', '/') }}-->
+                                            {{ ui.collec_item(data.handle, 'co_add.png', 'Create New', '_collections?rq=post') }}
 
                                             <div class="spa20">&nbsp;</div>
                                         </div>

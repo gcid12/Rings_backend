@@ -69,3 +69,7 @@ docs/_build/
 # CouchDB logs
 *.stderr
 *.stdout
+
+
+.idea
+

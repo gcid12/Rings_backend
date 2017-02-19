@@ -9,10 +9,10 @@
   </div>
   <div class="row">
     <form action="" method="POST" role="form" id="register">
-      <input type="hidden" name="h" value="{{request.args.get('h')}}">
-      <input type="hidden" name="t" value="{{request.args.get('t')}}">
-      <input type="hidden" name="k" value="{{request.args.get('k')}}"> 
-      <input type="hidden" name="e" value="{{request.args.get('e')}}"> 
+      <input type="hidden" name="h" value="{{request.args.get('h','')}}">
+      <input type="hidden" name="t" value="{{request.args.get('t','')}}">
+      <input type="hidden" name="k" value="{{request.args.get('k','')}}"> 
+      <input type="hidden" name="e" value="{{request.args.get('e','')}}"> 
       <div class="col-sm-offset-1 col-sm-6">   
         <div class="box box-clear text-center" style="padding:0 50px 20px 50px;">
           <div class="alert alert-success" role="alert">
@@ -21,11 +21,11 @@
             {% if 'h' in request.args and 't' in request.args  %}
             <p class="fs-1-2">You have been invited to the team <b>{{request.args.get('h')}}/{{request.args.get('t')}}</b></p>
             {% else %}
-            <p class="fs-1-2">Please complete your registration</p>
+            <p class="fs-1-2">Create personal account</p>
             {% endif %}
           </div>
           <hr/>       
-          <span class="fc-g">choose your personal username</span>
+          <span class="fc-g">choose your username</span>
           <div class="input-group input-group-md text-center">     
             <span class="input-group-addon fw-c" id="sizing-addon1"><i class="fa fa-user"></i></span>
             <input id="username" name="username" type="text" required="required" class="form-control" placeholder="username" aria-describedby="sizing-addon1">
@@ -56,28 +56,13 @@
       <div class="col-sm-4">     
         <div class="pad-x-20"> 
           <div class="spa50"></div>
-          <h4 class="fc-b">Optional: </h4>
+          <h4 class="fc-b">Note: </h4>
           <p class="text-gray fs-0-8">
-              You can also create an acount for an organization, it's free!. <span class="fc-i">An organization is any company, non-profit, school , museum, punk band, etc. </span>.</p>
+              <i class="fa fa-comment fa-1x"></i>
+              If you are creating an account for an organization or company, <span class="fc-i">please create a personal account first. Is very easy to create an Organization account in your dashboard. </span></p>
           <div class="spa20"></div>
-            <!-- OPTION 1 -->
-          <p class="fs-0-9">
-              <input type="checkbox"/><!-- CHECKBOX FAKE -->
-              <!-- <input type = radio id = "rad1" name = "org" checked ></input>  -->
-              I'll create it later <span class="fs-0-8">(super easy)</span> 
-          </p>
-          <!-- OPTION 3 -->
-          <!-- <p class="fs-0-9">
-            <input type = radio id = "rad3" name = "org" ></input>
-            I'm creating an account for an organization
-          </p> -->
-          <div id="op3" class="input-group input-group-md">    
-            <input type="text" class="form-control" placeholder="organization_name" aria-describedby="sizing-addon1">
 
-            <div id="myDIVTag" class="fs-0-8">
-              <span class=""><em>please choose a ' <strong><i class='fa fa-user'></i> username </strong> ' first. <br/>She will be the admin of this organization</em></span>
-            </div>    
-          </div>
+
         </div>
       </div>
       {%endif%} 
@@ -91,51 +76,5 @@
               mixpanel.track_forms("#register", "_register RQ sent");
             });  
         </script>
-<!-- REGISTER SCRIPTS -->
-        <script type="text/javascript">
-              $(document).ready(function() {
-                  $('#username').keyup(function() {
-                   $('#myOutputText').val($(this).val());
-                   $('#myDIVTag').html("<i class='fa fa-user'></i><span class='text-dgray fw-c'> " + $(this).val() + " </span> will be the admin.");
-                  });
-              });    
-        </script>
-        <script type="text/javascript">
-        $(document).ready(function(){
-          $("#op2").hide();
-          $("#op3").hide();
-          $("#rad1").click(function(){
-              if ($("#rad1").is(":checked")) {                  
-                  //show the hidden div
-                   $("#op1").show("slide");
-                   $("#op2").hide("fade");
-                   $("#op3").hide("fade");                  
-              }
-          });
 
-          $("#rad2").click(function(){
-
-              if ($("#rad2").is(":checked")) {
-                   
-                  //show the hidden div
-                   $("#op2").show("slide");
-                   $("#op1").hide("fade");
-                   $("#op3").hide("fade");
-                  
-              }
-          });
-
-          $("#rad3").click(function(){
-
-              if ($("#rad3").is(":checked")) {
-                   
-                  //show the hidden div
-                   $("#op3").show("slide");
-                   $("#op2").hide("fade");
-                   $("#op1").hide("fade");      
-              } 
-          });
-        });
-        </script>
-<!-- END REGISTER SCRIPTS -->
 {% endblock %}

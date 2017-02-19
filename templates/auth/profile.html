@@ -2,7 +2,7 @@
             {% block settings %}
                 <div class="gcard">
                     <div class="gcard-title bg-d">                        
-                        <span class="fc-b fs-1-2"> {{ data.user['name'] }}</span>123
+                        <span class="fc-b fs-1-2"> {{ data.user['name'] }}</span>
                         <span class="fc-b fs-1-2 fw-c"> Profile</span>             
                     </div> 
                     <div class="gcard-body p-20">             
@@ -18,43 +18,43 @@
                                 </div>
                                 <div class="col-sm-7 spa30">
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label fc-n fs-0-9">Name</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-4 control-label fc-n fs-0-9">Your name</label>
+                                        <div class="col-sm-7">
                                           <input type="text" id="name" name="name"  class="form-control input-sm" placeholder="Your Name" value="{{ data.user['name'] }}" >
                                         </div>
                                     </div>
+                                    <!--<div class="form-group">-->
+                                      <!--<label class="col-sm-2 control-label fc-n fs-0-9">Website</label>-->
+                                      <!--<div class="col-sm-10">-->
+                                          <!--<input type="text" id="url" name="url"  class="form-control input-sm" placeholder="Homepage, personal blog" value="{{ data.user['url'] }}">-->
+                                       <!--</div>-->
+                                    <!--</div>-->
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-n fs-0-9">Website</label>
-                                      <div class="col-sm-10">
-                                          <input type="text" id="url" name="url"  class="form-control input-sm" placeholder="Homepage, personal blog" value="{{ data.user['url'] }}">
-                                       </div>
-                                    </div>
-                                    <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-n fs-0-9">About</label>
-                                      <div class="col-sm-10">
-                                        <input type="text" id="about" name="about"  class="form-control input-sm" placeholder="About you" value="{{ data.user['about'] }}">
+                                      <label class="col-sm-4 control-label fc-n fs-0-9">About you</label>
+                                      <div class="col-sm-7">
+                                          <textarea id="about" name="about"  class="form-control input-sm" placeholder="Brief description">{{ data.user['about'] }}</textarea>
                                       </div>
                                     </div>
                                     <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-n fs-0-9">Location</label>
-                                      <div class="col-sm-10">
-                                        <input type="text" id="location" name="location"  class="form-control input-sm" placeholder="Where do you live" value="{{ data.user['location'] }}">
+                                      <label class="col-sm-4 control-label fc-n fs-0-9">Your location</label>
+                                      <div class="col-sm-7">
+                                        <input type="text" id="location" name="location"  class="form-control input-sm" placeholder="e.g. New York, London, Tokyo" value="{{ data.user['location'] }}">
                                       </div>
                                     </div>
-                                    <div class="form-group">
-                                      <label class="col-sm-2 control-label fc-n fs-0-9">OnLogin</label>
-                                      <div class="col-sm-4">
-                                        <input type="text" id="onlogin" name="onlogin"  class="form-control input-sm" placeholder="" value="{{ data.user['onlogin'] }}">
-                                      </div>
-                                    </div>                                  
+                                    <!--<div class="form-group">-->
+                                      <!--<label class="col-sm-2 control-label fc-n fs-0-9">OnLogin</label>-->
+                                      <!--<div class="col-sm-4">-->
+                                        <!--<input type="text" id="onlogin" name="onlogin"  class="form-control input-sm" placeholder="" value="{{ data.user['onlogin'] }}">-->
+                                      <!--</div>-->
+                                    <!--</div>                                  -->
                                 </div>
                             </div>
                              <div class="row">
                                 <div class="col-sm-offset-1 col-sm-11">
                                     <div class="rn-box-content text-right">
                                         <hr/>
-                                        <button type="submit" class="btn btn-primary btn-xs">Update</button>
-                                        <a href="/{{ data.handle }}/_home" class="btn btn-default btn-sm">Cancel</a>
+                                        <button type="submit" class="btn btn-primary btn-md">Update</button>
+                                        <a href="/{{ data.handle }}/_home" class="btn btn-default btn-md">Cancel</a>
                                     </div>
                                 </div>
                             </div>                           
