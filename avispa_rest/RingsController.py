@@ -5,6 +5,7 @@ from flask import redirect, flash,url_for
 from RingBuilder import RingBuilder
 from RingsModel import RingsModel
 from ElasticSearchModel import ElasticSearchModel
+from AlgoliaSearchModel import AlgoliaSearchModel
 from CollectionsModel import CollectionsModel
 from env_config import PREVIEW_LAYER,URL_SCHEME
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
@@ -659,6 +660,7 @@ class RingsController:
                 index_result = ASM.indexer(content,idx)
                 flash("(AS) Indexing result:%s"%index_result,'UI')
             except Exception as e:
+                self.lggr.error('(AS) Item was saved but could not be updated in the index. Error:%s'%e) 
                 flash("(AS) Item was saved but could not be updated in the index. Error:%s"%e,'ER')
 
 
@@ -1095,14 +1097,22 @@ class RingsController:
                 flash("Item was saved but could not be indexed. Error:%s"%e,'ER')
 
             #AlgoliaSearch : Index new changes in the search engine
+
+            self.lggr.info('Next: Algolia ')
+
             try: 
+                self.lggr.info('in Algolia try block ')
                 ASM = AlgoliaSearchModel(handle,ring,tid=self.tid,ip=self.ip)
                 content = self.get_a_b_c(handle,ring,idx)
                 index_result = ASM.indexer(content,idx)
-                flash("(AS) Indexing result:%s"%index_result,'UI')
+                self.lggr.info('(Algolia) Indexing result:%s'%index_result)
+                flash("(Algolia) Indexing result:%s"%index_result,'UI')
+            
+            
             except Exception as e:
-                flash("(AS) Item was saved but could not be updated in the index. Error:%s"%e,'ER')
-
+                self.lggr.error('(AS) Item was saved but could not be updated in the index. Error:%s'%e) 
+                flash("(Algolia) Item was saved but could not be updated in the index. Error:%s"%e,'ER')
+            
 
             # Awesome , you just put the changes in the Item        
             #redirect = '/'+handle+'/'+ring
