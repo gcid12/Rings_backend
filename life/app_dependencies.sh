@@ -27,6 +27,7 @@ pip install flanker
 pip install Wand
 pip install boto
 pip install supervisor
+pip install algoliasearch
 
 #echo 'Setting up supervisord'
 #Prepare supervisor config
