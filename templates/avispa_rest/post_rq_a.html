@@ -28,7 +28,7 @@
   </div>
 </div>         
 <div class="row bg-g">
-  <form class="form-horizontal" role="form" action="/{{ data.handle }}?method=post" method="POST">
+  <form class="form-horizontal" role="form" action="/{{ data.handle }}?method=post{%if data.collection %}&collection={{data.collection}}{%endif%}" method="POST">
     <div class="col-sm-offset-1 col-sm-2">
       <h2 class="fs-4 hidden-xs">1</h2> 
       <div class="spa20 visible-xs"></div>
@@ -36,10 +36,7 @@
       <p class="text-lgray"> Define name and description for this type </p>
     </div>
     <div class="col-sm-8">
-      <div class="spa20 hidden-xs"></div>
-      {%if data.collection %}
-      <input type="hidden" name="collection" value="{{data.collection}}"/>
-      {%endif%}  
+      <div class="spa20 hidden-xs"></div> 
       <div class="input-group input-group-sm">
         <span class="input-group-addon" id="sizing-addon1">Type Name</span>
         <input name="RingName" type="text" class="form-control" id="RingName" placeholder="The name of the new Ring" value="{{request.args.get('RingName')}}">

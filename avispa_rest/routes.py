@@ -403,8 +403,12 @@ def route_a(handle):
                                      _external=True,
                                      _scheme=URL_SCHEME))
 
+    if 'collection' in request.args:
+        collection = request.args.get('collection')
+    else:
+        collection = False
 
-    result = rings_dispatcher('_a',handle)
+    result = rings_dispatcher('_a',handle,collection=collection)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
