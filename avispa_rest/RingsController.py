@@ -71,7 +71,7 @@ class RingsController:
     
     def post_a(self,handle,ring,idx,api=False,collection=None,rqurl=None,rqform=None,*args,**kargs):
         ''' Creates a new ring '''
-       
+
         RB = RingBuilder(tid=self.tid,ip=self.ip)
         result = RB.post_a(rqurl,rqform,handle)
         out = {} 
@@ -90,11 +90,10 @@ class RingsController:
                     if COM.add_ring_to_collection(handle, collection,result):
                         flash(" The ring has been added to the collection.",'UI')
                         if not api:
-                            redirect = url_for('avispa_rest.collections_route_a_x_y',
-                                               handle=handle,
-                                               collection=collection,
-                                               _external=True,
-                                               _scheme=URL_SCHEME)
+                            redirect = url_for('avispa_rest.home',
+                                        handle=handle,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
                         else:
                             out['Success'] = True
                             out['Message'] = 'The ring has been added to the collection'
@@ -140,10 +139,10 @@ class RingsController:
 
                 if collection:
                     #redirect = '/'+handle+'/_collections/'+collection+'?rq=post&n='+str(len(unique))+'&'+str(recovery_string)
-                    redirect = url_for('avispa_rest.collections_route_a_x_y',
+                    redirect = url_for('avispa_rest.route_a',
                                         handle=handle,
-                                        collection=collection,
                                         rq='post',
+                                        collection=collection,
                                         n=str(len(unique)),
                                         _external=True,
                                         _scheme=URL_SCHEME,
@@ -173,6 +172,7 @@ class RingsController:
     
     def post_rq_a(self,handle,ring,idx,api=False,collection=None,*args,**kargs):
         '''Shows Ring Modeler for new ring'''
+    
         d = {'message': 'Using post_rq_a for handle '+handle , 'template':'avispa_rest/post_rq_a.html'}
         return d
 
