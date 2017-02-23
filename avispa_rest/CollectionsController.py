@@ -205,11 +205,11 @@ class CollectionsController:
             self.lggr.debug('Awesome , you just updated a Collection')
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been updated",'UI')
-            
-            redirect = url_for('avispa_rest.route_a',
-                                     handle=handle,
-                                     _external=True,
-                                     _scheme=URL_SCHEME) 
+
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME) 
 
             d = {'redirect': redirect, 'status':200}
 
@@ -225,7 +225,7 @@ class CollectionsController:
 
         collectionrings = []
         for ring in collectiond['rings']:
-            collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace('-','.'))
+            collectionrings.append(ring['handle']+'_'+ring['ringname'])
 
         
         d = {'message': 'Using Collection put_rq_a_x_y for handle '+handle , 
@@ -233,6 +233,10 @@ class CollectionsController:
              'ringlist': ringlist,
              'collectionlist': collectiond,
              'collectionrings': collectionrings}
+
+        #raise Exception('debug')
+
+        #[u'blacklabelrobot_tricoders_0.1.0', u'blacklabelrobot_pancreas_0.1.0', u'blacklabelrobot_intestino_0.1.0', u'blacklabelrobot_tricoders4_']
 
         return d
 
