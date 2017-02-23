@@ -37,46 +37,22 @@ class CollectionsModel:
 
                 if not 'deleted' in ring:
                     ringname = str(ring['ringname'])
-                    ringversion = str(ring['version'])
-                    ringversionh = ringversion
 
                     if 'origin' in ring:
                         ringorigin = str(ring['origin'])
                     else:
                         ringorigin = str(handle)
 
-                    ringorigins[ringname+'_'+ringversionh] = ringorigin 
-                    ringcounts[ringname+'_'+ringversionh] = ring['count']
-                    validring[ringname+'_'+ringversionh] = True
+                    ringorigins[ringname] = ringorigin 
+                    ringcounts[ringname] = ring['count']
 
-        
-            self.lggr.debug('BEFORE COLLECTIONS: %s'%collections)
-            
-            count_c = 0
+            #raise Exception('debug')
+          
             for coll in collections:
-                coll['valid'] = True
-                count_r = 0
-                for ring in coll['rings']:
-                    
-                    if ring['ringname']+'_'+ring['version'] not in validring:
-                        #InValid Collection, at least one of its rings is marked as deleted             
-                        coll['valid'] = False
-                        self.lggr.debug('EXCLUDING RING:',ring['ringname']+'_'+ring['version'])
-                        ring['invalid'] = True
-                        del collections[count_c]['rings'][count_r]
-
-                        #break
-                    else:
-                        ring['count'] = ringcounts[ring['ringname']+'_'+ring['version']]
-                        ring['ringorigin'] = ringorigins[ring['ringname']+'_'+ring['version']]
-
-                    count_r += 1
-
-                count_c += 1
-
-            self.lggr.debug('AFTER COLLECTIONS: %s'%collections)
-                    
-                        
+                for ring in coll['rings']:    
+                    ring['count'] = ringcounts[ring['ringname']]
+                    ring['ringorigin'] = ringorigins[ring['ringname']]
+                                
             return collections
                 
 
@@ -94,8 +70,8 @@ class CollectionsModel:
         '''Creates new collection'''
 
         doc = self.MAM.select_user(handle) 
-
-        self.lggr.debug('user_doc[colections]:',doc['collections'])
+        if 'description' not in collectiond:
+            collectiond['description'] = ''
 
         newcollection = {'collectionname' : str(collectiond['name']),
                          'collectiondescription' : str(collectiond['description']),
@@ -103,12 +79,8 @@ class CollectionsModel:
                          'rings' : collectiond['ringlist'],
                          'added' : str(datetime.now())}
 
-
-        doc['collections'].append(newcollection)
-
-        
+        doc['collections'].append(newcollection)        
         self.MAM.post_user_doc(doc)
-
         return True  
 
 
@@ -120,7 +92,7 @@ class CollectionsModel:
         try:               
             doc = self.MAM.select_user(handle) 
 
-            #self.lggr.debug('user_doc:',user_doc)
+            
 
             collections = doc['collections'] 
             rings = doc['rings']
@@ -160,7 +132,6 @@ class CollectionsModel:
     def put_a_x_y(self,handle,collectiond):
 
         doc = self.MAM.select_user(handle) 
-        self.lggr.debug('user_doc[colections]:',doc['collections'])
 
         newcollection = {'collectionname' : str(collectiond['name']),
                          'collectiondescription' : str(collectiond['description']),
@@ -172,11 +143,8 @@ class CollectionsModel:
         for coll in doc['collections']:
 
             if coll['collectionname'] ==  newcollection['collectionname']:
-                self.lggr.debug('You need to replace this', coll)
-                self.lggr.debug('For this:', newcollection)
                 #This is a match. This is what we need to replace with incoming document
                 doc['collections'][i] = newcollection
-                #self.lggr.debug('coll MOD',coll)
 
             i = i+1
 

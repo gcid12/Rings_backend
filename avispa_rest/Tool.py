@@ -4,6 +4,7 @@ import uuid
 import random
 import bcrypt
 import json
+import urlparse
 
 from flask import flash
 from MainModel import MainModel
@@ -301,3 +302,102 @@ class Tool:
         
         d = {'rq': current_user,'template':'avispa_rest/'+template+'.html'}
         return d
+
+
+    def collectionbatch(self,request,*args):
+
+        from RingsController import RingsController
+        from RingsModel import RingsModel
+        from CollectionsModel import CollectionsModel
+        from RingBuilder import RingBuilder
+
+        #Step 0 Prerequirements
+        source_handle =request.args.get("source_handle")
+        target_handle =request.args.get("target_handle")
+        collection =request.args.get("collection")
+        rqurl=request.url
+
+        print(rqurl)
+
+        #Step 1 Get collection with list of its Rings
+        #INPUT: source_handle,collection
+        #OUTPUT: collectiond
+        COM = CollectionsModel()
+        collectiond = COM.get_a_x_y(source_handle,collection)
+
+        print(collectiond)
+
+        #Step 2 Get ringlist from source_handle
+        #INPUT: source_handle
+        #OUTPUT: ringlist
+        RIM = RingsModel()
+        ringlist = RIM.user_get_rings(source_handle)
+
+        print(ringlist)
+
+        
+        #Step 3 Verify that origin source_handle has all the rings needed
+        #INPUT: collectiond,ringlist
+        #RETURN: collectiond_verified
+
+        existing_rings = []
+        collectiond_verified = {}
+        for rr in ringlist:
+            existing_rings.append(rr['ringname'])
+            
+        rings_verified=[] 
+        for ring in collectiond['rings']:               
+            if ring['ringname'] in existing_rings:
+                ring['handle'] = target_handle
+                rings_verified.append(ring)
+
+        collectiond_verified['rings'] = rings_verified
+
+        print(collectiond_verified['rings'])
+
+
+        #Step 4  Clone all the rings in target_handle
+        #INPUT: baseurl,target_handle, collectiond_verified
+        #RETURN: collectiond_built
+
+        RB = RingBuilder()
+
+        o1 = urlparse.urlparse(rqurl)
+        rings_built = []
+        collectiond_built = {}
+
+        for ring in collectiond_verified['rings']:
+
+            path = '%s/%s'%(source_handle,ring['ringname'])
+            ringurl = urlparse.urlunparse((o1.scheme, o1.netloc, path, '', '', ''))
+            rqform={'ringurl': ringurl}
+
+            ring_post_result = RB.post_a(rqurl,rqform,target_handle)
+
+            if ring_post_result:
+                ring['handle'] = target_handle
+                rings_built.append(ring)
+
+        collectiond_built['rings'] = rings_built
+
+        print(collectiond_built['rings'])
+ 
+
+        #Step 5 Build the collection
+        #INPUT: target_handle,collectiond_built
+        #RETURN: <success>
+
+        COM = CollectionsModel()
+        #collectiond['ringlist'] = collectiond_built['rings']
+        collectiond['ringlist'] = collectiond_verified['rings']  #Build collection no matter what
+        collectiond['name'] = collectiond['collectionname']
+        collection_post_result = COM.post_a_x(target_handle,collectiond)
+
+        print(collectiond)
+        print(collection_post_result)
+
+        #Step 7 Verify
+        data={'raw':collectiond} 
+        d = {'data': data,'template':'base_raw.html'}
+        return d
+

@@ -24,18 +24,17 @@ class CollectionsController:
         'Show list of collections'
      
         collectionlist = self.COM.get_a_x(handle)
-        #self.lggr.debug('collectionlist:%s'%collectionlist)
 
         count = 0
         if collectionlist:          
             for collection in collectionlist:
-                if collection['valid']:
-                    count = count + 1
-            
+                count = count + 1          
         else:
             collectionlist = []
 
         collectionlistlen = count
+
+        #raise Exception("Debug")
 
         d = {'template':'avispa_rest/get_a_x.html', 'collectionlist':collectionlist, 'collectionlistlen':collectionlistlen}
         return d
@@ -224,8 +223,6 @@ class CollectionsController:
         ringlist = self.RIM.user_get_rings(handle)
         collectiond = self.COM.get_a_x_y(handle,collection) #It comes with just one collection
 
-        self.lggr.debug('collectiond:%s'%collectiond)
-
         collectionrings = []
         for ring in collectiond['rings']:
             collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace('-','.'))
@@ -236,8 +233,6 @@ class CollectionsController:
              'ringlist': ringlist,
              'collectionlist': collectiond,
              'collectionrings': collectionrings}
-
-        self.lggr.debug("d:%s"%d)
 
         return d
 
