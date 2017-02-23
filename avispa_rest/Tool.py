@@ -314,7 +314,8 @@ class Tool:
         #Step 0 Prerequirements
         source_handle =request.args.get("source_handle")
         target_handle =request.args.get("target_handle")
-        collection =request.args.get("collection")
+        source_collection =request.args.get("source_collection")
+        target_collection =request.args.get("target_collection")
         rqurl=request.url
 
         print(rqurl)
@@ -323,7 +324,7 @@ class Tool:
         #INPUT: source_handle,collection
         #OUTPUT: collectiond
         COM = CollectionsModel()
-        collectiond = COM.get_a_x_y(source_handle,collection)
+        collectiond = COM.get_a_x_y(source_handle,source_collection)
 
         print(collectiond)
 
@@ -351,12 +352,18 @@ class Tool:
                 ring['handle'] = target_handle
                 rings_verified.append(ring)
 
-        collectiond_verified['rings'] = rings_verified
 
-        print(collectiond_verified['rings'])
+        #Step 4 Check if a collection with that name already exists at the target_handle
+        #INPUT: target_handle,collection
+        #OUTPUT: <success>
+        COM = CollectionsModel()
+        collectionlist = COM.get_a_x(target_handle)
+        for c in collectionlist:
+            if c['collectionname'] == target_collection:
+                raise Exception('Collection Name Already in use, use another one')
 
 
-        #Step 4  Clone all the rings in target_handle
+        #Step 5  Clone all the rings in target_handle
         #INPUT: baseurl,target_handle, collectiond_verified
         #RETURN: collectiond_built
 
@@ -366,7 +373,7 @@ class Tool:
         rings_built = []
         collectiond_built = {}
 
-        for ring in collectiond_verified['rings']:
+        for ring in rings_verified:
 
             path = '%s/%s'%(source_handle,ring['ringname'])
             ringurl = urlparse.urlunparse((o1.scheme, o1.netloc, path, '', '', ''))
@@ -378,19 +385,18 @@ class Tool:
                 ring['handle'] = target_handle
                 rings_built.append(ring)
 
-        collectiond_built['rings'] = rings_built
 
-        print(collectiond_built['rings'])
+
  
 
-        #Step 5 Build the collection
-        #INPUT: target_handle,collectiond_built
+        #Step 6 Build the collection
+        #INPUT: target_handle,target_collection,rings_verified
         #RETURN: <success>
 
         COM = CollectionsModel()
         #collectiond['ringlist'] = collectiond_built['rings']
-        collectiond['ringlist'] = collectiond_verified['rings']  #Build collection no matter what
-        collectiond['name'] = collectiond['collectionname']
+        collectiond['ringlist'] = rings_verified  #Build collection no matter what
+        collectiond['name'] = target_collection
         collection_post_result = COM.post_a_x(target_handle,collectiond)
 
         print(collectiond)
