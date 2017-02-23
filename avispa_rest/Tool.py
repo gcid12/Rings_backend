@@ -6,13 +6,14 @@ import bcrypt
 import json
 import urlparse
 
-from flask import flash
+from flask import flash,url_for
 from MainModel import MainModel
 from RingsModel import RingsModel
 from auth.AuthModel import AuthModel
 from Upload import Upload
 from RingsSchema import RingsSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+from env_config import URL_SCHEME
 
 class Tool:
 
@@ -336,7 +337,6 @@ class Tool:
 
         print(ringlist)
 
-        
         #Step 3 Verify that origin source_handle has all the rings needed
         #INPUT: collectiond,ringlist
         #RETURN: collectiond_verified
@@ -386,9 +386,6 @@ class Tool:
                 rings_built.append(ring)
 
 
-
- 
-
         #Step 6 Build the collection
         #INPUT: target_handle,target_collection,rings_verified
         #RETURN: <success>
@@ -399,11 +396,13 @@ class Tool:
         collectiond['name'] = target_collection
         collection_post_result = COM.post_a_x(target_handle,collectiond)
 
-        print(collectiond)
-        print(collection_post_result)
+        #Step 7 Redirect
 
-        #Step 7 Verify
-        data={'raw':collectiond} 
-        d = {'data': data,'template':'base_raw.html'}
-        return d
+        redirect = url_for('avispa_rest.home',
+                                        handle=target_handle,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
+
+        return {'redirect': redirect, 'status':200}
+
 
