@@ -662,9 +662,10 @@ def home_dispatcher(handle):
             #This is a regular user
          
             data['organizations'] = MAM.user_orgs(handle)
+
             data['template'] = 'avispa_rest/userhome.html'
 
-            
+            '''
             #data['collections'] = {}
             #data['collections']['collectionlistlen'] = 1
             #data['collections']['collectionlist'] = []
@@ -679,8 +680,7 @@ def home_dispatcher(handle):
                     #cd['collectionlist'].append(collection_dict)
                     #data['collections'] = cd
                     data['collections']['collectionlist'].append(collection_dict)
-            #raise
-
+            '''
      
         return render_template(data['template'], data=data)
 
