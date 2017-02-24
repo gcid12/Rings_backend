@@ -75,11 +75,11 @@
                                   </td>
 
                                   <td>
-                                      <a tabindex="0" class="nounder fs-0-8" data-toggle="popover" data-trigger="focus" title="{{ data.handle }}/{{ring.ringname}}" data-content=" {{ring.ringdescription}} [ version: {{ring.ringversionh}} ]">{{ data.handle }}/{{ring.ringname}}</a>
+                                      <a tabindex="0" class="nounder fs-0-8" data-toggle="popover" data-trigger="focus" title="{{ data.handle }}/{{ring.ringname}}" data-content=" {{ring.ringdescription}}">{{ data.handle }}/{{ring.ringname}}</a>
 
                                   </td>
                                   <td>
-                                      <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}_{{ring.ringversionh}}' {% if data.handle+'_'+ring.ringname+'_'+ring.ringversionh in data.collectionrings %} checked {% endif %}/> 
+                                      <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}' {% if data.handle+'_'+ring.ringname in data.collectionrings %} checked {% endif %}/> 
                                   </td>
                                 
                             </tr>

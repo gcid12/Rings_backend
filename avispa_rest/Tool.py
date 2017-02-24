@@ -4,14 +4,16 @@ import uuid
 import random
 import bcrypt
 import json
+import urlparse
 
-from flask import flash
+from flask import flash,url_for
 from MainModel import MainModel
 from RingsModel import RingsModel
 from auth.AuthModel import AuthModel
 from Upload import Upload
 from RingsSchema import RingsSchema
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
+from env_config import URL_SCHEME
 
 class Tool:
 
@@ -301,3 +303,106 @@ class Tool:
         
         d = {'rq': current_user,'template':'avispa_rest/'+template+'.html'}
         return d
+
+
+    def collectionbatch(self,request,*args):
+
+        from RingsController import RingsController
+        from RingsModel import RingsModel
+        from CollectionsModel import CollectionsModel
+        from RingBuilder import RingBuilder
+
+        #Step 0 Prerequirements
+        source_handle =request.args.get("source_handle")
+        target_handle =request.args.get("target_handle")
+        source_collection =request.args.get("source_collection")
+        target_collection =request.args.get("target_collection")
+        rqurl=request.url
+
+        print(rqurl)
+
+        #Step 1 Get collection with list of its Rings
+        #INPUT: source_handle,collection
+        #OUTPUT: collectiond
+        COM = CollectionsModel()
+        collectiond = COM.get_a_x_y(source_handle,source_collection)
+
+        print(collectiond)
+
+        #Step 2 Get ringlist from source_handle
+        #INPUT: source_handle
+        #OUTPUT: ringlist
+        RIM = RingsModel()
+        ringlist = RIM.user_get_rings(source_handle)
+
+        print(ringlist)
+
+        #Step 3 Verify that origin source_handle has all the rings needed
+        #INPUT: collectiond,ringlist
+        #RETURN: collectiond_verified
+
+        existing_rings = []
+        collectiond_verified = {}
+        for rr in ringlist:
+            existing_rings.append(rr['ringname'])
+            
+        rings_verified=[] 
+        for ring in collectiond['rings']:               
+            if ring['ringname'] in existing_rings:
+                ring['handle'] = target_handle
+                rings_verified.append(ring)
+
+
+        #Step 4 Check if a collection with that name already exists at the target_handle
+        #INPUT: target_handle,collection
+        #OUTPUT: <success>
+        COM = CollectionsModel()
+        collectionlist = COM.get_a_x(target_handle)
+        for c in collectionlist:
+            if c['collectionname'] == target_collection:
+                raise Exception('Collection Name Already in use, use another one')
+
+
+        #Step 5  Clone all the rings in target_handle
+        #INPUT: baseurl,target_handle, collectiond_verified
+        #RETURN: collectiond_built
+
+        RB = RingBuilder()
+
+        o1 = urlparse.urlparse(rqurl)
+        rings_built = []
+        collectiond_built = {}
+
+        for ring in rings_verified:
+
+            path = '%s/%s'%(source_handle,ring['ringname'])
+            ringurl = urlparse.urlunparse((o1.scheme, o1.netloc, path, '', '', ''))
+            rqform={'ringurl': ringurl}
+
+            ring_post_result = RB.post_a(rqurl,rqform,target_handle)
+
+            if ring_post_result:
+                ring['handle'] = target_handle
+                rings_built.append(ring)
+
+
+        #Step 6 Build the collection
+        #INPUT: target_handle,target_collection,rings_verified
+        #RETURN: <success>
+
+        COM = CollectionsModel()
+        #collectiond['ringlist'] = collectiond_built['rings']
+        collectiond['ringlist'] = rings_verified  #Build collection no matter what
+        collectiond['name'] = target_collection
+        collection_post_result = COM.post_a_x(target_handle,collectiond)
+
+        #Step 7 Redirect
+
+        redirect = url_for('avispa_rest.home',
+                                        handle=target_handle,
+                                        _external=True,
+                                        _scheme=URL_SCHEME)
+
+        return {'redirect': redirect, 'status':200}
+
+
