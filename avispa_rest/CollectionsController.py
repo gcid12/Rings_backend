@@ -24,18 +24,17 @@ class CollectionsController:
         'Show list of collections'
      
         collectionlist = self.COM.get_a_x(handle)
-        #self.lggr.debug('collectionlist:%s'%collectionlist)
 
         count = 0
         if collectionlist:          
             for collection in collectionlist:
-                if collection['valid']:
-                    count = count + 1
-            
+                count = count + 1          
         else:
             collectionlist = []
 
         collectionlistlen = count
+
+        #raise Exception("Debug")
 
         d = {'template':'avispa_rest/get_a_x.html', 'collectionlist':collectionlist, 'collectionlistlen':collectionlistlen}
         return d
@@ -206,11 +205,11 @@ class CollectionsController:
             self.lggr.debug('Awesome , you just updated a Collection')
             #msg = 'Item put with id: '+idx
             flash("Your Collection has been updated",'UI')
-            
-            redirect = url_for('avispa_rest.route_a',
-                                     handle=handle,
-                                     _external=True,
-                                     _scheme=URL_SCHEME) 
+
+            redirect = url_for('avispa_rest.home',
+                                handle=handle,
+                                _external=True,
+                                _scheme=URL_SCHEME) 
 
             d = {'redirect': redirect, 'status':200}
 
@@ -224,11 +223,9 @@ class CollectionsController:
         ringlist = self.RIM.user_get_rings(handle)
         collectiond = self.COM.get_a_x_y(handle,collection) #It comes with just one collection
 
-        self.lggr.debug('collectiond:%s'%collectiond)
-
         collectionrings = []
         for ring in collectiond['rings']:
-            collectionrings.append(ring['handle']+'_'+ring['ringname']+'_'+ring['version'].replace('-','.'))
+            collectionrings.append(ring['handle']+'_'+ring['ringname'])
 
         
         d = {'message': 'Using Collection put_rq_a_x_y for handle '+handle , 
@@ -237,7 +234,9 @@ class CollectionsController:
              'collectionlist': collectiond,
              'collectionrings': collectionrings}
 
-        self.lggr.debug("d:%s"%d)
+        #raise Exception('debug')
+
+        #[u'blacklabelrobot_tricoders_0.1.0', u'blacklabelrobot_pancreas_0.1.0', u'blacklabelrobot_intestino_0.1.0', u'blacklabelrobot_tricoders4_']
 
         return d
 
