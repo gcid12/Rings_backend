@@ -314,6 +314,11 @@ class AuthModel:
                             x['name']=doc.name;
                         }
 
+                        x['location']=''
+                        if(doc.location){
+                            x['location']=doc.location;
+                        }
+
                         x['profilepic']='';     
                         if(doc.profilepic){
                             if(doc.profilepic===''){
@@ -326,10 +331,6 @@ class AuthModel:
                                   x['profilepic'] = parts[0];
                                 }
                             }
-                        }
-
-                        if(doc.collections){
-                            x['collections'] = doc.collections;
                         }
 
                         for (var key in doc.people){

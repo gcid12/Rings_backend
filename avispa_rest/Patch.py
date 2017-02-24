@@ -928,6 +928,8 @@ class Patch:
         This patch regenerates all the user views
         In this case it will add orgs/invitations
         Run it once per system 
+
+        http://0.0.0.0/_patch/p20150612
         '''
 
         from auth.AuthModel import AuthModel
