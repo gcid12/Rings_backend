@@ -47,11 +47,22 @@ class PeopleModel:
         
         doc = self.MAM.select_user(handle)
 
-        counter = 0
-        for p in doc['people']:
-            if p['handle'] == person:
-                del doc['people'][counter]
-            counter += 1
+        #Delete user from _people pool
+        m = 0
+        for people in doc['people']:
+            if people['handle'] == person:
+                del doc['people'][m]                
+            m += 1
+
+        #Delete user from all the teams it belongs too in this org (if any)
+        n = 0  
+        for team in doc['teams']: 
+            p = 0 
+            for m in team['members']:               
+                if m['handle'] == person: 
+                    del doc['teams'][n]['members'][p]
+                p += 1
+            n += 1
 
         return self.MAM.post_user_doc(doc)
 
