@@ -5,8 +5,8 @@ from AvispaLogging import AvispaLoggerAdapter
 from flask import render_template,request,make_response,url_for
 from RingsController import RingsController
 from CollectionsController import CollectionsController
-from PeopleCollection import PeopleCollection
-from TeamsCollection import TeamsCollection
+from PeopleController import PeopleController
+from TeamsController import TeamsController
 from Tool import Tool
 from Patch import Patch
 from ElasticSearchModel import ElasticSearchModel
@@ -988,7 +988,7 @@ def people_dispatcher(route,handle,person=None):
 
 
 
-def teams_dispatcher(route,handle,team=None):
+def teams_dispatcher(route,handle,team=None,member=None,ring=None):
 
     tid,ip = setup_log_vars()
     lggr = setup_local_logger(tid,ip)
