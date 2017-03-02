@@ -222,7 +222,52 @@ def teams_a_m(handle):
 #The home of user <handle>
 def teams_a_m_n(handle,team):
 
-    result = teams_dispatcher('_a_m_n',handle,team)
+    result = teams_dispatcher('_a_m_n',handle,team=team)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_teams/<team>/_people', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def teams_a_m_n_p(handle,team):
+
+    result = teams_dispatcher('_a_m_n_p',handle,team=team)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_teams/<team>/_people/<member>', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def teams_a_m_n_p_q(handle,team,member):
+
+    result = teams_dispatcher('_a_m_n_p_q',handle,team=team,member=member)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+
+@avispa_rest.route('/<handle>/_teams/<team>/_rings', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def teams_a_m_n_r(handle,team):
+
+    result = teams_dispatcher('_a_m_n_r',handle,team=team)
+ 
+    if 'redirect' in result:
+        return redirect(result['redirect'])        
+    else:
+        return result
+
+@avispa_rest.route('/<handle>/_teams/<team>/_rings/<ring>', methods=['GET','POST','PUT','PATCH','DELETE'])
+#The home of user <handle>
+def teams_a_m_n_r_b(handle,team,ring):
+
+    result = teams_dispatcher('_a_m_n_r_b',handle,team,ring=ring)
  
     if 'redirect' in result:
         return redirect(result['redirect'])        
