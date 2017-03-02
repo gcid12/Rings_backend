@@ -8,7 +8,7 @@ from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
 
-class PeopleCollection:
+class PeopleController:
 
     def __init__(self,tid=None,ip=None):
         

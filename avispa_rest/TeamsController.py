@@ -13,7 +13,7 @@ from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
 
-class TeamsCollection:
+class TeamsController:
 
     def __init__(self,tid=None,ip=None):
 
@@ -226,10 +226,44 @@ class TeamsCollection:
 
         return d
 
+    def post_a_m_n_p(self,handle,team,rqform):
+        member = rqform.get('newmember')
+        if self.TEM.post_a_m_n_members(handle,team,member):
+            self.lggr.debug('%s has been added to the team.'%member)
+            flash('%s has been added to the team.'%member,'UI')
+        else:
+            self.lggr.debug('%s is already part of this team.'%member)
+            flash('%s is already part of this team.'%member,'UI')
+
+    def delete_a_m_n_p_q(self,handle,team,member):
+        if self.TEM.delete_a_m_n_members(handle,team,member):
+            self.lggr.debug('%s has been deleted from the team.'%member)
+            flash('%s has been deleted from the team.'%member,'UI')
+        else:
+            self.lggr.error('There was an issue deleting: %s'%member)
+            flash('There was an issue deleting: %s'%member,'UI')
+
+    def post_a_m_n_r(self,handle,team,rqform):
+        ring = rqform.get('newring')
+        if self.TEM.post_a_m_n_rings(handle,team,ring):
+            self.lggr.debug('%s has been added to the team.'%ring)
+            flash('%s has been added to the team.'%ring,'UI')
+        else:
+            self.lggr.error('%s already  exists in this team.'%ring)
+            flash('%s already  exists in this team.'%ring,'UI') 
+
+    def delete_a_m_n_r_b(self,handle,team,ring):
+        if self.TEM.delete_a_m_n_rings(handle,team,ring):
+            self.lggr.debug('%s has been deleted from the team.'%ring)
+            flash('%s has been deleted from the team.'%ring,'UI')
+        else:
+            self.lggr.error('There was an issue deleting: %s'%ring)
+            flash('There was an issue deleting: %s'%ring,'UI')
+
 
         #DELETE /a/b
     def delete_a_m_n(self,handle,team,*args,**kargs):
-        #Will delete an existing person
+        #Will delete an existing team
         self.lggr.debug('Trying to delete the following team: %s'%team)
 
         d = {}
