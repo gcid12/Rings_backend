@@ -5,15 +5,15 @@
       <div class="col-xs-12 col-sm-9">
 
          <div class="btn-group confirm-active" data-toggle="buttons">
-          <label class="btn btn-sm btn-default {% if data.item[field.FieldId]|nonone == 'true' %} {% elif data.item[field.FieldId]|nonone == 'false' %} {%else%} active {% endif %}">
+          <label class="btn btn-xs btn-default {% if data.item[field.FieldId]|nonone == 'true' %} {% elif data.item[field.FieldId]|nonone == 'false' %} {%else%} active{% endif %}">
               <input id="input_{{ field.FieldId }}" type="radio" name="{{ field.FieldId }}"
                      value="" class="flag-aware"> Unknown
           </label>
-          <label class="btn btn-sm btn-default {% if data.item[field.FieldId]|nonone == 'true'  %} active {% endif %}" >
+          <label class="btn btn-xs btn-default {% if data.item[field.FieldId]|nonone == 'true'  %} active {% endif %}" >
               <input id="input_{{ field.FieldId }}" type="radio" class="flag-aware" name="{{ field.FieldId }}"
                      value="true" > Yes
           </label>
-          <label class="btn btn-sm btn-default {% if data.item[field.FieldId]|nonone == 'false'  %} active {% endif %}">
+          <label class="btn btn-xs btn-default {% if data.item[field.FieldId]|nonone == 'false'  %} active {% endif %}">
               <input id="input_{{ field.FieldId }}" type="radio" class="flag-aware" name="{{ field.FieldId }}"
                      value="false" > No
           </label>
