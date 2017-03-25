@@ -47,11 +47,14 @@ class CollectionsModel:
                     ringcounts[ringname] = ring['count']
 
             #raise Exception('debug')
+            self.lggr.info(ringcounts)
           
             for coll in collections:
-                for ring in coll['rings']:    
-                    ring['count'] = ringcounts[ring['ringname']]
-                    ring['ringorigin'] = ringorigins[ring['ringname']]
+                for ring in coll['rings']: 
+                    if ring['ringname'] in ringcounts:   
+                        ring['count'] = ringcounts[ring['ringname']]
+                    if ring['ringname'] in ringorigins:
+                        ring['ringorigin'] = ringorigins[ring['ringname']]
                                 
             return collections
                 
