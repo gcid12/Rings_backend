@@ -95,8 +95,6 @@ class CollectionsModel:
         try:               
             doc = self.MAM.select_user(handle) 
 
-            
-
             collections = doc['collections'] 
             rings = doc['rings']
             
@@ -105,9 +103,7 @@ class CollectionsModel:
             for ring in rings:   
                 if not 'deleted' in ring:
                     ringname = str(ring['ringname'])
-                    ringversion = str(ring['version'])
-                    ringversionh = ringversion.replace('-','.')
-                    validring[ringname+'_'+ringversionh] = ring['count']
+                    validring[ringname] = ring['count']
 
             for coll in collections:
                 #coll['valid'] = True
@@ -115,8 +111,8 @@ class CollectionsModel:
                     
                     #coll['valid'] = True
                     for ring in coll['rings']:       
-                        if ring['ringname']+'_'+ring['version'] in validring:
-                            ring['count'] = validring[ring['ringname']+'_'+ring['version']]
+                        if ring['ringname'] in validring:
+                            ring['count'] = validring[ring['ringname']]
                         else:
                             pass
                             #InValid Collection, at least one of its rings is marked as deleted             
