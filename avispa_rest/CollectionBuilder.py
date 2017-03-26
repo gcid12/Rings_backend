@@ -43,7 +43,6 @@ class CollectionBuilder:
                     vparts = value.split('_')
                     ring['handle'] = vparts[0]
                     ring['ringname'] = '_'.join(vparts[1:])
-                    ring['version'] = vparts[-1].replace('.','-')
                     # Will implement this later. Layer is to separate from primary and secondary rings
                     ring['layer'] = 1 
                     ringlist.append(ring)
@@ -78,11 +77,11 @@ class CollectionBuilder:
             for p in rqform:
                 pparts = p.split('_')
                 ring = {}
-                if pparts[0] == 'ring':
+                if pparts[0] == 'ring' and pparts[1]:
                     value = rqform.get(p)
                     vparts = value.split('_')
                     ring['handle'] = vparts[0]
-                    ring['ringname'] = vparts[1]
+                    ring['ringname'] = '_'.join(vparts[1:])
                     # Will implement layer later. This is to separate from primary and secondary rings
                     ring['layer'] = 1 
                     ringlist.append(ring)
