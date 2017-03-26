@@ -89,7 +89,7 @@ class CollectionsModel:
 
     #COLLECTIONSMODEL
     def get_a_x_y(self,handle,collection):
-        # DEPRECATED
+        #Not used directly, but used by put_rq_a_x_y to return collection details
         #Returns just one collection
 
         try:               

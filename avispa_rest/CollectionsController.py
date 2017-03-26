@@ -165,7 +165,7 @@ class CollectionsController:
     
     #GET /a/x/y
     def get_a_x_y(self,handle,collection,idx,api=False,*args,**kargs):
-        #THIS IS NOT USED . SEE RingsController.get_a() instead 
+        #THIS IS NOT USED . SEE CollectionsController.put_rq_a_x_y() instead 
 
         d = {'message': 'Using Collection get_a_x_y for handle '+handle , 'template':'avispa_rest/get_a.html'}
         return d
