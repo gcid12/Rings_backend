@@ -242,7 +242,7 @@ class RingsModel:
         return data
 
 
-    #REFACTORED
+    #PROTOTYPE NOT IN USE
     def user_get_rings_mongodb(self,handle):
         '''
         @MONGODB:
@@ -665,7 +665,7 @@ class RingsModel:
         
         return False
 
-
+    #NOT IN USE
     def user_hard_delete_ring(self,handle,ringname,ringversion):
         '''
         Delete ring from DB 

@@ -496,12 +496,3 @@ class RingBuilder:
         # Collect all the 'Field*' fields
 
         return True
-
-
-
-
-    #def _createnew_db(self,ringname):
-
-
-
-
