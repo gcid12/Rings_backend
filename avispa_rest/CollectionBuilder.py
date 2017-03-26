@@ -78,7 +78,7 @@ class CollectionBuilder:
             for p in rqform:
                 pparts = p.split('_')
                 ring = {}
-                if pparts[0] == 'ring' and pparts[1]:
+                if pparts[0] == 'ring':
                     value = rqform.get(p)
                     vparts = value.split('_')
                     ring['handle'] = vparts[0]
