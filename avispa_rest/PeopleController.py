@@ -4,6 +4,7 @@ from flask import redirect,flash,url_for
 
 from MainModel import MainModel
 from PeopleModel import PeopleModel
+from TeamsModel import TeamsModel
 from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
@@ -14,10 +15,10 @@ class PeopleController:
         
         logger = logging.getLogger('Avispa')
         self.lggr = AvispaLoggerAdapter(logger, {'tid': tid,'ip': ip})
-        
-        
+               
         self.MAM = MainModel(tid=tid,ip=ip)
         self.PEM = PeopleModel(tid=tid,ip=ip)
+        self.TEM = TeamsModel(tid=tid,ip=ip)
         
     # GET/a
     def get_a_p(self,handle,person,*args,**kargs):
@@ -35,8 +36,8 @@ class PeopleController:
                 person_user_doc = self.MAM.select_user_doc_view('auth/userbasic',person['handle'])
                 if person_user_doc:
                     person['thumbnail'] = person_user_doc['profilepic']
-
-                    #d['peoplethumbnails'][person['handle']] = person_user_doc['profilepic']
+                    person['memberships'] = self.TEM.get_a_m_all_p_q(handle,person['handle'])
+                
 
             
             d['template'] = 'avispa_rest/get_a_p.html'

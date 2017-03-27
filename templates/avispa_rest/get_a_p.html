@@ -59,6 +59,7 @@
 
                     <tr class=" fs-0-6">        
                         <th>Name</th>
+                        <th>Teams @{{ data.handle|lower() }}</th>
                         <th>Role @{{ data.handle|lower() }}</th>
                         <th class="hidden-xs">Added </th>
                         <th>Actions</th>
@@ -76,6 +77,7 @@
                                     {{ person.handle }}
                                 </a>
                             </td>
+                            <td>{{ person.memberships }}</td>
                             <td>
                                 <span class="badge bg-d fs-0-6 ">collaborator</span>
                                 
