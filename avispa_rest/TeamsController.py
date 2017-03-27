@@ -173,7 +173,8 @@ class TeamsController:
                                 _scheme=URL_SCHEME)         
      
         return d
-
+    
+    #DEPRECATED 
     def put_a_m_n(self,handle,team,rqform=None,rqargs=None,*args,**kargs):
 
         #This function should be refactored into multiple functions that obey RESTFUL:
@@ -227,6 +228,7 @@ class TeamsController:
         return d
 
     def post_a_m_n_p(self,handle,team,rqform):
+        d = {}
         member = rqform.get('newmember')
         if self.TEM.post_a_m_n_members(handle,team,member):
             self.lggr.debug('%s has been added to the team.'%member)
@@ -234,8 +236,11 @@ class TeamsController:
         else:
             self.lggr.debug('%s is already part of this team.'%member)
             flash('%s is already part of this team.'%member,'UI')
+        return d
 
     def delete_a_m_n_p_q(self,handle,team,member):
+        '''Deletes a member from a team'''
+        d = {}
         if self.TEM.delete_a_m_n_members(handle,team,member):
             self.lggr.debug('%s has been deleted from the team.'%member)
             flash('%s has been deleted from the team.'%member,'UI')
@@ -251,14 +256,17 @@ class TeamsController:
         else:
             self.lggr.error('%s already  exists in this team.'%ring)
             flash('%s already  exists in this team.'%ring,'UI') 
+        return d
 
     def delete_a_m_n_r_b(self,handle,team,ring):
+        d = {}
         if self.TEM.delete_a_m_n_rings(handle,team,ring):
             self.lggr.debug('%s has been deleted from the team.'%ring)
             flash('%s has been deleted from the team.'%ring,'UI')
         else:
             self.lggr.error('There was an issue deleting: %s'%ring)
             flash('There was an issue deleting: %s'%ring,'UI')
+        return d
 
 
         #DELETE /a/b
