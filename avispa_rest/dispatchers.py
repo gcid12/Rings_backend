@@ -923,7 +923,7 @@ def people_dispatcher(route,handle,person=None):
     lggr = setup_local_logger(tid,ip)
 
     MAM = MainModel(tid=tid,ip=ip)
-    PEC = PeopleCollection(tid=tid,ip=ip)
+    PEC = PeopleController(tid=tid,ip=ip)
 
     data = {}
     data['section'] = '_people'
@@ -994,7 +994,7 @@ def teams_dispatcher(route,handle,team=None,member=None,ring=None):
     lggr = setup_local_logger(tid,ip)
 
     MAM = MainModel(tid=tid,ip=ip)
-    TEC = TeamsCollection(tid=tid,ip=ip)
+    TEC = TeamsController(tid=tid,ip=ip)
 
     data = {}
     data['section'] = '_teams'
