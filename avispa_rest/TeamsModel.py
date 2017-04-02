@@ -172,4 +172,16 @@ class TeamsModel:
         else:
             return False
 
-  
+    def get_a_m_all_p_q(self,handle,member):
+        '''All the teams that this <member> belongs to in this org <handle>'''
+        memberships = []
+        
+        doc = self.MAM.select_user(handle) 
+        for teamd in doc['teams']:
+            for memberd in teamd['members']:
+                if member == memberd['handle']:
+                    memberships.append(teamd['teamname'])
+
+        return memberships
+
+

@@ -5,6 +5,7 @@ from flask import redirect, flash, url_for
 from MainModel import MainModel
 from flask.ext.login import current_user
 from TeamsModel import TeamsModel
+from PeopleModel import PeopleModel
 from flanker.addresslib import address
 from datetime import datetime
 from app import flask_bcrypt
@@ -13,7 +14,7 @@ from AvispaLogging import AvispaLoggerAdapter
 from env_config import URL_SCHEME
 
 
-class TeamsCollection:
+class TeamsController:
 
     def __init__(self,tid=None,ip=None):
 
@@ -22,6 +23,7 @@ class TeamsCollection:
         
         self.MAM = MainModel(tid=tid,ip=ip)
         self.TEM = TeamsModel(tid=tid,ip=ip)
+        self.PEM = PeopleModel(tid=tid,ip=ip)
 
     # GET/a
     def get_a_m(self,handle,team,*args,**kargs):
@@ -173,7 +175,8 @@ class TeamsCollection:
                                 _scheme=URL_SCHEME)         
      
         return d
-
+    
+    #DEPRECATED 
     def put_a_m_n(self,handle,team,rqform=None,rqargs=None,*args,**kargs):
 
         #This function should be refactored into multiple functions that obey RESTFUL:
@@ -226,10 +229,66 @@ class TeamsCollection:
 
         return d
 
+    def post_a_m_n_p(self,handle,team,rqform):
+        d = {}
+        member = rqform.get('newmember')
+        if self.TEM.post_a_m_n_members(handle,team,member):
+            self.lggr.debug('%s has been added to the team.'%member)
+            flash('%s has been added to the team.'%member,'UI')
+        else:
+            self.lggr.debug('%s is already part of this team.'%member)
+            flash('%s is already part of this team.'%member,'UI')
+        return d
+
+    def delete_a_m_n_p_q(self,handle,team,member):
+        '''Deletes a member from a team'''
+        d = {}
+        if self.TEM.delete_a_m_n_members(handle,team,member):
+            self.lggr.debug('%s has been deleted from the team.'%member)
+            flash('%s has been deleted from the team.'%member,'UI')
+        else:
+            self.lggr.error('There was an issue deleting: %s'%member)
+            flash('There was an issue deleting: %s'%member,'UI')
+
+        '''User Garbage collection'''
+        # If a user no longer belongs to any team, it should be also released from the org
+        
+        # 1. Call TeamModel to check if this <member> exists in any other <team> in this <handle>
+        memberships = self.TEM.get_a_m_all_p_q(handle,member)
+
+        raise Exception
+
+        # 2. If it doesn't, call the PeopleModel to delete this user
+        if len(memberships) == 0:
+            self.PEM.delete_a_p_q(handle,member)
+
+        return d
+
+    def post_a_m_n_r(self,handle,team,rqform):
+        d = {}
+        ring = rqform.get('newring')
+        if self.TEM.post_a_m_n_rings(handle,team,ring):
+            self.lggr.debug('%s has been added to the team.'%ring)
+            flash('%s has been added to the team.'%ring,'UI')
+        else:
+            self.lggr.error('%s already  exists in this team.'%ring)
+            flash('%s already  exists in this team.'%ring,'UI') 
+        return d
+
+    def delete_a_m_n_r_b(self,handle,team,ring):
+        d = {}
+        if self.TEM.delete_a_m_n_rings(handle,team,ring):
+            self.lggr.debug('%s has been deleted from the team.'%ring)
+            flash('%s has been deleted from the team.'%ring,'UI')
+        else:
+            self.lggr.error('There was an issue deleting: %s'%ring)
+            flash('There was an issue deleting: %s'%ring,'UI')
+        return d
+
 
         #DELETE /a/b
     def delete_a_m_n(self,handle,team,*args,**kargs):
-        #Will delete an existing person
+        #Will delete an existing team
         self.lggr.debug('Trying to delete the following team: %s'%team)
 
         d = {}

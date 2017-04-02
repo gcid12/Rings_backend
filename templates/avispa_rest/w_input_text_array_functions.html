@@ -1,65 +1,25 @@
 <script src="/_static/assets/tagsinputs/bootstrap-tagsinput.min.js"></script>
 
-<script>
+<script type="text/javascript">
 
-//    $count= 0;
-//    if($count ==0){
-//
-//        $( document ).ready(function() {
-//
-//            var target= "#input_{{ field.FieldId }}";
-//            $(target).attr("value","initial values, here2");
-//
-//            console.log('FIRST');
-//        });
-//        $count++;
-//    }else{}L
+$(function() {
+  $('#input_{{ field.FieldId }}, select').on('change', function(event) {
+    
+    //Update the value that will be sent
+    var $element = $(event.target);
+    $("#input_{{ field.FieldId }}_hidden").val(JSON.stringify($element.tagsinput('items')))
 
-        $(function() {
-            $('#input_{{ field.FieldId }}, select').on('change', function(event) {
+    //Update the PREVIEW container
+    var $container = $element.closest('.example');
+    if (!$element.data('tagsinput'))
+      return;    
+    $('#code_{{ field.FieldId }}', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+    
 
-                var $element = $(event.target),
-                    $container = $element.closest('.example');
+    
+  }).trigger('change');
 
-                if (!$element.data('tagsinput'))
-                    return;
-
-                var val = $element.val();
-                if (val === null)
-                    val = "null";
-                $("#codex_{{ field.FieldId }}", $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-                $("#codex_{{ field.FieldId }}", $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-
-                var asComma = ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"");
-                var asArray = JSON.stringify($element.tagsinput('items'));
-
-                $('#input_{{ field.FieldId }}_hidden').attr("value",asArray);
-            }).trigger('change');
-        });
-        console.log('SECOND');
+});
 
 
 </script>
-
-
-
-<script>
-
-//    $(function() {
-//        $('#input_{{ field.FieldId }}, select').on('change', function(event) {
-//            var $element = $(event.target),
-//                $container = $element.closest('.example');
-//
-//            if (!$element.data('tagsinput'))
-//                return;
-//
-//            var val = $element.val();
-//            if (val === null)
-//                val = "null";
-//            $('#code_{{ field.FieldId }}', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-//            $('#code_{{ field.FieldId }}', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-//        }).trigger('change');
-//    });
-
-</script>
-

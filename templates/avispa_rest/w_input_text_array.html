@@ -3,20 +3,14 @@
         {% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}
     </label>
     <div class="col-xs-9 col-sm-10">
-
         <div class="example example_markup">
-
             <div class="bs-example">
-                <!--<input type="text" value="" data-role="tagsinput" />-->
-
-
-
                 <input id="input_{{ field.FieldId }}"
                        type="text"
                        data-role="tagsinput"
                        order="{{ field.FieldOrder }}"
                        placeholder="{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}"
-                        value="{{ data.item[field.FieldId]|nonone }}"
+                        value="{{ data.item[field.FieldId]|join(',')|nonone }}"
                        /> 
 
                 <input id="input_{{ field.FieldId }}_hidden"
@@ -24,7 +18,7 @@
                        name="{{ field.FieldId }}" {% if field.FieldRequired %} required {% endif %}"
                        />
 
-                <pre class="items"><code id="codex_{{ field.FieldId }}" data-language="javascript"></code></pre>
+                <pre class="items"><code id="code_{{ field.FieldId }}" data-language="javascript"></code></pre>
 
             </div>
             <div class="accordion">
