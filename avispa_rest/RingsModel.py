@@ -242,7 +242,7 @@ class RingsModel:
         return data
 
 
-    #REFACTORED
+    #PROTOTYPE NOT IN USE
     def user_get_rings_mongodb(self,handle):
         '''
         @MONGODB:
@@ -665,7 +665,7 @@ class RingsModel:
         
         return False
 
-
+    #NOT IN USE
     def user_hard_delete_ring(self,handle,ringname,ringversion):
         '''
         Delete ring from DB 
@@ -1927,7 +1927,9 @@ class RingsModel:
                     try:
                         item_values[field['FieldId']] = json.loads(new_raw.strip())
                     except:
-                        item_values[field['FieldId']] = unicode(new_raw).strip()
+                        item_values[field['FieldId']] = ''
+                        #If it is not a valid JSON don't save it to the DB!
+                        
                 else:
                     if new_raw:
                         item_values[field['FieldId']] = unicode(new_raw).strip()
@@ -2144,13 +2146,15 @@ class RingsModel:
                 '''
 
 
-            if field['FieldType'] == 'OBJECT':
+            if field['FieldType'] == 'OBJECT' or field['FieldType'] == 'ARRAY':
                 #We need to check if new_raw is a valid json object or just a regular string
                 try:
-                    new = json.loads(new_raw.strip())
+                    new = json.loads(new_raw.strip())   
                 except:
                     new = ''
-                    #new = unicode(new_raw).strip()
+                    #If it is not a valid JSON don't save it to the DB!
+                    #Save an empty string
+
             else:
                 if new_raw:
                     new = new_raw.strip()

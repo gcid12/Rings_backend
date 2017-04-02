@@ -62,12 +62,8 @@
                     <div class="gcard-body" style="padding:10px 25px;">
 
                         <div class="form-group">
-                          <table class="table table-condensed table-striped">
-                              
-                          {% set n = 0 %}
+                          <table class="table table-condensed table-striped">                            
                           {% for ring in data.ringlist %}
-
-                            {% set n = n+1 %}
 
                             <tr>
                                   <td>
@@ -79,7 +75,7 @@
 
                                   </td>
                                   <td>
-                                      <input name="ring_{{n}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}' {% if data.handle+'_'+ring.ringname in data.collectionrings %} checked {% endif %}/> 
+                                      <input name="ring_{{data.handle}}_{{ring.ringname}}" type='checkbox' value='{{data.handle}}_{{ring.ringname}}' {% if data.handle+'_'+ring.ringname in data.collectionrings %} checked {% endif %}/> 
                                   </td>
                                 
                             </tr>

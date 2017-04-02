@@ -1,32 +1,42 @@
-    <div class="form-group">
-      <label for="{{ field.FieldId }}" class="col-xs-12 col-sm-3 control-label" id="{{ field.FieldId}}">
+<div class="form-group">
+    <label for="{{ field.FieldId }}" class="col-xs-3 col-sm-2 control-label" id="{{ field.FieldId}}">
         {% if field.FieldLabel %}{{ field.FieldLabel}}{% else %}{{ field.FieldName }}{% endif %}{% if field.FieldRequired %}*{% endif %}
-      </label>
-      <div class="col-xs-12 col-sm-9">
-        
-        <div class="example example_markupx">
-        
-          <div class="bs-examplex">
-            <input id="input_{{ field.FieldId }}" type="text" data-role="tagsinput" order="{{ field.FieldOrder }}" order="{{ field.FieldOrder }}" placeholder="{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}" name="ignore_{{ field.FieldId }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldId]|join(', ')|nonone }}" />
-            <input id="{{ field.FieldId }}" name="{{ field.FieldId }}" type="hidden" >
+    </label>
+    <div class="col-xs-9 col-sm-10">
+        <div class="example example_markup">
+            <div class="bs-example">
+                <input id="input_{{ field.FieldId }}"
+                       type="text"
+                       data-role="tagsinput"
+                       order="{{ field.FieldOrder }}"
+                       placeholder="{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}"
+                        value="{{ data.item[field.FieldId]|join(',')|nonone }}"
+                       /> 
 
-            
-          </div>
-          <div class="accordion">
-            <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#showarray_{{ field.FieldId }}">
-                  <i class="fa fa-angle-down"></i>
-                </a>
-              </div>
-              <div id="showarray_{{ field.FieldId }}" class="accordion-body collapse">
-                <div class="accordion-inner highlight">
-                  <pre class="items"><code id="code_{{ field.FieldId }}" data-language="javascript"></code></pre>
-                </div>
-              </div>
+                <input id="input_{{ field.FieldId }}_hidden"
+                       type="hidden"
+                       name="{{ field.FieldId }}" {% if field.FieldRequired %} required {% endif %}"
+                       />
+
+                <pre class="items"><code id="code_{{ field.FieldId }}" data-language="javascript"></code></pre>
+
             </div>
-          </div>
+            <div class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#accordion_example_markup">
+                            Show array
+                        </a>
+                    </div>
+                    <div id="accordion_example_markup" class="accordion-body collapse">
+                        <div class="accordion-inner highlight">
+                            <pre class="items"><code data-language="javascript"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-      </div>
     </div>
+</div>
+

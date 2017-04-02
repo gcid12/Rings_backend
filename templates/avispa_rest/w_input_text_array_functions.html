@@ -5,22 +5,21 @@
 $(function() {
   $('#input_{{ field.FieldId }}, select').on('change', function(event) {
     
-    var $element = $(event.target),
-      $container = $element.closest('.example');
+    //Update the value that will be sent
+    var $element = $(event.target);
+    $("#input_{{ field.FieldId }}_hidden").val(JSON.stringify($element.tagsinput('items')))
 
+    //Update the PREVIEW container
+    var $container = $element.closest('.example');
     if (!$element.data('tagsinput'))
-      return;
-    
-    var val = $element.val();
-    if (val === null)
-      val = "null";
-    $('#code_{{ field.FieldId }}', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
+      return;    
     $('#code_{{ field.FieldId }}', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
-    $("#{{ field.FieldId }}").val(JSON.stringify($element.tagsinput('items')))
+    
 
     
   }).trigger('change');
 
 });
+
 
 </script>

@@ -95,7 +95,7 @@ class RingBuilder:
         if ring:
             p['RingName'] = ring 
         elif 'RingName' in rqform:  
-            p['RingName'] = rqform.get('RingName').lower().replace(' ','')
+            p['RingName'] = rqform.get('RingName').lower().replace(' ','').replace('_','-')
             #There should be also a nonaplhanumeric character strip here
         else:
             self.lggr.info('No name for the ring')
@@ -496,12 +496,3 @@ class RingBuilder:
         # Collect all the 'Field*' fields
 
         return True
-
-
-
-
-    #def _createnew_db(self,ringname):
-
-
-
-
