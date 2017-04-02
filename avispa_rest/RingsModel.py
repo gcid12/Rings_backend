@@ -968,7 +968,7 @@ class RingsModel:
         elif fieldtype == 'OBJECT':
             return DictField()
         elif fieldtype == 'ARRAY':
-            return ListField()
+            return ListField(TextField())
         elif fieldtype == 'BOOLEAN':
             return BooleanField()
         else:
@@ -1923,7 +1923,7 @@ class RingsModel:
 
 
 
-                if field['FieldType'] == 'OBJECT':
+                if field['FieldType'] == 'OBJECT' or field['FieldType'] == 'ARRAY' :
                     try:
                         item_values[field['FieldId']] = json.loads(new_raw.strip())
                     except:
