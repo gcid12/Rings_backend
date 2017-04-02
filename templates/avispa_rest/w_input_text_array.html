@@ -4,10 +4,11 @@
       </label>
       <div class="col-xs-12 col-sm-9">
         
-        <div class="examplex example_markupx">
+        <div class="example example_markupx">
         
           <div class="bs-examplex">
-            <input id="input_{{ field.FieldId }}" type="text" data-role="tagsinput" order="{{ field.FieldOrder }}" order="{{ field.FieldOrder }}" placeholder="{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}" name="{{ field.FieldId }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldId]|nonone }}" />
+            <input id="input_{{ field.FieldId }}" type="text" data-role="tagsinput" order="{{ field.FieldOrder }}" order="{{ field.FieldOrder }}" placeholder="{% if field.FieldHint %}{{ field.FieldHint }}{% endif %}" name="ignore_{{ field.FieldId }}" {% if field.FieldRequired %} required {% endif %} value="{{ data.item[field.FieldId]|join(', ')|nonone }}" />
+            <input id="{{ field.FieldId }}" name="{{ field.FieldId }}" type="hidden" >
 
             
           </div>
