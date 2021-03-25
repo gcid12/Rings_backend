@@ -4,7 +4,7 @@ Flask-DebugToolbar==0.10.0
 Jinja2==2.7.3
 MarkupSafe==0.23
 #PAM==0.4.2
-PyYAML==3.11
+PyYAML==5.4
 #Twisted-Core==14.0.2
 Werkzeug==0.10.4
 argparse==1.2.1
