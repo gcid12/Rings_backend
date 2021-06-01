@@ -35,7 +35,7 @@ service-identity==1.0.0
 six==1.7.3
 ssh-import-id==3.21
 uWSGI==2.0.10
-urllib3==1.8.3
+urllib3==1.26.5
 virtualenv==1.11.6
 wheel==0.24.0
 wsgiref==0.1.2
